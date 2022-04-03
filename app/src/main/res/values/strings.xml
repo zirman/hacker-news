@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Hacker News</string>
+    <string name="top_stories">Top Stories</string>
+    <string name="more_options">More Options</string>
+    <string name="no_story_selected">no story selected</string>
+    <string name="hacker_news">Hacker News</string>
+    <string name="url_is_null">Url is null</string>
+    <string name="deleted">[Deleted]</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="upvote">Upvote</string>
+    <string name="favorite">Favorite</string>
+    <string name="reply">Reply</string>
+    <string name="new_stories">New Stories</string>
+    <string name="best_stories">Best Stories</string>
+    <string name="show_hn">Show HN</string>
+    <string name="ask_hn">Ask HN</string>
+    <string name="jobs">Jobs</string>
+    <string name="ask_hacker_news">Ask Hacker News</string>
+    <string name="show_hacker_news">Show Hacker News</string>
+    <string name="updates">Updates</string>
+    <string name="back">Back</string>
+    <string name="password_toggle">Password toggle</string>
+    <string name="clear">Clear</string>
+    <string name="login_error">Login Error</string>
+    <string name="invalid_username_or_password">Invalid username or password</string>
+    <string name="submit">Submit</string>
+    <string name="hacker_news_login">Hacker News Login</string>
+    <string name="favorites">Favorites</string>
+    <string name="un_favorite">UnFavorite</string>
+    <string name="un_vote">UnVote</string>
+    <string name="send">Send</string>
+</resources>

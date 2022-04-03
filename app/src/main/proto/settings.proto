@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+option java_package = "com.monoid.hackernews.datastore";
+option java_multiple_files = true;
+
+message Authentication {
+  string username = 1;
+  string password = 2;
+}
