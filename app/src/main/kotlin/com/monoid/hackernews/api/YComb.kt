@@ -40,8 +40,6 @@ private suspend inline fun HttpClient.yCombRequest(
         val contentType: ContentType? =
             httpResponse.contentType()
 
-        Log.e("FOOBAR", "${httpResponse.headers["location"]}")
-
         throw if (contentType != null && contentType.match(ContentType.Text.Html)) {
             val content: String =
                 httpResponse.readText()
