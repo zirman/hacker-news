@@ -87,7 +87,7 @@ fun CommentItem(
                         if (commentItem.expanded.not()) {
                             setExpanded(true)
                         } else {
-                            val username1: Username? = timeByUserAnnotatedString
+                            val username: Username? = timeByUserAnnotatedString
                                 .getStringAnnotations(
                                     tag = userTag,
                                     start = offset,
@@ -97,8 +97,8 @@ fun CommentItem(
                                 ?.item
                                 ?.let { Username(it) }
 
-                            if (username1 != null) {
-                                onClickUser(username1)
+                            if (username != null) {
+                                onClickUser(username)
                             } else {
                                 setExpanded(false)
                             }

@@ -3,7 +3,6 @@ package com.monoid.hackernews.api
 import android.os.Build
 import android.text.Html
 import android.text.Spanned
-import android.util.Log
 import androidx.core.text.getSpans
 import com.monoid.hackernews.datastore.Authentication
 import io.ktor.client.HttpClient
@@ -32,6 +31,7 @@ private suspend inline fun HttpClient.yCombRequest(
                 append("acct", authentication.username)
                 append("pw", authentication.password)
             }
+
             parametersBuilder()
         },
     ) { expectSuccess = false }

@@ -80,9 +80,6 @@ val storiesToNavigationItem: Map<Stories, NavigationDrawerItemData> =
         ),
     )
 
-val navigationItemToStories: Map<NavigationDrawerItemData, Stories> =
-    storiesToNavigationItem.map { (a, b) -> Pair(b, a) }.toMap()
-
 val navigationItemList: List<NavigationDrawerItemData?> =
     listOf(
         storiesToNavigationItem[Stories.Top],
