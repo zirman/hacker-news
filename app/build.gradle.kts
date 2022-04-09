@@ -27,7 +27,7 @@ android {
         applicationId = "com.monoid.hackernews"
         minSdk = 21
         targetSdk = 32
-        versionCode = 1
+        versionCode = 3
         versionName = "1.0"
         vectorDrawables {
             useSupportLibrary = true
@@ -78,7 +78,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.2.0-alpha06"
+        kotlinCompilerExtensionVersion = "1.2.0-alpha07"
     }
 }
 protobuf {
@@ -108,9 +108,9 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1-native-mt")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1-native-mt")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.1-native-mt")
 
     implementation("androidx.core:core-ktx:1.9.0-alpha02")
 
@@ -129,21 +129,21 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.4.1")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.1")
 
-    implementation("androidx.compose.ui:ui:1.2.0-alpha06")
+    implementation("androidx.compose.ui:ui:1.2.0-alpha07")
 
-    implementation("androidx.compose.material:material:1.2.0-alpha06")
+    implementation("androidx.compose.material:material:1.2.0-alpha07")
 
     implementation("androidx.compose.material3:material3:1.0.0-alpha08")
-    implementation("androidx.compose.material:material-icons-core:1.2.0-alpha06")
-    implementation("androidx.compose.material:material-icons-extended:1.2.0-alpha06")
+    implementation("androidx.compose.material:material-icons-core:1.2.0-alpha07")
+    implementation("androidx.compose.material:material-icons-extended:1.2.0-alpha07")
 
-    implementation("androidx.compose.ui:ui-tooling:1.2.0-alpha06")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.2.0-alpha06")
-    implementation("androidx.compose.ui:ui-util:1.2.0-alpha06")
+    implementation("androidx.compose.ui:ui-tooling:1.2.0-alpha07")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.2.0-alpha07")
+    implementation("androidx.compose.ui:ui-util:1.2.0-alpha07")
 
-    implementation("androidx.compose.foundation:foundation:1.2.0-alpha06")
+    implementation("androidx.compose.foundation:foundation:1.2.0-alpha07")
 
-    implementation("androidx.compose.runtime:runtime-livedata:1.2.0-alpha06")
+    implementation("androidx.compose.runtime:runtime-livedata:1.2.0-alpha07")
 
     implementation("androidx.datastore:datastore:1.0.0")
 
@@ -151,9 +151,9 @@ dependencies {
 
     implementation("androidx.window:window:1.0.0")
 
-    implementation("androidx.navigation:navigation-runtime-ktx:2.4.1")
-    implementation("androidx.navigation:navigation-ui-ktx:2.4.1")
-    implementation("androidx.navigation:navigation-compose:2.4.1")
+    implementation("androidx.navigation:navigation-runtime-ktx:2.4.2")
+    implementation("androidx.navigation:navigation-ui-ktx:2.4.2")
+    implementation("androidx.navigation:navigation-compose:2.4.2")
 
     implementation("androidx.room:room-runtime:2.4.2")
     kapt("androidx.room:room-compiler:2.4.2")
@@ -164,15 +164,15 @@ dependencies {
 
     implementation("com.google.protobuf:protobuf-kotlin-lite:3.19.4")
 
-    implementation("com.google.accompanist:accompanist-navigation-animation:0.24.5-alpha")
-    implementation("com.google.accompanist:accompanist-navigation-material:0.24.5-alpha")
-    implementation("com.google.accompanist:accompanist-swiperefresh:0.24.5-alpha")
-    implementation("com.google.accompanist:accompanist-insets:0.24.5-alpha")
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.5-alpha")
-    implementation("com.google.accompanist:accompanist-flowlayout:0.24.5-alpha")
+    implementation("com.google.accompanist:accompanist-navigation-animation:0.24.6-alpha")
+    implementation("com.google.accompanist:accompanist-navigation-material:0.24.6-alpha")
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.24.6-alpha")
+    implementation("com.google.accompanist:accompanist-insets:0.24.6-alpha")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.6-alpha")
+    implementation("com.google.accompanist:accompanist-flowlayout:0.24.6-alpha")
 
-    implementation("io.ktor:ktor-client-core:1.6.7")
-    implementation("io.ktor:ktor-client-android:1.6.7")
-    implementation("io.ktor:ktor-client-serialization:1.6.7")
-    implementation("io.ktor:ktor-client-logging:1.6.7")
+    implementation("io.ktor:ktor-client-core:1.6.8")
+    implementation("io.ktor:ktor-client-android:1.6.8")
+    implementation("io.ktor:ktor-client-serialization:1.6.8")
+    implementation("io.ktor:ktor-client-logging:1.6.8")
 }
