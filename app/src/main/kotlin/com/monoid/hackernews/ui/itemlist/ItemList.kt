@@ -40,6 +40,7 @@ import com.monoid.hackernews.datastore.Authentication
 import com.monoid.hackernews.repo.OrderedItem
 import com.monoid.hackernews.settingsDataStore
 import com.monoid.hackernews.ui.main.MainState
+import kotlinx.coroutines.CancellationException
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
@@ -115,23 +116,27 @@ fun ItemList(
                                     .toLong()
                                 ).not()
                     ) {
-                        val itemFromApi: Item =
-                            mainState.httpClient.getItem(itemId)
+                        try {
+                            val itemFromApi: Item =
+                                mainState.httpClient.getItem(itemId)
 
-                        // insert children entries if they don't exist
-                        if (itemFromApi.kids != null) {
-                            mainState.itemDao.insertIdsIgnore(
-                                itemFromApi.kids.map {
-                                    com.monoid.hackernews.room.Item(
-                                        id = it.long,
-                                        parent = itemFromApi.id.long,
-                                    )
-                                }
-                            )
+                            // insert children entries if they don't exist
+                            if (itemFromApi.kids != null) {
+                                mainState.itemDao.insertIdsIgnore(
+                                    itemFromApi.kids.map {
+                                        com.monoid.hackernews.room.Item(
+                                            id = it.long,
+                                            parent = itemFromApi.id.long,
+                                        )
+                                    }
+                                )
+                            }
+
+                            // insert item entry
+                            mainState.itemDao.insertReplace(itemFromApi.toRoomItem())
+                        } catch (error: Throwable) {
+                            if (error is CancellationException) throw error
                         }
-
-                        // insert item entry
-                        mainState.itemDao.insertReplace(itemFromApi.toRoomItem())
                     }
                 }
 

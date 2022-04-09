@@ -1,14 +1,23 @@
 package com.monoid.hackernews.ui.main
 
+import android.content.Context
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
@@ -31,6 +40,12 @@ import com.monoid.hackernews.repo.UserStoryRepo
 import com.monoid.hackernews.ui.home.HomeScreen
 import com.monoid.hackernews.ui.login.LoginContent
 import com.monoid.hackernews.ui.reply.ReplyContent
+import com.monoid.hackernews.ui.util.networkConnectivity
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.dropWhile
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 @Composable
 fun MainNavigationComponent(
@@ -43,6 +58,36 @@ fun MainNavigationComponent(
     // bug workaround for bottom sheets not updating
     val windowSizeState: State<WindowSize> =
         rememberUpdatedState(windowSize)
+
+    val snackbarHostState: SnackbarHostState =
+        remember { SnackbarHostState() }
+
+    val context: Context =
+        LocalContext.current
+
+    val lifecycleOwner: LifecycleOwner =
+        LocalLifecycleOwner.current
+
+    LaunchedEffect(lifecycleOwner) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            context.networkConnectivity()
+                .debounce(2.toDuration(DurationUnit.SECONDS))
+                .dropWhile { it }
+                .collectLatest { hasConnectivity ->
+                    if (hasConnectivity) {
+                        snackbarHostState.showSnackbar(
+                            message = context.getString(R.string.back_online),
+                            duration = SnackbarDuration.Short,
+                        )
+                    } else {
+                        snackbarHostState.showSnackbar(
+                            message = context.getString(R.string.offline),
+                            duration = SnackbarDuration.Indefinite,
+                        )
+                    }
+                }
+        }
+    }
 
     AnimatedNavHost(
         navController = mainNavController,
@@ -120,6 +165,7 @@ fun MainNavigationComponent(
                             )
                     }
                 },
+                snackbarHostState = snackbarHostState,
             )
         }
 
@@ -147,6 +193,7 @@ fun MainNavigationComponent(
                         username = username,
                     )
                 },
+                snackbarHostState = snackbarHostState,
             )
         }
 

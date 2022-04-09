@@ -9,10 +9,15 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContent
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
@@ -25,6 +30,8 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallTopAppBar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -74,13 +81,14 @@ import com.monoid.hackernews.ui.itemlist.ItemList
 import com.monoid.hackernews.ui.main.MainState
 import com.monoid.hackernews.ui.itemdetail.ItemDetail
 import com.monoid.hackernews.ui.util.itemIdSaver
+import com.monoid.hackernews.ui.util.networkConnectivity
 import com.monoid.hackernews.ui.util.notifyInput
+import com.monoid.hackernews.ui.util.runWhen
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import java.util.concurrent.TimeUnit
@@ -92,6 +100,7 @@ fun HomeScreen(
     windowSize: WindowSize,
     title: String,
     orderedItemRepo: OrderedItemRepo,
+    snackbarHostState: SnackbarHostState,
     context: Context = LocalContext.current,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     onClickUpvote: (ItemId?) -> Unit = { itemId ->
@@ -268,25 +277,29 @@ fun HomeScreen(
     // refreshes if last update is stale on resume and loops refresh.
     LaunchedEffect(lifecycleOwner) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-            while (true) {
-                var lastUpdate = lastUpdateState.value
+            context.networkConnectivity().runWhen({ it }) {
+                while (true) {
+                    var lastUpdate = lastUpdateState.value
 
-                if (lastUpdate == null ||
-                    Clock.System.now().toEpochMilliseconds() - lastUpdate >=
-                    TimeUnit.MINUTES.toMillis(
-                        context.resources.getInteger(R.integer.item_stale_minutes).toLong()
+                    if (lastUpdate == null ||
+                        Clock.System.now().toEpochMilliseconds() - lastUpdate >=
+                        TimeUnit.MINUTES.toMillis(
+                            context.resources.getInteger(R.integer.item_stale_minutes)
+                                .toLong()
+                        )
+                    ) {
+                        orderedItemRepo.updateRepoItems()
+                        lastUpdate = Clock.System.now().toEpochMilliseconds()
+                        setLastUpdate(lastUpdate)
+                    }
+
+                    delay(
+                        (TimeUnit.MINUTES.toMillis(
+                            context.resources.getInteger(R.integer.item_stale_minutes)
+                                .toLong()
+                        ) + lastUpdate) - Clock.System.now().toEpochMilliseconds()
                     )
-                ) {
-                    orderedItemRepo.updateRepoItems()
-                    lastUpdate = Clock.System.now().toEpochMilliseconds()
-                    setLastUpdate(lastUpdate)
                 }
-
-                delay(
-                    (TimeUnit.MINUTES.toMillis(
-                        context.resources.getInteger(R.integer.item_stale_minutes).toLong()
-                    ) + lastUpdate) - Clock.System.now().toEpochMilliseconds()
-                )
             }
         }
     }
@@ -357,6 +370,14 @@ fun HomeScreen(
                     actionIconContentColor = MaterialTheme.colorScheme.tertiary,
                 ),
                 scrollBehavior = scrollBehavior,
+            )
+        },
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = Modifier.windowInsetsPadding(
+                    WindowInsets.safeContent.only(WindowInsetsSides.Bottom)
+                ),
             )
         },
     ) { paddingValues ->
@@ -447,18 +468,6 @@ fun HomeScreen(
                         .weight(1f)
                         .fillMaxHeight()
 
-                    val username = remember {
-                        context.settingsDataStore.data.map {
-                            if (it.password.isNotBlank()) {
-                                Username(it.username)
-                            } else {
-                                null
-                            }
-                        }
-                    }
-                        .collectAsState(initial = null)
-                        .value
-
                     if (
                         showItemId != null &&
                         (detailInteraction || windowSize.width != WindowSizeClass.Compact)
@@ -466,7 +475,6 @@ fun HomeScreen(
                         key(showItemId) {
                             ItemDetail(
                                 mainState = mainState,
-                                username = username,
                                 itemId = showItemId,
                                 onClickUpvote = onClickUpvote,
                                 onClickUnUpvote = onClickUnUpvote,

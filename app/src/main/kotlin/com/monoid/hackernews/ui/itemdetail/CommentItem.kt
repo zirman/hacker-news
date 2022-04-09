@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ThumbUp
-import androidx.compose.material.icons.twotone.Delete
 import androidx.compose.material.icons.twotone.ExpandLess
 import androidx.compose.material.icons.twotone.ExpandMore
 import androidx.compose.material.icons.twotone.MoreVert
@@ -53,7 +52,6 @@ import com.monoid.hackernews.ui.util.userTag
 
 @Composable
 fun CommentItem(
-    username: Username?,
     commentItem: ItemRow,
     isUpvote: Boolean,
     loadingBrush: Brush?,

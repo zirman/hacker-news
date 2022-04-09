@@ -10,6 +10,7 @@ import com.monoid.hackernews.room.UserDao
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.util.concurrent.CancellationException
 
 class UserStoryRepo(
     private val httpClient: HttpClient,
@@ -33,12 +34,16 @@ class UserStoryRepo(
     }
 
     override suspend fun updateRepoItems() {
-        val user = httpClient.getUser(username = username)
+        try {
+            val user = httpClient.getUser(username = username)
 
-        itemDao.insertIdsIgnore(
-            user.submitted.map { Item(id = it.long, by = username.string) }
-        )
+            itemDao.insertIdsIgnore(
+                user.submitted.map { Item(id = it.long, by = username.string) }
+            )
 
-        userDao.insertReplace(user.toRoomUser())
+            userDao.insertReplace(user.toRoomUser())
+        } catch (error: Throwable) {
+            if (error is CancellationException) throw error
+        }
     }
 }

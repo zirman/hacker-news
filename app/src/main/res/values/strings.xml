@@ -31,4 +31,6 @@
     <string name="un_favorite">UnFavorite</string>
     <string name="un_vote">UnVote</string>
     <string name="send">Send</string>
+    <string name="back_online">Back Online</string>
+    <string name="offline">Offline</string>
 </resources>

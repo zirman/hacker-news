@@ -5,6 +5,7 @@ import com.monoid.hackernews.api.getJobStories
 import com.monoid.hackernews.room.JobStory
 import com.monoid.hackernews.room.JobStoryDao
 import io.ktor.client.HttpClient
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -25,13 +26,17 @@ class JobStoryRepo(
     }
 
     override suspend fun updateRepoItems() {
-        jobStoryDao.replaceJobStories(
-            httpClient.getJobStories().mapIndexed { order, storyId ->
-                JobStory(
-                    itemId = storyId,
-                    order = order,
-                )
-            }
-        )
+        try {
+            jobStoryDao.replaceJobStories(
+                httpClient.getJobStories().mapIndexed { order, storyId ->
+                    JobStory(
+                        itemId = storyId,
+                        order = order,
+                    )
+                }
+            )
+        } catch (error: Throwable) {
+            if (error is CancellationException) throw error
+        }
     }
 }

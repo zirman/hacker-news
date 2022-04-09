@@ -5,6 +5,7 @@ import com.monoid.hackernews.api.getShowStories
 import com.monoid.hackernews.room.ShowStory
 import com.monoid.hackernews.room.ShowStoryDao
 import io.ktor.client.HttpClient
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -25,13 +26,17 @@ class ShowStoryRepo(
     }
 
     override suspend fun updateRepoItems() {
-        showStoryDao.replaceShowStories(
-            httpClient.getShowStories().mapIndexed { order, storyId ->
-                ShowStory(
-                    itemId = storyId,
-                    order = order,
-                )
-            }
-        )
+        try {
+            showStoryDao.replaceShowStories(
+                httpClient.getShowStories().mapIndexed { order, storyId ->
+                    ShowStory(
+                        itemId = storyId,
+                        order = order,
+                    )
+                }
+            )
+        } catch (error: Throwable) {
+            if (error is CancellationException) throw error
+        }
     }
 }

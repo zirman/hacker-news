@@ -45,6 +45,7 @@ import com.monoid.hackernews.room.ItemRow
 import com.monoid.hackernews.room.ItemWithKids
 import com.monoid.hackernews.settingsDataStore
 import com.monoid.hackernews.ui.main.MainState
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
@@ -54,7 +55,6 @@ import kotlinx.datetime.Instant
 @Composable
 fun CommentList(
     mainState: MainState,
-    username: Username?,
     itemList: List<ItemRow>,
     updateItemWithKids: (ItemWithKids) -> Unit,
     setExpanded: (ItemId, Boolean) -> Unit,
@@ -137,23 +137,27 @@ fun CommentList(
                         // launch in list's coroutine scope so that the job is not
                         // canceled if the item scrolls off.
                         coroutineScope.launch {
-                            val itemFromApi =
-                                mainState.httpClient.getItem(ItemId(item.id))
+                            try {
+                                val itemFromApi =
+                                    mainState.httpClient.getItem(ItemId(item.id))
 
-                            // insert children entries if they don't exist
-                            if (itemFromApi.kids != null) {
-                                mainState.itemDao.insertIdsIgnore(
-                                    itemFromApi.kids.map {
-                                        Item(
-                                            id = it.long,
-                                            parent = itemFromApi.id.long,
-                                        )
-                                    }
-                                )
+                                // insert children entries if they don't exist
+                                if (itemFromApi.kids != null) {
+                                    mainState.itemDao.insertIdsIgnore(
+                                        itemFromApi.kids.map {
+                                            Item(
+                                                id = it.long,
+                                                parent = itemFromApi.id.long,
+                                            )
+                                        }
+                                    )
+                                }
+
+                                mainState.itemDao.insertReplace(itemFromApi.toRoomItem())
+                                updateItemWithKids(mainState.itemDao.itemByIdWithKidsById(item.id)!!)
+                            } catch (error: Throwable) {
+                                if (error is CancellationException) throw error
                             }
-
-                            mainState.itemDao.insertReplace(itemFromApi.toRoomItem())
-                            updateItemWithKids(mainState.itemDao.itemByIdWithKidsById(item.id)!!)
                         }
                     }
                 }
@@ -204,7 +208,6 @@ fun CommentList(
                     )
                 } else {
                     CommentItem(
-                        username = username,
                         commentItem = itemRow,
                         isUpvote = isUpvoteState.value,
                         loadingBrush = if (itemRow.item.lastUpdate == null) loadingBrush else null,

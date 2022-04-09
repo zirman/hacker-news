@@ -43,6 +43,8 @@ import com.monoid.hackernews.ui.main.MainState
 import com.monoid.hackernews.ui.text.ReplyTextField
 import com.monoid.hackernews.ui.util.WindowSize
 import com.monoid.hackernews.ui.util.WindowSizeClass
+import com.monoid.hackernews.ui.util.networkConnectivity
+import com.monoid.hackernews.ui.util.runWhen
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -68,16 +70,22 @@ fun ReplyContent(
     // Update item in on resume if it's stale.
     LaunchedEffect(Unit) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-            val databaseItem = mainState.itemDao.itemByIdFlow(itemId = itemId.long).first()
+            context.networkConnectivity().runWhen({ it }) {
+                val databaseItem = mainState.itemDao.itemByIdFlow(itemId = itemId.long).first()
 
-            if (databaseItem?.lastUpdate == null ||
-                Clock.System.now().toEpochMilliseconds() - databaseItem.lastUpdate >=
-                TimeUnit.MINUTES.toMillis(
-                    context.resources.getInteger(R.integer.item_stale_minutes).toLong()
-                )
-            ) {
-                val apiItem = mainState.httpClient.getItem(itemId).toRoomItem()
-                mainState.itemDao.insertReplace(apiItem)
+                if (databaseItem?.lastUpdate == null ||
+                    Clock.System.now().toEpochMilliseconds() - databaseItem.lastUpdate >=
+                    TimeUnit.MINUTES.toMillis(
+                        context.resources.getInteger(R.integer.item_stale_minutes).toLong()
+                    )
+                ) {
+                    try {
+                        val apiItem = mainState.httpClient.getItem(itemId).toRoomItem()
+                        mainState.itemDao.insertReplace(apiItem)
+                    } catch (error: Throwable) {
+                        if (error is CancellationException) throw error
+                    }
+                }
             }
         }
     }

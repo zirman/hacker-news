@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -40,7 +41,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -88,10 +88,9 @@ fun MainContent(windowSize: WindowSize) {
             modifier = Modifier
                 // color under system bars when in landscape
                 .background(MaterialTheme.colorScheme.surfaceVariant)
-                .padding(
+                .windowInsetsPadding(
                     WindowInsets.safeDrawing
                         .only(WindowInsetsSides.Horizontal)
-                        .asPaddingValues()
                 ),
         ) {
             ModalNavigationDrawer(
@@ -113,10 +112,9 @@ fun MainContent(windowSize: WindowSize) {
                                     MainNavigation.User.routeWithArgs(username)
                                 )
                             },
-                            modifier = Modifier.padding(
+                            modifier = Modifier.windowInsetsPadding(
                                 WindowInsets.safeDrawing
                                     .only(WindowInsetsSides.Top + WindowInsetsSides.Bottom)
-                                    .asPaddingValues()
                             ),
                         )
                     }
@@ -142,10 +140,9 @@ fun MainContent(windowSize: WindowSize) {
                                     authenticationState.value
 
                                 val modifier: Modifier = Modifier
-                                    .padding(
+                                    .windowInsetsPadding(
                                         WindowInsets.safeDrawing
                                             .only(WindowInsetsSides.Top)
-                                            .asPaddingValues()
                                     )
 
                                 if (authentication?.password?.isNotEmpty() == true) {
@@ -196,10 +193,9 @@ fun MainContent(windowSize: WindowSize) {
                                 mainState = mainState,
                                 modifier = Modifier
                                     .fillMaxSize()
-                                    .padding(
+                                    .windowInsetsPadding(
                                         WindowInsets.safeDrawing
                                             .only(WindowInsetsSides.Bottom)
-                                            .asPaddingValues()
                                     )
                                     .verticalScroll(state = navigationRailScrollState),
                             )
@@ -213,10 +209,9 @@ fun MainContent(windowSize: WindowSize) {
                         onLoginError = { setShowLoginErrorDialog(it) },
                         modifier = Modifier
                             .background(MaterialTheme.colorScheme.surface)
-                            .padding(
+                            .windowInsetsPadding(
                                 WindowInsets.safeDrawing
                                     .only(WindowInsetsSides.Top)
-                                    .asPaddingValues()
                             ),
                     )
                 }

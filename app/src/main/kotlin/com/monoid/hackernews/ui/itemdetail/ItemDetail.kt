@@ -26,13 +26,13 @@ import com.monoid.hackernews.room.traverse
 import com.monoid.hackernews.room.update
 import com.monoid.hackernews.ui.main.MainState
 import com.monoid.hackernews.ui.util.itemTreeSaver
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
 fun ItemDetail(
     mainState: MainState,
-    username: Username?,
     itemId: ItemId,
     onClickUpvote: (ItemId) -> Unit,
     onClickUnUpvote: (ItemId) -> Unit,
@@ -59,36 +59,40 @@ fun ItemDetail(
         var itemWithKids = mainState.itemDao.itemByIdWithKidsById(itemId.long)
 
         if (itemWithKids == null) {
-            val itemFromApi = mainState.httpClient.getItem(itemId)
+            try {
+                val itemFromApi = mainState.httpClient.getItem(itemId)
 
-            if (itemFromApi.kids != null) {
-                mainState.itemDao.insertIdsIgnore(itemFromApi.kids.map {
-                    Item(
-                        id = it.long,
-                        parent = itemFromApi.id.long,
+                if (itemFromApi.kids != null) {
+                    mainState.itemDao.insertIdsIgnore(itemFromApi.kids.map {
+                        Item(
+                            id = it.long,
+                            parent = itemFromApi.id.long,
+                        )
+                    })
+                }
+
+                mainState.itemDao.insertReplace(itemFromApi.toRoomItem())
+                itemWithKids = mainState.itemDao.itemByIdWithKidsById(itemId.long)!!
+
+                val v = itemTreeState.value
+
+                if (v == null) {
+                    setItemTree(
+                        ItemTree(
+                            item = itemWithKids.item,
+                            kids = itemWithKids.kids.map { ItemTree(it, null) },
+                            expanded = true,
+                        )
                     )
-                })
+                } else {
+                    setItemTree(
+                        itemTreeState.value!!
+                            .update(itemWithKids)
+                    )
+                }
+            } catch (error: Throwable) {
+                if (error is CancellationException) throw error
             }
-
-            mainState.itemDao.insertReplace(itemFromApi.toRoomItem())
-            itemWithKids = mainState.itemDao.itemByIdWithKidsById(itemId.long)!!
-        }
-
-        val v = itemTreeState.value
-
-        if (v == null) {
-            setItemTree(
-                ItemTree(
-                    item = itemWithKids.item,
-                    kids = itemWithKids.kids.map { ItemTree(it, null) },
-                    expanded = true,
-                )
-            )
-        } else {
-            setItemTree(
-                itemTreeState.value!!
-                    .update(itemWithKids)
-            )
         }
     }
 
@@ -106,27 +110,31 @@ fun ItemDetail(
         state = swipeRefreshState,
         onRefresh = {
             coroutineScope.launch {
-                val itemFromApi = mainState.httpClient.getItem(itemId)
+                try {
+                    val itemFromApi = mainState.httpClient.getItem(itemId)
 
-                if (itemFromApi.kids != null) {
-                    mainState.itemDao.insertIdsIgnore(itemFromApi.kids.map {
-                        Item(
-                            id = it.long,
-                            parent = itemFromApi.id.long,
+                    if (itemFromApi.kids != null) {
+                        mainState.itemDao.insertIdsIgnore(itemFromApi.kids.map {
+                            Item(
+                                id = it.long,
+                                parent = itemFromApi.id.long,
+                            )
+                        })
+                    }
+
+                    mainState.itemDao.insertReplace(itemFromApi.toRoomItem())
+                    val itemWithKids = mainState.itemDao.itemByIdWithKidsById(itemId.long)!!
+
+                    setItemTree(
+                        ItemTree(
+                            item = itemWithKids.item,
+                            kids = itemWithKids.kids.map { ItemTree(it, null) },
+                            expanded = true,
                         )
-                    })
-                }
-
-                mainState.itemDao.insertReplace(itemFromApi.toRoomItem())
-                val itemWithKids = mainState.itemDao.itemByIdWithKidsById(itemId.long)!!
-
-                setItemTree(
-                    ItemTree(
-                        item = itemWithKids.item,
-                        kids = itemWithKids.kids.map { ItemTree(it, null) },
-                        expanded = true,
                     )
-                )
+                } catch (error: Throwable) {
+                    if (error is CancellationException) throw error
+                }
             }
         },
         modifier = modifier,
@@ -140,7 +148,6 @@ fun ItemDetail(
     ) {
         CommentList(
             mainState = mainState,
-            username = username,
             itemList = itemList ?: emptyList(),
             updateItemWithKids = { setItemTree(itemTreeState.value!!.update(it)) },
             setExpanded = { itemId, expanded ->
