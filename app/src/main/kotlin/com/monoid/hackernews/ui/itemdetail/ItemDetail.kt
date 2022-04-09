@@ -58,8 +58,8 @@ fun ItemDetail(
     LaunchedEffect(Unit) {
         var itemWithKids = mainState.itemDao.itemByIdWithKidsById(itemId.long)
 
-        if (itemWithKids == null) {
-            try {
+        try {
+            if (itemWithKids == null) {
                 val itemFromApi = mainState.httpClient.getItem(itemId)
 
                 if (itemFromApi.kids != null) {
@@ -74,25 +74,26 @@ fun ItemDetail(
                 mainState.itemDao.insertReplace(itemFromApi.toRoomItem())
                 itemWithKids = mainState.itemDao.itemByIdWithKidsById(itemId.long)!!
 
-                val v = itemTreeState.value
-
-                if (v == null) {
-                    setItemTree(
-                        ItemTree(
-                            item = itemWithKids.item,
-                            kids = itemWithKids.kids.map { ItemTree(it, null) },
-                            expanded = true,
-                        )
-                    )
-                } else {
-                    setItemTree(
-                        itemTreeState.value!!
-                            .update(itemWithKids)
-                    )
-                }
-            } catch (error: Throwable) {
-                if (error is CancellationException) throw error
             }
+
+            val v = itemTreeState.value
+
+            if (v == null) {
+                setItemTree(
+                    ItemTree(
+                        item = itemWithKids.item,
+                        kids = itemWithKids.kids.map { ItemTree(it, null) },
+                        expanded = true,
+                    )
+                )
+            } else {
+                setItemTree(
+                    itemTreeState.value!!
+                        .update(itemWithKids)
+                )
+            }
+        } catch (error: Throwable) {
+            if (error is CancellationException) throw error
         }
     }
 
