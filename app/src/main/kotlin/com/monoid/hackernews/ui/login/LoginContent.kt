@@ -30,6 +30,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.monoid.hackernews.R
+import com.monoid.hackernews.api.ItemId
 import com.monoid.hackernews.api.commentRequest
 import com.monoid.hackernews.api.favoriteRequest
 import com.monoid.hackernews.api.loginRequest
@@ -179,19 +180,19 @@ fun submitJob(
                 is LoginAction.Upvote -> {
                     httpClient.upvoteRequest(
                         authentication = authentication,
-                        itemId = loginAction.itemId,
+                        itemId = ItemId(loginAction.itemId),
                     )
                 }
                 is LoginAction.Favorite -> {
                     httpClient.favoriteRequest(
                         authentication = authentication,
-                        itemId = loginAction.itemId,
+                        itemId = ItemId(loginAction.itemId),
                     )
                 }
                 is LoginAction.Reply -> {
                     httpClient.commentRequest(
                         authentication = authentication,
-                        parentId = loginAction.parentId,
+                        parentId = ItemId(loginAction.parentId),
                         text = loginAction.text,
                     )
                 }

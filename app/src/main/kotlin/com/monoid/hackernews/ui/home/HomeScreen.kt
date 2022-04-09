@@ -124,7 +124,7 @@ fun HomeScreen(
                     }
                 } else {
                     mainNavController.navigate(
-                        MainNavigation.Login.routeWithArgs(LoginAction.Upvote(itemId))
+                        MainNavigation.Login.routeWithArgs(LoginAction.Upvote(itemId.long))
                     )
                 }
             }
@@ -193,7 +193,7 @@ fun HomeScreen(
                     }
                 } else {
                     mainNavController.navigate(
-                        MainNavigation.Login.routeWithArgs(LoginAction.Favorite(itemId))
+                        MainNavigation.Login.routeWithArgs(LoginAction.Favorite(itemId.long))
                     )
                 }
             }
