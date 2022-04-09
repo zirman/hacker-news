@@ -1,7 +1,7 @@
 package com.monoid.hackernews.repo
 
 import com.monoid.hackernews.api.ItemId
-import com.monoid.hackernews.api.getTopStories
+import com.monoid.hackernews.api.getNewStories
 import com.monoid.hackernews.room.NewStory
 import com.monoid.hackernews.room.NewStoryDao
 import io.ktor.client.HttpClient
@@ -26,7 +26,7 @@ class NewStoryRepo(
 
     override suspend fun updateRepoItems() {
         newStoryDao.replaceNewStories(
-            httpClient.getTopStories().mapIndexed { order, storyId ->
+            httpClient.getNewStories().mapIndexed { order, storyId ->
                 NewStory(
                     itemId = storyId,
                     order = order,
