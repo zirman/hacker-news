@@ -2,38 +2,39 @@ package com.monoid.hackernews.api
 
 import com.monoid.hackernews.Username
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
 import io.ktor.client.request.get
 
 private const val firebaseApiBase = "https://hacker-news.firebaseio.com/v0/"
 
 suspend fun HttpClient.getTopStories(): List<Long> {
-    return get(urlString = "${firebaseApiBase}topstories.json")
+    return get(urlString = "${firebaseApiBase}topstories.json").body()
 }
 
 suspend fun HttpClient.getNewStories(): List<Long> {
-    return get(urlString = "${firebaseApiBase}newstories.json")
+    return get(urlString = "${firebaseApiBase}newstories.json").body()
 }
 
 suspend fun HttpClient.getBestStories(): List<Long> {
-    return get(urlString = "${firebaseApiBase}beststories.json")
+    return get(urlString = "${firebaseApiBase}beststories.json").body()
 }
 
 suspend fun HttpClient.getShowStories(): List<Long> {
-    return get(urlString = "${firebaseApiBase}showstories.json")
+    return get(urlString = "${firebaseApiBase}showstories.json").body()
 }
 
 suspend fun HttpClient.getAskStories(): List<Long> {
-    return get(urlString = "${firebaseApiBase}askstories.json")
+    return get(urlString = "${firebaseApiBase}askstories.json").body()
 }
 
 suspend fun HttpClient.getJobStories(): List<Long> {
-    return get(urlString = "${firebaseApiBase}jobstories.json")
+    return get(urlString = "${firebaseApiBase}jobstories.json").body()
 }
 
 suspend fun HttpClient.getItem(itemId: ItemId): Item {
-    return get(urlString = "${firebaseApiBase}item/${itemId.long}.json")
+    return get(urlString = "${firebaseApiBase}item/${itemId.long}.json").body()
 }
 
 suspend fun HttpClient.getUser(username: Username): User {
-    return get(urlString = "${firebaseApiBase}user/${username.string}.json")
+    return get(urlString = "${firebaseApiBase}user/${username.string}.json").body()
 }

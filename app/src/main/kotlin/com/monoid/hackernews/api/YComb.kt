@@ -6,10 +6,10 @@ import android.text.Spanned
 import androidx.core.text.getSpans
 import com.monoid.hackernews.datastore.Authentication
 import io.ktor.client.HttpClient
-import io.ktor.client.features.expectSuccess
+import io.ktor.client.plugins.expectSuccess
 import io.ktor.client.request.forms.submitForm
 import io.ktor.client.statement.HttpResponse
-import io.ktor.client.statement.readText
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.Parameters
@@ -42,7 +42,7 @@ private suspend inline fun HttpClient.yCombRequest(
 
         throw if (contentType != null && contentType.match(ContentType.Text.Html)) {
             val content: String =
-                httpResponse.readText()
+                httpResponse.bodyAsText()
 
             try {
                 val spanned: Spanned =

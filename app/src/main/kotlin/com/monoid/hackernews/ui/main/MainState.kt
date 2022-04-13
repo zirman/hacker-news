@@ -19,12 +19,12 @@ import com.monoid.hackernews.room.UpvoteDao
 import com.monoid.hackernews.room.UserDao
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.features.json.serializer.KotlinxSerializer
-import io.ktor.client.features.logging.ANDROID
-import io.ktor.client.features.logging.LogLevel
-import io.ktor.client.features.logging.Logger
-import io.ktor.client.features.logging.Logging
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.ANDROID
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 @Composable
@@ -32,20 +32,13 @@ fun rememberMainState(): MainState {
     val client =
         remember {
             HttpClient(Android) {
-//                defaultRequest {
-//                    url {
-//                        protocol = URLProtocol.HTTPS
-//                        host = "news.ycombinator.com"
-//                    }
-//                }
-
                 install(Logging) {
                     logger = Logger.ANDROID
                     level = LogLevel.ALL
                 }
 
-                install(JsonFeature) {
-                    serializer = KotlinxSerializer(Json {
+                install(ContentNegotiation) {
+                    json(Json {
                         ignoreUnknownKeys = true
                     })
                 }

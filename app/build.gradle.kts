@@ -59,7 +59,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
-        kotlinOptions.freeCompilerArgs = listOf(
+        freeCompilerArgs = listOf(
             "-Xopt-in=kotlin.RequiresOptIn",
             "-Xopt-in=kotlin.time.ExperimentalTime",
             "-Xopt-in=kotlinx.coroutines.FlowPreview",
@@ -108,9 +108,9 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1-native-mt")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1-native-mt")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.1-native-mt")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.1")
 
     implementation("androidx.core:core-ktx:1.9.0-alpha02")
 
@@ -133,7 +133,7 @@ dependencies {
 
     implementation("androidx.compose.material:material:1.2.0-alpha07")
 
-    implementation("androidx.compose.material3:material3:1.0.0-alpha08")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha09")
     implementation("androidx.compose.material:material-icons-core:1.2.0-alpha07")
     implementation("androidx.compose.material:material-icons-extended:1.2.0-alpha07")
 
@@ -171,8 +171,9 @@ dependencies {
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.6-alpha")
     implementation("com.google.accompanist:accompanist-flowlayout:0.24.6-alpha")
 
-    implementation("io.ktor:ktor-client-core:1.6.8")
-    implementation("io.ktor:ktor-client-android:1.6.8")
-    implementation("io.ktor:ktor-client-serialization:1.6.8")
-    implementation("io.ktor:ktor-client-logging:1.6.8")
+    implementation("io.ktor:ktor-client-core:2.0.0")
+    implementation("io.ktor:ktor-client-android:2.0.0")
+    implementation("io.ktor:ktor-client-logging:2.0.0")
+    implementation("io.ktor:ktor-client-content-negotiation:2.0.0")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.0")
 }
