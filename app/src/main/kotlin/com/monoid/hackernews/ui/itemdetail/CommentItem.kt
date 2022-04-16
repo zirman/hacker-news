@@ -18,7 +18,6 @@ import androidx.compose.material.icons.twotone.Reply
 import androidx.compose.material.icons.twotone.ThumbUp
 import androidx.compose.material.MaterialTheme as MaterialTheme2
 import androidx.compose.material3.Badge
-import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -28,12 +27,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -62,6 +62,10 @@ fun CommentItem(
     onClickReply: (ItemId) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    // state wrapper must be used in callbacks or onClicks may not be handled
+    val commentItemState: State<ItemRow> =
+        rememberUpdatedState(commentItem)
+
     Surface(
         modifier = modifier.padding(start = ((commentItem.depth - 1) * 16).dp),
         shape = MaterialTheme2.shapes.medium,
@@ -84,7 +88,7 @@ fun CommentItem(
                     text = timeByUserAnnotatedString,
                     lines = 1,
                     onClick = { offset ->
-                        if (commentItem.expanded.not()) {
+                        if (commentItemState.value.expanded) {
                             setExpanded(true)
                         } else {
                             val username: Username? = timeByUserAnnotatedString
@@ -149,9 +153,9 @@ fun CommentItem(
                                 setContextExpanded(false)
 
                                 if (isUpvote) {
-                                    onClickUnUpvote(ItemId(commentItem.item.id))
+                                    onClickUnUpvote(ItemId(commentItemState.value.item.id))
                                 } else {
-                                    onClickUpvote(ItemId(commentItem.item.id))
+                                    onClickUpvote(ItemId(commentItemState.value.item.id))
                                 }
                             },
                             leadingIcon = {
@@ -175,7 +179,7 @@ fun CommentItem(
                             text = { Text(text = stringResource(id = R.string.reply)) },
                             onClick = {
                                 setContextExpanded(false)
-                                onClickReply(ItemId(commentItem.item.id))
+                                onClickReply(ItemId(commentItemState.value.item.id))
                             },
                             leadingIcon = {
                                 Icon(
@@ -198,56 +202,46 @@ fun CommentItem(
             val annotatedText: AnnotatedString =
                 rememberAnnotatedString(text = text)
 
-            val context: Context =
-                LocalContext.current
+            // context must be wrapped or onClick handler is not called
+            val context: State<Context> =
+                rememberUpdatedState(LocalContext.current)
 
             ClickableTextBlock(
                 text = annotatedText,
                 lines = 2,
-                modifier = Modifier.padding(horizontal = 16.dp),
-                overflow = TextOverflow.Ellipsis,
-                minHeight = commentItem.expanded,
                 onClick = { offset ->
-                    if (commentItem.expanded.not() || annotatedText.onClick(
-                            context,
+                    if (commentItemState.value.expanded.not() || annotatedText.onClick(
+                            context.value,
                             offset = offset
                         ).not()
                     ) {
-                        setExpanded(commentItem.expanded.not())
+                        setExpanded(commentItemState.value.expanded.not())
                     }
                 },
+                modifier = Modifier.padding(horizontal = 16.dp),
+                overflow = TextOverflow.Ellipsis,
+                minHeight = commentItem.expanded,
                 style = MaterialTheme.typography.bodyMedium,
             )
 
-            BadgedBox(
-                badge = {
-                    if (commentItem.kidCount > 0) {
-                        Badge(
-                            containerColor = if (isDeleted) {
-                                Color.Transparent
-                            } else {
-                                MaterialTheme.colorScheme.surfaceVariant
-                            }
-                        ) {
-                            TextBlock(
-                                text = "${commentItem.kidCount}",
-                                lines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                            )
-                        }
-                    }
-                },
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-            ) {
+            if (commentItem.expanded.not() && commentItem.kidCount > 0) {
+                Badge(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(4.dp),
+                ) {
+                    TextBlock(
+                        text = "${commentItem.kidCount}",
+                        lines = 1,
+                    )
+                }
+            } else {
                 Icon(
                     imageVector = if (commentItem.expanded) Icons.TwoTone.ExpandLess
                     else Icons.TwoTone.ExpandMore,
-                    contentDescription = null,
-                    tint = if (isDeleted.not() || commentItem.kidCount > 0) {
-                        LocalContentColor.current
-                    } else {
-                        Color.Transparent
-                    },
+                    contentDescription = stringResource(id = R.string.expand),
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
                 )
             }
         }
