@@ -205,6 +205,7 @@ fun CommentList(
                         onClickReply = onClickReply,
                         onClickUser = onClickUser,
                         onClickBrowser = onClickBrowser,
+                        modifier = Modifier.animateItemPlacement(),
                     )
                 } else {
                     CommentItem(
@@ -221,7 +222,8 @@ fun CommentList(
                                 horizontal = 16.dp,
                                 vertical = 8.dp,
                             )
-                            .fillMaxWidth(),
+                            .fillMaxWidth()
+                            .animateItemPlacement(),
                     )
                 }
             }

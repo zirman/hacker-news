@@ -161,7 +161,9 @@ fun ItemList(
                     onClickReply = onClickReply,
                     onClickUser = onClickUser,
                     onClickBrowser = onClickBrowser,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .animateItemPlacement(),
                 )
             }
         }
