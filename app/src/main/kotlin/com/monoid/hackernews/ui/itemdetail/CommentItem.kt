@@ -88,7 +88,7 @@ fun CommentItem(
                     text = timeByUserAnnotatedString,
                     lines = 1,
                     onClick = { offset ->
-                        if (commentItemState.value.expanded) {
+                        if (commentItemState.value.expanded.not()) {
                             setExpanded(true)
                         } else {
                             val username: Username? = timeByUserAnnotatedString
