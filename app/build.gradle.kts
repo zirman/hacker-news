@@ -27,7 +27,7 @@ android {
         applicationId = "com.monoid.hackernews"
         minSdk = 21
         targetSdk = 32
-        versionCode = 3
+        versionCode = 4
         versionName = "1.0"
         vectorDrawables {
             useSupportLibrary = true
@@ -167,9 +167,7 @@ dependencies {
     implementation("com.google.accompanist:accompanist-navigation-animation:0.24.6-alpha")
     implementation("com.google.accompanist:accompanist-navigation-material:0.24.6-alpha")
     implementation("com.google.accompanist:accompanist-swiperefresh:0.24.6-alpha")
-    implementation("com.google.accompanist:accompanist-insets:0.24.6-alpha")
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.6-alpha")
-    implementation("com.google.accompanist:accompanist-flowlayout:0.24.6-alpha")
 
     implementation("io.ktor:ktor-client-core:2.0.0")
     implementation("io.ktor:ktor-client-android:2.0.0")
