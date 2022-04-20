@@ -29,9 +29,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -284,8 +286,12 @@ fun RootItem(
                 val annotatedText: AnnotatedString =
                     rememberAnnotatedString(text = item.text)
 
-                val context: Context =
-                    LocalContext.current
+                // state wrapper must be used in callbacks or onClicks may not be handled
+                val annotatedTextState: State<AnnotatedString> =
+                    rememberUpdatedState(annotatedText)
+
+                val contextState: State<Context> =
+                    rememberUpdatedState(LocalContext.current)
 
                 ClickableText(
                     text = annotatedText,
@@ -294,8 +300,8 @@ fun RootItem(
                         .let { if (loadingBrush != null) it.background(loadingBrush) else it },
                     style = MaterialTheme.typography.bodyMedium,
                     onClick = { offset ->
-                        annotatedText.onClick(
-                            context = context,
+                        annotatedTextState.value.onClick(
+                            context = contextState.value,
                             offset = offset,
                         )
                     },

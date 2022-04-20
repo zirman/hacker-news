@@ -202,18 +202,19 @@ fun CommentItem(
             val annotatedText: AnnotatedString =
                 rememberAnnotatedString(text = text)
 
+            val annotatedTextState: State<AnnotatedString> =
+                rememberUpdatedState(annotatedText)
+
             // context must be wrapped or onClick handler is not called
-            val context: State<Context> =
+            val contextState: State<Context> =
                 rememberUpdatedState(LocalContext.current)
 
             ClickableTextBlock(
                 text = annotatedText,
                 lines = 2,
                 onClick = { offset ->
-                    if (commentItemState.value.expanded.not() || annotatedText.onClick(
-                            context.value,
-                            offset = offset
-                        ).not()
+                    if (commentItemState.value.expanded.not() ||
+                        annotatedTextState.value.onClick(contextState.value, offset = offset).not()
                     ) {
                         setExpanded(commentItemState.value.expanded.not())
                     }
