@@ -76,6 +76,7 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.2.0-alpha07"
@@ -123,6 +124,8 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.4.0")
     implementation("androidx.activity:activity-compose:1.4.0")
 
+    implementation("androidx.fragment:fragment-ktx:1.4.1")
+
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
@@ -130,6 +133,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.1")
 
     implementation("androidx.compose.ui:ui:1.2.0-alpha07")
+    implementation("androidx.compose.ui:ui-viewbinding:1.2.0-alpha07")
 
     implementation("androidx.compose.material:material:1.2.0-alpha07")
 
