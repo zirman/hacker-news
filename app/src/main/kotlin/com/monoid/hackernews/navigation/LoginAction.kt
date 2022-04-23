@@ -1,9 +1,7 @@
 package com.monoid.hackernews.navigation
 
 import android.os.Parcelable
-import com.monoid.hackernews.api.ItemId
 import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
 import kotlinx.serialization.Serializable
 
 @Serializable

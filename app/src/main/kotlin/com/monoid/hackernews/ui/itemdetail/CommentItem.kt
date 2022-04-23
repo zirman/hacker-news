@@ -16,7 +16,6 @@ import androidx.compose.material.icons.twotone.ExpandMore
 import androidx.compose.material.icons.twotone.MoreVert
 import androidx.compose.material.icons.twotone.Reply
 import androidx.compose.material.icons.twotone.ThumbUp
-import androidx.compose.material.MaterialTheme as MaterialTheme2
 import androidx.compose.material3.Badge
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -43,12 +42,13 @@ import com.monoid.hackernews.R
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
 import com.monoid.hackernews.onClick
+import com.monoid.hackernews.rememberAnnotatedString
 import com.monoid.hackernews.room.ItemRow
 import com.monoid.hackernews.ui.text.ClickableTextBlock
 import com.monoid.hackernews.ui.text.TextBlock
-import com.monoid.hackernews.rememberAnnotatedString
 import com.monoid.hackernews.ui.util.rememberTimeBy
 import com.monoid.hackernews.ui.util.userTag
+import androidx.compose.material.MaterialTheme as MaterialTheme2
 
 @Composable
 fun CommentItem(
@@ -62,19 +62,18 @@ fun CommentItem(
     onClickReply: (ItemId) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    // state wrapper must be used in callbacks or onClicks may not be handled
-    val commentItemState: State<ItemRow> =
-        rememberUpdatedState(commentItem)
-
     Surface(
         modifier = modifier.padding(start = ((commentItem.depth - 1) * 16).dp),
         shape = MaterialTheme2.shapes.medium,
         contentColor = MaterialTheme.colorScheme.secondary,
         tonalElevation = (commentItem.kidCount * 10 + 40).dp,
     ) {
+        val expandedState: State<Boolean> =
+            rememberUpdatedState(commentItem.expanded)
+
         Column(
             modifier = Modifier
-                .clickable { setExpanded(commentItem.expanded.not()) }
+                .clickable { setExpanded(expandedState.value.not()) }
                 .let { if (loadingBrush != null) it.background(loadingBrush) else it }
                 .animateContentSize(),
         ) {
@@ -88,7 +87,7 @@ fun CommentItem(
                     text = timeByUserAnnotatedString,
                     lines = 1,
                     onClick = { offset ->
-                        if (commentItemState.value.expanded.not()) {
+                        if (expandedState.value.not()) {
                             setExpanded(true)
                         } else {
                             val username: Username? = timeByUserAnnotatedString
@@ -137,11 +136,17 @@ fun CommentItem(
                         expanded = expanded,
                         onDismissRequest = { setContextExpanded(false) },
                     ) {
+                        val itemIdState: State<ItemId> =
+                            rememberUpdatedState(ItemId(commentItem.item.id))
+
+                        val isUpvoteState: State<Boolean> =
+                            rememberUpdatedState(isUpvote)
+
                         DropdownMenuItem(
                             text = {
                                 Text(
                                     text = stringResource(
-                                        id = if (isUpvote) {
+                                        id = if (isUpvoteState.value) {
                                             R.string.un_vote
                                         } else {
                                             R.string.upvote
@@ -152,21 +157,21 @@ fun CommentItem(
                             onClick = {
                                 setContextExpanded(false)
 
-                                if (isUpvote) {
-                                    onClickUnUpvote(ItemId(commentItemState.value.item.id))
+                                if (isUpvoteState.value) {
+                                    onClickUnUpvote(itemIdState.value)
                                 } else {
-                                    onClickUpvote(ItemId(commentItemState.value.item.id))
+                                    onClickUpvote(itemIdState.value)
                                 }
                             },
                             leadingIcon = {
                                 Icon(
-                                    imageVector = if (isUpvote) {
+                                    imageVector = if (isUpvoteState.value) {
                                         Icons.Filled.ThumbUp
                                     } else {
                                         Icons.TwoTone.ThumbUp
                                     },
                                     contentDescription = stringResource(
-                                        id = if (isUpvote) {
+                                        id = if (isUpvoteState.value) {
                                             R.string.un_vote
                                         } else {
                                             R.string.upvote
@@ -179,7 +184,7 @@ fun CommentItem(
                             text = { Text(text = stringResource(id = R.string.reply)) },
                             onClick = {
                                 setContextExpanded(false)
-                                onClickReply(ItemId(commentItemState.value.item.id))
+                                onClickReply(itemIdState.value)
                             },
                             leadingIcon = {
                                 Icon(
@@ -213,10 +218,10 @@ fun CommentItem(
                 text = annotatedText,
                 lines = 2,
                 onClick = { offset ->
-                    if (commentItemState.value.expanded.not() ||
+                    if (expandedState.value.not() ||
                         annotatedTextState.value.onClick(contextState.value, offset = offset).not()
                     ) {
-                        setExpanded(commentItemState.value.expanded.not())
+                        setExpanded(expandedState.value.not())
                     }
                 },
                 modifier = Modifier.padding(horizontal = 16.dp),

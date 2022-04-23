@@ -384,12 +384,12 @@ fun HomeScreen(
         val swipeRefreshState: SwipeRefreshState =
             rememberSwipeRefreshState(isRefreshing = false)
 
-        val orderedItems: List<OrderedItem>? =
+        val orderedItems: State<List<OrderedItem>?> =
             remember { orderedItemRepo.getRepoItems() }
-                .collectAsState(initial = null).value
+                .collectAsState(initial = null)
 
         val loadingState: State<Boolean> =
-            remember(orderedItems) { derivedStateOf { orderedItems == null } }
+            remember(orderedItems.value) { derivedStateOf { orderedItems.value == null } }
 
         Surface(
             modifier = Modifier.padding(paddingValues = paddingValues),

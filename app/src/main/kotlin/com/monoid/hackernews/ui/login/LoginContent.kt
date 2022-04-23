@@ -40,6 +40,7 @@ import com.monoid.hackernews.datastore.authentication
 import com.monoid.hackernews.datastore.copy
 import com.monoid.hackernews.navigation.LoginAction
 import com.monoid.hackernews.settingsDataStore
+import com.monoid.hackernews.ui.main.MainState
 import com.monoid.hackernews.ui.text.PasswordTextField
 import com.monoid.hackernews.ui.text.UsernameTextField
 import com.monoid.hackernews.ui.util.WindowSize
@@ -52,8 +53,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LoginContent(
+    mainState: MainState,
     loginAction: LoginAction,
-    httpClient: HttpClient,
     windowSizeState: State<WindowSize>,
     onLogin: () -> Unit,
     onLoginError: (Throwable) -> Unit,
@@ -125,7 +126,7 @@ fun LoginContent(
                         context = context,
                         coroutineScope = coroutineScope,
                         loginAction = loginAction,
-                        httpClient = httpClient,
+                        httpClient = mainState.httpClient,
                         authentication = authentication {
                             this.username = username
                             this.password = password
@@ -142,7 +143,7 @@ fun LoginContent(
                         context = context,
                         coroutineScope = coroutineScope,
                         loginAction = loginAction,
-                        httpClient = httpClient,
+                        httpClient = mainState.httpClient,
                         authentication = authentication {
                             this.username = username
                             this.password = password

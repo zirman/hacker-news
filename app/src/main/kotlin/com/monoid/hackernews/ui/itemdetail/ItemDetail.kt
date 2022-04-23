@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,7 +42,7 @@ fun ItemDetail(
     onClickUser: (Username) -> Unit,
     onClickReply: (ItemId) -> Unit,
     onClickBrowser: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val itemTreeState: MutableState<ItemTree?> =
         rememberSaveable(stateSaver = itemTreeSaver) {
@@ -97,9 +98,8 @@ fun ItemDetail(
         }
     }
 
-    val itemList: List<ItemRow>? =
+    val itemList: State<List<ItemRow>?> =
         remember(itemTree) { derivedStateOf { itemTree?.traverse() } }
-            .value
 
     val coroutineScope: CoroutineScope =
         rememberCoroutineScope()
@@ -149,13 +149,10 @@ fun ItemDetail(
     ) {
         CommentList(
             mainState = mainState,
-            itemList = itemList ?: emptyList(),
+            itemList = itemList,
             updateItemWithKids = { setItemTree(itemTreeState.value!!.update(it)) },
             setExpanded = { itemId, expanded ->
-                setItemTree(
-                    itemTreeState.value!!
-                        .setExpanded(itemId, expanded)
-                )
+                setItemTree(itemTreeState.value!!.setExpanded(itemId, expanded))
             },
             onClickUpvote = onClickUpvote,
             onClickUnUpvote = onClickUnUpvote,

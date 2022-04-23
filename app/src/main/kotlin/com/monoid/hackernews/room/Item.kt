@@ -1,5 +1,6 @@
 package com.monoid.hackernews.room
 
+import androidx.compose.runtime.Immutable
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -22,10 +23,10 @@ data class Item(
     val title: String? = null,
     val text: String? = null,
     val url: String? = null,
-
     val parent: Long? = null,
 )
 
+@Immutable
 data class ItemWithKids(
     @Embedded val item: Item,
     @Relation(

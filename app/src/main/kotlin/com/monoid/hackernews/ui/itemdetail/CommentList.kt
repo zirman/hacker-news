@@ -27,6 +27,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
@@ -55,7 +56,7 @@ import kotlinx.datetime.Instant
 @Composable
 fun CommentList(
     mainState: MainState,
-    itemList: List<ItemRow>,
+    itemList: State<List<ItemRow>?>,
     updateItemWithKids: (ItemWithKids) -> Unit,
     setExpanded: (ItemId, Boolean) -> Unit,
     onClickUpvote: (ItemId) -> Unit,
@@ -116,18 +117,16 @@ fun CommentList(
             ),
         ) {
             itemsIndexed(
-                items = itemList,
+                items = itemList.value ?: emptyList(),
                 key = { _, itemRow -> itemRow.item.id },
+                contentType = { index, _ -> index == 0 },
             ) { index, itemRow ->
-                val item: Item =
-                    itemRow.item
-
-                LaunchedEffect(Unit) {
+                LaunchedEffect(itemRow.item.id) {
                     // item's children may not be loaded in the tree so we do that now.
-                    updateItemWithKids(mainState.itemDao.itemByIdWithKidsById(item.id)!!)
+                    updateItemWithKids(mainState.itemDao.itemByIdWithKidsById(itemRow.item.id)!!)
 
-                    if (item.lastUpdate == null ||
-                        (Clock.System.now() - Instant.fromEpochSeconds(item.lastUpdate))
+                    if (itemRow.item.lastUpdate == null ||
+                        (Clock.System.now() - Instant.fromEpochSeconds(itemRow.item.lastUpdate))
                             .inWholeMinutes
                         >
                         context.resources
@@ -139,7 +138,7 @@ fun CommentList(
                         coroutineScope.launch {
                             try {
                                 val itemFromApi =
-                                    mainState.httpClient.getItem(ItemId(item.id))
+                                    mainState.httpClient.getItem(ItemId(itemRow.item.id))
 
                                 // insert children entries if they don't exist
                                 if (itemFromApi.kids != null) {
@@ -154,7 +153,7 @@ fun CommentList(
                                 }
 
                                 mainState.itemDao.insertReplace(itemFromApi.toRoomItem())
-                                updateItemWithKids(mainState.itemDao.itemByIdWithKidsById(item.id)!!)
+                                updateItemWithKids(mainState.itemDao.itemByIdWithKidsById(itemRow.item.id)!!)
                             } catch (error: Throwable) {
                                 if (error is CancellationException) throw error
                             }
@@ -198,32 +197,33 @@ fun CommentList(
                         isUpvote = isUpvoteState.value,
                         isFavorite = isFavoriteState.value,
                         loadingBrush = if (itemRow.item.lastUpdate == null) loadingBrush else null,
-                        onClickUpvote = onClickUpvote,
-                        onClickUnUpvote = onClickUnUpvote,
-                        onClickFavorite = onClickFavorite,
-                        onClickUnFavorite = onClickUnFavorite,
-                        onClickReply = onClickReply,
-                        onClickUser = onClickUser,
-                        onClickBrowser = onClickBrowser,
-                        modifier = Modifier.animateItemPlacement(),
+                        onClickUpvote = { onClickUpvote(it) },
+                        onClickUnUpvote = { onClickUnUpvote(it) },
+                        onClickFavorite = { onClickFavorite(it) },
+                        onClickUnFavorite = { onClickUnFavorite(it) },
+                        onClickReply = { onClickReply(it) },
+                        onClickUser = { onClickUser(it) },
+                        onClickBrowser = { onClickBrowser(it) },
                     )
                 } else {
+                    val itemIdState: State<ItemId> =
+                        rememberUpdatedState(ItemId(itemRow.item.id))
+
                     CommentItem(
                         commentItem = itemRow,
                         isUpvote = isUpvoteState.value,
                         loadingBrush = if (itemRow.item.lastUpdate == null) loadingBrush else null,
-                        setExpanded = { setExpanded(ItemId(itemRow.item.id), it) },
-                        onClickUser = onClickUser,
-                        onClickUpvote = onClickUpvote,
-                        onClickUnUpvote = onClickUnUpvote,
-                        onClickReply = onClickReply,
+                        setExpanded = { setExpanded(itemIdState.value, it) },
+                        onClickUser = { onClickUser(it) },
+                        onClickUpvote = { onClickUpvote(it) },
+                        onClickUnUpvote = { onClickUnUpvote(it) },
+                        onClickReply = { onClickReply(it) },
                         modifier = Modifier
                             .padding(
                                 horizontal = 16.dp,
                                 vertical = 8.dp,
                             )
-                            .fillMaxWidth()
-                            .animateItemPlacement(),
+                            .fillMaxWidth(),
                     )
                 }
             }

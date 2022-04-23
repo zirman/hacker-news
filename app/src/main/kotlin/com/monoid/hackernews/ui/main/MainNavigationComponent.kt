@@ -205,8 +205,8 @@ fun MainNavigationComponent(
                 MainNavigation.Login.argsFromRoute(navBackStackEntry = navBackStackEntry)
 
             LoginContent(
+                mainState = mainState,
                 loginAction = loginAction,
-                httpClient = mainState.httpClient,
                 windowSizeState = windowSizeState,
                 onLogin = { mainNavController.navigateUp() },
                 onLoginError = onLoginError,

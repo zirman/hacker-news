@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -47,7 +48,7 @@ import kotlinx.datetime.Instant
 @Composable
 fun ItemList(
     mainState: MainState,
-    orderedItems: List<OrderedItem>?,
+    orderedItems: State<List<OrderedItem>?>,
     selectedItem: ItemId?,
     onClickDetail: (ItemId?) -> Unit,
     onClickUpvote: (ItemId?) -> Unit,
@@ -104,7 +105,7 @@ fun ItemList(
                 .only(WindowInsetsSides.Bottom)
                 .asPaddingValues(),
         ) {
-            items(orderedItems ?: emptyList(), { it.itemId.long }) { (itemId, _) ->
+            items(orderedItems.value ?: emptyList(), { it.itemId.long }) { (itemId, _) ->
                 LaunchedEffect(Unit) {
                     val itemFromDb = mainState.itemDao.itemByIdWithKidsById(itemId.long)
 
@@ -153,17 +154,15 @@ fun ItemList(
                         ?.find { it.username == authentication?.username } != null,
                     isSelected = selectedItem != null && selectedItem.long == itemWithKids?.item?.id,
                     loadingBrush = if (itemWithKids == null) loadingBrush else null,
-                    onClickUpvote = onClickUpvote,
-                    onClickUnUpvote = onClickUnUpvote,
-                    onClickFavorite = onClickFavorite,
-                    onClickUnFavorite = onClickUnFavorite,
-                    onClickDetail = onClickDetail,
-                    onClickReply = onClickReply,
-                    onClickUser = onClickUser,
-                    onClickBrowser = onClickBrowser,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .animateItemPlacement(),
+                    onClickUpvote = { onClickUpvote(it) },
+                    onClickUnUpvote = { onClickUnUpvote(it) },
+                    onClickFavorite = { onClickFavorite(it) },
+                    onClickUnFavorite = { onClickUnFavorite(it) },
+                    onClickDetail = { onClickDetail(it) },
+                    onClickReply = { onClickReply(it) },
+                    onClickUser = { onClickUser(it) },
+                    onClickBrowser = { onClickBrowser(it) },
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
         }
