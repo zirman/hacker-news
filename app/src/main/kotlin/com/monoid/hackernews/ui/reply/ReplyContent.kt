@@ -62,10 +62,12 @@ fun ReplyContent(
     onSuccess: () -> Unit,
     onError: (Throwable) -> Unit,
     modifier: Modifier = Modifier,
-    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
 ) {
     val context: Context =
         LocalContext.current
+
+    val lifecycleOwner: LifecycleOwner =
+        LocalLifecycleOwner.current
 
     // Update item in on resume if it's stale.
     LaunchedEffect(Unit) {

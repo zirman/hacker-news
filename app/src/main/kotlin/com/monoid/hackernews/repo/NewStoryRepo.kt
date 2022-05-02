@@ -14,7 +14,7 @@ class NewStoryRepo(
     private val newStoryDao: NewStoryDao,
 ) : OrderedItemRepo {
     override fun getRepoItems(): Flow<List<OrderedItem>> {
-        return newStoryDao.getAll()
+        return newStoryDao.getNewStories()
             .map { topStories ->
                 topStories.map {
                     OrderedItem(

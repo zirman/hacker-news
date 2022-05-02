@@ -4,13 +4,23 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface JobStoryDao {
     @Query("SELECT * FROM jobstory ORDER BY `order`")
-    fun getAll(): Flow<List<JobStory>>
+    fun getJobStories(): Flow<List<JobStory>>
+
+    @Query("DELETE FROM jobstory")
+    suspend fun deleteJobStories()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun replaceJobStories(topStories: List<JobStory>)
+    suspend fun insertJobStories(jobStories: List<JobStory>)
+
+    @Transaction
+    suspend fun replaceJobStories(topStories: List<JobStory>) {
+        deleteJobStories()
+        insertJobStories(topStories)
+    }
 }

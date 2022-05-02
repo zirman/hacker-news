@@ -14,7 +14,7 @@ plugins {
 }
 android {
     compileSdk = 32
-    buildToolsVersion = "33.0.0-rc2"
+    buildToolsVersion = "33.0.0-rc3"
     signingConfigs {
         create("release") {
             storeFile = file("release.jks")
@@ -27,7 +27,7 @@ android {
         applicationId = "com.monoid.hackernews"
         minSdk = 21
         targetSdk = 32
-        versionCode = 4
+        versionCode = 5
         versionName = "1.0"
         vectorDrawables {
             useSupportLibrary = true
@@ -137,7 +137,7 @@ dependencies {
 
     implementation("androidx.compose.material:material:1.2.0-alpha08")
 
-    implementation("androidx.compose.material3:material3:1.0.0-alpha09")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha10")
     implementation("androidx.compose.material:material-icons-core:1.2.0-alpha08")
     implementation("androidx.compose.material:material-icons-extended:1.2.0-alpha08")
 
@@ -173,9 +173,9 @@ dependencies {
     implementation("com.google.accompanist:accompanist-swiperefresh:0.24.7-alpha")
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.7-alpha")
 
-    implementation("io.ktor:ktor-client-core:2.0.0")
-    implementation("io.ktor:ktor-client-android:2.0.0")
-    implementation("io.ktor:ktor-client-logging:2.0.0")
-    implementation("io.ktor:ktor-client-content-negotiation:2.0.0")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.0")
+    implementation("io.ktor:ktor-client-core:2.0.1")
+    implementation("io.ktor:ktor-client-android:2.0.1")
+    implementation("io.ktor:ktor-client-logging:2.0.1")
+    implementation("io.ktor:ktor-client-content-negotiation:2.0.1")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.1")
 }

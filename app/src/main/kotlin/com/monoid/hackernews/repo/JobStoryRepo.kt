@@ -14,7 +14,7 @@ class JobStoryRepo(
     private val jobStoryDao: JobStoryDao,
 ) : OrderedItemRepo {
     override fun getRepoItems(): Flow<List<OrderedItem>> {
-        return jobStoryDao.getAll()
+        return jobStoryDao.getJobStories()
             .map { jobStories ->
                 jobStories.map {
                     OrderedItem(

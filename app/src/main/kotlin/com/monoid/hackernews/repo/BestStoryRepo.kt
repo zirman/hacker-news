@@ -14,7 +14,7 @@ class BestStoryRepo(
     private val bestStoryDao: BestStoryDao,
 ) : OrderedItemRepo {
     override fun getRepoItems(): Flow<List<OrderedItem>> {
-        return bestStoryDao.getAll()
+        return bestStoryDao.getBestStories()
             .map { bestStories ->
                 bestStories.map {
                     OrderedItem(

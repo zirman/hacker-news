@@ -113,7 +113,7 @@ fun HomeScreen(
                     try {
                         mainState.httpClient.upvoteRequest(authentication, itemId)
 
-                        mainState.upvoteDao.insertReplace(
+                        mainState.upvoteDao.insertUpvote(
                             Upvote(
                                 username = authentication.username,
                                 itemId = itemId.long,
@@ -150,7 +150,7 @@ fun HomeScreen(
                             flag = false,
                         )
 
-                        mainState.upvoteDao.delete(
+                        mainState.upvoteDao.deleteUpvote(
                             Upvote(
                                 username = authentication.username,
                                 itemId = itemId.long,
@@ -182,7 +182,7 @@ fun HomeScreen(
                             itemId = itemId,
                         )
 
-                        mainState.favoriteDao.insertReplace(
+                        mainState.favoriteDao.insertFavorite(
                             Favorite(
                                 username = authentication.username,
                                 itemId = itemId.long,
@@ -219,7 +219,7 @@ fun HomeScreen(
                             flag = false,
                         )
 
-                        mainState.favoriteDao.delete(
+                        mainState.favoriteDao.deleteFavorite(
                             Favorite(
                                 username = authentication.username,
                                 itemId = itemId.long,
@@ -265,8 +265,10 @@ fun HomeScreen(
             ).show()
         }
     },
-    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
 ) {
+    val lifecycleOwner: LifecycleOwner =
+        LocalLifecycleOwner.current
+
     val lastUpdateState =
         rememberSaveable { mutableStateOf<Long?>(null) }
 

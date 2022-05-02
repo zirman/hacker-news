@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="item_stale_minutes">5</integer>
+    <integer name="favorites_state_hours">24</integer>
 </resources>

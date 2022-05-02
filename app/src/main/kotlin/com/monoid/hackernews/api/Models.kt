@@ -19,7 +19,9 @@ data class User(
     val submitted: List<ItemId> = emptyList(),
 )
 
-fun User.toRoomUser(lastUpdate: Long = Clock.System.now().epochSeconds): com.monoid.hackernews.room.User {
+fun User.toRoomUser(
+    lastUpdate: Long = Clock.System.now().epochSeconds,
+): com.monoid.hackernews.room.User {
     return com.monoid.hackernews.room.User(
         id = id,
         lastUpdate = lastUpdate,

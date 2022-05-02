@@ -14,7 +14,7 @@ class AskStoryRepo(
     private val askStoryDao: AskStoryDao,
 ) : OrderedItemRepo {
     override fun getRepoItems(): Flow<List<OrderedItem>> {
-        return askStoryDao.getAll()
+        return askStoryDao.getAskStories()
             .map { askStories ->
                 askStories.map {
                     OrderedItem(

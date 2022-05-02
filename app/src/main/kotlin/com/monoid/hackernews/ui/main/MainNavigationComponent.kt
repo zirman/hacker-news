@@ -161,6 +161,7 @@ fun MainNavigationComponent(
                             )
                         Stories.Favorite ->
                             FavoriteStoryRepo(
+                                context = context,
                                 favoriteDao = mainState.favoriteDao,
                             )
                     }
