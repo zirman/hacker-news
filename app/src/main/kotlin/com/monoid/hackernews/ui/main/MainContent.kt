@@ -1,6 +1,7 @@
 package com.monoid.hackernews.ui.main
 
 import android.content.Context
+import android.content.Intent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
@@ -57,9 +58,13 @@ import com.monoid.hackernews.ui.util.WindowSizeClass
 import com.monoid.hackernews.datastore.Authentication
 import com.monoid.hackernews.navigation.LoginAction
 import com.monoid.hackernews.settingsDataStore
+import kotlinx.coroutines.channels.Channel
 
 @Composable
-fun MainContent(windowSize: WindowSize) {
+fun MainContent(
+    newIntentChannel: Channel<Intent>,
+    windowSize: WindowSize,
+) {
     val mainState: MainState =
         rememberMainState()
 
@@ -69,6 +74,13 @@ fun MainContent(windowSize: WindowSize) {
     Box {
         val mainNavController: NavHostController =
             rememberAnimatedNavController()
+
+        // handle deep links
+        LaunchedEffect(Unit) {
+            for (intent in newIntentChannel) {
+                mainNavController.handleDeepLink(intent)
+            }
+        }
 
         val modalBottomSheetState = rememberModalBottomSheetState(
             initialValue = ModalBottomSheetValue.Hidden,

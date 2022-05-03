@@ -80,7 +80,6 @@ import com.monoid.hackernews.settingsDataStore
 import com.monoid.hackernews.ui.itemlist.ItemList
 import com.monoid.hackernews.ui.main.MainState
 import com.monoid.hackernews.ui.itemdetail.ItemDetail
-import com.monoid.hackernews.ui.util.itemIdSaver
 import com.monoid.hackernews.ui.util.networkConnectivity
 import com.monoid.hackernews.ui.util.notifyInput
 import com.monoid.hackernews.ui.util.runWhen
@@ -101,6 +100,11 @@ fun HomeScreen(
     title: String,
     orderedItemRepo: OrderedItemRepo,
     snackbarHostState: SnackbarHostState,
+    selectedItemId: ItemId?,
+    setSelectedItemId: (ItemId?) -> Unit,
+    // Used to keep track of if the story was scrolled last.
+    detailInteraction: Boolean,
+    setDetailInteraction: (Boolean) -> Unit,
     context: Context = LocalContext.current,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     onClickUpvote: (ItemId?) -> Unit = { itemId ->
@@ -309,13 +313,6 @@ fun HomeScreen(
     // layout to provide system bar scrims on all sides
     val scrollBehavior: TopAppBarScrollBehavior =
         remember { TopAppBarDefaults.enterAlwaysScrollBehavior() }
-
-    val (selectedItemId, setSelectedItemId) =
-        rememberSaveable(stateSaver = itemIdSaver) { mutableStateOf(null) }
-
-    // Used to keep track of if the story was scrolled last.
-    val (detailInteraction: Boolean, setDetailInteraction) =
-        rememberSaveable { mutableStateOf(false) }
 
     val showItemId: ItemId? =
         remember(windowSize.width, selectedItemId, detailInteraction) {

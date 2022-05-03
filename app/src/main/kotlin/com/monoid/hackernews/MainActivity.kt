@@ -1,5 +1,6 @@
 package com.monoid.hackernews
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
@@ -13,10 +14,19 @@ import com.monoid.hackernews.ui.main.MainContent
 import com.monoid.hackernews.ui.theme.AppTheme
 import com.monoid.hackernews.ui.util.rememberUseDarkTheme
 import com.monoid.hackernews.ui.util.rememberWindowSize
+import kotlinx.coroutines.channels.Channel
 
 class MainActivity : FragmentActivity() {
+    private lateinit var newIntentChannel: Channel<Intent>
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        newIntentChannel.trySend(intent)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        newIntentChannel = Channel()
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
@@ -43,7 +53,7 @@ class MainActivity : FragmentActivity() {
                     )
                 }
 
-                MainContent(windowSize = rememberWindowSize())
+                MainContent(newIntentChannel = newIntentChannel, windowSize = rememberWindowSize())
             }
         }
     }

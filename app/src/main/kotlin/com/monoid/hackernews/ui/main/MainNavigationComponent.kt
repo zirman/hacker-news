@@ -9,8 +9,10 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -19,6 +21,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
+import androidx.navigation.navDeepLink
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.material.bottomSheet
@@ -40,6 +43,7 @@ import com.monoid.hackernews.repo.UserStoryRepo
 import com.monoid.hackernews.ui.home.HomeScreen
 import com.monoid.hackernews.ui.login.LoginContent
 import com.monoid.hackernews.ui.reply.ReplyContent
+import com.monoid.hackernews.ui.util.itemIdSaver
 import com.monoid.hackernews.ui.util.networkConnectivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
@@ -96,6 +100,10 @@ fun MainNavigationComponent(
     ) {
         composable(
             route = MainNavigation.Home.route,
+            deepLinks = listOf(
+                navDeepLink { uriPattern = "http://news.ycombinator.com/item?id={itemId}" },
+                navDeepLink { uriPattern = "https://news.ycombinator.com/item?id={itemId}" },
+            ),
             arguments = MainNavigation.Home.arguments,
             enterTransition = MainNavigation.Home.enterTransition,
             exitTransition = MainNavigation.Home.exitTransition,
@@ -104,6 +112,20 @@ fun MainNavigationComponent(
         ) { navBackStackEntry ->
             val stories: Stories =
                 MainNavigation.Home.argsFromRoute(navBackStackEntry)
+
+            val (selectedItemId, setSelectedItemId) =
+                rememberSaveable(stateSaver = itemIdSaver) {
+                    mutableStateOf(
+                        navBackStackEntry.arguments
+                            ?.getString("itemId")
+                            ?.toLong()
+                            ?.let { ItemId(it) }
+                    )
+                }
+
+            // Used to keep track of if the story was scrolled last.
+            val (detailInteraction, setDetailInteraction) =
+                rememberSaveable { mutableStateOf(selectedItemId != null) }
 
             HomeScreen(
                 mainState = mainState,
@@ -167,11 +189,19 @@ fun MainNavigationComponent(
                     }
                 },
                 snackbarHostState = snackbarHostState,
+                selectedItemId = selectedItemId,
+                setSelectedItemId = setSelectedItemId,
+                detailInteraction = detailInteraction,
+                setDetailInteraction = setDetailInteraction,
             )
         }
 
         composable(
             route = MainNavigation.User.route,
+            deepLinks = listOf(
+                navDeepLink { uriPattern = "http://news.ycombinator.com/user?id={username}" },
+                navDeepLink { uriPattern = "https://news.ycombinator.com/user?id={username}" },
+            ),
             arguments = MainNavigation.User.arguments,
             enterTransition = MainNavigation.User.enterTransition,
             exitTransition = MainNavigation.User.exitTransition,
@@ -180,6 +210,20 @@ fun MainNavigationComponent(
         ) { navBackStackEntry ->
             val username: Username =
                 MainNavigation.User.argsFromRoute(navBackStackEntry = navBackStackEntry)
+
+            val (selectedItemId, setSelectedItemId) =
+                rememberSaveable(stateSaver = itemIdSaver) {
+                    mutableStateOf(
+                        navBackStackEntry.arguments
+                            ?.getString("username")
+                            ?.toLong()
+                            ?.let { ItemId(it) }
+                    )
+                }
+
+            // Used to keep track of if the story was scrolled last.
+            val (detailInteraction, setDetailInteraction) =
+                rememberSaveable { mutableStateOf(false) }
 
             HomeScreen(
                 mainState = mainState,
@@ -195,6 +239,10 @@ fun MainNavigationComponent(
                     )
                 },
                 snackbarHostState = snackbarHostState,
+                selectedItemId = selectedItemId,
+                setSelectedItemId = setSelectedItemId,
+                detailInteraction = detailInteraction,
+                setDetailInteraction = setDetailInteraction,
             )
         }
 

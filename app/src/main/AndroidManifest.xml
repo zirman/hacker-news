@@ -29,6 +29,21 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter android:label="@string/app_name">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:host="news.ycombinator.com" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:pathPrefix="/item" />
+                <data android:pathPrefix="/user" />
+                <data android:pathPrefix="/favorites" />
+                <data android:pathPrefix="/submitted" />
+            </intent-filter>
         </activity>
     </application>
 </manifest>
