@@ -8,7 +8,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withAnnotation
 import androidx.compose.ui.text.withStyle
-import com.monoid.hackernews.room.Item
+import com.monoid.hackernews.room.ItemDb
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
@@ -17,7 +17,7 @@ import kotlinx.datetime.periodUntil
 const val userTag = "USER"
 
 @Composable
-fun rememberTimeBy(story: Item): AnnotatedString =
+fun rememberTimeBy(story: ItemDb): AnnotatedString =
     remember(story.time, story.by) {
         buildAnnotatedString {
             val userSpanStyle = TextStyle()

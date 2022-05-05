@@ -74,8 +74,8 @@ import com.monoid.hackernews.datastore.Authentication
 import com.monoid.hackernews.navigation.LoginAction
 import com.monoid.hackernews.repo.OrderedItem
 import com.monoid.hackernews.repo.OrderedItemRepo
-import com.monoid.hackernews.room.Favorite
-import com.monoid.hackernews.room.Upvote
+import com.monoid.hackernews.room.FavoriteDb
+import com.monoid.hackernews.room.UpvoteDb
 import com.monoid.hackernews.settingsDataStore
 import com.monoid.hackernews.ui.itemlist.ItemList
 import com.monoid.hackernews.ui.main.MainState
@@ -118,7 +118,7 @@ fun HomeScreen(
                         mainState.httpClient.upvoteRequest(authentication, itemId)
 
                         mainState.upvoteDao.insertUpvote(
-                            Upvote(
+                            UpvoteDb(
                                 username = authentication.username,
                                 itemId = itemId.long,
                             )
@@ -155,7 +155,7 @@ fun HomeScreen(
                         )
 
                         mainState.upvoteDao.deleteUpvote(
-                            Upvote(
+                            UpvoteDb(
                                 username = authentication.username,
                                 itemId = itemId.long,
                             )
@@ -187,7 +187,7 @@ fun HomeScreen(
                         )
 
                         mainState.favoriteDao.insertFavorite(
-                            Favorite(
+                            FavoriteDb(
                                 username = authentication.username,
                                 itemId = itemId.long,
                             )
@@ -224,7 +224,7 @@ fun HomeScreen(
                         )
 
                         mainState.favoriteDao.deleteFavorite(
-                            Favorite(
+                            FavoriteDb(
                                 username = authentication.username,
                                 itemId = itemId.long,
                             )
@@ -441,7 +441,9 @@ fun HomeScreen(
                                 )
                             },
                         ) {
-                            CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.primary) {
+                            CompositionLocalProvider(
+                                LocalContentColor provides MaterialTheme.colorScheme.primary,
+                            ) {
                                 ItemList(
                                     mainState = mainState,
                                     orderedItems = orderedItems,

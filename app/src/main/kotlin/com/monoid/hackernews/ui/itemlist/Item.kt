@@ -53,6 +53,7 @@ import com.monoid.hackernews.R
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
 import com.monoid.hackernews.rememberAnnotatedString
+import com.monoid.hackernews.room.ItemDb
 import com.monoid.hackernews.room.ItemWithKids
 import com.monoid.hackernews.ui.text.ClickableTextBlock
 import com.monoid.hackernews.ui.text.TextBlock
@@ -362,7 +363,7 @@ private fun ItemPreview() {
 
         Item(
             itemWithKids = ItemWithKids(
-                item = com.monoid.hackernews.room.Item(
+                item = ItemDb(
                     id = 0,
                     lastUpdate = 0,
                     type = "job",

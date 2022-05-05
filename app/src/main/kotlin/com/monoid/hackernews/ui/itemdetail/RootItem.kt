@@ -48,13 +48,13 @@ import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
 import com.monoid.hackernews.onClick
 import com.monoid.hackernews.rememberAnnotatedString
-import com.monoid.hackernews.room.Item
+import com.monoid.hackernews.room.ItemDb
 import com.monoid.hackernews.ui.util.rememberTimeBy
 import com.monoid.hackernews.ui.util.userTag
 
 @Composable
 fun RootItem(
-    item: Item,
+    item: ItemDb,
     isUpvote: Boolean,
     isFavorite: Boolean,
     loadingBrush: Brush?,

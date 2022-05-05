@@ -31,19 +31,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import com.monoid.hackernews.api.Item
-import com.monoid.hackernews.R
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
-import com.monoid.hackernews.api.getItem
-import com.monoid.hackernews.api.toRoomItem
 import com.monoid.hackernews.datastore.Authentication
 import com.monoid.hackernews.repo.OrderedItem
 import com.monoid.hackernews.settingsDataStore
 import com.monoid.hackernews.ui.main.MainState
-import kotlinx.coroutines.CancellationException
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 @Composable
 fun ItemList(
@@ -107,42 +101,15 @@ fun ItemList(
         ) {
             items(orderedItems.value ?: emptyList(), { it.itemId.long }) { (itemId, _) ->
                 LaunchedEffect(Unit) {
-                    val itemFromDb = mainState.itemDao.itemByIdWithKidsById(itemId.long)
-
-                    if ((itemFromDb?.item?.lastUpdate != null &&
-                                (Clock.System.now() - Instant.fromEpochSeconds(
-                                    itemFromDb.item.lastUpdate
-                                )).inWholeMinutes <=
-                                context.resources.getInteger(R.integer.item_stale_minutes)
-                                    .toLong()
-                                ).not()
-                    ) {
-                        try {
-                            val itemFromApi: Item =
-                                mainState.httpClient.getItem(itemId)
-
-                            // insert children entries if they don't exist
-                            if (itemFromApi.kids != null) {
-                                mainState.itemDao.insertIdsIgnore(
-                                    itemFromApi.kids.map {
-                                        com.monoid.hackernews.room.Item(
-                                            id = it.long,
-                                            parent = itemFromApi.id.long,
-                                        )
-                                    }
-                                )
-                            }
-
-                            // insert item entry
-                            mainState.itemDao.insertReplace(itemFromApi.toRoomItem())
-                        } catch (error: Throwable) {
-                            if (error is CancellationException) throw error
-                        }
-                    }
+                    // TODO: update periodically
+                    mainState.itemRepo.itemUpdate(itemId)
                 }
 
                 val itemWithKids =
-                    remember { mainState.itemDao.itemByIdWithKidsByIdFlow(itemId.long) }
+                    remember {
+                        mainState.itemDao.itemByIdWithKidsByIdFlow(itemId.long)
+                            .distinctUntilChanged()
+                    }
                         .collectAsState(initial = null)
                         .value
 

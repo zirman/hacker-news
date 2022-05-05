@@ -43,7 +43,7 @@ import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
 import com.monoid.hackernews.onClick
 import com.monoid.hackernews.rememberAnnotatedString
-import com.monoid.hackernews.room.ItemRow
+import com.monoid.hackernews.room.ItemUi
 import com.monoid.hackernews.ui.text.ClickableTextBlock
 import com.monoid.hackernews.ui.text.TextBlock
 import com.monoid.hackernews.ui.util.rememberTimeBy
@@ -52,7 +52,7 @@ import androidx.compose.material.MaterialTheme as MaterialTheme2
 
 @Composable
 fun CommentItem(
-    commentItem: ItemRow,
+    commentItem: ItemUi,
     isUpvote: Boolean,
     loadingBrush: Brush?,
     setExpanded: (Boolean) -> Unit,

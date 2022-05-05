@@ -5,8 +5,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.Relation
 
-@Entity
-data class User(
+@Entity(tableName = "user")
+data class UserDb(
     @PrimaryKey val id: String,
     // last time item was retrieved from api
     val lastUpdate: Long,
@@ -16,10 +16,10 @@ data class User(
 )
 
 data class UserWithSubmitted(
-    @Embedded val user: User,
+    @Embedded val user: UserDb,
     @Relation(
         parentColumn = "id",
         entityColumn = "by",
     )
-    val submitted: List<Item>
+    val submitted: List<ItemDb>
 )

@@ -2,7 +2,7 @@ package com.monoid.hackernews.repo
 
 import com.monoid.hackernews.api.ItemId
 import com.monoid.hackernews.api.getJobStories
-import com.monoid.hackernews.room.JobStory
+import com.monoid.hackernews.room.JobStoryDb
 import com.monoid.hackernews.room.JobStoryDao
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CancellationException
@@ -29,7 +29,7 @@ class JobStoryRepo(
         try {
             jobStoryDao.replaceJobStories(
                 httpClient.getJobStories().mapIndexed { order, storyId ->
-                    JobStory(
+                    JobStoryDb(
                         itemId = storyId,
                         order = order,
                     )

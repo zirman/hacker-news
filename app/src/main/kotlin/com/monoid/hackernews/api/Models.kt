@@ -2,6 +2,8 @@
 
 package com.monoid.hackernews.api
 
+import com.monoid.hackernews.room.ItemDb
+import com.monoid.hackernews.room.UserDb
 import kotlinx.datetime.Clock
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -11,7 +13,7 @@ import kotlinx.serialization.Serializable
 value class ItemId(val long: Long)
 
 @Serializable
-data class User(
+data class UserApi(
     val id: String,
     val created: Long,
     val about: String? = null,
@@ -19,10 +21,10 @@ data class User(
     val submitted: List<ItemId> = emptyList(),
 )
 
-fun User.toRoomUser(
+fun UserApi.toUserApiUpdate(
     lastUpdate: Long = Clock.System.now().epochSeconds,
-): com.monoid.hackernews.room.User {
-    return com.monoid.hackernews.room.User(
+): UserDb {
+    return UserDb(
         id = id,
         lastUpdate = lastUpdate,
         created = created,
@@ -32,7 +34,7 @@ fun User.toRoomUser(
 }
 
 @Serializable
-sealed class Item(
+sealed class ItemApi(
     val deleted: Boolean = false,
     val kids: List<ItemId>? = null,
 ) {
@@ -50,7 +52,7 @@ sealed class Item(
         val title: String? = null,
         val text: String? = null,
         val url: String? = null
-    ) : Item()
+    ) : ItemApi()
 
     @Serializable
     @SerialName("job")
@@ -61,7 +63,7 @@ sealed class Item(
         val title: String? = null,
         val text: String? = null,
         val url: String? = null,
-    ) : Item()
+    ) : ItemApi()
 
     @Serializable
     @SerialName("poll")
@@ -73,7 +75,7 @@ sealed class Item(
         val descendants: Int? = null,
         val score: Int? = null,
         val title: String? = null,
-    ) : Item()
+    ) : ItemApi()
 
     @Serializable
     @SerialName("pollopt")
@@ -84,7 +86,7 @@ sealed class Item(
         val by: String? = null,
         val score: Int? = null,
         val title: String? = null,
-    ) : Item()
+    ) : ItemApi()
 
     @Serializable
     @SerialName("comment")
@@ -94,15 +96,15 @@ sealed class Item(
         val by: String? = null,
         val parent: ItemId,
         val text: String? = null,
-    ) : Item()
+    ) : ItemApi()
 }
 
-fun Item.toRoomItem(
+fun ItemApi.toItemDb(
     lastUpdate: Long? = Clock.System.now().epochSeconds,
-): com.monoid.hackernews.room.Item {
+): ItemDb {
     return when (this) {
-        is Item.Comment -> {
-            com.monoid.hackernews.room.Item(
+        is ItemApi.Comment -> {
+            ItemDb(
                 id = id.long,
                 lastUpdate = lastUpdate,
                 type = "comment",
@@ -113,8 +115,8 @@ fun Item.toRoomItem(
                 parent = parent.long,
             )
         }
-        is Item.Job -> {
-            com.monoid.hackernews.room.Item(
+        is ItemApi.Job -> {
+            ItemDb(
                 id = id.long,
                 lastUpdate = lastUpdate,
                 type = "job",
@@ -126,8 +128,8 @@ fun Item.toRoomItem(
                 url = url,
             )
         }
-        is Item.Poll -> {
-            com.monoid.hackernews.room.Item(
+        is ItemApi.Poll -> {
+            ItemDb(
                 id = id.long,
                 lastUpdate = lastUpdate,
                 type = "poll",
@@ -139,8 +141,8 @@ fun Item.toRoomItem(
                 title = title,
             )
         }
-        is Item.PollOpt -> {
-            com.monoid.hackernews.room.Item(
+        is ItemApi.PollOpt -> {
+            ItemDb(
                 id = id.long,
                 lastUpdate = lastUpdate,
                 type = "pollopt",
@@ -151,8 +153,8 @@ fun Item.toRoomItem(
                 title = title,
             )
         }
-        is Item.Story -> {
-            com.monoid.hackernews.room.Item(
+        is ItemApi.Story -> {
+            ItemDb(
                 id = id.long,
                 lastUpdate = lastUpdate,
                 type = "story",

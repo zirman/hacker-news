@@ -3,8 +3,7 @@ package com.monoid.hackernews.repo
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
 import com.monoid.hackernews.api.getUser
-import com.monoid.hackernews.api.toRoomUser
-import com.monoid.hackernews.room.Item
+import com.monoid.hackernews.api.toUserApiUpdate
 import com.monoid.hackernews.room.ItemDao
 import com.monoid.hackernews.room.UserDao
 import io.ktor.client.HttpClient
@@ -37,11 +36,11 @@ class UserStoryRepo(
         try {
             val user = httpClient.getUser(username = username)
 
-            itemDao.insertIdsIgnore(
-                user.submitted.map { Item(id = it.long, by = username.string) }
-            )
+//            itemDao.itemByInsert(
+//                user.submitted.map { ItemApiByUpdate(id = it.long, by = username.string) },
+//            )
 
-            userDao.insertReplace(user.toRoomUser())
+            userDao.insertReplace(user.toUserApiUpdate())
         } catch (error: Throwable) {
             if (error is CancellationException) throw error
         }

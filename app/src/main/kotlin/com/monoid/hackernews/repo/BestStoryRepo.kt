@@ -2,7 +2,7 @@ package com.monoid.hackernews.repo
 
 import com.monoid.hackernews.api.ItemId
 import com.monoid.hackernews.api.getBestStories
-import com.monoid.hackernews.room.BestStory
+import com.monoid.hackernews.room.BestStoryDb
 import com.monoid.hackernews.room.BestStoryDao
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CancellationException
@@ -29,7 +29,7 @@ class BestStoryRepo(
         try {
             bestStoryDao.replaceBestStories(
                 httpClient.getBestStories().mapIndexed { order, storyId ->
-                    BestStory(
+                    BestStoryDb(
                         itemId = storyId,
                         order = order,
                     )

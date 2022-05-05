@@ -5,12 +5,17 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import com.monoid.hackernews.api.ItemApi
+import com.monoid.hackernews.api.toItemDb
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ItemDao {
     @Query("SELECT * FROM item WHERE id = :itemId")
-    fun itemByIdFlow(itemId: Long): Flow<Item?>
+    fun itemById(itemId: Long): ItemDb?
+
+    @Query("SELECT * FROM item WHERE id = :itemId")
+    fun itemByIdFlow(itemId: Long): Flow<ItemDb?>
 
     @Transaction
     @Query("SELECT * FROM item WHERE id = :itemId")
@@ -20,9 +25,21 @@ interface ItemDao {
     @Query("SELECT * FROM item WHERE id = :itemId")
     fun itemByIdWithKidsByIdFlow(itemId: Long): Flow<ItemWithKids?>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertIdsIgnore(items: List<Item>)
+    @Insert(entity = ItemDb::class, onConflict = OnConflictStrategy.REPLACE)
+    suspend fun itemInsert(item: ItemDb)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertReplace(items: Item)
+    @Transaction
+    suspend fun itemApiInsert(itemApi: ItemApi) {
+        // update children entries
+        if (itemApi.kids != null) {
+            itemApi.kids.forEach { itemId ->
+                itemInsert(
+                    (itemById(itemId.long) ?: ItemDb(id = itemId.long))
+                        .copy(parent = itemApi.id.long)
+                )
+            }
+        }
+
+        itemInsert(itemApi.toItemDb())
+    }
 }

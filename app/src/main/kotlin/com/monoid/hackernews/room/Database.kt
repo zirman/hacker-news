@@ -5,16 +5,17 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [
-        TopStory::class,
-        NewStory::class,
-        BestStory::class,
-        ShowStory::class,
-        AskStory::class,
-        JobStory::class,
-        Item::class,
-        User::class,
-        Upvote::class,
-        Favorite::class,
+        TopStoryDb::class,
+        NewStoryDb::class,
+        BestStoryDb::class,
+        ShowStoryDb::class,
+        AskStoryDb::class,
+        JobStoryDb::class,
+        ItemDb::class,
+        UserDb::class,
+        UpvoteDb::class,
+        FavoriteDb::class,
+        ExpandedDb::class,
     ],
     version = 1,
     exportSchema = false,
@@ -30,4 +31,5 @@ abstract class HNDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun upvoteDao(): UpvoteDao
     abstract fun favoriteDao(): FavoriteDao
+    abstract fun expandedDao(): ExpandedDao
 }

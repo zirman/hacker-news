@@ -4,9 +4,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.serialization.Serializable
 
-@Entity
+@Entity(tableName = "jobstory")
 @Serializable
-data class JobStory(
+data class JobStoryDb(
     val itemId: Long,
     @PrimaryKey val order: Int,
 )

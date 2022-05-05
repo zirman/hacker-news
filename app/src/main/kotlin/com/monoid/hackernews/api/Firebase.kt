@@ -31,10 +31,10 @@ suspend fun HttpClient.getJobStories(): List<Long> {
     return get(urlString = "${firebaseApiBase}jobstories.json").body()
 }
 
-suspend fun HttpClient.getItem(itemId: ItemId): Item {
+suspend fun HttpClient.getItem(itemId: ItemId): ItemApi {
     return get(urlString = "${firebaseApiBase}item/${itemId.long}.json").body()
 }
 
-suspend fun HttpClient.getUser(username: Username): User {
+suspend fun HttpClient.getUser(username: Username): UserApi {
     return get(urlString = "${firebaseApiBase}user/${username.string}.json").body()
 }

@@ -8,8 +8,10 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import com.monoid.hackernews.HNApplication
+import com.monoid.hackernews.repo.ItemRepo
 import com.monoid.hackernews.room.AskStoryDao
 import com.monoid.hackernews.room.BestStoryDao
+import com.monoid.hackernews.room.ExpandedDao
 import com.monoid.hackernews.room.FavoriteDao
 import com.monoid.hackernews.room.ItemDao
 import com.monoid.hackernews.room.JobStoryDao
@@ -51,19 +53,32 @@ fun rememberMainState(): MainState {
     val drawerState: DrawerState =
         rememberDrawerState(DrawerValue.Closed)
 
+    val db = HNApplication.instance.db
+
+    val itemDao =
+        db.itemDao()
+
+    val expandedDao =
+        db.expandedDao()
+
     return remember {
         MainState(
             httpClient = client,
-            topStoryDao = HNApplication.instance.db.topStoryDao(),
-            newStoryDao = HNApplication.instance.db.newStoryDao(),
-            bestStoryDao = HNApplication.instance.db.bestStoryDao(),
-            showStoryDao = HNApplication.instance.db.showStoryDao(),
-            askStoryDao = HNApplication.instance.db.askStoryDao(),
-            jobStoryDao = HNApplication.instance.db.jobStoryDao(),
-            itemDao = HNApplication.instance.db.itemDao(),
-            userDao = HNApplication.instance.db.userDao(),
-            upvoteDao = HNApplication.instance.db.upvoteDao(),
-            favoriteDao = HNApplication.instance.db.favoriteDao(),
+            topStoryDao = db.topStoryDao(),
+            newStoryDao = db.newStoryDao(),
+            bestStoryDao = db.bestStoryDao(),
+            showStoryDao = db.showStoryDao(),
+            askStoryDao = db.askStoryDao(),
+            jobStoryDao = db.jobStoryDao(),
+            itemDao = itemDao,
+            userDao = db.userDao(),
+            upvoteDao = db.upvoteDao(),
+            favoriteDao = db.favoriteDao(),
+            itemRepo = ItemRepo(
+                httpClient = client,
+                itemDao = itemDao,
+                expandedDao = expandedDao,
+            ),
             drawerState = drawerState,
         )
     }
@@ -82,5 +97,6 @@ class MainState(
     val userDao: UserDao,
     val upvoteDao: UpvoteDao,
     val favoriteDao: FavoriteDao,
+    val itemRepo: ItemRepo,
     val drawerState: DrawerState,
 )

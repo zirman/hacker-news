@@ -26,7 +26,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -36,28 +35,19 @@ import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import com.monoid.hackernews.R
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
-import com.monoid.hackernews.api.getItem
-import com.monoid.hackernews.api.toRoomItem
-import com.monoid.hackernews.room.Item
-import com.monoid.hackernews.room.ItemRow
-import com.monoid.hackernews.room.ItemWithKids
+import com.monoid.hackernews.room.ItemDb
+import com.monoid.hackernews.room.ItemUi
 import com.monoid.hackernews.settingsDataStore
 import com.monoid.hackernews.ui.main.MainState
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 
 @Composable
 fun CommentList(
     mainState: MainState,
-    itemList: State<List<ItemRow>?>,
-    updateItemWithKids: (ItemWithKids) -> Unit,
+    itemList: State<List<ItemUi>?>,
+    updateItem: (ItemDb) -> Unit,
     setExpanded: (ItemId, Boolean) -> Unit,
     onClickUpvote: (ItemId) -> Unit,
     onClickUnUpvote: (ItemId) -> Unit,
@@ -72,9 +62,6 @@ fun CommentList(
         LocalContext.current
 
     BoxWithConstraints(modifier = modifier) {
-        val coroutineScope: CoroutineScope =
-            rememberCoroutineScope()
-
         val gradientWidth = with(LocalDensity.current) { (maxWidth * 5).toPx() }
 
         val loadingAnimationPosition: Float
@@ -122,43 +109,8 @@ fun CommentList(
                 contentType = { index, _ -> index == 0 },
             ) { index, itemRow ->
                 LaunchedEffect(itemRow.item.id) {
-                    // item's children may not be loaded in the tree so we do that now.
-                    updateItemWithKids(mainState.itemDao.itemByIdWithKidsById(itemRow.item.id)!!)
-
-                    if (itemRow.item.lastUpdate == null ||
-                        (Clock.System.now() - Instant.fromEpochSeconds(itemRow.item.lastUpdate))
-                            .inWholeMinutes
-                        >
-                        context.resources
-                            .getInteger(R.integer.item_stale_minutes)
-                            .toLong()
-                    ) {
-                        // launch in list's coroutine scope so that the job is not
-                        // canceled if the item scrolls off.
-                        coroutineScope.launch {
-                            try {
-                                val itemFromApi =
-                                    mainState.httpClient.getItem(ItemId(itemRow.item.id))
-
-                                // insert children entries if they don't exist
-                                if (itemFromApi.kids != null) {
-                                    mainState.itemDao.insertIdsIgnore(
-                                        itemFromApi.kids.map {
-                                            Item(
-                                                id = it.long,
-                                                parent = itemFromApi.id.long,
-                                            )
-                                        }
-                                    )
-                                }
-
-                                mainState.itemDao.insertReplace(itemFromApi.toRoomItem())
-                                updateItemWithKids(mainState.itemDao.itemByIdWithKidsById(itemRow.item.id)!!)
-                            } catch (error: Throwable) {
-                                if (error is CancellationException) throw error
-                            }
-                        }
-                    }
+                    // todo periodic update
+                    updateItem(itemRow.item)
                 }
 
                 val isUpvoteState: State<Boolean> =
@@ -213,7 +165,7 @@ fun CommentList(
                         commentItem = itemRow,
                         isUpvote = isUpvoteState.value,
                         loadingBrush = if (itemRow.item.lastUpdate == null) loadingBrush else null,
-                        setExpanded = { setExpanded(itemIdState.value, it) },
+                        setExpanded = { expanded -> setExpanded(itemIdState.value, expanded) },
                         onClickUser = { onClickUser(it) },
                         onClickUpvote = { onClickUpvote(it) },
                         onClickUnUpvote = { onClickUnUpvote(it) },

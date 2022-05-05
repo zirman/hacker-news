@@ -10,16 +10,16 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TopStoryDao {
     @Query("SELECT * FROM topstory ORDER BY `order`")
-    fun getTopStories(): Flow<List<TopStory>>
+    fun getTopStories(): Flow<List<TopStoryDb>>
 
     @Query("DELETE FROM topstory")
     suspend fun deleteTopStories()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTopStories(topStories: List<TopStory>)
+    suspend fun insertTopStories(topStories: List<TopStoryDb>)
 
     @Transaction
-    suspend fun replaceTopStories(topStories: List<TopStory>) {
+    suspend fun replaceTopStories(topStories: List<TopStoryDb>) {
         deleteTopStories()
         insertTopStories(topStories)
     }

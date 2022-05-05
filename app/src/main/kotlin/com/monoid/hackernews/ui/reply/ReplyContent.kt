@@ -35,9 +35,8 @@ import com.monoid.hackernews.R
 import com.monoid.hackernews.api.ItemId
 import com.monoid.hackernews.api.commentRequest
 import com.monoid.hackernews.api.getItem
-import com.monoid.hackernews.api.toRoomItem
 import com.monoid.hackernews.getAnnotatedString
-import com.monoid.hackernews.room.Item
+import com.monoid.hackernews.room.ItemDb
 import com.monoid.hackernews.settingsDataStore
 import com.monoid.hackernews.ui.main.MainState
 import com.monoid.hackernews.ui.text.ReplyTextField
@@ -82,8 +81,8 @@ fun ReplyContent(
                     )
                 ) {
                     try {
-                        val apiItem = mainState.httpClient.getItem(itemId).toRoomItem()
-                        mainState.itemDao.insertReplace(apiItem)
+                        val apiItem = mainState.httpClient.getItem(itemId)
+                        mainState.itemDao.itemApiInsert(apiItem)
                     } catch (error: Throwable) {
                         if (error is CancellationException) throw error
                     }
@@ -92,7 +91,7 @@ fun ReplyContent(
         }
     }
 
-    val item: Item? = remember { mainState.itemDao.itemByIdFlow(itemId = itemId.long) }
+    val item: ItemDb? = remember { mainState.itemDao.itemByIdFlow(itemId = itemId.long) }
         .collectAsState(initial = null)
         .value
 

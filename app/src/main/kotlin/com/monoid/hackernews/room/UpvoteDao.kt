@@ -14,20 +14,20 @@ interface UpvoteDao {
     fun isUpvote(itemId: Long, username: String): Flow<Boolean>
 
     @Insert
-    suspend fun insertUpvote(upvote: Upvote)
+    suspend fun insertUpvote(upvote: UpvoteDb)
 
     @Delete
-    suspend fun deleteUpvote(upvote: Upvote)
+    suspend fun deleteUpvote(upvote: UpvoteDb)
 
     @Query("DELETE FROM upvote WHERE username = :username")
     suspend fun deleteUpvotesForUser(username: String)
 
     @Insert
-    suspend fun insertUpvotes(favorites: List<Upvote>)
+    suspend fun insertUpvotes(favorites: List<UpvoteDb>)
 
     @Transaction
     suspend fun replaceUpvotesForUser(username: String, upvotes: List<ItemId>) {
         deleteUpvotesForUser(username)
-        insertUpvotes(upvotes.map { Upvote(username, it.long) })
+        insertUpvotes(upvotes.map { UpvoteDb(username, it.long) })
     }
 }
