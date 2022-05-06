@@ -1,6 +1,5 @@
 package com.monoid.hackernews.repo
 
-import android.util.Log
 import com.monoid.hackernews.HNApplication
 import com.monoid.hackernews.R
 import com.monoid.hackernews.api.ItemId
@@ -8,9 +7,11 @@ import com.monoid.hackernews.api.getItem
 import com.monoid.hackernews.room.ExpandedDao
 import com.monoid.hackernews.room.ExpandedDb
 import com.monoid.hackernews.room.ItemDao
+import com.monoid.hackernews.room.ItemDb
 import com.monoid.hackernews.room.ItemTree
 import com.monoid.hackernews.room.ItemUi
 import io.ktor.client.HttpClient
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
@@ -67,21 +68,26 @@ class ItemRepo(
                         suspend fun recur(itemId: ItemId): ItemTree {
                             return (itemDao.itemByIdWithKidsById(itemId.long)
                                 ?: run {
-                                    itemDao.itemApiInsert(httpClient.getItem(rootItemId))
-                                    itemDao.itemByIdWithKidsById(rootItemId.long)!!
+                                    try {
+                                        itemDao.itemApiInsert(httpClient.getItem(rootItemId))
+                                    } catch (error: Throwable) {
+                                        if (error is CancellationException) throw error
+                                    }
+
+                                    itemDao.itemByIdWithKidsById(rootItemId.long)
                                 })
                                 .let { itemWithKids ->
                                     val expanded = expandedDao.isExpanded(itemId.long)
 
                                     ItemTree(
-                                        item = itemWithKids.item,
+                                        item = itemWithKids?.item ?: ItemDb(id = itemId.long),
                                         kids = if (expanded) {
-                                            itemWithKids.kids
-                                                .map { async { recur(ItemId(it.id)) } }
-                                                .map { it.await() }
+                                            itemWithKids?.kids
+                                                ?.map { async { recur(ItemId(it.id)) } }
+                                                ?.map { it.await() }
                                         } else {
-                                            itemWithKids.kids
-                                                .map {
+                                            itemWithKids?.kids
+                                                ?.map {
                                                     async {
                                                         ItemTree(
                                                             item = it,
@@ -90,7 +96,7 @@ class ItemRepo(
                                                         )
                                                     }
                                                 }
-                                                .map { it.await() }
+                                                ?.map { it.await() }
                                         },
                                         expanded = expanded,
                                     )
@@ -100,24 +106,20 @@ class ItemRepo(
                         recur(rootItemId)
                     }
 
-                for (i in itemTreeEventChannel) {
-                    when (i) {
+                for (event in itemTreeEventChannel) {
+                    when (event) {
                         is Event.SetExpanded -> {
                             withContext(Dispatchers.IO) {
-                                if (i.expanded) {
-                                    expandedDao.expandedInsert(ExpandedDb(i.item.long))
+                                if (event.expanded) {
+                                    expandedDao.expandedInsert(ExpandedDb(event.item.long))
                                 } else {
-                                    expandedDao.expandedDelete(ExpandedDb(i.item.long))
+                                    expandedDao.expandedDelete(ExpandedDb(event.item.long))
                                 }
                             }
 
-                            withContext(Dispatchers.IO) {
-                                Log.e("FOOBAR", "isDeleted ${i.item.long} ${expandedDao.isExpanded(i.item.long)}")
-                            }
-
                             fun recur(itemTree: ItemTree): ItemTree {
-                                return if (itemTree.item.id == i.item.long) {
-                                    itemTree.copy(expanded = i.expanded)
+                                return if (itemTree.item.id == event.item.long) {
+                                    itemTree.copy(expanded = event.expanded)
                                 } else {
                                     itemTree.copy(kids = itemTree.kids?.map { recur(it) })
                                 }
@@ -128,7 +130,7 @@ class ItemRepo(
                         is Event.TryItemUpdate -> {
                             itemTree = withContext(Dispatchers.IO) {
                                 suspend fun recur(itemTree: ItemTree): ItemTree {
-                                    return if (itemTree.item.id == i.item.long) {
+                                    return if (itemTree.item.id == event.item.long) {
                                         if (itemTree.item.lastUpdate == null ||
                                             (Clock.System.now() - Instant.fromEpochSeconds(itemTree.item.lastUpdate))
                                                 .inWholeMinutes >
@@ -136,15 +138,19 @@ class ItemRepo(
                                                 .getInteger(R.integer.item_stale_minutes)
                                                 .toLong()
                                         ) {
-                                            itemDao.itemApiInsert(httpClient.getItem(i.item))
+                                            try {
+                                                itemDao.itemApiInsert(httpClient.getItem(event.item))
+                                            } catch (error: Throwable) {
+                                                if (error is CancellationException) throw error
+                                            }
                                         }
 
                                         val itemWithKids =
-                                            itemDao.itemByIdWithKidsById(i.item.long)!!
+                                            itemDao.itemByIdWithKidsById(event.item.long)
 
                                         itemTree.copy(
-                                            item = itemWithKids.item,
-                                            kids = itemWithKids.kids.map { itemDb ->
+                                            item = itemWithKids?.item ?: ItemDb(id = event.item.long),
+                                            kids = itemWithKids?.kids?.map { itemDb ->
                                                 itemTree.kids?.find { it.item.id == itemDb.id }
                                                     ?: ItemTree(
                                                         item = itemDb,
@@ -187,7 +193,11 @@ class ItemRepo(
                     .getInteger(R.integer.item_stale_minutes)
                     .toLong()
             ) {
-                itemDao.itemApiInsert(httpClient.getItem(itemId))
+                try {
+                    itemDao.itemApiInsert(httpClient.getItem(itemId))
+                } catch (error: Throwable) {
+                    if (error is CancellationException) throw error
+                }
             }
         }
     }

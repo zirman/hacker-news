@@ -2,12 +2,12 @@ package com.monoid.hackernews
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
-import androidx.fragment.app.FragmentActivity
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.monoid.hackernews.ui.main.MainContent
@@ -16,7 +16,7 @@ import com.monoid.hackernews.ui.util.rememberUseDarkTheme
 import com.monoid.hackernews.ui.util.rememberWindowSize
 import kotlinx.coroutines.channels.Channel
 
-class MainActivity : FragmentActivity() {
+class MainActivity : ComponentActivity() {
     private lateinit var newIntentChannel: Channel<Intent>
 
     override fun onNewIntent(intent: Intent) {
