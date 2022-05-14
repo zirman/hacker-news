@@ -14,7 +14,7 @@ plugins {
 }
 android {
     compileSdk = 32
-    buildToolsVersion = "33.0.0-rc3"
+    buildToolsVersion = "33.0.0-rc4"
     signingConfigs {
         create("release") {
             storeFile = file("release.jks")
@@ -81,6 +81,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.2.0-alpha08"
     }
+    namespace = "com.monoid.hackernews"
 }
 protobuf {
     protoc {
@@ -132,22 +133,22 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.4.1")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.1")
 
-    implementation("androidx.compose.ui:ui:1.2.0-alpha08")
-    implementation("androidx.compose.ui:ui-viewbinding:1.2.0-alpha08")
+    implementation("androidx.compose.ui:ui:1.2.0-beta01")
+    implementation("androidx.compose.ui:ui-viewbinding:1.2.0-beta01")
 
-    implementation("androidx.compose.material:material:1.2.0-alpha08")
+    implementation("androidx.compose.material:material:1.2.0-beta01")
 
-    implementation("androidx.compose.material3:material3:1.0.0-alpha10")
-    implementation("androidx.compose.material:material-icons-core:1.2.0-alpha08")
-    implementation("androidx.compose.material:material-icons-extended:1.2.0-alpha08")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha11")
+    implementation("androidx.compose.material:material-icons-core:1.2.0-beta01")
+    implementation("androidx.compose.material:material-icons-extended:1.2.0-beta01")
 
-    implementation("androidx.compose.ui:ui-tooling:1.2.0-alpha08")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.2.0-alpha08")
-    implementation("androidx.compose.ui:ui-util:1.2.0-alpha08")
+    implementation("androidx.compose.ui:ui-tooling:1.2.0-beta01")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.2.0-beta01")
+    implementation("androidx.compose.ui:ui-util:1.2.0-beta01")
 
-    implementation("androidx.compose.foundation:foundation:1.2.0-alpha08")
+    implementation("androidx.compose.foundation:foundation:1.2.0-beta01")
 
-    implementation("androidx.compose.runtime:runtime-livedata:1.2.0-alpha08")
+    implementation("androidx.compose.runtime:runtime-livedata:1.2.0-beta01")
 
     implementation("androidx.datastore:datastore:1.0.0")
 
@@ -164,7 +165,7 @@ dependencies {
     implementation("androidx.room:room-ktx:2.4.2")
     implementation("androidx.room:room-paging:2.4.2")
 
-    implementation("com.google.android.material:material:1.5.0")
+    implementation("com.google.android.material:material:1.6.0")
 
     implementation("com.google.protobuf:protobuf-kotlin-lite:3.20.1")
 
