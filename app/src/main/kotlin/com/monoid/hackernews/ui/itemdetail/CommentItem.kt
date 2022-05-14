@@ -2,7 +2,6 @@ package com.monoid.hackernews.ui.itemdetail
 
 import android.content.Context
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,66 +28,90 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.placeholder
+import com.google.accompanist.placeholder.shimmer
 import com.monoid.hackernews.R
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
 import com.monoid.hackernews.onClick
 import com.monoid.hackernews.rememberAnnotatedString
-import com.monoid.hackernews.room.ItemUi
+import com.monoid.hackernews.repo.ItemRepo
+import com.monoid.hackernews.room.ItemDb
 import com.monoid.hackernews.ui.text.ClickableTextBlock
 import com.monoid.hackernews.ui.text.TextBlock
 import com.monoid.hackernews.ui.util.rememberTimeBy
 import com.monoid.hackernews.ui.util.userTag
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import androidx.compose.material.MaterialTheme as MaterialTheme2
 
 @Composable
 fun CommentItem(
-    commentItem: ItemUi,
-    isUpvote: Boolean,
-    loadingBrush: Brush?,
-    setExpanded: (Boolean) -> Unit,
+    itemUiState: State<ItemRepo.ItemUi?>,
     onClickUser: (Username) -> Unit,
-    onClickUpvote: (ItemId) -> Unit,
-    onClickUnUpvote: (ItemId) -> Unit,
     onClickReply: (ItemId) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Surface(
-        modifier = modifier.padding(start = ((commentItem.depth - 1) * 16).dp),
+        modifier = modifier
+            .padding(
+                horizontal = 16.dp,
+                vertical = 8.dp,
+            )
+            .padding(start = (((itemUiState.value?.threadDepth ?: 1) - 1) * 16).dp),
         shape = MaterialTheme2.shapes.medium,
         contentColor = MaterialTheme.colorScheme.secondary,
-        tonalElevation = (commentItem.kidCount * 10 + 40).dp,
+        tonalElevation = ((itemUiState.value?.kidCount ?: 0) * 10 + 40).dp,
     ) {
         val expandedState: State<Boolean> =
-            rememberUpdatedState(commentItem.expanded)
+            rememberUpdatedState(itemUiState.value?.isExpanded ?: false)
+
+        val coroutineScope: CoroutineScope =
+            rememberCoroutineScope()
 
         Column(
             modifier = Modifier
-                .clickable { setExpanded(expandedState.value.not()) }
-                .let { if (loadingBrush != null) it.background(loadingBrush) else it }
-                .animateContentSize(),
+                .clickable { coroutineScope.launch { itemUiState.value?.toggleExpanded() } }
+                .placeholder(
+                    visible = itemUiState.value == null,
+                    color = Color.Transparent,
+                    shape = MaterialTheme.shapes.small,
+                    highlight = PlaceholderHighlight.shimmer(
+                        highlightColor = LocalContentColor.current.copy(alpha = .5f),
+                    ),
+                )
+                .then(
+                    if (itemUiState.value != null) {
+                        Modifier.animateContentSize()
+                    } else {
+                        Modifier
+                    }
+                ),
         ) {
-            val isDeleted = commentItem.item.text == null && commentItem.item.lastUpdate != null
+            val isDeleted =
+                itemUiState.value?.item?.text == null && itemUiState.value?.item?.lastUpdate != null
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 val timeByUserAnnotatedString: AnnotatedString =
-                    rememberTimeBy(commentItem.item)
+                    rememberTimeBy(itemUiState.value?.item ?: ItemDb(id = 0))
 
                 ClickableTextBlock(
                     text = timeByUserAnnotatedString,
                     lines = 1,
                     onClick = { offset ->
-                        if (expandedState.value.not()) {
-                            setExpanded(true)
+                        if (itemUiState.value?.isExpanded == true) {
+                            coroutineScope.launch { itemUiState.value?.toggleExpanded() }
                         } else {
                             val username: Username? = timeByUserAnnotatedString
                                 .getStringAnnotations(
@@ -103,7 +126,7 @@ fun CommentItem(
                             if (username != null) {
                                 onClickUser(username)
                             } else {
-                                setExpanded(false)
+                                coroutineScope.launch { itemUiState.value?.toggleExpanded() }
                             }
                         }
                     },
@@ -124,7 +147,7 @@ fun CommentItem(
 
                     IconButton(
                         onClick = { setContextExpanded(true) },
-                        enabled = loadingBrush == null,
+                        enabled = itemUiState.value != null,
                     ) {
                         Icon(
                             imageVector = Icons.TwoTone.MoreVert,
@@ -136,46 +159,35 @@ fun CommentItem(
                         expanded = expanded,
                         onDismissRequest = { setContextExpanded(false) },
                     ) {
-                        val itemIdState: State<ItemId> =
-                            rememberUpdatedState(ItemId(commentItem.item.id))
-
-                        val isUpvoteState: State<Boolean> =
-                            rememberUpdatedState(isUpvote)
-
                         DropdownMenuItem(
                             text = {
                                 Text(
                                     text = stringResource(
-                                        id = if (isUpvoteState.value) {
+                                        id = if (itemUiState.value?.isUpvote == true) {
                                             R.string.un_vote
                                         } else {
                                             R.string.upvote
-                                        }
+                                        },
                                     ),
                                 )
                             },
                             onClick = {
                                 setContextExpanded(false)
-
-                                if (isUpvoteState.value) {
-                                    onClickUnUpvote(itemIdState.value)
-                                } else {
-                                    onClickUpvote(itemIdState.value)
-                                }
+                                coroutineScope.launch { itemUiState.value?.toggleUpvote() }
                             },
                             leadingIcon = {
                                 Icon(
-                                    imageVector = if (isUpvoteState.value) {
+                                    imageVector = if (itemUiState.value?.isUpvote == true) {
                                         Icons.Filled.ThumbUp
                                     } else {
                                         Icons.TwoTone.ThumbUp
                                     },
                                     contentDescription = stringResource(
-                                        id = if (isUpvoteState.value) {
+                                        id = if (itemUiState.value?.isUpvote == true) {
                                             R.string.un_vote
                                         } else {
                                             R.string.upvote
-                                        }
+                                        },
                                     ),
                                 )
                             },
@@ -184,7 +196,9 @@ fun CommentItem(
                             text = { Text(text = stringResource(id = R.string.reply)) },
                             onClick = {
                                 setContextExpanded(false)
-                                onClickReply(itemIdState.value)
+                                itemUiState.value?.item?.id?.let {
+                                    onClickReply(ItemId(it))
+                                }
                             },
                             leadingIcon = {
                                 Icon(
@@ -201,7 +215,7 @@ fun CommentItem(
                 if (isDeleted) {
                     stringResource(id = R.string.deleted)
                 } else {
-                    commentItem.item.text ?: ""
+                    itemUiState.value?.item?.text ?: ""
                 }
 
             val annotatedText: AnnotatedString =
@@ -221,16 +235,18 @@ fun CommentItem(
                     if (expandedState.value.not() ||
                         annotatedTextState.value.onClick(contextState.value, offset = offset).not()
                     ) {
-                        setExpanded(expandedState.value.not())
+                        coroutineScope.launch { itemUiState.value?.toggleExpanded() }
                     }
                 },
                 modifier = Modifier.padding(horizontal = 16.dp),
                 overflow = TextOverflow.Ellipsis,
-                minHeight = commentItem.expanded,
+                minHeight = itemUiState.value?.isExpanded == true,
                 style = MaterialTheme.typography.bodyMedium,
             )
 
-            if (commentItem.expanded.not() && commentItem.kidCount > 0) {
+            if (itemUiState.value?.isExpanded?.not() == true &&
+                (itemUiState.value?.kidCount ?: 0) > 0
+            ) {
                 Badge(
                     containerColor = MaterialTheme.colorScheme.surfaceVariant,
                     modifier = Modifier
@@ -238,14 +254,17 @@ fun CommentItem(
                         .padding(4.dp),
                 ) {
                     TextBlock(
-                        text = "${commentItem.kidCount}",
+                        text = "${itemUiState.value?.kidCount}",
                         lines = 1,
                     )
                 }
             } else {
                 Icon(
-                    imageVector = if (commentItem.expanded) Icons.TwoTone.ExpandLess
-                    else Icons.TwoTone.ExpandMore,
+                    imageVector = if (itemUiState.value?.isExpanded == true) {
+                        Icons.TwoTone.ExpandLess
+                    } else {
+                        Icons.TwoTone.ExpandMore
+                    },
                     contentDescription = stringResource(id = R.string.expand),
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                 )

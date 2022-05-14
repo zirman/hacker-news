@@ -2,8 +2,8 @@ package com.monoid.hackernews.repo
 
 import com.monoid.hackernews.api.ItemId
 import com.monoid.hackernews.api.getJobStories
-import com.monoid.hackernews.room.JobStoryDb
 import com.monoid.hackernews.room.JobStoryDao
+import com.monoid.hackernews.room.JobStoryDb
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow

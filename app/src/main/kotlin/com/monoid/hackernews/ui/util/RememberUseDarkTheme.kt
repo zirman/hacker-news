@@ -12,6 +12,6 @@ fun rememberUseDarkTheme(): Boolean {
 
     return remember(configuration.uiMode) {
         configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK) ==
-                Configuration.UI_MODE_NIGHT_YES
+            Configuration.UI_MODE_NIGHT_YES
     }
 }

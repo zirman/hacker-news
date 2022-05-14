@@ -11,13 +11,16 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface UpvoteDao {
     @Query("SELECT EXISTS (SELECT * FROM upvote WHERE itemId = :itemId AND username = :username)")
-    fun isUpvote(itemId: Long, username: String): Flow<Boolean>
+    fun isUpvote(itemId: Long, username: String): Boolean
+
+    @Query("SELECT EXISTS (SELECT * FROM upvote WHERE itemId = :itemId AND username = :username)")
+    fun isUpvoteFlow(itemId: Long, username: String): Flow<Boolean>
 
     @Insert
-    suspend fun insertUpvote(upvote: UpvoteDb)
+    suspend fun upvoteInsert(upvote: UpvoteDb)
 
     @Delete
-    suspend fun deleteUpvote(upvote: UpvoteDb)
+    suspend fun upvoteDelete(upvote: UpvoteDb)
 
     @Query("DELETE FROM upvote WHERE username = :username")
     suspend fun deleteUpvotesForUser(username: String)

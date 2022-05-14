@@ -4,7 +4,6 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.SaverScope
 import com.monoid.hackernews.api.ItemId
 import com.monoid.hackernews.jsonDecoder
-import com.monoid.hackernews.room.ItemTree
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 
@@ -18,4 +17,3 @@ inline fun <reified T> makeSaver(): Saver<T, String> =
     }
 
 val itemIdSaver = makeSaver<ItemId?>()
-val itemTreeSaver = makeSaver<ItemTree?>()

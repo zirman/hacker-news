@@ -19,7 +19,6 @@
         <!-- |density -->
         <activity
             android:name=".MainActivity"
-            android:configChanges="orientation|keyboard|keyboardHidden|fontScale|fontWeightAdjustment|screenLayout|screenSize|locale|navigation|colorMode|layoutDirection|smallestScreenSize|touchscreen|uiMode|mcc|mnc"
             android:exported="true"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustNothing|stateHidden">

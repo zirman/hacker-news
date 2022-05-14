@@ -29,6 +29,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.R
 import com.monoid.hackernews.api.ItemId
 import com.monoid.hackernews.api.commentRequest
@@ -40,7 +42,6 @@ import com.monoid.hackernews.datastore.authentication
 import com.monoid.hackernews.datastore.copy
 import com.monoid.hackernews.navigation.LoginAction
 import com.monoid.hackernews.settingsDataStore
-import com.monoid.hackernews.ui.main.MainState
 import com.monoid.hackernews.ui.text.PasswordTextField
 import com.monoid.hackernews.ui.text.UsernameTextField
 import com.monoid.hackernews.ui.util.WindowSize
@@ -53,13 +54,14 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LoginContent(
-    mainState: MainState,
     loginAction: LoginAction,
     windowSizeState: State<WindowSize>,
     onLogin: () -> Unit,
     onLoginError: (Throwable) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val mainViewModel: MainViewModel = viewModel()
+
     val windowSize = windowSizeState.value
 
     Surface(
@@ -126,7 +128,7 @@ fun LoginContent(
                         context = context,
                         coroutineScope = coroutineScope,
                         loginAction = loginAction,
-                        httpClient = mainState.httpClient,
+                        httpClient = mainViewModel.httpClient,
                         authentication = authentication {
                             this.username = username
                             this.password = password
@@ -143,7 +145,7 @@ fun LoginContent(
                         context = context,
                         coroutineScope = coroutineScope,
                         loginAction = loginAction,
-                        httpClient = mainState.httpClient,
+                        httpClient = mainViewModel.httpClient,
                         authentication = authentication {
                             this.username = username
                             this.password = password

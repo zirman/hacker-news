@@ -13,12 +13,12 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
-import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -43,7 +43,7 @@ fun PasswordTextField(
 ) {
     Column(modifier = modifier) {
         var isPasswordVisible: Boolean
-                by rememberSaveable { mutableStateOf(false) }
+            by rememberSaveable { mutableStateOf(false) }
 
         OutlinedTextField(
             value = password,

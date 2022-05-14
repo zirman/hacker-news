@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -20,17 +21,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.navDeepLink
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.material.bottomSheet
 import com.monoid.hackernews.MainNavigation
+import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.R
 import com.monoid.hackernews.Stories
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
-import com.monoid.hackernews.ui.util.WindowSize
 import com.monoid.hackernews.navigation.LoginAction
 import com.monoid.hackernews.repo.AskStoryRepo
 import com.monoid.hackernews.repo.BestStoryRepo
@@ -43,6 +45,7 @@ import com.monoid.hackernews.repo.UserStoryRepo
 import com.monoid.hackernews.ui.home.HomeScreen
 import com.monoid.hackernews.ui.login.LoginContent
 import com.monoid.hackernews.ui.reply.ReplyContent
+import com.monoid.hackernews.ui.util.WindowSize
 import com.monoid.hackernews.ui.util.itemIdSaver
 import com.monoid.hackernews.ui.util.networkConnectivity
 import kotlinx.coroutines.flow.collectLatest
@@ -53,12 +56,14 @@ import kotlin.time.toDuration
 
 @Composable
 fun MainNavigationComponent(
-    mainState: MainState,
     windowSize: WindowSize,
     mainNavController: NavHostController,
+    drawerState: DrawerState,
     onLoginError: (Throwable) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val mainViewModel: MainViewModel = viewModel()
+
     // bug workaround for bottom sheets not updating
     val windowSizeState: State<WindowSize> =
         rememberUpdatedState(windowSize)
@@ -128,7 +133,8 @@ fun MainNavigationComponent(
                 rememberSaveable { mutableStateOf(selectedItemId != null) }
 
             HomeScreen(
-                mainState = mainState,
+                mainViewModel = mainViewModel,
+                drawerState = drawerState,
                 mainNavController = mainNavController,
                 windowSize = windowSize,
                 title = stringResource(
@@ -153,38 +159,38 @@ fun MainNavigationComponent(
                     when (stories) {
                         Stories.Top ->
                             TopStoryRepo(
-                                httpClient = mainState.httpClient,
-                                topStoryDao = mainState.topStoryDao,
+                                httpClient = mainViewModel.httpClient,
+                                topStoryDao = mainViewModel.topStoryDao,
                             )
                         Stories.New ->
                             NewStoryRepo(
-                                httpClient = mainState.httpClient,
-                                newStoryDao = mainState.newStoryDao,
+                                httpClient = mainViewModel.httpClient,
+                                newStoryDao = mainViewModel.newStoryDao,
                             )
                         Stories.Best ->
                             BestStoryRepo(
-                                httpClient = mainState.httpClient,
-                                bestStoryDao = mainState.bestStoryDao,
+                                httpClient = mainViewModel.httpClient,
+                                bestStoryDao = mainViewModel.bestStoryDao,
                             )
                         Stories.Ask ->
                             AskStoryRepo(
-                                httpClient = mainState.httpClient,
-                                askStoryDao = mainState.askStoryDao,
+                                httpClient = mainViewModel.httpClient,
+                                askStoryDao = mainViewModel.askStoryDao,
                             )
                         Stories.Show ->
                             ShowStoryRepo(
-                                httpClient = mainState.httpClient,
-                                showStoryDao = mainState.showStoryDao,
+                                httpClient = mainViewModel.httpClient,
+                                showStoryDao = mainViewModel.showStoryDao,
                             )
                         Stories.Job ->
                             JobStoryRepo(
-                                httpClient = mainState.httpClient,
-                                jobStoryDao = mainState.jobStoryDao,
+                                httpClient = mainViewModel.httpClient,
+                                jobStoryDao = mainViewModel.jobStoryDao,
                             )
                         Stories.Favorite ->
                             FavoriteStoryRepo(
                                 context = context,
-                                favoriteDao = mainState.favoriteDao,
+                                favoriteDao = mainViewModel.favoriteDao,
                             )
                     }
                 },
@@ -226,15 +232,16 @@ fun MainNavigationComponent(
                 rememberSaveable { mutableStateOf(false) }
 
             HomeScreen(
-                mainState = mainState,
+                mainViewModel = mainViewModel,
+                drawerState = drawerState,
                 mainNavController = mainNavController,
                 windowSize = windowSize,
                 title = username.string,
-                orderedItemRepo = remember(mainState, username) {
+                orderedItemRepo = remember(mainViewModel, username) {
                     UserStoryRepo(
-                        httpClient = mainState.httpClient,
-                        userDao = mainState.userDao,
-                        itemDao = mainState.itemDao,
+                        httpClient = mainViewModel.httpClient,
+                        userDao = mainViewModel.userDao,
+                        itemDao = mainViewModel.itemDao,
                         username = username,
                     )
                 },
@@ -254,7 +261,6 @@ fun MainNavigationComponent(
                 MainNavigation.Login.argsFromRoute(navBackStackEntry = navBackStackEntry)
 
             LoginContent(
-                mainState = mainState,
                 loginAction = loginAction,
                 windowSizeState = windowSizeState,
                 onLogin = { mainNavController.navigateUp() },
@@ -274,7 +280,6 @@ fun MainNavigationComponent(
 
             ReplyContent(
                 itemId = itemId,
-                mainState = mainState,
                 windowSizeState = windowSizeState,
                 onSuccess = { mainNavController.navigateUp() },
                 onError = onLoginError,

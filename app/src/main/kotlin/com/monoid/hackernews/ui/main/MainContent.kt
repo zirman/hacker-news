@@ -25,6 +25,8 @@ import androidx.compose.material.icons.twotone.Face
 import androidx.compose.material.icons.twotone.Login
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
@@ -32,6 +34,7 @@ import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
@@ -49,15 +52,15 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.navigation.material.BottomSheetNavigator
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.monoid.hackernews.MainNavigation
-import com.monoid.hackernews.ui.navigationdrawer.NavigationDrawerContent
-import com.monoid.hackernews.ui.navigationdrawer.NavigationRailContent
 import com.monoid.hackernews.R
 import com.monoid.hackernews.Username
-import com.monoid.hackernews.ui.util.WindowSize
-import com.monoid.hackernews.ui.util.WindowSizeClass
 import com.monoid.hackernews.datastore.Authentication
 import com.monoid.hackernews.navigation.LoginAction
 import com.monoid.hackernews.settingsDataStore
+import com.monoid.hackernews.ui.navigationdrawer.NavigationDrawerContent
+import com.monoid.hackernews.ui.navigationdrawer.NavigationRailContent
+import com.monoid.hackernews.ui.util.WindowSize
+import com.monoid.hackernews.ui.util.WindowSizeClass
 import kotlinx.coroutines.channels.Channel
 
 @Composable
@@ -65,8 +68,8 @@ fun MainContent(
     newIntentChannel: Channel<Intent>,
     windowSize: WindowSize,
 ) {
-    val mainState: MainState =
-        rememberMainState()
+    val drawerState: DrawerState =
+        rememberDrawerState(DrawerValue.Closed)
 
     val (showLoginErrorDialog, setShowLoginErrorDialog) =
         remember { mutableStateOf<Throwable?>(null) }
@@ -108,15 +111,15 @@ fun MainContent(
                     // hide drawer when expanded
                     LaunchedEffect(windowSize.width == WindowSizeClass.Expanded) {
                         if (windowSize.width == WindowSizeClass.Expanded) {
-                            mainState.drawerState.close()
+                            drawerState.close()
                         }
                     }
 
                     // hide drawer content because it may layout under navigation bars.
                     AnimatedVisibility(visible = windowSize.width != WindowSizeClass.Expanded) {
                         NavigationDrawerContent(
-                            mainState = mainState,
                             mainNavController = mainNavController,
+                            drawerState = drawerState,
                             onClickUser = { username ->
                                 mainNavController.navigate(
                                     MainNavigation.User.routeWithArgs(username)
@@ -129,7 +132,7 @@ fun MainContent(
                         )
                     }
                 },
-                drawerState = mainState.drawerState,
+                drawerState = drawerState,
                 gesturesEnabled = windowSize.width != WindowSizeClass.Expanded,
             ) {
                 Row {
@@ -200,7 +203,7 @@ fun MainContent(
                         ) {
                             NavigationRailContent(
                                 mainNavController = mainNavController,
-                                mainState = mainState,
+                                drawerState = drawerState,
                                 modifier = Modifier
                                     .fillMaxSize()
                                     .windowInsetsPadding(
@@ -213,9 +216,9 @@ fun MainContent(
                     }
 
                     MainNavigationComponent(
-                        mainState = mainState,
                         windowSize = windowSize,
                         mainNavController = mainNavController,
+                        drawerState = drawerState,
                         onLoginError = { setShowLoginErrorDialog(it) },
                         modifier = Modifier
                             .background(MaterialTheme.colorScheme.surface)

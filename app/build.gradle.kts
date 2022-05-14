@@ -79,7 +79,7 @@ android {
         viewBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.2.0-alpha08"
+        kotlinCompilerExtensionVersion = "1.2.0-beta01"
     }
     namespace = "com.monoid.hackernews"
 }
@@ -105,8 +105,8 @@ protobuf {
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:1.3.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:1.3.3")
 
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.3")
 
@@ -169,10 +169,11 @@ dependencies {
 
     implementation("com.google.protobuf:protobuf-kotlin-lite:3.20.1")
 
-    implementation("com.google.accompanist:accompanist-navigation-animation:0.24.7-alpha")
-    implementation("com.google.accompanist:accompanist-navigation-material:0.24.7-alpha")
-    implementation("com.google.accompanist:accompanist-swiperefresh:0.24.7-alpha")
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.7-alpha")
+    implementation("com.google.accompanist:accompanist-navigation-animation:0.24.8-beta")
+    implementation("com.google.accompanist:accompanist-navigation-material:0.24.8-beta")
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.24.8-beta")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.8-beta")
+    implementation("com.google.accompanist:accompanist-placeholder:0.24.8-beta")
 
     implementation("io.ktor:ktor-client-core:2.0.1")
     implementation("io.ktor:ktor-client-android:2.0.1")

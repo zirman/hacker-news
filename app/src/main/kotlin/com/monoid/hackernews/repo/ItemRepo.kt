@@ -1,204 +1,295 @@
 package com.monoid.hackernews.repo
 
+import androidx.compose.runtime.Immutable
+import androidx.datastore.core.DataStore
 import com.monoid.hackernews.HNApplication
 import com.monoid.hackernews.R
 import com.monoid.hackernews.api.ItemId
+import com.monoid.hackernews.api.favoriteRequest
 import com.monoid.hackernews.api.getItem
+import com.monoid.hackernews.api.upvoteRequest
+import com.monoid.hackernews.datastore.Authentication
+import com.monoid.hackernews.mapAsync
 import com.monoid.hackernews.room.ExpandedDao
 import com.monoid.hackernews.room.ExpandedDb
+import com.monoid.hackernews.room.FavoriteDao
+import com.monoid.hackernews.room.FavoriteDb
 import com.monoid.hackernews.room.ItemDao
 import com.monoid.hackernews.room.ItemDb
-import com.monoid.hackernews.room.ItemTree
-import com.monoid.hackernews.room.ItemUi
+import com.monoid.hackernews.room.UpvoteDao
+import com.monoid.hackernews.room.UpvoteDb
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
 class ItemRepo(
+    private val authenticationDataStore: DataStore<Authentication>,
     private val httpClient: HttpClient,
     private val itemDao: ItemDao,
+    private val upvoteDao: UpvoteDao,
+    private val favoriteDao: FavoriteDao,
     private val expandedDao: ExpandedDao,
 ) {
-    fun itemTreeFactory(rootItemId: ItemId): ItemTreeFactory {
-        return ItemTreeFactory(rootItemId)
-    }
+    private val sharedFlows: MutableMap<ItemId, Flow<ItemUi>> = mutableMapOf()
 
-    private sealed class Event {
-        data class TryItemUpdate(val item: ItemId) : Event()
-        data class SetExpanded(val item: ItemId, val expanded: Boolean) : Event()
-    }
+    inner class ItemRow(val itemId: ItemId, private val threadDepth: Int) {
+        override fun equals(other: Any?): Boolean = other is ItemRow && itemId == other.itemId
+        override fun hashCode(): Int = itemId.long.toInt()
 
-    inner class ItemTreeFactory(private val rootItemId: ItemId) {
-        private val itemTreeEventChannel: Channel<Event> =
-            Channel()
+        val itemUiFlow: Flow<ItemUi> by lazy {
+            sharedFlows.getOrPut(itemId) {
+                flow {
+                    val item = itemDao.itemById(itemId.long)
 
-        fun itemUiListFlow(): Flow<List<ItemUi>> =
-            flow {
-                fun traverse(itemTree: ItemTree): List<ItemUi> {
-                    val list = mutableListOf<ItemUi>()
+                    if (item?.lastUpdate == null ||
+                        (Clock.System.now() - Instant.fromEpochSeconds(item.lastUpdate))
+                            .inWholeMinutes >
+                        HNApplication.instance.resources
+                            .getInteger(R.integer.item_stale_minutes)
+                            .toLong()
+                    ) {
+                        try {
+                            itemDao.itemApiInsert(httpClient.getItem(itemId))
+                        } catch (error: Throwable) {
+                            if (error is CancellationException) throw error
+                        }
+                    }
 
-                    fun recur(itemTree: ItemTree, depth: Int) {
-                        list.add(
-                            ItemUi(
-                                item = itemTree.item,
-                                expanded = itemTree.expanded,
-                                kidCount = itemTree.kids?.size ?: 0,
-                                depth = depth,
+                    val username = authenticationDataStore.data.first().username
+
+                    expandedDao.isExpandedFlow(itemId.long)
+                        .distinctUntilChanged()
+
+                    var foo: Triple<ItemId, Boolean, List<ItemId>>? = null
+
+                    emitAll(
+                        combine(
+                            combine(
+                                itemDao.itemByIdWithKidsByIdFlow(itemId.long)
+                                    .filterNotNull()
+                                    .distinctUntilChanged(),
+                                expandedDao.isExpandedFlow(itemId.long)
+                                    .distinctUntilChanged(),
+                                ::Pair,
                             )
-                        )
-
-                        if (itemTree.expanded) {
-                            itemTree.kids?.forEach { recur(it, depth + 1) }
-                        }
-                    }
-
-                    recur(itemTree = itemTree, depth = 0)
-                    return list.toList()
-                }
-
-                var itemTree: ItemTree =
-                    withContext(Dispatchers.IO) {
-                        suspend fun recur(itemId: ItemId): ItemTree {
-                            return (itemDao.itemByIdWithKidsById(itemId.long)
-                                ?: run {
-                                    try {
-                                        itemDao.itemApiInsert(httpClient.getItem(rootItemId))
-                                    } catch (error: Throwable) {
-                                        if (error is CancellationException) throw error
-                                    }
-
-                                    itemDao.itemByIdWithKidsById(rootItemId.long)
-                                })
-                                .let { itemWithKids ->
-                                    val expanded = expandedDao.isExpanded(itemId.long)
-
-                                    ItemTree(
-                                        item = itemWithKids?.item ?: ItemDb(id = itemId.long),
-                                        kids = if (expanded) {
-                                            itemWithKids?.kids
-                                                ?.map { async { recur(ItemId(it.id)) } }
-                                                ?.map { it.await() }
-                                        } else {
-                                            itemWithKids?.kids
-                                                ?.map {
-                                                    async {
-                                                        ItemTree(
-                                                            item = it,
-                                                            kids = null,
-                                                            expanded = expandedDao.isExpanded(it.id),
-                                                        )
-                                                    }
-                                                }
-                                                ?.map { it.await() }
-                                        },
-                                        expanded = expanded,
+                                .onEach { (itemWithKids, isExpanded) ->
+                                    val bar = Triple(
+                                        ItemId(itemWithKids.item.id),
+                                        isExpanded,
+                                        itemWithKids.kids.map { ItemId(it.id) }
                                     )
-                                }
-                        }
 
-                        recur(rootItemId)
-                    }
-
-                for (event in itemTreeEventChannel) {
-                    when (event) {
-                        is Event.SetExpanded -> {
-                            withContext(Dispatchers.IO) {
-                                if (event.expanded) {
-                                    expandedDao.expandedInsert(ExpandedDb(event.item.long))
-                                } else {
-                                    expandedDao.expandedDelete(ExpandedDb(event.item.long))
-                                }
-                            }
-
-                            fun recur(itemTree: ItemTree): ItemTree {
-                                return if (itemTree.item.id == event.item.long) {
-                                    itemTree.copy(expanded = event.expanded)
-                                } else {
-                                    itemTree.copy(kids = itemTree.kids?.map { recur(it) })
-                                }
-                            }
-
-                            itemTree = recur(itemTree)
-                        }
-                        is Event.TryItemUpdate -> {
-                            itemTree = withContext(Dispatchers.IO) {
-                                suspend fun recur(itemTree: ItemTree): ItemTree {
-                                    return if (itemTree.item.id == event.item.long) {
-                                        if (itemTree.item.lastUpdate == null ||
-                                            (Clock.System.now() - Instant.fromEpochSeconds(itemTree.item.lastUpdate))
-                                                .inWholeMinutes >
-                                            HNApplication.instance.resources
-                                                .getInteger(R.integer.item_stale_minutes)
-                                                .toLong()
-                                        ) {
-                                            try {
-                                                itemDao.itemApiInsert(httpClient.getItem(event.item))
-                                            } catch (error: Throwable) {
-                                                if (error is CancellationException) throw error
-                                            }
-                                        }
-
-                                        val itemWithKids =
-                                            itemDao.itemByIdWithKidsById(event.item.long)
-
-                                        itemTree.copy(
-                                            item = itemWithKids?.item ?: ItemDb(id = event.item.long),
-                                            kids = itemWithKids?.kids?.map { itemDb ->
-                                                itemTree.kids?.find { it.item.id == itemDb.id }
-                                                    ?: ItemTree(
-                                                        item = itemDb,
-                                                        kids = null,
-                                                        expanded = expandedDao.isExpanded(itemDb.id),
-                                                    )
-                                            },
-                                        )
-                                    } else {
-                                        itemTree.copy(kids = itemTree.kids?.map { recur(it) })
+                                    if (foo != bar) {
+                                        foo = bar
+                                        itemUpdatesChannel.tryEmit(bar)
                                     }
-                                }
-
-                                recur(itemTree)
-                            }
+                                },
+                            combine(
+                                upvoteDao
+                                    .isUpvoteFlow(itemId.long, username)
+                                    .distinctUntilChanged(),
+                                favoriteDao
+                                    .isFavoriteFlow(itemId.long, username)
+                                    .distinctUntilChanged(),
+                                ::Pair,
+                            )
+                        ) { (itemWithKids, isExpanded), (isUpvote, isFavorite) ->
+                            ItemUi(
+                                item = itemWithKids.item,
+                                kidCount = itemWithKids.kids.size,
+                                isUpvote = isUpvote,
+                                isFavorite = isFavorite,
+                                isExpanded = isExpanded,
+                                threadDepth = 0, // changes based root
+                            )
                         }
-                    }
-
-                    emit(traverse(itemTree))
+                    )
                 }
+                    .shareIn(
+                        scope = coroutineScope,
+                        started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
+                        replay = 1,
+                    )
+                    .map { it.setThreadDepth(threadDepth) }
             }
-
-        suspend fun itemUpdate(itemId: ItemId) {
-            itemTreeEventChannel.send(Event.TryItemUpdate(itemId))
-        }
-
-        suspend fun setItemExpanded(itemId: ItemId, expanded: Boolean) {
-            itemTreeEventChannel.send(Event.SetExpanded(itemId, expanded))
         }
     }
 
-    suspend fun itemUpdate(itemId: ItemId) {
-        withContext(Dispatchers.IO) {
-            val item = itemDao.itemById(itemId.long)
+    @Immutable
+    inner class ItemUi(
+        val item: ItemDb,
+        val kidCount: Int,
+        val isUpvote: Boolean,
+        val isFavorite: Boolean,
+        val isExpanded: Boolean,
+        val threadDepth: Int,
+    ) {
+        override fun equals(other: Any?): Boolean {
+            return other is ItemUi &&
+                item == other.item &&
+                kidCount == other.kidCount &&
+                isUpvote == other.isUpvote &&
+                isFavorite == other.isFavorite &&
+                isExpanded == other.isExpanded &&
+                threadDepth == other.threadDepth
+        }
 
-            if (item?.lastUpdate == null ||
-                (Clock.System.now() - Instant.fromEpochSeconds(item.lastUpdate))
-                    .inWholeMinutes >
-                HNApplication.instance.resources
-                    .getInteger(R.integer.item_stale_minutes)
-                    .toLong()
-            ) {
+        override fun hashCode(): Int {
+            return item.hashCode() xor
+                kidCount.hashCode() xor
+                isUpvote.hashCode() xor
+                isFavorite.hashCode() xor
+                isExpanded.hashCode() xor
+                threadDepth.hashCode()
+        }
+
+        // used to set depth after update from db
+        fun setThreadDepth(threadDepth: Int): ItemUi {
+            return ItemUi(item, kidCount, isUpvote, isFavorite, isExpanded, threadDepth)
+        }
+
+        fun toggleUpvote() {
+            coroutineScope.launch {
                 try {
-                    itemDao.itemApiInsert(httpClient.getItem(itemId))
+                    val authentication = authenticationDataStore.data.first()
+
+                    httpClient.upvoteRequest(
+                        authentication = authentication,
+                        itemId = ItemId(item.id),
+                    )
+
+                    if (isUpvote) {
+                        upvoteDao.upvoteDelete(UpvoteDb(authentication.username, item.id))
+                    } else {
+                        upvoteDao.upvoteInsert(UpvoteDb(authentication.username, item.id))
+                    }
                 } catch (error: Throwable) {
                     if (error is CancellationException) throw error
                 }
             }
         }
+
+        fun toggleFavorite() {
+            coroutineScope.launch {
+                try {
+                    val authentication = authenticationDataStore.data.first()
+
+                    httpClient.favoriteRequest(
+                        authentication = authentication,
+                        itemId = ItemId(item.id),
+                    )
+
+                    if (isFavorite) {
+                        favoriteDao.favoriteDelete(FavoriteDb(authentication.username, item.id))
+                    } else {
+                        favoriteDao.favoriteInsert(FavoriteDb(authentication.username, item.id))
+                    }
+                } catch (error: Throwable) {
+                    if (error is CancellationException) throw error
+                }
+            }
+        }
+
+        fun toggleExpanded() {
+            coroutineScope.launch {
+                if (isExpanded) {
+                    expandedDao.expandedDelete(ExpandedDb(item.id))
+                } else {
+                    expandedDao.expandedInsert(ExpandedDb(item.id))
+                }
+            }
+        }
+    }
+
+    private val coroutineScope = CoroutineScope(Dispatchers.Default)
+    private val itemUpdatesChannel: MutableSharedFlow<Triple<ItemId, Boolean, List<ItemId>>> =
+        MutableSharedFlow(extraBufferCapacity = 10)
+
+    fun itemUiTreeFlow(rootItemId: ItemId): Flow<List<ItemRow>> = flow {
+        var itemTree: ItemTree = withContext(Dispatchers.IO) {
+            val rootItemWithKids = itemDao.itemByIdWithKidsById(rootItemId.long)
+
+            ItemTree(
+                itemId = rootItemId,
+                kids = rootItemWithKids?.kids?.map {
+                    ItemTree(
+                        itemId = ItemId(it.id),
+                        isExpanded = expandedDao.isExpanded(it.id),
+                        kids = null,
+                    )
+                },
+                isExpanded = rootItemWithKids?.kids != null,
+            )
+        }
+
+        fun traverse(itemTree: ItemTree): List<ItemRow> {
+            val list = mutableListOf<ItemRow>()
+
+            fun recur(itemTree: ItemTree, threadDepth: Int = 0) {
+                list.add(
+                    ItemRow(
+                        itemId = itemTree.itemId,
+                        threadDepth = threadDepth,
+                    )
+                )
+
+                if (itemTree.itemId == rootItemId || itemTree.isExpanded) {
+                    itemTree.kids?.forEach { recur(it, threadDepth + 1) }
+                }
+            }
+
+            recur(itemTree)
+            return list.toList()
+        }
+
+        emit(traverse(itemTree))
+
+        itemUpdatesChannel.collect { (itemId, isExpanded, kids) ->
+            suspend fun recur(itemTree: ItemTree): ItemTree {
+                return if (itemTree.itemId == itemId) {
+                    itemTree.copy(
+                        isExpanded = isExpanded,
+                        kids = coroutineScope {
+                            kids.mapAsync { kidItemId ->
+                                itemTree.kids?.find { it.itemId == kidItemId }
+                                    ?: ItemTree(
+                                        itemId = kidItemId,
+                                        kids = null,
+                                        isExpanded = false,
+                                    )
+                            }
+                        },
+                    )
+                } else {
+                    itemTree.copy(kids = itemTree.kids?.map { recur(it) })
+                }
+            }
+
+            itemTree = recur(itemTree)
+            emit(traverse(itemTree))
+        }
+    }
+        .distinctUntilChanged()
+
+    fun itemUiList(itemIds: List<ItemId>): List<ItemRow> {
+        return itemIds.map { itemId -> ItemRow(itemId, 0) }
     }
 }

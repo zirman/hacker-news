@@ -24,6 +24,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.ArrowBack
 import androidx.compose.material.icons.twotone.Menu
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
@@ -63,38 +64,31 @@ import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.monoid.hackernews.MainNavigation
+import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.R
 import com.monoid.hackernews.Username
+import com.monoid.hackernews.api.ItemId
+import com.monoid.hackernews.repo.ItemRepo
+import com.monoid.hackernews.repo.OrderedItemRepo
+import com.monoid.hackernews.ui.itemdetail.ItemDetail
+import com.monoid.hackernews.ui.itemlist.ItemList
 import com.monoid.hackernews.ui.util.WindowSize
 import com.monoid.hackernews.ui.util.WindowSizeClass
-import com.monoid.hackernews.api.ItemId
-import com.monoid.hackernews.api.favoriteRequest
-import com.monoid.hackernews.api.upvoteRequest
-import com.monoid.hackernews.datastore.Authentication
-import com.monoid.hackernews.navigation.LoginAction
-import com.monoid.hackernews.repo.OrderedItem
-import com.monoid.hackernews.repo.OrderedItemRepo
-import com.monoid.hackernews.room.FavoriteDb
-import com.monoid.hackernews.room.UpvoteDb
-import com.monoid.hackernews.settingsDataStore
-import com.monoid.hackernews.ui.itemlist.ItemList
-import com.monoid.hackernews.ui.main.MainState
-import com.monoid.hackernews.ui.itemdetail.ItemDetail
 import com.monoid.hackernews.ui.util.networkConnectivity
 import com.monoid.hackernews.ui.util.notifyInput
 import com.monoid.hackernews.ui.util.runWhen
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import java.util.concurrent.TimeUnit
 
 @Composable
 fun HomeScreen(
-    mainState: MainState,
+    mainViewModel: MainViewModel,
+    drawerState: DrawerState,
     mainNavController: NavController,
     windowSize: WindowSize,
     title: String,
@@ -107,141 +101,6 @@ fun HomeScreen(
     setDetailInteraction: (Boolean) -> Unit,
     context: Context = LocalContext.current,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    onClickUpvote: (ItemId?) -> Unit = { itemId ->
-        if (itemId != null) {
-            coroutineScope.launch {
-                val authentication: Authentication =
-                    context.settingsDataStore.data.first()
-
-                if (authentication.password.isNotEmpty()) {
-                    try {
-                        mainState.httpClient.upvoteRequest(authentication, itemId)
-
-                        mainState.upvoteDao.insertUpvote(
-                            UpvoteDb(
-                                username = authentication.username,
-                                itemId = itemId.long,
-                            )
-                        )
-                    } catch (error: Throwable) {
-                        if (error is CancellationException) throw error
-                    }
-                } else {
-                    mainNavController.navigate(
-                        MainNavigation.Login.routeWithArgs(LoginAction.Upvote(itemId.long))
-                    )
-                }
-            }
-        } else {
-            Toast.makeText(
-                context,
-                context.getString(R.string.url_is_null),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-    },
-    onClickUnUpvote: (ItemId?) -> Unit = { itemId ->
-        if (itemId != null) {
-            coroutineScope.launch {
-                val authentication: Authentication =
-                    context.settingsDataStore.data.first()
-
-                if (authentication.password.isNotEmpty()) {
-                    try {
-                        mainState.httpClient.upvoteRequest(
-                            authentication = authentication,
-                            itemId = itemId,
-                            flag = false,
-                        )
-
-                        mainState.upvoteDao.deleteUpvote(
-                            UpvoteDb(
-                                username = authentication.username,
-                                itemId = itemId.long,
-                            )
-                        )
-                    } catch (error: Throwable) {
-                        if (error is CancellationException) throw error
-                    }
-                }
-            }
-        } else {
-            Toast.makeText(
-                context,
-                context.getString(R.string.url_is_null),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-    },
-    onClickFavorite: (ItemId?) -> Unit = { itemId ->
-        if (itemId != null) {
-            coroutineScope.launch {
-                val authentication: Authentication =
-                    context.settingsDataStore.data.first()
-
-                if (authentication.password.isNotEmpty()) {
-                    try {
-                        mainState.httpClient.favoriteRequest(
-                            authentication = authentication,
-                            itemId = itemId,
-                        )
-
-                        mainState.favoriteDao.insertFavorite(
-                            FavoriteDb(
-                                username = authentication.username,
-                                itemId = itemId.long,
-                            )
-                        )
-                    } catch (error: Throwable) {
-                        if (error is CancellationException) throw error
-                    }
-                } else {
-                    mainNavController.navigate(
-                        MainNavigation.Login.routeWithArgs(LoginAction.Favorite(itemId.long))
-                    )
-                }
-            }
-        } else {
-            Toast.makeText(
-                context,
-                context.getString(R.string.url_is_null),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-    },
-    onClickUnFavorite: (ItemId?) -> Unit = { itemId ->
-        if (itemId != null) {
-            coroutineScope.launch {
-                val authentication: Authentication =
-                    context.settingsDataStore.data.first()
-
-                if (authentication.password.isNotEmpty()) {
-                    try {
-                        mainState.httpClient.favoriteRequest(
-                            authentication = authentication,
-                            itemId = itemId,
-                            flag = false,
-                        )
-
-                        mainState.favoriteDao.deleteFavorite(
-                            FavoriteDb(
-                                username = authentication.username,
-                                itemId = itemId.long,
-                            )
-                        )
-                    } catch (error: Throwable) {
-                        if (error is CancellationException) throw error
-                    }
-                }
-            }
-        } else {
-            Toast.makeText(
-                context,
-                context.getString(R.string.url_is_null),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-    },
     onClickUser: (Username?) -> Unit = { user ->
         if (user != null) {
             mainNavController.navigate(MainNavigation.User.routeWithArgs(user))
@@ -287,11 +146,11 @@ fun HomeScreen(
                 while (true) {
                     var lastUpdate = lastUpdateState.value
 
-                    if (lastUpdate == null ||
+                    if (
+                        lastUpdate == null ||
                         Clock.System.now().toEpochMilliseconds() - lastUpdate >=
                         TimeUnit.MINUTES.toMillis(
-                            context.resources.getInteger(R.integer.item_stale_minutes)
-                                .toLong()
+                            context.resources.getInteger(R.integer.item_stale_minutes).toLong()
                         )
                     ) {
                         orderedItemRepo.updateRepoItems()
@@ -300,10 +159,12 @@ fun HomeScreen(
                     }
 
                     delay(
-                        (TimeUnit.MINUTES.toMillis(
-                            context.resources.getInteger(R.integer.item_stale_minutes)
-                                .toLong()
-                        ) + lastUpdate) - Clock.System.now().toEpochMilliseconds()
+                        (
+                            TimeUnit.MINUTES.toMillis(
+                                context.resources.getInteger(R.integer.item_stale_minutes)
+                                    .toLong()
+                            ) + lastUpdate
+                            ) - Clock.System.now().toEpochMilliseconds()
                     )
                 }
             }
@@ -353,7 +214,7 @@ fun HomeScreen(
                             }
                         } else {
                             IconButton(
-                                onClick = { coroutineScope.launch { mainState.drawerState.open() } },
+                                onClick = { coroutineScope.launch { drawerState.open() } },
                             ) {
                                 Icon(
                                     imageVector = Icons.TwoTone.Menu,
@@ -383,12 +244,17 @@ fun HomeScreen(
         val swipeRefreshState: SwipeRefreshState =
             rememberSwipeRefreshState(isRefreshing = false)
 
-        val orderedItems: State<List<OrderedItem>?> =
-            remember { orderedItemRepo.getRepoItems() }
+        val itemRows: State<List<ItemRepo.ItemRow>?> =
+            remember {
+                orderedItemRepo.getRepoItems()
+                    .map { orderedItems ->
+                        mainViewModel.itemRepo.itemUiList(orderedItems.map { it.itemId })
+                    }
+            }
                 .collectAsState(initial = null)
 
         val loadingState: State<Boolean> =
-            remember(orderedItems.value) { derivedStateOf { orderedItems.value == null } }
+            remember(itemRows.value) { derivedStateOf { itemRows.value == null } }
 
         Surface(
             modifier = Modifier.padding(paddingValues = paddingValues),
@@ -412,16 +278,21 @@ fun HomeScreen(
                             state = swipeRefreshState,
                             onRefresh = {
                                 if (job?.isCompleted != false) {
-                                    setJob(coroutineScope.launch {
-                                        swipeRefreshState.isRefreshing = true
+                                    setJob(
+                                        coroutineScope.launch {
+                                            swipeRefreshState.isRefreshing = true
 
-                                        try {
-                                            orderedItemRepo.updateRepoItems()
-                                            setLastUpdate(Clock.System.now().toEpochMilliseconds())
-                                        } finally {
-                                            swipeRefreshState.isRefreshing = false
+                                            try {
+                                                orderedItemRepo.updateRepoItems()
+
+                                                setLastUpdate(
+                                                    Clock.System.now().toEpochMilliseconds()
+                                                )
+                                            } finally {
+                                                swipeRefreshState.isRefreshing = false
+                                            }
                                         }
-                                    })
+                                    )
                                 }
                             },
                             modifier = when (windowSize.width) {
@@ -445,17 +316,12 @@ fun HomeScreen(
                                 LocalContentColor provides MaterialTheme.colorScheme.primary,
                             ) {
                                 ItemList(
-                                    mainState = mainState,
-                                    orderedItems = orderedItems,
+                                    itemRows = itemRows,
                                     selectedItem = showItemId,
                                     onClickDetail = {
                                         setDetailInteraction(true)
                                         setSelectedItemId(it)
                                     },
-                                    onClickUpvote = onClickUpvote,
-                                    onClickUnUpvote = onClickUnUpvote,
-                                    onClickFavorite = onClickFavorite,
-                                    onClickUnFavorite = onClickUnFavorite,
                                     onClickUser = onClickUser,
                                     onClickReply = onClickReply,
                                     onClickBrowser = onClickBrowser,
@@ -469,22 +335,21 @@ fun HomeScreen(
                         .weight(1f)
                         .fillMaxHeight()
 
+                    val detailListState: LazyListState =
+                        rememberLazyListState()
+
                     if (
                         showItemId != null &&
                         (detailInteraction || windowSize.width != WindowSizeClass.Compact)
                     ) {
                         key(showItemId) {
                             ItemDetail(
-                                mainState = mainState,
                                 itemId = showItemId,
-                                onClickUpvote = onClickUpvote,
-                                onClickUnUpvote = onClickUnUpvote,
-                                onClickFavorite = onClickFavorite,
-                                onClickUnFavorite = onClickUnFavorite,
                                 onClickReply = onClickReply,
                                 onClickUser = onClickUser,
                                 onClickBrowser = onClickBrowser,
                                 modifier = modifier.notifyInput { setDetailInteraction(true) },
+                                listState = detailListState,
                             )
                         }
                     } else if (windowSize.width != WindowSizeClass.Compact) {

@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.Face
 import androidx.compose.material.icons.twotone.Login
 import androidx.compose.material3.Divider
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
@@ -30,7 +31,6 @@ import com.monoid.hackernews.Username
 import com.monoid.hackernews.datastore.Authentication
 import com.monoid.hackernews.navigation.LoginAction
 import com.monoid.hackernews.settingsDataStore
-import com.monoid.hackernews.ui.main.MainState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -38,7 +38,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun NavigationDrawerContent(
     mainNavController: NavHostController,
-    mainState: MainState,
+    drawerState: DrawerState,
     onClickUser: (Username) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -88,7 +88,7 @@ fun NavigationDrawerContent(
                 selected = false,
                 onClick = {
                     onClickUser(Username(authentication.username))
-                    coroutineScope.launch { mainState.drawerState.close() }
+                    coroutineScope.launch { drawerState.close() }
                 },
                 modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
             )
@@ -108,7 +108,7 @@ fun NavigationDrawerContent(
                 },
                 selected = false,
                 onClick = {
-                    coroutineScope.launch { mainState.drawerState.close() }
+                    coroutineScope.launch { drawerState.close() }
 
                     mainNavController.navigate(
                         route = MainNavigation.Login.routeWithArgs(LoginAction.Login)
@@ -146,7 +146,7 @@ fun NavigationDrawerContent(
                         },
                         selected = item == storiesToNavigationItem[selectedStories],
                         onClick = {
-                            coroutineScope.launch { mainState.drawerState.close() }
+                            coroutineScope.launch { drawerState.close() }
                             mainNavController.navigate(route = item.route)
                         },
                         modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),

@@ -31,6 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.R
 import com.monoid.hackernews.api.ItemId
 import com.monoid.hackernews.api.commentRequest
@@ -38,7 +40,6 @@ import com.monoid.hackernews.api.getItem
 import com.monoid.hackernews.getAnnotatedString
 import com.monoid.hackernews.room.ItemDb
 import com.monoid.hackernews.settingsDataStore
-import com.monoid.hackernews.ui.main.MainState
 import com.monoid.hackernews.ui.text.ReplyTextField
 import com.monoid.hackernews.ui.util.WindowSize
 import com.monoid.hackernews.ui.util.WindowSizeClass
@@ -56,12 +57,13 @@ import java.util.concurrent.TimeUnit
 @Composable
 fun ReplyContent(
     itemId: ItemId,
-    mainState: MainState,
     windowSizeState: State<WindowSize>,
     onSuccess: () -> Unit,
     onError: (Throwable) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val mainViewModel: MainViewModel = viewModel()
+
     val context: Context =
         LocalContext.current
 
@@ -72,17 +74,18 @@ fun ReplyContent(
     LaunchedEffect(Unit) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
             context.networkConnectivity().runWhen({ it }) {
-                val databaseItem = mainState.itemDao.itemByIdFlow(itemId = itemId.long).first()
+                val databaseItem = mainViewModel.itemDao.itemByIdFlow(itemId = itemId.long).first()
 
-                if (databaseItem?.lastUpdate == null ||
+                if (
+                    databaseItem?.lastUpdate == null ||
                     Clock.System.now().toEpochMilliseconds() - databaseItem.lastUpdate >=
                     TimeUnit.MINUTES.toMillis(
                         context.resources.getInteger(R.integer.item_stale_minutes).toLong()
                     )
                 ) {
                     try {
-                        val apiItem = mainState.httpClient.getItem(itemId)
-                        mainState.itemDao.itemApiInsert(apiItem)
+                        val apiItem = mainViewModel.httpClient.getItem(itemId)
+                        mainViewModel.itemDao.itemApiInsert(apiItem)
                     } catch (error: Throwable) {
                         if (error is CancellationException) throw error
                     }
@@ -91,7 +94,7 @@ fun ReplyContent(
         }
     }
 
-    val item: ItemDb? = remember { mainState.itemDao.itemByIdFlow(itemId = itemId.long) }
+    val item: ItemDb? = remember { mainViewModel.itemDao.itemByIdFlow(itemId = itemId.long) }
         .collectAsState(initial = null)
         .value
 
@@ -164,7 +167,7 @@ fun ReplyContent(
                     replyJob(
                         context = context,
                         coroutineScope = coroutineScope,
-                        httpClient = mainState.httpClient,
+                        httpClient = mainViewModel.httpClient,
                         itemId = itemId,
                         text = reply,
                         onSuccess = onSuccess,

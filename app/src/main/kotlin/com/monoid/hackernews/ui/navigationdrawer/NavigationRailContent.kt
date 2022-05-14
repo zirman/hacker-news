@@ -3,6 +3,7 @@ package com.monoid.hackernews.ui.navigationdrawer
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Text
@@ -16,7 +17,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.monoid.hackernews.MainNavigation
-import com.monoid.hackernews.ui.main.MainState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun NavigationRailContent(
     mainNavController: NavHostController,
-    mainState: MainState,
+    drawerState: DrawerState,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
@@ -64,7 +64,7 @@ fun NavigationRailContent(
                     },
                     selected = item == storiesToNavigationItem[selectedStories],
                     onClick = {
-                        coroutineScope.launch { mainState.drawerState.close() }
+                        coroutineScope.launch { drawerState.close() }
                         mainNavController.navigate(route = item.route)
                     },
                 )

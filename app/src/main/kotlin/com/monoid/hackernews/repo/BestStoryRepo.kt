@@ -2,8 +2,8 @@ package com.monoid.hackernews.repo
 
 import com.monoid.hackernews.api.ItemId
 import com.monoid.hackernews.api.getBestStories
-import com.monoid.hackernews.room.BestStoryDb
 import com.monoid.hackernews.room.BestStoryDao
+import com.monoid.hackernews.room.BestStoryDb
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow

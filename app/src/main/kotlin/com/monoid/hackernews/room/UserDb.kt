@@ -1,9 +1,7 @@
 package com.monoid.hackernews.room
 
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.Relation
 
 @Entity(tableName = "user")
 data class UserDb(
@@ -13,13 +11,4 @@ data class UserDb(
     val created: Long,
     val karma: Int,
     val about: String?,
-)
-
-data class UserWithSubmitted(
-    @Embedded val user: UserDb,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "by",
-    )
-    val submitted: List<ItemDb>
 )
