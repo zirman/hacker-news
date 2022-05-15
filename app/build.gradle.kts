@@ -27,7 +27,7 @@ android {
         applicationId = "com.monoid.hackernews"
         minSdk = 21
         targetSdk = 32
-        versionCode = 5
+        versionCode = 8
         versionName = "1.0"
         vectorDrawables {
             useSupportLibrary = true
@@ -60,18 +60,18 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
         freeCompilerArgs = listOf(
-            "-Xopt-in=kotlin.RequiresOptIn",
-            "-Xopt-in=kotlin.time.ExperimentalTime",
-            "-Xopt-in=kotlinx.coroutines.FlowPreview",
-            "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-            "-Xopt-in=kotlinx.coroutines.InternalCoroutinesApi",
-            "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi",
-            "-Xopt-in=androidx.compose.material.ExperimentalMaterialApi",
-            "-Xopt-in=androidx.compose.material3.ExperimentalMaterial3Api",
-            "-Xopt-in=androidx.compose.animation.ExperimentalAnimationApi",
-            "-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi",
-            "-Xopt-in=androidx.compose.ui.text.ExperimentalTextApi",
-            "-Xopt-in=com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi",
+            "-opt-in=kotlin.RequiresOptIn",
+            "-opt-in=kotlin.time.ExperimentalTime",
+            "-opt-in=kotlinx.coroutines.FlowPreview",
+            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "-opt-in=kotlinx.coroutines.InternalCoroutinesApi",
+            "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
+            "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
+            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
+            "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
+            "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
+            "-opt-in=androidx.compose.ui.text.ExperimentalTextApi",
+            "-opt-in=com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi",
         )
     }
     buildFeatures {
@@ -122,16 +122,16 @@ dependencies {
 
     implementation("androidx.collection:collection-ktx:1.2.0")
 
-    implementation("androidx.activity:activity-ktx:1.4.0")
-    implementation("androidx.activity:activity-compose:1.4.0")
+    implementation("androidx.activity:activity-ktx:1.6.0-alpha03")
+    implementation("androidx.activity:activity-compose:1.6.0-alpha03")
 
     implementation("androidx.fragment:fragment-ktx:1.4.1")
 
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.4.1")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-beta01")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-beta01")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.0-beta01")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.0-beta01")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.0-beta01")
 
     implementation("androidx.compose.ui:ui:1.2.0-beta01")
     implementation("androidx.compose.ui:ui-viewbinding:1.2.0-beta01")
@@ -156,9 +156,9 @@ dependencies {
 
     implementation("androidx.window:window:1.0.0")
 
-    implementation("androidx.navigation:navigation-runtime-ktx:2.4.2")
-    implementation("androidx.navigation:navigation-ui-ktx:2.4.2")
-    implementation("androidx.navigation:navigation-compose:2.4.2")
+    implementation("androidx.navigation:navigation-runtime-ktx:2.5.0-beta01")
+    implementation("androidx.navigation:navigation-ui-ktx:2.5.0-beta01")
+    implementation("androidx.navigation:navigation-compose:2.5.0-beta01")
 
     implementation("androidx.room:room-runtime:2.4.2")
     kapt("androidx.room:room-compiler:2.4.2")

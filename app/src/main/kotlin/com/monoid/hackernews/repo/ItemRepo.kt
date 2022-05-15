@@ -9,7 +9,7 @@ import com.monoid.hackernews.api.favoriteRequest
 import com.monoid.hackernews.api.getItem
 import com.monoid.hackernews.api.upvoteRequest
 import com.monoid.hackernews.datastore.Authentication
-import com.monoid.hackernews.mapAsync
+import com.monoid.hackernews.util.mapAsync
 import com.monoid.hackernews.room.ExpandedDao
 import com.monoid.hackernews.room.ExpandedDb
 import com.monoid.hackernews.room.FavoriteDao

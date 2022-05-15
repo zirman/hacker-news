@@ -218,14 +218,7 @@ fun MainNavigationComponent(
                 MainNavigation.User.argsFromRoute(navBackStackEntry = navBackStackEntry)
 
             val (selectedItemId, setSelectedItemId) =
-                rememberSaveable(stateSaver = itemIdSaver) {
-                    mutableStateOf(
-                        navBackStackEntry.arguments
-                            ?.getString("username")
-                            ?.toLong()
-                            ?.let { ItemId(it) }
-                    )
-                }
+                rememberSaveable(stateSaver = itemIdSaver) { mutableStateOf(null) }
 
             // Used to keep track of if the story was scrolled last.
             val (detailInteraction, setDetailInteraction) =

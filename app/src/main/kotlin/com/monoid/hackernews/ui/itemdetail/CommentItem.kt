@@ -44,14 +44,14 @@ import com.google.accompanist.placeholder.shimmer
 import com.monoid.hackernews.R
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
-import com.monoid.hackernews.onClick
-import com.monoid.hackernews.rememberAnnotatedString
 import com.monoid.hackernews.repo.ItemRepo
 import com.monoid.hackernews.room.ItemDb
 import com.monoid.hackernews.ui.text.ClickableTextBlock
 import com.monoid.hackernews.ui.text.TextBlock
 import com.monoid.hackernews.ui.util.rememberTimeBy
 import com.monoid.hackernews.ui.util.userTag
+import com.monoid.hackernews.util.onClick
+import com.monoid.hackernews.util.rememberAnnotatedString
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import androidx.compose.material.MaterialTheme as MaterialTheme2
@@ -81,23 +81,21 @@ fun CommentItem(
             rememberCoroutineScope()
 
         Column(
-            modifier = Modifier
-                .clickable { coroutineScope.launch { itemUiState.value?.toggleExpanded() } }
-                .placeholder(
-                    visible = itemUiState.value == null,
-                    color = Color.Transparent,
-                    shape = MaterialTheme.shapes.small,
-                    highlight = PlaceholderHighlight.shimmer(
-                        highlightColor = LocalContentColor.current.copy(alpha = .5f),
-                    ),
-                )
-                .then(
-                    if (itemUiState.value != null) {
-                        Modifier.animateContentSize()
-                    } else {
-                        Modifier
-                    }
-                ),
+            modifier = if (itemUiState.value?.item == null) {
+                Modifier
+            } else {
+                Modifier
+                    .clickable { coroutineScope.launch { itemUiState.value?.toggleExpanded() } }
+                    .animateContentSize()
+                    .placeholder(
+                        visible = itemUiState.value?.item?.lastUpdate == null,
+                        color = Color.Transparent,
+                        shape = MaterialTheme.shapes.small,
+                        highlight = PlaceholderHighlight.shimmer(
+                            highlightColor = LocalContentColor.current.copy(alpha = .5f),
+                        ),
+                    )
+            },
         ) {
             val isDeleted =
                 itemUiState.value?.item?.text == null && itemUiState.value?.item?.lastUpdate != null

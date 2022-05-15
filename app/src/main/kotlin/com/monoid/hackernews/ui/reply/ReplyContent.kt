@@ -37,7 +37,6 @@ import com.monoid.hackernews.R
 import com.monoid.hackernews.api.ItemId
 import com.monoid.hackernews.api.commentRequest
 import com.monoid.hackernews.api.getItem
-import com.monoid.hackernews.getAnnotatedString
 import com.monoid.hackernews.room.ItemDb
 import com.monoid.hackernews.settingsDataStore
 import com.monoid.hackernews.ui.text.ReplyTextField
@@ -45,6 +44,7 @@ import com.monoid.hackernews.ui.util.WindowSize
 import com.monoid.hackernews.ui.util.WindowSizeClass
 import com.monoid.hackernews.ui.util.networkConnectivity
 import com.monoid.hackernews.ui.util.runWhen
+import com.monoid.hackernews.util.getAnnotatedString
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope

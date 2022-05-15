@@ -50,11 +50,11 @@ import com.google.accompanist.placeholder.shimmer
 import com.monoid.hackernews.R
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
-import com.monoid.hackernews.onClick
-import com.monoid.hackernews.rememberAnnotatedString
 import com.monoid.hackernews.repo.ItemRepo
 import com.monoid.hackernews.ui.util.rememberTimeBy
 import com.monoid.hackernews.ui.util.userTag
+import com.monoid.hackernews.util.onClick
+import com.monoid.hackernews.util.rememberAnnotatedString
 import kotlinx.coroutines.launch
 
 @Composable

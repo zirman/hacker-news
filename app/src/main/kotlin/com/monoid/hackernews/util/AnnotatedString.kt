@@ -1,4 +1,4 @@
-package com.monoid.hackernews
+package com.monoid.hackernews.util
 
 import android.content.Context
 import android.content.Intent
