@@ -28,6 +28,9 @@ interface ItemDao {
     @Insert(entity = ItemDb::class, onConflict = OnConflictStrategy.REPLACE)
     suspend fun itemInsert(item: ItemDb)
 
+    @Insert(entity = ItemDb::class, onConflict = OnConflictStrategy.IGNORE)
+    suspend fun itemsInsert(items: List<ItemDb>)
+
     @Transaction
     suspend fun itemApiInsert(itemApi: ItemApi) {
         // update children entries

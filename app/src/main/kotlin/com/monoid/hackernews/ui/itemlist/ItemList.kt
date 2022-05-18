@@ -17,11 +17,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
-import com.monoid.hackernews.repo.ItemRepo
+import com.monoid.hackernews.repo.ItemListRow
 
 @Composable
 fun ItemList(
-    itemRows: State<List<ItemRepo.ItemRow>?>,
+    itemRows: State<List<ItemListRow>?>,
     selectedItem: ItemId?,
     onClickDetail: (ItemId?) -> Unit,
     onClickUser: (Username?) -> Unit,

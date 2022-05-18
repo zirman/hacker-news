@@ -1,5 +1,6 @@
 package com.monoid.hackernews.ui.itemdetail
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
@@ -20,11 +21,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
-import com.monoid.hackernews.repo.ItemRepo
+import com.monoid.hackernews.repo.ItemTreeRow
+import com.monoid.hackernews.repo.ItemUiWithThreadDepth
 
 @Composable
 fun CommentList(
-    itemListState: State<List<ItemRepo.ItemRow>?>,
+    itemListState: State<List<ItemTreeRow>?>,
     onClickUser: (Username) -> Unit,
     onClickReply: (ItemId) -> Unit,
     onClickBrowser: (String) -> Unit,
@@ -36,19 +38,22 @@ fun CommentList(
             modifier = Modifier.fillMaxSize(),
             state = listState,
             contentPadding = PaddingValues(
+                start = 16.dp,
                 top = 8.dp,
+                end = 16.dp,
                 bottom = WindowInsets.safeDrawing
                     .only(WindowInsetsSides.Bottom)
                     .asPaddingValues()
                     .calculateBottomPadding() + 8.dp,
             ),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             itemsIndexed(
                 items = itemListState.value ?: emptyList(),
                 key = { _, itemRow -> itemRow.itemId.long },
                 contentType = { index, _ -> index == 0 },
             ) { index, itemRow ->
-                val itemUiState: State<ItemRepo.ItemUi?> = itemRow.itemUiFlow
+                val itemUiState: State<ItemUiWithThreadDepth?> = itemRow.itemUiFlow
                     .collectAsState(initial = null)
 
                 if (index == 0) {

@@ -5,6 +5,7 @@ import com.monoid.hackernews.api.ItemId
 import com.monoid.hackernews.api.getUser
 import com.monoid.hackernews.api.toUserApiUpdate
 import com.monoid.hackernews.room.ItemDao
+import com.monoid.hackernews.room.ItemDb
 import com.monoid.hackernews.room.UserDao
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.flow.Flow
@@ -35,11 +36,7 @@ class UserStoryRepo(
     override suspend fun updateRepoItems() {
         try {
             val user = httpClient.getUser(username = username)
-
-//            itemDao.itemByInsert(
-//                user.submitted.map { ItemApiByUpdate(id = it.long, by = username.string) },
-//            )
-
+            itemDao.itemsInsert(user.submitted.map { ItemDb(id = it.long, by = username.string) })
             userDao.insertReplace(user.toUserApiUpdate())
         } catch (error: Throwable) {
             if (error is CancellationException) throw error

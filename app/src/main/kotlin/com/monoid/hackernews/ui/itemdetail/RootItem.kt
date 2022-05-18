@@ -50,7 +50,7 @@ import com.google.accompanist.placeholder.shimmer
 import com.monoid.hackernews.R
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
-import com.monoid.hackernews.repo.ItemRepo
+import com.monoid.hackernews.repo.ItemUiWithThreadDepth
 import com.monoid.hackernews.ui.util.rememberTimeBy
 import com.monoid.hackernews.ui.util.userTag
 import com.monoid.hackernews.util.onClick
@@ -59,7 +59,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun RootItem(
-    itemUiState: State<ItemRepo.ItemUi?>,
+    itemUiState: State<ItemUiWithThreadDepth?>,
     onClickReply: (ItemId) -> Unit,
     onClickUser: (Username) -> Unit,
     onClickBrowser: (String) -> Unit,
@@ -73,7 +73,7 @@ fun RootItem(
             val coroutineScope =
                 rememberCoroutineScope()
 
-            val item = itemUiState.value?.item
+            val item = itemUiState.value?.itemUi?.item
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -84,7 +84,8 @@ fun RootItem(
                         text = (if (item?.type == "comment") item.text else item?.title) ?: "",
                         linkColor = LocalContentColor.current,
                     ),
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier
+                        .weight(1f)
                         .padding(horizontal = 8.dp)
                         .placeholder(
                             visible = itemUiState.value == null,
@@ -119,7 +120,9 @@ fun RootItem(
                                     text = {
                                         Text(
                                             text = stringResource(
-                                                id = if (itemUiState.value?.isFavorite == true) {
+                                                id = if (
+                                                    itemUiState.value?.itemUi?.isFavorite == true
+                                                ) {
                                                     R.string.un_favorite
                                                 } else {
                                                     R.string.favorite
@@ -129,17 +132,23 @@ fun RootItem(
                                     },
                                     onClick = {
                                         setContextExpanded(false)
-                                        coroutineScope.launch { itemUiState.value?.toggleFavorite() }
+                                        coroutineScope.launch {
+                                            itemUiState.value?.itemUi?.toggleFavorite()
+                                        }
                                     },
                                     leadingIcon = {
                                         Icon(
-                                            imageVector = if (itemUiState.value?.isFavorite == true) {
+                                            imageVector = if (
+                                                itemUiState.value?.itemUi?.isFavorite == true
+                                            ) {
                                                 Icons.Filled.Favorite
                                             } else {
                                                 Icons.TwoTone.FavoriteBorder
                                             },
                                             contentDescription = stringResource(
-                                                id = if (itemUiState.value?.isFavorite == true) {
+                                                id = if (
+                                                    itemUiState.value?.itemUi?.isFavorite == true
+                                                ) {
                                                     R.string.un_favorite
                                                 } else {
                                                     R.string.favorite
@@ -211,18 +220,20 @@ fun RootItem(
                         key("score") {
                             IconButton(
                                 onClick = {
-                                    coroutineScope.launch { itemUiState.value?.toggleUpvote() }
+                                    coroutineScope.launch {
+                                        itemUiState.value?.itemUi?.toggleUpvote()
+                                    }
                                 },
                                 enabled = item?.type == "story",
                             ) {
                                 Icon(
-                                    imageVector = if (itemUiState.value?.isUpvote == true) {
+                                    imageVector = if (itemUiState.value?.itemUi?.isUpvote == true) {
                                         Icons.Filled.ThumbUp
                                     } else {
                                         Icons.TwoTone.ThumbUp
                                     },
                                     contentDescription = stringResource(
-                                        id = if (itemUiState.value?.isUpvote == true) {
+                                        id = if (itemUiState.value?.itemUi?.isUpvote == true) {
                                             R.string.un_vote
                                         } else {
                                             R.string.upvote
@@ -240,7 +251,8 @@ fun RootItem(
                                         color = Color.Transparent,
                                         shape = MaterialTheme.shapes.small,
                                         highlight = PlaceholderHighlight.shimmer(
-                                            highlightColor = LocalContentColor.current.copy(alpha = .5f),
+                                            highlightColor = LocalContentColor.current
+                                                .copy(alpha = .5f),
                                         ),
                                     ),
                                 style = MaterialTheme.typography.labelMedium,

@@ -1,7 +1,9 @@
 package com.monoid.hackernews.ui.itemlist
 
 import android.net.Uri
-import androidx.compose.foundation.layout.Box
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -36,7 +38,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -50,7 +51,7 @@ import com.google.accompanist.placeholder.shimmer
 import com.monoid.hackernews.R
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
-import com.monoid.hackernews.repo.ItemRepo
+import com.monoid.hackernews.repo.ItemUi
 import com.monoid.hackernews.ui.text.ClickableTextBlock
 import com.monoid.hackernews.ui.text.TextBlock
 import com.monoid.hackernews.ui.util.rememberTimeBy
@@ -59,7 +60,7 @@ import com.monoid.hackernews.util.rememberAnnotatedString
 
 @Composable
 fun Item(
-    itemUiState: State<ItemRepo.ItemUi?>,
+    itemUiState: State<ItemUi?>,
     isSelected: Boolean,
     onClickDetail: (ItemId?) -> Unit,
     onClickReply: (ItemId) -> Unit,
@@ -104,12 +105,10 @@ fun Item(
                 val (contextExpanded: Boolean, setContextExpanded) =
                     rememberSaveable { mutableStateOf(false) }
 
-                Box(
-                    modifier = if (item?.lastUpdate == null || item.type == "story") {
-                        Modifier
-                    } else {
-                        Modifier.drawWithContent {}
-                    },
+                AnimatedVisibility(
+                    visible = item?.lastUpdate == null || item.type == "story",
+                    enter = fadeIn(),
+                    exit = fadeOut(),
                 ) {
                     IconButton(
                         onClick = { setContextExpanded(true) },

@@ -68,7 +68,7 @@ import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.R
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
-import com.monoid.hackernews.repo.ItemRepo
+import com.monoid.hackernews.repo.ItemListRow
 import com.monoid.hackernews.repo.OrderedItemRepo
 import com.monoid.hackernews.ui.itemdetail.ItemDetail
 import com.monoid.hackernews.ui.itemlist.ItemList
@@ -244,7 +244,7 @@ fun HomeScreen(
         val swipeRefreshState: SwipeRefreshState =
             rememberSwipeRefreshState(isRefreshing = false)
 
-        val itemRows: State<List<ItemRepo.ItemRow>?> =
+        val itemRows: State<List<ItemListRow>?> =
             remember {
                 orderedItemRepo.getRepoItems()
                     .map { orderedItems ->

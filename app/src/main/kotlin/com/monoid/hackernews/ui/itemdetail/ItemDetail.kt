@@ -16,7 +16,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
-import com.monoid.hackernews.repo.ItemRepo
+import com.monoid.hackernews.repo.ItemTreeRow
 
 @Composable
 fun ItemDetail(
@@ -29,7 +29,7 @@ fun ItemDetail(
 ) {
     val mainViewModel: MainViewModel = viewModel()
 
-    val itemListState: State<List<ItemRepo.ItemRow>?> =
+    val itemListState: State<List<ItemTreeRow>?> =
         remember(itemId) { mainViewModel.itemRepo.itemUiTreeFlow(itemId) }
             .collectAsState(initial = null)
 
