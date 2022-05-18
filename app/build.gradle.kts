@@ -27,7 +27,7 @@ android {
         applicationId = "com.monoid.hackernews"
         minSdk = 21
         targetSdk = 32
-        versionCode = 8
+        versionCode = 10
         versionName = "1.0"
         vectorDrawables {
             useSupportLibrary = true
@@ -127,11 +127,11 @@ dependencies {
 
     implementation("androidx.fragment:fragment-ktx:1.4.1")
 
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-beta01")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-beta01")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.0-beta01")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.0-beta01")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.0-beta01")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc01")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-rc01")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.0-rc01")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.0-rc01")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.0-rc01")
 
     implementation("androidx.compose.ui:ui:1.2.0-beta01")
     implementation("androidx.compose.ui:ui-viewbinding:1.2.0-beta01")
@@ -156,9 +156,9 @@ dependencies {
 
     implementation("androidx.window:window:1.0.0")
 
-    implementation("androidx.navigation:navigation-runtime-ktx:2.5.0-beta01")
-    implementation("androidx.navigation:navigation-ui-ktx:2.5.0-beta01")
-    implementation("androidx.navigation:navigation-compose:2.5.0-beta01")
+    implementation("androidx.navigation:navigation-runtime-ktx:2.5.0-rc01")
+    implementation("androidx.navigation:navigation-ui-ktx:2.5.0-rc01")
+    implementation("androidx.navigation:navigation-compose:2.5.0-rc01")
 
     implementation("androidx.room:room-runtime:2.4.2")
     kapt("androidx.room:room-compiler:2.4.2")
