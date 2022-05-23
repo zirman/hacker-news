@@ -22,6 +22,8 @@ import io.ktor.client.HttpClient
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -52,6 +54,7 @@ class ItemRepo(
     private val sharedFlows: MutableMap<ItemId, Flow<ItemUiInternal>> =
         mutableMapOf()
 
+    @Immutable
     private inner class ItemRowInternal(
         override val itemId: ItemId,
     ) : ItemListRow(), () -> SharedFlow<ItemUiInternal> {
@@ -64,6 +67,7 @@ class ItemRepo(
             sharedItemUiFlow(itemId)
     }
 
+    @Immutable
     private inner class ItemThreadInternal(
         override val itemId: ItemId,
         private val threadDepth: Int,
@@ -145,18 +149,38 @@ class ItemRepo(
 
     fun itemUiTreeFlow(rootItemId: ItemId): Flow<List<ItemTreeRow>> = flow {
         var itemTree: ItemTree = withContext(Dispatchers.IO) {
+            suspend fun recur(itemId: ItemId): ItemTree {
+                val itemWithKids = async { itemDao.itemByIdWithKidsById(itemId.long) }
+                val isExpanded = async { expandedDao.isExpanded(itemId.long) }
+
+                return ItemTree(
+                    itemId = itemId,
+                    kids = if (isExpanded.await()) {
+                        itemWithKids.await()
+                            ?.kids
+                            ?.map { async { recur(ItemId(it.id)) } }
+                            ?.awaitAll()
+                    } else {
+                        itemWithKids.await()
+                            ?.kids
+                            ?.map {
+                                ItemTree(
+                                    itemId = ItemId(it.id),
+                                    isExpanded = false,
+                                    kids = null,
+                                )
+                            }
+                    },
+                    isExpanded = isExpanded.await(),
+                )
+            }
+
             val rootItemWithKids = itemDao.itemByIdWithKidsById(rootItemId.long)
 
             ItemTree(
                 itemId = rootItemId,
-                kids = rootItemWithKids?.kids?.map {
-                    ItemTree(
-                        itemId = ItemId(it.id),
-                        isExpanded = expandedDao.isExpanded(it.id),
-                        kids = null,
-                    )
-                },
-                isExpanded = rootItemWithKids?.kids != null,
+                kids = rootItemWithKids?.kids?.map { async { recur(ItemId(it.id)) } }?.awaitAll(),
+                isExpanded = true,
             )
         }
 
