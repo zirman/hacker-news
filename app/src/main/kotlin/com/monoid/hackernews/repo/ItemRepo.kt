@@ -160,15 +160,7 @@ class ItemRepo(
                             ?.map { async { recur(ItemId(it.id)) } }
                             ?.awaitAll()
                     } else {
-                        itemWithKids.await()
-                            ?.kids
-                            ?.map {
-                                ItemTree(
-                                    itemId = ItemId(it.id),
-                                    isExpanded = false,
-                                    kids = null,
-                                )
-                            }
+                        null
                     },
                     isExpanded = isExpanded.await(),
                 )
