@@ -17,7 +17,6 @@ import com.monoid.hackernews.room.ItemDao
 import com.monoid.hackernews.room.ItemDb
 import com.monoid.hackernews.room.UpvoteDao
 import com.monoid.hackernews.room.UpvoteDb
-import com.monoid.hackernews.util.mapAsync
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -216,7 +215,7 @@ class ItemRepo(
                     itemTree.copy(
                         isExpanded = isExpanded,
                         kids = coroutineScope {
-                            kids.mapAsync { kidItemId ->
+                            kids.map { kidItemId ->
                                 itemTree.kids?.find { it.itemId == kidItemId }
                                     ?: ItemTree(
                                         itemId = kidItemId,
