@@ -39,12 +39,12 @@ fun CommentList(
             state = listState,
             contentPadding = PaddingValues(
                 start = 16.dp,
-                top = 8.dp,
+                top = 16.dp,
                 end = 16.dp,
                 bottom = WindowInsets.safeDrawing
                     .only(WindowInsetsSides.Bottom)
                     .asPaddingValues()
-                    .calculateBottomPadding() + 8.dp,
+                    .calculateBottomPadding() + 16.dp,
             ),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {

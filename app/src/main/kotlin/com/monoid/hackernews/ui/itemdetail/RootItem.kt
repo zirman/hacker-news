@@ -69,7 +69,7 @@ fun RootItem(
         modifier = modifier.animateContentSize(),
         contentColor = MaterialTheme.colorScheme.secondary,
     ) {
-        Column(modifier = Modifier.padding(4.dp)) {
+        Column {
             val coroutineScope =
                 rememberCoroutineScope()
 
