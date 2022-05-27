@@ -85,7 +85,7 @@ android {
 }
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:3.19.4"
+        artifact = "com.google.protobuf:protoc:3.21.0"
     }
     generateProtoTasks {
         all().forEach { task ->
@@ -114,7 +114,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.1")
 
-    implementation("androidx.core:core-ktx:1.9.0-alpha03")
+    implementation("androidx.core:core-ktx:1.9.0-alpha04")
 
     implementation("androidx.appcompat:appcompat:1.4.1")
 
@@ -122,7 +122,7 @@ dependencies {
 
     implementation("androidx.collection:collection-ktx:1.2.0")
 
-    implementation("androidx.activity:activity-ktx:1.6.0-alpha03")
+    implementation("androidx.activity:activity-ktx:1.6.0-alpha04")
     implementation("androidx.activity:activity-compose:1.6.0-alpha03")
 
     implementation("androidx.fragment:fragment-ktx:1.4.1")
@@ -134,25 +134,25 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.0-rc01")
 
     implementation("androidx.compose.ui:ui:1.2.0-beta02")
-    implementation("androidx.compose.ui:ui-viewbinding:1.2.0-beta01")
+    implementation("androidx.compose.ui:ui-viewbinding:1.2.0-beta02")
 
     implementation("androidx.compose.material:material:1.2.0-beta02")
 
-    implementation("androidx.compose.material3:material3:1.0.0-alpha11")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha12")
     implementation("androidx.compose.material:material-icons-core:1.2.0-beta02")
-    implementation("androidx.compose.material:material-icons-extended:1.2.0-beta01")
+    implementation("androidx.compose.material:material-icons-extended:1.2.0-beta02")
 
-    implementation("androidx.compose.ui:ui-tooling:1.2.0-beta01")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.2.0-beta01")
+    implementation("androidx.compose.ui:ui-tooling:1.2.0-beta02")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.2.0-beta02")
     implementation("androidx.compose.ui:ui-util:1.2.0-beta02")
 
     implementation("androidx.compose.foundation:foundation:1.2.0-beta02")
 
-    implementation("androidx.compose.runtime:runtime-livedata:1.2.0-beta01")
+    implementation("androidx.compose.runtime:runtime-livedata:1.2.0-beta02")
 
     implementation("androidx.datastore:datastore:1.0.0")
 
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.0")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
     implementation("androidx.window:window:1.0.0")
 
@@ -167,7 +167,7 @@ dependencies {
 
     implementation("com.google.android.material:material:1.6.0")
 
-    implementation("com.google.protobuf:protobuf-kotlin-lite:3.20.1")
+    implementation("com.google.protobuf:protobuf-kotlin-lite:3.21.0")
 
     implementation("com.google.accompanist:accompanist-navigation-animation:0.24.9-beta")
     implementation("com.google.accompanist:accompanist-navigation-material:0.24.9-beta")
