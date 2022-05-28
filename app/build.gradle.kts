@@ -175,9 +175,9 @@ dependencies {
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.9-beta")
     implementation("com.google.accompanist:accompanist-placeholder:0.24.9-beta")
 
-    implementation("io.ktor:ktor-client-core:2.0.1")
-    implementation("io.ktor:ktor-client-android:2.0.1")
-    implementation("io.ktor:ktor-client-logging:2.0.1")
-    implementation("io.ktor:ktor-client-content-negotiation:2.0.1")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.1")
+    implementation("io.ktor:ktor-client-core:2.0.2")
+    implementation("io.ktor:ktor-client-android:2.0.2")
+    implementation("io.ktor:ktor-client-logging:2.0.2")
+    implementation("io.ktor:ktor-client-content-negotiation:2.0.2")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.2")
 }
