@@ -11,6 +11,7 @@ plugins {
     kotlin("kapt")
     id("kotlin-parcelize")
     id("com.google.protobuf")
+    id("com.github.ben-manes.versions")
 }
 android {
     compileSdk = 32
@@ -79,7 +80,7 @@ android {
         viewBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.2.0-beta01"
+        kotlinCompilerExtensionVersion = libs.versions.compose.get()
     }
     namespace = "com.monoid.hackernews"
 }
@@ -105,79 +106,9 @@ protobuf {
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:1.3.3")
-
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.3")
-
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.1")
-
-    implementation("androidx.core:core-ktx:1.9.0-alpha04")
-
-    implementation("androidx.appcompat:appcompat:1.4.1")
-
-    implementation("androidx.benchmark:benchmark-junit4:1.0.0")
-
-    implementation("androidx.collection:collection-ktx:1.2.0")
-
-    implementation("androidx.activity:activity-ktx:1.6.0-alpha04")
-    implementation("androidx.activity:activity-compose:1.6.0-alpha03")
-
-    implementation("androidx.fragment:fragment-ktx:1.4.1")
-
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0-rc01")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-rc01")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.0-rc01")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.0-rc01")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.0-rc01")
-
-    implementation("androidx.compose.ui:ui:1.2.0-beta02")
-    implementation("androidx.compose.ui:ui-viewbinding:1.2.0-beta02")
-
-    implementation("androidx.compose.material:material:1.2.0-beta02")
-
-    implementation("androidx.compose.material3:material3:1.0.0-alpha12")
-    implementation("androidx.compose.material:material-icons-core:1.2.0-beta02")
-    implementation("androidx.compose.material:material-icons-extended:1.2.0-beta02")
-
-    implementation("androidx.compose.ui:ui-tooling:1.2.0-beta02")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.2.0-beta02")
-    implementation("androidx.compose.ui:ui-util:1.2.0-beta02")
-
-    implementation("androidx.compose.foundation:foundation:1.2.0-beta02")
-
-    implementation("androidx.compose.runtime:runtime-livedata:1.2.0-beta02")
-
-    implementation("androidx.datastore:datastore:1.0.0")
-
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
-
-    implementation("androidx.window:window:1.0.0")
-
-    implementation("androidx.navigation:navigation-runtime-ktx:2.5.0-rc01")
-    implementation("androidx.navigation:navigation-ui-ktx:2.5.0-rc01")
-    implementation("androidx.navigation:navigation-compose:2.5.0-rc01")
-
-    implementation("androidx.room:room-runtime:2.4.2")
-    kapt("androidx.room:room-compiler:2.4.2")
-    implementation("androidx.room:room-ktx:2.4.2")
-    implementation("androidx.room:room-paging:2.4.2")
-
-    implementation("com.google.android.material:material:1.6.0")
-
-    implementation("com.google.protobuf:protobuf-kotlin-lite:3.21.0")
-
-    implementation("com.google.accompanist:accompanist-navigation-animation:0.24.9-beta")
-    implementation("com.google.accompanist:accompanist-navigation-material:0.24.9-beta")
-    implementation("com.google.accompanist:accompanist-swiperefresh:0.24.9-beta")
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.9-beta")
-    implementation("com.google.accompanist:accompanist-placeholder:0.24.9-beta")
-
-    implementation("io.ktor:ktor-client-core:2.0.2")
-    implementation("io.ktor:ktor-client-android:2.0.2")
-    implementation("io.ktor:ktor-client-logging:2.0.2")
-    implementation("io.ktor:ktor-client-content-negotiation:2.0.2")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.2")
+    implementation(libs.bundles.kotlinx)
+    implementation(libs.bundles.ktor)
+    implementation(libs.bundles.androidx)
+    implementation(libs.bundles.google)
+    kapt("androidx.room:room-compiler:${libs.versions.room.get()}")
 }
