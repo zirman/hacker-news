@@ -37,6 +37,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.rememberTopAppBarScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -171,9 +172,11 @@ fun HomeScreen(
         }
     }
 
+    val state = rememberTopAppBarScrollState()
+
     // layout to provide system bar scrims on all sides
     val scrollBehavior: TopAppBarScrollBehavior =
-        remember { TopAppBarDefaults.enterAlwaysScrollBehavior() }
+        remember { TopAppBarDefaults.enterAlwaysScrollBehavior(state = state) }
 
     val showItemId: ItemId? =
         remember(windowSize.width, selectedItemId, detailInteraction) {

@@ -8,26 +8,12 @@ dependencyResolutionManagement {
         create("libs") {
             version("kotlinx-coroutines", "1.6.2")
             version("kotlinx-serialization", "1.3.3")
-            version("kotlinx-datetime", "0.3.3")
             version("ktor", "2.0.2")
-            version("protobuf", "3.21.1")
-            version("datastore", "1.0.0")
-            version("room", "2.5.0-alpha01")
-            version("collection-ktx", "1.2.0")
-            version("core-ktx", "1.9.0-alpha04")
-            version("appcompat", "1.6.0-alpha04")
-            version("window", "1.1.0-alpha02")
-            version("activity-ktx", "1.6.0-alpha04")
-            version("activity-compose", "1.6.0-alpha03")
-            version("fragment-ktx", "1.5.0-rc01")
+            version("room", "2.5.0-alpha02")
             version("lifecycle", "2.5.0-rc01")
             version("navigation", "2.5.0-rc01")
-            version("material", "1.7.0-alpha02")
-            version("material3", "1.0.0-alpha12")
-            version("compose", "1.2.0-beta02")
-            version("constraintlayout", "1.1.0-alpha02")
-            version("accompanist", "0.24.9-beta")
-            version("benchmark-junit4", "1.1.0-rc02")
+            version("compose", "1.2.0-beta03")
+            version("accompanist", "0.24.10-beta")
 
             bundle(
                 "kotlinx",
@@ -106,15 +92,12 @@ dependencyResolutionManagement {
                     "material-icons-extended",
                     "foundation",
                     "runtime-livedata",
-                    "constraintlayout",
+                    "constraintlayout"
                 )
             )
 
-            library(
-                "kotlinx-coroutines-core",
-                "org.jetbrains.kotlinx",
-                "kotlinx-coroutines-core"
-            ).versionRef("kotlinx-coroutines")
+            library("kotlinx-coroutines-core", "org.jetbrains.kotlinx", "kotlinx-coroutines-core")
+                .versionRef("kotlinx-coroutines")
 
             library(
                 "kotlinx-coroutines-android",
@@ -140,131 +123,68 @@ dependencyResolutionManagement {
                 "kotlinx-serialization-protobuf"
             ).versionRef("kotlinx-serialization")
 
-            library(
-                "kotlinx-datetime",
-                "org.jetbrains.kotlinx",
-                "kotlinx-datetime"
-            ).versionRef("kotlinx-datetime")
+            library("kotlinx-datetime", "org.jetbrains.kotlinx", "kotlinx-datetime")
+                .version("0.3.3")
 
-            library(
-                "ktor-client-core",
-                "io.ktor",
-                "ktor-client-core"
-            ).versionRef("ktor")
+            library("ktor-client-core", "io.ktor", "ktor-client-core")
+                .versionRef("ktor")
 
-            library(
-                "ktor-client-android",
-                "io.ktor",
-                "ktor-client-android"
-            ).versionRef("ktor")
+            library("ktor-client-android", "io.ktor", "ktor-client-android")
+                .versionRef("ktor")
 
-            library(
-                "ktor-client-logging",
-                "io.ktor",
-                "ktor-client-logging"
-            ).versionRef("ktor")
+            library("ktor-client-logging", "io.ktor", "ktor-client-logging")
+                .versionRef("ktor")
 
-            library(
-                "ktor-client-content-negotiation",
-                "io.ktor",
-                "ktor-client-content-negotiation"
-            ).versionRef("ktor")
+            library("ktor-client-content-negotiation", "io.ktor", "ktor-client-content-negotiation")
+                .versionRef("ktor")
 
-            library(
-                "ktor-serialization-kotlinx-json",
-                "io.ktor",
-                "ktor-serialization-kotlinx-json"
-            ).versionRef("ktor")
+            library("ktor-serialization-kotlinx-json", "io.ktor", "ktor-serialization-kotlinx-json")
+                .versionRef("ktor")
 
-            library(
-                "protobuf-kotlin-lite",
-                "com.google.protobuf",
-                "protobuf-kotlin-lite"
-            ).versionRef("protobuf")
+            library("protobuf-kotlin-lite", "com.google.protobuf", "protobuf-kotlin-lite")
+                .version("3.21.1")
 
-            library(
-                "datastore",
-                "androidx.datastore",
-                "datastore"
-            ).versionRef("datastore")
+            library("datastore", "androidx.datastore", "datastore")
+                .version("1.0.0")
 
-            library(
-                "room-runtime",
-                "androidx.room",
-                "room-runtime"
-            ).versionRef("room")
+            library("room-runtime", "androidx.room", "room-runtime")
+                .versionRef("room")
 
-            library(
-                "room-ktx",
-                "androidx.room",
-                "room-ktx"
-            ).versionRef("room")
+            library("room-ktx", "androidx.room", "room-ktx")
+                .versionRef("room")
 
-            library(
-                "room-paging",
-                "androidx.room",
-                "room-paging"
-            ).versionRef("room")
+            library("room-paging", "androidx.room", "room-paging")
+                .versionRef("room")
 
-            library(
-                "collection-ktx",
-                "androidx.collection",
-                "collection-ktx"
-            ).versionRef("collection-ktx")
+            library("collection-ktx", "androidx.collection", "collection-ktx")
+                .version("1.2.0")
 
-            library(
-                "core-ktx",
-                "androidx.core",
-                "core-ktx"
-            ).versionRef("core-ktx")
+            library("core-ktx", "androidx.core", "core-ktx")
+                .version("1.9.0-alpha04")
 
-            library(
-                "appcompat",
-                "androidx.appcompat",
-                "appcompat"
-            ).versionRef("appcompat")
+            library("appcompat", "androidx.appcompat", "appcompat")
+                .version("1.6.0-alpha04")
 
-            library(
-                "window",
-                "androidx.window",
-                "window"
-            ).versionRef("window")
+            library("window", "androidx.window", "window")
+                .version("1.1.0-alpha02")
 
-            library(
-                "activity-ktx",
-                "androidx.activity",
-                "activity-ktx"
-            ).versionRef("activity-ktx")
+            library("activity-ktx", "androidx.activity", "activity-ktx")
+                .version("1.6.0-alpha04")
 
-            library(
-                "activity-compose",
-                "androidx.activity",
-                "activity-compose"
-            ).versionRef("activity-compose")
+            library("activity-compose", "androidx.activity", "activity-compose")
+                .version("1.6.0-alpha03")
 
-            library(
-                "fragment-ktx",
-                "androidx.fragment",
-                "fragment-ktx"
-            ).versionRef("fragment-ktx")
+            library("fragment-ktx", "androidx.fragment", "fragment-ktx")
+                .version("1.5.0-rc01")
 
-            library(
-                "benchmark-junit4",
-                "androidx.benchmark",
-                "benchmark-junit4"
-            ).versionRef("benchmark-junit4")
+            library("benchmark-junit4", "androidx.benchmark", "benchmark-junit4")
+                .version("1.1.0-rc03")
 
-            library(
-                "lifecycle-runtime-ktx",
-                "androidx.lifecycle",
-                "lifecycle-runtime-ktx"
-            ).versionRef("lifecycle")
+            library("lifecycle-runtime-ktx", "androidx.lifecycle", "lifecycle-runtime-ktx")
+                .versionRef("lifecycle")
 
-            library(
-                "lifecycle-viewmodel-ktx",
-                "androidx.lifecycle",
-                "lifecycle-viewmodel-ktx"
-            ).versionRef("lifecycle")
+            library("lifecycle-viewmodel-ktx", "androidx.lifecycle", "lifecycle-viewmodel-ktx")
+                .versionRef("lifecycle")
 
             library(
                 "lifecycle-viewmodel-compose",
@@ -278,83 +198,44 @@ dependencyResolutionManagement {
                 "lifecycle-viewmodel-savedstate"
             ).versionRef("lifecycle")
 
-            library(
-                "lifecycle-livedata-ktx",
-                "androidx.lifecycle",
-                "lifecycle-livedata-ktx"
-            ).versionRef("lifecycle")
+            library("lifecycle-livedata-ktx", "androidx.lifecycle", "lifecycle-livedata-ktx")
+                .versionRef("lifecycle")
 
-            library(
-                "navigation-runtime-ktx",
-                "androidx.navigation",
-                "navigation-runtime-ktx"
-            ).versionRef("navigation")
+            library("navigation-runtime-ktx", "androidx.navigation", "navigation-runtime-ktx")
+                .versionRef("navigation")
 
-            library(
-                "navigation-ui-ktx",
-                "androidx.navigation",
-                "navigation-ui-ktx"
-            ).versionRef("navigation")
+            library("navigation-ui-ktx", "androidx.navigation", "navigation-ui-ktx")
+                .versionRef("navigation")
 
-            library(
-                "navigation-compose",
-                "androidx.navigation",
-                "navigation-compose"
-            ).versionRef("navigation")
+            library("navigation-compose", "androidx.navigation", "navigation-compose")
+                .versionRef("navigation")
 
-            library(
-                "material",
-                "com.google.android.material",
-                "material"
-            ).versionRef("material")
+            library("material", "com.google.android.material", "material")
+                .version("1.7.0-alpha02")
 
-            library(
-                "material3",
-                "androidx.compose.material3",
-                "material3"
-            ).versionRef("material3")
+            library("material3", "androidx.compose.material3", "material3")
+                .version("1.0.0-alpha13")
 
-            library(
-                "ui",
-                "androidx.compose.ui",
-                "ui"
-            ).versionRef("compose")
+            library("ui", "androidx.compose.ui", "ui")
+                .versionRef("compose")
 
-            library(
-                "ui-viewbinding",
-                "androidx.compose.ui",
-                "ui-viewbinding"
-            ).versionRef("compose")
+            library("ui-viewbinding", "androidx.compose.ui", "ui-viewbinding")
+                .versionRef("compose")
 
-            library(
-                "ui-tooling",
-                "androidx.compose.ui",
-                "ui-tooling"
-            ).versionRef("compose")
+            library("ui-tooling", "androidx.compose.ui", "ui-tooling")
+                .versionRef("compose")
 
-            library(
-                "ui-tooling-preview",
-                "androidx.compose.ui",
-                "ui-tooling-preview"
-            ).versionRef("compose")
+            library("ui-tooling-preview", "androidx.compose.ui", "ui-tooling-preview")
+                .versionRef("compose")
 
-            library(
-                "ui-util",
-                "androidx.compose.ui",
-                "ui-util"
-            ).versionRef("compose")
+            library("ui-util", "androidx.compose.ui", "ui-util")
+                .versionRef("compose")
 
-            library(
-                "material-compose",
-                "androidx.compose.material",
-                "material"
-            ).versionRef("compose")
+            library("material-compose", "androidx.compose.material", "material")
+                .versionRef("compose")
 
-            library(
-                "material-icons-core",
-                "androidx.compose.material",
-                "material-icons-core"
-            ).versionRef("compose")
+            library("material-icons-core", "androidx.compose.material", "material-icons-core")
+                .versionRef("compose")
 
             library(
                 "material-icons-extended",
@@ -362,23 +243,14 @@ dependencyResolutionManagement {
                 "material-icons-extended"
             ).versionRef("compose")
 
-            library(
-                "foundation",
-                "androidx.compose.foundation",
-                "foundation"
-            ).versionRef("compose")
+            library("foundation", "androidx.compose.foundation", "foundation")
+                .versionRef("compose")
 
-            library(
-                "runtime-livedata",
-                "androidx.compose.runtime",
-                "runtime-livedata"
-            ).versionRef("compose")
+            library("runtime-livedata", "androidx.compose.runtime", "runtime-livedata")
+                .versionRef("compose")
 
-            library(
-                "constraintlayout",
-                "androidx.constraintlayout",
-                "constraintlayout-compose"
-            ).versionRef("constraintlayout")
+            library("constraintlayout", "androidx.constraintlayout", "constraintlayout-compose")
+                .version("1.1.0-alpha02")
 
             library(
                 "accompanist-navigation-animation",
@@ -404,11 +276,8 @@ dependencyResolutionManagement {
                 "accompanist-systemuicontroller"
             ).versionRef("accompanist")
 
-            library(
-                "accompanist-placeholder",
-                "com.google.accompanist",
-                "accompanist-placeholder"
-            ).versionRef("accompanist")
+            library("accompanist-placeholder", "com.google.accompanist", "accompanist-placeholder")
+                .versionRef("accompanist")
         }
     }
 }

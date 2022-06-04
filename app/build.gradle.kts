@@ -28,7 +28,7 @@ android {
         applicationId = "com.monoid.hackernews"
         minSdk = 21
         targetSdk = 32
-        versionCode = 10
+        versionCode = 12
         versionName = "1.0"
         vectorDrawables {
             useSupportLibrary = true
@@ -86,7 +86,7 @@ android {
 }
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:3.21.0"
+        artifact = "com.google.protobuf:protoc:21.0-rc-1"
     }
     generateProtoTasks {
         all().forEach { task ->
