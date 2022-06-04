@@ -14,9 +14,11 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Comment
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.twotone.Comment
-import androidx.compose.material.icons.twotone.FavoriteBorder
+import androidx.compose.material.icons.twotone.Favorite
+import androidx.compose.material.icons.twotone.Flag
 import androidx.compose.material.icons.twotone.MoreVert
 import androidx.compose.material.icons.twotone.OpenInBrowser
 import androidx.compose.material.icons.twotone.Reply
@@ -51,6 +53,7 @@ import com.google.accompanist.placeholder.shimmer
 import com.monoid.hackernews.R
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
+import com.monoid.hackernews.navigation.LoginAction
 import com.monoid.hackernews.repo.ItemUi
 import com.monoid.hackernews.ui.text.ClickableTextBlock
 import com.monoid.hackernews.ui.text.TextBlock
@@ -66,6 +69,7 @@ fun Item(
     onClickReply: (ItemId) -> Unit,
     onClickUser: (Username?) -> Unit,
     onClickBrowser: (String?) -> Unit,
+    onNavigateLogin: (LoginAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val item = itemUiState.value?.item
@@ -126,6 +130,21 @@ fun Item(
                         modifier = Modifier,
                     ) {
                         DropdownMenuItem(
+                            text = { Text(text = stringResource(id = R.string.reply)) },
+                            onClick = {
+                                itemUiState.value?.item?.id?.let { onClickReply(ItemId(it)) }
+                                setContextExpanded(false)
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.TwoTone.Reply,
+                                    contentDescription = stringResource(id = R.string.reply),
+                                )
+                            },
+                            enabled = item?.type == "story",
+                        )
+
+                        DropdownMenuItem(
                             text = {
                                 Text(
                                     text = stringResource(
@@ -138,15 +157,15 @@ fun Item(
                                 )
                             },
                             onClick = {
+                                itemUiState.value?.toggleFavorite(onNavigateLogin)
                                 setContextExpanded(false)
-                                itemUiState.value?.toggleFavorite()
                             },
                             leadingIcon = {
                                 Icon(
                                     imageVector = if (itemUiState.value?.isFavorite == true) {
                                         Icons.Filled.Favorite
                                     } else {
-                                        Icons.TwoTone.FavoriteBorder
+                                        Icons.TwoTone.Favorite
                                     },
                                     contentDescription = stringResource(
                                         id = if (itemUiState.value?.isFavorite == true) {
@@ -159,22 +178,41 @@ fun Item(
                             },
                             enabled = item?.type == "story",
                         )
-                        DropdownMenuItem(
-                            text = { Text(text = stringResource(id = R.string.reply)) },
-                            onClick = {
-                                setContextExpanded(false)
 
-                                if (item?.id != null) {
-                                    onClickReply(ItemId(item.id))
-                                }
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = stringResource(
+                                        id = if (itemUiState.value?.isFlag == true) {
+                                            R.string.un_flag
+                                        } else {
+                                            R.string.flag
+                                        },
+                                    ),
+                                )
+                            },
+                            onClick = {
+                                itemUiState.value?.toggleFlag(onNavigateLogin)
+                                setContextExpanded(false)
                             },
                             leadingIcon = {
                                 Icon(
-                                    imageVector = Icons.TwoTone.Reply,
-                                    contentDescription = stringResource(id = R.string.reply),
+                                    imageVector = if (
+                                        itemUiState.value?.isFlag == true
+                                    ) {
+                                        Icons.Filled.Flag
+                                    } else {
+                                        Icons.TwoTone.Flag
+                                    },
+                                    contentDescription = stringResource(
+                                        id = if (itemUiState.value?.isFlag == true) {
+                                            R.string.un_flag
+                                        } else {
+                                            R.string.flag
+                                        },
+                                    ),
                                 )
                             },
-                            enabled = item?.type == "story",
                         )
                     }
                 }
@@ -226,7 +264,7 @@ fun Item(
                     item?.score.let { score ->
                         key("score") {
                             IconButton(
-                                onClick = { itemUiState.value?.toggleUpvote() },
+                                onClick = { itemUiState.value?.toggleUpvote(onNavigateLogin) },
                                 enabled = item?.type == "story",
                             ) {
                                 Icon(

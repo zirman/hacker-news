@@ -16,6 +16,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
+import com.monoid.hackernews.navigation.LoginAction
 import com.monoid.hackernews.repo.ItemTreeRow
 
 @Composable
@@ -24,6 +25,7 @@ fun ItemDetail(
     onClickUser: (Username) -> Unit,
     onClickReply: (ItemId) -> Unit,
     onClickBrowser: (String) -> Unit,
+    onNavigateLogin: (LoginAction) -> Unit,
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState(),
 ) {
@@ -55,6 +57,7 @@ fun ItemDetail(
             onClickUser = onClickUser,
             onClickReply = onClickReply,
             onClickBrowser = onClickBrowser,
+            onNavigateLogin = onNavigateLogin,
             modifier = Modifier.fillMaxSize(),
             listState = listState,
         )

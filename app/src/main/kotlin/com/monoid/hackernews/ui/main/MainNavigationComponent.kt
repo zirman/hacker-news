@@ -254,9 +254,30 @@ fun MainNavigationComponent(
                 MainNavigation.Login.argsFromRoute(navBackStackEntry = navBackStackEntry)
 
             LoginContent(
-                loginAction = loginAction,
                 windowSizeState = windowSizeState,
-                onLogin = { mainNavController.navigateUp() },
+                onLogin = {
+                    when (loginAction) {
+                        is LoginAction.Login -> {}
+                        is LoginAction.Upvote -> {
+                            mainViewModel.itemRepo.upvoteItemJob(ItemId(loginAction.itemId))
+                        }
+                        is LoginAction.Favorite -> {
+                            mainViewModel.itemRepo.favoriteItemJob(ItemId(loginAction.itemId))
+                        }
+                        is LoginAction.Flag -> {
+                            mainViewModel.itemRepo.flagItemJob(ItemId(loginAction.itemId))
+                        }
+                        is LoginAction.Reply -> {
+//                            httpClient.commentRequest(
+//                                authentication = authentication,
+//                                parentId = ItemId(loginAction.parentId),
+//                                text = loginAction.text,
+//                            )
+                        }
+                    }
+
+                    mainNavController.navigateUp()
+                },
                 onLoginError = onLoginError,
                 modifier = Modifier
                     .fillMaxWidth()

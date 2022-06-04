@@ -69,6 +69,7 @@ import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.R
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
+import com.monoid.hackernews.navigation.LoginAction
 import com.monoid.hackernews.repo.ItemListRow
 import com.monoid.hackernews.repo.OrderedItemRepo
 import com.monoid.hackernews.ui.itemdetail.ItemDetail
@@ -128,6 +129,9 @@ fun HomeScreen(
                 Toast.LENGTH_SHORT
             ).show()
         }
+    },
+    onNavigateLogin: (LoginAction) -> Unit = { loginAction ->
+        mainNavController.navigate(MainNavigation.Login.routeWithArgs(loginAction))
     },
 ) {
     val lifecycleOwner: LifecycleOwner =
@@ -328,6 +332,7 @@ fun HomeScreen(
                                     onClickUser = onClickUser,
                                     onClickReply = onClickReply,
                                     onClickBrowser = onClickBrowser,
+                                    onNavigateLogin = onNavigateLogin,
                                     listState = listState,
                                 )
                             }
@@ -351,6 +356,7 @@ fun HomeScreen(
                                 onClickReply = onClickReply,
                                 onClickUser = onClickUser,
                                 onClickBrowser = onClickBrowser,
+                                onNavigateLogin = onNavigateLogin,
                                 modifier = modifier.notifyInput { setDetailInteraction(true) },
                                 listState = detailListState,
                             )

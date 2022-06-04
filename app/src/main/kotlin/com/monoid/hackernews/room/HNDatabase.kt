@@ -15,6 +15,7 @@ import androidx.room.RoomDatabase
         UserDb::class,
         UpvoteDb::class,
         FavoriteDb::class,
+        FlagDb::class,
         ExpandedDb::class,
     ],
     version = 1,
@@ -31,5 +32,6 @@ abstract class HNDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun upvoteDao(): UpvoteDao
     abstract fun favoriteDao(): FavoriteDao
+    abstract fun flagDao(): FlagDao
     abstract fun expandedDao(): ExpandedDao
 }

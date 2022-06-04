@@ -7,12 +7,15 @@ import com.monoid.hackernews.R
 import com.monoid.hackernews.api.ItemId
 import com.monoid.hackernews.api.favoriteRequest
 import com.monoid.hackernews.api.getItem
-import com.monoid.hackernews.api.upvoteRequest
+import com.monoid.hackernews.api.upvoteItem
 import com.monoid.hackernews.datastore.Authentication
+import com.monoid.hackernews.navigation.LoginAction
 import com.monoid.hackernews.room.ExpandedDao
 import com.monoid.hackernews.room.ExpandedDb
 import com.monoid.hackernews.room.FavoriteDao
 import com.monoid.hackernews.room.FavoriteDb
+import com.monoid.hackernews.room.FlagDao
+import com.monoid.hackernews.room.FlagDb
 import com.monoid.hackernews.room.ItemDao
 import com.monoid.hackernews.room.ItemDb
 import com.monoid.hackernews.room.UpvoteDao
@@ -21,6 +24,7 @@ import io.ktor.client.HttpClient
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -48,6 +52,7 @@ class ItemRepo(
     private val itemDao: ItemDao,
     private val upvoteDao: UpvoteDao,
     private val favoriteDao: FavoriteDao,
+    private val flagDao: FlagDao,
     private val expandedDao: ExpandedDao,
 ) {
     private val sharedFlows: MutableMap<ItemId, Flow<ItemUiInternal>> =
@@ -81,52 +86,112 @@ class ItemRepo(
             sharedItemUiFlow(itemId)
     }
 
+    fun upvoteItemJob(itemId: ItemId, isUpvote: Boolean = true): Job = coroutineScope.launch {
+        try {
+            val authentication = authenticationDataStore.data.first()
+
+            httpClient.upvoteItem(
+                authentication = authentication,
+                itemId = itemId,
+                flag = isUpvote,
+            )
+
+            if (isUpvote) {
+                upvoteDao.upvoteInsert(UpvoteDb(authentication.username, itemId.long))
+            } else {
+                upvoteDao.upvoteDelete(UpvoteDb(authentication.username, itemId.long))
+            }
+        } catch (error: Throwable) {
+            if (error is CancellationException) throw error
+        }
+    }
+
+    fun favoriteItemJob(itemId: ItemId, isFavorite: Boolean = true): Job = coroutineScope.launch {
+        try {
+            val authentication = authenticationDataStore.data.first()
+
+            httpClient.favoriteRequest(
+                authentication = authentication,
+                itemId = itemId,
+                flag = isFavorite,
+            )
+
+            if (isFavorite) {
+                favoriteDao.favoriteInsert(FavoriteDb(authentication.username, itemId.long))
+            } else {
+                favoriteDao.favoriteDelete(FavoriteDb(authentication.username, itemId.long))
+            }
+        } catch (error: Throwable) {
+            if (error is CancellationException) throw error
+        }
+    }
+
+    fun flagItemJob(itemId: ItemId, isFlag: Boolean = true): Job = coroutineScope.launch {
+        try {
+            val authentication = authenticationDataStore.data.first()
+
+//                    httpClient.flagRequest(
+//                        authentication = authentication,
+//                        itemId = ItemId(item.id),
+//                    )
+
+            if (isFlag) {
+                flagDao.flagInsert(FlagDb(authentication.username, itemId.long))
+            } else {
+                flagDao.flagDelete(FlagDb(authentication.username, itemId.long))
+            }
+        } catch (error: Throwable) {
+            if (error is CancellationException) throw error
+        }
+    }
+
     @Immutable
     private inner class ItemUiInternal(
         override val item: ItemDb,
         override val kids: List<ItemId>,
         override val isUpvote: Boolean,
         override val isFavorite: Boolean,
+        override val isFlag: Boolean,
         override val isExpanded: Boolean,
     ) : ItemUi() {
-        override fun toggleUpvote() {
+        override fun toggleUpvote(onNavigateLogin: (LoginAction) -> Unit) {
             coroutineScope.launch {
-                try {
-                    val authentication = authenticationDataStore.data.first()
+                val authentication = authenticationDataStore.data.first()
 
-                    httpClient.upvoteRequest(
-                        authentication = authentication,
-                        itemId = ItemId(item.id),
-                    )
-
-                    if (isUpvote) {
-                        upvoteDao.upvoteDelete(UpvoteDb(authentication.username, item.id))
-                    } else {
-                        upvoteDao.upvoteInsert(UpvoteDb(authentication.username, item.id))
+                if (authentication.password.isNotBlank()) {
+                    upvoteItemJob(ItemId(item.id), isUpvote.not())
+                } else {
+                    withContext(Dispatchers.Main.immediate) {
+                        onNavigateLogin(LoginAction.Upvote(itemId = item.id))
                     }
-                } catch (error: Throwable) {
-                    if (error is CancellationException) throw error
                 }
             }
         }
 
-        override fun toggleFavorite() {
+        override fun toggleFavorite(onNavigateLogin: (LoginAction) -> Unit) {
             coroutineScope.launch {
-                try {
-                    val authentication = authenticationDataStore.data.first()
+                val authentication = authenticationDataStore.data.first()
 
-                    httpClient.favoriteRequest(
-                        authentication = authentication,
-                        itemId = ItemId(item.id),
-                    )
-
-                    if (isFavorite) {
-                        favoriteDao.favoriteDelete(FavoriteDb(authentication.username, item.id))
-                    } else {
-                        favoriteDao.favoriteInsert(FavoriteDb(authentication.username, item.id))
+                if (authentication.password.isNotBlank()) {
+                    favoriteItemJob(ItemId(item.id), isFavorite.not())
+                } else {
+                    withContext(Dispatchers.Main.immediate) {
+                        onNavigateLogin(LoginAction.Favorite(itemId = item.id))
                     }
-                } catch (error: Throwable) {
-                    if (error is CancellationException) throw error
+                }
+            }
+        }
+
+        override fun toggleFlag(onNavigateLogin: (LoginAction) -> Unit) {
+            coroutineScope.launch {
+                val authentication = authenticationDataStore.data.first()
+
+                if (authentication.password.isNotBlank()) {
+                    flagItemJob(ItemId(item.id), isFlag.not())
+                } else {
+                    withContext(Dispatchers.Main.immediate) {
+                        onNavigateLogin(LoginAction.Flag(itemId = item.id))
+                    }
                 }
             }
         }
@@ -143,6 +208,7 @@ class ItemRepo(
     }
 
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
+
     private val itemUpdatesSharedFlow: MutableSharedFlow<ItemUiInternal> =
         MutableSharedFlow(extraBufferCapacity = 10)
 
@@ -264,8 +330,7 @@ class ItemRepo(
                     expandedDao.isExpandedFlow(itemId.long)
                         .distinctUntilChanged(),
                     ::Pair,
-                )
-                    .distinctUntilChanged(),
+                ).distinctUntilChanged(),
                 combine(
                     upvoteDao
                         .isUpvoteFlow(itemId.long, username)
@@ -273,14 +338,18 @@ class ItemRepo(
                     favoriteDao
                         .isFavoriteFlow(itemId.long, username)
                         .distinctUntilChanged(),
-                    ::Pair,
-                )
-            ) { (itemWithKids, isExpanded), (isUpvote, isFavorite) ->
+                    flagDao
+                        .isFlagFlow(itemId.long, username)
+                        .distinctUntilChanged(),
+                    ::Triple,
+                ),
+            ) { (itemWithKids, isExpanded), (isUpvote, isFavorite, isFlag) ->
                 ItemUiInternal(
                     item = itemWithKids.item,
                     kids = itemWithKids.kids.map { ItemId(it.id) },
                     isUpvote = isUpvote,
                     isFavorite = isFavorite,
+                    isFlag = isFlag,
                     isExpanded = isExpanded,
                 )
             }

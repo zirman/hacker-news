@@ -204,7 +204,7 @@ suspend fun HttpClient.flagRequest(
     }
 }
 
-suspend fun HttpClient.upvoteRequest(
+suspend fun HttpClient.upvoteItem(
     authentication: Authentication,
     itemId: ItemId,
     flag: Boolean = true,

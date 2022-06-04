@@ -1,6 +1,7 @@
 package com.monoid.hackernews.repo
 
 import com.monoid.hackernews.api.ItemId
+import com.monoid.hackernews.navigation.LoginAction
 import com.monoid.hackernews.room.ItemDb
 
 data class ItemUiWithThreadDepth(val threadDepth: Int, val itemUi: ItemUi?)
@@ -10,10 +11,11 @@ abstract class ItemUi {
     abstract val kids: List<ItemId>
     abstract val isUpvote: Boolean
     abstract val isFavorite: Boolean
+    abstract val isFlag: Boolean
     abstract val isExpanded: Boolean
-
-    abstract fun toggleUpvote()
-    abstract fun toggleFavorite()
+    abstract fun toggleUpvote(onNavigateLogin: (LoginAction) -> Unit)
+    abstract fun toggleFavorite(onNavigateLogin: (LoginAction) -> Unit)
+    abstract fun toggleFlag(onNavigateLogin: (LoginAction) -> Unit)
     abstract fun toggleExpanded()
 
     override fun equals(other: Any?): Boolean {
@@ -22,6 +24,7 @@ abstract class ItemUi {
             kids == other.kids &&
             isUpvote == other.isUpvote &&
             isFavorite == other.isFavorite &&
+            isFlag == other.isFlag &&
             isExpanded == other.isExpanded
     }
 
@@ -30,6 +33,7 @@ abstract class ItemUi {
             kids.hashCode() xor
             isUpvote.hashCode() xor
             isFavorite.hashCode() xor
+            isFlag.hashCode() xor
             isExpanded.hashCode()
     }
 }

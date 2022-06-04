@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.monoid.hackernews.api.getFavorites
 import com.monoid.hackernews.api.getUpvoted
 import com.monoid.hackernews.room.FavoriteDao
+import com.monoid.hackernews.room.FlagDao
 import com.monoid.hackernews.room.HNDatabase
 import com.monoid.hackernews.room.UpvoteDao
 import io.ktor.client.HttpClient
@@ -46,6 +47,9 @@ class HNApplication : Application() {
     lateinit var favoriteDao: FavoriteDao
         private set
 
+    lateinit var flagDao: FlagDao
+        private set
+
     lateinit var httpClient: HttpClient
         private set
 
@@ -70,6 +74,7 @@ class HNApplication : Application() {
 
         upvoteDao = db.upvoteDao()
         favoriteDao = db.favoriteDao()
+        flagDao = db.flagDao()
 
         httpClient =
             HttpClient(Android) {
@@ -78,13 +83,7 @@ class HNApplication : Application() {
                     level = LogLevel.ALL
                 }
 
-                install(ContentNegotiation) {
-                    json(
-                        Json {
-                            ignoreUnknownKeys = true
-                        }
-                    )
-                }
+                install(ContentNegotiation) { json(Json { ignoreUnknownKeys = true }) }
             }
 
         // Update upvote and favorite table on login and then periodically.

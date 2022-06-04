@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
+import com.monoid.hackernews.navigation.LoginAction
 import com.monoid.hackernews.repo.ItemTreeRow
 import com.monoid.hackernews.repo.ItemUiWithThreadDepth
 
@@ -30,6 +31,7 @@ fun CommentList(
     onClickUser: (Username) -> Unit,
     onClickReply: (ItemId) -> Unit,
     onClickBrowser: (String) -> Unit,
+    onNavigateLogin: (LoginAction) -> Unit,
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState(),
 ) {
@@ -62,6 +64,7 @@ fun CommentList(
                         onClickReply = { onClickReply(it) },
                         onClickUser = { onClickUser(it) },
                         onClickBrowser = { onClickBrowser(it) },
+                        onNavigateLogin = { onNavigateLogin(it) },
                         modifier = Modifier.fillMaxWidth(),
                     )
                 } else {
@@ -69,6 +72,7 @@ fun CommentList(
                         itemUiState = itemUiState,
                         onClickUser = { onClickUser(it) },
                         onClickReply = { onClickReply(it) },
+                        onNavigateLogin = { onNavigateLogin(it) },
                         modifier = Modifier.fillMaxWidth(),
                     )
                 }

@@ -32,15 +32,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.R
-import com.monoid.hackernews.api.ItemId
-import com.monoid.hackernews.api.commentRequest
-import com.monoid.hackernews.api.favoriteRequest
 import com.monoid.hackernews.api.loginRequest
-import com.monoid.hackernews.api.upvoteRequest
 import com.monoid.hackernews.datastore.Authentication
 import com.monoid.hackernews.datastore.authentication
 import com.monoid.hackernews.datastore.copy
-import com.monoid.hackernews.navigation.LoginAction
 import com.monoid.hackernews.settingsDataStore
 import com.monoid.hackernews.ui.text.PasswordTextField
 import com.monoid.hackernews.ui.text.UsernameTextField
@@ -54,7 +49,6 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LoginContent(
-    loginAction: LoginAction,
     windowSizeState: State<WindowSize>,
     onLogin: () -> Unit,
     onLoginError: (Throwable) -> Unit,
@@ -127,7 +121,6 @@ fun LoginContent(
                     submitJob(
                         context = context,
                         coroutineScope = coroutineScope,
-                        loginAction = loginAction,
                         httpClient = mainViewModel.httpClient,
                         authentication = authentication {
                             this.username = username
@@ -144,7 +137,6 @@ fun LoginContent(
                     submitJob(
                         context = context,
                         coroutineScope = coroutineScope,
-                        loginAction = loginAction,
                         httpClient = mainViewModel.httpClient,
                         authentication = authentication {
                             this.username = username
@@ -168,7 +160,6 @@ fun LoginContent(
 fun submitJob(
     context: Context,
     coroutineScope: CoroutineScope,
-    loginAction: LoginAction,
     httpClient: HttpClient,
     authentication: Authentication,
     onLogin: () -> Unit,
@@ -176,30 +167,7 @@ fun submitJob(
 ): Job {
     return coroutineScope.launch {
         try {
-            when (loginAction) {
-                is LoginAction.Login -> {
-                    httpClient.loginRequest(authentication = authentication)
-                }
-                is LoginAction.Upvote -> {
-                    httpClient.upvoteRequest(
-                        authentication = authentication,
-                        itemId = ItemId(loginAction.itemId),
-                    )
-                }
-                is LoginAction.Favorite -> {
-                    httpClient.favoriteRequest(
-                        authentication = authentication,
-                        itemId = ItemId(loginAction.itemId),
-                    )
-                }
-                is LoginAction.Reply -> {
-                    httpClient.commentRequest(
-                        authentication = authentication,
-                        parentId = ItemId(loginAction.parentId),
-                        text = loginAction.text,
-                    )
-                }
-            }
+            httpClient.loginRequest(authentication = authentication)
 
             context.settingsDataStore.updateData {
                 it.copy {

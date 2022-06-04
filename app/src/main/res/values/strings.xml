@@ -10,7 +10,12 @@
     <string name="password">Password</string>
     <string name="username">Username</string>
     <string name="upvote">Upvote</string>
+    <string name="un_vote">UnVote</string>
     <string name="favorite">Favorite</string>
+    <string name="un_favorite">UnFavorite</string>
+    <string name="flag">Flag</string>
+    <string name="un_flag">UnFlag</string>
+    <string name="favorites">Favorites</string>
     <string name="reply">Reply</string>
     <string name="new_stories">New Stories</string>
     <string name="best_stories">Best Stories</string>
@@ -27,9 +32,6 @@
     <string name="invalid_username_or_password">Invalid username or password</string>
     <string name="submit">Submit</string>
     <string name="hacker_news_login">Hacker News Login</string>
-    <string name="favorites">Favorites</string>
-    <string name="un_favorite">UnFavorite</string>
-    <string name="un_vote">UnVote</string>
     <string name="send">Send</string>
     <string name="back_online">Back Online</string>
     <string name="offline">Offline</string>

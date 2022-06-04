@@ -6,6 +6,7 @@ import com.monoid.hackernews.room.AskStoryDao
 import com.monoid.hackernews.room.BestStoryDao
 import com.monoid.hackernews.room.ExpandedDao
 import com.monoid.hackernews.room.FavoriteDao
+import com.monoid.hackernews.room.FlagDao
 import com.monoid.hackernews.room.HNDatabase
 import com.monoid.hackernews.room.ItemDao
 import com.monoid.hackernews.room.JobStoryDao
@@ -28,6 +29,7 @@ class MainViewModel : ViewModel() {
     val userDao: UserDao
     val upvoteDao: UpvoteDao
     val favoriteDao: FavoriteDao
+    val flagDao: FlagDao
     val expandedDao: ExpandedDao
     val itemRepo: ItemRepo
 
@@ -51,6 +53,7 @@ class MainViewModel : ViewModel() {
         userDao = db.userDao()
         upvoteDao = app.upvoteDao
         favoriteDao = app.favoriteDao
+        flagDao = app.flagDao
         expandedDao = db.expandedDao()
 
         itemRepo = ItemRepo(
@@ -59,6 +62,7 @@ class MainViewModel : ViewModel() {
             itemDao = itemDao,
             upvoteDao = upvoteDao,
             favoriteDao = favoriteDao,
+            flagDao = flagDao,
             expandedDao = expandedDao,
         )
     }

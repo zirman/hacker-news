@@ -9,9 +9,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.twotone.ExpandLess
 import androidx.compose.material.icons.twotone.ExpandMore
+import androidx.compose.material.icons.twotone.Flag
 import androidx.compose.material.icons.twotone.MoreVert
 import androidx.compose.material.icons.twotone.Reply
 import androidx.compose.material.icons.twotone.ThumbUp
@@ -29,7 +31,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,6 +47,7 @@ import com.google.accompanist.placeholder.shimmer
 import com.monoid.hackernews.R
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
+import com.monoid.hackernews.navigation.LoginAction
 import com.monoid.hackernews.repo.ItemUiWithThreadDepth
 import com.monoid.hackernews.room.ItemDb
 import com.monoid.hackernews.ui.text.ClickableTextBlock
@@ -54,8 +56,6 @@ import com.monoid.hackernews.ui.util.rememberTimeBy
 import com.monoid.hackernews.ui.util.userTag
 import com.monoid.hackernews.util.onClick
 import com.monoid.hackernews.util.rememberAnnotatedString
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import androidx.compose.material.MaterialTheme as MaterialTheme2
 
 @Composable
@@ -63,6 +63,7 @@ fun CommentItem(
     itemUiState: State<ItemUiWithThreadDepth?>,
     onClickUser: (Username) -> Unit,
     onClickReply: (ItemId) -> Unit,
+    onNavigateLogin: (LoginAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Surface(
@@ -84,17 +85,12 @@ fun CommentItem(
                 derivedStateOf { itemUiState.value?.itemUi?.isExpanded ?: false }
             }
 
-        val coroutineScope: CoroutineScope =
-            rememberCoroutineScope()
-
         Column(
             modifier = if (itemUiState.value?.itemUi?.item == null) {
                 Modifier
             } else {
                 Modifier
-                    .clickable {
-                        coroutineScope.launch { itemUiState.value?.itemUi?.toggleExpanded() }
-                    }
+                    .clickable { itemUiState.value?.itemUi?.toggleExpanded() }
                     .animateContentSize()
                     .placeholder(
                         visible = itemUiState.value?.itemUi?.item?.lastUpdate == null,
@@ -119,9 +115,7 @@ fun CommentItem(
                     lines = 1,
                     onClick = { offset ->
                         if (itemUiState.value?.itemUi?.isExpanded == true) {
-                            coroutineScope.launch {
-                                itemUiState.value?.itemUi?.toggleExpanded()
-                            }
+                            itemUiState.value?.itemUi?.toggleExpanded()
                         } else {
                             val username: Username? = timeByUserAnnotatedString
                                 .getStringAnnotations(
@@ -136,9 +130,7 @@ fun CommentItem(
                             if (username != null) {
                                 onClickUser(username)
                             } else {
-                                coroutineScope.launch {
-                                    itemUiState.value?.itemUi?.toggleExpanded()
-                                }
+                                itemUiState.value?.itemUi?.toggleExpanded()
                             }
                         }
                     },
@@ -172,6 +164,20 @@ fun CommentItem(
                         onDismissRequest = { setContextExpanded(false) },
                     ) {
                         DropdownMenuItem(
+                            text = { Text(text = stringResource(id = R.string.reply)) },
+                            onClick = {
+                                itemUiState.value?.itemUi?.item?.id?.let { onClickReply(ItemId(it)) }
+                                setContextExpanded(false)
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.TwoTone.Reply,
+                                    contentDescription = stringResource(id = R.string.reply),
+                                )
+                            },
+                        )
+
+                        DropdownMenuItem(
                             text = {
                                 Text(
                                     text = stringResource(
@@ -184,10 +190,8 @@ fun CommentItem(
                                 )
                             },
                             onClick = {
+                                itemUiState.value?.itemUi?.toggleUpvote(onNavigateLogin = onNavigateLogin)
                                 setContextExpanded(false)
-                                coroutineScope.launch {
-                                    itemUiState.value?.itemUi?.toggleUpvote()
-                                }
                             },
                             leadingIcon = {
                                 Icon(
@@ -208,18 +212,39 @@ fun CommentItem(
                                 )
                             },
                         )
+
                         DropdownMenuItem(
-                            text = { Text(text = stringResource(id = R.string.reply)) },
+                            text = {
+                                Text(
+                                    text = stringResource(
+                                        id = if (itemUiState.value?.itemUi?.isFlag == true) {
+                                            R.string.un_flag
+                                        } else {
+                                            R.string.flag
+                                        },
+                                    ),
+                                )
+                            },
                             onClick = {
+                                itemUiState.value?.itemUi?.toggleFlag(onNavigateLogin)
                                 setContextExpanded(false)
-                                itemUiState.value?.itemUi?.item?.id?.let {
-                                    onClickReply(ItemId(it))
-                                }
                             },
                             leadingIcon = {
                                 Icon(
-                                    imageVector = Icons.TwoTone.Reply,
-                                    contentDescription = stringResource(id = R.string.reply),
+                                    imageVector = if (
+                                        itemUiState.value?.itemUi?.isFlag == true
+                                    ) {
+                                        Icons.Filled.Flag
+                                    } else {
+                                        Icons.TwoTone.Flag
+                                    },
+                                    contentDescription = stringResource(
+                                        id = if (itemUiState.value?.itemUi?.isFlag == true) {
+                                            R.string.un_flag
+                                        } else {
+                                            R.string.flag
+                                        },
+                                    ),
                                 )
                             },
                         )
@@ -252,7 +277,7 @@ fun CommentItem(
                         annotatedTextState.value.onClick(contextState.value, offset = offset)
                             .not()
                     ) {
-                        coroutineScope.launch { itemUiState.value?.itemUi?.toggleExpanded() }
+                        itemUiState.value?.itemUi?.toggleExpanded()
                     }
                 },
                 modifier = Modifier.padding(horizontal = 16.dp),

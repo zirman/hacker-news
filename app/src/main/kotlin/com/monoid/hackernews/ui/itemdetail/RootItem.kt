@@ -2,7 +2,6 @@ package com.monoid.hackernews.ui.itemdetail
 
 import android.content.Context
 import android.net.Uri
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,8 +13,10 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.ThumbUp
-import androidx.compose.material.icons.twotone.FavoriteBorder
+import androidx.compose.material.icons.twotone.Favorite
+import androidx.compose.material.icons.twotone.Flag
 import androidx.compose.material.icons.twotone.MoreVert
 import androidx.compose.material.icons.twotone.OpenInBrowser
 import androidx.compose.material.icons.twotone.Reply
@@ -33,7 +34,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -50,12 +50,13 @@ import com.google.accompanist.placeholder.shimmer
 import com.monoid.hackernews.R
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
+import com.monoid.hackernews.navigation.LoginAction
 import com.monoid.hackernews.repo.ItemUiWithThreadDepth
+import com.monoid.hackernews.ui.text.TextBlock
 import com.monoid.hackernews.ui.util.rememberTimeBy
 import com.monoid.hackernews.ui.util.userTag
 import com.monoid.hackernews.util.onClick
 import com.monoid.hackernews.util.rememberAnnotatedString
-import kotlinx.coroutines.launch
 
 @Composable
 fun RootItem(
@@ -63,27 +64,26 @@ fun RootItem(
     onClickReply: (ItemId) -> Unit,
     onClickUser: (Username) -> Unit,
     onClickBrowser: (String) -> Unit,
+    onNavigateLogin: (LoginAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Surface(
-        modifier = modifier.animateContentSize(),
+        modifier = modifier,
         contentColor = MaterialTheme.colorScheme.secondary,
     ) {
         Column {
-            val coroutineScope =
-                rememberCoroutineScope()
-
             val item = itemUiState.value?.itemUi?.item
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Top,
             ) {
-                Text(
+                TextBlock(
                     text = rememberAnnotatedString(
                         text = (if (item?.type == "comment") item.text else item?.title) ?: "",
                         linkColor = LocalContentColor.current,
                     ),
+                    lines = 2,
                     modifier = Modifier
                         .weight(1f)
                         .padding(horizontal = 8.dp)
@@ -115,6 +115,20 @@ fun RootItem(
                             onDismissRequest = { setContextExpanded(false) },
                             modifier = Modifier,
                         ) {
+                            DropdownMenuItem(
+                                text = { Text(text = stringResource(id = R.string.reply)) },
+                                onClick = {
+                                    onClickReply(ItemId(item.id))
+                                    setContextExpanded(false)
+                                },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = Icons.TwoTone.Reply,
+                                        contentDescription = stringResource(id = R.string.reply),
+                                    )
+                                },
+                            )
+
                             if (item.type == "story") {
                                 DropdownMenuItem(
                                     text = {
@@ -131,10 +145,8 @@ fun RootItem(
                                         )
                                     },
                                     onClick = {
+                                        itemUiState.value?.itemUi?.toggleFavorite(onNavigateLogin)
                                         setContextExpanded(false)
-                                        coroutineScope.launch {
-                                            itemUiState.value?.itemUi?.toggleFavorite()
-                                        }
                                     },
                                     leadingIcon = {
                                         Icon(
@@ -143,7 +155,7 @@ fun RootItem(
                                             ) {
                                                 Icons.Filled.Favorite
                                             } else {
-                                                Icons.TwoTone.FavoriteBorder
+                                                Icons.TwoTone.Favorite
                                             },
                                             contentDescription = stringResource(
                                                 id = if (
@@ -158,16 +170,43 @@ fun RootItem(
                                     },
                                 )
                             }
+
                             DropdownMenuItem(
-                                text = { Text(text = stringResource(id = R.string.reply)) },
+                                text = {
+                                    Text(
+                                        text = stringResource(
+                                            id = if (
+                                                itemUiState.value?.itemUi?.isFlag == true
+                                            ) {
+                                                R.string.un_flag
+                                            } else {
+                                                R.string.flag
+                                            },
+                                        )
+                                    )
+                                },
                                 onClick = {
+                                    itemUiState.value?.itemUi?.toggleFlag(onNavigateLogin)
                                     setContextExpanded(false)
-                                    onClickReply(ItemId(item.id))
                                 },
                                 leadingIcon = {
                                     Icon(
-                                        imageVector = Icons.TwoTone.Reply,
-                                        contentDescription = stringResource(id = R.string.reply),
+                                        imageVector = if (
+                                            itemUiState.value?.itemUi?.isFlag == true
+                                        ) {
+                                            Icons.Filled.Flag
+                                        } else {
+                                            Icons.TwoTone.Flag
+                                        },
+                                        contentDescription = stringResource(
+                                            id = if (
+                                                itemUiState.value?.itemUi?.isFlag == true
+                                            ) {
+                                                R.string.un_flag
+                                            } else {
+                                                R.string.flag
+                                            },
+                                        ),
                                     )
                                 },
                             )
@@ -219,11 +258,7 @@ fun RootItem(
                     item?.score.let { score ->
                         key("score") {
                             IconButton(
-                                onClick = {
-                                    coroutineScope.launch {
-                                        itemUiState.value?.itemUi?.toggleUpvote()
-                                    }
-                                },
+                                onClick = { itemUiState.value?.itemUi?.toggleUpvote(onNavigateLogin) },
                                 enabled = item?.type == "story",
                             ) {
                                 Icon(

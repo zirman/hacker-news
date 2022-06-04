@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
+import com.monoid.hackernews.navigation.LoginAction
 import com.monoid.hackernews.repo.ItemListRow
 
 @Composable
@@ -27,6 +28,7 @@ fun ItemList(
     onClickUser: (Username?) -> Unit,
     onClickReply: (ItemId) -> Unit,
     onClickBrowser: (String?) -> Unit,
+    onNavigateLogin: (LoginAction) -> Unit,
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState()
 ) {
@@ -46,6 +48,7 @@ fun ItemList(
                 onClickReply = { onClickReply(it) },
                 onClickUser = { onClickUser(it) },
                 onClickBrowser = { onClickBrowser(it) },
+                onNavigateLogin = { onNavigateLogin(it) },
                 modifier = Modifier.fillMaxWidth(),
             )
         }
