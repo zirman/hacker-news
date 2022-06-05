@@ -16,6 +16,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -39,8 +42,6 @@ import com.monoid.hackernews.datastore.copy
 import com.monoid.hackernews.settingsDataStore
 import com.monoid.hackernews.ui.text.PasswordTextField
 import com.monoid.hackernews.ui.text.UsernameTextField
-import com.monoid.hackernews.ui.util.WindowSize
-import com.monoid.hackernews.ui.util.WindowSizeClass
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -49,14 +50,14 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LoginContent(
-    windowSizeState: State<WindowSize>,
+    windowSizeClassState: State<WindowSizeClass>,
     onLogin: () -> Unit,
     onLoginError: (Throwable) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val mainViewModel: MainViewModel = viewModel()
 
-    val windowSize = windowSizeState.value
+    val windowSizeClass = windowSizeClassState.value
 
     Surface(
         modifier = modifier,
@@ -66,7 +67,7 @@ fun LoginContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    if (windowSize.height == WindowSizeClass.Compact) {
+                    if (windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact) {
                         WindowInsets.safeContent.only(WindowInsetsSides.Vertical)
                     } else {
                         WindowInsets.safeContent.only(WindowInsetsSides.Bottom)
@@ -75,7 +76,7 @@ fun LoginContent(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             val rowModifier: Modifier =
-                if (windowSize.width == WindowSizeClass.Compact) {
+                if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
                     Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)

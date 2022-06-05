@@ -1,11 +1,14 @@
 package com.monoid.hackernews
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import com.google.accompanist.systemuicontroller.SystemUiController
@@ -13,7 +16,6 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.monoid.hackernews.ui.main.MainContent
 import com.monoid.hackernews.ui.theme.AppTheme
 import com.monoid.hackernews.ui.util.rememberUseDarkTheme
-import com.monoid.hackernews.ui.util.rememberWindowSize
 import kotlinx.coroutines.channels.Channel
 
 class MainActivity : FragmentActivity() {
@@ -53,7 +55,10 @@ class MainActivity : FragmentActivity() {
                     )
                 }
 
-                MainContent(newIntentChannel = newIntentChannel, windowSize = rememberWindowSize())
+                MainContent(
+                    newIntentChannel = newIntentChannel,
+                    windowSizeClass = calculateWindowSizeClass(LocalContext.current as Activity)
+                )
             }
         }
     }

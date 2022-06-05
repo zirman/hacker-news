@@ -38,6 +38,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberTopAppBarScrollState
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -75,8 +77,6 @@ import com.monoid.hackernews.repo.OrderedItemRepo
 import com.monoid.hackernews.settingsDataStore
 import com.monoid.hackernews.ui.itemdetail.ItemDetail
 import com.monoid.hackernews.ui.itemlist.ItemList
-import com.monoid.hackernews.ui.util.WindowSize
-import com.monoid.hackernews.ui.util.WindowSizeClass
 import com.monoid.hackernews.ui.util.networkConnectivity
 import com.monoid.hackernews.ui.util.notifyInput
 import com.monoid.hackernews.ui.util.runWhen
@@ -94,7 +94,7 @@ fun HomeScreen(
     mainViewModel: MainViewModel,
     drawerState: DrawerState,
     mainNavController: NavController,
-    windowSize: WindowSize,
+    windowSizeClass: WindowSizeClass,
     title: String,
     orderedItemRepo: OrderedItemRepo,
     snackbarHostState: SnackbarHostState,
@@ -193,13 +193,11 @@ fun HomeScreen(
         remember { TopAppBarDefaults.enterAlwaysScrollBehavior(state = state) }
 
     val showItemId: ItemId? =
-        remember(windowSize.width, selectedItemId, detailInteraction) {
-            when (windowSize.width) {
-                WindowSizeClass.Compact ->
+        remember(windowSizeClass.widthSizeClass, selectedItemId, detailInteraction) {
+            when (windowSizeClass.widthSizeClass) {
+                WindowWidthSizeClass.Compact ->
                     if (detailInteraction) selectedItemId else null
-                WindowSizeClass.Medium ->
-                    selectedItemId
-                WindowSizeClass.Expanded ->
+                else ->
                     selectedItemId
             }
         }
@@ -219,8 +217,8 @@ fun HomeScreen(
                     }
                 },
                 navigationIcon = {
-                    AnimatedVisibility(visible = windowSize.width != WindowSizeClass.Expanded) {
-                        if (showItemId != null && windowSize.width == WindowSizeClass.Compact) {
+                    AnimatedVisibility(visible = windowSizeClass.widthSizeClass != WindowWidthSizeClass.Expanded) {
+                        if (showItemId != null && windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
                             BackHandler { setSelectedItemId(null) }
 
                             IconButton(onClick = { setSelectedItemId(null) }) {
@@ -290,7 +288,7 @@ fun HomeScreen(
                     val listState: LazyListState =
                         rememberLazyListState()
 
-                    if (showItemId == null || windowSize.width != WindowSizeClass.Compact) {
+                    if (showItemId == null || windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact) {
                         SwipeRefresh(
                             state = swipeRefreshState,
                             onRefresh = {
@@ -312,11 +310,10 @@ fun HomeScreen(
                                     )
                                 }
                             },
-                            modifier = when (windowSize.width) {
-                                WindowSizeClass.Compact ->
+                            modifier = when (windowSizeClass.widthSizeClass) {
+                                WindowWidthSizeClass.Compact ->
                                     Modifier.weight(1f)
-                                WindowSizeClass.Medium,
-                                WindowSizeClass.Expanded ->
+                                else ->
                                     Modifier.width(320.dp)
                             }
                                 .fillMaxHeight()
@@ -358,7 +355,7 @@ fun HomeScreen(
 
                     if (
                         showItemId != null &&
-                        (detailInteraction || windowSize.width != WindowSizeClass.Compact)
+                        (detailInteraction || windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact)
                     ) {
                         key(showItemId) {
                             ItemDetail(
@@ -371,7 +368,7 @@ fun HomeScreen(
                                 listState = detailListState,
                             )
                         }
-                    } else if (windowSize.width != WindowSizeClass.Compact) {
+                    } else if (windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact) {
                         Box(
                             modifier = modifier,
                             contentAlignment = Alignment.Center,

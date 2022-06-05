@@ -14,6 +14,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
@@ -40,8 +43,6 @@ import com.monoid.hackernews.api.getItem
 import com.monoid.hackernews.room.ItemDb
 import com.monoid.hackernews.settingsDataStore
 import com.monoid.hackernews.ui.text.ReplyTextField
-import com.monoid.hackernews.ui.util.WindowSize
-import com.monoid.hackernews.ui.util.WindowSizeClass
 import com.monoid.hackernews.ui.util.networkConnectivity
 import com.monoid.hackernews.ui.util.runWhen
 import com.monoid.hackernews.util.getAnnotatedString
@@ -57,7 +58,7 @@ import java.util.concurrent.TimeUnit
 @Composable
 fun ReplyContent(
     itemId: ItemId,
-    windowSizeState: State<WindowSize>,
+    windowSizeClassState: State<WindowSizeClass>,
     onSuccess: () -> Unit,
     onError: (Throwable) -> Unit,
     modifier: Modifier = Modifier,
@@ -98,8 +99,8 @@ fun ReplyContent(
         .collectAsState(initial = null)
         .value
 
-    val windowSize: WindowSize =
-        windowSizeState.value
+    val windowSizeClass: WindowSizeClass =
+        windowSizeClassState.value
 
     Surface(
         modifier = modifier,
@@ -109,7 +110,7 @@ fun ReplyContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    if (windowSize.height == WindowSizeClass.Compact) {
+                    if (windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact) {
                         WindowInsets.safeContent
                     } else {
                         WindowInsets.safeContent
@@ -119,7 +120,7 @@ fun ReplyContent(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             val rowModifier: Modifier =
-                if (windowSize.width == WindowSizeClass.Compact) {
+                if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
                     Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)

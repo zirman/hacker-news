@@ -7,6 +7,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
@@ -45,7 +46,6 @@ import com.monoid.hackernews.repo.UserStoryRepo
 import com.monoid.hackernews.ui.home.HomeScreen
 import com.monoid.hackernews.ui.login.LoginContent
 import com.monoid.hackernews.ui.reply.ReplyContent
-import com.monoid.hackernews.ui.util.WindowSize
 import com.monoid.hackernews.ui.util.itemIdSaver
 import com.monoid.hackernews.ui.util.networkConnectivity
 import kotlinx.coroutines.flow.collectLatest
@@ -56,7 +56,7 @@ import kotlin.time.toDuration
 
 @Composable
 fun MainNavigationComponent(
-    windowSize: WindowSize,
+    windowSizeClass: WindowSizeClass,
     mainNavController: NavHostController,
     drawerState: DrawerState,
     onLoginError: (Throwable) -> Unit,
@@ -65,8 +65,8 @@ fun MainNavigationComponent(
     val mainViewModel: MainViewModel = viewModel()
 
     // bug workaround for bottom sheets not updating
-    val windowSizeState: State<WindowSize> =
-        rememberUpdatedState(windowSize)
+    val windowSizeClassState: State<WindowSizeClass> =
+        rememberUpdatedState(windowSizeClass)
 
     val snackbarHostState: SnackbarHostState =
         remember { SnackbarHostState() }
@@ -136,7 +136,7 @@ fun MainNavigationComponent(
                 mainViewModel = mainViewModel,
                 drawerState = drawerState,
                 mainNavController = mainNavController,
-                windowSize = windowSize,
+                windowSizeClass = windowSizeClass,
                 title = stringResource(
                     id = when (stories) {
                         Stories.Top ->
@@ -228,7 +228,7 @@ fun MainNavigationComponent(
                 mainViewModel = mainViewModel,
                 drawerState = drawerState,
                 mainNavController = mainNavController,
-                windowSize = windowSize,
+                windowSizeClass = windowSizeClass,
                 title = username.string,
                 orderedItemRepo = remember(mainViewModel, username) {
                     UserStoryRepo(
@@ -254,7 +254,7 @@ fun MainNavigationComponent(
                 MainNavigation.Login.argsFromRoute(navBackStackEntry = navBackStackEntry)
 
             LoginContent(
-                windowSizeState = windowSizeState,
+                windowSizeClassState = windowSizeClassState,
                 onLogin = {
                     when (loginAction) {
                         is LoginAction.Login -> {}
@@ -292,7 +292,7 @@ fun MainNavigationComponent(
 
             ReplyContent(
                 itemId = itemId,
-                windowSizeState = windowSizeState,
+                windowSizeClassState = windowSizeClassState,
                 onSuccess = { mainNavController.navigateUp() },
                 onError = onLoginError,
                 modifier = Modifier

@@ -35,6 +35,8 @@ import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDrawerState
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
@@ -59,14 +61,12 @@ import com.monoid.hackernews.navigation.LoginAction
 import com.monoid.hackernews.settingsDataStore
 import com.monoid.hackernews.ui.navigationdrawer.NavigationDrawerContent
 import com.monoid.hackernews.ui.navigationdrawer.NavigationRailContent
-import com.monoid.hackernews.ui.util.WindowSize
-import com.monoid.hackernews.ui.util.WindowSizeClass
 import kotlinx.coroutines.channels.Channel
 
 @Composable
 fun MainContent(
     newIntentChannel: Channel<Intent>,
-    windowSize: WindowSize,
+    windowSizeClass: WindowSizeClass,
 ) {
     val drawerState: DrawerState =
         rememberDrawerState(DrawerValue.Closed)
@@ -109,14 +109,14 @@ fun MainContent(
             ModalNavigationDrawer(
                 drawerContent = {
                     // hide drawer when expanded
-                    LaunchedEffect(windowSize.width == WindowSizeClass.Expanded) {
-                        if (windowSize.width == WindowSizeClass.Expanded) {
+                    LaunchedEffect(windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded) {
+                        if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded) {
                             drawerState.close()
                         }
                     }
 
                     // hide drawer content because it may layout under navigation bars.
-                    AnimatedVisibility(visible = windowSize.width != WindowSizeClass.Expanded) {
+                    AnimatedVisibility(visible = windowSizeClass.widthSizeClass != WindowWidthSizeClass.Expanded) {
                         NavigationDrawerContent(
                             mainNavController = mainNavController,
                             drawerState = drawerState,
@@ -133,13 +133,13 @@ fun MainContent(
                     }
                 },
                 drawerState = drawerState,
-                gesturesEnabled = windowSize.width != WindowSizeClass.Expanded,
+                gesturesEnabled = windowSizeClass.widthSizeClass != WindowWidthSizeClass.Expanded,
             ) {
                 Row {
                     val navigationRailScrollState: ScrollState =
                         rememberScrollState()
 
-                    AnimatedVisibility(visible = windowSize.width == WindowSizeClass.Expanded) {
+                    AnimatedVisibility(visible = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded) {
                         NavigationRail(
                             header = {
                                 val context: Context =
@@ -216,7 +216,7 @@ fun MainContent(
                     }
 
                     MainNavigationComponent(
-                        windowSize = windowSize,
+                        windowSizeClass = windowSizeClass,
                         mainNavController = mainNavController,
                         drawerState = drawerState,
                         onLoginError = { setShowLoginErrorDialog(it) },

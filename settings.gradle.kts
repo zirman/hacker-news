@@ -13,6 +13,7 @@ dependencyResolutionManagement {
             version("lifecycle", "2.5.0-rc01")
             version("navigation", "2.5.0-rc01")
             version("compose", "1.2.0-beta03")
+            version("material3", "1.0.0-alpha13")
             version("accompanist", "0.24.10-beta")
 
             bundle(
@@ -80,6 +81,7 @@ dependencyResolutionManagement {
 
                     "material",
                     "material3",
+                    "material3-window-size",
 
                     // compose
                     "ui",
@@ -214,7 +216,14 @@ dependencyResolutionManagement {
                 .version("1.7.0-alpha02")
 
             library("material3", "androidx.compose.material3", "material3")
-                .version("1.0.0-alpha13")
+                .versionRef("material3")
+
+            library(
+                // cannot have `class` as alias postfix because gradle fails
+                "material3-window-size",
+                "androidx.compose.material3",
+                "material3-window-size-class"
+            ).versionRef("material3")
 
             library("ui", "androidx.compose.ui", "ui")
                 .versionRef("compose")
