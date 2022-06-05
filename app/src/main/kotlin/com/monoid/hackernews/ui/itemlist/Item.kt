@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Comment
 import androidx.compose.material.icons.filled.Favorite
@@ -102,19 +103,21 @@ fun Item(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Top,
             ) {
-                TextBlock(
-                    text = rememberAnnotatedString(
-                        text = item?.text ?: item?.title ?: "",
-                        linkColor = LocalContentColor.current,
-                    ),
-                    lines = 2,
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(start = 8.dp)
-                        .then(placeholderModifier),
-                    overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.titleMedium,
-                )
+                SelectionContainer {
+                    TextBlock(
+                        text = rememberAnnotatedString(
+                            text = item?.text ?: item?.title ?: "",
+                            linkColor = LocalContentColor.current,
+                        ),
+                        lines = 2,
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(start = 8.dp)
+                            .then(placeholderModifier),
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                }
 
                 val (contextExpanded: Boolean, setContextExpanded) =
                     rememberSaveable { mutableStateOf(false) }

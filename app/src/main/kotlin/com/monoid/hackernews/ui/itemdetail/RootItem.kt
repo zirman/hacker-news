@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Flag
@@ -78,25 +79,27 @@ fun RootItem(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Top,
             ) {
-                TextBlock(
-                    text = rememberAnnotatedString(
-                        text = (if (item?.type == "comment") item.text else item?.title) ?: "",
-                        linkColor = LocalContentColor.current,
-                    ),
-                    lines = 2,
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 8.dp)
-                        .placeholder(
-                            visible = itemUiState.value == null,
-                            color = Color.Transparent,
-                            shape = MaterialTheme.shapes.small,
-                            highlight = PlaceholderHighlight.shimmer(
-                                highlightColor = LocalContentColor.current.copy(alpha = .5f),
-                            ),
+                SelectionContainer {
+                    TextBlock(
+                        text = rememberAnnotatedString(
+                            text = (if (item?.type == "comment") item.text else item?.title) ?: "",
+                            linkColor = LocalContentColor.current,
                         ),
-                    style = MaterialTheme.typography.titleMedium,
-                )
+                        lines = 2,
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = 8.dp)
+                            .placeholder(
+                                visible = itemUiState.value == null,
+                                color = Color.Transparent,
+                                shape = MaterialTheme.shapes.small,
+                                highlight = PlaceholderHighlight.shimmer(
+                                    highlightColor = LocalContentColor.current.copy(alpha = .5f),
+                                ),
+                            ),
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                }
 
                 val (contextExpanded: Boolean, setContextExpanded) =
                     rememberSaveable { mutableStateOf(false) }

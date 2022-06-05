@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContent
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -147,11 +148,13 @@ fun ReplyContent(
                 }
 
             if (item?.title != null) {
-                Text(
-                    text = item.title,
-                    modifier = rowModifier.padding(top = 8.dp),
-                    style = MaterialTheme.typography.bodyLarge,
-                )
+                SelectionContainer {
+                    Text(
+                        text = item.title,
+                        modifier = rowModifier.padding(top = 8.dp),
+                        style = MaterialTheme.typography.bodyLarge,
+                    )
+                }
             }
 
             ReplyTextField(

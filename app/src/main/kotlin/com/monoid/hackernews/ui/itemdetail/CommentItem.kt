@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.ThumbUp
@@ -80,11 +81,6 @@ fun CommentItem(
         contentColor = MaterialTheme.colorScheme.secondary,
         tonalElevation = ((itemUiState.value?.itemUi?.kids?.size ?: 0) * 10 + 40).dp,
     ) {
-        val expandedState: State<Boolean> =
-            remember(itemUiState.value) {
-                derivedStateOf { itemUiState.value?.itemUi?.isExpanded ?: false }
-            }
-
         Column(
             modifier = if (itemUiState.value?.itemUi?.item == null) {
                 Modifier
@@ -269,22 +265,35 @@ fun CommentItem(
             val contextState: State<Context> =
                 rememberUpdatedState(LocalContext.current)
 
-            ClickableTextBlock(
-                text = annotatedText,
-                lines = 2,
-                onClick = { offset ->
-                    if (expandedState.value.not() ||
-                        annotatedTextState.value.onClick(contextState.value, offset = offset)
-                            .not()
-                    ) {
-                        itemUiState.value?.itemUi?.toggleExpanded()
-                    }
-                },
-                modifier = Modifier.padding(horizontal = 16.dp),
-                overflow = TextOverflow.Ellipsis,
-                minHeight = itemUiState.value?.itemUi?.isExpanded == true,
-                style = MaterialTheme.typography.bodyMedium,
-            )
+            if (itemUiState.value?.itemUi?.isExpanded == true) {
+                SelectionContainer {
+                    ClickableTextBlock(
+                        text = annotatedText,
+                        lines = 2,
+                        onClick = { offset ->
+                            if (
+                                annotatedTextState.value.onClick(contextState.value, offset = offset)
+                                    .not()
+                            ) {
+                                itemUiState.value?.itemUi?.toggleExpanded()
+                            }
+                        },
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        overflow = TextOverflow.Ellipsis,
+                        minHeight = true,
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                }
+            } else {
+                ClickableTextBlock(
+                    text = annotatedText,
+                    lines = 2,
+                    onClick = { itemUiState.value?.itemUi?.toggleExpanded() },
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
 
             if (itemUiState.value?.itemUi?.isExpanded?.not() == true &&
                 (itemUiState.value?.itemUi?.kids?.size ?: 0) > 0
