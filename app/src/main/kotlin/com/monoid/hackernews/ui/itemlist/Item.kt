@@ -1,9 +1,7 @@
 package com.monoid.hackernews.ui.itemlist
 
 import android.net.Uri
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -40,6 +38,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -72,8 +71,26 @@ fun Item(
     onNavigateLogin: (LoginAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val item = itemUiState.value?.item
-    val isComment: Boolean = item?.type == "comment"
+    val itemUi = itemUiState.value
+    val item = itemUi?.item
+    val isLoading = item == null
+
+    val placeholderModifier = Modifier
+        .placeholder(
+            visible = isLoading,
+            color = Color.Transparent,
+            shape = MaterialTheme.shapes.small,
+            highlight = PlaceholderHighlight.shimmer(
+                highlightColor = LocalContentColor.current.copy(alpha = .5f),
+            ),
+        )
+
+    val storyCommentModifier =
+        if (item != null && (item.type == "story" || item.type == "comment").not()) {
+            Modifier.drawWithContent { }
+        } else {
+            Modifier
+        }
 
     Surface(
         modifier = modifier,
@@ -87,21 +104,14 @@ fun Item(
             ) {
                 TextBlock(
                     text = rememberAnnotatedString(
-                        text = (if (isComment) item?.text else item?.title) ?: "",
+                        text = item?.text ?: item?.title ?: "",
                         linkColor = LocalContentColor.current,
                     ),
                     lines = 2,
                     modifier = Modifier
                         .weight(1f)
                         .padding(start = 8.dp)
-                        .placeholder(
-                            visible = itemUiState.value == null,
-                            color = Color.Transparent,
-                            shape = MaterialTheme.shapes.small,
-                            highlight = PlaceholderHighlight.shimmer(
-                                highlightColor = LocalContentColor.current.copy(alpha = .5f),
-                            ),
-                        ),
+                        .then(placeholderModifier),
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.titleMedium,
                 )
@@ -109,14 +119,12 @@ fun Item(
                 val (contextExpanded: Boolean, setContextExpanded) =
                     rememberSaveable { mutableStateOf(false) }
 
-                AnimatedVisibility(
-                    visible = item?.lastUpdate == null || item.type == "story",
-                    enter = fadeIn(),
-                    exit = fadeOut(),
-                ) {
+                Box {
                     IconButton(
                         onClick = { setContextExpanded(true) },
-                        enabled = item?.type == "story",
+                        modifier = Modifier
+                            .then(placeholderModifier)
+                            .then(storyCommentModifier),
                     ) {
                         Icon(
                             imageVector = Icons.TwoTone.MoreVert,
@@ -141,14 +149,13 @@ fun Item(
                                     contentDescription = stringResource(id = R.string.reply),
                                 )
                             },
-                            enabled = item?.type == "story",
                         )
 
                         DropdownMenuItem(
                             text = {
                                 Text(
                                     text = stringResource(
-                                        id = if (itemUiState.value?.isFavorite == true) {
+                                        id = if (itemUi?.isFavorite == true) {
                                             R.string.un_favorite
                                         } else {
                                             R.string.favorite
@@ -162,13 +169,13 @@ fun Item(
                             },
                             leadingIcon = {
                                 Icon(
-                                    imageVector = if (itemUiState.value?.isFavorite == true) {
+                                    imageVector = if (itemUi?.isFavorite == true) {
                                         Icons.Filled.Favorite
                                     } else {
                                         Icons.TwoTone.Favorite
                                     },
                                     contentDescription = stringResource(
-                                        id = if (itemUiState.value?.isFavorite == true) {
+                                        id = if (itemUi?.isFavorite == true) {
                                             R.string.un_favorite
                                         } else {
                                             R.string.favorite
@@ -176,14 +183,13 @@ fun Item(
                                     ),
                                 )
                             },
-                            enabled = item?.type == "story",
                         )
 
                         DropdownMenuItem(
                             text = {
                                 Text(
                                     text = stringResource(
-                                        id = if (itemUiState.value?.isFlag == true) {
+                                        id = if (itemUi?.isFlag == true) {
                                             R.string.un_flag
                                         } else {
                                             R.string.flag
@@ -198,14 +204,14 @@ fun Item(
                             leadingIcon = {
                                 Icon(
                                     imageVector = if (
-                                        itemUiState.value?.isFlag == true
+                                        itemUi?.isFlag == true
                                     ) {
                                         Icons.Filled.Flag
                                     } else {
                                         Icons.TwoTone.Flag
                                     },
                                     contentDescription = stringResource(
-                                        id = if (itemUiState.value?.isFlag == true) {
+                                        id = if (itemUi?.isFlag == true) {
                                             R.string.un_flag
                                         } else {
                                             R.string.flag
@@ -245,14 +251,7 @@ fun Item(
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
                     .fillMaxWidth()
-                    .placeholder(
-                        visible = itemUiState.value == null,
-                        color = Color.Transparent,
-                        shape = MaterialTheme.shapes.small,
-                        highlight = PlaceholderHighlight.shimmer(
-                            highlightColor = LocalContentColor.current.copy(alpha = .5f),
-                        ),
-                    ),
+                    .then(placeholderModifier),
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.labelMedium.copy(
                     color = LocalContentColor.current,
@@ -260,128 +259,96 @@ fun Item(
             )
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                if (item?.lastUpdate == null || item.type == "story") {
-                    item?.score.let { score ->
-                        key("score") {
-                            IconButton(
-                                onClick = { itemUiState.value?.toggleUpvote(onNavigateLogin) },
-                                enabled = item?.type == "story",
-                            ) {
-                                Icon(
-                                    imageVector = if (itemUiState.value?.isUpvote == true) {
-                                        Icons.Filled.ThumbUp
-                                    } else {
-                                        Icons.TwoTone.ThumbUp
-                                    },
-                                    contentDescription = stringResource(
-                                        id = if (itemUiState.value?.isUpvote == true) {
-                                            R.string.un_vote
-                                        } else {
-                                            R.string.upvote
-                                        },
-                                    ),
-                                )
-                            }
+                val score = item?.score
 
-                            TextBlock(
-                                text = remember(score) { score?.toString() ?: "" },
-                                lines = 1,
-                                modifier = Modifier
-                                    .widthIn(min = 24.dp)
-                                    .placeholder(
-                                        visible = itemUiState.value == null,
-                                        color = Color.Transparent,
-                                        shape = MaterialTheme.shapes.small,
-                                        highlight = PlaceholderHighlight.shimmer(
-                                            highlightColor = LocalContentColor.current
-                                                .copy(alpha = .5f),
-                                        ),
-                                    ),
-                                overflow = TextOverflow.Ellipsis,
-                                style = MaterialTheme.typography.labelMedium,
-                            )
-                        }
-                    }
-                }
-
-                if (item?.lastUpdate == null || item.type == "story" || item.text != null) {
-                    item?.descendants.let { descendants ->
-                        key("comments") {
-                            IconButton(
-                                onClick = {
-                                    onClickDetail(item?.id?.let { ItemId(it) })
-                                },
-                                enabled = item?.lastUpdate != null && (item.type == "story" || item.text != null),
-                            ) {
-                                Icon(
-                                    imageVector = if (isSelected) {
-                                        Icons.Filled.Comment
-                                    } else {
-                                        Icons.TwoTone.Comment
-                                    },
-                                    contentDescription = null,
-                                )
-                            }
-
-                            TextBlock(
-                                text = remember(descendants) { descendants?.toString() ?: "" },
-                                lines = 1,
-                                modifier = Modifier
-                                    .widthIn(min = 24.dp)
-                                    .placeholder(
-                                        visible = itemUiState.value == null,
-                                        color = Color.Transparent,
-                                        shape = MaterialTheme.shapes.small,
-                                        highlight = PlaceholderHighlight.shimmer(
-                                            highlightColor = LocalContentColor.current
-                                                .copy(alpha = .5f),
-                                        ),
-                                    ),
-                                overflow = TextOverflow.Ellipsis,
-                                style = MaterialTheme.typography.labelMedium,
-                            )
-                        }
-                    }
-                }
-
-                val host: String? =
-                    remember(item, item?.url) {
-                        if (item?.lastUpdate != null) {
-                            item.url?.let { Uri.parse(it) }?.host
-                        } else {
-                            ""
-                        }
-                    }
-
-                if (host != null) {
-                    TextBlock(
-                        text = host,
-                        lines = 1,
-                        modifier = Modifier
-                            .padding(start = 16.dp)
-                            .weight(1f)
-                            .placeholder(
-                                visible = itemUiState.value == null,
-                                color = Color.Transparent,
-                                shape = MaterialTheme.shapes.small,
-                                highlight = PlaceholderHighlight.shimmer(
-                                    highlightColor = LocalContentColor.current.copy(alpha = .5f),
-                                ),
-                            ),
-                        textAlign = TextAlign.End,
-                        overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.labelLarge,
-                    )
-
+                key("score") {
                     IconButton(
-                        onClick = { onClickBrowser(item?.url) },
-                        enabled = item?.url != null,
+                        onClick = { itemUiState.value?.toggleUpvote(onNavigateLogin) },
+                        modifier = Modifier
+                            .then(placeholderModifier)
+                            .then(storyCommentModifier),
                     ) {
                         Icon(
-                            imageVector = Icons.TwoTone.OpenInBrowser,
+                            imageVector = if (itemUi?.isUpvote == true) {
+                                Icons.Filled.ThumbUp
+                            } else {
+                                Icons.TwoTone.ThumbUp
+                            },
+                            contentDescription = stringResource(
+                                id = if (itemUi?.isUpvote == true) {
+                                    R.string.un_vote
+                                } else {
+                                    R.string.upvote
+                                },
+                            ),
+                        )
+                    }
+
+                    TextBlock(
+                        text = remember(score) { score?.toString() ?: "" },
+                        lines = 1,
+                        modifier = Modifier
+                            .widthIn(min = 24.dp)
+                            .then(placeholderModifier),
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.labelMedium,
+                    )
+                }
+
+                val descendants = item?.descendants
+
+                key("comments") {
+                    IconButton(
+                        onClick = { itemUiState.value?.item?.id?.let { onClickDetail(ItemId(it)) } },
+                        modifier = placeholderModifier,
+                    ) {
+                        Icon(
+                            imageVector = if (isSelected) {
+                                Icons.Filled.Comment
+                            } else {
+                                Icons.TwoTone.Comment
+                            },
                             contentDescription = null,
                         )
                     }
+
+                    TextBlock(
+                        text = remember(descendants) { descendants?.toString() ?: "" },
+                        lines = 1,
+                        modifier = Modifier
+                            .widthIn(min = 24.dp)
+                            .then(placeholderModifier),
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.labelMedium,
+                    )
+                }
+
+                val host: String =
+                    remember(item, item?.url) {
+                        item?.url?.let { Uri.parse(it) }?.host ?: ""
+                    }
+
+                TextBlock(
+                    text = host,
+                    lines = 1,
+                    modifier = Modifier
+                        .padding(start = 16.dp)
+                        .weight(1f)
+                        .then(placeholderModifier),
+                    textAlign = TextAlign.End,
+                    overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.labelLarge,
+                )
+
+                IconButton(
+                    onClick = { onClickBrowser(item?.url) },
+                    modifier = placeholderModifier,
+                    enabled = item?.url != null,
+                ) {
+                    Icon(
+                        imageVector = Icons.TwoTone.OpenInBrowser,
+                        contentDescription = null,
+                    )
                 }
             }
 
