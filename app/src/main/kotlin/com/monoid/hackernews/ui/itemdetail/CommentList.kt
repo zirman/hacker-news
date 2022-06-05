@@ -61,18 +61,18 @@ fun CommentList(
                 if (index == 0) {
                     RootItem(
                         itemUiState = itemUiState,
-                        onClickReply = { onClickReply(it) },
-                        onClickUser = { onClickUser(it) },
-                        onClickBrowser = { onClickBrowser(it) },
-                        onNavigateLogin = { onNavigateLogin(it) },
+                        onClickReply = onClickReply,
+                        onClickUser = onClickUser,
+                        onClickBrowser = onClickBrowser,
+                        onNavigateLogin = onNavigateLogin,
                         modifier = Modifier.fillMaxWidth(),
                     )
                 } else {
                     CommentItem(
                         itemUiState = itemUiState,
-                        onClickUser = { onClickUser(it) },
-                        onClickReply = { onClickReply(it) },
-                        onNavigateLogin = { onNavigateLogin(it) },
+                        onClickUser = onClickUser,
+                        onClickReply = onClickReply,
+                        onNavigateLogin = onNavigateLogin,
                         modifier = Modifier.fillMaxWidth(),
                     )
                 }

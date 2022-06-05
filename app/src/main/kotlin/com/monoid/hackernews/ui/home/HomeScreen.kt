@@ -72,6 +72,7 @@ import com.monoid.hackernews.api.ItemId
 import com.monoid.hackernews.navigation.LoginAction
 import com.monoid.hackernews.repo.ItemListRow
 import com.monoid.hackernews.repo.OrderedItemRepo
+import com.monoid.hackernews.settingsDataStore
 import com.monoid.hackernews.ui.itemdetail.ItemDetail
 import com.monoid.hackernews.ui.itemlist.ItemList
 import com.monoid.hackernews.ui.util.WindowSize
@@ -82,6 +83,7 @@ import com.monoid.hackernews.ui.util.runWhen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -115,7 +117,15 @@ fun HomeScreen(
         }
     },
     onClickReply: (ItemId) -> Unit = { itemId ->
-        mainNavController.navigate(MainNavigation.Reply.routeWithArgs(itemId))
+        coroutineScope.launch {
+            val authentication = context.settingsDataStore.data.first()
+
+            if (authentication.password.isNotEmpty()) {
+                mainNavController.navigate(MainNavigation.Reply.routeWithArgs(itemId))
+            } else {
+                mainNavController.navigate(MainNavigation.Login.routeWithArgs(LoginAction.Reply(itemId.long)))
+            }
+        }
     },
     onClickBrowser: (String?) -> Unit = { url ->
         val uri = url?.let { Uri.parse(it) }

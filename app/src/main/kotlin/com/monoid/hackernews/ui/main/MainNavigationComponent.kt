@@ -268,11 +268,9 @@ fun MainNavigationComponent(
                             mainViewModel.itemRepo.flagItemJob(ItemId(loginAction.itemId))
                         }
                         is LoginAction.Reply -> {
-//                            httpClient.commentRequest(
-//                                authentication = authentication,
-//                                parentId = ItemId(loginAction.parentId),
-//                                text = loginAction.text,
-//                            )
+                            mainNavController.navigate(
+                                MainNavigation.Reply.routeWithArgs(ItemId(loginAction.itemId))
+                            )
                         }
                     }
 

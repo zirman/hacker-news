@@ -24,5 +24,5 @@ sealed class LoginAction : Parcelable {
 
     @Serializable
     @Parcelize
-    data class Reply(val parentId: Long, val text: String) : LoginAction()
+    data class Reply(val itemId: Long) : LoginAction()
 }

@@ -6,6 +6,7 @@ import com.monoid.hackernews.HNApplication
 import com.monoid.hackernews.R
 import com.monoid.hackernews.api.ItemId
 import com.monoid.hackernews.api.favoriteRequest
+import com.monoid.hackernews.api.flagRequest
 import com.monoid.hackernews.api.getItem
 import com.monoid.hackernews.api.upvoteItem
 import com.monoid.hackernews.datastore.Authentication
@@ -57,6 +58,11 @@ class ItemRepo(
 ) {
     private val sharedFlows: MutableMap<ItemId, Flow<ItemUiInternal>> =
         mutableMapOf()
+
+    private val coroutineScope = CoroutineScope(Dispatchers.Default)
+
+    private val itemUpdatesSharedFlow: MutableSharedFlow<ItemUiInternal> =
+        MutableSharedFlow(extraBufferCapacity = 10)
 
     @Immutable
     private inner class ItemRowInternal(
@@ -130,10 +136,10 @@ class ItemRepo(
         try {
             val authentication = authenticationDataStore.data.first()
 
-//                    httpClient.flagRequest(
-//                        authentication = authentication,
-//                        itemId = ItemId(item.id),
-//                    )
+            httpClient.flagRequest(
+                authentication = authentication,
+                itemId = ItemId(itemId.long),
+            )
 
             if (isFlag) {
                 flagDao.flagInsert(FlagDb(authentication.username, itemId.long))
@@ -144,73 +150,6 @@ class ItemRepo(
             if (error is CancellationException) throw error
         }
     }
-
-    @Immutable
-    private inner class ItemUiInternal(
-        override val item: ItemDb,
-        override val kids: List<ItemId>,
-        override val isUpvote: Boolean,
-        override val isFavorite: Boolean,
-        override val isFlag: Boolean,
-        override val isExpanded: Boolean,
-    ) : ItemUi() {
-        override fun toggleUpvote(onNavigateLogin: (LoginAction) -> Unit) {
-            coroutineScope.launch {
-                val authentication = authenticationDataStore.data.first()
-
-                if (authentication.password.isNotBlank()) {
-                    upvoteItemJob(ItemId(item.id), isUpvote.not())
-                } else {
-                    withContext(Dispatchers.Main.immediate) {
-                        onNavigateLogin(LoginAction.Upvote(itemId = item.id))
-                    }
-                }
-            }
-        }
-
-        override fun toggleFavorite(onNavigateLogin: (LoginAction) -> Unit) {
-            coroutineScope.launch {
-                val authentication = authenticationDataStore.data.first()
-
-                if (authentication.password.isNotBlank()) {
-                    favoriteItemJob(ItemId(item.id), isFavorite.not())
-                } else {
-                    withContext(Dispatchers.Main.immediate) {
-                        onNavigateLogin(LoginAction.Favorite(itemId = item.id))
-                    }
-                }
-            }
-        }
-
-        override fun toggleFlag(onNavigateLogin: (LoginAction) -> Unit) {
-            coroutineScope.launch {
-                val authentication = authenticationDataStore.data.first()
-
-                if (authentication.password.isNotBlank()) {
-                    flagItemJob(ItemId(item.id), isFlag.not())
-                } else {
-                    withContext(Dispatchers.Main.immediate) {
-                        onNavigateLogin(LoginAction.Flag(itemId = item.id))
-                    }
-                }
-            }
-        }
-
-        override fun toggleExpanded() {
-            coroutineScope.launch {
-                if (isExpanded) {
-                    expandedDao.expandedDelete(ExpandedDb(item.id))
-                } else {
-                    expandedDao.expandedInsert(ExpandedDb(item.id))
-                }
-            }
-        }
-    }
-
-    private val coroutineScope = CoroutineScope(Dispatchers.Default)
-
-    private val itemUpdatesSharedFlow: MutableSharedFlow<ItemUiInternal> =
-        MutableSharedFlow(extraBufferCapacity = 10)
 
     fun itemUiTreeFlow(rootItemId: ItemId): Flow<List<ItemTreeRow>> = flow {
         var itemTree: ItemTree = withContext(Dispatchers.IO) {
@@ -360,4 +299,66 @@ class ItemRepo(
             started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
             replay = 1,
         )
+
+    @Immutable
+    private inner class ItemUiInternal(
+        override val item: ItemDb,
+        override val kids: List<ItemId>,
+        override val isUpvote: Boolean,
+        override val isFavorite: Boolean,
+        override val isFlag: Boolean,
+        override val isExpanded: Boolean,
+    ) : ItemUi() {
+        override fun toggleUpvote(onNavigateLogin: (LoginAction) -> Unit) {
+            coroutineScope.launch {
+                val authentication = authenticationDataStore.data.first()
+
+                if (authentication.password.isNotEmpty()) {
+                    upvoteItemJob(ItemId(item.id), isUpvote.not())
+                } else {
+                    withContext(Dispatchers.Main.immediate) {
+                        onNavigateLogin(LoginAction.Upvote(itemId = item.id))
+                    }
+                }
+            }
+        }
+
+        override fun toggleFavorite(onNavigateLogin: (LoginAction) -> Unit) {
+            coroutineScope.launch {
+                val authentication = authenticationDataStore.data.first()
+
+                if (authentication.password.isNotEmpty()) {
+                    favoriteItemJob(ItemId(item.id), isFavorite.not())
+                } else {
+                    withContext(Dispatchers.Main.immediate) {
+                        onNavigateLogin(LoginAction.Favorite(itemId = item.id))
+                    }
+                }
+            }
+        }
+
+        override fun toggleFlag(onNavigateLogin: (LoginAction) -> Unit) {
+            coroutineScope.launch {
+                val authentication = authenticationDataStore.data.first()
+
+                if (authentication.password.isNotEmpty()) {
+                    flagItemJob(ItemId(item.id), isFlag.not())
+                } else {
+                    withContext(Dispatchers.Main.immediate) {
+                        onNavigateLogin(LoginAction.Flag(itemId = item.id))
+                    }
+                }
+            }
+        }
+
+        override fun toggleExpanded() {
+            coroutineScope.launch {
+                if (isExpanded) {
+                    expandedDao.expandedDelete(ExpandedDb(item.id))
+                } else {
+                    expandedDao.expandedInsert(ExpandedDb(item.id))
+                }
+            }
+        }
+    }
 }
