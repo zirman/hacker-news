@@ -79,7 +79,7 @@ fun RootItem(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Top,
             ) {
-                SelectionContainer {
+                SelectionContainer(modifier = Modifier.weight(1f)) {
                     TextBlock(
                         text = rememberAnnotatedString(
                             text = (if (item?.type == "comment") item.text else item?.title) ?: "",
@@ -87,7 +87,6 @@ fun RootItem(
                         ),
                         lines = 2,
                         modifier = Modifier
-                            .weight(1f)
                             .padding(horizontal = 8.dp)
                             .placeholder(
                                 visible = itemUiState.value == null,

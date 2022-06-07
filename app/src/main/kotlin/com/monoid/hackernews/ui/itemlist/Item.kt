@@ -103,7 +103,7 @@ fun Item(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Top,
             ) {
-                SelectionContainer {
+                SelectionContainer(modifier = Modifier.weight(1f)) {
                     TextBlock(
                         text = rememberAnnotatedString(
                             text = item?.text ?: item?.title ?: "",
@@ -111,7 +111,6 @@ fun Item(
                         ),
                         lines = 2,
                         modifier = Modifier
-                            .weight(1f)
                             .padding(start = 8.dp)
                             .then(placeholderModifier),
                         overflow = TextOverflow.Ellipsis,
