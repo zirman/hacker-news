@@ -255,17 +255,17 @@ fun MainNavigationComponent(
 
             LoginContent(
                 windowSizeClassState = windowSizeClassState,
-                onLogin = {
+                onLogin = { authentication ->
                     when (loginAction) {
                         is LoginAction.Login -> {}
                         is LoginAction.Upvote -> {
-                            mainViewModel.itemRepo.upvoteItemJob(ItemId(loginAction.itemId))
+                            mainViewModel.itemRepo.upvoteItemJob(authentication, ItemId(loginAction.itemId))
                         }
                         is LoginAction.Favorite -> {
-                            mainViewModel.itemRepo.favoriteItemJob(ItemId(loginAction.itemId))
+                            mainViewModel.itemRepo.favoriteItemJob(authentication, ItemId(loginAction.itemId))
                         }
                         is LoginAction.Flag -> {
-                            mainViewModel.itemRepo.flagItemJob(ItemId(loginAction.itemId))
+                            mainViewModel.itemRepo.flagItemJob(authentication, ItemId(loginAction.itemId))
                         }
                         is LoginAction.Reply -> {
                             mainNavController.navigate(

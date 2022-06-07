@@ -38,6 +38,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -92,10 +93,12 @@ class ItemRepo(
             sharedItemUiFlow(itemId)
     }
 
-    fun upvoteItemJob(itemId: ItemId, isUpvote: Boolean = true): Job = coroutineScope.launch {
+    fun upvoteItemJob(
+        authentication: Authentication,
+        itemId: ItemId,
+        isUpvote: Boolean = true
+    ): Job = coroutineScope.launch {
         try {
-            val authentication = authenticationDataStore.data.first()
-
             httpClient.upvoteItem(
                 authentication = authentication,
                 itemId = itemId,
@@ -112,10 +115,12 @@ class ItemRepo(
         }
     }
 
-    fun favoriteItemJob(itemId: ItemId, isFavorite: Boolean = true): Job = coroutineScope.launch {
+    fun favoriteItemJob(
+        authentication: Authentication,
+        itemId: ItemId,
+        isFavorite: Boolean = true
+    ): Job = coroutineScope.launch {
         try {
-            val authentication = authenticationDataStore.data.first()
-
             httpClient.favoriteRequest(
                 authentication = authentication,
                 itemId = itemId,
@@ -132,10 +137,12 @@ class ItemRepo(
         }
     }
 
-    fun flagItemJob(itemId: ItemId, isFlag: Boolean = true): Job = coroutineScope.launch {
+    fun flagItemJob(
+        authentication: Authentication,
+        itemId: ItemId,
+        isFlag: Boolean = true
+    ): Job = coroutineScope.launch {
         try {
-            val authentication = authenticationDataStore.data.first()
-
             httpClient.flagRequest(
                 authentication = authentication,
                 itemId = ItemId(itemId.long),
@@ -255,8 +262,6 @@ class ItemRepo(
             }
         }
 
-        val username = authenticationDataStore.data.first().username
-
         expandedDao.isExpandedFlow(itemId.long)
             .distinctUntilChanged()
 
@@ -268,20 +273,25 @@ class ItemRepo(
                         .distinctUntilChanged(),
                     expandedDao.isExpandedFlow(itemId.long)
                         .distinctUntilChanged(),
-                    ::Pair,
+                    ::Pair
                 ).distinctUntilChanged(),
-                combine(
-                    upvoteDao
-                        .isUpvoteFlow(itemId.long, username)
-                        .distinctUntilChanged(),
-                    favoriteDao
-                        .isFavoriteFlow(itemId.long, username)
-                        .distinctUntilChanged(),
-                    flagDao
-                        .isFlagFlow(itemId.long, username)
-                        .distinctUntilChanged(),
-                    ::Triple,
-                ),
+                authenticationDataStore.data
+                    .map { it.username }
+                    .distinctUntilChanged()
+                    .flatMapLatest { username ->
+                        combine(
+                            upvoteDao
+                                .isUpvoteFlow(itemId.long, username)
+                                .distinctUntilChanged(),
+                            favoriteDao
+                                .isFavoriteFlow(itemId.long, username)
+                                .distinctUntilChanged(),
+                            flagDao
+                                .isFlagFlow(itemId.long, username)
+                                .distinctUntilChanged(),
+                            ::Triple
+                        )
+                    },
             ) { (itemWithKids, isExpanded), (isUpvote, isFavorite, isFlag) ->
                 ItemUiInternal(
                     item = itemWithKids.item,
@@ -314,7 +324,7 @@ class ItemRepo(
                 val authentication = authenticationDataStore.data.first()
 
                 if (authentication.password.isNotEmpty()) {
-                    upvoteItemJob(ItemId(item.id), isUpvote.not())
+                    upvoteItemJob(authentication, ItemId(item.id), isUpvote.not())
                 } else {
                     withContext(Dispatchers.Main.immediate) {
                         onNavigateLogin(LoginAction.Upvote(itemId = item.id))
@@ -328,7 +338,7 @@ class ItemRepo(
                 val authentication = authenticationDataStore.data.first()
 
                 if (authentication.password.isNotEmpty()) {
-                    favoriteItemJob(ItemId(item.id), isFavorite.not())
+                    favoriteItemJob(authentication, ItemId(item.id), isFavorite.not())
                 } else {
                     withContext(Dispatchers.Main.immediate) {
                         onNavigateLogin(LoginAction.Favorite(itemId = item.id))
@@ -342,7 +352,7 @@ class ItemRepo(
                 val authentication = authenticationDataStore.data.first()
 
                 if (authentication.password.isNotEmpty()) {
-                    flagItemJob(ItemId(item.id), isFlag.not())
+                    flagItemJob(authentication, ItemId(item.id), isFlag.not())
                 } else {
                     withContext(Dispatchers.Main.immediate) {
                         onNavigateLogin(LoginAction.Flag(itemId = item.id))

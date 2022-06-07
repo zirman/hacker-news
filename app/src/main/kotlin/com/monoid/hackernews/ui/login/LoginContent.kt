@@ -51,7 +51,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun LoginContent(
     windowSizeClassState: State<WindowSizeClass>,
-    onLogin: () -> Unit,
+    onLogin: (Authentication) -> Unit,
     onLoginError: (Throwable) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -163,21 +163,21 @@ fun submitJob(
     coroutineScope: CoroutineScope,
     httpClient: HttpClient,
     authentication: Authentication,
-    onLogin: () -> Unit,
+    onLogin: (Authentication) -> Unit,
     onLoginError: (Throwable) -> Unit,
 ): Job {
     return coroutineScope.launch {
         try {
             httpClient.loginRequest(authentication = authentication)
 
-            context.settingsDataStore.updateData {
-                it.copy {
-                    this.username = authentication.username
-                    this.password = authentication.password
+            onLogin(
+                context.settingsDataStore.updateData {
+                    it.copy {
+                        this.username = authentication.username
+                        this.password = authentication.password
+                    }
                 }
-            }
-
-            onLogin()
+            )
         } catch (error: Throwable) {
             if (error is CancellationException) throw error
             onLoginError(error)
