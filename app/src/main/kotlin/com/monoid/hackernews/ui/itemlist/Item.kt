@@ -86,8 +86,10 @@ fun Item(
             ),
         )
 
-    val storyCommentModifier =
-        if (item != null && (item.type == "story" || item.type == "comment").not()) {
+    val isStoryOrComment = (item?.type == "story" || item?.type == "comment")
+
+    val notStoryAndCommentModifier =
+        if (isStoryOrComment.not()) {
             Modifier.drawWithContent { }
         } else {
             Modifier
@@ -126,7 +128,8 @@ fun Item(
                         onClick = { setContextExpanded(true) },
                         modifier = Modifier
                             .then(placeholderModifier)
-                            .then(storyCommentModifier),
+                            .then(notStoryAndCommentModifier),
+                        enabled = isStoryOrComment.not(),
                     ) {
                         Icon(
                             imageVector = Icons.TwoTone.MoreVert,
@@ -268,7 +271,8 @@ fun Item(
                         onClick = { itemUiState.value?.toggleUpvote(onNavigateLogin) },
                         modifier = Modifier
                             .then(placeholderModifier)
-                            .then(storyCommentModifier),
+                            .then(notStoryAndCommentModifier),
+                        enabled = isStoryOrComment,
                     ) {
                         Icon(
                             imageVector = if (itemUi?.isUpvote == true) {
@@ -303,6 +307,7 @@ fun Item(
                     IconButton(
                         onClick = { itemUiState.value?.item?.id?.let { onClickDetail(ItemId(it)) } },
                         modifier = placeholderModifier,
+                        enabled = item != null,
                     ) {
                         Icon(
                             imageVector = if (isSelected) {

@@ -28,7 +28,7 @@ android {
         applicationId = "com.monoid.hackernews"
         minSdk = 21
         targetSdk = 32
-        versionCode = 13
+        versionCode = 15
         versionName = "1.0"
         vectorDrawables {
             useSupportLibrary = true
