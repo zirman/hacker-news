@@ -46,7 +46,7 @@ class FavoriteStoryRepo(
             if (authentication.password?.isNotEmpty() == true) {
                 favoriteDao.replaceFavoritesForUser(
                     username = authentication.username,
-                    favorites = getFavorites(Username(authentication.username)),
+                    favorites = getFavorites(Username(authentication.username)).map { it.long },
                 )
             }
         } catch (error: Throwable) {

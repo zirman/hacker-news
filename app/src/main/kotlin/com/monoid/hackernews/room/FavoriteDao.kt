@@ -32,8 +32,8 @@ interface FavoriteDao {
     suspend fun insertFavorites(favorites: List<FavoriteDb>)
 
     @Transaction
-    suspend fun replaceFavoritesForUser(username: String, favorites: List<ItemId>) {
+    suspend fun replaceFavoritesForUser(username: String, favorites: List<Long>) {
         deleteFavoritesForUser(username)
-        insertFavorites(favorites.map { FavoriteDb(username, it.long) })
+        insertFavorites(favorites.map { FavoriteDb(username, it) })
     }
 }

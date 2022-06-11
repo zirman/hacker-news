@@ -29,8 +29,8 @@ interface UpvoteDao {
     suspend fun insertUpvotes(favorites: List<UpvoteDb>)
 
     @Transaction
-    suspend fun replaceUpvotesForUser(username: String, upvotes: List<ItemId>) {
+    suspend fun replaceUpvotesForUser(username: String, upvotes: List<Long>) {
         deleteUpvotesForUser(username)
-        insertUpvotes(upvotes.map { UpvoteDb(username, it.long) })
+        insertUpvotes(upvotes.map { UpvoteDb(username, it) })
     }
 }

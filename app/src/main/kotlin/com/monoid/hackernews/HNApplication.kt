@@ -99,7 +99,7 @@ class HNApplication : Application() {
                                         upvotes = getUpvoted(
                                             authentication,
                                             Username(authentication.username)
-                                        ),
+                                        ).map { it.long },
                                     )
                                 }
 
@@ -107,7 +107,8 @@ class HNApplication : Application() {
                                 async {
                                     favoriteDao.replaceFavoritesForUser(
                                         username = authentication.username,
-                                        favorites = getFavorites(Username(authentication.username)),
+                                        favorites = getFavorites(Username(authentication.username))
+                                            .map { it.long },
                                     )
                                 }
 

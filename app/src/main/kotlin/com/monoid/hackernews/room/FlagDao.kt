@@ -5,7 +5,6 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
-import com.monoid.hackernews.api.ItemId
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -32,8 +31,8 @@ interface FlagDao {
     suspend fun insertFlags(flags: List<FlagDb>)
 
     @Transaction
-    suspend fun replaceFlagsForUser(username: String, flags: List<ItemId>) {
+    suspend fun replaceFlagsForUser(username: String, flags: List<Long>) {
         deleteFlagsForUser(username)
-        insertFlags(flags.map { FlagDb(username, it.long) })
+        insertFlags(flags.map { FlagDb(username, it) })
     }
 }

@@ -10,9 +10,10 @@ buildscript {
     }
     dependencies {
         // must import plugins in top level or kotlin compiler gets ir errors
+
+        classpath(kotlin("gradle-plugin", version = "1.6.21"))
+        classpath(kotlin("serialization", version = "1.6.21"))
         classpath("com.android.tools.build:gradle:7.2.1")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21")
-        classpath("org.jetbrains.kotlin:kotlin-serialization:1.6.21")
         classpath("com.google.protobuf:protobuf-gradle-plugin:0.8.18")
         classpath("com.github.ben-manes:gradle-versions-plugin:0.42.0")
     }
@@ -31,8 +32,8 @@ subprojects {
         kotlinOptions {
             if (project.findProperty("hackernews.enableComposeCompilerReports") == "true") {
                 freeCompilerArgs = freeCompilerArgs +
-                        "-P=plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=${project.buildDir.absolutePath}/compose_metrics" +
-                        "-P=plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=${project.buildDir.absolutePath}/compose_metrics"
+                    "-P=plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=${project.buildDir.absolutePath}/compose_metrics" +
+                    "-P=plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=${project.buildDir.absolutePath}/compose_metrics"
             }
         }
     }

@@ -8,14 +8,14 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("plugin.serialization")
-    kotlin("kapt")
     id("kotlin-parcelize")
+    id("com.google.devtools.ksp") version "1.6.21-1.0.6"
     id("com.google.protobuf")
     id("com.github.ben-manes.versions")
 }
 android {
     compileSdk = 32
-    buildToolsVersion = "33.0.0-rc4"
+    buildToolsVersion = "33.0.0"
     signingConfigs {
         create("release") {
             storeFile = file("release.jks")
@@ -107,9 +107,10 @@ protobuf {
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
+    implementation("com.google.devtools.ksp:symbol-processing-api:1.6.21-1.0.6")
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.ktor)
     implementation(libs.bundles.androidx)
     implementation(libs.bundles.google)
-    kapt("androidx.room:room-compiler:${libs.versions.room.get()}")
+    ksp("androidx.room:room-compiler:${libs.versions.room.get()}")
 }
