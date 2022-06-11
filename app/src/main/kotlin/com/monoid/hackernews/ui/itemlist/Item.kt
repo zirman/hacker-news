@@ -108,7 +108,7 @@ fun Item(
                 SelectionContainer(modifier = Modifier.weight(1f)) {
                     TextBlock(
                         text = rememberAnnotatedString(
-                            text = item?.text ?: item?.title ?: "",
+                            text = item?.title ?: item?.text ?: "",
                             linkColor = LocalContentColor.current,
                         ),
                         lines = 2,
@@ -349,7 +349,13 @@ fun Item(
 
                 IconButton(
                     onClick = { onClickBrowser(item?.url) },
-                    modifier = placeholderModifier,
+                    modifier = placeholderModifier.then(
+                        if (item?.url != null) {
+                            Modifier
+                        } else {
+                            Modifier.drawWithContent { }
+                        }
+                    ),
                     enabled = item?.url != null,
                 ) {
                     Icon(
