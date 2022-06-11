@@ -9,8 +9,6 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        // must import plugins in top level or kotlin compiler gets ir errors
-
         classpath(kotlin("gradle-plugin", version = libs.versions.gradle.plugin.kotlin.get()))
         classpath(kotlin("serialization", version = libs.versions.gradle.plugin.kotlin.get()))
         classpath("com.android.tools.build:gradle:${libs.versions.gradle.plugin.android.get()}")

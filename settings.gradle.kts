@@ -6,9 +6,11 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         create("libs") {
-            version("gradle-plugin-kotlin", "1.6.21")
+            val kotlin = "1.6.21"
+
+            version("gradle-plugin-kotlin", kotlin)
+            version("gradle-plugin-ksp", "$kotlin-1.0.6")
             version("gradle-plugin-android", "7.2.1")
-            version("gradle-plugin-ksp", "1.6.21-1.0.6")
             version("gradle-plugin-protobuf", "0.8.18")
             version("gradle-plugin-versions", "0.42.0")
 

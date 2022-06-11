@@ -11,7 +11,6 @@ plugins {
     id("kotlin-parcelize")
     id("com.google.devtools.ksp")
     id("com.google.protobuf")
-    id("com.github.ben-manes.versions")
 }
 android {
     compileSdk = 32
