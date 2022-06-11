@@ -9,7 +9,7 @@ plugins {
     kotlin("android")
     kotlin("plugin.serialization")
     id("kotlin-parcelize")
-    id("com.google.devtools.ksp") version "1.6.21-1.0.6"
+    id("com.google.devtools.ksp")
     id("com.google.protobuf")
     id("com.github.ben-manes.versions")
 }
@@ -107,7 +107,6 @@ protobuf {
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 
-    implementation("com.google.devtools.ksp:symbol-processing-api:1.6.21-1.0.6")
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.ktor)
     implementation(libs.bundles.androidx)

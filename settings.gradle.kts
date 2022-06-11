@@ -6,6 +6,12 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         create("libs") {
+            version("gradle-plugin-kotlin", "1.6.21")
+            version("gradle-plugin-android", "7.2.1")
+            version("gradle-plugin-ksp", "1.6.21-1.0.6")
+            version("gradle-plugin-protobuf", "0.8.18")
+            version("gradle-plugin-versions", "0.42.0")
+
             version("kotlinx-coroutines", "1.6.2")
             version("kotlinx-serialization", "1.3.3")
             version("ktor", "2.0.2")
@@ -44,6 +50,7 @@ dependencyResolutionManagement {
             bundle(
                 "google",
                 listOf(
+                    "ksp-symbol-processing-api",
                     "protobuf-kotlin-lite",
                     "accompanist-navigation-animation",
                     "accompanist-navigation-material",
@@ -145,6 +152,9 @@ dependencyResolutionManagement {
 
             library("protobuf-kotlin-lite", "com.google.protobuf", "protobuf-kotlin-lite")
                 .version("3.21.1")
+
+            library("ksp-symbol-processing-api", "com.google.devtools.ksp", "symbol-processing-api")
+                .versionRef("gradle-plugin-ksp")
 
             library("datastore", "androidx.datastore", "datastore")
                 .version("1.0.0")

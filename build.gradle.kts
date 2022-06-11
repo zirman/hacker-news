@@ -11,11 +11,12 @@ buildscript {
     dependencies {
         // must import plugins in top level or kotlin compiler gets ir errors
 
-        classpath(kotlin("gradle-plugin", version = "1.6.21"))
-        classpath(kotlin("serialization", version = "1.6.21"))
-        classpath("com.android.tools.build:gradle:7.2.1")
-        classpath("com.google.protobuf:protobuf-gradle-plugin:0.8.18")
-        classpath("com.github.ben-manes:gradle-versions-plugin:0.42.0")
+        classpath(kotlin("gradle-plugin", version = libs.versions.gradle.plugin.kotlin.get()))
+        classpath(kotlin("serialization", version = libs.versions.gradle.plugin.kotlin.get()))
+        classpath("com.android.tools.build:gradle:${libs.versions.gradle.plugin.android.get()}")
+        classpath("com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:${libs.versions.gradle.plugin.ksp.get()}")
+        classpath("com.google.protobuf:protobuf-gradle-plugin:${libs.versions.gradle.plugin.protobuf.get()}")
+        classpath("com.github.ben-manes:gradle-versions-plugin:${libs.versions.gradle.plugin.versions.get()}")
     }
 }
 tasks.register("clean", Delete::class) {
