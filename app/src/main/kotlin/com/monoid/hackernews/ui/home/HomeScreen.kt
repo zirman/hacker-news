@@ -123,7 +123,9 @@ fun HomeScreen(
             if (authentication.password.isNotEmpty()) {
                 mainNavController.navigate(MainNavigation.Reply.routeWithArgs(itemId))
             } else {
-                mainNavController.navigate(MainNavigation.Login.routeWithArgs(LoginAction.Reply(itemId.long)))
+                mainNavController.navigate(
+                    MainNavigation.Login.routeWithArgs(LoginAction.Reply(itemId.long))
+                )
             }
         }
     },
@@ -186,12 +188,6 @@ fun HomeScreen(
         }
     }
 
-    val state = rememberTopAppBarScrollState()
-
-    // layout to provide system bar scrims on all sides
-    val scrollBehavior: TopAppBarScrollBehavior =
-        remember { TopAppBarDefaults.enterAlwaysScrollBehavior(state = state) }
-
     val showItemId: ItemId? =
         remember(windowSizeClass.widthSizeClass, selectedItemId, detailInteraction) {
             when (windowSizeClass.widthSizeClass) {
@@ -201,6 +197,12 @@ fun HomeScreen(
                     selectedItemId
             }
         }
+
+    // enterAlwaysScrollBehavior is buggy
+    val scrollBehavior: TopAppBarScrollBehavior =
+        TopAppBarDefaults.pinnedScrollBehavior(
+            state = rememberTopAppBarScrollState(),
+        )
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
