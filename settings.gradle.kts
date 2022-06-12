@@ -71,6 +71,10 @@ dependencyResolutionManagement {
                     "activity-ktx",
                     "activity-compose",
                     "fragment-ktx",
+                    "palette-ktx",
+                    "work-runtime-ktx",
+                    "preference-ktx",
+                    "slice-builders-ktx",
                     "datastore",
                     "benchmark-junit4",
 
@@ -190,6 +194,18 @@ dependencyResolutionManagement {
 
             library("fragment-ktx", "androidx.fragment", "fragment-ktx")
                 .version("1.5.0-rc01")
+
+            library("palette-ktx", "androidx.palette", "palette-ktx")
+                .version("1.0.0")
+
+            library("work-runtime-ktx", "androidx.work", "work-runtime-ktx")
+                .version("2.7.1")
+
+            library("preference-ktx", "androidx.preference", "preference-ktx")
+                .version("1.2.0")
+
+            library("slice-builders-ktx", "androidx.slice", "slice-builders-ktx")
+                .version("1.0.0-alpha08")
 
             library("benchmark-junit4", "androidx.benchmark", "benchmark-junit4")
                 .version("1.1.0-rc03")
