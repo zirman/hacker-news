@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
+import androidx.core.content.getSystemService
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
@@ -47,8 +48,8 @@ import com.monoid.hackernews.navigation.LoginAction
 import com.monoid.hackernews.ui.home.HomeScreen
 import com.monoid.hackernews.ui.login.LoginContent
 import com.monoid.hackernews.ui.reply.ReplyContent
+import com.monoid.hackernews.ui.util.getNetworkConnectivityStateFlow
 import com.monoid.hackernews.ui.util.itemIdSaver
-import com.monoid.hackernews.ui.util.networkConnectivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.dropWhile
@@ -80,7 +81,10 @@ fun MainNavigationComponent(
 
     LaunchedEffect(lifecycleOwner) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-            context.networkConnectivity(this)
+            getNetworkConnectivityStateFlow(
+                coroutineScope = this,
+                connectivityManager = context.getSystemService()!!,
+            )
                 .debounce(2.toDuration(DurationUnit.SECONDS))
                 .dropWhile { it }
                 .collectLatest { hasConnectivity ->
@@ -157,57 +161,46 @@ fun MainNavigationComponent(
                     }
                 ),
                 orderedItemRepo = remember(stories) {
-                    when (stories) {
-                        Stories.Top ->
-                            LiveUpdateUseCase(
+                    LiveUpdateUseCase(
+                        context.getSystemService()!!,
+                        when (stories) {
+                            Stories.Top ->
                                 TopStoryRepository(
                                     httpClient = mainViewModel.httpClient,
                                     topStoryDao = mainViewModel.topStoryDao,
                                 )
-                            )
-                        Stories.New ->
-                            LiveUpdateUseCase(
+                            Stories.New ->
                                 NewStoryRepository(
                                     httpClient = mainViewModel.httpClient,
                                     newStoryDao = mainViewModel.newStoryDao,
                                 )
-                            )
-                        Stories.Best ->
-                            LiveUpdateUseCase(
+                            Stories.Best ->
                                 BestStoryRepository(
                                     httpClient = mainViewModel.httpClient,
                                     bestStoryDao = mainViewModel.bestStoryDao,
                                 )
-                            )
-                        Stories.Ask ->
-                            LiveUpdateUseCase(
+                            Stories.Ask ->
                                 AskStoryRepository(
                                     httpClient = mainViewModel.httpClient,
                                     askStoryDao = mainViewModel.askStoryDao,
                                 )
-                            )
-                        Stories.Show ->
-                            LiveUpdateUseCase(
+                            Stories.Show ->
                                 ShowStoryRepository(
                                     httpClient = mainViewModel.httpClient,
                                     showStoryDao = mainViewModel.showStoryDao,
                                 )
-                            )
-                        Stories.Job ->
-                            LiveUpdateUseCase(
+                            Stories.Job ->
                                 JobStoryRepository(
                                     httpClient = mainViewModel.httpClient,
                                     jobStoryDao = mainViewModel.jobStoryDao,
                                 )
-                            )
-                        Stories.Favorite ->
-                            LiveUpdateUseCase(
+                            Stories.Favorite ->
                                 FavoriteStoryRepository(
                                     context = context,
                                     favoriteDao = mainViewModel.favoriteDao,
                                 )
-                            )
-                    }
+                        }
+                    )
                 },
                 snackbarHostState = snackbarHostState,
                 selectedItemId = selectedItemId,
@@ -247,6 +240,7 @@ fun MainNavigationComponent(
                 title = username.string,
                 orderedItemRepo = remember(mainViewModel, username) {
                     LiveUpdateUseCase(
+                        context.getSystemService()!!,
                         UserStoryRepository(
                             httpClient = mainViewModel.httpClient,
                             userDao = mainViewModel.userDao,
@@ -276,19 +270,19 @@ fun MainNavigationComponent(
                     when (loginAction) {
                         is LoginAction.Login -> {}
                         is LoginAction.Upvote -> {
-                            mainViewModel.itemRepo.upvoteItemJob(
+                            mainViewModel.itemTreeRepository.upvoteItemJob(
                                 authentication,
                                 ItemId(loginAction.itemId)
                             )
                         }
                         is LoginAction.Favorite -> {
-                            mainViewModel.itemRepo.favoriteItemJob(
+                            mainViewModel.itemTreeRepository.favoriteItemJob(
                                 authentication,
                                 ItemId(loginAction.itemId)
                             )
                         }
                         is LoginAction.Flag -> {
-                            mainViewModel.itemRepo.flagItemJob(
+                            mainViewModel.itemTreeRepository.flagItemJob(
                                 authentication,
                                 ItemId(loginAction.itemId)
                             )

@@ -31,7 +31,7 @@ class MainViewModel : ViewModel() {
     val favoriteDao: FavoriteDao
     val flagDao: FlagDao
     val expandedDao: ExpandedDao
-    val itemRepo: ItemTreeRepository
+    val itemTreeRepository: ItemTreeRepository
 
     init {
         val app: HNApplication =
@@ -56,7 +56,7 @@ class MainViewModel : ViewModel() {
         flagDao = app.flagDao
         expandedDao = db.expandedDao()
 
-        itemRepo = ItemTreeRepository(
+        itemTreeRepository = ItemTreeRepository(
             authenticationDataStore = app.settingsDataStore,
             httpClient = httpClient,
             itemDao = itemDao,

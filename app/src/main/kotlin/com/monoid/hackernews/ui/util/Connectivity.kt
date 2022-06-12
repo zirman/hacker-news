@@ -1,11 +1,9 @@
 package com.monoid.hackernews.ui.util
 
-import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
-import androidx.core.content.getSystemService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -14,11 +12,11 @@ import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 
-suspend fun Context.networkConnectivity(coroutineScope: CoroutineScope): StateFlow<Boolean> =
+suspend fun getNetworkConnectivityStateFlow(
+    coroutineScope: CoroutineScope,
+    connectivityManager: ConnectivityManager,
+): StateFlow<Boolean> =
     flow {
-        val connectivityManager: ConnectivityManager =
-            getSystemService()!!
-
         val networkRequest = NetworkRequest.Builder()
             .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
             .build()

@@ -32,7 +32,7 @@ fun ItemDetail(
     val mainViewModel: MainViewModel = viewModel()
 
     val itemListState: State<List<ItemTreeRow>?> =
-        remember(itemId) { mainViewModel.itemRepo.itemUiTreeFlow(itemId) }
+        remember(itemId) { mainViewModel.itemTreeRepository.itemUiTreeFlow(itemId) }
             .collectAsState(initial = null)
 
     val swipeRefreshState: SwipeRefreshState =
