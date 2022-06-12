@@ -129,7 +129,7 @@ fun Item(
                         modifier = Modifier
                             .then(placeholderModifier)
                             .then(notStoryAndCommentModifier),
-                        enabled = isStoryOrComment.not(),
+                        enabled = isStoryOrComment,
                     ) {
                         Icon(
                             imageVector = Icons.TwoTone.MoreVert,
