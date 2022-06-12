@@ -7,7 +7,6 @@ import com.monoid.hackernews.api.ItemId
 import com.monoid.hackernews.api.getFavorites
 import com.monoid.hackernews.room.FavoriteDao
 import com.monoid.hackernews.settingsDataStore
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
@@ -17,8 +16,8 @@ import kotlinx.coroutines.flow.map
 class FavoriteStoryRepo(
     private val context: Context,
     private val favoriteDao: FavoriteDao,
-) : OrderedItemRepo {
-    override fun getRepoItems(): Flow<List<OrderedItem>> {
+) : OrderedItemRepo() {
+    override fun getDbItems(): Flow<List<OrderedItem>> {
         return HNApplication.instance.settingsDataStore.data
             .map { authentication ->
                 if (authentication.password.isNotEmpty()) {
@@ -39,18 +38,14 @@ class FavoriteStoryRepo(
             }
     }
 
-    override suspend fun updateRepoItems() {
-        try {
-            val authentication = context.settingsDataStore.data.first()
+    override suspend fun updateDbItems() {
+        val authentication = context.settingsDataStore.data.first()
 
-            if (authentication.password?.isNotEmpty() == true) {
-                favoriteDao.replaceFavoritesForUser(
-                    username = authentication.username,
-                    favorites = getFavorites(Username(authentication.username)).map { it.long },
-                )
-            }
-        } catch (error: Throwable) {
-            if (error is CancellationException) throw error
+        if (authentication.password?.isNotEmpty() == true) {
+            favoriteDao.replaceFavoritesForUser(
+                username = authentication.username,
+                favorites = getFavorites(Username(authentication.username)).map { it.long },
+            )
         }
     }
 }

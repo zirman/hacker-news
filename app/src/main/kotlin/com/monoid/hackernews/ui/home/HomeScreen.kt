@@ -42,25 +42,18 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
@@ -77,17 +70,11 @@ import com.monoid.hackernews.repo.OrderedItemRepo
 import com.monoid.hackernews.settingsDataStore
 import com.monoid.hackernews.ui.itemdetail.ItemDetail
 import com.monoid.hackernews.ui.itemlist.ItemList
-import com.monoid.hackernews.ui.util.networkConnectivity
 import com.monoid.hackernews.ui.util.notifyInput
-import com.monoid.hackernews.ui.util.runWhen
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
-import java.util.concurrent.TimeUnit
 
 @Composable
 fun HomeScreen(
@@ -146,48 +133,6 @@ fun HomeScreen(
         mainNavController.navigate(MainNavigation.Login.routeWithArgs(loginAction))
     },
 ) {
-    val lifecycleOwner: LifecycleOwner =
-        LocalLifecycleOwner.current
-
-    val lastUpdateState =
-        rememberSaveable { mutableStateOf<Long?>(null) }
-
-    fun setLastUpdate(epochMillis: Long) {
-        lastUpdateState.value = epochMillis
-    }
-
-    // refreshes if last update is stale on resume and loops refresh.
-    LaunchedEffect(lifecycleOwner) {
-        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-            context.networkConnectivity().runWhen({ it }) {
-                while (true) {
-                    var lastUpdate = lastUpdateState.value
-
-                    if (
-                        lastUpdate == null ||
-                        Clock.System.now().toEpochMilliseconds() - lastUpdate >=
-                        TimeUnit.MINUTES.toMillis(
-                            context.resources.getInteger(R.integer.item_stale_minutes).toLong()
-                        )
-                    ) {
-                        orderedItemRepo.updateRepoItems()
-                        lastUpdate = Clock.System.now().toEpochMilliseconds()
-                        setLastUpdate(lastUpdate)
-                    }
-
-                    delay(
-                        (
-                            TimeUnit.MINUTES.toMillis(
-                                context.resources.getInteger(R.integer.item_stale_minutes)
-                                    .toLong()
-                            ) + lastUpdate
-                            ) - Clock.System.now().toEpochMilliseconds()
-                    )
-                }
-            }
-        }
-    }
-
     val showItemId: ItemId? =
         remember(windowSizeClass.widthSizeClass, selectedItemId, detailInteraction) {
             when (windowSizeClass.widthSizeClass) {
@@ -263,12 +208,10 @@ fun HomeScreen(
 
         val itemRows: State<List<ItemListRow>?> =
             remember {
-                orderedItemRepo.getRepoItems()
-                    .map { orderedItems ->
-                        mainViewModel.itemRepo.itemUiList(orderedItems.map { it.itemId })
-                    }
-            }
-                .collectAsState(initial = null)
+                orderedItemRepo.getItems(context).map { orderedItems ->
+                    mainViewModel.itemRepo.itemUiList(orderedItems.map { it.itemId })
+                }
+            }.collectAsState(initial = null)
 
         val loadingState: State<Boolean> =
             remember(itemRows.value) { derivedStateOf { itemRows.value == null } }
@@ -284,34 +227,13 @@ fun HomeScreen(
                 ) { CircularProgressIndicator() }
             } else {
                 Row {
-                    val (job: Job?, setJob) =
-                        remember { mutableStateOf<Job?>(null) }
-
                     val listState: LazyListState =
                         rememberLazyListState()
 
                     if (showItemId == null || windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact) {
                         SwipeRefresh(
                             state = swipeRefreshState,
-                            onRefresh = {
-                                if (job?.isCompleted != false) {
-                                    setJob(
-                                        coroutineScope.launch {
-                                            swipeRefreshState.isRefreshing = true
-
-                                            try {
-                                                orderedItemRepo.updateRepoItems()
-
-                                                setLastUpdate(
-                                                    Clock.System.now().toEpochMilliseconds()
-                                                )
-                                            } finally {
-                                                swipeRefreshState.isRefreshing = false
-                                            }
-                                        }
-                                    )
-                                }
-                            },
+                            onRefresh = { /* TODO */ },
                             modifier = when (windowSizeClass.widthSizeClass) {
                                 WindowWidthSizeClass.Compact ->
                                     Modifier.weight(1f)

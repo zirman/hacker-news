@@ -5,15 +5,14 @@ import com.monoid.hackernews.api.getShowStories
 import com.monoid.hackernews.room.ShowStoryDao
 import com.monoid.hackernews.room.ShowStoryDb
 import io.ktor.client.HttpClient
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class ShowStoryRepo(
     private val httpClient: HttpClient,
     private val showStoryDao: ShowStoryDao,
-) : OrderedItemRepo {
-    override fun getRepoItems(): Flow<List<OrderedItem>> {
+) : OrderedItemRepo() {
+    override fun getDbItems(): Flow<List<OrderedItem>> {
         return showStoryDao.getShowStories()
             .map { showStories ->
                 showStories.map {
@@ -25,18 +24,14 @@ class ShowStoryRepo(
             }
     }
 
-    override suspend fun updateRepoItems() {
-        try {
-            showStoryDao.replaceShowStories(
-                httpClient.getShowStories().mapIndexed { order, storyId ->
-                    ShowStoryDb(
-                        itemId = storyId,
-                        order = order,
-                    )
-                }
-            )
-        } catch (error: Throwable) {
-            if (error is CancellationException) throw error
-        }
+    override suspend fun updateDbItems() {
+        showStoryDao.replaceShowStories(
+            httpClient.getShowStories().mapIndexed { order, storyId ->
+                ShowStoryDb(
+                    itemId = storyId,
+                    order = order,
+                )
+            }
+        )
     }
 }

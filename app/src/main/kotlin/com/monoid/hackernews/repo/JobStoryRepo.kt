@@ -5,15 +5,14 @@ import com.monoid.hackernews.api.getJobStories
 import com.monoid.hackernews.room.JobStoryDao
 import com.monoid.hackernews.room.JobStoryDb
 import io.ktor.client.HttpClient
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class JobStoryRepo(
     private val httpClient: HttpClient,
     private val jobStoryDao: JobStoryDao,
-) : OrderedItemRepo {
-    override fun getRepoItems(): Flow<List<OrderedItem>> {
+) : OrderedItemRepo() {
+    override fun getDbItems(): Flow<List<OrderedItem>> {
         return jobStoryDao.getJobStories()
             .map { jobStories ->
                 jobStories.map {
@@ -25,18 +24,14 @@ class JobStoryRepo(
             }
     }
 
-    override suspend fun updateRepoItems() {
-        try {
-            jobStoryDao.replaceJobStories(
-                httpClient.getJobStories().mapIndexed { order, storyId ->
-                    JobStoryDb(
-                        itemId = storyId,
-                        order = order,
-                    )
-                }
-            )
-        } catch (error: Throwable) {
-            if (error is CancellationException) throw error
-        }
+    override suspend fun updateDbItems() {
+        jobStoryDao.replaceJobStories(
+            httpClient.getJobStories().mapIndexed { order, storyId ->
+                JobStoryDb(
+                    itemId = storyId,
+                    order = order,
+                )
+            }
+        )
     }
 }

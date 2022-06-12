@@ -79,7 +79,7 @@ fun MainNavigationComponent(
 
     LaunchedEffect(lifecycleOwner) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-            context.networkConnectivity()
+            context.networkConnectivity(this)
                 .debounce(2.toDuration(DurationUnit.SECONDS))
                 .dropWhile { it }
                 .collectLatest { hasConnectivity ->

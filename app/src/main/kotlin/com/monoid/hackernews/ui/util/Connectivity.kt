@@ -6,13 +6,15 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import androidx.core.content.getSystemService
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.stateIn
 
-fun Context.networkConnectivity(): Flow<Boolean> =
+suspend fun Context.networkConnectivity(coroutineScope: CoroutineScope): StateFlow<Boolean> =
     flow {
         val connectivityManager: ConnectivityManager =
             getSystemService()!!
@@ -44,12 +46,8 @@ fun Context.networkConnectivity(): Flow<Boolean> =
         } finally {
             connectivityManager.unregisterNetworkCallback(networkCallback)
         }
-    }
-
-suspend fun <T> Flow<T>.runWhen(predicate: (T) -> Boolean, block: suspend () -> Unit) {
-    collectLatest {
-        if (predicate(it)) {
-            block()
-        }
-    }
-}
+    }.stateIn(
+        scope = coroutineScope,
+        started = SharingStarted.Lazily,
+        initialValue = false
+    )
