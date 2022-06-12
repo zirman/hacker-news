@@ -45,12 +45,12 @@ import com.monoid.hackernews.room.ItemDb
 import com.monoid.hackernews.settingsDataStore
 import com.monoid.hackernews.ui.text.ReplyTextField
 import com.monoid.hackernews.ui.util.networkConnectivity
-import com.monoid.hackernews.ui.util.runWhen
 import com.monoid.hackernews.util.getAnnotatedString
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -75,21 +75,24 @@ fun ReplyContent(
     // Update item in on resume if it's stale.
     LaunchedEffect(Unit) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-            context.networkConnectivity().runWhen({ it }) {
-                val databaseItem = mainViewModel.itemDao.itemByIdFlow(itemId = itemId.long).first()
+            context.networkConnectivity(this).collectLatest { hasConnectivity ->
+                if (hasConnectivity) {
+                    val databaseItem =
+                        mainViewModel.itemDao.itemByIdFlow(itemId = itemId.long).first()
 
-                if (
-                    databaseItem?.lastUpdate == null ||
-                    Clock.System.now().toEpochMilliseconds() - databaseItem.lastUpdate >=
-                    TimeUnit.MINUTES.toMillis(
-                        context.resources.getInteger(R.integer.item_stale_minutes).toLong()
-                    )
-                ) {
-                    try {
-                        val apiItem = mainViewModel.httpClient.getItem(itemId)
-                        mainViewModel.itemDao.itemApiInsert(apiItem)
-                    } catch (error: Throwable) {
-                        if (error is CancellationException) throw error
+                    if (
+                        databaseItem?.lastUpdate == null ||
+                        Clock.System.now().toEpochMilliseconds() - databaseItem.lastUpdate >=
+                        TimeUnit.MINUTES.toMillis(
+                            context.resources.getInteger(R.integer.item_stale_minutes).toLong()
+                        )
+                    ) {
+                        try {
+                            val apiItem = mainViewModel.httpClient.getItem(itemId)
+                            mainViewModel.itemDao.itemApiInsert(apiItem)
+                        } catch (error: Throwable) {
+                            if (error is CancellationException) throw error
+                        }
                     }
                 }
             }
