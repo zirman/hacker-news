@@ -21,9 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
+import com.monoid.hackernews.data.ItemTreeRow
+import com.monoid.hackernews.data.ItemUiWithThreadDepth
 import com.monoid.hackernews.navigation.LoginAction
-import com.monoid.hackernews.repo.ItemTreeRow
-import com.monoid.hackernews.repo.ItemUiWithThreadDepth
 
 @Composable
 fun CommentList(

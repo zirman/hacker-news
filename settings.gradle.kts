@@ -199,7 +199,7 @@ dependencyResolutionManagement {
                 .version("1.0.0")
 
             library("work-runtime-ktx", "androidx.work", "work-runtime-ktx")
-                .version("2.7.1")
+                .version("2.8.0-alpha02")
 
             library("preference-ktx", "androidx.preference", "preference-ktx")
                 .version("1.2.0")

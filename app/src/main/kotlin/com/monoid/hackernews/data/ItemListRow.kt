@@ -1,4 +1,4 @@
-package com.monoid.hackernews.repo
+package com.monoid.hackernews.data
 
 import com.monoid.hackernews.api.ItemId
 import kotlinx.coroutines.flow.Flow

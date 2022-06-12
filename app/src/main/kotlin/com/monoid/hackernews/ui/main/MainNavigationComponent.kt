@@ -34,15 +34,16 @@ import com.monoid.hackernews.R
 import com.monoid.hackernews.Stories
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
+import com.monoid.hackernews.data.AskStoryRepository
+import com.monoid.hackernews.data.BestStoryRepository
+import com.monoid.hackernews.data.FavoriteStoryRepository
+import com.monoid.hackernews.data.JobStoryRepository
+import com.monoid.hackernews.data.NewStoryRepository
+import com.monoid.hackernews.data.ShowStoryRepository
+import com.monoid.hackernews.data.TopStoryRepository
+import com.monoid.hackernews.data.UserStoryRepository
+import com.monoid.hackernews.domain.LiveUpdateUseCase
 import com.monoid.hackernews.navigation.LoginAction
-import com.monoid.hackernews.repo.AskStoryRepo
-import com.monoid.hackernews.repo.BestStoryRepo
-import com.monoid.hackernews.repo.FavoriteStoryRepo
-import com.monoid.hackernews.repo.JobStoryRepo
-import com.monoid.hackernews.repo.NewStoryRepo
-import com.monoid.hackernews.repo.ShowStoryRepo
-import com.monoid.hackernews.repo.TopStoryRepo
-import com.monoid.hackernews.repo.UserStoryRepo
 import com.monoid.hackernews.ui.home.HomeScreen
 import com.monoid.hackernews.ui.login.LoginContent
 import com.monoid.hackernews.ui.reply.ReplyContent
@@ -158,39 +159,53 @@ fun MainNavigationComponent(
                 orderedItemRepo = remember(stories) {
                     when (stories) {
                         Stories.Top ->
-                            TopStoryRepo(
-                                httpClient = mainViewModel.httpClient,
-                                topStoryDao = mainViewModel.topStoryDao,
+                            LiveUpdateUseCase(
+                                TopStoryRepository(
+                                    httpClient = mainViewModel.httpClient,
+                                    topStoryDao = mainViewModel.topStoryDao,
+                                )
                             )
                         Stories.New ->
-                            NewStoryRepo(
-                                httpClient = mainViewModel.httpClient,
-                                newStoryDao = mainViewModel.newStoryDao,
+                            LiveUpdateUseCase(
+                                NewStoryRepository(
+                                    httpClient = mainViewModel.httpClient,
+                                    newStoryDao = mainViewModel.newStoryDao,
+                                )
                             )
                         Stories.Best ->
-                            BestStoryRepo(
-                                httpClient = mainViewModel.httpClient,
-                                bestStoryDao = mainViewModel.bestStoryDao,
+                            LiveUpdateUseCase(
+                                BestStoryRepository(
+                                    httpClient = mainViewModel.httpClient,
+                                    bestStoryDao = mainViewModel.bestStoryDao,
+                                )
                             )
                         Stories.Ask ->
-                            AskStoryRepo(
-                                httpClient = mainViewModel.httpClient,
-                                askStoryDao = mainViewModel.askStoryDao,
+                            LiveUpdateUseCase(
+                                AskStoryRepository(
+                                    httpClient = mainViewModel.httpClient,
+                                    askStoryDao = mainViewModel.askStoryDao,
+                                )
                             )
                         Stories.Show ->
-                            ShowStoryRepo(
-                                httpClient = mainViewModel.httpClient,
-                                showStoryDao = mainViewModel.showStoryDao,
+                            LiveUpdateUseCase(
+                                ShowStoryRepository(
+                                    httpClient = mainViewModel.httpClient,
+                                    showStoryDao = mainViewModel.showStoryDao,
+                                )
                             )
                         Stories.Job ->
-                            JobStoryRepo(
-                                httpClient = mainViewModel.httpClient,
-                                jobStoryDao = mainViewModel.jobStoryDao,
+                            LiveUpdateUseCase(
+                                JobStoryRepository(
+                                    httpClient = mainViewModel.httpClient,
+                                    jobStoryDao = mainViewModel.jobStoryDao,
+                                )
                             )
                         Stories.Favorite ->
-                            FavoriteStoryRepo(
-                                context = context,
-                                favoriteDao = mainViewModel.favoriteDao,
+                            LiveUpdateUseCase(
+                                FavoriteStoryRepository(
+                                    context = context,
+                                    favoriteDao = mainViewModel.favoriteDao,
+                                )
                             )
                     }
                 },
@@ -231,11 +246,13 @@ fun MainNavigationComponent(
                 windowSizeClass = windowSizeClass,
                 title = username.string,
                 orderedItemRepo = remember(mainViewModel, username) {
-                    UserStoryRepo(
-                        httpClient = mainViewModel.httpClient,
-                        userDao = mainViewModel.userDao,
-                        itemDao = mainViewModel.itemDao,
-                        username = username,
+                    LiveUpdateUseCase(
+                        UserStoryRepository(
+                            httpClient = mainViewModel.httpClient,
+                            userDao = mainViewModel.userDao,
+                            itemDao = mainViewModel.itemDao,
+                            username = username,
+                        )
                     )
                 },
                 snackbarHostState = snackbarHostState,
@@ -259,13 +276,22 @@ fun MainNavigationComponent(
                     when (loginAction) {
                         is LoginAction.Login -> {}
                         is LoginAction.Upvote -> {
-                            mainViewModel.itemRepo.upvoteItemJob(authentication, ItemId(loginAction.itemId))
+                            mainViewModel.itemRepo.upvoteItemJob(
+                                authentication,
+                                ItemId(loginAction.itemId)
+                            )
                         }
                         is LoginAction.Favorite -> {
-                            mainViewModel.itemRepo.favoriteItemJob(authentication, ItemId(loginAction.itemId))
+                            mainViewModel.itemRepo.favoriteItemJob(
+                                authentication,
+                                ItemId(loginAction.itemId)
+                            )
                         }
                         is LoginAction.Flag -> {
-                            mainViewModel.itemRepo.flagItemJob(authentication, ItemId(loginAction.itemId))
+                            mainViewModel.itemRepo.flagItemJob(
+                                authentication,
+                                ItemId(loginAction.itemId)
+                            )
                         }
                         is LoginAction.Reply -> {
                             mainNavController.navigate(

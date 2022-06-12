@@ -1,4 +1,4 @@
-package com.monoid.hackernews.repo
+package com.monoid.hackernews.data
 
 import androidx.compose.runtime.Immutable
 import androidx.datastore.core.DataStore
@@ -48,7 +48,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
-class ItemRepo(
+class ItemTreeRepository(
     private val authenticationDataStore: DataStore<Authentication>,
     private val httpClient: HttpClient,
     private val itemDao: ItemDao,

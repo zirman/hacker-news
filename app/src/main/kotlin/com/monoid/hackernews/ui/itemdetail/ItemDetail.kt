@@ -16,8 +16,8 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
+import com.monoid.hackernews.data.ItemTreeRow
 import com.monoid.hackernews.navigation.LoginAction
-import com.monoid.hackernews.repo.ItemTreeRow
 
 @Composable
 fun ItemDetail(

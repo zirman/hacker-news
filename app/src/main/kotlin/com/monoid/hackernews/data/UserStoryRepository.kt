@@ -1,4 +1,4 @@
-package com.monoid.hackernews.repo
+package com.monoid.hackernews.data
 
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
@@ -11,13 +11,13 @@ import io.ktor.client.HttpClient
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class UserStoryRepo(
+class UserStoryRepository(
     private val httpClient: HttpClient,
     private val userDao: UserDao,
     private val itemDao: ItemDao,
     private val username: Username,
-) : OrderedItemRepo() {
-    override fun getDbItems(): Flow<List<OrderedItem>> {
+) : Repository<OrderedItem> {
+    override fun getItems(): Flow<List<OrderedItem>> {
         return userDao.userByUsernameWithSubmitted(username.string)
             .map { userWithSubmitted ->
                 userWithSubmitted?.submitted
@@ -32,7 +32,7 @@ class UserStoryRepo(
             }
     }
 
-    override suspend fun updateDbItems() {
+    override suspend fun updateItems() {
         val user = httpClient.getUser(username = username)
         itemDao.itemsInsert(user.submitted.map { ItemDb(id = it.long, by = username.string) })
         userDao.insertReplace(user.toUserApiUpdate())

@@ -1,7 +1,7 @@
 package com.monoid.hackernews
 
 import androidx.lifecycle.ViewModel
-import com.monoid.hackernews.repo.ItemRepo
+import com.monoid.hackernews.data.ItemTreeRepository
 import com.monoid.hackernews.room.AskStoryDao
 import com.monoid.hackernews.room.BestStoryDao
 import com.monoid.hackernews.room.ExpandedDao
@@ -31,7 +31,7 @@ class MainViewModel : ViewModel() {
     val favoriteDao: FavoriteDao
     val flagDao: FlagDao
     val expandedDao: ExpandedDao
-    val itemRepo: ItemRepo
+    val itemRepo: ItemTreeRepository
 
     init {
         val app: HNApplication =
@@ -56,7 +56,7 @@ class MainViewModel : ViewModel() {
         flagDao = app.flagDao
         expandedDao = db.expandedDao()
 
-        itemRepo = ItemRepo(
+        itemRepo = ItemTreeRepository(
             authenticationDataStore = app.settingsDataStore,
             httpClient = httpClient,
             itemDao = itemDao,

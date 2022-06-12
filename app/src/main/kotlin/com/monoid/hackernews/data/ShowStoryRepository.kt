@@ -1,4 +1,4 @@
-package com.monoid.hackernews.repo
+package com.monoid.hackernews.data
 
 import com.monoid.hackernews.api.ItemId
 import com.monoid.hackernews.api.getShowStories
@@ -8,11 +8,11 @@ import io.ktor.client.HttpClient
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class ShowStoryRepo(
+class ShowStoryRepository(
     private val httpClient: HttpClient,
     private val showStoryDao: ShowStoryDao,
-) : OrderedItemRepo() {
-    override fun getDbItems(): Flow<List<OrderedItem>> {
+) : Repository<OrderedItem> {
+    override fun getItems(): Flow<List<OrderedItem>> {
         return showStoryDao.getShowStories()
             .map { showStories ->
                 showStories.map {
@@ -24,7 +24,7 @@ class ShowStoryRepo(
             }
     }
 
-    override suspend fun updateDbItems() {
+    override suspend fun updateItems() {
         showStoryDao.replaceShowStories(
             httpClient.getShowStories().mapIndexed { order, storyId ->
                 ShowStoryDb(

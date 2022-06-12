@@ -1,4 +1,4 @@
-package com.monoid.hackernews.repo
+package com.monoid.hackernews.data
 
 import android.content.Context
 import com.monoid.hackernews.HNApplication
@@ -13,11 +13,11 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 
-class FavoriteStoryRepo(
+class FavoriteStoryRepository(
     private val context: Context,
     private val favoriteDao: FavoriteDao,
-) : OrderedItemRepo() {
-    override fun getDbItems(): Flow<List<OrderedItem>> {
+) : Repository<OrderedItem> {
+    override fun getItems(): Flow<List<OrderedItem>> {
         return HNApplication.instance.settingsDataStore.data
             .map { authentication ->
                 if (authentication.password.isNotEmpty()) {
@@ -38,7 +38,7 @@ class FavoriteStoryRepo(
             }
     }
 
-    override suspend fun updateDbItems() {
+    override suspend fun updateItems() {
         val authentication = context.settingsDataStore.data.first()
 
         if (authentication.password?.isNotEmpty() == true) {

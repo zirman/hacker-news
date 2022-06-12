@@ -53,8 +53,8 @@ import com.google.accompanist.placeholder.shimmer
 import com.monoid.hackernews.R
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
+import com.monoid.hackernews.data.ItemUi
 import com.monoid.hackernews.navigation.LoginAction
-import com.monoid.hackernews.repo.ItemUi
 import com.monoid.hackernews.ui.text.ClickableTextBlock
 import com.monoid.hackernews.ui.text.TextBlock
 import com.monoid.hackernews.ui.util.rememberTimeBy

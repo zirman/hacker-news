@@ -64,9 +64,10 @@ import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.R
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
+import com.monoid.hackernews.data.ItemListRow
+import com.monoid.hackernews.data.OrderedItem
+import com.monoid.hackernews.domain.LiveUpdateUseCase
 import com.monoid.hackernews.navigation.LoginAction
-import com.monoid.hackernews.repo.ItemListRow
-import com.monoid.hackernews.repo.OrderedItemRepo
 import com.monoid.hackernews.settingsDataStore
 import com.monoid.hackernews.ui.itemdetail.ItemDetail
 import com.monoid.hackernews.ui.itemlist.ItemList
@@ -83,7 +84,7 @@ fun HomeScreen(
     mainNavController: NavController,
     windowSizeClass: WindowSizeClass,
     title: String,
-    orderedItemRepo: OrderedItemRepo,
+    orderedItemRepo: LiveUpdateUseCase<OrderedItem>,
     snackbarHostState: SnackbarHostState,
     selectedItemId: ItemId?,
     setSelectedItemId: (ItemId?) -> Unit,
