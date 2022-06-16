@@ -18,11 +18,11 @@ dependencyResolutionManagement {
             version("kotlinx-serialization", "1.3.3")
             version("ktor", "2.0.2")
             version("room", "2.5.0-alpha02")
-            version("lifecycle", "2.5.0-rc01")
-            version("navigation", "2.5.0-rc01")
-            version("compose", "1.2.0-beta03")
+            version("lifecycle", "2.5.0-rc02")
+            version("navigation", "2.5.0-rc02")
+            version("compose", "1.2.0-rc01")
             version("material3", "1.0.0-alpha13")
-            version("accompanist", "0.24.10-beta")
+            version("accompanist", "0.24.11-rc")
 
             bundle(
                 "kotlinx",
@@ -178,19 +178,19 @@ dependencyResolutionManagement {
                 .version("1.2.0")
 
             library("core-ktx", "androidx.core", "core-ktx")
-                .version("1.9.0-alpha04")
+                .version("1.9.0-alpha05")
 
             library("appcompat", "androidx.appcompat", "appcompat")
-                .version("1.6.0-alpha04")
+                .version("1.6.0-alpha05")
 
             library("window", "androidx.window", "window")
                 .version("1.1.0-alpha02")
 
             library("activity-ktx", "androidx.activity", "activity-ktx")
-                .version("1.6.0-alpha04")
+                .version("1.6.0-alpha05")
 
             library("activity-compose", "androidx.activity", "activity-compose")
-                .version("1.6.0-alpha03")
+                .version("1.6.0-alpha05")
 
             library("fragment-ktx", "androidx.fragment", "fragment-ktx")
                 .version("1.5.0-rc01")
@@ -208,7 +208,7 @@ dependencyResolutionManagement {
                 .version("1.0.0-alpha08")
 
             library("benchmark-junit4", "androidx.benchmark", "benchmark-junit4")
-                .version("1.1.0-rc03")
+                .version("1.1.0")
 
             library("lifecycle-runtime-ktx", "androidx.lifecycle", "lifecycle-runtime-ktx")
                 .versionRef("lifecycle")
