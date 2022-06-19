@@ -40,7 +40,7 @@ object StoriesNavType : NavType<Stories>(isNullableAllowed = false) {
     }
 
     override fun get(bundle: Bundle, key: String): Stories? {
-        return bundle.getParcelable(key, Stories::class.java)
+        return bundle.getParcelable(key)
     }
 
     override fun parseValue(value: String): Stories {
@@ -54,7 +54,7 @@ object StoriesNavType : NavType<Stories>(isNullableAllowed = false) {
 
 private object ActionNavType : NavType<LoginAction>(isNullableAllowed = true) {
     override fun get(bundle: Bundle, key: String): LoginAction? {
-        return bundle.getParcelable(key, LoginAction::class.java)
+        return bundle.getParcelable(key)
     }
 
     override fun parseValue(value: String): LoginAction {
@@ -167,7 +167,7 @@ sealed class MainNavigation<T : Any> {
             "home?$storiesKey=${StoriesNavType.encodeValue(args)}"
 
         override fun argsFromRoute(navBackStackEntry: NavBackStackEntry): Stories =
-            navBackStackEntry.arguments?.getParcelable(storiesKey, Stories::class.java)
+            navBackStackEntry.arguments?.getParcelable(storiesKey)
                 ?: Stories.Top
     }
 

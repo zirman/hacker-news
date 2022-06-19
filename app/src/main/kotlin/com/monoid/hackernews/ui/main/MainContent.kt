@@ -49,11 +49,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.metrics.performance.PerformanceMetricsState
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.plusAssign
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.navigation.material.BottomSheetNavigator
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
+import com.monoid.hackernews.BuildConfig
 import com.monoid.hackernews.MainNavigation
 import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.R
@@ -83,18 +85,20 @@ fun MainContent(
             rememberMetricsStateHolder()
 
         // save route to jank stats
-        LaunchedEffect(mainNavController, metricsStateHolder) {
-            var route: String? = null
+        LaunchedEffect(Unit) {
+            if (BuildConfig.DEBUG.not()) {
+                var route: String? = null
 
-            mainNavController.addOnDestinationChangedListener { _, destination, _ ->
-                if (route != null) {
-                    metricsStateHolder.state!!.removeState("route")
-                }
+                mainNavController.addOnDestinationChangedListener { _, destination, _ ->
+                    if (route != null) {
+                        metricsStateHolder.state!!.removeState("route")
+                    }
 
-                route = destination.route
+                    route = destination.route
 
-                if (route != null) {
-                    metricsStateHolder.state!!.addState("route", "$route")
+                    if (route != null) {
+                        metricsStateHolder.state!!.addState("route", "$route")
+                    }
                 }
             }
         }
