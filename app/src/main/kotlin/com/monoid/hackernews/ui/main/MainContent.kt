@@ -86,7 +86,7 @@ fun MainContent(
         LaunchedEffect(mainNavController, metricsStateHolder) {
             var route: String? = null
 
-            mainNavController.addOnDestinationChangedListener { c, destination, a ->
+            mainNavController.addOnDestinationChangedListener { _, destination, _ ->
                 if (route != null) {
                     metricsStateHolder.state!!.removeState("route")
                 }
