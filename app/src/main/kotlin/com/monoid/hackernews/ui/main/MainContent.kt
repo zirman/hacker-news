@@ -1,7 +1,6 @@
 package com.monoid.hackernews.ui.main
 
 import android.content.Context
-import android.content.Intent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
@@ -48,12 +47,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.metrics.performance.PerformanceMetricsState
 import androidx.navigation.NavHostController
 import androidx.navigation.plusAssign
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.navigation.material.BottomSheetNavigator
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.monoid.hackernews.MainNavigation
+import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.R
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.datastore.Authentication
@@ -61,11 +63,10 @@ import com.monoid.hackernews.navigation.LoginAction
 import com.monoid.hackernews.settingsDataStore
 import com.monoid.hackernews.ui.navigationdrawer.NavigationDrawerContent
 import com.monoid.hackernews.ui.navigationdrawer.NavigationRailContent
-import kotlinx.coroutines.channels.Channel
+import com.monoid.hackernews.util.rememberMetricsStateHolder
 
 @Composable
 fun MainContent(
-    newIntentChannel: Channel<Intent>,
     windowSizeClass: WindowSizeClass,
 ) {
     val drawerState: DrawerState =
@@ -78,9 +79,32 @@ fun MainContent(
         val mainNavController: NavHostController =
             rememberAnimatedNavController()
 
+        val metricsStateHolder: PerformanceMetricsState.MetricsStateHolder =
+            rememberMetricsStateHolder()
+
+        // save route to jank stats
+        LaunchedEffect(mainNavController, metricsStateHolder) {
+            var route: String? = null
+
+            mainNavController.addOnDestinationChangedListener { c, destination, a ->
+                if (route != null) {
+                    metricsStateHolder.state!!.removeState("route")
+                }
+
+                route = destination.route
+
+                if (route != null) {
+                    metricsStateHolder.state!!.addState("route", "$route")
+                }
+            }
+        }
+
+        val mainViewModel: MainViewModel =
+            viewModel()
+
         // handle deep links
-        LaunchedEffect(Unit) {
-            for (intent in newIntentChannel) {
+        LaunchedEffect(mainNavController) {
+            for (intent in mainViewModel.newIntentChannel) {
                 mainNavController.handleDeepLink(intent)
             }
         }

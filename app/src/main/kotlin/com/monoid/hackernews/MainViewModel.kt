@@ -1,5 +1,6 @@
 package com.monoid.hackernews
 
+import android.content.Intent
 import androidx.lifecycle.ViewModel
 import com.monoid.hackernews.data.ItemTreeRepository
 import com.monoid.hackernews.room.AskStoryDao
@@ -16,8 +17,10 @@ import com.monoid.hackernews.room.TopStoryDao
 import com.monoid.hackernews.room.UpvoteDao
 import com.monoid.hackernews.room.UserDao
 import io.ktor.client.HttpClient
+import kotlinx.coroutines.channels.Channel
 
 class MainViewModel : ViewModel() {
+    val newIntentChannel = Channel<Intent>()
     val httpClient: HttpClient
     val topStoryDao: TopStoryDao
     val newStoryDao: NewStoryDao

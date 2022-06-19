@@ -3,7 +3,9 @@ package com.monoid.hackernews
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.SideEffect
@@ -11,24 +13,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.metrics.performance.JankStats
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.monoid.hackernews.ui.main.MainContent
 import com.monoid.hackernews.ui.theme.AppTheme
 import com.monoid.hackernews.ui.util.rememberUseDarkTheme
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asExecutor
+import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 
 class MainActivity : FragmentActivity() {
-    private lateinit var newIntentChannel: Channel<Intent>
-
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        newIntentChannel.trySend(intent)
-    }
+    private val mainViewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        newIntentChannel = Channel()
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
@@ -56,10 +60,39 @@ class MainActivity : FragmentActivity() {
                 }
 
                 MainContent(
-                    newIntentChannel = newIntentChannel,
                     windowSizeClass = calculateWindowSizeClass(LocalContext.current as Activity)
                 )
             }
         }
+
+        if (BuildConfig.DEBUG.not()) {
+            val jankStats: JankStats = JankStats
+                .createAndTrack(window, Dispatchers.Default.asExecutor()) { frameData ->
+                    if (frameData.isJank) {
+                        val states = frameData.states.joinToString { "${it.stateName}:${it.state}" }
+
+                        Log.w(
+                            "Jank",
+                            "Jank states[$states] ${TimeUnit.NANOSECONDS.toMillis(frameData.frameDurationUiNanos)}ms"
+                        )
+                    }
+                }
+
+            lifecycle.coroutineScope.launch {
+                lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                    try {
+                        jankStats.isTrackingEnabled = true
+                        awaitCancellation()
+                    } finally {
+                        jankStats.isTrackingEnabled = false
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        mainViewModel.newIntentChannel.trySend(intent)
     }
 }

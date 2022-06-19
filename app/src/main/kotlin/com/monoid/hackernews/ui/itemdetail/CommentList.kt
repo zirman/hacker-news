@@ -15,15 +15,20 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.metrics.performance.PerformanceMetricsState
+import com.monoid.hackernews.BuildConfig
 import com.monoid.hackernews.Username
 import com.monoid.hackernews.api.ItemId
 import com.monoid.hackernews.data.ItemTreeRow
 import com.monoid.hackernews.data.ItemUiWithThreadDepth
 import com.monoid.hackernews.navigation.LoginAction
+import com.monoid.hackernews.util.rememberMetricsStateHolder
 
 @Composable
 fun CommentList(
@@ -36,6 +41,25 @@ fun CommentList(
     listState: LazyListState = rememberLazyListState(),
 ) {
     BoxWithConstraints(modifier = modifier) {
+        if (BuildConfig.DEBUG.not()) {
+            val metricsStateHolder: PerformanceMetricsState.MetricsStateHolder =
+                rememberMetricsStateHolder()
+
+            // Reporting scrolling state from compose should be done from side effect to prevent
+            // recomposition.
+            LaunchedEffect(metricsStateHolder) {
+                snapshotFlow { listState.isScrollInProgress }.collect { isScrolling ->
+                    metricsStateHolder.state!!.run {
+                        if (isScrolling) {
+                            addState("CommentList", "Scrolling")
+                        } else {
+                            removeState("CommentList")
+                        }
+                    }
+                }
+            }
+        }
+
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             state = listState,

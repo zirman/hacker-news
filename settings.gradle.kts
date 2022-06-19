@@ -107,7 +107,8 @@ dependencyResolutionManagement {
                     "material-icons-extended",
                     "foundation",
                     "runtime-livedata",
-                    "constraintlayout"
+                    "constraintlayout",
+                    "metrics-performance"
                 )
             )
 
@@ -288,6 +289,9 @@ dependencyResolutionManagement {
 
             library("constraintlayout", "androidx.constraintlayout", "constraintlayout-compose")
                 .version("1.1.0-alpha02")
+
+            library("metrics-performance", "androidx.metrics", "metrics-performance")
+                .version("1.0.0-alpha01")
 
             library(
                 "accompanist-navigation-animation",
