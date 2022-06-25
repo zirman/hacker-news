@@ -14,15 +14,15 @@ dependencyResolutionManagement {
             version("gradle-plugin-protobuf", "0.8.18")
             version("gradle-plugin-versions", "0.42.0")
 
-            version("kotlinx-coroutines", "1.6.2")
+            version("kotlinx-coroutines", "1.6.3")
             version("kotlinx-serialization", "1.3.3")
             version("ktor", "2.0.2")
             version("room", "2.5.0-alpha02")
             version("lifecycle", "2.5.0-rc02")
             version("navigation", "2.5.0-rc02")
-            version("compose", "1.2.0-rc01")
+            version("compose", "1.2.0-rc02")
             version("material3", "1.0.0-alpha13")
-            version("accompanist", "0.24.11-rc")
+            version("accompanist", "0.24.12-rc")
 
             bundle(
                 "kotlinx",
@@ -140,7 +140,7 @@ dependencyResolutionManagement {
             ).versionRef("kotlinx-serialization")
 
             library("kotlinx-datetime", "org.jetbrains.kotlinx", "kotlinx-datetime")
-                .version("0.3.3")
+                .version("0.4.0")
 
             library("ktor-client-core", "io.ktor", "ktor-client-core")
                 .versionRef("ktor")
@@ -158,7 +158,7 @@ dependencyResolutionManagement {
                 .versionRef("ktor")
 
             library("protobuf-kotlin-lite", "com.google.protobuf", "protobuf-kotlin-lite")
-                .version("3.21.1")
+                .version("3.21.2")
 
             library("ksp-symbol-processing-api", "com.google.devtools.ksp", "symbol-processing-api")
                 .versionRef("gradle-plugin-ksp")
