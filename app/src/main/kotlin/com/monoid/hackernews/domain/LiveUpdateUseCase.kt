@@ -28,7 +28,7 @@ class LiveUpdateUseCase<out T>(
                     while (hasConnectivity) {
                         try {
                             repository.updateItems()
-                        } catch (error: Exception) {
+                        } catch (error: Throwable) {
                             if (error is CancellationException) throw error
                         }
 

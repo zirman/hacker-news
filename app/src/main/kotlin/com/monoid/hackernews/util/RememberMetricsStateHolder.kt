@@ -6,7 +6,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.metrics.performance.PerformanceMetricsState
 
 @Composable
-fun rememberMetricsStateHolder(): PerformanceMetricsState.MetricsStateHolder {
+fun rememberMetricsStateHolder(): PerformanceMetricsState.Holder {
     val view = LocalView.current
     return remember(view) { PerformanceMetricsState.getForHierarchy(view) }
 }

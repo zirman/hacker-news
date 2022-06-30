@@ -42,7 +42,7 @@ fun CommentList(
 ) {
     BoxWithConstraints(modifier = modifier) {
         if (BuildConfig.DEBUG.not()) {
-            val metricsStateHolder: PerformanceMetricsState.MetricsStateHolder =
+            val metricsStateHolder: PerformanceMetricsState.Holder =
                 rememberMetricsStateHolder()
 
             // Reporting scrolling state from compose should be done from side effect to prevent

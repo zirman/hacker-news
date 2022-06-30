@@ -49,7 +49,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.metrics.performance.PerformanceMetricsState
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.plusAssign
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -81,7 +80,7 @@ fun MainContent(
         val mainNavController: NavHostController =
             rememberAnimatedNavController()
 
-        val metricsStateHolder: PerformanceMetricsState.MetricsStateHolder =
+        val metricsStateHolder: PerformanceMetricsState.Holder =
             rememberMetricsStateHolder()
 
         // save route to jank stats

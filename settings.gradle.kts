@@ -6,22 +6,22 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         create("libs") {
-            val kotlin = "1.6.21"
+            val kotlin = "1.7.0"
 
             version("gradle-plugin-kotlin", kotlin)
             version("gradle-plugin-ksp", "$kotlin-1.0.6")
             version("gradle-plugin-android", "7.2.1")
-            version("gradle-plugin-protobuf", "0.8.18")
+            version("gradle-plugin-protobuf", "0.8.19")
             version("gradle-plugin-versions", "0.42.0")
 
             version("kotlinx-coroutines", "1.6.3")
             version("kotlinx-serialization", "1.3.3")
-            version("ktor", "2.0.2")
+            version("ktor", "2.0.3")
             version("room", "2.5.0-alpha02")
-            version("lifecycle", "2.5.0-rc02")
-            version("navigation", "2.5.0-rc02")
-            version("compose", "1.2.0-rc02")
-            version("material3", "1.0.0-alpha13")
+            version("lifecycle", "2.6.0-alpha01")
+            version("navigation", "2.5.0")
+            version("compose", "1.3.0-alpha01")
+            version("material3", "1.0.0-alpha14")
             version("accompanist", "0.24.12-rc")
 
             bundle(
@@ -194,7 +194,7 @@ dependencyResolutionManagement {
                 .version("1.6.0-alpha05")
 
             library("fragment-ktx", "androidx.fragment", "fragment-ktx")
-                .version("1.5.0-rc01")
+                .version("1.5.0")
 
             library("palette-ktx", "androidx.palette", "palette-ktx")
                 .version("1.0.0")
@@ -288,10 +288,10 @@ dependencyResolutionManagement {
                 .versionRef("compose")
 
             library("constraintlayout", "androidx.constraintlayout", "constraintlayout-compose")
-                .version("1.1.0-alpha02")
+                .version("1.1.0-alpha03")
 
             library("metrics-performance", "androidx.metrics", "metrics-performance")
-                .version("1.0.0-alpha01")
+                .version("1.0.0-alpha02")
 
             library(
                 "accompanist-navigation-animation",

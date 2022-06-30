@@ -80,7 +80,7 @@ android {
         viewBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.get()
+        kotlinCompilerExtensionVersion = "1.2.0"
     }
     namespace = "com.monoid.hackernews"
 }
