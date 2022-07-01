@@ -21,13 +21,13 @@ dependencyResolutionManagement {
             version("lifecycle", "2.6.0-alpha01")
             version("navigation", "2.5.0")
             version("compose", "1.3.0-alpha01")
+            version("compose-compiler", "1.2.0")
             version("material3", "1.0.0-alpha14")
             version("accompanist", "0.24.12-rc")
 
             bundle(
                 "kotlinx",
                 listOf(
-                    "kotlinx-coroutines-core",
                     "kotlinx-coroutines-android",
                     "kotlinx-coroutines-play-services",
 
@@ -112,9 +112,6 @@ dependencyResolutionManagement {
                 )
             )
 
-            library("kotlinx-coroutines-core", "org.jetbrains.kotlinx", "kotlinx-coroutines-core")
-                .versionRef("kotlinx-coroutines")
-
             library(
                 "kotlinx-coroutines-android",
                 "org.jetbrains.kotlinx",
@@ -173,6 +170,9 @@ dependencyResolutionManagement {
                 .versionRef("room")
 
             library("room-paging", "androidx.room", "room-paging")
+                .versionRef("room")
+
+            library("room-compiler", "androidx.room", "room-compiler")
                 .versionRef("room")
 
             library("collection-ktx", "androidx.collection", "collection-ktx")
@@ -319,6 +319,9 @@ dependencyResolutionManagement {
 
             library("accompanist-placeholder", "com.google.accompanist", "accompanist-placeholder")
                 .versionRef("accompanist")
+
+            library("slf4j-simple", "org.slf4j", "slf4j-simple")
+                .version("1.6.1")
         }
     }
 }

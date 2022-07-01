@@ -60,17 +60,12 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
         freeCompilerArgs = listOf(
-            "-opt-in=kotlin.RequiresOptIn",
-            "-opt-in=kotlin.time.ExperimentalTime",
             "-opt-in=kotlinx.coroutines.FlowPreview",
             "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-            "-opt-in=kotlinx.coroutines.InternalCoroutinesApi",
-            "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
             "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
             "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
             "-opt-in=androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi",
             "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
-            "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
             "-opt-in=androidx.compose.ui.text.ExperimentalTextApi",
             "-opt-in=com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi",
         )
@@ -80,7 +75,7 @@ android {
         viewBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.2.0"
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
     namespace = "com.monoid.hackernews"
 }
@@ -110,5 +105,6 @@ dependencies {
     implementation(libs.bundles.ktor)
     implementation(libs.bundles.androidx)
     implementation(libs.bundles.google)
-    ksp("androidx.room:room-compiler:${libs.versions.room.get()}")
+    compileOnly(libs.slf4j.simple)
+    ksp(libs.room.compiler)
 }
