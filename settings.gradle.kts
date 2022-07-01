@@ -23,7 +23,7 @@ dependencyResolutionManagement {
             version("compose", "1.3.0-alpha01")
             version("compose-compiler", "1.2.0")
             version("material3", "1.0.0-alpha14")
-            version("accompanist", "0.24.12-rc")
+            version("accompanist", "0.24.13-rc")
 
             bundle(
                 "kotlinx",
@@ -321,7 +321,7 @@ dependencyResolutionManagement {
                 .versionRef("accompanist")
 
             library("slf4j-simple", "org.slf4j", "slf4j-simple")
-                .version("1.6.1")
+                .version("2.0.0-alpha7")
         }
     }
 }
