@@ -1,14 +1,18 @@
 package com.monoid.hackernews
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.fadeIn
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.monoid.hackernews.api.ItemId
@@ -30,6 +34,45 @@ enum class Stories : Parcelable {
     Show,
     Job,
     Favorite,
+}
+
+@StringRes
+fun Stories.toShortcutShortLabelStringId(): Int {
+    return when (this) {
+        Stories.Top -> R.string.top_stories_shortcut_short_label
+        Stories.New -> R.string.new_stories_shortcut_short_label
+        Stories.Best -> R.string.best_stories_shortcut_short_label
+        Stories.Ask -> R.string.ask_hacker_news_shortcut_short_label
+        Stories.Show -> R.string.show_hacker_news_shortcut_short_label
+        Stories.Job -> R.string.jobs_shortcut_short_label
+        Stories.Favorite -> R.string.favorites_shortcut_short_label
+    }
+}
+
+@StringRes
+fun Stories.toShortcutLongLabelStringId(): Int {
+    return when (this) {
+        Stories.Top -> R.string.top_stories_shortcut_long_label
+        Stories.New -> R.string.new_stories_shortcut_long_label
+        Stories.Best -> R.string.best_stories_shortcut_long_label
+        Stories.Ask -> R.string.ask_hacker_news_shortcut_long_label
+        Stories.Show -> R.string.show_hacker_news_shortcut_long_label
+        Stories.Job -> R.string.jobs_shortcut_long_label
+        Stories.Favorite -> R.string.favorites_shortcut_long_label
+    }
+}
+
+@DrawableRes
+fun Stories.toShortcutIconDrawableId(): Int {
+    return when (this) {
+        Stories.Top -> R.drawable.trending_up_48px
+        Stories.New -> R.drawable.new_releases_48px
+        Stories.Best -> R.drawable.grade_48px
+        Stories.Ask -> R.drawable.forum_48px
+        Stories.Show -> R.drawable.present_to_all_48px
+        Stories.Job -> R.drawable.work_48px
+        Stories.Favorite -> R.drawable.bookmarks_48px
+    }
 }
 
 val jsonDecoder: Json = Json { ignoreUnknownKeys = true }
@@ -167,8 +210,31 @@ sealed class MainNavigation<T : Any> {
             "home?$storiesKey=${StoriesNavType.encodeValue(args)}"
 
         override fun argsFromRoute(navBackStackEntry: NavBackStackEntry): Stories =
-            navBackStackEntry.arguments?.getParcelable(storiesKey)
-                ?: Stories.Top
+            when (
+                navBackStackEntry.arguments!!
+                    .getParcelable<Intent>(NavController.KEY_DEEP_LINK_INTENT)
+                    ?.data?.pathSegments
+                    ?.firstOrNull()
+                    ?.lowercase()
+            ) {
+                "news" ->
+                    Stories.Top
+                "newest" ->
+                    Stories.New
+                "best" ->
+                    Stories.Best
+                "show" ->
+                    Stories.Show
+                "ask" ->
+                    Stories.Ask
+                "jobs" ->
+                    Stories.Job
+                "favorites" ->
+                    Stories.Favorite
+                else ->
+                    navBackStackEntry.arguments?.getParcelable(storiesKey)
+                        ?: Stories.Top
+            }
     }
 
     object Login : MainNavigation<LoginAction>() {

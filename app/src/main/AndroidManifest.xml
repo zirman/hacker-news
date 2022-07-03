@@ -21,8 +21,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Material3.DynamicColors.DayNight">
 
-        <!-- Handling density changes causes a crash on ChromeOS. -->
-        <!-- |density -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -43,6 +41,13 @@
                 <data android:host="news.ycombinator.com" />
                 <data android:scheme="http" />
                 <data android:scheme="https" />
+                <data android:pathPrefix="/" />
+                <data android:pathPrefix="/news" />
+                <data android:pathPrefix="/newest" />
+                <data android:pathPrefix="/best" />
+                <data android:pathPrefix="/show" />
+                <data android:pathPrefix="/ask" />
+                <data android:pathPrefix="/jobs" />
                 <data android:pathPrefix="/item" />
                 <data android:pathPrefix="/user" />
                 <data android:pathPrefix="/favorites" />

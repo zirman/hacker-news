@@ -25,7 +25,7 @@ android {
     }
     defaultConfig {
         applicationId = "com.monoid.hackernews"
-        minSdk = 21
+        minSdk = 26
         targetSdk = 32
         versionCode = 16
         versionName = "1.0"

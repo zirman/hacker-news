@@ -2,7 +2,7 @@ package com.monoid.hackernews.ui.navigationdrawer
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.twotone.Bookmark
+import androidx.compose.material.icons.twotone.Bookmarks
 import androidx.compose.material.icons.twotone.NewReleases
 import androidx.compose.material.icons.twotone.PresentToAll
 import androidx.compose.material.icons.twotone.QuestionAnswer
@@ -73,7 +73,7 @@ val storiesToNavigationItem: Map<Stories, NavigationDrawerItemData> =
         Pair(
             Stories.Favorite,
             NavigationDrawerItemData(
-                icon = Icons.TwoTone.Bookmark,
+                icon = Icons.TwoTone.Bookmarks,
                 titleId = R.string.favorites,
                 route = MainNavigation.Home.routeWithArgs(Stories.Favorite),
             )

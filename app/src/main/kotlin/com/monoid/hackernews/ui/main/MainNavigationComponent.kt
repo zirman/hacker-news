@@ -1,6 +1,8 @@
 package com.monoid.hackernews.ui.main
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -20,6 +22,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.getSystemService
+import androidx.core.content.pm.ShortcutInfoCompat
+import androidx.core.content.pm.ShortcutManagerCompat
+import androidx.core.graphics.drawable.IconCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
@@ -29,6 +34,7 @@ import androidx.navigation.navDeepLink
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.material.bottomSheet
+import com.monoid.hackernews.MainActivity
 import com.monoid.hackernews.MainNavigation
 import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.R
@@ -45,6 +51,9 @@ import com.monoid.hackernews.data.TopStoryRepository
 import com.monoid.hackernews.data.UserStoryRepository
 import com.monoid.hackernews.domain.LiveUpdateUseCase
 import com.monoid.hackernews.navigation.LoginAction
+import com.monoid.hackernews.toShortcutIconDrawableId
+import com.monoid.hackernews.toShortcutLongLabelStringId
+import com.monoid.hackernews.toShortcutShortLabelStringId
 import com.monoid.hackernews.ui.home.HomeScreen
 import com.monoid.hackernews.ui.login.LoginContent
 import com.monoid.hackernews.ui.reply.ReplyContent
@@ -109,10 +118,59 @@ fun MainNavigationComponent(
         modifier = modifier,
     ) {
         composable(
+            route = MainNavigation.User.route,
+            deepLinks = listOf(
+                navDeepLink { uriPattern = "http://news.ycombinator.com/user?id={username}" },
+                navDeepLink { uriPattern = "https://news.ycombinator.com/user?id={username}" },
+            ),
+            arguments = MainNavigation.User.arguments,
+            enterTransition = MainNavigation.User.enterTransition,
+            exitTransition = MainNavigation.User.exitTransition,
+            popEnterTransition = MainNavigation.User.popEnterTransition,
+            popExitTransition = MainNavigation.User.popExitTransition,
+        ) { navBackStackEntry ->
+            val username: Username =
+                MainNavigation.User.argsFromRoute(navBackStackEntry = navBackStackEntry)
+
+            val (selectedItemId, setSelectedItemId) =
+                rememberSaveable(stateSaver = itemIdSaver) { mutableStateOf(null) }
+
+            // Used to keep track of if the story was scrolled last.
+            val (detailInteraction, setDetailInteraction) =
+                rememberSaveable { mutableStateOf(false) }
+
+            HomeScreen(
+                mainViewModel = mainViewModel,
+                drawerState = drawerState,
+                mainNavController = mainNavController,
+                windowSizeClass = windowSizeClass,
+                title = username.string,
+                orderedItemRepo = remember(mainViewModel, username) {
+                    LiveUpdateUseCase(
+                        context.getSystemService()!!,
+                        UserStoryRepository(
+                            httpClient = mainViewModel.httpClient,
+                            userDao = mainViewModel.userDao,
+                            itemDao = mainViewModel.itemDao,
+                            username = username,
+                        )
+                    )
+                },
+                snackbarHostState = snackbarHostState,
+                selectedItemId = selectedItemId,
+                setSelectedItemId = setSelectedItemId,
+                detailInteraction = detailInteraction,
+                setDetailInteraction = setDetailInteraction,
+            )
+        }
+
+        composable(
             route = MainNavigation.Home.route,
             deepLinks = listOf(
                 navDeepLink { uriPattern = "http://news.ycombinator.com/item?id={itemId}" },
                 navDeepLink { uriPattern = "https://news.ycombinator.com/item?id={itemId}" },
+                navDeepLink { uriPattern = "http://news.ycombinator.com/{deepLinkRoute}" },
+                navDeepLink { uriPattern = "https://news.ycombinator.com/{deepLinkRoute}" },
             ),
             arguments = MainNavigation.Home.arguments,
             enterTransition = MainNavigation.Home.enterTransition,
@@ -120,8 +178,45 @@ fun MainNavigationComponent(
             popEnterTransition = MainNavigation.Home.popEnterTransition,
             popExitTransition = MainNavigation.Home.popExitTransition,
         ) { navBackStackEntry ->
-            val stories: Stories =
-                MainNavigation.Home.argsFromRoute(navBackStackEntry)
+            val stories: Stories = remember { MainNavigation.Home.argsFromRoute(navBackStackEntry) }
+
+            LaunchedEffect(navBackStackEntry) {
+                ShortcutManagerCompat.pushDynamicShortcut(
+                    context,
+                    ShortcutInfoCompat.Builder(context, stories.name)
+                        .setShortLabel(context.resources.getString(stories.toShortcutShortLabelStringId()))
+                        .setLongLabel(context.resources.getString(stories.toShortcutLongLabelStringId()))
+                        .setIcon(
+                            IconCompat.createWithResource(
+                                context,
+                                stories.toShortcutIconDrawableId()
+                            )
+                        )
+                        .setIntent(
+                            Intent(context, MainActivity::class.java).apply {
+                                action = Intent.ACTION_VIEW
+
+                                data = Uri.parse("https://news.ycombinator.com")
+                                    .buildUpon()
+                                    .appendPath(
+                                        when (stories) {
+                                            Stories.Top -> "news"
+                                            Stories.New -> "newest"
+                                            Stories.Best -> "best"
+                                            Stories.Ask -> "ask"
+                                            Stories.Show -> "show"
+                                            Stories.Job -> "jobs"
+                                            Stories.Favorite -> "favorites"
+                                        }
+                                    )
+                                    .build().also {
+                                        println("FOOBAR shortcut $it")
+                                    }
+                            }
+                        )
+                        .build()
+                )
+            }
 
             val (selectedItemId, setSelectedItemId) =
                 rememberSaveable(stateSaver = itemIdSaver) {
@@ -200,53 +295,6 @@ fun MainNavigationComponent(
                                     favoriteDao = mainViewModel.favoriteDao,
                                 )
                         }
-                    )
-                },
-                snackbarHostState = snackbarHostState,
-                selectedItemId = selectedItemId,
-                setSelectedItemId = setSelectedItemId,
-                detailInteraction = detailInteraction,
-                setDetailInteraction = setDetailInteraction,
-            )
-        }
-
-        composable(
-            route = MainNavigation.User.route,
-            deepLinks = listOf(
-                navDeepLink { uriPattern = "http://news.ycombinator.com/user?id={username}" },
-                navDeepLink { uriPattern = "https://news.ycombinator.com/user?id={username}" },
-            ),
-            arguments = MainNavigation.User.arguments,
-            enterTransition = MainNavigation.User.enterTransition,
-            exitTransition = MainNavigation.User.exitTransition,
-            popEnterTransition = MainNavigation.User.popEnterTransition,
-            popExitTransition = MainNavigation.User.popExitTransition,
-        ) { navBackStackEntry ->
-            val username: Username =
-                MainNavigation.User.argsFromRoute(navBackStackEntry = navBackStackEntry)
-
-            val (selectedItemId, setSelectedItemId) =
-                rememberSaveable(stateSaver = itemIdSaver) { mutableStateOf(null) }
-
-            // Used to keep track of if the story was scrolled last.
-            val (detailInteraction, setDetailInteraction) =
-                rememberSaveable { mutableStateOf(false) }
-
-            HomeScreen(
-                mainViewModel = mainViewModel,
-                drawerState = drawerState,
-                mainNavController = mainNavController,
-                windowSizeClass = windowSizeClass,
-                title = username.string,
-                orderedItemRepo = remember(mainViewModel, username) {
-                    LiveUpdateUseCase(
-                        context.getSystemService()!!,
-                        UserStoryRepository(
-                            httpClient = mainViewModel.httpClient,
-                            userDao = mainViewModel.userDao,
-                            itemDao = mainViewModel.itemDao,
-                            username = username,
-                        )
                     )
                 },
                 snackbarHostState = snackbarHostState,

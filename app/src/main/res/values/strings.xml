@@ -36,4 +36,18 @@
     <string name="back_online">Back Online</string>
     <string name="offline">Offline</string>
     <string name="expand">Expand</string>
+    <string name="top_stories_shortcut_long_label">Top Stories</string>
+    <string name="top_stories_shortcut_short_label">Top HN</string>
+    <string name="new_stories_shortcut_long_label">New Stories</string>
+    <string name="new_stories_shortcut_short_label">New HN</string>
+    <string name="best_stories_shortcut_long_label">Best Stories</string>
+    <string name="best_stories_shortcut_short_label">Best HN</string>
+    <string name="show_hacker_news_shortcut_long_label">Show Hacker News</string>
+    <string name="show_hacker_news_shortcut_short_label">Show HN</string>
+    <string name="ask_hacker_news_shortcut_long_label">Ask Hacker News</string>
+    <string name="ask_hacker_news_shortcut_short_label">Ask HN</string>
+    <string name="jobs_shortcut_long_label">Jobs Hacker News</string>
+    <string name="jobs_shortcut_short_label">Jobs HN</string>
+    <string name="favorites_shortcut_long_label">Favorites HN</string>
+    <string name="favorites_shortcut_short_label">Favorites</string>
 </resources>
