@@ -1,6 +1,8 @@
 package com.monoid.hackernews
 
 import android.app.Application
+import android.content.Intent
+import android.content.IntentFilter
 import androidx.room.Room
 import com.monoid.hackernews.api.getFavorites
 import com.monoid.hackernews.api.getUpvoted
@@ -130,6 +132,14 @@ class HNApplication : Application() {
                 }
             }
         }
+
+        updateAndPushDynamicShortcuts()
+
+        // register locale changed broadcast receiver
+        registerReceiver(
+            LocaleChangedBroadcastReceiver(),
+            IntentFilter(Intent.ACTION_LOCALE_CHANGED)
+        )
     }
 
     override fun onTerminate() {

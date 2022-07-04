@@ -66,6 +66,7 @@ dependencyResolutionManagement {
                 "androidx",
                 listOf(
                     "core-ktx",
+                    "core-google-shortcuts",
                     "appcompat",
                     "window",
                     "activity-ktx",
@@ -180,6 +181,9 @@ dependencyResolutionManagement {
 
             library("core-ktx", "androidx.core", "core-ktx")
                 .version("1.9.0-alpha05")
+
+            library("core-google-shortcuts", "androidx.core", "core-google-shortcuts")
+                .version("1.0.1")
 
             library("appcompat", "androidx.appcompat", "appcompat")
                 .version("1.6.0-alpha05")

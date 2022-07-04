@@ -14,7 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.metrics.performance.JankStats
 import com.google.accompanist.systemuicontroller.SystemUiController
@@ -78,7 +78,7 @@ class MainActivity : FragmentActivity() {
                     }
                 }
 
-            lifecycle.coroutineScope.launch {
+            lifecycleScope.launch {
                 lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                     try {
                         jankStats.isTrackingEnabled = true
@@ -93,6 +93,6 @@ class MainActivity : FragmentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        mainViewModel.newIntentChannel.trySend(intent)
+        lifecycleScope.launch { mainViewModel.newIntentChannel.send(intent) }
     }
 }

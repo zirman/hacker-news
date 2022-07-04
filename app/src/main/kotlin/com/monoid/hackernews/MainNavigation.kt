@@ -1,5 +1,6 @@
 package com.monoid.hackernews
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -10,6 +11,8 @@ import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.fadeIn
+import androidx.core.content.pm.ShortcutInfoCompat
+import androidx.core.graphics.drawable.IconCompat
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
@@ -73,6 +76,34 @@ fun Stories.toShortcutIconDrawableId(): Int {
         Stories.Job -> R.drawable.work_48px
         Stories.Favorite -> R.drawable.bookmarks_48px
     }
+}
+
+fun Stories.toShortcutInfoCompat(context: Context): ShortcutInfoCompat {
+    return ShortcutInfoCompat.Builder(context, name)
+        .setShortLabel(context.resources.getString(toShortcutShortLabelStringId()))
+        .setLongLabel(context.resources.getString(toShortcutLongLabelStringId()))
+        .setIcon(IconCompat.createWithResource(context, toShortcutIconDrawableId()))
+        .setIntent(
+            Intent(context, MainActivity::class.java).apply {
+                action = Intent.ACTION_VIEW
+
+                data = Uri.parse("https://news.ycombinator.com")
+                    .buildUpon()
+                    .appendPath(
+                        when (this@toShortcutInfoCompat) {
+                            Stories.Top -> "news"
+                            Stories.New -> "newest"
+                            Stories.Best -> "best"
+                            Stories.Ask -> "ask"
+                            Stories.Show -> "show"
+                            Stories.Job -> "jobs"
+                            Stories.Favorite -> "favorites"
+                        }
+                    )
+                    .build()
+            }
+        )
+        .build()
 }
 
 val jsonDecoder: Json = Json { ignoreUnknownKeys = true }
