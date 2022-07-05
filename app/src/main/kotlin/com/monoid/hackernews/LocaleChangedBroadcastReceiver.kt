@@ -6,6 +6,8 @@ import android.content.Intent
 
 class LocaleChangedBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
-        context.updateAndPushDynamicShortcuts()
+        // Starting a service gets always updates resources. Otherwise it does not always get
+        // updated locale in resources. Why?
+        context.startService(Intent(context, LocaleChangedService::class.java))
     }
 }
