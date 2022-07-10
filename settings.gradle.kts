@@ -183,7 +183,7 @@ dependencyResolutionManagement {
                 .version("1.9.0-alpha05")
 
             library("core-google-shortcuts", "androidx.core", "core-google-shortcuts")
-                .version("1.0.1")
+                .version("1.1.0-alpha01")
 
             library("appcompat", "androidx.appcompat", "appcompat")
                 .version("1.6.0-alpha05")

@@ -29,6 +29,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -44,11 +45,15 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import java.lang.ref.WeakReference
+import java.util.concurrent.TimeUnit
 
 class ItemTreeRepository(
+    coroutineScope: CoroutineScope,
     private val authenticationDataStore: DataStore<Authentication>,
     private val httpClient: HttpClient,
     private val itemDao: ItemDao,
@@ -57,40 +62,54 @@ class ItemTreeRepository(
     private val flagDao: FlagDao,
     private val expandedDao: ExpandedDao,
 ) {
-    private val sharedFlows: MutableMap<ItemId, Flow<ItemUiInternal>> =
-        mutableMapOf()
+    private val coroutineScope: CoroutineScope =
+        coroutineScope + Dispatchers.Default
 
-    private val coroutineScope = CoroutineScope(Dispatchers.Default)
+    private val sharedFlows: MutableMap<ItemId, WeakReference<Flow<ItemUiInternal>>> =
+        mutableMapOf()
 
     private val itemUpdatesSharedFlow: MutableSharedFlow<ItemUiInternal> =
         MutableSharedFlow(extraBufferCapacity = 10)
 
+    init {
+        // job to cleanup weak references to unused flows
+        coroutineScope.launch(Dispatchers.Main.immediate) {
+            while (true) {
+                delay(TimeUnit.SECONDS.toMillis(10))
+
+                sharedFlows.toList()
+                    .forEach { (itemId) ->
+                        if (sharedFlows[itemId]?.get() == null) {
+                            sharedFlows.remove(itemId)
+                        }
+                    }
+            }
+        }
+    }
+
     @Immutable
     private inner class ItemRowInternal(
         override val itemId: ItemId,
-    ) : ItemListRow(), () -> SharedFlow<ItemUiInternal> {
+    ) : ItemListRow() {
         override val itemUiFlow: Flow<ItemUi>
-            get() = sharedFlows
-                .getOrPut(itemId, this)
-                .onEach { itemUpdatesSharedFlow.emit(it) }
-
-        override fun invoke(): SharedFlow<ItemUiInternal> =
-            sharedItemUiFlow(itemId)
+            get() = sharedFlows[itemId]?.get()
+                ?: sharedItemUiFlow(itemId).also { sharedFlows[itemId] = WeakReference(it) }
     }
 
     @Immutable
     private inner class ItemThreadInternal(
         override val itemId: ItemId,
         private val threadDepth: Int,
-    ) : ItemTreeRow(), () -> SharedFlow<ItemUiInternal> {
+    ) : ItemTreeRow() {
         override val itemUiFlow: Flow<ItemUiWithThreadDepth>
-            get() = sharedFlows
-                .getOrPut(itemId, this)
+            get() = (
+                sharedFlows[itemId]?.get()
+                    ?: sharedItemUiFlow(itemId).also {
+                        sharedFlows[itemId] = WeakReference(it)
+                    }
+                )
                 .onEach { itemUpdatesSharedFlow.emit(it) }
                 .map { ItemUiWithThreadDepth(threadDepth, it) }
-
-        override fun invoke(): SharedFlow<ItemUiInternal> =
-            sharedItemUiFlow(itemId)
     }
 
     fun upvoteItemJob(
@@ -188,23 +207,22 @@ class ItemTreeRepository(
         }
 
         fun traverse(itemTree: ItemTree): List<ItemTreeRow> {
-            val list = mutableListOf<ItemTreeRow>()
-
-            fun recur(itemTree: ItemTree, threadDepth: Int = 0) {
-                list.add(
-                    ItemThreadInternal(
-                        itemId = itemTree.itemId,
-                        threadDepth = threadDepth,
+            return buildList {
+                fun recur(itemTree: ItemTree, threadDepth: Int = 0) {
+                    add(
+                        ItemThreadInternal(
+                            itemId = itemTree.itemId,
+                            threadDepth = threadDepth,
+                        )
                     )
-                )
 
-                if (itemTree.itemId == rootItemId || itemTree.isExpanded) {
-                    itemTree.kids?.forEach { recur(it, threadDepth + 1) }
+                    if (itemTree.itemId == rootItemId || itemTree.isExpanded) {
+                        itemTree.kids?.forEach { recur(it, threadDepth + 1) }
+                    }
                 }
-            }
 
-            recur(itemTree)
-            return list.toList()
+                recur(itemTree)
+            }
         }
 
         emit(traverse(itemTree))
@@ -245,7 +263,7 @@ class ItemTreeRepository(
     }
 
     private fun sharedItemUiFlow(itemId: ItemId): SharedFlow<ItemUiInternal> = flow {
-        val item = itemDao.itemById(itemId.long)
+        val item = withContext(Dispatchers.IO) { itemDao.itemById(itemId.long) }
 
         if (
             item?.lastUpdate == null ||
@@ -262,9 +280,6 @@ class ItemTreeRepository(
             }
         }
 
-        expandedDao.isExpandedFlow(itemId.long)
-            .distinctUntilChanged()
-
         emitAll(
             combine(
                 combine(
@@ -273,7 +288,7 @@ class ItemTreeRepository(
                         .distinctUntilChanged(),
                     expandedDao.isExpandedFlow(itemId.long)
                         .distinctUntilChanged(),
-                    ::Pair
+                    ::Pair,
                 ).distinctUntilChanged(),
                 authenticationDataStore.data
                     .map { it.username }

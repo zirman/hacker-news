@@ -67,9 +67,7 @@ import com.monoid.hackernews.ui.navigationdrawer.NavigationRailContent
 import com.monoid.hackernews.util.rememberMetricsStateHolder
 
 @Composable
-fun MainContent(
-    windowSizeClass: WindowSizeClass,
-) {
+fun MainContent(windowSizeClass: WindowSizeClass) {
     val drawerState: DrawerState =
         rememberDrawerState(DrawerValue.Closed)
 

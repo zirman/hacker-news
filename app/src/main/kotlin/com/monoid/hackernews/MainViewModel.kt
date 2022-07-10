@@ -2,6 +2,7 @@ package com.monoid.hackernews
 
 import android.content.Intent
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.monoid.hackernews.data.ItemTreeRepository
 import com.monoid.hackernews.room.AskStoryDao
 import com.monoid.hackernews.room.BestStoryDao
@@ -60,6 +61,7 @@ class MainViewModel : ViewModel() {
         expandedDao = db.expandedDao()
 
         itemTreeRepository = ItemTreeRepository(
+            coroutineScope = viewModelScope,
             authenticationDataStore = app.settingsDataStore,
             httpClient = httpClient,
             itemDao = itemDao,
