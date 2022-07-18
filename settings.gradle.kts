@@ -14,7 +14,7 @@ dependencyResolutionManagement {
             version("gradle-plugin-protobuf", "0.8.19")
             version("gradle-plugin-versions", "0.42.0")
 
-            version("kotlinx-coroutines", "1.6.3")
+            version("kotlinx-coroutines", "1.6.4")
             version("kotlinx-serialization", "1.3.3")
             version("ktor", "2.0.3")
             version("room", "2.5.0-alpha02")
@@ -246,7 +246,7 @@ dependencyResolutionManagement {
                 .versionRef("navigation")
 
             library("material", "com.google.android.material", "material")
-                .version("1.7.0-alpha02")
+                .version("1.7.0-alpha03")
 
             library("material3", "androidx.compose.material3", "material3")
                 .versionRef("material3")
