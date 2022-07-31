@@ -6,7 +6,7 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         create("libs") {
-            val kotlin = "1.7.0"
+            val kotlin = "1.7.10"
 
             version("gradle-plugin-kotlin", kotlin)
             version("gradle-plugin-ksp", "$kotlin-1.0.6")
@@ -15,15 +15,15 @@ dependencyResolutionManagement {
             version("gradle-plugin-versions", "0.42.0")
 
             version("kotlinx-coroutines", "1.6.4")
-            version("kotlinx-serialization", "1.3.3")
+            version("kotlinx-serialization", "1.4.0-RC")
             version("ktor", "2.0.3")
             version("room", "2.5.0-alpha02")
             version("lifecycle", "2.6.0-alpha01")
-            version("navigation", "2.5.0")
-            version("compose", "1.3.0-alpha01")
-            version("compose-compiler", "1.2.0")
-            version("material3", "1.0.0-alpha14")
-            version("accompanist", "0.24.13-rc")
+            version("navigation", "2.5.1")
+            version("compose", "1.3.0-alpha02")
+            version("compose-compiler", "1.3.0-rc01")
+            version("material3", "1.0.0-alpha15")
+            version("accompanist", "0.26.0-alpha")
 
             bundle(
                 "kotlinx",
@@ -156,7 +156,7 @@ dependencyResolutionManagement {
                 .versionRef("ktor")
 
             library("protobuf-kotlin-lite", "com.google.protobuf", "protobuf-kotlin-lite")
-                .version("3.21.2")
+                .version("3.21.4")
 
             library("ksp-symbol-processing-api", "com.google.devtools.ksp", "symbol-processing-api")
                 .versionRef("gradle-plugin-ksp")
@@ -189,7 +189,7 @@ dependencyResolutionManagement {
                 .version("1.6.0-alpha05")
 
             library("window", "androidx.window", "window")
-                .version("1.1.0-alpha02")
+                .version("1.1.0-alpha03")
 
             library("activity-ktx", "androidx.activity", "activity-ktx")
                 .version("1.6.0-alpha05")
@@ -198,7 +198,7 @@ dependencyResolutionManagement {
                 .version("1.6.0-alpha05")
 
             library("fragment-ktx", "androidx.fragment", "fragment-ktx")
-                .version("1.5.0")
+                .version("1.6.0-alpha01")
 
             library("palette-ktx", "androidx.palette", "palette-ktx")
                 .version("1.0.0")
@@ -213,7 +213,7 @@ dependencyResolutionManagement {
                 .version("1.0.0-alpha08")
 
             library("benchmark-junit4", "androidx.benchmark", "benchmark-junit4")
-                .version("1.1.0")
+                .version("1.2.0-alpha01")
 
             library("lifecycle-runtime-ktx", "androidx.lifecycle", "lifecycle-runtime-ktx")
                 .versionRef("lifecycle")
@@ -295,7 +295,7 @@ dependencyResolutionManagement {
                 .version("1.1.0-alpha03")
 
             library("metrics-performance", "androidx.metrics", "metrics-performance")
-                .version("1.0.0-alpha02")
+                .version("1.0.0-alpha03")
 
             library(
                 "accompanist-navigation-animation",

@@ -37,7 +37,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
-import androidx.compose.material3.rememberTopAppBarScrollState
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
@@ -148,7 +148,7 @@ fun HomeScreen(
     // enterAlwaysScrollBehavior is buggy
     val scrollBehavior: TopAppBarScrollBehavior =
         TopAppBarDefaults.pinnedScrollBehavior(
-            state = rememberTopAppBarScrollState(),
+            state = rememberTopAppBarState()
         )
 
     Scaffold(

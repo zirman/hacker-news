@@ -47,7 +47,7 @@ fun ItemList(
             snapshotFlow { listState.isScrollInProgress }.collect { isScrolling ->
                 metricsStateHolder.state!!.run {
                     if (isScrolling) {
-                        addState("ItemList", "Scrolling")
+                        putState("ItemList", "Scrolling")
                     } else {
                         removeState("ItemList")
                     }

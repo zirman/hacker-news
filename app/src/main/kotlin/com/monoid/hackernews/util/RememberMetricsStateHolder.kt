@@ -8,5 +8,5 @@ import androidx.metrics.performance.PerformanceMetricsState
 @Composable
 fun rememberMetricsStateHolder(): PerformanceMetricsState.Holder {
     val view = LocalView.current
-    return remember(view) { PerformanceMetricsState.getForHierarchy(view) }
+    return remember(view) { PerformanceMetricsState.getHolderForHierarchy(view) }
 }

@@ -22,8 +22,6 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.monoid.hackernews.ui.main.MainContent
 import com.monoid.hackernews.ui.theme.AppTheme
 import com.monoid.hackernews.ui.util.rememberUseDarkTheme
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
@@ -67,9 +65,9 @@ class MainActivity : FragmentActivity() {
 
         if (BuildConfig.DEBUG.not()) {
             val jankStats: JankStats = JankStats
-                .createAndTrack(window, Dispatchers.Default.asExecutor()) { frameData ->
+                .createAndTrack(window) { frameData ->
                     if (frameData.isJank) {
-                        val states = frameData.states.joinToString { "${it.stateName}:${it.state}" }
+                        val states = frameData.states.joinToString { "${it.key}:${it.value}" }
 
                         Log.w(
                             "Jank",

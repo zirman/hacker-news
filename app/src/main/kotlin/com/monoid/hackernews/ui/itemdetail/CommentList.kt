@@ -51,7 +51,7 @@ fun CommentList(
                 snapshotFlow { listState.isScrollInProgress }.collect { isScrolling ->
                     metricsStateHolder.state!!.run {
                         if (isScrolling) {
-                            addState("CommentList", "Scrolling")
+                            putState("CommentList", "Scrolling")
                         } else {
                             removeState("CommentList")
                         }

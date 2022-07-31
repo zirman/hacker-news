@@ -94,7 +94,7 @@ fun MainContent(windowSizeClass: WindowSizeClass) {
                     route = destination.route
 
                     if (route != null) {
-                        metricsStateHolder.state!!.addState("route", "$route")
+                        metricsStateHolder.state!!.putState("route", "$route")
                     }
                 }
             }
