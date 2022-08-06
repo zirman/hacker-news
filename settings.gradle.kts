@@ -10,7 +10,7 @@ dependencyResolutionManagement {
 
             version("gradle-plugin-kotlin", kotlin)
             version("gradle-plugin-ksp", "$kotlin-1.0.6")
-            version("gradle-plugin-android", "7.2.1")
+            version("gradle-plugin-android", "7.2.2")
             version("gradle-plugin-protobuf", "0.8.19")
             version("gradle-plugin-versions", "0.42.0")
 
@@ -21,7 +21,7 @@ dependencyResolutionManagement {
             version("lifecycle", "2.6.0-alpha01")
             version("navigation", "2.5.1")
             version("compose", "1.3.0-alpha02")
-            version("compose-compiler", "1.3.0-rc01")
+            version("compose-compiler", "1.3.0-rc02")
             version("material3", "1.0.0-alpha15")
             version("accompanist", "0.26.0-alpha")
 
@@ -325,7 +325,7 @@ dependencyResolutionManagement {
                 .versionRef("accompanist")
 
             library("slf4j-simple", "org.slf4j", "slf4j-simple")
-                .version("2.0.0-alpha7")
+                .version("2.0.0-beta0")
         }
     }
 }
