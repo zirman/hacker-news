@@ -31,10 +31,10 @@ class MainViewModel : ViewModel() {
     val jobStoryDao: JobStoryDao
     val itemDao: ItemDao
     val userDao: UserDao
-    val upvoteDao: UpvoteDao
+    private val upvoteDao: UpvoteDao
     val favoriteDao: FavoriteDao
-    val flagDao: FlagDao
-    val expandedDao: ExpandedDao
+    private val flagDao: FlagDao
+    private val expandedDao: ExpandedDao
     val itemTreeRepository: ItemTreeRepository
 
     init {
