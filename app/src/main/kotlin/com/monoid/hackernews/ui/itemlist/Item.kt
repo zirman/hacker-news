@@ -255,6 +255,8 @@ fun Item(
 
                     if (username != null) {
                         onClickUser(username)
+                    } else {
+                        itemUiState.value?.item?.url?.let { onClickBrowser(it) }
                     }
                 },
                 modifier = Modifier

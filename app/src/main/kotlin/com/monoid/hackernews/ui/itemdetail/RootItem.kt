@@ -243,8 +243,8 @@ fun RootItem(
 
                     if (username != null) {
                         onClickUser(username)
-                    } else if (item?.url != null) {
-                        onClickBrowser(item.url)
+                    } else {
+                        itemUiState.value?.itemUi?.item?.url?.let { onClickBrowser(it) }
                     }
                 },
                 modifier = Modifier
