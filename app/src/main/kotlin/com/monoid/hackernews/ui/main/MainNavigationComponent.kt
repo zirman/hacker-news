@@ -46,6 +46,7 @@ import com.monoid.hackernews.data.TopStoryRepository
 import com.monoid.hackernews.data.UserStoryRepository
 import com.monoid.hackernews.domain.LiveUpdateUseCase
 import com.monoid.hackernews.navigation.LoginAction
+import com.monoid.hackernews.ui.aboutus.AboutUs
 import com.monoid.hackernews.ui.home.HomeScreen
 import com.monoid.hackernews.ui.login.LoginContent
 import com.monoid.hackernews.ui.reply.ReplyContent
@@ -321,6 +322,18 @@ fun MainNavigationComponent(
                 windowSizeClassState = windowSizeClassState,
                 onSuccess = { mainNavController.navigateUp() },
                 onError = onLoginError,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(state = rememberScrollState()),
+            )
+        }
+
+        bottomSheet(
+            route = MainNavigation.AboutUs.route,
+            arguments = MainNavigation.AboutUs.arguments,
+        ) {
+            AboutUs(
+                windowSizeClassState = windowSizeClassState,
                 modifier = Modifier
                     .fillMaxWidth()
                     .verticalScroll(state = rememberScrollState()),

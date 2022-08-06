@@ -322,4 +322,18 @@ sealed class MainNavigation<T : Any> {
             return UsernameNavType[navBackStackEntry.arguments!!, usernameKey]
         }
     }
+
+    object AboutUs : MainNavigation<Unit>() {
+        override val route: String get() = "about-us"
+
+        override val arguments: List<NamedNavArgument>
+            get() = listOf()
+
+        override fun routeWithArgs(args: Unit): String =
+            "about-us"
+
+        override fun argsFromRoute(navBackStackEntry: NavBackStackEntry) {
+            return
+        }
+    }
 }

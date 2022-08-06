@@ -17,6 +17,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.core.text.HtmlCompat
 import androidx.core.text.getSpans
 
@@ -52,7 +53,9 @@ fun getAnnotatedString(
         append(asString)
 
         addStyle(
-            style = SpanStyle(color = contentColor),
+            style = SpanStyle(
+                color = contentColor,
+            ),
             start = 0,
             end = asString.length,
         )
@@ -65,7 +68,10 @@ fun getAnnotatedString(
                 end = spanned.getSpanEnd(urlSpan),
             )
             addStyle(
-                style = SpanStyle(color = linkColor),
+                style = SpanStyle(
+                    color = linkColor,
+                    textDecoration = TextDecoration.Underline,
+                ),
                 start = spanned.getSpanStart(urlSpan),
                 end = spanned.getSpanEnd(urlSpan),
             )

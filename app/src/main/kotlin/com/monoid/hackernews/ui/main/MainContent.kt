@@ -2,22 +2,18 @@ package com.monoid.hackernews.ui.main
 
 import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.windowInsetsTopHeight
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.Face
@@ -34,6 +30,7 @@ import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDrawerState
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
@@ -131,17 +128,20 @@ fun MainContent(windowSizeClass: WindowSizeClass) {
                         .only(WindowInsetsSides.Horizontal)
                 ),
         ) {
+            val fullyExpanded = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded &&
+                    windowSizeClass.heightSizeClass == WindowHeightSizeClass.Expanded
+
             ModalNavigationDrawer(
                 drawerContent = {
                     // hide drawer when expanded
-                    LaunchedEffect(windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded) {
-                        if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded) {
+                    LaunchedEffect(fullyExpanded) {
+                        if (fullyExpanded) {
                             drawerState.close()
                         }
                     }
 
                     // hide drawer content because it may layout under navigation bars.
-                    AnimatedVisibility(visible = windowSizeClass.widthSizeClass != WindowWidthSizeClass.Expanded) {
+                    AnimatedVisibility(visible = fullyExpanded.not()) {
                         NavigationDrawerContent(
                             mainNavController = mainNavController,
                             drawerState = drawerState,
@@ -158,13 +158,10 @@ fun MainContent(windowSizeClass: WindowSizeClass) {
                     }
                 },
                 drawerState = drawerState,
-                gesturesEnabled = windowSizeClass.widthSizeClass != WindowWidthSizeClass.Expanded,
+                gesturesEnabled = fullyExpanded.not(),
             ) {
                 Row {
-                    val navigationRailScrollState: ScrollState =
-                        rememberScrollState()
-
-                    AnimatedVisibility(visible = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded) {
+                    AnimatedVisibility(visible = fullyExpanded) {
                         NavigationRail(
                             header = {
                                 val context: Context =
@@ -228,14 +225,6 @@ fun MainContent(windowSizeClass: WindowSizeClass) {
                         ) {
                             NavigationRailContent(
                                 mainNavController = mainNavController,
-                                drawerState = drawerState,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .windowInsetsPadding(
-                                        WindowInsets.safeDrawing
-                                            .only(WindowInsetsSides.Bottom)
-                                    )
-                                    .verticalScroll(state = navigationRailScrollState),
                             )
                         }
                     }

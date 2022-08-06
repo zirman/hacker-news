@@ -1,6 +1,7 @@
 package com.monoid.hackernews.ui.itemlist
 
 import android.net.Uri
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,7 +20,6 @@ import androidx.compose.material.icons.twotone.Comment
 import androidx.compose.material.icons.twotone.Favorite
 import androidx.compose.material.icons.twotone.Flag
 import androidx.compose.material.icons.twotone.MoreVert
-import androidx.compose.material.icons.twotone.OpenInBrowser
 import androidx.compose.material.icons.twotone.Reply
 import androidx.compose.material.icons.twotone.ThumbUp
 import androidx.compose.material3.Divider
@@ -36,6 +36,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -96,7 +97,7 @@ fun Item(
         }
 
     Surface(
-        modifier = modifier,
+        modifier = modifier.clickable { onClickBrowser(item?.url) },
         contentColor = LocalContentColor.current,
         tonalElevation = ((item?.score ?: 0) / 10).dp,
     ) {
@@ -231,15 +232,18 @@ fun Item(
 
             Spacer(modifier = Modifier.height(4.dp))
 
-            val timeUserAnnotatedString: AnnotatedString = item
-                ?.let { rememberTimeBy(it) }
-                ?: AnnotatedString("")
+            val timeUserAnnotatedString: State<AnnotatedString> =
+                rememberUpdatedState(
+                    item
+                        ?.let { rememberTimeBy(it) }
+                        ?: AnnotatedString("")
+                )
 
             ClickableTextBlock(
-                text = timeUserAnnotatedString,
+                text = timeUserAnnotatedString.value,
                 lines = 1,
                 onClick = { offset ->
-                    val username = timeUserAnnotatedString
+                    val username = timeUserAnnotatedString.value
                         .getStringAnnotations(
                             tag = userTag,
                             start = offset,
@@ -339,30 +343,13 @@ fun Item(
                     text = host,
                     lines = 1,
                     modifier = Modifier
-                        .padding(start = 16.dp)
+                        .padding(horizontal = 16.dp)
                         .weight(1f)
                         .then(placeholderModifier),
                     textAlign = TextAlign.End,
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.labelLarge,
                 )
-
-                IconButton(
-                    onClick = { onClickBrowser(item?.url) },
-                    modifier = placeholderModifier.then(
-                        if (item?.url != null) {
-                            Modifier
-                        } else {
-                            Modifier.drawWithContent { }
-                        }
-                    ),
-                    enabled = item?.url != null,
-                ) {
-                    Icon(
-                        imageVector = Icons.TwoTone.OpenInBrowser,
-                        contentDescription = null,
-                    )
-                }
             }
 
             Divider(

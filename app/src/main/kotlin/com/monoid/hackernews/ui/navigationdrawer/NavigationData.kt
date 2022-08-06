@@ -80,15 +80,13 @@ val storiesToNavigationItem: Map<Stories, NavigationDrawerItemData> =
         ),
     )
 
-val navigationItemList: List<NavigationDrawerItemData?> =
+val navigationItemList: List<NavigationDrawerItemData> =
     listOf(
-        storiesToNavigationItem[Stories.Top],
-        storiesToNavigationItem[Stories.New],
-        storiesToNavigationItem[Stories.Best],
-        null,
-        storiesToNavigationItem[Stories.Show],
-        storiesToNavigationItem[Stories.Ask],
-        storiesToNavigationItem[Stories.Job],
-        null,
-        storiesToNavigationItem[Stories.Favorite],
+        storiesToNavigationItem[Stories.Top]!!,
+        storiesToNavigationItem[Stories.New]!!,
+        storiesToNavigationItem[Stories.Best]!!,
+        storiesToNavigationItem[Stories.Show]!!,
+        storiesToNavigationItem[Stories.Ask]!!,
+        storiesToNavigationItem[Stories.Job]!!,
+        storiesToNavigationItem[Stories.Favorite]!!,
     )

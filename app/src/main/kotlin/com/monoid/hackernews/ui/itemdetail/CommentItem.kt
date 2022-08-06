@@ -99,20 +99,22 @@ fun CommentItem(
         ) {
             val isDeleted =
                 itemUiState.value?.itemUi?.item?.text == null &&
-                    itemUiState.value?.itemUi?.item?.lastUpdate != null
+                        itemUiState.value?.itemUi?.item?.lastUpdate != null
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                val timeByUserAnnotatedString: AnnotatedString =
-                    rememberTimeBy(itemUiState.value?.itemUi?.item ?: ItemDb(id = 0))
+                val timeByUserAnnotatedString: State<AnnotatedString> =
+                    rememberUpdatedState(
+                        rememberTimeBy(itemUiState.value?.itemUi?.item ?: ItemDb(id = 0))
+                    )
 
                 ClickableTextBlock(
-                    text = timeByUserAnnotatedString,
+                    text = timeByUserAnnotatedString.value,
                     lines = 1,
                     onClick = { offset ->
                         if (itemUiState.value?.itemUi?.isExpanded == true) {
                             itemUiState.value?.itemUi?.toggleExpanded()
                         } else {
-                            val username: Username? = timeByUserAnnotatedString
+                            val username: Username? = timeByUserAnnotatedString.value
                                 .getStringAnnotations(
                                     tag = userTag,
                                     start = offset,
@@ -271,8 +273,10 @@ fun CommentItem(
                         lines = 2,
                         onClick = { offset ->
                             if (
-                                annotatedTextState.value.onClick(contextState.value, offset = offset)
-                                    .not()
+                                annotatedTextState.value.onClick(
+                                    contextState.value,
+                                    offset = offset
+                                ).not()
                             ) {
                                 itemUiState.value?.itemUi?.toggleExpanded()
                             }

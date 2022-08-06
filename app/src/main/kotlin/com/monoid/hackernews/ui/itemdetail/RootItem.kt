@@ -2,6 +2,7 @@ package com.monoid.hackernews.ui.itemdetail
 
 import android.content.Context
 import android.net.Uri
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,7 +20,6 @@ import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.twotone.Favorite
 import androidx.compose.material.icons.twotone.Flag
 import androidx.compose.material.icons.twotone.MoreVert
-import androidx.compose.material.icons.twotone.OpenInBrowser
 import androidx.compose.material.icons.twotone.Reply
 import androidx.compose.material.icons.twotone.ThumbUp
 import androidx.compose.material3.DropdownMenu
@@ -68,13 +68,19 @@ fun RootItem(
     onNavigateLogin: (LoginAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val item = itemUiState.value?.itemUi?.item
+
     Surface(
-        modifier = modifier,
+        modifier = modifier.then(
+            if (item?.url == null) {
+                Modifier
+            } else {
+                Modifier.clickable { onClickBrowser(item.url) }
+            }
+        ),
         contentColor = MaterialTheme.colorScheme.secondary,
     ) {
         Column {
-            val item = itemUiState.value?.itemUi?.item
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Top,
@@ -219,13 +225,13 @@ fun RootItem(
 
             Spacer(modifier = Modifier.height(4.dp))
 
-            val timeUserAnnotatedString: AnnotatedString =
-                rememberTimeBy(item)
+            val timeUserAnnotatedString: State<AnnotatedString> =
+                rememberUpdatedState(rememberTimeBy(item))
 
             ClickableText(
-                text = timeUserAnnotatedString,
+                text = timeUserAnnotatedString.value,
                 onClick = { offset ->
-                    val username = timeUserAnnotatedString
+                    val username = timeUserAnnotatedString.value
                         .getStringAnnotations(
                             tag = userTag,
                             start = offset,
@@ -237,6 +243,8 @@ fun RootItem(
 
                     if (username != null) {
                         onClickUser(username)
+                    } else if (item?.url != null) {
+                        onClickBrowser(item.url)
                     }
                 },
                 modifier = Modifier
@@ -324,20 +332,6 @@ fun RootItem(
                         textAlign = TextAlign.End,
                         style = MaterialTheme.typography.labelLarge,
                     )
-
-                    IconButton(
-                        onClick = {
-                            if (item?.url != null) {
-                                onClickBrowser(item.url)
-                            }
-                        },
-                        enabled = item?.url != null,
-                    ) {
-                        Icon(
-                            imageVector = Icons.TwoTone.OpenInBrowser,
-                            contentDescription = null,
-                        )
-                    }
                 }
             }
 

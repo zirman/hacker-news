@@ -8,6 +8,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.Face
+import androidx.compose.material.icons.twotone.Info
 import androidx.compose.material.icons.twotone.Login
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
@@ -130,35 +131,57 @@ fun NavigationDrawerContent(
             )
 
             navigationItemList.forEach { item ->
-                if (item != null) {
-                    NavigationDrawerItem(
-                        icon = {
-                            Icon(
-                                imageVector = item.icon,
-                                contentDescription = stringResource(id = item.titleId),
-                            )
-                        },
-                        label = {
-                            Text(
-                                text = stringResource(id = item.titleId),
-                                maxLines = 1,
-                            )
-                        },
-                        selected = item == storiesToNavigationItem[selectedStories],
-                        onClick = {
-                            coroutineScope.launch { drawerState.close() }
-                            mainNavController.navigate(route = item.route)
-                        },
-                        modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
-                    )
-                } else {
-                    Divider(
-                        modifier = Modifier
-                            .padding(vertical = 4.dp)
-                            .padding(NavigationDrawerItemDefaults.ItemPadding),
-                    )
-                }
+                NavigationDrawerItem(
+                    icon = {
+                        Icon(
+                            imageVector = item.icon,
+                            contentDescription = stringResource(id = item.titleId),
+                        )
+                    },
+                    label = {
+                        Text(
+                            text = stringResource(id = item.titleId),
+                            maxLines = 1,
+                        )
+                    },
+                    selected = item == storiesToNavigationItem[selectedStories],
+                    onClick = {
+                        coroutineScope.launch { drawerState.close() }
+                        mainNavController.navigate(route = item.route)
+                    },
+                    modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
+                )
             }
+
+            Divider(
+                modifier = Modifier
+                    .padding(vertical = 4.dp)
+                    .padding(NavigationDrawerItemDefaults.ItemPadding),
+            )
+
+            NavigationDrawerItem(
+                icon = {
+                    Icon(
+                        imageVector = Icons.TwoTone.Info,
+                        contentDescription = stringResource(id = R.string.about_us),
+                    )
+                },
+                label = {
+                    Text(
+                        text = stringResource(id = R.string.about_us),
+                        maxLines = 1,
+                    )
+                },
+                selected = false,
+                onClick = {
+                    coroutineScope.launch { drawerState.close() }
+
+                    mainNavController.navigate(
+                        route = MainNavigation.AboutUs.routeWithArgs(Unit)
+                    )
+                },
+                modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
+            )
         }
     }
 }
