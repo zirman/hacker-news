@@ -3,6 +3,7 @@ package com.monoid.hackernews
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
@@ -114,7 +115,12 @@ object StoriesNavType : NavType<Stories>(isNullableAllowed = false) {
     }
 
     override fun get(bundle: Bundle, key: String): Stories? {
-        return bundle.getParcelable(key)
+        return if (Build.VERSION.SDK_INT >= 33) {
+            bundle.getParcelable(key, Stories::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            bundle.getParcelable(key)
+        }
     }
 
     override fun parseValue(value: String): Stories {
@@ -128,7 +134,12 @@ object StoriesNavType : NavType<Stories>(isNullableAllowed = false) {
 
 private object ActionNavType : NavType<LoginAction>(isNullableAllowed = true) {
     override fun get(bundle: Bundle, key: String): LoginAction? {
-        return bundle.getParcelable(key)
+        return if (Build.VERSION.SDK_INT >= 33) {
+            bundle.getParcelable(key, LoginAction::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            bundle.getParcelable(key)
+        }
     }
 
     override fun parseValue(value: String): LoginAction {
@@ -240,11 +251,16 @@ sealed class MainNavigation<T : Any> {
         override fun routeWithArgs(args: Stories): String =
             "home?$storiesKey=${StoriesNavType.encodeValue(args)}"
 
-        override fun argsFromRoute(navBackStackEntry: NavBackStackEntry): Stories =
-            when (
-                navBackStackEntry.arguments!!
-                    .getParcelable<Intent>(NavController.KEY_DEEP_LINK_INTENT)
-                    ?.data?.pathSegments
+        override fun argsFromRoute(navBackStackEntry: NavBackStackEntry): Stories {
+            val arguments = navBackStackEntry.arguments!!
+
+            return when (
+                if (Build.VERSION.SDK_INT >= 33) {
+                    arguments.getParcelable(NavController.KEY_DEEP_LINK_INTENT, Intent::class.java)
+                } else {
+                    @Suppress("DEPRECATION")
+                    arguments.getParcelable(NavController.KEY_DEEP_LINK_INTENT)
+                }?.data?.pathSegments
                     ?.firstOrNull()
                     ?.lowercase()
             ) {
@@ -263,9 +279,14 @@ sealed class MainNavigation<T : Any> {
                 "favorites" ->
                     Stories.Favorite
                 else ->
-                    navBackStackEntry.arguments?.getParcelable(storiesKey)
-                        ?: Stories.Top
+                    if (Build.VERSION.SDK_INT >= 33) {
+                        navBackStackEntry.arguments?.getParcelable(storiesKey, Stories::class.java)
+                    } else {
+                        @Suppress("DEPRECATION")
+                        navBackStackEntry.arguments?.getParcelable(storiesKey)
+                    } ?: Stories.Top
             }
+        }
     }
 
     object Login : MainNavigation<LoginAction>() {

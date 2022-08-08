@@ -13,7 +13,7 @@ plugins {
     id("com.google.protobuf")
 }
 android {
-    compileSdk = 32
+    compileSdk = 33
     buildToolsVersion = "33.0.0"
     signingConfigs {
         create("release") {
@@ -26,7 +26,7 @@ android {
     defaultConfig {
         applicationId = "com.monoid.hackernews"
         minSdk = 26
-        targetSdk = 32
+        targetSdk = 33
         versionCode = 19
         versionName = "1.0"
         vectorDrawables {

@@ -73,7 +73,7 @@ fun NavigationRailContent(
         },
         selected = false,
         onClick = {
-            MainNavigation.AboutUs.routeWithArgs(Unit)
+            mainNavController.navigate(MainNavigation.AboutUs.routeWithArgs(Unit))
         },
     )
 }
