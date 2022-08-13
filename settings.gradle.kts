@@ -16,14 +16,14 @@ dependencyResolutionManagement {
 
             version("kotlinx-coroutines", "1.6.4")
             version("kotlinx-serialization", "1.4.0-RC")
-            version("ktor", "2.0.3")
+            version("ktor", "2.1.0")
             version("room", "2.5.0-alpha02")
             version("lifecycle", "2.6.0-alpha01")
             version("navigation", "2.5.1")
-            version("compose", "1.3.0-alpha02")
-            version("compose-compiler", "1.3.0-rc02")
-            version("material3", "1.0.0-alpha15")
-            version("accompanist", "0.26.0-alpha")
+            version("compose", "1.3.0-alpha03")
+            version("compose-compiler", "1.3.0")
+            version("material3", "1.0.0-alpha16")
+            version("accompanist", "0.26.1-alpha")
 
             bundle(
                 "kotlinx",
@@ -156,7 +156,7 @@ dependencyResolutionManagement {
                 .versionRef("ktor")
 
             library("protobuf-kotlin-lite", "com.google.protobuf", "protobuf-kotlin-lite")
-                .version("3.21.4")
+                .version("3.21.5")
 
             library("ksp-symbol-processing-api", "com.google.devtools.ksp", "symbol-processing-api")
                 .versionRef("gradle-plugin-ksp")
@@ -180,22 +180,22 @@ dependencyResolutionManagement {
                 .version("1.2.0")
 
             library("core-ktx", "androidx.core", "core-ktx")
-                .version("1.9.0-alpha05")
+                .version("1.9.0-beta01")
 
             library("core-google-shortcuts", "androidx.core", "core-google-shortcuts")
                 .version("1.1.0-alpha01")
 
             library("appcompat", "androidx.appcompat", "appcompat")
-                .version("1.6.0-alpha05")
+                .version("1.6.0-beta01")
 
             library("window", "androidx.window", "window")
                 .version("1.1.0-alpha03")
 
             library("activity-ktx", "androidx.activity", "activity-ktx")
-                .version("1.6.0-alpha05")
+                .version("1.6.0-beta01")
 
             library("activity-compose", "androidx.activity", "activity-compose")
-                .version("1.6.0-alpha05")
+                .version("1.6.0-beta01")
 
             library("fragment-ktx", "androidx.fragment", "fragment-ktx")
                 .version("1.6.0-alpha01")
@@ -204,7 +204,7 @@ dependencyResolutionManagement {
                 .version("1.0.0")
 
             library("work-runtime-ktx", "androidx.work", "work-runtime-ktx")
-                .version("2.8.0-alpha02")
+                .version("2.8.0-alpha03")
 
             library("preference-ktx", "androidx.preference", "preference-ktx")
                 .version("1.2.0")
@@ -246,7 +246,7 @@ dependencyResolutionManagement {
                 .versionRef("navigation")
 
             library("material", "com.google.android.material", "material")
-                .version("1.7.0-alpha03")
+                .version("1.7.0-beta01")
 
             library("material3", "androidx.compose.material3", "material3")
                 .versionRef("material3")
@@ -325,7 +325,7 @@ dependencyResolutionManagement {
                 .versionRef("accompanist")
 
             library("slf4j-simple", "org.slf4j", "slf4j-simple")
-                .version("2.0.0-beta0")
+                .version("2.0.0-beta1")
         }
     }
 }
