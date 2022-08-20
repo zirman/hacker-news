@@ -15,7 +15,7 @@ dependencyResolutionManagement {
             version("gradle-plugin-versions", "0.42.0")
 
             version("kotlinx-coroutines", "1.6.4")
-            version("kotlinx-serialization", "1.4.0-RC")
+            version("kotlinx-serialization", "1.4.0")
             version("ktor", "2.1.0")
             version("room", "2.5.0-alpha02")
             version("lifecycle", "2.6.0-alpha01")
