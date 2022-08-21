@@ -50,6 +50,7 @@ import com.monoid.hackernews.ui.aboutus.AboutUs
 import com.monoid.hackernews.ui.home.HomeScreen
 import com.monoid.hackernews.ui.login.LoginContent
 import com.monoid.hackernews.ui.reply.ReplyContent
+import com.monoid.hackernews.ui.settings.Settings
 import com.monoid.hackernews.ui.util.getNetworkConnectivityStateFlow
 import com.monoid.hackernews.ui.util.itemIdSaver
 import kotlinx.coroutines.flow.collectLatest
@@ -333,6 +334,18 @@ fun MainNavigationComponent(
             arguments = MainNavigation.AboutUs.arguments,
         ) {
             AboutUs(
+                windowSizeClassState = windowSizeClassState,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(state = rememberScrollState()),
+            )
+        }
+
+        bottomSheet(
+            route = MainNavigation.Settings.route,
+            arguments = MainNavigation.Settings.arguments,
+        ) {
+            Settings(
                 windowSizeClassState = windowSizeClassState,
                 modifier = Modifier
                     .fillMaxWidth()

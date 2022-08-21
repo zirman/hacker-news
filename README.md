@@ -1,5 +1,5 @@
 TODO:
- + logout 
+ + logout
  + post story
  + handle posture/fold
  + notifications on responses

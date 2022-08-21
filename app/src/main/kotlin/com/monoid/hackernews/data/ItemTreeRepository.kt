@@ -103,11 +103,11 @@ class ItemTreeRepository(
     ) : ItemTreeRow() {
         override val itemUiFlow: Flow<ItemUiWithThreadDepth>
             get() = (
-                sharedFlows[itemId]?.get()
-                    ?: sharedItemUiFlow(itemId).also {
-                        sharedFlows[itemId] = WeakReference(it)
-                    }
-                )
+                    sharedFlows[itemId]?.get()
+                        ?: sharedItemUiFlow(itemId).also {
+                            sharedFlows[itemId] = WeakReference(it)
+                        }
+                    )
                 .onEach { itemUpdatesSharedFlow.emit(it) }
                 .map { ItemUiWithThreadDepth(threadDepth, it) }
     }
@@ -227,34 +227,36 @@ class ItemTreeRepository(
 
         emit(traverse(itemTree))
 
-        itemUpdatesSharedFlow.collect { itemUi ->
-            val itemId = ItemId(itemUi.item.id)
-            val isExpanded = itemUi.isExpanded
-            val kids = itemUi.kids
+        emitAll(
+            itemUpdatesSharedFlow.map { itemUi ->
+                val itemId = ItemId(itemUi.item.id)
+                val isExpanded = itemUi.isExpanded
+                val kids = itemUi.kids
 
-            suspend fun recur(itemTree: ItemTree): ItemTree {
-                return if (itemTree.itemId == itemId) {
-                    itemTree.copy(
-                        isExpanded = isExpanded,
-                        kids = coroutineScope {
-                            kids.map { kidItemId ->
-                                itemTree.kids?.find { it.itemId == kidItemId }
-                                    ?: ItemTree(
-                                        itemId = kidItemId,
-                                        kids = null,
-                                        isExpanded = false,
-                                    )
-                            }
-                        },
-                    )
-                } else {
-                    itemTree.copy(kids = itemTree.kids?.map { recur(it) })
+                suspend fun recur(itemTree: ItemTree): ItemTree {
+                    return if (itemTree.itemId == itemId) {
+                        itemTree.copy(
+                            isExpanded = isExpanded,
+                            kids = coroutineScope {
+                                kids.map { kidItemId ->
+                                    itemTree.kids?.find { it.itemId == kidItemId }
+                                        ?: ItemTree(
+                                            itemId = kidItemId,
+                                            kids = null,
+                                            isExpanded = false,
+                                        )
+                                }
+                            },
+                        )
+                    } else {
+                        itemTree.copy(kids = itemTree.kids?.map { recur(it) })
+                    }
                 }
-            }
 
-            itemTree = recur(itemTree)
-            emit(traverse(itemTree))
-        }
+                itemTree = recur(itemTree)
+                traverse(itemTree)
+            }
+        )
     }
         .distinctUntilChanged()
 
@@ -263,61 +265,67 @@ class ItemTreeRepository(
     }
 
     private fun sharedItemUiFlow(itemId: ItemId): SharedFlow<ItemUiInternal> = flow {
-        val item = withContext(Dispatchers.IO) { itemDao.itemById(itemId.long) }
+        coroutineScope {
+            launch {
+                val item = withContext(Dispatchers.IO) {
+                    itemDao.itemById(itemId.long)
+                }
 
-        if (
-            item?.lastUpdate == null ||
-            (Clock.System.now() - Instant.fromEpochSeconds(item.lastUpdate))
-                .inWholeMinutes >
-            HNApplication.instance.resources
-                .getInteger(R.integer.item_stale_minutes)
-                .toLong()
-        ) {
-            try {
-                itemDao.itemApiInsert(httpClient.getItem(itemId))
-            } catch (error: Throwable) {
-                if (error is CancellationException) throw error
+                if (
+                    item?.lastUpdate == null ||
+                    (Clock.System.now() - Instant.fromEpochSeconds(item.lastUpdate))
+                        .inWholeMinutes >
+                    HNApplication.instance.resources
+                        .getInteger(R.integer.item_stale_minutes)
+                        .toLong()
+                ) {
+                    try {
+                        itemDao.itemApiInsert(httpClient.getItem(itemId))
+                    } catch (error: Throwable) {
+                        if (error is CancellationException) throw error
+                    }
+                }
             }
-        }
 
-        emitAll(
-            combine(
+            emitAll(
                 combine(
-                    itemDao.itemByIdWithKidsByIdFlow(itemId.long)
-                        .filterNotNull()
-                        .distinctUntilChanged(),
-                    expandedDao.isExpandedFlow(itemId.long)
-                        .distinctUntilChanged(),
-                    ::Pair,
-                ).distinctUntilChanged(),
-                authenticationDataStore.data
-                    .map { it.username }
-                    .distinctUntilChanged()
-                    .flatMapLatest { username ->
-                        combine(
-                            upvoteDao
-                                .isUpvoteFlow(itemId.long, username)
-                                .distinctUntilChanged(),
-                            favoriteDao
-                                .isFavoriteFlow(itemId.long, username)
-                                .distinctUntilChanged(),
-                            flagDao
-                                .isFlagFlow(itemId.long, username)
-                                .distinctUntilChanged(),
-                            ::Triple
-                        )
-                    },
-            ) { (itemWithKids, isExpanded), (isUpvote, isFavorite, isFlag) ->
-                ItemUiInternal(
-                    item = itemWithKids.item,
-                    kids = itemWithKids.kids.map { ItemId(it.id) },
-                    isUpvote = isUpvote,
-                    isFavorite = isFavorite,
-                    isFlag = isFlag,
-                    isExpanded = isExpanded,
-                )
-            }
-        )
+                    combine(
+                        itemDao.itemByIdWithKidsByIdFlow(itemId.long)
+                            .filterNotNull()
+                            .distinctUntilChanged(),
+                        expandedDao.isExpandedFlow(itemId.long)
+                            .distinctUntilChanged(),
+                        ::Pair,
+                    ).distinctUntilChanged(),
+                    authenticationDataStore.data
+                        .map { it.username }
+                        .distinctUntilChanged()
+                        .flatMapLatest { username ->
+                            combine(
+                                upvoteDao
+                                    .isUpvoteFlow(itemId.long, username)
+                                    .distinctUntilChanged(),
+                                favoriteDao
+                                    .isFavoriteFlow(itemId.long, username)
+                                    .distinctUntilChanged(),
+                                flagDao
+                                    .isFlagFlow(itemId.long, username)
+                                    .distinctUntilChanged(),
+                                ::Triple
+                            )
+                        },
+                ) { (itemWithKids, isExpanded), (isUpvote, isFavorite, isFlag) ->
+                    ItemUiInternal(
+                        item = itemWithKids.item,
+                        kids = itemWithKids.kids.map { ItemId(it.id) },
+                        isUpvote = isUpvote,
+                        isFavorite = isFavorite,
+                        isFlag = isFlag,
+                        isExpanded = isExpanded,
+                    )
+                }
+            )
+        }
     }
         .shareIn(
             scope = coroutineScope,

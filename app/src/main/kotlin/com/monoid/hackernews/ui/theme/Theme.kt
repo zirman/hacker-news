@@ -73,6 +73,7 @@ private val DarkThemeColors = darkColorScheme(
 fun AppTheme(
     useDarkTheme: Boolean = false,
     dynamicIfAvailable: Boolean = true,
+    hnFont: HNFont = HNFont.Default,
     content: @Composable () -> Unit,
 ) {
     MaterialTheme(
@@ -90,7 +91,7 @@ fun AppTheme(
         } else {
             LightThemeColors
         },
-        typography = AppTypography,
+        typography = rememberAppTypography(hnFont.rememberFontFamily()),
     ) {
         // Shim in Material 3 styles into Material 2 components.
         MaterialTheme2(

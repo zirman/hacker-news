@@ -357,4 +357,18 @@ sealed class MainNavigation<T : Any> {
             return
         }
     }
+
+    object Settings : MainNavigation<Unit>() {
+        override val route: String get() = "settings"
+
+        override val arguments: List<NamedNavArgument>
+            get() = listOf()
+
+        override fun routeWithArgs(args: Unit): String =
+            "settings"
+
+        override fun argsFromRoute(navBackStackEntry: NavBackStackEntry) {
+            return
+        }
+    }
 }

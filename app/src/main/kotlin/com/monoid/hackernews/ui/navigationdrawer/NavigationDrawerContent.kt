@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.Face
 import androidx.compose.material.icons.twotone.Info
 import androidx.compose.material.icons.twotone.Login
+import androidx.compose.material.icons.twotone.Settings
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.Icon
@@ -178,6 +179,30 @@ fun NavigationDrawerContent(
 
                     mainNavController.navigate(
                         route = MainNavigation.AboutUs.routeWithArgs(Unit)
+                    )
+                },
+                modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
+            )
+
+            NavigationDrawerItem(
+                icon = {
+                    Icon(
+                        imageVector = Icons.TwoTone.Settings,
+                        contentDescription = stringResource(id = R.string.settings),
+                    )
+                },
+                label = {
+                    Text(
+                        text = stringResource(id = R.string.settings),
+                        maxLines = 1,
+                    )
+                },
+                selected = false,
+                onClick = {
+                    coroutineScope.launch { drawerState.close() }
+
+                    mainNavController.navigate(
+                        route = MainNavigation.Settings.routeWithArgs(Unit)
                     )
                 },
                 modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),

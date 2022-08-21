@@ -9,6 +9,9 @@ import androidx.activity.viewModels
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
@@ -21,9 +24,13 @@ import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.monoid.hackernews.ui.main.MainContent
 import com.monoid.hackernews.ui.theme.AppTheme
+import com.monoid.hackernews.ui.theme.HNFont
 import com.monoid.hackernews.ui.util.rememberUseDarkTheme
 import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import java.util.concurrent.TimeUnit
 
 class MainActivity : FragmentActivity() {
@@ -37,7 +44,23 @@ class MainActivity : FragmentActivity() {
             val useDarkTheme: Boolean =
                 rememberUseDarkTheme()
 
-            AppTheme(useDarkTheme = useDarkTheme) {
+            val fontState: State<String?> = remember { settingsDataStore.data.map { it.font } }
+                .collectAsState(null)
+
+            AppTheme(
+                useDarkTheme = useDarkTheme,
+                hnFont = remember(fontState.value) {
+                    fontState.value
+                        ?.let { font ->
+                            try {
+                                Json.decodeFromString<HNFont>(font)
+                            } catch (error: Throwable) {
+                                null
+                            }
+                        }
+                        ?: HNFont.Default
+                },
+            ) {
                 val systemUiController: SystemUiController =
                     rememberSystemUiController()
 

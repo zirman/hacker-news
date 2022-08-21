@@ -2,6 +2,7 @@ package com.monoid.hackernews.ui.navigationdrawer
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.Info
+import androidx.compose.material.icons.twotone.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Text
@@ -74,6 +75,26 @@ fun NavigationRailContent(
         selected = false,
         onClick = {
             mainNavController.navigate(MainNavigation.AboutUs.routeWithArgs(Unit))
+        },
+    )
+
+    NavigationRailItem(
+        icon = {
+            Icon(
+                imageVector = Icons.TwoTone.Settings,
+                contentDescription = stringResource(id = R.string.settings),
+            )
+        },
+        label = {
+            Text(
+                text = stringResource(id = R.string.settings),
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+            )
+        },
+        selected = false,
+        onClick = {
+            mainNavController.navigate(MainNavigation.Settings.routeWithArgs(Unit))
         },
     )
 }

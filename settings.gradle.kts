@@ -22,7 +22,7 @@ dependencyResolutionManagement {
             version("navigation", "2.5.1")
             version("compose", "1.3.0-alpha03")
             version("compose-compiler", "1.3.0")
-            version("material3", "1.0.0-alpha16")
+            version("material3", "1.0.0-alpha15")
             version("accompanist", "0.26.1-alpha")
 
             bundle(
@@ -108,6 +108,7 @@ dependencyResolutionManagement {
                     "material-icons-extended",
                     "foundation",
                     "runtime-livedata",
+                    "ui-text-google-fonts",
                     "constraintlayout",
                     "metrics-performance"
                 )
@@ -290,6 +291,9 @@ dependencyResolutionManagement {
 
             library("runtime-livedata", "androidx.compose.runtime", "runtime-livedata")
                 .versionRef("compose")
+
+            library("ui-text-google-fonts", "androidx.compose.ui", "ui-text-google-fonts")
+                .version("1.2.0-beta01")
 
             library("constraintlayout", "androidx.constraintlayout", "constraintlayout-compose")
                 .version("1.1.0-alpha03")
