@@ -17,7 +17,7 @@ dependencyResolutionManagement {
             version("kotlinx-coroutines", "1.6.4")
             version("kotlinx-serialization", "1.4.0")
             version("ktor", "2.1.0")
-            version("room", "2.5.0-alpha02")
+            version("room", "2.5.0-alpha03")
             version("lifecycle", "2.6.0-alpha01")
             version("navigation", "2.5.1")
             version("compose", "1.3.0-alpha03")
@@ -181,10 +181,10 @@ dependencyResolutionManagement {
                 .version("1.2.0")
 
             library("core-ktx", "androidx.core", "core-ktx")
-                .version("1.9.0-beta01")
+                .version("1.9.0-rc01")
 
             library("core-google-shortcuts", "androidx.core", "core-google-shortcuts")
-                .version("1.1.0-alpha01")
+                .version("1.1.0-alpha02")
 
             library("appcompat", "androidx.appcompat", "appcompat")
                 .version("1.6.0-beta01")
@@ -193,13 +193,13 @@ dependencyResolutionManagement {
                 .version("1.1.0-alpha03")
 
             library("activity-ktx", "androidx.activity", "activity-ktx")
-                .version("1.6.0-beta01")
+                .version("1.6.0-rc01")
 
             library("activity-compose", "androidx.activity", "activity-compose")
-                .version("1.6.0-beta01")
+                .version("1.6.0-rc01")
 
             library("fragment-ktx", "androidx.fragment", "fragment-ktx")
-                .version("1.6.0-alpha01")
+                .version("1.6.0-alpha02")
 
             library("palette-ktx", "androidx.palette", "palette-ktx")
                 .version("1.0.0")
@@ -214,7 +214,7 @@ dependencyResolutionManagement {
                 .version("1.0.0-alpha08")
 
             library("benchmark-junit4", "androidx.benchmark", "benchmark-junit4")
-                .version("1.2.0-alpha01")
+                .version("1.2.0-alpha02")
 
             library("lifecycle-runtime-ktx", "androidx.lifecycle", "lifecycle-runtime-ktx")
                 .versionRef("lifecycle")
@@ -329,7 +329,7 @@ dependencyResolutionManagement {
                 .versionRef("accompanist")
 
             library("slf4j-simple", "org.slf4j", "slf4j-simple")
-                .version("2.0.0-beta1")
+                .version("2.0.0")
         }
     }
 }
