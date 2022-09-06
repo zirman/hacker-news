@@ -57,11 +57,11 @@ fun ItemList(
     }
 
     LazyColumn(
+        modifier = modifier,
         state = listState,
         contentPadding = WindowInsets.safeDrawing
             .only(WindowInsetsSides.Bottom)
             .asPaddingValues(),
-        modifier = modifier,
     ) {
         items(itemRows.value ?: emptyList(), { it.itemId.long }) { itemRow ->
             Item(
