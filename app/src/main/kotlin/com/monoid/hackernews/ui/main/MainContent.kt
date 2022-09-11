@@ -39,6 +39,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -128,20 +129,23 @@ fun MainContent(windowSizeClass: WindowSizeClass) {
                         .only(WindowInsetsSides.Horizontal)
                 ),
         ) {
-            val fullyExpanded = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded &&
-                    windowSizeClass.heightSizeClass == WindowHeightSizeClass.Expanded
+            val fullyExpandedState =
+                rememberUpdatedState(
+                    windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded &&
+                            windowSizeClass.heightSizeClass == WindowHeightSizeClass.Expanded
+                )
 
             ModalNavigationDrawer(
                 drawerContent = {
                     // hide drawer when expanded
-                    LaunchedEffect(fullyExpanded) {
-                        if (fullyExpanded) {
+                    LaunchedEffect(fullyExpandedState.value) {
+                        if (fullyExpandedState.value) {
                             drawerState.close()
                         }
                     }
 
                     // hide drawer content because it may layout under navigation bars.
-                    AnimatedVisibility(visible = fullyExpanded.not()) {
+                    AnimatedVisibility(visible = fullyExpandedState.value.not()) {
                         NavigationDrawerContent(
                             mainNavController = mainNavController,
                             drawerState = drawerState,
@@ -158,10 +162,10 @@ fun MainContent(windowSizeClass: WindowSizeClass) {
                     }
                 },
                 drawerState = drawerState,
-                gesturesEnabled = fullyExpanded.not(),
+                gesturesEnabled = fullyExpandedState.value.not(),
             ) {
                 Row {
-                    AnimatedVisibility(visible = fullyExpanded) {
+                    AnimatedVisibility(visible = fullyExpandedState.value) {
                         NavigationRail(
                             header = {
                                 val context: Context =
@@ -292,7 +296,7 @@ fun MainContent(windowSizeClass: WindowSizeClass) {
             text = {
                 Text(
                     text = showLoginErrorDialog.message
-                        ?: stringResource(id = R.string.invalid_username_or_password)
+                        ?: stringResource(id = R.string.invalid_username_or_password),
                 )
             },
             iconContentColor = MaterialTheme.colorScheme.tertiary,

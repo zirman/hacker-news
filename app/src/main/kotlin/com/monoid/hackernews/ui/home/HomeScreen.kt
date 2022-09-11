@@ -38,6 +38,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberTopAppBarState
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
@@ -166,7 +167,10 @@ fun HomeScreen(
                     }
                 },
                 navigationIcon = {
-                    AnimatedVisibility(visible = windowSizeClass.widthSizeClass != WindowWidthSizeClass.Expanded) {
+                    AnimatedVisibility(
+                        visible = windowSizeClass.widthSizeClass != WindowWidthSizeClass.Expanded ||
+                                windowSizeClass.heightSizeClass != WindowHeightSizeClass.Expanded,
+                    ) {
                         if (showItemId != null && windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
                             BackHandler { setSelectedItemId(null) }
 
