@@ -250,7 +250,7 @@ fun HomeScreen(
                                 WindowWidthSizeClass.Compact ->
                                     Modifier.weight(1f)
                                 else ->
-                                    Modifier.width(320.dp)
+                                    Modifier.width(360.dp)
                             }
                                 .fillMaxHeight()
                                 .notifyInput { setDetailInteraction(false) },
