@@ -8,11 +8,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.windowInsetsStartWidth
 import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
@@ -249,6 +251,7 @@ fun MainContent(windowSizeClass: WindowSizeClass) {
             }
         }
 
+        // status bar scrim
         Spacer(
             modifier = Modifier
                 .background(
@@ -263,6 +266,7 @@ fun MainContent(windowSizeClass: WindowSizeClass) {
                 .align(Alignment.TopCenter),
         )
 
+        // navigation bar scrim when on bottom
         Spacer(
             modifier = Modifier
                 .background(
@@ -275,6 +279,21 @@ fun MainContent(windowSizeClass: WindowSizeClass) {
                 .fillMaxWidth()
                 .windowInsetsBottomHeight(WindowInsets.safeDrawing)
                 .align(Alignment.BottomCenter),
+        )
+
+        // navigation bar scrim in start
+        Spacer(
+            modifier = Modifier
+                .background(
+                    Brush.horizontalGradient(
+                        Pair(0f, MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.9f)),
+                        Pair(.70f, MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.9f)),
+                        Pair(1f, MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0f)),
+                    )
+                )
+                .fillMaxHeight()
+                .windowInsetsStartWidth(WindowInsets.safeDrawing)
+                .align(Alignment.CenterStart),
         )
     }
 
