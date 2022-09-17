@@ -157,7 +157,7 @@ dependencyResolutionManagement {
                 .versionRef("ktor")
 
             library("protobuf-kotlin-lite", "com.google.protobuf", "protobuf-kotlin-lite")
-                .version("3.21.5")
+                .version("3.21.6")
 
             library("ksp-symbol-processing-api", "com.google.devtools.ksp", "symbol-processing-api")
                 .versionRef("gradle-plugin-ksp")
@@ -329,7 +329,7 @@ dependencyResolutionManagement {
                 .versionRef("accompanist")
 
             library("slf4j-simple", "org.slf4j", "slf4j-simple")
-                .version("2.0.0")
+                .version("2.0.1")
         }
     }
 }
