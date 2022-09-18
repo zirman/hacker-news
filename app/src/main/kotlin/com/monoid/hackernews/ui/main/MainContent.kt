@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
+import androidx.compose.foundation.layout.windowInsetsEndWidth
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.windowInsetsStartWidth
 import androidx.compose.foundation.layout.windowInsetsTopHeight
@@ -251,7 +252,7 @@ fun MainContent(windowSizeClass: WindowSizeClass) {
             }
         }
 
-        // status bar scrim
+        // status bar scrim on top
         Spacer(
             modifier = Modifier
                 .background(
@@ -281,19 +282,22 @@ fun MainContent(windowSizeClass: WindowSizeClass) {
                 .align(Alignment.BottomCenter),
         )
 
-        // navigation bar scrim in start
+        // navigation bar scrim on start
         Spacer(
             modifier = Modifier
-                .background(
-                    Brush.horizontalGradient(
-                        Pair(0f, MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.9f)),
-                        Pair(.70f, MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.9f)),
-                        Pair(1f, MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0f)),
-                    )
-                )
+                .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.9f))
                 .fillMaxHeight()
                 .windowInsetsStartWidth(WindowInsets.safeDrawing)
                 .align(Alignment.CenterStart),
+        )
+
+        // navigation bar scrim on end
+        Spacer(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.9f))
+                .fillMaxHeight()
+                .windowInsetsEndWidth(WindowInsets.safeDrawing)
+                .align(Alignment.CenterEnd),
         )
     }
 
