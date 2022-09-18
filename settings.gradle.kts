@@ -29,7 +29,6 @@ dependencyResolutionManagement {
                 "kotlinx",
                 listOf(
                     "kotlinx-coroutines-android",
-                    "kotlinx-coroutines-play-services",
 
                     "kotlinx-serialization-json",
                     "kotlinx-serialization-protobuf",
@@ -118,12 +117,6 @@ dependencyResolutionManagement {
                 "kotlinx-coroutines-android",
                 "org.jetbrains.kotlinx",
                 "kotlinx-coroutines-android"
-            ).versionRef("kotlinx-coroutines")
-
-            library(
-                "kotlinx-coroutines-play-services",
-                "org.jetbrains.kotlinx",
-                "kotlinx-coroutines-play-services"
             ).versionRef("kotlinx-coroutines")
 
             library(
