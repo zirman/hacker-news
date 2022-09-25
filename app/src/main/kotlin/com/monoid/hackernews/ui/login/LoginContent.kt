@@ -67,11 +67,18 @@ fun LoginContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    if (windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact) {
-                        WindowInsets.safeContent.only(WindowInsetsSides.Vertical)
-                    } else {
-                        WindowInsets.safeContent.only(WindowInsetsSides.Bottom)
-                    }.asPaddingValues()
+                    WindowInsets.safeContent
+                        .only(run {
+                            var windowInsets = WindowInsetsSides.Bottom
+                            if (windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact) {
+                                windowInsets += WindowInsetsSides.Top
+                            }
+                            if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
+                                windowInsets += WindowInsetsSides.Horizontal
+                            }
+                            windowInsets
+                        })
+                        .asPaddingValues()
                 ),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {

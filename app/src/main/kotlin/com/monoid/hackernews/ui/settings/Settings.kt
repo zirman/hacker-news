@@ -13,6 +13,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
@@ -37,16 +38,18 @@ fun Settings(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    if (windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact) {
-                        WindowInsets.safeContent
-                    } else {
-                        WindowInsets.safeContent
-                            .only(
-                                WindowInsetsSides.Start +
-                                        WindowInsetsSides.End +
-                                        WindowInsetsSides.Bottom
-                            )
-                    }.asPaddingValues()
+                    WindowInsets.safeContent
+                        .only(run {
+                            var windowInsets = WindowInsetsSides.Bottom
+                            if (windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact) {
+                                windowInsets += WindowInsetsSides.Top
+                            }
+                            if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
+                                windowInsets += WindowInsetsSides.Horizontal
+                            }
+                            windowInsets
+                        })
+                        .asPaddingValues()
                 ),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {

@@ -78,12 +78,18 @@ fun ReplyContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    if (windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact) {
-                        WindowInsets.safeContent
-                    } else {
-                        WindowInsets.safeContent
-                            .only(WindowInsetsSides.Start + WindowInsetsSides.End + WindowInsetsSides.Bottom)
-                    }.asPaddingValues()
+                    WindowInsets.safeContent
+                        .only(run {
+                            var windowInsets = WindowInsetsSides.Bottom
+                            if (windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact) {
+                                windowInsets += WindowInsetsSides.Top
+                            }
+                            if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
+                                windowInsets += WindowInsetsSides.Horizontal
+                            }
+                            windowInsets
+                        })
+                        .asPaddingValues()
                 ),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
