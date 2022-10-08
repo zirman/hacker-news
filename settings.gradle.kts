@@ -16,7 +16,7 @@ dependencyResolutionManagement {
 
             version("kotlinx-coroutines", "1.6.4")
             version("kotlinx-serialization", "1.4.0")
-            version("ktor", "2.1.1")
+            version("ktor", "2.1.2")
             version("room", "2.5.0-alpha03")
             version("lifecycle", "2.6.0-alpha02")
             version("navigation", "2.6.0-alpha01")
@@ -29,6 +29,7 @@ dependencyResolutionManagement {
                 "kotlinx",
                 listOf(
                     "kotlinx-coroutines-android",
+                    "kotlinx-coroutines-play-services",
 
                     "kotlinx-serialization-json",
                     "kotlinx-serialization-protobuf",
@@ -120,6 +121,12 @@ dependencyResolutionManagement {
             ).versionRef("kotlinx-coroutines")
 
             library(
+                "kotlinx-coroutines-play-services",
+                "org.jetbrains.kotlinx",
+                "kotlinx-coroutines-play-services"
+            ).versionRef("kotlinx-coroutines")
+
+            library(
                 "kotlinx-serialization-json",
                 "org.jetbrains.kotlinx",
                 "kotlinx-serialization-json"
@@ -150,7 +157,7 @@ dependencyResolutionManagement {
                 .versionRef("ktor")
 
             library("protobuf-kotlin-lite", "com.google.protobuf", "protobuf-kotlin-lite")
-                .version("3.21.6")
+                .version("3.21.7")
 
             library("ksp-symbol-processing-api", "com.google.devtools.ksp", "symbol-processing-api")
                 .versionRef("gradle-plugin-ksp")
@@ -322,7 +329,7 @@ dependencyResolutionManagement {
                 .versionRef("accompanist")
 
             library("slf4j-simple", "org.slf4j", "slf4j-simple")
-                .version("2.0.1")
+                .version("2.0.3")
         }
     }
 }
