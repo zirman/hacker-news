@@ -6,24 +6,24 @@ dependencyResolutionManagement {
     }
     versionCatalogs {
         create("libs") {
-            val kotlin = "1.7.10"
+            val kotlin = "1.7.20"
 
             version("gradle-plugin-kotlin", kotlin)
-            version("gradle-plugin-ksp", "$kotlin-1.0.6")
-            version("gradle-plugin-android", "7.3.0")
+            version("gradle-plugin-ksp", "$kotlin-1.0.7")
+            version("gradle-plugin-android", "7.3.1")
             version("gradle-plugin-protobuf", "0.8.19")
             version("gradle-plugin-versions", "0.42.0")
 
             version("kotlinx-coroutines", "1.6.4")
-            version("kotlinx-serialization", "1.4.0")
+            version("kotlinx-serialization", "1.4.1")
             version("ktor", "2.1.2")
-            version("room", "2.5.0-alpha03")
+            version("room", "2.5.0-beta01")
             version("lifecycle", "2.6.0-alpha02")
-            version("navigation", "2.6.0-alpha01")
-            version("compose", "1.3.0-beta03")
-            version("compose-compiler", "1.3.1")
+            version("navigation", "2.6.0-alpha02")
+            version("compose", "1.3.0-rc01")
+            version("compose-compiler", "1.3.2")
             version("material3", "1.0.0-alpha15")
-            version("accompanist", "0.26.4-beta")
+            version("accompanist", "0.26.5-rc")
 
             bundle(
                 "kotlinx",
@@ -184,28 +184,28 @@ dependencyResolutionManagement {
                 .version("1.9.0")
 
             library("core-google-shortcuts", "androidx.core", "core-google-shortcuts")
-                .version("1.1.0-beta01")
+                .version("1.1.0-rc01")
 
             library("appcompat", "androidx.appcompat", "appcompat")
-                .version("1.6.0-rc01")
+                .version("1.7.0-alpha01")
 
             library("window", "androidx.window", "window")
                 .version("1.1.0-alpha03")
 
             library("activity-ktx", "androidx.activity", "activity-ktx")
-                .version("1.6.0")
+                .version("1.7.0-alpha01")
 
             library("activity-compose", "androidx.activity", "activity-compose")
-                .version("1.6.0")
+                .version("1.7.0-alpha01")
 
             library("fragment-ktx", "androidx.fragment", "fragment-ktx")
-                .version("1.6.0-alpha02")
+                .version("1.6.0-alpha03")
 
             library("palette-ktx", "androidx.palette", "palette-ktx")
                 .version("1.0.0")
 
             library("work-runtime-ktx", "androidx.work", "work-runtime-ktx")
-                .version("2.8.0-alpha04")
+                .version("2.8.0-beta01")
 
             library("preference-ktx", "androidx.preference", "preference-ktx")
                 .version("1.2.0")
@@ -214,7 +214,7 @@ dependencyResolutionManagement {
                 .version("1.0.0-alpha08")
 
             library("benchmark-junit4", "androidx.benchmark", "benchmark-junit4")
-                .version("1.2.0-alpha04")
+                .version("1.2.0-alpha05")
 
             library("lifecycle-runtime-ktx", "androidx.lifecycle", "lifecycle-runtime-ktx")
                 .versionRef("lifecycle")
@@ -293,7 +293,7 @@ dependencyResolutionManagement {
                 .versionRef("compose")
 
             library("ui-text-google-fonts", "androidx.compose.ui", "ui-text-google-fonts")
-                .version("1.3.0-beta03")
+                .version("1.3.0-rc01")
 
             library("constraintlayout", "androidx.constraintlayout", "constraintlayout-compose")
                 .version("1.1.0-alpha04")
