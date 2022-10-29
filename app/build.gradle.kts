@@ -1,16 +1,9 @@
-import com.google.protobuf.gradle.generateProtoTasks
-import com.google.protobuf.gradle.id
-import com.google.protobuf.gradle.plugins
-import com.google.protobuf.gradle.protobuf
-import com.google.protobuf.gradle.protoc
-
 plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("plugin.serialization")
     id("kotlin-parcelize")
     id("com.google.devtools.ksp")
-    id("com.google.protobuf")
 }
 
 android {
@@ -87,28 +80,6 @@ android {
 
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
-}
-
-protobuf {
-    protoc {
-        artifact = "com.google.protobuf:protoc:21.0-rc-1"
-    }
-
-    generateProtoTasks {
-        all().forEach { task ->
-            task.plugins {
-                id("java") {
-                    option("lite")
-                }
-            }
-
-            task.builtins {
-                id("kotlin") {
-                    option("lite")
-                }
-            }
-        }
     }
 }
 

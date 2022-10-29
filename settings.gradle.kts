@@ -13,20 +13,21 @@ dependencyResolutionManagement {
             version("gradle-plugin-kotlin", kotlin)
             version("gradle-plugin-ksp", "$kotlin-1.0.7")
             version("gradle-plugin-android", "7.3.1")
-            version("gradle-plugin-protobuf", "0.8.19")
-            version("gradle-plugin-versions", "0.42.0")
+            version("gradle-plugin-protobuf", "0.9.1")
+            version("gradle-plugin-versions", "0.43.0")
 
             version("kotlinx-coroutines", "1.6.4")
             version("kotlinx-serialization", "1.4.1")
-            version("ktor", "2.1.2")
+            version("protobuf", "3.21.9")
+            version("ktor", "2.1.3")
             version("room", "2.5.0-beta01")
-            version("lifecycle", "2.6.0-alpha02")
-            version("navigation", "2.6.0-alpha02")
-            version("compose", "1.3.0-rc01")
+            version("lifecycle", "2.6.0-alpha03")
+            version("navigation", "2.6.0-alpha03")
+            version("compose", "1.4.0-alpha01")
             version("wear-compose", "1.0.0-alpha18")
             version("compose-compiler", "1.3.2")
             version("material3", "1.0.0-alpha15")
-            version("accompanist", "0.26.5-rc")
+            version("accompanist", "0.27.0")
 
             bundle(
                 "kotlinx",
@@ -194,7 +195,7 @@ dependencyResolutionManagement {
                 .version("18.0.0")
 
             library("protobuf-kotlin-lite", "com.google.protobuf", "protobuf-kotlin-lite")
-                .version("3.21.7")
+                .versionRef("protobuf")
 
             library("ksp-symbol-processing-api", "com.google.devtools.ksp", "symbol-processing-api")
                 .versionRef("gradle-plugin-ksp")
@@ -221,7 +222,7 @@ dependencyResolutionManagement {
                 .version("1.9.0")
 
             library("core-google-shortcuts", "androidx.core", "core-google-shortcuts")
-                .version("1.1.0-rc01")
+                .version("1.1.0")
 
             library("appcompat", "androidx.appcompat", "appcompat")
                 .version("1.7.0-alpha01")
@@ -230,10 +231,10 @@ dependencyResolutionManagement {
                 .version("1.1.0-alpha03")
 
             library("activity-ktx", "androidx.activity", "activity-ktx")
-                .version("1.7.0-alpha01")
+                .version("1.7.0-alpha02")
 
             library("activity-compose", "androidx.activity", "activity-compose")
-                .version("1.7.0-alpha01")
+                .version("1.7.0-alpha02")
 
             library("fragment-ktx", "androidx.fragment", "fragment-ktx")
                 .version("1.6.0-alpha03")
@@ -251,7 +252,7 @@ dependencyResolutionManagement {
                 .version("1.0.0-alpha08")
 
             library("benchmark-junit4", "androidx.benchmark", "benchmark-junit4")
-                .version("1.2.0-alpha05")
+                .version("1.2.0-alpha06")
 
             library("lifecycle-runtime-ktx", "androidx.lifecycle", "lifecycle-runtime-ktx")
                 .versionRef("lifecycle")
@@ -284,7 +285,7 @@ dependencyResolutionManagement {
                 .versionRef("navigation")
 
             library("material", "com.google.android.material", "material")
-                .version("1.8.0-alpha01")
+                .version("1.8.0-alpha02")
 
             library("material3", "androidx.compose.material3", "material3")
                 .versionRef("material3")
@@ -330,7 +331,7 @@ dependencyResolutionManagement {
                 .versionRef("compose")
 
             library("ui-text-google-fonts", "androidx.compose.ui", "ui-text-google-fonts")
-                .version("1.3.0-rc01")
+                .version("1.4.0-alpha01")
 
             library("constraintlayout", "androidx.constraintlayout", "constraintlayout-compose")
                 .version("1.1.0-alpha04")
@@ -339,13 +340,13 @@ dependencyResolutionManagement {
                 .version("1.0.0-alpha03")
 
             library("compose-foundation", "androidx.wear.compose", "compose-foundation")
-                .version("1.0.2")
+                .version("1.1.0-beta01")
 
             library("compose-material-wear", "androidx.wear.compose", "compose-material")
-                .version("1.0.2")
+                .version("1.1.0-beta01")
 
             library("compose-navigation-wear", "androidx.wear.compose", "compose-navigation")
-                .version("1.0.2")
+                .version("1.1.0-beta01")
 
             library(
                 "accompanist-navigation-animation",

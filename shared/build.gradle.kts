@@ -1,8 +1,4 @@
-import com.google.protobuf.gradle.generateProtoTasks
 import com.google.protobuf.gradle.id
-import com.google.protobuf.gradle.plugins
-import com.google.protobuf.gradle.protobuf
-import com.google.protobuf.gradle.protoc
 
 plugins {
     id("com.android.library")
@@ -56,19 +52,23 @@ android {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:21.0-rc-1"
+        artifact = "com.google.protobuf:protoc:${libs.versions.protobuf.get()}"
     }
-
+    plugins {
+        id("kotlin")
+        id("java")
+    }
     generateProtoTasks {
         all().forEach { task ->
+            task.builtins {
+                kotlin {}
+                java {}
+            }
             task.plugins {
-                id("java") {
+                id("kotlin") {
                     option("lite")
                 }
-            }
-
-            task.builtins {
-                id("kotlin") {
+                id("java") {
                     option("lite")
                 }
             }
@@ -87,5 +87,5 @@ dependencies {
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0-rc01")
 }

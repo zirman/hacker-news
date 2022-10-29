@@ -1,9 +1,3 @@
-import com.google.protobuf.gradle.generateProtoTasks
-import com.google.protobuf.gradle.id
-import com.google.protobuf.gradle.plugins
-import com.google.protobuf.gradle.protobuf
-import com.google.protobuf.gradle.protoc
-
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -91,28 +85,6 @@ android {
     packagingOptions {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-}
-
-protobuf {
-    protoc {
-        artifact = "com.google.protobuf:protoc:21.0-rc-1"
-    }
-
-    generateProtoTasks {
-        all().forEach { task ->
-            task.plugins {
-                id("java") {
-                    option("lite")
-                }
-            }
-
-            task.builtins {
-                id("kotlin") {
-                    option("lite")
-                }
-            }
         }
     }
 }
