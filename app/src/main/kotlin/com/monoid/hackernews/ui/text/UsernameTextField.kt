@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
-import com.monoid.hackernews.R
+import com.monoid.hackernews.shared.R
 
 @Composable
 fun UsernameTextField(

@@ -4,12 +4,15 @@ import android.app.Application
 import android.content.Intent
 import android.content.IntentFilter
 import androidx.room.Room
-import com.monoid.hackernews.api.getFavorites
-import com.monoid.hackernews.api.getUpvoted
-import com.monoid.hackernews.room.FavoriteDao
-import com.monoid.hackernews.room.FlagDao
-import com.monoid.hackernews.room.HNDatabase
-import com.monoid.hackernews.room.UpvoteDao
+import com.monoid.hackernews.shared.api.getFavorites
+import com.monoid.hackernews.shared.api.getUpvoted
+import com.monoid.hackernews.shared.navigation.Username
+import com.monoid.hackernews.shared.room.FavoriteDao
+import com.monoid.hackernews.shared.room.FlagDao
+import com.monoid.hackernews.shared.room.HNDatabase
+import com.monoid.hackernews.shared.room.UpvoteDao
+import com.monoid.hackernews.shared.settingsDataStore
+import com.monoid.hackernews.shared.updateAndPushDynamicShortcuts
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -99,9 +102,11 @@ class HNApplication : Application() {
                                     upvoteDao.replaceUpvotesForUser(
                                         username = authentication.username,
                                         upvotes = getUpvoted(
+                                            this@HNApplication,
                                             authentication,
                                             Username(authentication.username)
-                                        ).map { it.long },
+                                        )
+                                            .map { it.long },
                                     )
                                 }
 
@@ -109,7 +114,10 @@ class HNApplication : Application() {
                                 async {
                                     favoriteDao.replaceFavoritesForUser(
                                         username = authentication.username,
-                                        favorites = getFavorites(Username(authentication.username))
+                                        favorites = getFavorites(
+                                            this@HNApplication,
+                                            Username(authentication.username)
+                                        )
                                             .map { it.long },
                                     )
                                 }
@@ -125,7 +133,10 @@ class HNApplication : Application() {
 
                         delay(
                             TimeUnit.HOURS.toMillis(
-                                resources.getInteger(R.integer.favorites_state_hours).toLong()
+                                resources.getInteger(
+                                    com.monoid.hackernews.shared.R.integer.favorites_state_hours
+                                )
+                                    .toLong()
                             )
                         )
                     }
@@ -133,7 +144,7 @@ class HNApplication : Application() {
             }
         }
 
-        updateAndPushDynamicShortcuts()
+        updateAndPushDynamicShortcuts(MainActivity::class.java)
 
         // register locale changed broadcast receiver
         registerReceiver(

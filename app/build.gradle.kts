@@ -12,9 +12,12 @@ plugins {
     id("com.google.devtools.ksp")
     id("com.google.protobuf")
 }
+
 android {
+    namespace = "com.monoid.hackernews"
     compileSdk = 33
     buildToolsVersion = "33.0.0"
+
     signingConfigs {
         create("release") {
             storeFile = file("release.jks")
@@ -23,16 +26,19 @@ android {
             keyPassword = "h8G8xDZYuceM"
         }
     }
+
     defaultConfig {
         applicationId = "com.monoid.hackernews"
         minSdk = 26
         targetSdk = 33
         versionCode = 22
         versionName = "1.0"
+
         vectorDrawables {
             useSupportLibrary = true
         }
     }
+
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
@@ -40,6 +46,7 @@ android {
             isShrinkResources = false
             isDebuggable = true
         }
+
         release {
             signingConfig = signingConfigs.getByName("release")
 
@@ -53,12 +60,15 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
+
         freeCompilerArgs = listOf(
             "-opt-in=kotlinx.coroutines.FlowPreview",
             "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
@@ -70,19 +80,21 @@ android {
             "-opt-in=com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi",
         )
     }
+
     buildFeatures {
         compose = true
-        viewBinding = true
     }
+
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
-    namespace = "com.monoid.hackernews"
 }
+
 protobuf {
     protoc {
         artifact = "com.google.protobuf:protoc:21.0-rc-1"
     }
+
     generateProtoTasks {
         all().forEach { task ->
             task.plugins {
@@ -90,6 +102,7 @@ protobuf {
                     option("lite")
                 }
             }
+
             task.builtins {
                 id("kotlin") {
                     option("lite")
@@ -98,13 +111,16 @@ protobuf {
         }
     }
 }
+
 dependencies {
-    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+    implementation(project(":shared"))
 
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.ktor)
     implementation(libs.bundles.androidx)
+    implementation(libs.bundles.androidx.app)
     implementation(libs.bundles.google)
+    implementation(libs.bundles.google.app)
     compileOnly(libs.slf4j.simple)
     ksp(libs.room.compiler)
 }

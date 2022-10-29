@@ -32,13 +32,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.monoid.hackernews.MainViewModel
-import com.monoid.hackernews.R
-import com.monoid.hackernews.api.ItemId
-import com.monoid.hackernews.api.commentRequest
-import com.monoid.hackernews.data.ItemUi
-import com.monoid.hackernews.settingsDataStore
+import com.monoid.hackernews.shared.R
+import com.monoid.hackernews.shared.api.ItemId
+import com.monoid.hackernews.shared.api.commentRequest
+import com.monoid.hackernews.shared.data.ItemUi
+import com.monoid.hackernews.shared.settingsDataStore
 import com.monoid.hackernews.ui.text.ReplyTextField
-import com.monoid.hackernews.util.getAnnotatedString
+import com.monoid.hackernews.ui.util.getAnnotatedString
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -120,10 +120,11 @@ fun ReplyContent(
                     )
                 }
 
-            if (item?.title != null) {
+            val title = item?.title
+            if (title != null) {
                 SelectionContainer {
                     Text(
-                        text = item.title,
+                        text = title,
                         modifier = rowModifier.padding(top = 8.dp),
                         style = MaterialTheme.typography.bodyLarge,
                     )

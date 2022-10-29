@@ -12,8 +12,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavHostController
-import com.monoid.hackernews.MainNavigation
-import com.monoid.hackernews.R
+import com.monoid.hackernews.shared.R
+import com.monoid.hackernews.shared.navigation.MainNavigation
 import kotlinx.coroutines.flow.map
 
 @Composable

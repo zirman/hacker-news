@@ -1,9 +1,11 @@
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+
     repositories {
         google()
         mavenCentral()
     }
+
     versionCatalogs {
         create("libs") {
             val kotlin = "1.7.20"
@@ -21,6 +23,7 @@ dependencyResolutionManagement {
             version("lifecycle", "2.6.0-alpha02")
             version("navigation", "2.6.0-alpha02")
             version("compose", "1.3.0-rc01")
+            version("wear-compose", "1.0.0-alpha18")
             version("compose-compiler", "1.3.2")
             version("material3", "1.0.0-alpha15")
             version("accompanist", "0.26.5-rc")
@@ -53,7 +56,13 @@ dependencyResolutionManagement {
                 "google",
                 listOf(
                     "ksp-symbol-processing-api",
-                    "protobuf-kotlin-lite",
+                    "protobuf-kotlin-lite"
+                )
+            )
+
+            bundle(
+                "google-app",
+                listOf(
                     "accompanist-navigation-animation",
                     "accompanist-navigation-material",
                     "accompanist-swiperefresh",
@@ -63,10 +72,16 @@ dependencyResolutionManagement {
             )
 
             bundle(
+                "google-wear",
+                listOf(
+                    "play-services-wearable",
+                )
+            )
+
+            bundle(
                 "androidx",
                 listOf(
                     "core-ktx",
-                    "core-google-shortcuts",
                     "appcompat",
                     "window",
                     "activity-ktx",
@@ -75,7 +90,7 @@ dependencyResolutionManagement {
                     "palette-ktx",
                     "work-runtime-ktx",
                     "preference-ktx",
-                    "slice-builders-ktx",
+//                    "slice-builders-ktx",
                     "datastore",
                     "benchmark-junit4",
 
@@ -89,6 +104,28 @@ dependencyResolutionManagement {
                     "lifecycle-viewmodel-savedstate",
                     "lifecycle-livedata-ktx",
 
+                    // compose
+                    "ui",
+                    "ui-viewbinding",
+                    "ui-tooling",
+                    "ui-tooling-preview",
+                    "ui-util",
+                    "material-icons-core",
+                    "material-icons-extended",
+                    "foundation",
+                    "runtime-livedata",
+                    "ui-text-google-fonts",
+                    "constraintlayout",
+                    "metrics-performance",
+                    "compose-foundation",
+                )
+            )
+
+            bundle(
+                "androidx-app",
+                listOf(
+                    "core-google-shortcuts",
+
                     "navigation-runtime-ktx",
                     "navigation-ui-ktx",
                     "navigation-compose",
@@ -98,19 +135,16 @@ dependencyResolutionManagement {
                     "material3-window-size",
 
                     // compose
-                    "ui",
-                    "ui-viewbinding",
-                    "ui-tooling",
-                    "ui-tooling-preview",
-                    "ui-util",
-                    "material-compose",
-                    "material-icons-core",
-                    "material-icons-extended",
-                    "foundation",
-                    "runtime-livedata",
-                    "ui-text-google-fonts",
-                    "constraintlayout",
-                    "metrics-performance"
+                    "compose-material"
+                )
+            )
+
+            bundle(
+                "androidx-wear",
+                listOf(
+//                    "compose-foundation-wear",
+                    "compose-material-wear",
+                    "compose-navigation-wear"
                 )
             )
 
@@ -155,6 +189,9 @@ dependencyResolutionManagement {
 
             library("ktor-serialization-kotlinx-json", "io.ktor", "ktor-serialization-kotlinx-json")
                 .versionRef("ktor")
+
+            library("play-services-wearable", "com.google.android.gms", "play-services-wearable")
+                .version("18.0.0")
 
             library("protobuf-kotlin-lite", "com.google.protobuf", "protobuf-kotlin-lite")
                 .version("3.21.7")
@@ -274,7 +311,7 @@ dependencyResolutionManagement {
             library("ui-util", "androidx.compose.ui", "ui-util")
                 .versionRef("compose")
 
-            library("material-compose", "androidx.compose.material", "material")
+            library("compose-material", "androidx.compose.material", "material")
                 .versionRef("compose")
 
             library("material-icons-core", "androidx.compose.material", "material-icons-core")
@@ -300,6 +337,15 @@ dependencyResolutionManagement {
 
             library("metrics-performance", "androidx.metrics", "metrics-performance")
                 .version("1.0.0-alpha03")
+
+            library("compose-foundation", "androidx.wear.compose", "compose-foundation")
+                .version("1.0.2")
+
+            library("compose-material-wear", "androidx.wear.compose", "compose-material")
+                .version("1.0.2")
+
+            library("compose-navigation-wear", "androidx.wear.compose", "compose-navigation")
+                .version("1.0.2")
 
             library(
                 "accompanist-navigation-animation",
@@ -333,5 +379,8 @@ dependencyResolutionManagement {
         }
     }
 }
+
 rootProject.name = "Hacker News"
 include(":app")
+include(":wear")
+include(":shared")

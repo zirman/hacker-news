@@ -60,19 +60,19 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.monoid.hackernews.MainNavigation
 import com.monoid.hackernews.MainViewModel
-import com.monoid.hackernews.R
-import com.monoid.hackernews.Username
-import com.monoid.hackernews.api.ItemId
-import com.monoid.hackernews.data.ItemListRow
-import com.monoid.hackernews.data.OrderedItem
-import com.monoid.hackernews.domain.LiveUpdateUseCase
-import com.monoid.hackernews.navigation.LoginAction
-import com.monoid.hackernews.settingsDataStore
+import com.monoid.hackernews.shared.R
+import com.monoid.hackernews.shared.api.ItemId
+import com.monoid.hackernews.shared.data.ItemListRow
+import com.monoid.hackernews.shared.data.OrderedItem
+import com.monoid.hackernews.shared.domain.LiveUpdateUseCase
+import com.monoid.hackernews.shared.navigation.LoginAction
+import com.monoid.hackernews.shared.navigation.MainNavigation
+import com.monoid.hackernews.shared.navigation.Username
+import com.monoid.hackernews.shared.settingsDataStore
 import com.monoid.hackernews.ui.itemdetail.ItemDetail
 import com.monoid.hackernews.ui.itemlist.ItemList
-import com.monoid.hackernews.ui.util.notifyInput
+import com.monoid.hackernews.shared.ui.util.notifyInput
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -216,9 +216,8 @@ fun HomeScreen(
             remember {
                 orderedItemRepo
                     .getItems(
-                        TimeUnit.MINUTES.toMillis(
-                            context.resources.getInteger(R.integer.item_stale_minutes).toLong()
-                        )
+                        //context.resources.getInteger(R.integer.item_stale_minutes).toLong()
+                        TimeUnit.MINUTES.toMillis(5L)
                     )
                     .map { orderedItems ->
                         mainViewModel.itemTreeRepository.itemUiList(orderedItems.map { it.itemId })

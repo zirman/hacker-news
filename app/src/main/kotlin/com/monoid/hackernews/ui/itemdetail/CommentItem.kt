@@ -44,18 +44,18 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.placeholder
 import com.google.accompanist.placeholder.shimmer
-import com.monoid.hackernews.R
-import com.monoid.hackernews.Username
-import com.monoid.hackernews.api.ItemId
-import com.monoid.hackernews.data.ItemUiWithThreadDepth
-import com.monoid.hackernews.navigation.LoginAction
-import com.monoid.hackernews.room.ItemDb
-import com.monoid.hackernews.ui.text.ClickableTextBlock
+import com.monoid.hackernews.shared.R
+import com.monoid.hackernews.shared.api.ItemId
+import com.monoid.hackernews.shared.data.ItemUiWithThreadDepth
+import com.monoid.hackernews.shared.navigation.LoginAction
+import com.monoid.hackernews.shared.navigation.Username
+import com.monoid.hackernews.shared.room.ItemDb
+import com.monoid.hackernews.shared.ui.text.ClickableTextBlock
 import com.monoid.hackernews.ui.text.TextBlock
-import com.monoid.hackernews.ui.util.rememberTimeBy
-import com.monoid.hackernews.ui.util.userTag
-import com.monoid.hackernews.util.onClick
-import com.monoid.hackernews.util.rememberAnnotatedString
+import com.monoid.hackernews.shared.ui.util.rememberTimeBy
+import com.monoid.hackernews.shared.ui.util.userTag
+import com.monoid.hackernews.ui.util.onClick
+import com.monoid.hackernews.ui.util.rememberAnnotatedString
 import androidx.compose.material.MaterialTheme as MaterialTheme2
 
 @Composable

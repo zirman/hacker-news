@@ -19,7 +19,7 @@ import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.monoid.hackernews.R
+import com.monoid.hackernews.shared.R
 import com.monoid.hackernews.ui.theme.HNFont
 
 @Composable

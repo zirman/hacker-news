@@ -56,16 +56,16 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.navigation.material.BottomSheetNavigator
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.monoid.hackernews.BuildConfig
-import com.monoid.hackernews.MainNavigation
 import com.monoid.hackernews.MainViewModel
-import com.monoid.hackernews.R
-import com.monoid.hackernews.Username
-import com.monoid.hackernews.datastore.Authentication
-import com.monoid.hackernews.navigation.LoginAction
-import com.monoid.hackernews.settingsDataStore
+import com.monoid.hackernews.shared.R
+import com.monoid.hackernews.shared.datastore.Authentication
+import com.monoid.hackernews.shared.navigation.LoginAction
+import com.monoid.hackernews.shared.navigation.MainNavigation
+import com.monoid.hackernews.shared.navigation.Username
+import com.monoid.hackernews.shared.settingsDataStore
 import com.monoid.hackernews.ui.navigationdrawer.NavigationDrawerContent
 import com.monoid.hackernews.ui.navigationdrawer.NavigationRailContent
-import com.monoid.hackernews.util.rememberMetricsStateHolder
+import com.monoid.hackernews.shared.util.rememberMetricsStateHolder
 
 @Composable
 fun MainContent(windowSizeClass: WindowSizeClass) {

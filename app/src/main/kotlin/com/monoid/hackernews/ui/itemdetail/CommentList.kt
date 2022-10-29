@@ -23,12 +23,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.metrics.performance.PerformanceMetricsState
 import com.monoid.hackernews.BuildConfig
-import com.monoid.hackernews.Username
-import com.monoid.hackernews.api.ItemId
-import com.monoid.hackernews.data.ItemTreeRow
-import com.monoid.hackernews.data.ItemUiWithThreadDepth
-import com.monoid.hackernews.navigation.LoginAction
-import com.monoid.hackernews.util.rememberMetricsStateHolder
+import com.monoid.hackernews.shared.api.ItemId
+import com.monoid.hackernews.shared.data.ItemTreeRow
+import com.monoid.hackernews.shared.data.ItemUiWithThreadDepth
+import com.monoid.hackernews.shared.navigation.LoginAction
+import com.monoid.hackernews.shared.navigation.Username
+import com.monoid.hackernews.shared.util.rememberMetricsStateHolder
 
 @Composable
 fun CommentList(

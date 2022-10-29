@@ -26,9 +26,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.monoid.hackernews.R
-import com.monoid.hackernews.util.onClick
-import com.monoid.hackernews.util.rememberAnnotatedString
+import com.monoid.hackernews.shared.R
+import com.monoid.hackernews.ui.util.onClick
+import com.monoid.hackernews.ui.util.rememberAnnotatedString
 
 @Composable
 fun AboutUs(

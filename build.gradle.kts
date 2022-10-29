@@ -8,6 +8,7 @@ buildscript {
         google()
         mavenCentral()
     }
+
     dependencies {
         classpath(kotlin("gradle-plugin", version = libs.versions.gradle.plugin.kotlin.get()))
         classpath(kotlin("serialization", version = libs.versions.gradle.plugin.kotlin.get()))
@@ -17,15 +18,18 @@ buildscript {
         classpath("com.github.ben-manes:gradle-versions-plugin:${libs.versions.gradle.plugin.versions.get()}")
     }
 }
+
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }
+
 tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
     checkForGradleUpdate = true
     outputFormatter = "json"
     outputDir = "build/dependencyUpdates"
     reportfileName = "report"
 }
+
 subprojects {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
         kotlinOptions {

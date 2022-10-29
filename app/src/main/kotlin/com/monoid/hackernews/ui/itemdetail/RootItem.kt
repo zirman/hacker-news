@@ -48,16 +48,16 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.placeholder
 import com.google.accompanist.placeholder.shimmer
-import com.monoid.hackernews.R
-import com.monoid.hackernews.Username
-import com.monoid.hackernews.api.ItemId
-import com.monoid.hackernews.data.ItemUiWithThreadDepth
-import com.monoid.hackernews.navigation.LoginAction
+import com.monoid.hackernews.shared.R
+import com.monoid.hackernews.shared.api.ItemId
+import com.monoid.hackernews.shared.data.ItemUiWithThreadDepth
+import com.monoid.hackernews.shared.navigation.LoginAction
+import com.monoid.hackernews.shared.navigation.Username
 import com.monoid.hackernews.ui.text.TextBlock
-import com.monoid.hackernews.ui.util.rememberTimeBy
-import com.monoid.hackernews.ui.util.userTag
-import com.monoid.hackernews.util.onClick
-import com.monoid.hackernews.util.rememberAnnotatedString
+import com.monoid.hackernews.shared.ui.util.rememberTimeBy
+import com.monoid.hackernews.shared.ui.util.userTag
+import com.monoid.hackernews.ui.util.onClick
+import com.monoid.hackernews.ui.util.rememberAnnotatedString
 
 @Composable
 fun RootItem(
@@ -72,10 +72,14 @@ fun RootItem(
 
     Surface(
         modifier = modifier.then(
-            if (item?.url == null) {
-                Modifier
-            } else {
-                Modifier.clickable { onClickBrowser(item.url) }
+            run {
+                val url = item?.url
+
+                if (url == null) {
+                    Modifier
+                } else {
+                    Modifier.clickable { onClickBrowser(url) }
+                }
             }
         ),
         contentColor = MaterialTheme.colorScheme.secondary,
@@ -335,9 +339,11 @@ fun RootItem(
                 }
             }
 
-            if (item?.type != "comment" && item?.text != null) {
+            val itemText = item?.text
+
+            if (item?.type != "comment" && itemText != null) {
                 val annotatedText: AnnotatedString =
-                    rememberAnnotatedString(text = item.text)
+                    rememberAnnotatedString(text = itemText)
 
                 // state wrapper must be used in callbacks or onClicks may not be handled
                 val annotatedTextState: State<AnnotatedString> =
