@@ -21,6 +21,18 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
 
+    buildTypes {
+        debug {
+            isMinifyEnabled = false
+            isShrinkResources = false
+        }
+
+        release {
+            isMinifyEnabled = true
+            isShrinkResources = false
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -54,21 +66,25 @@ protobuf {
     protoc {
         artifact = "com.google.protobuf:protoc:${libs.versions.protobuf.get()}"
     }
+
     plugins {
-        id("kotlin")
         id("java")
+        id("kotlin")
     }
+
     generateProtoTasks {
         all().forEach { task ->
             task.builtins {
                 kotlin {}
                 java {}
             }
+
             task.plugins {
-                id("kotlin") {
+                id("java") {
                     option("lite")
                 }
-                id("java") {
+
+                id("kotlin") {
                     option("lite")
                 }
             }
