@@ -10,28 +10,95 @@ dependencyResolutionManagement {
         create("libs") {
             val kotlin = "1.7.20"
 
-            version("gradle-plugin-kotlin", kotlin)
-            version("gradle-plugin-ksp", "$kotlin-1.0.7")
-            version("gradle-plugin-android", "7.3.1")
-            version("gradle-plugin-protobuf", "0.9.1")
-            version("gradle-plugin-versions", "0.43.0")
+            version(
+                /* alias = */ "gradle-plugin-kotlin",
+                /* version = */ kotlin
+            )
 
-            version("kotlinx-coroutines", "1.6.4")
-            version("kotlinx-serialization", "1.4.1")
-            version("protobuf", "3.21.9")
-            version("ktor", "2.1.3")
-            version("room", "2.5.0-beta01")
-            version("lifecycle", "2.6.0-alpha03")
-            version("navigation", "2.6.0-alpha03")
-            version("compose", "1.4.0-alpha01")
-            version("wear-compose", "1.0.0-alpha18")
-            version("compose-compiler", "1.3.2")
-            version("material3", "1.0.0-alpha15")
-            version("accompanist", "0.27.0")
+            version(
+                /* alias = */ "gradle-plugin-ksp",
+                /* version = */ "$kotlin-1.0.8"
+            )
+
+            version(
+                /* alias = */ "gradle-plugin-android",
+                /* version = */ "7.3.1"
+            )
+
+            version(
+                /* alias = */ "gradle-plugin-protobuf",
+                /* version = */ "0.9.1"
+            )
+
+            version(
+                /* alias = */ "gradle-plugin-versions",
+                /* version = */ "0.43.0"
+            )
+
+
+            version(
+                /* alias = */ "kotlinx-coroutines",
+                /* version = */ "1.6.4"
+            )
+
+            version(
+                /* alias = */ "kotlinx-serialization",
+                /* version = */ "1.4.1"
+            )
+
+            version(
+                /* alias = */ "protobuf",
+                /* version = */ "3.21.9"
+            )
+
+            version(
+                /* alias = */ "ktor",
+                /* version = */ "2.1.3"
+            )
+
+            version(
+                /* alias = */ "room",
+                /* version = */ "2.5.0-beta01"
+            )
+
+            version(
+                /* alias = */ "lifecycle",
+                /* version = */ "2.6.0-alpha03"
+            )
+
+            version(
+                /* alias = */ "navigation",
+                /* version = */ "2.6.0-alpha03"
+            )
+
+            version(
+                /* alias = */ "compose",
+                /* version = */ "1.4.0-alpha01"
+            )
+
+            version(
+                /* alias = */ "wear-compose",
+                /* version = */ "1.0.0-alpha18"
+            )
+
+            version(
+                /* alias = */ "compose-compiler",
+                /* version = */ "1.3.2"
+            )
+
+            version(
+                /* alias = */ "material3",
+                /* version = */ "1.0.0-alpha15"
+            )
+
+            version(
+                /* alias = */ "accompanist",
+                /* version = */ "0.27.0"
+            )
 
             bundle(
-                "kotlinx",
-                listOf(
+                /* alias = */ "kotlinx",
+                /* aliases = */ listOf(
                     "kotlinx-coroutines-android",
                     "kotlinx-coroutines-play-services",
 
@@ -43,8 +110,8 @@ dependencyResolutionManagement {
             )
 
             bundle(
-                "ktor",
-                listOf(
+                /* alias = */ "ktor",
+                /* aliases = */ listOf(
                     "ktor-client-core",
                     "ktor-client-android",
                     "ktor-client-logging",
@@ -54,34 +121,35 @@ dependencyResolutionManagement {
             )
 
             bundle(
-                "google",
-                listOf(
+                /* alias = */ "google",
+                /* aliases = */ listOf(
                     "ksp-symbol-processing-api",
                     "protobuf-kotlin-lite"
                 )
             )
 
             bundle(
-                "google-app",
-                listOf(
+                /* alias = */ "google-app",
+                /* aliases = */ listOf(
                     "accompanist-navigation-animation",
                     "accompanist-navigation-material",
                     "accompanist-swiperefresh",
                     "accompanist-systemuicontroller",
+                    "accompanist-adaptive",
                     "accompanist-placeholder"
                 )
             )
 
             bundle(
-                "google-wear",
-                listOf(
+                /* alias = */ "google-wear",
+                /* aliases = */ listOf(
                     "play-services-wearable",
                 )
             )
 
             bundle(
-                "androidx",
-                listOf(
+                /* alias = */ "androidx",
+                /* aliases = */ listOf(
                     "core-ktx",
                     "appcompat",
                     "window",
@@ -91,7 +159,7 @@ dependencyResolutionManagement {
                     "palette-ktx",
                     "work-runtime-ktx",
                     "preference-ktx",
-//                    "slice-builders-ktx",
+                    // "slice-builders-ktx",
                     "datastore",
                     "benchmark-junit4",
 
@@ -123,8 +191,8 @@ dependencyResolutionManagement {
             )
 
             bundle(
-                "androidx-app",
-                listOf(
+                /* alias = */ "androidx-app",
+                /* aliases = */ listOf(
                     "core-google-shortcuts",
 
                     "navigation-runtime-ktx",
@@ -141,242 +209,403 @@ dependencyResolutionManagement {
             )
 
             bundle(
-                "androidx-wear",
-                listOf(
-//                    "compose-foundation-wear",
+                /* alias = */ "androidx-wear",
+                /* aliases = */ listOf(
                     "compose-material-wear",
                     "compose-navigation-wear"
                 )
             )
 
             library(
-                "kotlinx-coroutines-android",
-                "org.jetbrains.kotlinx",
-                "kotlinx-coroutines-android"
+                /* alias = */ "kotlinx-coroutines-android",
+                /* group = */ "org.jetbrains.kotlinx",
+                /* artifact = */ "kotlinx-coroutines-android"
             ).versionRef("kotlinx-coroutines")
 
             library(
-                "kotlinx-coroutines-play-services",
-                "org.jetbrains.kotlinx",
-                "kotlinx-coroutines-play-services"
+                /* alias = */ "kotlinx-coroutines-play-services",
+                /* group = */ "org.jetbrains.kotlinx",
+                /* artifact = */ "kotlinx-coroutines-play-services"
             ).versionRef("kotlinx-coroutines")
 
             library(
-                "kotlinx-serialization-json",
-                "org.jetbrains.kotlinx",
-                "kotlinx-serialization-json"
+                /* alias = */ "kotlinx-serialization-json",
+                /* group = */ "org.jetbrains.kotlinx",
+                /* artifact = */ "kotlinx-serialization-json"
             ).versionRef("kotlinx-serialization")
 
             library(
-                "kotlinx-serialization-protobuf",
-                "org.jetbrains.kotlinx",
-                "kotlinx-serialization-protobuf"
+                /* alias = */ "kotlinx-serialization-protobuf",
+                /* group = */ "org.jetbrains.kotlinx",
+                /* artifact = */ "kotlinx-serialization-protobuf"
             ).versionRef("kotlinx-serialization")
 
-            library("kotlinx-datetime", "org.jetbrains.kotlinx", "kotlinx-datetime")
-                .version("0.4.0")
-
-            library("ktor-client-core", "io.ktor", "ktor-client-core")
-                .versionRef("ktor")
-
-            library("ktor-client-android", "io.ktor", "ktor-client-android")
-                .versionRef("ktor")
-
-            library("ktor-client-logging", "io.ktor", "ktor-client-logging")
-                .versionRef("ktor")
-
-            library("ktor-client-content-negotiation", "io.ktor", "ktor-client-content-negotiation")
-                .versionRef("ktor")
-
-            library("ktor-serialization-kotlinx-json", "io.ktor", "ktor-serialization-kotlinx-json")
-                .versionRef("ktor")
-
-            library("play-services-wearable", "com.google.android.gms", "play-services-wearable")
-                .version("18.0.0")
-
-            library("protobuf-kotlin-lite", "com.google.protobuf", "protobuf-kotlin-lite")
-                .versionRef("protobuf")
-
-            library("ksp-symbol-processing-api", "com.google.devtools.ksp", "symbol-processing-api")
-                .versionRef("gradle-plugin-ksp")
-
-            library("datastore", "androidx.datastore", "datastore")
-                .version("1.0.0")
-
-            library("room-runtime", "androidx.room", "room-runtime")
-                .versionRef("room")
-
-            library("room-ktx", "androidx.room", "room-ktx")
-                .versionRef("room")
-
-            library("room-paging", "androidx.room", "room-paging")
-                .versionRef("room")
-
-            library("room-compiler", "androidx.room", "room-compiler")
-                .versionRef("room")
-
-            library("collection-ktx", "androidx.collection", "collection-ktx")
-                .version("1.2.0")
-
-            library("core-ktx", "androidx.core", "core-ktx")
-                .version("1.9.0")
-
-            library("core-google-shortcuts", "androidx.core", "core-google-shortcuts")
-                .version("1.1.0")
-
-            library("appcompat", "androidx.appcompat", "appcompat")
-                .version("1.7.0-alpha01")
-
-            library("window", "androidx.window", "window")
-                .version("1.1.0-alpha03")
-
-            library("activity-ktx", "androidx.activity", "activity-ktx")
-                .version("1.7.0-alpha02")
-
-            library("activity-compose", "androidx.activity", "activity-compose")
-                .version("1.7.0-alpha02")
-
-            library("fragment-ktx", "androidx.fragment", "fragment-ktx")
-                .version("1.6.0-alpha03")
-
-            library("palette-ktx", "androidx.palette", "palette-ktx")
-                .version("1.0.0")
-
-            library("work-runtime-ktx", "androidx.work", "work-runtime-ktx")
-                .version("2.8.0-beta01")
-
-            library("preference-ktx", "androidx.preference", "preference-ktx")
-                .version("1.2.0")
-
-            library("slice-builders-ktx", "androidx.slice", "slice-builders-ktx")
-                .version("1.0.0-alpha08")
-
-            library("benchmark-junit4", "androidx.benchmark", "benchmark-junit4")
-                .version("1.2.0-alpha06")
-
-            library("lifecycle-runtime-ktx", "androidx.lifecycle", "lifecycle-runtime-ktx")
-                .versionRef("lifecycle")
-
-            library("lifecycle-viewmodel-ktx", "androidx.lifecycle", "lifecycle-viewmodel-ktx")
-                .versionRef("lifecycle")
+            library(
+                /* alias = */ "kotlinx-datetime",
+                /* group = */ "org.jetbrains.kotlinx",
+                /* artifact = */ "kotlinx-datetime"
+            ).version("0.4.0")
 
             library(
-                "lifecycle-viewmodel-compose",
-                "androidx.lifecycle",
-                "lifecycle-viewmodel-compose"
+                /* alias = */ "ktor-client-core",
+                /* group = */ "io.ktor",
+                /* artifact = */ "ktor-client-core"
+            ).versionRef("ktor")
+
+            library(
+                /* alias = */ "ktor-client-android",
+                /* group = */ "io.ktor",
+                /* artifact = */ "ktor-client-android"
+            ).versionRef("ktor")
+
+            library(
+                /* alias = */ "ktor-client-logging",
+                /* group = */ "io.ktor",
+                /* artifact = */ "ktor-client-logging"
+            ).versionRef("ktor")
+
+            library(
+                /* alias = */ "ktor-client-content-negotiation",
+                /* group = */ "io.ktor",
+                /* artifact = */ "ktor-client-content-negotiation"
+            ).versionRef("ktor")
+
+            library(
+                /* alias = */ "ktor-serialization-kotlinx-json",
+                /* group = */ "io.ktor",
+                /* artifact = */ "ktor-serialization-kotlinx-json"
+            ).versionRef("ktor")
+
+            library(
+                /* alias = */ "play-services-wearable",
+                /* group = */ "com.google.android.gms",
+                /* artifact = */ "play-services-wearable"
+            ).version("18.0.0")
+
+            library(
+                /* alias = */ "protobuf-kotlin-lite",
+                /* group = */ "com.google.protobuf",
+                /* artifact = */ "protobuf-kotlin-lite"
+            ).versionRef("protobuf")
+
+            library(
+                /* alias = */ "ksp-symbol-processing-api",
+                /* group = */ "com.google.devtools.ksp",
+                /* artifact = */ "symbol-processing-api"
+            ).versionRef("gradle-plugin-ksp")
+
+            library(
+                /* alias = */ "datastore",
+                /* group = */ "androidx.datastore",
+                /* artifact = */ "datastore"
+            ).version("1.0.0")
+
+            library(
+                /* alias = */ "room-runtime",
+                /* group = */ "androidx.room",
+                /* artifact = */ "room-runtime"
+            ).versionRef("room")
+
+            library(
+                /* alias = */ "room-ktx",
+                /* group = */ "androidx.room",
+                /* artifact = */ "room-ktx"
+            ).versionRef("room")
+
+            library(
+                /* alias = */ "room-paging",
+                /* group = */ "androidx.room",
+                /* artifact = */ "room-paging"
+            ).versionRef("room")
+
+            library(
+                /* alias = */ "room-compiler",
+                /* group = */ "androidx.room",
+                /* artifact = */ "room-compiler"
+            ).versionRef("room")
+
+            library(
+                /* alias = */ "collection-ktx",
+                /* group = */ "androidx.collection",
+                /* artifact = */ "collection-ktx"
+            ).version("1.2.0")
+
+            library(
+                /* alias = */ "core-ktx",
+                /* group = */ "androidx.core",
+                /* artifact = */ "core-ktx"
+            ).version("1.9.0")
+
+            library(
+                /* alias = */ "core-google-shortcuts",
+                /* group = */ "androidx.core",
+                /* artifact = */ "core-google-shortcuts"
+            ).version("1.1.0")
+
+            library(
+                /* alias = */ "appcompat",
+                /* group = */ "androidx.appcompat",
+                /* artifact = */ "appcompat"
+            ).version("1.7.0-alpha01")
+
+            library(
+                /* alias = */ "window",
+                /* group = */ "androidx.window",
+                /* artifact = */ "window"
+            ).version("1.1.0-alpha03")
+
+            library(
+                /* alias = */ "activity-ktx",
+                /* group = */ "androidx.activity",
+                /* artifact = */ "activity-ktx"
+            ).version("1.7.0-alpha02")
+
+            library(
+                /* alias = */ "activity-compose",
+                /* group = */ "androidx.activity",
+                /* artifact = */ "activity-compose"
+            ).version("1.7.0-alpha02")
+
+            library(
+                /* alias = */ "fragment-ktx",
+                /* group = */ "androidx.fragment",
+                /* artifact = */ "fragment-ktx"
+            ).version("1.6.0-alpha03")
+
+            library(
+                /* alias = */ "palette-ktx",
+                /* group = */ "androidx.palette",
+                /* artifact = */ "palette-ktx"
+            ).version("1.0.0")
+
+            library(
+                /* alias = */ "work-runtime-ktx",
+                /* group = */ "androidx.work",
+                /* artifact = */ "work-runtime-ktx"
+            ).version("2.8.0-beta01")
+
+            library(
+                /* alias = */ "preference-ktx",
+                /* group = */ "androidx.preference",
+                /* artifact = */ "preference-ktx"
+            ).version("1.2.0")
+
+            library(
+                /* alias = */ "slice-builders-ktx",
+                /* group = */ "androidx.slice",
+                /* artifact = */ "slice-builders-ktx"
+            ).version("1.0.0-alpha08")
+
+            library(
+                /* alias = */ "benchmark-junit4",
+                /* group = */ "androidx.benchmark",
+                /* artifact = */ "benchmark-junit4"
+            ).version("1.2.0-alpha06")
+
+            library(
+                /* alias = */ "lifecycle-runtime-ktx",
+                /* group = */ "androidx.lifecycle",
+                /* artifact = */ "lifecycle-runtime-ktx"
             ).versionRef("lifecycle")
 
             library(
-                "lifecycle-viewmodel-savedstate",
-                "androidx.lifecycle",
-                "lifecycle-viewmodel-savedstate"
+                /* alias = */ "lifecycle-viewmodel-ktx",
+                /* group = */ "androidx.lifecycle",
+                /* artifact = */ "lifecycle-viewmodel-ktx"
             ).versionRef("lifecycle")
 
-            library("lifecycle-livedata-ktx", "androidx.lifecycle", "lifecycle-livedata-ktx")
-                .versionRef("lifecycle")
+            library(
+                /* alias = */ "lifecycle-viewmodel-compose",
+                /* group = */ "androidx.lifecycle",
+                /* artifact = */ "lifecycle-viewmodel-compose"
+            ).versionRef("lifecycle")
 
-            library("navigation-runtime-ktx", "androidx.navigation", "navigation-runtime-ktx")
-                .versionRef("navigation")
+            library(
+                /* alias = */ "lifecycle-viewmodel-savedstate",
+                /* group = */ "androidx.lifecycle",
+                /* artifact = */ "lifecycle-viewmodel-savedstate"
+            ).versionRef("lifecycle")
 
-            library("navigation-ui-ktx", "androidx.navigation", "navigation-ui-ktx")
-                .versionRef("navigation")
+            library(
+                /* alias = */ "lifecycle-livedata-ktx",
+                /* group = */ "androidx.lifecycle",
+                /* artifact = */ "lifecycle-livedata-ktx"
+            ).versionRef("lifecycle")
 
-            library("navigation-compose", "androidx.navigation", "navigation-compose")
-                .versionRef("navigation")
+            library(
+                /* alias = */ "navigation-runtime-ktx",
+                /* group = */ "androidx.navigation",
+                /* artifact = */ "navigation-runtime-ktx"
+            ).versionRef("navigation")
 
-            library("material", "com.google.android.material", "material")
-                .version("1.8.0-alpha02")
+            library(
+                /* alias = */ "navigation-ui-ktx",
+                /* group = */ "androidx.navigation",
+                /* artifact = */ "navigation-ui-ktx"
+            ).versionRef("navigation")
 
-            library("material3", "androidx.compose.material3", "material3")
-                .versionRef("material3")
+            library(
+                /* alias = */ "navigation-compose",
+                /* group = */ "androidx.navigation",
+                /* artifact = */ "navigation-compose"
+            ).versionRef("navigation")
+
+            library(
+                /* alias = */ "material",
+                /* group = */ "com.google.android.material",
+                /* artifact = */ "material"
+            ).version("1.8.0-alpha02")
+
+            library(
+                /* alias = */ "material3",
+                /* group = */ "androidx.compose.material3",
+                /* artifact = */ "material3"
+            ).versionRef("material3")
 
             library(
                 // cannot have `class` as alias postfix because gradle fails
-                "material3-window-size",
-                "androidx.compose.material3",
-                "material3-window-size-class"
+                /* alias = */ "material3-window-size",
+                /* group = */ "androidx.compose.material3",
+                /* artifact = */ "material3-window-size-class"
             ).versionRef("material3")
 
-            library("ui", "androidx.compose.ui", "ui")
-                .versionRef("compose")
-
-            library("ui-viewbinding", "androidx.compose.ui", "ui-viewbinding")
-                .versionRef("compose")
-
-            library("ui-tooling", "androidx.compose.ui", "ui-tooling")
-                .versionRef("compose")
-
-            library("ui-tooling-preview", "androidx.compose.ui", "ui-tooling-preview")
-                .versionRef("compose")
-
-            library("ui-util", "androidx.compose.ui", "ui-util")
-                .versionRef("compose")
-
-            library("compose-material", "androidx.compose.material", "material")
-                .versionRef("compose")
-
-            library("material-icons-core", "androidx.compose.material", "material-icons-core")
-                .versionRef("compose")
-
             library(
-                "material-icons-extended",
-                "androidx.compose.material",
-                "material-icons-extended"
+                /* alias = */ "ui",
+                /* group = */ "androidx.compose.ui",
+                /* artifact = */ "ui"
             ).versionRef("compose")
 
-            library("foundation", "androidx.compose.foundation", "foundation")
-                .versionRef("compose")
-
-            library("runtime-livedata", "androidx.compose.runtime", "runtime-livedata")
-                .versionRef("compose")
-
-            library("ui-text-google-fonts", "androidx.compose.ui", "ui-text-google-fonts")
-                .version("1.4.0-alpha01")
-
-            library("constraintlayout", "androidx.constraintlayout", "constraintlayout-compose")
-                .version("1.1.0-alpha04")
-
-            library("metrics-performance", "androidx.metrics", "metrics-performance")
-                .version("1.0.0-alpha03")
-
-            library("compose-foundation", "androidx.wear.compose", "compose-foundation")
-                .version("1.1.0-beta01")
-
-            library("compose-material-wear", "androidx.wear.compose", "compose-material")
-                .version("1.1.0-beta01")
-
-            library("compose-navigation-wear", "androidx.wear.compose", "compose-navigation")
-                .version("1.1.0-beta01")
+            library(
+                /* alias = */ "ui-viewbinding",
+                /* group = */ "androidx.compose.ui",
+                /* artifact = */ "ui-viewbinding"
+            ).versionRef("compose")
 
             library(
-                "accompanist-navigation-animation",
-                "com.google.accompanist",
-                "accompanist-navigation-animation"
+                /* alias = */ "ui-tooling",
+                /* group = */ "androidx.compose.ui",
+                /* artifact = */ "ui-tooling"
+            ).versionRef("compose")
+
+            library(
+                /* alias = */ "ui-tooling-preview",
+                /* group = */ "androidx.compose.ui",
+                /* artifact = */ "ui-tooling-preview"
+            ).versionRef("compose")
+
+            library(
+                /* alias = */ "ui-util",
+                /* group = */ "androidx.compose.ui",
+                /* artifact = */ "ui-util"
+            ).versionRef("compose")
+
+            library(
+                /* alias = */ "compose-material",
+                /* group = */ "androidx.compose.material",
+                /* artifact = */ "material"
+            ).versionRef("compose")
+
+            library(
+                /* alias = */ "material-icons-core",
+                /* group = */ "androidx.compose.material",
+                /* artifact = */ "material-icons-core"
+            ).versionRef("compose")
+
+            library(
+                /* alias = */ "material-icons-extended",
+                /* group = */ "androidx.compose.material",
+                /* artifact = */ "material-icons-extended"
+            ).versionRef("compose")
+
+            library(
+                /* alias = */ "foundation",
+                /* group = */ "androidx.compose.foundation",
+                /* artifact = */ "foundation"
+            ).versionRef("compose")
+
+            library(
+                /* alias = */ "runtime-livedata",
+                /* group = */ "androidx.compose.runtime",
+                /* artifact = */ "runtime-livedata"
+            ).versionRef("compose")
+
+            library(
+                /* alias = */ "ui-text-google-fonts",
+                /* group = */ "androidx.compose.ui",
+                /* artifact = */ "ui-text-google-fonts"
+            ).version("1.4.0-alpha01")
+
+            library(
+                /* alias = */ "constraintlayout",
+                /* group = */ "androidx.constraintlayout",
+                /* artifact = */ "constraintlayout-compose"
+            ).version("1.1.0-alpha04")
+
+            library(
+                /* alias = */ "metrics-performance",
+                /* group = */ "androidx.metrics",
+                /* artifact = */ "metrics-performance"
+            ).version("1.0.0-alpha03")
+
+            library(
+                /* alias = */ "compose-foundation",
+                /* group = */ "androidx.wear.compose",
+                /* artifact = */ "compose-foundation"
+            ).version("1.1.0-beta01")
+
+            library(
+                /* alias = */ "compose-material-wear",
+                /* group = */ "androidx.wear.compose",
+                /* artifact = */ "compose-material"
+            ).version("1.1.0-beta01")
+
+            library(
+                /* alias = */ "compose-navigation-wear",
+                /* group = */ "androidx.wear.compose",
+                /* artifact = */ "compose-navigation"
+            ).version("1.1.0-beta01")
+
+            library(
+                /* alias = */ "accompanist-navigation-animation",
+                /* group = */ "com.google.accompanist",
+                /* artifact = */ "accompanist-navigation-animation"
             ).versionRef("accompanist")
 
             library(
-                "accompanist-navigation-material",
-                "com.google.accompanist",
-                "accompanist-navigation-material"
+                /* alias = */ "accompanist-navigation-material",
+                /* group = */ "com.google.accompanist",
+                /* artifact = */ "accompanist-navigation-material"
             ).versionRef("accompanist")
 
             library(
-                "accompanist-swiperefresh",
-                "com.google.accompanist",
-                "accompanist-swiperefresh"
+                /* alias = */ "accompanist-swiperefresh",
+                /* group = */ "com.google.accompanist",
+                /* artifact = */ "accompanist-swiperefresh"
             ).versionRef("accompanist")
 
             library(
-                "accompanist-systemuicontroller",
-                "com.google.accompanist",
-                "accompanist-systemuicontroller"
+                /* alias = */ "accompanist-systemuicontroller",
+                /* group = */ "com.google.accompanist",
+                /* artifact = */ "accompanist-systemuicontroller"
             ).versionRef("accompanist")
 
-            library("accompanist-placeholder", "com.google.accompanist", "accompanist-placeholder")
-                .versionRef("accompanist")
+            library(
+                /* alias = */ "accompanist-adaptive",
+                /* group = */ "com.google.accompanist",
+                /* artifact = */ "accompanist-adaptive"
+            ).versionRef("accompanist")
 
-            library("slf4j-simple", "org.slf4j", "slf4j-simple")
-                .version("2.0.3")
+            library(
+                /* alias = */ "accompanist-placeholder",
+                /* group = */ "com.google.accompanist",
+                /* artifact = */ "accompanist-placeholder"
+            ).versionRef("accompanist")
+
+            library(
+                /* alias = */ "slf4j-simple",
+                /* group = */ "org.slf4j",
+                /* artifact = */ "slf4j-simple"
+            ).version("2.0.3")
         }
     }
 }

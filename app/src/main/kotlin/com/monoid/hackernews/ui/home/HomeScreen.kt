@@ -8,15 +8,12 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContent
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -27,7 +24,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallTopAppBar
@@ -42,11 +38,9 @@ import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -56,10 +50,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
+import com.google.accompanist.adaptive.FoldAwareConfiguration
+import com.google.accompanist.adaptive.HorizontalTwoPaneStrategy
+import com.google.accompanist.adaptive.TwoPane
+import com.google.accompanist.adaptive.calculateDisplayFeatures
 import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.monoid.hackernews.MainActivity
 import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.shared.R
 import com.monoid.hackernews.shared.api.ItemId
@@ -71,13 +68,11 @@ import com.monoid.hackernews.shared.navigation.MainNavigation
 import com.monoid.hackernews.shared.navigation.Username
 import com.monoid.hackernews.shared.settingsDataStore
 import com.monoid.hackernews.ui.itemdetail.ItemDetail
-import com.monoid.hackernews.ui.itemlist.ItemList
 import com.monoid.hackernews.shared.ui.util.notifyInput
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
 
 @Composable
 fun HomeScreen(
@@ -209,16 +204,10 @@ fun HomeScreen(
             )
         },
     ) { paddingValues ->
-        val swipeRefreshState: SwipeRefreshState =
-            rememberSwipeRefreshState(isRefreshing = false)
-
         val itemRows: State<List<ItemListRow>?> =
             remember {
                 orderedItemRepo
-                    .getItems(
-                        //context.resources.getInteger(R.integer.item_stale_minutes).toLong()
-                        TimeUnit.MINUTES.toMillis(5L)
-                    )
+                    .getItems(context.resources.getInteger(R.integer.item_stale_minutes).toLong())
                     .map { orderedItems ->
                         mainViewModel.itemTreeRepository.itemUiList(orderedItems.map { it.itemId })
                     }
@@ -237,80 +226,89 @@ fun HomeScreen(
                     contentAlignment = Alignment.Center,
                 ) { CircularProgressIndicator() }
             } else {
-                Row {
-                    val listState: LazyListState =
-                        rememberLazyListState()
+                val swipeRefreshState: SwipeRefreshState =
+                    rememberSwipeRefreshState(isRefreshing = false)
 
-                    if (showItemId == null || windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact) {
-                        SwipeRefresh(
-                            state = swipeRefreshState,
-                            onRefresh = { /* TODO */ },
-                            modifier = when (windowSizeClass.widthSizeClass) {
-                                WindowWidthSizeClass.Compact ->
-                                    Modifier.weight(1f)
-                                else ->
-                                    Modifier.width(360.dp)
-                            }
-                                .fillMaxHeight()
-                                .notifyInput { setDetailInteraction(false) },
-                            indicator = { state, trigger ->
-                                SwipeRefreshIndicator(
-                                    state = state,
-                                    refreshTriggerDistance = trigger,
-                                    scale = true,
-                                )
-                            },
-                        ) {
-                            CompositionLocalProvider(
-                                LocalContentColor provides MaterialTheme.colorScheme.primary,
-                            ) {
-                                ItemList(
-                                    itemRows = itemRows,
-                                    selectedItem = showItemId,
-                                    onClickDetail = {
-                                        setDetailInteraction(true)
-                                        setSelectedItemId(it)
-                                    },
-                                    onClickUser = onClickUser,
+                val listState: LazyListState =
+                    rememberLazyListState()
+
+                val detailListState: LazyListState =
+                    rememberLazyListState()
+
+                if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
+                    if (showItemId == null) {
+                        ItemsList(
+                            swipeRefreshState = swipeRefreshState,
+                            listState = listState,
+                            itemRows = itemRows,
+                            showItemId = null,
+                            setSelectedItemId = setSelectedItemId,
+                            setDetailInteraction = setDetailInteraction,
+                            onClickUser = onClickUser,
+                            onClickReply = onClickReply,
+                            onClickBrowser = onClickBrowser,
+                            onNavigateLogin = onNavigateLogin
+                        )
+                    } else {
+                        ItemDetail(
+                            itemId = showItemId,
+                            onClickReply = onClickReply,
+                            onClickUser = onClickUser,
+                            onClickBrowser = onClickBrowser,
+                            onNavigateLogin = onNavigateLogin,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .notifyInput { setDetailInteraction(true) },
+                            listState = detailListState,
+                        )
+                    }
+                } else {
+                    TwoPane(
+                        first = {
+                            ItemsList(
+                                swipeRefreshState = swipeRefreshState,
+                                listState = listState,
+                                itemRows = itemRows,
+                                showItemId = showItemId,
+                                setSelectedItemId = setSelectedItemId,
+                                setDetailInteraction = setDetailInteraction,
+                                onClickUser = onClickUser,
+                                onClickReply = onClickReply,
+                                onClickBrowser = onClickBrowser,
+                                onNavigateLogin = onNavigateLogin
+                            )
+                        },
+                        second = {
+                            if (showItemId != null) {
+                                ItemDetail(
+                                    itemId = showItemId,
                                     onClickReply = onClickReply,
+                                    onClickUser = onClickUser,
                                     onClickBrowser = onClickBrowser,
                                     onNavigateLogin = onNavigateLogin,
-                                    listState = listState,
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .notifyInput { setDetailInteraction(true) },
+                                    listState = detailListState,
                                 )
+                            } else {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .notifyInput { setDetailInteraction(true) },
+                                    contentAlignment = Alignment.Center,
+                                ) {
+                                    Text(text = stringResource(id = R.string.no_story_selected))
+                                }
                             }
-                        }
-                    }
-
-                    val modifier = Modifier
-                        .weight(1f)
-                        .fillMaxHeight()
-
-                    val detailListState: LazyListState =
-                        rememberLazyListState()
-
-                    if (
-                        showItemId != null &&
-                        (detailInteraction || windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact)
-                    ) {
-                        key(showItemId) {
-                            ItemDetail(
-                                itemId = showItemId,
-                                onClickReply = onClickReply,
-                                onClickUser = onClickUser,
-                                onClickBrowser = onClickBrowser,
-                                onNavigateLogin = onNavigateLogin,
-                                modifier = modifier.notifyInput { setDetailInteraction(true) },
-                                listState = detailListState,
-                            )
-                        }
-                    } else if (windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact) {
-                        Box(
-                            modifier = modifier,
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            Text(text = stringResource(id = R.string.no_story_selected))
-                        }
-                    }
+                        },
+                        strategy = HorizontalTwoPaneStrategy(splitFraction = 0.40f),
+                        displayFeatures = calculateDisplayFeatures(
+                            activity = context as MainActivity
+                        ),
+                        modifier = Modifier.fillMaxSize(),
+                        foldAwareConfiguration = FoldAwareConfiguration.AllFolds
+                    )
                 }
             }
         }
