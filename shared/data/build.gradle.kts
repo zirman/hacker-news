@@ -46,14 +46,6 @@ android {
             "-opt-in=com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi",
         )
     }
-
-//    buildFeatures {
-//        compose = true
-//    }
-
-//    composeOptions {
-//        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-//    }
 }
 
 protobuf {
@@ -87,11 +79,10 @@ protobuf {
 }
 
 dependencies {
-    api(libs.bundles.kotlinx)
+    implementation(libs.bundles.kotlinx)
+    implementation(libs.bundles.androidx)
+    implementation(libs.bundles.google)
     api(libs.bundles.ktor)
-    api(libs.bundles.androidx)
-    api(libs.bundles.google)
-    compileOnly(libs.slf4j.simple)
     ksp(libs.room.compiler)
 
     testImplementation("junit:junit:4.13.2")

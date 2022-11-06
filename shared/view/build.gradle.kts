@@ -34,9 +34,9 @@ android {
 dependencies {
     api(project(":shared:domain"))
 
-    api(libs.bundles.kotlinx)
-    api(libs.bundles.androidx)
-    api(libs.bundles.google)
+    implementation(libs.bundles.kotlinx)
+    implementation(libs.bundles.androidx)
+    implementation(libs.bundles.google)
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.4-rc01")

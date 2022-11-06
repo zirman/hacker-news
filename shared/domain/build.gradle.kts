@@ -54,11 +54,11 @@ android {
 dependencies {
     api(project(":shared:data"))
 
-    api(libs.bundles.kotlinx)
-    api(libs.bundles.androidx)
+    implementation(libs.bundles.kotlinx)
+    implementation(libs.bundles.androidx)
     // TODO: refactor so that this isn't a shared dependency for wear
-    api(libs.bundles.androidx.app)
-    api(libs.bundles.google)
+    implementation(libs.bundles.androidx.app)
+    implementation(libs.bundles.google)
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.4-rc01")
