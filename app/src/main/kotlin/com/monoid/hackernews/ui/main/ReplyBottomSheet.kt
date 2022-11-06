@@ -13,7 +13,7 @@ import com.monoid.hackernews.ui.reply.ReplyContent
 
 fun NavGraphBuilder.replyBottomSheet(
     windowSizeClass: WindowSizeClass,
-    navigateUp: () -> Unit,
+    onNavigateUp: () -> Unit,
     onLoginError: (Throwable) -> Unit,
 ) {
     bottomSheet(
@@ -26,7 +26,7 @@ fun NavGraphBuilder.replyBottomSheet(
         ReplyContent(
             itemId = itemId,
             windowSizeClass = windowSizeClass,
-            onSuccess = navigateUp,
+            onSuccess = onNavigateUp,
             onError = onLoginError,
             modifier = Modifier
                 .fillMaxWidth()

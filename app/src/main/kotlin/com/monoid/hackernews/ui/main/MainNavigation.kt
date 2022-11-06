@@ -89,9 +89,9 @@ fun MainNavigation(
             mainViewModel = mainViewModel,
             drawerState = drawerState,
             snackbarHostState = snackbarHostState,
-            navigateToUser = onNavigateToUser,
-            navigateToReply = onNavigateToReply,
-            navigateToLogin = onNavigateToLogin,
+            onNavigateToUser = onNavigateToUser,
+            onNavigateToReply = onNavigateToReply,
+            onNavigateToLogin = onNavigateToLogin,
         )
 
         homeScreen(
@@ -100,22 +100,22 @@ fun MainNavigation(
             mainViewModel = mainViewModel,
             drawerState = drawerState,
             snackbarHostState = snackbarHostState,
-            navigateToUser = onNavigateToUser,
-            navigateToReply = onNavigateToReply,
-            navigateToLogin = onNavigateToLogin,
+            onNavigateToUser = onNavigateToUser,
+            onNavigateToReply = onNavigateToReply,
+            onNavigateToLogin = onNavigateToLogin,
         )
 
         loginBottomSheet(
             mainViewModel = mainViewModel,
             windowSizeClass = windowSizeClass,
-            navigateToReply = onNavigateToReply,
-            navigateUp = onNavigateUp,
+            onNavigateToReply = onNavigateToReply,
+            onNavigateUp = onNavigateUp,
             onLoginError = onLoginError,
         )
 
         replyBottomSheet(
             windowSizeClass = windowSizeClass,
-            navigateUp = onNavigateUp,
+            onNavigateUp = onNavigateUp,
             onLoginError = onLoginError,
         )
 

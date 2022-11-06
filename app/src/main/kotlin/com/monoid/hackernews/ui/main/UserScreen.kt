@@ -27,9 +27,9 @@ fun NavGraphBuilder.userScreen(
     mainViewModel: MainViewModel,
     drawerState: DrawerState,
     snackbarHostState: SnackbarHostState,
-    navigateToUser: (Username) -> Unit,
-    navigateToReply: (ItemId) -> Unit,
-    navigateToLogin: (LoginAction) -> Unit,
+    onNavigateToUser: (Username) -> Unit,
+    onNavigateToReply: (ItemId) -> Unit,
+    onNavigateToLogin: (LoginAction) -> Unit,
 ) {
     composable(
         route = MainNavigation.User.route,
@@ -74,9 +74,9 @@ fun NavGraphBuilder.userScreen(
             setSelectedItemId = setSelectedItemId,
             detailInteraction = detailInteraction,
             setDetailInteraction = setDetailInteraction,
-            navigateToUser = navigateToUser,
-            navigateToReply = navigateToReply,
-            navigateToLogin = navigateToLogin
+            onNavigateToUser = onNavigateToUser,
+            onNavigateToReply = onNavigateToReply,
+            onNavigateToLogin = onNavigateToLogin
         )
     }
 }

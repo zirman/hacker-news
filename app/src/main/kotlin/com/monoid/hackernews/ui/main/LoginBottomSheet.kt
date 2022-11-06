@@ -16,8 +16,8 @@ import com.monoid.hackernews.ui.login.LoginContent
 fun NavGraphBuilder.loginBottomSheet(
     mainViewModel: MainViewModel,
     windowSizeClass: WindowSizeClass,
-    navigateToReply: (ItemId) -> Unit,
-    navigateUp: () -> Unit,
+    onNavigateToReply: (ItemId) -> Unit,
+    onNavigateUp: () -> Unit,
     onLoginError: (Throwable) -> Unit,
 ) {
     bottomSheet(
@@ -51,11 +51,11 @@ fun NavGraphBuilder.loginBottomSheet(
                         )
                     }
                     is LoginAction.Reply -> {
-                        navigateToReply(ItemId(loginAction.itemId))
+                        onNavigateToReply(ItemId(loginAction.itemId))
                     }
                 }
 
-                navigateUp()
+                onNavigateUp()
             },
             onLoginError = onLoginError,
             modifier = Modifier
