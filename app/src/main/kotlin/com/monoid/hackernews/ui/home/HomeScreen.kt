@@ -49,7 +49,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.google.accompanist.adaptive.FoldAwareConfiguration
 import com.google.accompanist.adaptive.HorizontalTwoPaneStrategy
 import com.google.accompanist.adaptive.TwoPane
@@ -64,7 +63,6 @@ import com.monoid.hackernews.shared.data.ItemListRow
 import com.monoid.hackernews.shared.data.OrderedItem
 import com.monoid.hackernews.shared.domain.LiveUpdateUseCase
 import com.monoid.hackernews.shared.navigation.LoginAction
-import com.monoid.hackernews.shared.navigation.MainNavigation
 import com.monoid.hackernews.shared.navigation.Username
 import com.monoid.hackernews.shared.settingsDataStore
 import com.monoid.hackernews.ui.itemdetail.ItemDetail
@@ -78,7 +76,6 @@ import kotlinx.coroutines.launch
 fun HomeScreen(
     mainViewModel: MainViewModel,
     drawerState: DrawerState,
-    mainNavController: NavController,
     windowSizeClass: WindowSizeClass,
     title: String,
     orderedItemRepo: LiveUpdateUseCase<OrderedItem>,
@@ -90,9 +87,12 @@ fun HomeScreen(
     setDetailInteraction: (Boolean) -> Unit,
     context: Context = LocalContext.current,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    navigateToUser: (Username) -> Unit,
+    navigateToReply: (ItemId) -> Unit,
+    navigateToLogin: (LoginAction) -> Unit,
     onClickUser: (Username?) -> Unit = { user ->
         if (user != null) {
-            mainNavController.navigate(MainNavigation.User.routeWithArgs(user))
+            navigateToUser(user)
         } else {
             Toast.makeText(
                 context,
@@ -106,11 +106,9 @@ fun HomeScreen(
             val authentication = context.settingsDataStore.data.first()
 
             if (authentication.password.isNotEmpty()) {
-                mainNavController.navigate(MainNavigation.Reply.routeWithArgs(itemId))
+                navigateToReply(itemId)
             } else {
-                mainNavController.navigate(
-                    MainNavigation.Login.routeWithArgs(LoginAction.Reply(itemId.long))
-                )
+                navigateToLogin(LoginAction.Reply(itemId.long))
             }
         }
     },
@@ -126,10 +124,7 @@ fun HomeScreen(
                 Toast.LENGTH_SHORT
             ).show()
         }
-    },
-    onNavigateLogin: (LoginAction) -> Unit = { loginAction ->
-        mainNavController.navigate(MainNavigation.Login.routeWithArgs(loginAction))
-    },
+    }
 ) {
     val showItemId: ItemId? =
         remember(windowSizeClass.widthSizeClass, selectedItemId, detailInteraction) {
@@ -247,7 +242,7 @@ fun HomeScreen(
                             onClickUser = onClickUser,
                             onClickReply = onClickReply,
                             onClickBrowser = onClickBrowser,
-                            onNavigateLogin = onNavigateLogin
+                            onNavigateLogin = navigateToLogin
                         )
                     } else {
                         ItemDetail(
@@ -255,7 +250,7 @@ fun HomeScreen(
                             onClickReply = onClickReply,
                             onClickUser = onClickUser,
                             onClickBrowser = onClickBrowser,
-                            onNavigateLogin = onNavigateLogin,
+                            onNavigateLogin = navigateToLogin,
                             modifier = Modifier
                                 .fillMaxSize()
                                 .notifyInput { setDetailInteraction(true) },
@@ -275,7 +270,7 @@ fun HomeScreen(
                                 onClickUser = onClickUser,
                                 onClickReply = onClickReply,
                                 onClickBrowser = onClickBrowser,
-                                onNavigateLogin = onNavigateLogin
+                                onNavigateLogin = navigateToLogin
                             )
                         },
                         second = {
@@ -285,7 +280,7 @@ fun HomeScreen(
                                     onClickReply = onClickReply,
                                     onClickUser = onClickUser,
                                     onClickBrowser = onClickBrowser,
-                                    onNavigateLogin = onNavigateLogin,
+                                    onNavigateLogin = navigateToLogin,
                                     modifier = Modifier
                                         .fillMaxSize()
                                         .notifyInput { setDetailInteraction(true) },

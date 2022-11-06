@@ -24,12 +24,9 @@ import com.monoid.hackernews.ui.theme.HNFont
 
 @Composable
 fun Settings(
-    windowSizeClassState: State<WindowSizeClass>,
+    windowSizeClass: WindowSizeClass,
     modifier: Modifier = Modifier,
 ) {
-    val windowSizeClass: WindowSizeClass =
-        windowSizeClassState.value
-
     Surface(
         modifier = modifier,
         contentColor = MaterialTheme.colorScheme.tertiary,

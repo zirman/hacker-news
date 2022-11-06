@@ -236,10 +236,21 @@ fun MainContent(windowSizeClass: WindowSizeClass) {
                         }
                     }
 
-                    MainNavigationComponent(
+                    MainNavigation(
                         windowSizeClass = windowSizeClass,
                         mainNavController = mainNavController,
                         drawerState = drawerState,
+                        onNavigateToUser = { username ->
+                            mainNavController.navigate(MainNavigation.User.routeWithArgs(username))
+                        },
+                        onNavigateToReply = { itemId ->
+                            mainNavController.navigate(MainNavigation.Reply.routeWithArgs(itemId))
+                        },
+                        onNavigateToLogin = { loginAction ->
+                            mainNavController
+                                .navigate(MainNavigation.Login.routeWithArgs(loginAction))
+                        },
+                        onNavigateUp = { mainNavController.navigateUp() },
                         onLoginError = { setShowLoginErrorDialog(it) },
                         modifier = Modifier
                             .background(MaterialTheme.colorScheme.surface)

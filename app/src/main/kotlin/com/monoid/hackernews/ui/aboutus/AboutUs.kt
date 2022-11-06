@@ -32,12 +32,9 @@ import com.monoid.hackernews.ui.util.rememberAnnotatedString
 
 @Composable
 fun AboutUs(
-    windowSizeClassState: State<WindowSizeClass>,
+    windowSizeClass: WindowSizeClass,
     modifier: Modifier = Modifier,
 ) {
-    val windowSizeClass: WindowSizeClass =
-        windowSizeClassState.value
-
     Surface(
         modifier = modifier,
         contentColor = MaterialTheme.colorScheme.tertiary,

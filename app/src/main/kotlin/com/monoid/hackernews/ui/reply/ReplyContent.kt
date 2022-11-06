@@ -19,7 +19,6 @@ import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,7 +48,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun ReplyContent(
     itemId: ItemId,
-    windowSizeClassState: State<WindowSizeClass>,
+    windowSizeClass: WindowSizeClass,
     onSuccess: () -> Unit,
     onError: (Throwable) -> Unit,
     modifier: Modifier = Modifier,
@@ -66,9 +65,6 @@ fun ReplyContent(
         .value
 
     val item = itemUi?.item
-
-    val windowSizeClass: WindowSizeClass =
-        windowSizeClassState.value
 
     Surface(
         modifier = modifier,

@@ -20,7 +20,6 @@ import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -50,14 +49,12 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LoginContent(
-    windowSizeClassState: State<WindowSizeClass>,
+    windowSizeClass: WindowSizeClass,
     onLogin: (Authentication) -> Unit,
     onLoginError: (Throwable) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val mainViewModel: MainViewModel = viewModel()
-
-    val windowSizeClass = windowSizeClassState.value
 
     Surface(
         modifier = modifier,
