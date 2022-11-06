@@ -613,4 +613,6 @@ dependencyResolutionManagement {
 rootProject.name = "Hacker News"
 include(":app")
 include(":wear")
-include(":shared")
+include(":shared:view")
+include(":shared:domain")
+include(":shared:data")

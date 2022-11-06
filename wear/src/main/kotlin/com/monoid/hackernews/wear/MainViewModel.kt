@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.monoid.hackernews.shared.data.ItemTreeRepository
+import com.monoid.hackernews.shared.data.settingsDataStore
 import com.monoid.hackernews.shared.room.AskStoryDao
 import com.monoid.hackernews.shared.room.BestStoryDao
 import com.monoid.hackernews.shared.room.ExpandedDao
@@ -17,7 +18,6 @@ import com.monoid.hackernews.shared.room.ShowStoryDao
 import com.monoid.hackernews.shared.room.TopStoryDao
 import com.monoid.hackernews.shared.room.UpvoteDao
 import com.monoid.hackernews.shared.room.UserDao
-import com.monoid.hackernews.shared.settingsDataStore
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.channels.Channel
 

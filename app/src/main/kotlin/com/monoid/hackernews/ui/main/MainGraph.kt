@@ -8,9 +8,15 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.shared.api.ItemId
-import com.monoid.hackernews.shared.navigation.LoginAction
+import com.monoid.hackernews.shared.data.LoginAction
+import com.monoid.hackernews.shared.data.Username
 import com.monoid.hackernews.shared.navigation.MainNavigation
-import com.monoid.hackernews.shared.navigation.Username
+import com.monoid.hackernews.view.main.aboutUsBottomSheet
+import com.monoid.hackernews.view.main.homeScreen
+import com.monoid.hackernews.view.main.loginBottomSheet
+import com.monoid.hackernews.view.main.replyBottomSheet
+import com.monoid.hackernews.view.main.settingsBottomSheet
+import com.monoid.hackernews.view.main.userScreen
 
 val mainGraphRoutePattern = "main"
 

@@ -10,14 +10,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.getSystemService
-import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.metrics.performance.JankStats
-import com.monoid.hackernews.shared.R
 import com.monoid.hackernews.shared.data.TopStoryRepository
 import com.monoid.hackernews.shared.domain.LiveUpdateUseCase
+import com.monoid.hackernews.shared.view.R
 import com.monoid.hackernews.wear.theme.HackerNewsTheme
 import com.monoid.hackernews.wear.ui.home.HomeScreen
 import kotlinx.coroutines.awaitCancellation
@@ -29,7 +28,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+//        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
             HackerNewsTheme {

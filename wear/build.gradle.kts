@@ -1,10 +1,10 @@
 plugins {
     id("com.android.application")
     kotlin("android")
-    kotlin("plugin.serialization")
-    id("kotlin-parcelize")
-    id("com.google.devtools.ksp")
-    id("com.google.protobuf")
+//    kotlin("plugin.serialization")
+//    id("kotlin-parcelize")
+//    id("com.google.devtools.ksp")
+//    id("com.google.protobuf")
 }
 
 android {
@@ -90,14 +90,11 @@ android {
 }
 
 dependencies {
-    implementation(project(":shared"))
+    implementation(project(":shared:view"))
 
     implementation(libs.bundles.kotlinx)
-    implementation(libs.bundles.ktor)
     implementation(libs.bundles.androidx)
     implementation(libs.bundles.androidx.wear)
     implementation(libs.bundles.google)
     implementation(libs.bundles.google.wear)
-    implementation(libs.slf4j.simple)
-    ksp(libs.room.compiler)
 }

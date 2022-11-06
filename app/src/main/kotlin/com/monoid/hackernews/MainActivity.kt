@@ -23,10 +23,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.metrics.performance.JankStats
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.monoid.hackernews.shared.settingsDataStore
-import com.monoid.hackernews.ui.main.MainContent
-import com.monoid.hackernews.ui.theme.AppTheme
-import com.monoid.hackernews.ui.theme.HNFont
+import com.monoid.hackernews.shared.data.settingsDataStore
+import com.monoid.hackernews.view.main.MainContent
+import com.monoid.hackernews.view.theme.AppTheme
+import com.monoid.hackernews.view.theme.HNFont
 import com.monoid.hackernews.shared.ui.util.rememberUseDarkTheme
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.flow.map

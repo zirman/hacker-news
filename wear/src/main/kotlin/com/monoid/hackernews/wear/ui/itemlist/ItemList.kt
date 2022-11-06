@@ -19,10 +19,10 @@ import androidx.wear.compose.material.ScalingLazyColumn
 import androidx.wear.compose.material.ScalingLazyListState
 import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.items
-import com.monoid.hackernews.shared.BuildConfig
 import com.monoid.hackernews.shared.api.ItemId
 import com.monoid.hackernews.shared.data.ItemListRow
 import com.monoid.hackernews.shared.util.rememberMetricsStateHolder
+import com.monoid.hackernews.wear.BuildConfig
 
 @Composable
 fun ItemList(
