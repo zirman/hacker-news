@@ -22,7 +22,6 @@ import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.shared.R
 import com.monoid.hackernews.shared.api.ItemId
 import com.monoid.hackernews.shared.navigation.LoginAction
-import com.monoid.hackernews.shared.navigation.MainNavigation
 import com.monoid.hackernews.shared.navigation.Username
 import com.monoid.hackernews.shared.ui.util.getNetworkConnectivityStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -80,51 +79,20 @@ fun MainNavigation(
 
     AnimatedNavHost(
         navController = mainNavController,
-        startDestination = MainNavigation.Home.route,
+        startDestination = mainGraphRoutePattern,
         modifier = modifier,
     ) {
-        userScreen(
+        mainGraph(
             context = context,
-            windowSizeClass = windowSizeClass,
             mainViewModel = mainViewModel,
-            drawerState = drawerState,
             snackbarHostState = snackbarHostState,
+            windowSizeClass = windowSizeClass,
+            drawerState = drawerState,
             onNavigateToUser = onNavigateToUser,
             onNavigateToReply = onNavigateToReply,
             onNavigateToLogin = onNavigateToLogin,
-        )
-
-        homeScreen(
-            context = context,
-            windowSizeClass = windowSizeClass,
-            mainViewModel = mainViewModel,
-            drawerState = drawerState,
-            snackbarHostState = snackbarHostState,
-            onNavigateToUser = onNavigateToUser,
-            onNavigateToReply = onNavigateToReply,
-            onNavigateToLogin = onNavigateToLogin,
-        )
-
-        loginBottomSheet(
-            mainViewModel = mainViewModel,
-            windowSizeClass = windowSizeClass,
-            onNavigateToReply = onNavigateToReply,
             onNavigateUp = onNavigateUp,
             onLoginError = onLoginError,
-        )
-
-        replyBottomSheet(
-            windowSizeClass = windowSizeClass,
-            onNavigateUp = onNavigateUp,
-            onLoginError = onLoginError,
-        )
-
-        aboutUsBottomSheet(
-            windowSizeClass = windowSizeClass,
-        )
-
-        settingsBottomSheet(
-            windowSizeClass = windowSizeClass,
         )
     }
 }
