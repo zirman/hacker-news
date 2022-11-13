@@ -67,6 +67,7 @@ android {
             "-opt-in=androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi",
             "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
             "-opt-in=androidx.compose.ui.text.ExperimentalTextApi",
+            "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
             "-opt-in=com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi",
         )
     }

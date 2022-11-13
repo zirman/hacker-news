@@ -8,7 +8,7 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("libs") {
-            val kotlin = "1.7.20"
+            val kotlin = "1.7.21"
 
             version(
                 /* alias = */ "gradle-plugin-kotlin",
@@ -32,7 +32,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "gradle-plugin-versions",
-                /* version = */ "0.43.0"
+                /* version = */ "0.44.0"
             )
 
 
@@ -58,7 +58,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "room",
-                /* version = */ "2.5.0-beta01"
+                /* version = */ "2.5.0-beta02"
             )
 
             version(
@@ -68,22 +68,22 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "navigation",
-                /* version = */ "2.6.0-alpha03"
+                /* version = */ "2.6.0-alpha04"
             )
 
             version(
                 /* alias = */ "compose",
-                /* version = */ "1.4.0-alpha01"
+                /* version = */ "1.4.0-alpha02"
+            )
+
+            version(
+                /* alias = */ "compose-compiler",
+                /* version = */ "1.4.0-alpha02"
             )
 
             version(
                 /* alias = */ "wear-compose",
                 /* version = */ "1.0.0-alpha18"
-            )
-
-            version(
-                /* alias = */ "compose-compiler",
-                /* version = */ "1.3.2"
             )
 
             version(
@@ -298,7 +298,7 @@ dependencyResolutionManagement {
                 /* alias = */ "datastore",
                 /* group = */ "androidx.datastore",
                 /* artifact = */ "datastore"
-            ).version("1.0.0")
+            ).version("1.1.0-alpha01")
 
             library(
                 /* alias = */ "room-runtime",
@@ -352,7 +352,7 @@ dependencyResolutionManagement {
                 /* alias = */ "window",
                 /* group = */ "androidx.window",
                 /* artifact = */ "window"
-            ).version("1.1.0-alpha03")
+            ).version("1.1.0-alpha04")
 
             library(
                 /* alias = */ "activity-ktx",
@@ -382,7 +382,7 @@ dependencyResolutionManagement {
                 /* alias = */ "work-runtime-ktx",
                 /* group = */ "androidx.work",
                 /* artifact = */ "work-runtime-ktx"
-            ).version("2.8.0-beta01")
+            ).version("2.8.0-beta02")
 
             library(
                 /* alias = */ "preference-ktx",
@@ -400,7 +400,7 @@ dependencyResolutionManagement {
                 /* alias = */ "benchmark-junit4",
                 /* group = */ "androidx.benchmark",
                 /* artifact = */ "benchmark-junit4"
-            ).version("1.2.0-alpha06")
+            ).version("1.2.0-alpha07")
 
             library(
                 /* alias = */ "lifecycle-runtime-ktx",
@@ -533,7 +533,7 @@ dependencyResolutionManagement {
                 /* alias = */ "ui-text-google-fonts",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-text-google-fonts"
-            ).version("1.4.0-alpha01")
+            ).version("1.4.0-alpha02")
 
             library(
                 /* alias = */ "constraintlayout",
@@ -551,19 +551,19 @@ dependencyResolutionManagement {
                 /* alias = */ "compose-foundation",
                 /* group = */ "androidx.wear.compose",
                 /* artifact = */ "compose-foundation"
-            ).version("1.1.0-beta01")
+            ).version("1.1.0-rc01")
 
             library(
                 /* alias = */ "compose-material-wear",
                 /* group = */ "androidx.wear.compose",
                 /* artifact = */ "compose-material"
-            ).version("1.1.0-beta01")
+            ).version("1.1.0-rc01")
 
             library(
                 /* alias = */ "compose-navigation-wear",
                 /* group = */ "androidx.wear.compose",
                 /* artifact = */ "compose-navigation"
-            ).version("1.1.0-beta01")
+            ).version("1.1.0-rc01")
 
             library(
                 /* alias = */ "accompanist-navigation-animation",

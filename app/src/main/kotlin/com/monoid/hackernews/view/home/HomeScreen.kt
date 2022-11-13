@@ -297,7 +297,11 @@ fun HomeScreen(
                                 }
                             }
                         },
-                        strategy = HorizontalTwoPaneStrategy(splitFraction = 0.40f),
+                        strategy = HorizontalTwoPaneStrategy(
+                            splitOffset = 320.dp,
+                            offsetFromStart = true,
+                            gapWidth = 44.dp,
+                        ),
                         displayFeatures = calculateDisplayFeatures(
                             activity = context as MainActivity
                         ),

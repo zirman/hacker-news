@@ -21,9 +21,10 @@
 #-renamesourcefileattribute SourceFile
 #-dontobfuscate
 
--keep class com.monoid.hackernews.api.** { *; }
--keep class com.monoid.hackernews.datastore.** { *; }
--keep class com.monoid.hackernews.navigation.** { *; }
+-keep class com.monoid.hackernews.shared.api.** { *; }
+-keep class com.monoid.hackernews.shared.data.** { *; }
+-keep class com.monoid.hackernews.shared.datastore.** { *; }
+-keep class com.monoid.hackernews.shared.navigation.** { *; }
 
 # Keep `Companion` object fields of serializable classes.
 # This avoids serializer lookup through `getDeclaredClasses` as done for named companion objects.

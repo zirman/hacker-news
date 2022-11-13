@@ -1,5 +1,7 @@
 package com.monoid.hackernews.wear.ui.itemlist
 
+import androidx.compose.foundation.focusable
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
@@ -11,8 +13,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.input.rotary.onRotaryScrollEvent
 import androidx.metrics.performance.PerformanceMetricsState
 import androidx.wear.compose.material.ListHeader
 import androidx.wear.compose.material.ScalingLazyColumn
@@ -23,6 +29,7 @@ import com.monoid.hackernews.shared.api.ItemId
 import com.monoid.hackernews.shared.data.ItemListRow
 import com.monoid.hackernews.shared.util.rememberMetricsStateHolder
 import com.monoid.hackernews.wear.BuildConfig
+import kotlinx.coroutines.launch
 
 @Composable
 fun ItemList(
@@ -51,8 +58,22 @@ fun ItemList(
         }
     }
 
+    val focusRequester = remember { FocusRequester() }
+    LaunchedEffect(Unit) { focusRequester.requestFocus() }
+
+    val coroutineScope = rememberCoroutineScope()
+
     ScalingLazyColumn(
-        modifier = modifier,
+        modifier = modifier
+            .onRotaryScrollEvent { rotaryScrollEvent ->
+                coroutineScope.launch {
+                    state.scrollBy(rotaryScrollEvent.verticalScrollPixels)
+                }
+
+                true
+            }
+            .focusRequester(focusRequester)
+            .focusable(),
         state = state,
         contentPadding = WindowInsets.safeDrawing
             .only(WindowInsetsSides.Bottom)

@@ -38,6 +38,7 @@ android {
             "-opt-in=androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi",
             "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
             "-opt-in=androidx.compose.ui.text.ExperimentalTextApi",
+            "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
             "-opt-in=com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi",
         )
     }
@@ -61,6 +62,6 @@ dependencies {
     implementation(libs.bundles.google)
 
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.4-rc01")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0-rc01")
+    androidTestImplementation("androidx.test.ext:junit:1.1.4")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
 }
