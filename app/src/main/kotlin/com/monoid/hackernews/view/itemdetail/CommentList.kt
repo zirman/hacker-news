@@ -3,13 +3,10 @@ package com.monoid.hackernews.view.itemdetail
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -20,6 +17,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.metrics.performance.PerformanceMetricsState
 import com.monoid.hackernews.BuildConfig
@@ -33,6 +31,7 @@ import com.monoid.hackernews.shared.util.rememberMetricsStateHolder
 @Composable
 fun CommentList(
     itemListState: State<List<ItemTreeRow>?>,
+    paddingValues: PaddingValues,
     onClickUser: (Username) -> Unit,
     onClickReply: (ItemId) -> Unit,
     onClickBrowser: (String) -> Unit,
@@ -64,13 +63,10 @@ fun CommentList(
             modifier = Modifier.fillMaxSize(),
             state = listState,
             contentPadding = PaddingValues(
-                start = 16.dp,
-                top = 16.dp,
-                end = 16.dp,
-                bottom = WindowInsets.safeDrawing
-                    .only(WindowInsetsSides.Bottom)
-                    .asPaddingValues()
-                    .calculateBottomPadding() + 16.dp,
+                start = 16.dp + paddingValues.calculateStartPadding(LocalLayoutDirection.current),
+                top = 16.dp + paddingValues.calculateTopPadding(),
+                end = 16.dp + paddingValues.calculateEndPadding(LocalLayoutDirection.current),
+                bottom = 16.dp + paddingValues.calculateBottomPadding(),
             ),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {

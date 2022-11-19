@@ -7,14 +7,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.windowInsetsEndWidth
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.windowInsetsStartWidth
 import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.material.ModalBottomSheetValue
@@ -124,13 +121,6 @@ fun MainContent(windowSizeClass: WindowSizeClass) {
 
         ModalBottomSheetLayout(
             bottomSheetNavigator = bottomSheetNavigator,
-            modifier = Modifier
-                // color under system bars when in landscape
-                .background(MaterialTheme.colorScheme.surfaceVariant)
-                .windowInsetsPadding(
-                    WindowInsets.safeDrawing
-                        .only(WindowInsetsSides.Horizontal)
-                ),
         ) {
             val fullyExpandedState =
                 rememberUpdatedState(
@@ -157,10 +147,6 @@ fun MainContent(windowSizeClass: WindowSizeClass) {
                                     MainNavigation.User.routeWithArgs(username)
                                 )
                             },
-                            modifier = Modifier.windowInsetsPadding(
-                                WindowInsets.safeDrawing
-                                    .only(WindowInsetsSides.Top + WindowInsetsSides.Bottom)
-                            ),
                         )
                     }
                 },
@@ -181,12 +167,6 @@ fun MainContent(windowSizeClass: WindowSizeClass) {
                                 val authentication: Authentication? =
                                     authenticationState.value
 
-                                val modifier: Modifier = Modifier
-                                    .windowInsetsPadding(
-                                        WindowInsets.safeDrawing
-                                            .only(WindowInsetsSides.Top)
-                                    )
-
                                 if (authentication?.password?.isNotEmpty() == true) {
                                     NavigationRailItem(
                                         selected = false,
@@ -203,7 +183,6 @@ fun MainContent(windowSizeClass: WindowSizeClass) {
                                                 contentDescription = authentication.username,
                                             )
                                         },
-                                        modifier = modifier,
                                         label = { Text(text = authentication.username) },
                                     )
                                 } else {
@@ -221,7 +200,6 @@ fun MainContent(windowSizeClass: WindowSizeClass) {
                                                 contentDescription = stringResource(id = R.string.login),
                                             )
                                         },
-                                        modifier = modifier,
                                         label = {
                                             Text(text = stringResource(id = R.string.login))
                                         },
@@ -251,12 +229,6 @@ fun MainContent(windowSizeClass: WindowSizeClass) {
                         },
                         onNavigateUp = { mainNavController.navigateUp() },
                         onLoginError = { setShowLoginErrorDialog(it) },
-                        modifier = Modifier
-                            .background(MaterialTheme.colorScheme.surface)
-                            .windowInsetsPadding(
-                                WindowInsets.safeDrawing
-                                    .only(WindowInsetsSides.Top)
-                            ),
                     )
                 }
             }

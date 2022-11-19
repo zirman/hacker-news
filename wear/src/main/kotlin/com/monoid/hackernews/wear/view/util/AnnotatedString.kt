@@ -1,4 +1,4 @@
-package com.monoid.hackernews.wear.ui.util
+package com.monoid.hackernews.wear.view.util
 
 import android.content.Context
 import android.content.Intent

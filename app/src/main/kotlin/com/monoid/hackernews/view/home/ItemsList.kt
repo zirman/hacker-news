@@ -1,56 +1,47 @@
 package com.monoid.hackernews.view.home
 
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.PullRefreshState
+import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.State
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
-import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.monoid.hackernews.shared.api.ItemId
 import com.monoid.hackernews.shared.data.ItemListRow
 import com.monoid.hackernews.shared.data.LoginAction
 import com.monoid.hackernews.shared.data.Username
 import com.monoid.hackernews.view.itemlist.ItemList
-import com.monoid.hackernews.shared.ui.util.notifyInput
 
 @Composable
 fun ItemsList(
-    swipeRefreshState: SwipeRefreshState,
     listState: LazyListState,
+    pullRefreshState: PullRefreshState,
     itemRows: State<List<ItemListRow>?>,
     showItemId: ItemId?,
+    refreshing: Boolean,
+    paddingValues: PaddingValues,
     setSelectedItemId: (ItemId?) -> Unit,
     setDetailInteraction: (Boolean) -> Unit,
     onClickUser: (Username?) -> Unit,
     onClickReply: (ItemId) -> Unit,
     onClickBrowser: (String?) -> Unit,
-    onNavigateLogin: (LoginAction) -> Unit
+    onNavigateLogin: (LoginAction) -> Unit,
 ) {
-    SwipeRefresh(
-        state = swipeRefreshState,
-        onRefresh = { /* TODO */ },
-        modifier = Modifier
-            .fillMaxSize()
-            .notifyInput { setDetailInteraction(false) },
-        indicator = { state, trigger ->
-            SwipeRefreshIndicator(
-                state = state,
-                refreshTriggerDistance = trigger,
-                scale = true,
-            )
-        },
-    ) {
+    Box(Modifier.pullRefresh(pullRefreshState)) {
         CompositionLocalProvider(
             LocalContentColor provides MaterialTheme.colorScheme.primary,
         ) {
             ItemList(
                 itemRows = itemRows,
                 selectedItem = showItemId,
+                paddingValues = paddingValues,
                 onClickDetail = {
                     setDetailInteraction(true)
                     setSelectedItemId(it)
@@ -62,5 +53,11 @@ fun ItemsList(
                 listState = listState,
             )
         }
+
+        PullRefreshIndicator(
+            refreshing = refreshing,
+            state = pullRefreshState,
+            modifier = Modifier.align(Alignment.TopCenter)
+        )
     }
 }

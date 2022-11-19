@@ -21,7 +21,7 @@ android {
         applicationId = "com.monoid.hackernews"
         minSdk = 26
         targetSdk = 33
-        versionCode = 23
+        versionCode = 24
         versionName = "1.0"
 
         vectorDrawables {

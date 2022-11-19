@@ -1,4 +1,4 @@
-package com.monoid.hackernews.wear.ui.itemlist
+package com.monoid.hackernews.wear.view.itemlist
 
 import android.net.Uri
 import androidx.compose.runtime.Composable
@@ -10,7 +10,7 @@ import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.TitleCard
 import com.monoid.hackernews.shared.api.ItemId
 import com.monoid.hackernews.shared.data.ItemUi
-import com.monoid.hackernews.wear.ui.util.rememberAnnotatedString
+import com.monoid.hackernews.wear.view.util.rememberAnnotatedString
 
 @Composable
 fun Item(

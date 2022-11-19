@@ -1,11 +1,7 @@
 package com.monoid.hackernews.view.itemlist
 
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -29,13 +25,14 @@ import com.monoid.hackernews.shared.util.rememberMetricsStateHolder
 fun ItemList(
     itemRows: State<List<ItemListRow>?>,
     selectedItem: ItemId?,
+    paddingValues: PaddingValues,
     onClickDetail: (ItemId?) -> Unit,
     onClickUser: (Username?) -> Unit,
     onClickReply: (ItemId) -> Unit,
     onClickBrowser: (String?) -> Unit,
     onNavigateLogin: (LoginAction) -> Unit,
     modifier: Modifier = Modifier,
-    listState: LazyListState = rememberLazyListState()
+    listState: LazyListState = rememberLazyListState(),
 ) {
     if (BuildConfig.DEBUG.not()) {
         val metricsStateHolder: PerformanceMetricsState.Holder =
@@ -59,9 +56,7 @@ fun ItemList(
     LazyColumn(
         modifier = modifier,
         state = listState,
-        contentPadding = WindowInsets.safeDrawing
-            .only(WindowInsetsSides.Bottom)
-            .asPaddingValues(),
+        contentPadding = paddingValues,
     ) {
         items(itemRows.value ?: emptyList(), { it.itemId.long }) { itemRow ->
             Item(

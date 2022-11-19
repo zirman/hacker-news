@@ -1,4 +1,4 @@
-package com.monoid.hackernews.wear.ui.home
+package com.monoid.hackernews.wear.view.home
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -20,7 +20,7 @@ import com.monoid.hackernews.shared.data.ItemListRow
 import com.monoid.hackernews.shared.data.OrderedItem
 import com.monoid.hackernews.shared.domain.LiveUpdateUseCase
 import com.monoid.hackernews.wear.MainViewModel
-import com.monoid.hackernews.wear.ui.itemlist.ItemList
+import com.monoid.hackernews.wear.view.itemlist.ItemList
 import kotlinx.coroutines.flow.map
 import java.util.concurrent.TimeUnit
 

@@ -88,12 +88,12 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "material3",
-                /* version = */ "1.0.0-alpha15"
+                /* version = */ "1.0.1"
             )
 
             version(
                 /* alias = */ "accompanist",
-                /* version = */ "0.27.0"
+                /* version = */ "0.27.1"
             )
 
             bundle(
@@ -133,7 +133,6 @@ dependencyResolutionManagement {
                 /* aliases = */ listOf(
                     "accompanist-navigation-animation",
                     "accompanist-navigation-material",
-                    "accompanist-swiperefresh",
                     "accompanist-systemuicontroller",
                     "accompanist-adaptive",
                     "accompanist-placeholder"
@@ -575,12 +574,6 @@ dependencyResolutionManagement {
                 /* alias = */ "accompanist-navigation-material",
                 /* group = */ "com.google.accompanist",
                 /* artifact = */ "accompanist-navigation-material"
-            ).versionRef("accompanist")
-
-            library(
-                /* alias = */ "accompanist-swiperefresh",
-                /* group = */ "com.google.accompanist",
-                /* artifact = */ "accompanist-swiperefresh"
             ).versionRef("accompanist")
 
             library(

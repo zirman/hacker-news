@@ -1,4 +1,4 @@
-package com.monoid.hackernews.wear.ui.text
+package com.monoid.hackernews.wear.view.text
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn

@@ -18,7 +18,7 @@ import com.monoid.hackernews.shared.data.TopStoryRepository
 import com.monoid.hackernews.shared.domain.LiveUpdateUseCase
 import com.monoid.hackernews.shared.view.R
 import com.monoid.hackernews.wear.theme.HackerNewsTheme
-import com.monoid.hackernews.wear.ui.home.HomeScreen
+import com.monoid.hackernews.wear.view.home.HomeScreen
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
@@ -28,7 +28,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
             HackerNewsTheme {

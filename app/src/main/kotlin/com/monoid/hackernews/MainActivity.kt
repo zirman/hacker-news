@@ -9,7 +9,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
@@ -85,10 +84,6 @@ class MainActivity : ComponentActivity() {
                 MainContent(
                     windowSizeClass = calculateWindowSizeClass(LocalContext.current as Activity)
                 )
-            }
-
-            LaunchedEffect(Unit) {
-                reportFullyDrawn()
             }
         }
 

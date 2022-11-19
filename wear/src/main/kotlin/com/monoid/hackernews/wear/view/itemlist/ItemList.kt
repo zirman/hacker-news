@@ -1,4 +1,4 @@
-package com.monoid.hackernews.wear.ui.itemlist
+package com.monoid.hackernews.wear.view.itemlist
 
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.scrollBy
