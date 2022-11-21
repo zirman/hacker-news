@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -21,7 +22,7 @@ android {
         applicationId = "com.monoid.hackernews"
         minSdk = 26
         targetSdk = 33
-        versionCode = 24
+        versionCode = 26
         versionName = "1.0"
 
         vectorDrawables {
@@ -89,4 +90,5 @@ dependencies {
     implementation(libs.bundles.androidx.app)
     implementation(libs.bundles.google)
     implementation(libs.bundles.google.app)
+    implementation(libs.slf4j.simple)
 }

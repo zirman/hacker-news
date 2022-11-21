@@ -6,6 +6,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.integerResource
 import androidx.wear.compose.material.PositionIndicator
 import androidx.wear.compose.material.Scaffold
 import androidx.wear.compose.material.TimeText
@@ -20,6 +21,7 @@ import com.monoid.hackernews.shared.data.ItemListRow
 import com.monoid.hackernews.shared.data.OrderedItem
 import com.monoid.hackernews.shared.domain.LiveUpdateUseCase
 import com.monoid.hackernews.wear.MainViewModel
+import com.monoid.hackernews.shared.view.R
 import com.monoid.hackernews.wear.view.itemlist.ItemList
 import kotlinx.coroutines.flow.map
 import java.util.concurrent.TimeUnit
@@ -31,13 +33,12 @@ fun HomeScreen(
     orderedItemRepo: LiveUpdateUseCase<OrderedItem>,
     onSelectItemId: (ItemId?) -> Unit
 ) {
+    val itemStaleMinutes = integerResource(id = R.integer.item_stale_minutes)
+
     val itemRows: State<List<ItemListRow>?> =
-        remember {
+        remember(itemStaleMinutes) {
             orderedItemRepo
-                .getItems(
-                    //context.resources.getInteger(R.integer.item_stale_minutes).toLong()
-                    TimeUnit.MINUTES.toMillis(5L)
-                )
+                .getItems(TimeUnit.MINUTES.toMillis(itemStaleMinutes.toLong()))
                 .map { orderedItems ->
                     mainViewModel.itemTreeRepository.itemUiList(orderedItems.map { it.itemId })
                 }

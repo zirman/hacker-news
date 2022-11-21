@@ -85,7 +85,7 @@ class HNApplication : Application() {
             HttpClient(Android) {
                 install(Logging) {
                     logger = Logger.ANDROID
-                    level = LogLevel.ALL
+                    level = if (BuildConfig.DEBUG) LogLevel.ALL else LogLevel.NONE
                 }
 
                 install(ContentNegotiation) { json(Json { ignoreUnknownKeys = true }) }
@@ -122,22 +122,20 @@ class HNApplication : Application() {
                                     )
                                 }
 
+                            delay(
+                                TimeUnit.HOURS.toMillis(
+                                    resources
+                                        .getInteger(com.monoid.hackernews.shared.view.R.integer.favorites_state_hours)
+                                        .toLong()
+                                )
+                            )
+
                             upvoteDef.await()
                             favoriteDef.await()
-
-                            throw Exception()
                         } catch (error: Throwable) {
                             if (error is CancellationException) throw error
                             error.printStackTrace()
                         }
-
-                        delay(
-                            TimeUnit.HOURS.toMillis(
-                                resources
-                                    .getInteger(com.monoid.hackernews.shared.view.R.integer.favorites_state_hours)
-                                    .toLong()
-                            )
-                        )
                     }
                 }
             }

@@ -73,6 +73,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 
 @Composable
 fun HomeScreen(
@@ -203,7 +204,12 @@ fun HomeScreen(
         val itemRows: State<List<ItemListRow>?> =
             remember {
                 orderedItemRepo
-                    .getItems(context.resources.getInteger(R.integer.item_stale_minutes).toLong())
+                    .getItems(
+                        TimeUnit.MINUTES
+                            .toMillis(
+                                context.resources.getInteger(R.integer.item_stale_minutes).toLong()
+                            )
+                    )
                     .map { orderedItems ->
                         mainViewModel.itemTreeRepository.itemUiList(orderedItems.map { it.itemId })
                     }
