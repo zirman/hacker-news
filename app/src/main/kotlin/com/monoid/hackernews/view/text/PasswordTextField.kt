@@ -16,10 +16,8 @@ import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -42,8 +40,8 @@ fun PasswordTextField(
     onDone: (KeyboardActionScope.() -> Unit)? = null,
 ) {
     Column(modifier = modifier) {
-        var isPasswordVisible: Boolean
-            by rememberSaveable { mutableStateOf(false) }
+        val (isPasswordVisible, setPasswordVisible) =
+            rememberSaveable { mutableStateOf(false) }
 
         OutlinedTextField(
             value = password,
@@ -54,7 +52,7 @@ fun PasswordTextField(
             trailingIcon = {
                 IconToggleButton(
                     checked = isPasswordVisible,
-                    onCheckedChange = { isPasswordVisible = it },
+                    onCheckedChange = { setPasswordVisible(it) },
                 ) {
                     Icon(
                         imageVector = if (isPasswordVisible) {

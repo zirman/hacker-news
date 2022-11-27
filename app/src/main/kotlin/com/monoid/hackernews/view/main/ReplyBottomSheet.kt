@@ -10,13 +10,20 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.ui.Modifier
+import androidx.datastore.core.DataStore
 import androidx.navigation.NavGraphBuilder
 import com.google.accompanist.navigation.material.bottomSheet
 import com.monoid.hackernews.shared.api.ItemId
+import com.monoid.hackernews.shared.data.ItemTreeRepository
+import com.monoid.hackernews.shared.datastore.Authentication
 import com.monoid.hackernews.shared.navigation.MainNavigation
 import com.monoid.hackernews.view.reply.ReplyContent
+import io.ktor.client.HttpClient
 
 fun NavGraphBuilder.replyBottomSheet(
+    authentication: DataStore<Authentication>,
+    itemTreeRepository: ItemTreeRepository,
+    httpClient: HttpClient,
     windowSizeClass: WindowSizeClass,
     onNavigateUp: () -> Unit,
     onLoginError: (Throwable) -> Unit,
@@ -29,6 +36,9 @@ fun NavGraphBuilder.replyBottomSheet(
             MainNavigation.Reply.argsFromRoute(navBackStackEntry = navBackStackEntry)
 
         ReplyContent(
+            httpClient = httpClient,
+            itemTreeRepository = itemTreeRepository,
+            authentication = authentication,
             itemId = itemId,
             windowSizeClass = windowSizeClass,
             onSuccess = onNavigateUp,

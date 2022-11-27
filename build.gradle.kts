@@ -1,6 +1,11 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
-apply(plugin = "com.github.ben-manes.versions")
+plugins {
+    id("com.github.ben-manes.versions") version libs.versions.gradle.plugin.versions.get()
+    id("com.google.dagger.hilt.android") version "2.44.2" apply false
+    kotlin("kapt") version libs.versions.gradle.plugin.kotlin.get()
+    id("org.jetbrains.kotlin.android") version "1.7.20" apply false
+}
 
 buildscript {
     repositories {

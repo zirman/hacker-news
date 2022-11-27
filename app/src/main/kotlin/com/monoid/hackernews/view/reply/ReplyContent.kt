@@ -1,6 +1,5 @@
 package com.monoid.hackernews.view.reply
 
-import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -26,15 +25,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.monoid.hackernews.MainViewModel
+import androidx.datastore.core.DataStore
 import com.monoid.hackernews.shared.api.ItemId
 import com.monoid.hackernews.shared.api.commentRequest
+import com.monoid.hackernews.shared.data.ItemTreeRepository
 import com.monoid.hackernews.shared.data.ItemUi
-import com.monoid.hackernews.shared.data.settingsDataStore
+import com.monoid.hackernews.shared.datastore.Authentication
 import com.monoid.hackernews.shared.view.R
 import com.monoid.hackernews.view.text.ReplyTextField
 import com.monoid.hackernews.view.util.getAnnotatedString
@@ -47,19 +45,17 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ReplyContent(
+    httpClient: HttpClient,
+    itemTreeRepository: ItemTreeRepository,
+    authentication: DataStore<Authentication>,
     itemId: ItemId,
     windowSizeClass: WindowSizeClass,
     onSuccess: () -> Unit,
     onError: (Throwable) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val mainViewModel: MainViewModel = viewModel()
-
-    val context: Context =
-        LocalContext.current
-
     val itemUi: ItemUi? = remember {
-        mainViewModel.itemTreeRepository.itemUiList(listOf(itemId)).first().itemUiFlow
+        itemTreeRepository.itemUiList(listOf(itemId)).first().itemUiFlow
     }
         .collectAsState(initial = null)
         .value
@@ -139,9 +135,9 @@ fun ReplyContent(
             Button(
                 onClick = {
                     replyJob(
-                        context = context,
+                        authentication = authentication,
                         coroutineScope = coroutineScope,
-                        httpClient = mainViewModel.httpClient,
+                        httpClient = httpClient,
                         itemId = itemId,
                         text = reply,
                         onSuccess = onSuccess,
@@ -158,7 +154,7 @@ fun ReplyContent(
 }
 
 fun replyJob(
-    context: Context,
+    authentication: DataStore<Authentication>,
     coroutineScope: CoroutineScope,
     httpClient: HttpClient,
     itemId: ItemId,
@@ -169,7 +165,7 @@ fun replyJob(
     return coroutineScope.launch {
         try {
             httpClient.commentRequest(
-                authentication = context.settingsDataStore.data.first(),
+                authentication = authentication.data.first(),
                 parentId = itemId,
                 text = text,
             )

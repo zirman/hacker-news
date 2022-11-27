@@ -35,6 +35,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -58,6 +59,7 @@ import com.monoid.hackernews.shared.ui.util.rememberTimeBy
 import com.monoid.hackernews.shared.ui.util.userTag
 import com.monoid.hackernews.view.util.onClick
 import com.monoid.hackernews.view.util.rememberAnnotatedString
+import kotlinx.coroutines.launch
 
 @Composable
 fun RootItem(
@@ -141,6 +143,8 @@ fun RootItem(
                                 },
                             )
 
+                            val coroutineScope = rememberCoroutineScope()
+
                             if (item.type == "story") {
                                 DropdownMenuItem(
                                     text = {
@@ -157,7 +161,11 @@ fun RootItem(
                                         )
                                     },
                                     onClick = {
-                                        itemUiState.value?.itemUi?.toggleFavorite(onNavigateLogin)
+                                        coroutineScope.launch {
+                                            itemUiState.value?.itemUi
+                                                ?.toggleFavorite(onNavigateLogin)
+                                        }
+
                                         setContextExpanded(false)
                                     },
                                     leadingIcon = {
@@ -198,7 +206,10 @@ fun RootItem(
                                     )
                                 },
                                 onClick = {
-                                    itemUiState.value?.itemUi?.toggleFlag(onNavigateLogin)
+                                    coroutineScope.launch {
+                                        itemUiState.value?.itemUi?.toggleFlag(onNavigateLogin)
+                                    }
+
                                     setContextExpanded(false)
                                 },
                                 leadingIcon = {
@@ -268,11 +279,17 @@ fun RootItem(
             )
 
             Row(verticalAlignment = Alignment.CenterVertically) {
+                val coroutineScope = rememberCoroutineScope()
+
                 if (item?.lastUpdate == null || item.type == "story") {
                     item?.score.let { score ->
                         key("score") {
                             IconButton(
-                                onClick = { itemUiState.value?.itemUi?.toggleUpvote(onNavigateLogin) },
+                                onClick = {
+                                    coroutineScope.launch {
+                                        itemUiState.value?.itemUi?.toggleUpvote(onNavigateLogin)
+                                    }
+                                },
                                 enabled = item?.type == "story",
                             ) {
                                 Icon(

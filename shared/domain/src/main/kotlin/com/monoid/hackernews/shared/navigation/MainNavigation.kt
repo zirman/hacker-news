@@ -262,7 +262,7 @@ sealed class MainNavigation<T : Any> {
                 }
             )
 
-        override fun routeWithArgs(args: Username): String =
+    override fun routeWithArgs(args: Username): String =
             "user?$usernameKey=${UsernameNavType.encodeValue(args)}"
 
         override fun argsFromRoute(navBackStackEntry: NavBackStackEntry): Username {

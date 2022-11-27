@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -86,6 +88,10 @@ android {
     }
 }
 
+kapt {
+    correctErrorTypes = true
+}
+
 dependencies {
     implementation(project(":shared:view"))
 
@@ -94,4 +100,9 @@ dependencies {
     implementation(libs.bundles.androidx.wear)
     implementation(libs.bundles.google)
     implementation(libs.bundles.google.wear)
+
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+
+    implementation(libs.hilt.navigation.compose)
 }

@@ -1,10 +1,7 @@
 package com.monoid.hackernews.shared.data
 
-import android.content.Context
 import androidx.datastore.core.CorruptionException
-import androidx.datastore.core.DataStore
 import androidx.datastore.core.Serializer
-import androidx.datastore.dataStore
 import com.google.protobuf.InvalidProtocolBufferException
 import com.monoid.hackernews.shared.datastore.Authentication
 import java.io.InputStream
@@ -30,8 +27,3 @@ object AuthenticationSerializer : Serializer<Authentication> {
         t.writeTo(output)
     }
 }
-
-val Context.settingsDataStore: DataStore<Authentication> by dataStore(
-    fileName = "settings.pb",
-    serializer = AuthenticationSerializer
-)

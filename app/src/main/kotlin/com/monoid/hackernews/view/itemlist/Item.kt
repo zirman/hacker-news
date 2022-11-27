@@ -51,9 +51,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.placeholder
 import com.google.accompanist.placeholder.shimmer
-import com.monoid.hackernews.shared.api.ItemId
 import com.monoid.hackernews.shared.data.ItemUi
-import com.monoid.hackernews.shared.data.LoginAction
 import com.monoid.hackernews.shared.data.Username
 import com.monoid.hackernews.shared.view.R
 import com.monoid.hackernews.shared.ui.text.ClickableTextBlock
@@ -64,16 +62,17 @@ import com.monoid.hackernews.view.util.rememberAnnotatedString
 
 @Composable
 fun Item(
-    itemUiState: State<ItemUi?>,
+    itemUi: ItemUi?,
     isSelected: Boolean,
-    onClickDetail: (ItemId?) -> Unit,
-    onClickReply: (ItemId) -> Unit,
+    onClickDetail: () -> Unit,
+    onClickReply: () -> Unit,
     onClickUser: (Username?) -> Unit,
-    onClickBrowser: (String?) -> Unit,
-    onNavigateLogin: (LoginAction) -> Unit,
+    onClickBrowser: () -> Unit,
+    onClickUpvote: () -> Unit,
+    onClickFavorite: () -> Unit,
+    onClickFlag: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val itemUi = itemUiState.value
     val item = itemUi?.item
     val isLoading = item == null
 
@@ -97,7 +96,7 @@ fun Item(
         }
 
     Surface(
-        modifier = modifier.clickable { onClickBrowser(item?.url) },
+        modifier = modifier.clickable { onClickBrowser() },
         contentColor = LocalContentColor.current,
         tonalElevation = ((item?.score ?: 0) / 10).dp,
     ) {
@@ -146,7 +145,7 @@ fun Item(
                         DropdownMenuItem(
                             text = { Text(text = stringResource(id = R.string.reply)) },
                             onClick = {
-                                itemUiState.value?.item?.id?.let { onClickReply(ItemId(it)) }
+                                onClickReply()
                                 setContextExpanded(false)
                             },
                             leadingIcon = {
@@ -170,7 +169,8 @@ fun Item(
                                 )
                             },
                             onClick = {
-                                itemUiState.value?.toggleFavorite(onNavigateLogin)
+                                onClickFavorite()
+
                                 setContextExpanded(false)
                             },
                             leadingIcon = {
@@ -204,7 +204,7 @@ fun Item(
                                 )
                             },
                             onClick = {
-                                itemUiState.value?.toggleFlag(onNavigateLogin)
+                                onClickFlag()
                                 setContextExpanded(false)
                             },
                             leadingIcon = {
@@ -256,7 +256,7 @@ fun Item(
                     if (username != null) {
                         onClickUser(username)
                     } else {
-                        itemUiState.value?.item?.url?.let { onClickBrowser(it) }
+                        onClickBrowser()
                     }
                 },
                 modifier = Modifier
@@ -274,7 +274,7 @@ fun Item(
 
                 key("score") {
                     IconButton(
-                        onClick = { itemUiState.value?.toggleUpvote(onNavigateLogin) },
+                        onClick = onClickUpvote,
                         modifier = Modifier
                             .then(placeholderModifier)
                             .then(notStoryAndCommentModifier),
@@ -311,7 +311,7 @@ fun Item(
 
                 key("comments") {
                     IconButton(
-                        onClick = { itemUiState.value?.item?.id?.let { onClickDetail(ItemId(it)) } },
+                        onClick = onClickDetail,
                         modifier = placeholderModifier,
                         enabled = item != null,
                     ) {
@@ -337,8 +337,8 @@ fun Item(
                 }
 
                 val host: String =
-                    remember(itemUiState.value?.item?.url) {
-                        itemUiState.value?.item?.url?.let { Uri.parse(it) }?.host ?: ""
+                    remember(itemUi?.item?.url) {
+                        itemUi?.item?.url?.let { Uri.parse(it) }?.host ?: ""
                     }
 
                 TextBlock(

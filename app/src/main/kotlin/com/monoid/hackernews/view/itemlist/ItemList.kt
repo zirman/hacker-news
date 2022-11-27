@@ -8,9 +8,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.metrics.performance.PerformanceMetricsState
@@ -20,10 +20,11 @@ import com.monoid.hackernews.shared.data.ItemListRow
 import com.monoid.hackernews.shared.data.LoginAction
 import com.monoid.hackernews.shared.data.Username
 import com.monoid.hackernews.shared.util.rememberMetricsStateHolder
+import kotlinx.coroutines.launch
 
 @Composable
 fun ItemList(
-    itemRows: State<List<ItemListRow>?>,
+    itemRows: List<ItemListRow>?,
     selectedItem: ItemId?,
     paddingValues: PaddingValues,
     onClickDetail: (ItemId?) -> Unit,
@@ -58,16 +59,34 @@ fun ItemList(
         state = listState,
         contentPadding = paddingValues,
     ) {
-        items(itemRows.value ?: emptyList(), { it.itemId.long }) { itemRow ->
+        items(itemRows ?: emptyList(), { it.itemId.long }) { itemRow ->
+            val itemUiState = remember(itemRow.itemId) { itemRow.itemUiFlow }
+                .collectAsState(initial = null)
+
+            val coroutineScope = rememberCoroutineScope()
+
             Item(
-                itemUiState = remember(itemRow.itemId) { itemRow.itemUiFlow }
-                    .collectAsState(initial = null),
+                itemUi = itemUiState.value,
                 isSelected = itemRow.itemId == selectedItem,
-                onClickDetail = { onClickDetail(it) },
-                onClickReply = { onClickReply(it) },
+                onClickDetail = { itemUiState.value?.item?.id?.let { onClickDetail(ItemId(it)) } },
+                onClickReply = { itemUiState.value?.item?.id?.let { onClickReply(ItemId(it)) } },
                 onClickUser = { onClickUser(it) },
-                onClickBrowser = { onClickBrowser(it) },
-                onNavigateLogin = { onNavigateLogin(it) },
+                onClickBrowser = { onClickBrowser(itemUiState.value?.item?.url) },
+                onClickUpvote = {
+                    coroutineScope.launch {
+                        itemUiState.value?.toggleUpvote(onNavigateLogin)
+                    }
+                },
+                onClickFavorite = {
+                    coroutineScope.launch {
+                        itemUiState.value?.toggleFavorite(onNavigateLogin)
+                    }
+                },
+                onClickFlag = {
+                    coroutineScope.launch {
+                        itemUiState.value?.toggleFlag(onNavigateLogin)
+                    }
+                },
                 modifier = Modifier.fillMaxWidth(),
             )
         }

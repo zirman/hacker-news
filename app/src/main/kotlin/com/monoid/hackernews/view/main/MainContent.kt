@@ -1,6 +1,5 @@
 package com.monoid.hackernews.view.main
 
-import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -43,9 +42,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.metrics.performance.PerformanceMetricsState
 import androidx.navigation.NavHostController
 import androidx.navigation.plusAssign
@@ -56,7 +53,6 @@ import com.monoid.hackernews.BuildConfig
 import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.shared.data.LoginAction
 import com.monoid.hackernews.shared.data.Username
-import com.monoid.hackernews.shared.data.settingsDataStore
 import com.monoid.hackernews.shared.datastore.Authentication
 import com.monoid.hackernews.shared.view.R
 import com.monoid.hackernews.shared.navigation.MainNavigation
@@ -65,7 +61,10 @@ import com.monoid.hackernews.view.navigationdrawer.NavigationRailContent
 import com.monoid.hackernews.shared.util.rememberMetricsStateHolder
 
 @Composable
-fun MainContent(windowSizeClass: WindowSizeClass) {
+fun MainContent(
+    mainViewModel: MainViewModel,
+    windowSizeClass: WindowSizeClass,
+) {
     val drawerState: DrawerState =
         rememberDrawerState(DrawerValue.Closed)
 
@@ -97,9 +96,6 @@ fun MainContent(windowSizeClass: WindowSizeClass) {
                 }
             }
         }
-
-        val mainViewModel: MainViewModel =
-            viewModel()
 
         // handle deep links
         LaunchedEffect(mainNavController) {
@@ -140,6 +136,7 @@ fun MainContent(windowSizeClass: WindowSizeClass) {
                     // hide drawer content because it may layout under navigation bars.
                     AnimatedVisibility(visible = fullyExpandedState.value.not()) {
                         NavigationDrawerContent(
+                            authentication = mainViewModel.authentication,
                             mainNavController = mainNavController,
                             drawerState = drawerState,
                             onClickUser = { username ->
@@ -157,11 +154,8 @@ fun MainContent(windowSizeClass: WindowSizeClass) {
                     AnimatedVisibility(visible = fullyExpandedState.value) {
                         NavigationRail(
                             header = {
-                                val context: Context =
-                                    LocalContext.current
-
                                 val authenticationState: State<Authentication?> =
-                                    remember { context.settingsDataStore.data }
+                                    remember { mainViewModel.authentication.data }
                                         .collectAsState(initial = null)
 
                                 val authentication: Authentication? =
@@ -214,6 +208,7 @@ fun MainContent(windowSizeClass: WindowSizeClass) {
                     }
 
                     MainNavigation(
+                        mainViewModel = mainViewModel,
                         windowSizeClass = windowSizeClass,
                         mainNavController = mainNavController,
                         drawerState = drawerState,

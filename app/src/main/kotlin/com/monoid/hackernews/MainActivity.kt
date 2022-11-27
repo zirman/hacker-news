@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.SideEffect
@@ -16,26 +15,37 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
+import androidx.datastore.core.DataStore
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.metrics.performance.JankStats
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.monoid.hackernews.shared.data.settingsDataStore
+import com.monoid.hackernews.shared.datastore.Authentication
 import com.monoid.hackernews.view.main.MainContent
 import com.monoid.hackernews.view.theme.AppTheme
 import com.monoid.hackernews.view.theme.HNFont
 import com.monoid.hackernews.shared.ui.util.rememberUseDarkTheme
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val mainViewModel by viewModels<MainViewModel>()
+
+    @Inject
+    lateinit var authentication: DataStore<Authentication>
+
+    @Inject
+    lateinit var newIntentChannel: Channel<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +55,7 @@ class MainActivity : ComponentActivity() {
             val useDarkTheme: Boolean =
                 rememberUseDarkTheme()
 
-            val fontState: State<String?> = remember { settingsDataStore.data.map { it.font } }
+            val fontState: State<String?> = remember { authentication.data.map { it.font } }
                 .collectAsState(null)
 
             AppTheme(
@@ -82,6 +92,7 @@ class MainActivity : ComponentActivity() {
                 }
 
                 MainContent(
+                    mainViewModel = hiltViewModel(),
                     windowSizeClass = calculateWindowSizeClass(LocalContext.current as Activity)
                 )
             }
@@ -115,6 +126,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        lifecycleScope.launch { mainViewModel.newIntentChannel.send(intent) }
+        lifecycleScope.launch { newIntentChannel.send(intent) }
     }
 }

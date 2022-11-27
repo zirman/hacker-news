@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -30,7 +31,7 @@ import com.monoid.hackernews.shared.util.rememberMetricsStateHolder
 
 @Composable
 fun CommentList(
-    itemListState: State<List<ItemTreeRow>?>,
+    itemTreeRows: List<ItemTreeRow>?,
     paddingValues: PaddingValues,
     onClickUser: (Username) -> Unit,
     onClickReply: (ItemId) -> Unit,
@@ -71,12 +72,12 @@ fun CommentList(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             itemsIndexed(
-                items = itemListState.value ?: emptyList(),
+                items = itemTreeRows ?: emptyList(),
                 key = { _, itemRow -> itemRow.itemId.long },
                 contentType = { index, _ -> index == 0 },
             ) { index, itemRow ->
-                val itemUiState: State<ItemUiWithThreadDepth?> = itemRow.itemUiFlow
-                    .collectAsState(initial = null)
+                val itemUiState: State<ItemUiWithThreadDepth?> =
+                    remember { itemRow.itemUiFlow }.collectAsState(initial = null)
 
                 if (index == 0) {
                     RootItem(

@@ -9,10 +9,14 @@ import androidx.activity.compose.ReportDrawnWhen
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContent
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyListState
@@ -40,9 +44,9 @@ import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -50,26 +54,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.datastore.core.DataStore
 import com.google.accompanist.adaptive.FoldAwareConfiguration
 import com.google.accompanist.adaptive.HorizontalTwoPaneStrategy
 import com.google.accompanist.adaptive.TwoPane
 import com.google.accompanist.adaptive.calculateDisplayFeatures
 import com.monoid.hackernews.MainActivity
-import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.shared.api.ItemId
 import com.monoid.hackernews.shared.data.ItemListRow
+import com.monoid.hackernews.shared.data.ItemTreeRepository
 import com.monoid.hackernews.shared.data.LoginAction
 import com.monoid.hackernews.shared.data.OrderedItem
 import com.monoid.hackernews.shared.data.Username
-import com.monoid.hackernews.shared.data.settingsDataStore
+import com.monoid.hackernews.shared.datastore.Authentication
 import com.monoid.hackernews.shared.domain.LiveUpdateUseCase
 import com.monoid.hackernews.shared.view.R
 import com.monoid.hackernews.view.itemdetail.ItemDetail
 import com.monoid.hackernews.shared.ui.util.notifyInput
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -77,7 +84,8 @@ import java.util.concurrent.TimeUnit
 
 @Composable
 fun HomeScreen(
-    mainViewModel: MainViewModel,
+    authentication: DataStore<Authentication>,
+    itemTreeRepository: ItemTreeRepository,
     drawerState: DrawerState,
     windowSizeClass: WindowSizeClass,
     title: String,
@@ -106,9 +114,9 @@ fun HomeScreen(
     },
     onClickReply: (ItemId) -> Unit = { itemId ->
         coroutineScope.launch {
-            val authentication = context.settingsDataStore.data.first()
+            val auth = authentication.data.first()
 
-            if (authentication.password.isNotEmpty()) {
+            if (auth.password.isNotEmpty()) {
                 onNavigateToReply(itemId)
             } else {
                 onNavigateToLogin(LoginAction.Reply(itemId.long))
@@ -129,15 +137,17 @@ fun HomeScreen(
         }
     }
 ) {
-    val showItemId: ItemId? =
-        remember(windowSizeClass.widthSizeClass, selectedItemId, detailInteraction) {
-            when (windowSizeClass.widthSizeClass) {
-                WindowWidthSizeClass.Compact ->
-                    if (detailInteraction) selectedItemId else null
-                else ->
-                    selectedItemId
+    val showItemId: ItemId?
+            by remember(windowSizeClass.widthSizeClass, selectedItemId, detailInteraction) {
+                derivedStateOf {
+                    when (windowSizeClass.widthSizeClass) {
+                        WindowWidthSizeClass.Compact ->
+                            if (detailInteraction) selectedItemId else null
+                        else ->
+                            selectedItemId
+                    }
+                }
             }
-        }
 
     val scrollBehavior: TopAppBarScrollBehavior =
         TopAppBarDefaults.enterAlwaysScrollBehavior(
@@ -163,7 +173,13 @@ fun HomeScreen(
                         visible = windowSizeClass.widthSizeClass != WindowWidthSizeClass.Expanded ||
                                 windowSizeClass.heightSizeClass != WindowHeightSizeClass.Expanded,
                     ) {
-                        if (showItemId != null && windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
+                        val showUpButton: Boolean =
+                            remember(showItemId, windowSizeClass.widthSizeClass) {
+                                showItemId != null &&
+                                        windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact
+                            }
+
+                        if (showUpButton) {
                             BackHandler { setSelectedItemId(null) }
 
                             IconButton(onClick = { setSelectedItemId(null) }) {
@@ -173,9 +189,7 @@ fun HomeScreen(
                                 )
                             }
                         } else {
-                            IconButton(
-                                onClick = { coroutineScope.launch { drawerState.open() } },
-                            ) {
+                            IconButton(onClick = { coroutineScope.launch { drawerState.open() } }) {
                                 Icon(
                                     imageVector = Icons.TwoTone.Menu,
                                     contentDescription = null,
@@ -201,27 +215,25 @@ fun HomeScreen(
             )
         },
     ) { paddingValues ->
-        val itemRows: State<List<ItemListRow>?> =
-            remember {
-                orderedItemRepo
-                    .getItems(
-                        TimeUnit.MINUTES
-                            .toMillis(
-                                context.resources.getInteger(R.integer.item_stale_minutes).toLong()
-                            )
-                    )
-                    .map { orderedItems ->
-                        mainViewModel.itemTreeRepository.itemUiList(orderedItems.map { it.itemId })
-                    }
-            }.collectAsState(initial = null)
+        val itemRows: List<ItemListRow>?
+                by remember {
+                    orderedItemRepo
+                        .getItems(
+                            TimeUnit.MINUTES
+                                .toMillis(
+                                    context.resources.getInteger(R.integer.item_stale_minutes)
+                                        .toLong()
+                                )
+                        )
+                        .map { orderedItems ->
+                            itemTreeRepository.itemUiList(orderedItems.map { it.itemId })
+                        }
+                }.collectAsState(initial = null)
 
-        ReportDrawnWhen { itemRows.value != null }
-
-        val loadingState: State<Boolean> =
-            remember(itemRows.value) { derivedStateOf { itemRows.value == null } }
+        ReportDrawnWhen { itemRows != null }
 
         Surface(tonalElevation = 4.dp) {
-            if (loadingState.value) {
+            if (itemRows == null) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center,
@@ -252,8 +264,19 @@ fun HomeScreen(
                 val detailListState: LazyListState =
                     rememberLazyListState()
 
+                val itemTreeRows
+                        by remember(selectedItemId) {
+                            if (selectedItemId != null) {
+                                itemTreeRepository.itemUiTreeFlow(selectedItemId)
+                            } else {
+                                emptyFlow()
+                            }
+                        }.collectAsState(initial = null)
+
                 if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
-                    if (showItemId == null) {
+                    val showItemIdPrime = showItemId
+
+                    if (showItemIdPrime == null) {
                         ItemsList(
                             listState = listState,
                             pullRefreshState = pullRefreshState,
@@ -270,7 +293,7 @@ fun HomeScreen(
                         )
                     } else {
                         ItemDetail(
-                            itemId = showItemId,
+                            itemTreeRows = itemTreeRows,
                             paddingValues = paddingValues,
                             onClickReply = onClickReply,
                             onClickUser = onClickUser,
@@ -283,6 +306,18 @@ fun HomeScreen(
                         )
                     }
                 } else {
+                    val layoutDirection = LocalLayoutDirection.current
+
+                    val twoPanePadding = PaddingValues(
+                        start = paddingValues.calculateStartPadding(layoutDirection),
+                        top = paddingValues.calculateTopPadding(),
+                        end = paddingValues.calculateEndPadding(layoutDirection),
+                    )
+
+                    val innerPadding = PaddingValues(
+                        bottom = paddingValues.calculateBottomPadding(),
+                    )
+
                     TwoPane(
                         first = {
                             ItemsList(
@@ -291,7 +326,7 @@ fun HomeScreen(
                                 itemRows = itemRows,
                                 showItemId = showItemId,
                                 refreshing = refreshing,
-                                paddingValues = paddingValues,
+                                paddingValues = innerPadding,
                                 setSelectedItemId = setSelectedItemId,
                                 setDetailInteraction = setDetailInteraction,
                                 onClickUser = onClickUser,
@@ -301,10 +336,12 @@ fun HomeScreen(
                             )
                         },
                         second = {
-                            if (showItemId != null) {
+                            val showItemIdPrime = showItemId
+
+                            if (showItemIdPrime != null) {
                                 ItemDetail(
-                                    itemId = showItemId,
-                                    paddingValues = paddingValues,
+                                    itemTreeRows = itemTreeRows,
+                                    paddingValues = innerPadding,
                                     onClickReply = onClickReply,
                                     onClickUser = onClickUser,
                                     onClickBrowser = onClickBrowser,
@@ -317,6 +354,7 @@ fun HomeScreen(
                             } else {
                                 Box(
                                     modifier = Modifier
+                                        .padding(innerPadding)
                                         .fillMaxSize()
                                         .notifyInput { setDetailInteraction(true) },
                                     contentAlignment = Alignment.Center,
@@ -331,8 +369,10 @@ fun HomeScreen(
                         displayFeatures = calculateDisplayFeatures(
                             activity = context as MainActivity
                         ),
-                        modifier = Modifier.fillMaxSize(),
-                        foldAwareConfiguration = FoldAwareConfiguration.AllFolds
+                        modifier = Modifier
+                            .padding(twoPanePadding)
+                            .fillMaxSize(),
+                        foldAwareConfiguration = FoldAwareConfiguration.AllFolds,
                     )
                 }
             }

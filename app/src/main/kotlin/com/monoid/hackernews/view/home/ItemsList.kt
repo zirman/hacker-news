@@ -10,7 +10,6 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.monoid.hackernews.shared.api.ItemId
@@ -23,7 +22,7 @@ import com.monoid.hackernews.view.itemlist.ItemList
 fun ItemsList(
     listState: LazyListState,
     pullRefreshState: PullRefreshState,
-    itemRows: State<List<ItemListRow>?>,
+    itemRows: List<ItemListRow>?,
     showItemId: ItemId?,
     refreshing: Boolean,
     paddingValues: PaddingValues,

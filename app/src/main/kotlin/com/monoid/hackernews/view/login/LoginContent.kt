@@ -1,6 +1,5 @@
 package com.monoid.hackernews.view.login
 
-import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -27,14 +26,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.monoid.hackernews.MainViewModel
+import androidx.datastore.core.DataStore
 import com.monoid.hackernews.shared.api.loginRequest
-import com.monoid.hackernews.shared.data.settingsDataStore
 import com.monoid.hackernews.shared.datastore.Authentication
 import com.monoid.hackernews.shared.datastore.authentication
 import com.monoid.hackernews.shared.datastore.copy
@@ -49,13 +45,13 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LoginContent(
+    httpClient: HttpClient,
+    authentication: DataStore<Authentication>,
     windowSizeClass: WindowSizeClass,
     onLogin: (Authentication) -> Unit,
     onLoginError: (Throwable) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val mainViewModel: MainViewModel = viewModel()
-
     Surface(
         modifier = modifier,
         contentColor = MaterialTheme.colorScheme.tertiary,
@@ -115,19 +111,16 @@ fun LoginContent(
                 onNext = { focusManager.moveFocus(FocusDirection.Down) },
             )
 
-            val context: Context =
-                LocalContext.current
-
             PasswordTextField(
                 password = password,
                 onChangePassword = setPassword,
                 modifier = rowModifier,
                 onDone = {
                     submitJob(
-                        context = context,
                         coroutineScope = coroutineScope,
-                        httpClient = mainViewModel.httpClient,
-                        authentication = authentication {
+                        httpClient = httpClient,
+                        authentication = authentication,
+                        loginAuthentication = authentication {
                             this.username = username
                             this.password = password
                         },
@@ -140,10 +133,10 @@ fun LoginContent(
             Button(
                 onClick = {
                     submitJob(
-                        context = context,
                         coroutineScope = coroutineScope,
-                        httpClient = mainViewModel.httpClient,
-                        authentication = authentication {
+                        httpClient = httpClient,
+                        authentication = authentication,
+                        loginAuthentication = authentication {
                             this.username = username
                             this.password = password
                         },
@@ -163,22 +156,22 @@ fun LoginContent(
 }
 
 fun submitJob(
-    context: Context,
     coroutineScope: CoroutineScope,
     httpClient: HttpClient,
-    authentication: Authentication,
+    authentication: DataStore<Authentication>,
+    loginAuthentication: Authentication,
     onLogin: (Authentication) -> Unit,
     onLoginError: (Throwable) -> Unit,
 ): Job {
     return coroutineScope.launch {
         try {
-            httpClient.loginRequest(authentication = authentication)
-
             onLogin(
-                context.settingsDataStore.updateData {
-                    it.copy {
-                        this.username = authentication.username
-                        this.password = authentication.password
+                authentication.updateData { auth ->
+                    httpClient.loginRequest(authentication = loginAuthentication)
+
+                    auth.copy {
+                        username = loginAuthentication.username
+                        password = loginAuthentication.password
                     }
                 }
             )

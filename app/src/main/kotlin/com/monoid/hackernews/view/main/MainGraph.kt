@@ -15,8 +15,8 @@ import com.monoid.hackernews.shared.navigation.MainNavigation
 val mainGraphRoutePattern = "main"
 
 fun NavGraphBuilder.mainGraph(
-    context: Context,
     mainViewModel: MainViewModel,
+    context: Context,
     snackbarHostState: SnackbarHostState,
     windowSizeClass: WindowSizeClass,
     drawerState: DrawerState,
@@ -28,9 +28,9 @@ fun NavGraphBuilder.mainGraph(
 ) {
     navigation(startDestination = MainNavigation.Home.route, route = mainGraphRoutePattern) {
         userScreen(
+            mainViewModel = mainViewModel,
             context = context,
             windowSizeClass = windowSizeClass,
-            mainViewModel = mainViewModel,
             drawerState = drawerState,
             snackbarHostState = snackbarHostState,
             onNavigateToUser = onNavigateToUser,
@@ -39,9 +39,9 @@ fun NavGraphBuilder.mainGraph(
         )
 
         homeScreen(
+            mainViewModel = mainViewModel,
             context = context,
             windowSizeClass = windowSizeClass,
-            mainViewModel = mainViewModel,
             drawerState = drawerState,
             snackbarHostState = snackbarHostState,
             onNavigateToUser = onNavigateToUser,
@@ -50,7 +50,9 @@ fun NavGraphBuilder.mainGraph(
         )
 
         loginBottomSheet(
-            mainViewModel = mainViewModel,
+            authentication = mainViewModel.authentication,
+            itemTreeRepository = mainViewModel.itemTreeRepository,
+            httpClient = mainViewModel.httpClient,
             windowSizeClass = windowSizeClass,
             onNavigateToReply = onNavigateToReply,
             onNavigateUp = onNavigateUp,
@@ -58,6 +60,9 @@ fun NavGraphBuilder.mainGraph(
         )
 
         replyBottomSheet(
+            authentication = mainViewModel.authentication,
+            itemTreeRepository = mainViewModel.itemTreeRepository,
+            httpClient = mainViewModel.httpClient,
             windowSizeClass = windowSizeClass,
             onNavigateUp = onNavigateUp,
             onLoginError = onLoginError,
@@ -68,6 +73,7 @@ fun NavGraphBuilder.mainGraph(
         )
 
         settingsBottomSheet(
+            authentication = mainViewModel.authentication,
             windowSizeClass = windowSizeClass,
         )
     }

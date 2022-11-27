@@ -31,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -56,6 +57,7 @@ import com.monoid.hackernews.shared.ui.util.userTag
 import com.monoid.hackernews.view.text.TextBlock
 import com.monoid.hackernews.view.util.onClick
 import com.monoid.hackernews.view.util.rememberAnnotatedString
+import kotlinx.coroutines.launch
 import androidx.compose.material.MaterialTheme as MaterialTheme2
 
 @Composable
@@ -80,12 +82,18 @@ fun CommentItem(
         contentColor = MaterialTheme.colorScheme.secondary,
         tonalElevation = ((itemUiState.value?.itemUi?.kids?.size ?: 0) * 10 + 40).dp,
     ) {
+        val coroutineScope = rememberCoroutineScope()
+
         Column(
             modifier = if (itemUiState.value?.itemUi?.item == null) {
                 Modifier
             } else {
                 Modifier
-                    .clickable { itemUiState.value?.itemUi?.toggleExpanded() }
+                    .clickable {
+                        coroutineScope.launch {
+                            itemUiState.value?.itemUi?.toggleExpanded()
+                        }
+                    }
                     .animateContentSize()
                     .placeholder(
                         visible = itemUiState.value?.itemUi?.item?.lastUpdate == null,
@@ -112,7 +120,9 @@ fun CommentItem(
                     lines = 1,
                     onClick = { offset ->
                         if (itemUiState.value?.itemUi?.isExpanded == true) {
-                            itemUiState.value?.itemUi?.toggleExpanded()
+                            coroutineScope.launch {
+                                itemUiState.value?.itemUi?.toggleExpanded()
+                            }
                         } else {
                             val username: Username? = timeByUserAnnotatedString.value
                                 .getStringAnnotations(
@@ -127,7 +137,9 @@ fun CommentItem(
                             if (username != null) {
                                 onClickUser(username)
                             } else {
-                                itemUiState.value?.itemUi?.toggleExpanded()
+                                coroutineScope.launch {
+                                    itemUiState.value?.itemUi?.toggleExpanded()
+                                }
                             }
                         }
                     },
@@ -187,7 +199,12 @@ fun CommentItem(
                                 )
                             },
                             onClick = {
-                                itemUiState.value?.itemUi?.toggleUpvote(onNavigateLogin = onNavigateLogin)
+                                coroutineScope.launch {
+                                    itemUiState.value?.itemUi?.toggleUpvote(
+                                        onNavigateLogin = onNavigateLogin
+                                    )
+                                }
+
                                 setContextExpanded(false)
                             },
                             leadingIcon = {
@@ -223,7 +240,10 @@ fun CommentItem(
                                 )
                             },
                             onClick = {
-                                itemUiState.value?.itemUi?.toggleFlag(onNavigateLogin)
+                                coroutineScope.launch {
+                                    itemUiState.value?.itemUi?.toggleFlag(onNavigateLogin)
+                                }
+
                                 setContextExpanded(false)
                             },
                             leadingIcon = {
@@ -278,7 +298,9 @@ fun CommentItem(
                                     offset = offset
                                 ).not()
                             ) {
-                                itemUiState.value?.itemUi?.toggleExpanded()
+                                coroutineScope.launch {
+                                    itemUiState.value?.itemUi?.toggleExpanded()
+                                }
                             }
                         },
                         modifier = Modifier.padding(horizontal = 16.dp),
@@ -291,7 +313,11 @@ fun CommentItem(
                 ClickableTextBlock(
                     text = annotatedText,
                     lines = 2,
-                    onClick = { itemUiState.value?.itemUi?.toggleExpanded() },
+                    onClick = {
+                        coroutineScope.launch {
+                            itemUiState.value?.itemUi?.toggleExpanded()
+                        }
+                    },
                     modifier = Modifier.padding(horizontal = 16.dp),
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.bodyMedium,

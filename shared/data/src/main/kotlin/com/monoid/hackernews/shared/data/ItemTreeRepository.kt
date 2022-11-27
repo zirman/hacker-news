@@ -20,9 +20,9 @@ import com.monoid.hackernews.shared.room.UpvoteDao
 import com.monoid.hackernews.shared.room.UpvoteDb
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -42,16 +42,15 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import java.lang.ref.WeakReference
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class ItemTreeRepository(
-    coroutineScope: CoroutineScope,
-    private val authenticationDataStore: DataStore<Authentication>,
+class ItemTreeRepository @Inject constructor(
+    private val authentication: DataStore<Authentication>,
     private val httpClient: HttpClient,
     private val itemDao: ItemDao,
     private val upvoteDao: UpvoteDao,
@@ -59,38 +58,23 @@ class ItemTreeRepository(
     private val flagDao: FlagDao,
     private val expandedDao: ExpandedDao,
 ) {
-    private val coroutineScope: CoroutineScope =
-        coroutineScope + Dispatchers.Default
-
     private val sharedFlows: MutableMap<ItemId, WeakReference<Flow<ItemUiInternal>>> =
         mutableMapOf()
 
     private val itemUpdatesSharedFlow: MutableSharedFlow<ItemUiInternal> =
         MutableSharedFlow(extraBufferCapacity = 10)
 
-    init {
-        // job to cleanup weak references to unused flows
-        coroutineScope.launch(Dispatchers.Main.immediate) {
-            while (true) {
-                delay(TimeUnit.SECONDS.toMillis(10))
-
-                sharedFlows.toList()
-                    .forEach { (itemId) ->
-                        if (sharedFlows[itemId]?.get() == null) {
-                            sharedFlows.remove(itemId)
-                        }
-                    }
-            }
-        }
-    }
-
     @Immutable
     private inner class ItemRowInternal(
         override val itemId: ItemId,
     ) : ItemListRow() {
         override val itemUiFlow: Flow<ItemUi>
-            get() = sharedFlows[itemId]?.get()
-                ?: sharedItemUiFlow(itemId).also { sharedFlows[itemId] = WeakReference(it) }
+            get() {
+                return sharedFlows[itemId]?.get()
+                    ?: sharedItemUiFlow(itemId).also {
+                        sharedFlows[itemId] = WeakReference(it)
+                    }
+            }
     }
 
     @Immutable
@@ -99,21 +83,36 @@ class ItemTreeRepository(
         private val threadDepth: Int,
     ) : ItemTreeRow() {
         override val itemUiFlow: Flow<ItemUiWithThreadDepth>
-            get() = (
-                    sharedFlows[itemId]?.get()
-                        ?: sharedItemUiFlow(itemId).also {
-                            sharedFlows[itemId] = WeakReference(it)
-                        }
-                    )
-                .onEach { itemUpdatesSharedFlow.emit(it) }
-                .map { ItemUiWithThreadDepth(threadDepth, it) }
+            get() {
+                return (
+                        sharedFlows[itemId]?.get()
+                            ?: sharedItemUiFlow(itemId).also {
+                                sharedFlows[itemId] = WeakReference(it)
+                            }
+                        )
+                    .onEach { itemUpdatesSharedFlow.emit(it) }
+                    .map { ItemUiWithThreadDepth(threadDepth, it) }
+            }
     }
 
-    fun upvoteItemJob(
+    suspend fun cleanupJob() {
+        while (true) {
+            delay(TimeUnit.SECONDS.toMillis(10))
+
+            sharedFlows.toList()
+                .forEach { (itemId) ->
+                    if (sharedFlows[itemId]?.get() == null) {
+                        sharedFlows.remove(itemId)
+                    }
+                }
+        }
+    }
+
+    suspend fun upvoteItemJob(
         authentication: Authentication,
         itemId: ItemId,
         isUpvote: Boolean = true
-    ): Job = coroutineScope.launch {
+    ) {
         try {
             httpClient.upvoteItem(
                 authentication = authentication,
@@ -131,11 +130,11 @@ class ItemTreeRepository(
         }
     }
 
-    fun favoriteItemJob(
+    suspend fun favoriteItemJob(
         authentication: Authentication,
         itemId: ItemId,
         isFavorite: Boolean = true
-    ): Job = coroutineScope.launch {
+    ) {
         try {
             httpClient.favoriteRequest(
                 authentication = authentication,
@@ -153,11 +152,11 @@ class ItemTreeRepository(
         }
     }
 
-    fun flagItemJob(
+    suspend fun flagItemJob(
         authentication: Authentication,
         itemId: ItemId,
         isFlag: Boolean = true
-    ): Job = coroutineScope.launch {
+    ) {
         try {
             httpClient.flagRequest(
                 authentication = authentication,
@@ -261,7 +260,10 @@ class ItemTreeRepository(
         return itemIds.map { itemId -> ItemRowInternal(itemId) }
     }
 
-    private fun sharedItemUiFlow(itemId: ItemId): SharedFlow<ItemUiInternal> = flow {
+    @OptIn(DelicateCoroutinesApi::class)
+    private fun sharedItemUiFlow(
+        itemId: ItemId,
+    ): SharedFlow<ItemUiInternal> = flow {
         coroutineScope {
             launch {
                 val item = withContext(Dispatchers.IO) {
@@ -294,7 +296,7 @@ class ItemTreeRepository(
                             .distinctUntilChanged(),
                         ::Pair,
                     ).distinctUntilChanged(),
-                    authenticationDataStore.data
+                    authentication.data
                         .map { it.username }
                         .distinctUntilChanged()
                         .flatMapLatest { username ->
@@ -325,7 +327,7 @@ class ItemTreeRepository(
         }
     }
         .shareIn(
-            scope = coroutineScope,
+            scope = GlobalScope, // shared flows are in global scope
             started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
             replay = 1,
         )
@@ -339,55 +341,49 @@ class ItemTreeRepository(
         override val isFlag: Boolean,
         override val isExpanded: Boolean,
     ) : ItemUi() {
-        override fun toggleUpvote(onNavigateLogin: (LoginAction) -> Unit) {
-            coroutineScope.launch {
-                val authentication = authenticationDataStore.data.first()
+        override suspend fun toggleUpvote(onNavigateLogin: (LoginAction) -> Unit) {
+            val authentication = authentication.data.first()
 
-                if (authentication.password.isNotEmpty()) {
-                    upvoteItemJob(authentication, ItemId(item.id), isUpvote.not())
-                } else {
-                    withContext(Dispatchers.Main.immediate) {
-                        onNavigateLogin(LoginAction.Upvote(itemId = item.id))
-                    }
+            if (authentication.password.isNotEmpty()) {
+                upvoteItemJob(authentication, ItemId(item.id), isUpvote.not())
+            } else {
+                withContext(Dispatchers.Main.immediate) {
+                    onNavigateLogin(LoginAction.Upvote(itemId = item.id))
                 }
             }
         }
 
-        override fun toggleFavorite(onNavigateLogin: (LoginAction) -> Unit) {
-            coroutineScope.launch {
-                val authentication = authenticationDataStore.data.first()
+        override suspend fun toggleFavorite(onNavigateLogin: (LoginAction) -> Unit) {
+            val authentication = authentication.data.first()
 
-                if (authentication.password.isNotEmpty()) {
-                    favoriteItemJob(authentication, ItemId(item.id), isFavorite.not())
-                } else {
-                    withContext(Dispatchers.Main.immediate) {
-                        onNavigateLogin(LoginAction.Favorite(itemId = item.id))
-                    }
+            if (authentication.password.isNotEmpty()) {
+                favoriteItemJob(authentication, ItemId(item.id), isFavorite.not())
+            } else {
+                withContext(Dispatchers.Main.immediate) {
+                    onNavigateLogin(LoginAction.Favorite(itemId = item.id))
                 }
             }
         }
 
-        override fun toggleFlag(onNavigateLogin: (LoginAction) -> Unit) {
-            coroutineScope.launch {
-                val authentication = authenticationDataStore.data.first()
+        override suspend fun toggleFlag(
+            onNavigateLogin: (LoginAction) -> Unit
+        ) {
+            val authentication = authentication.data.first()
 
-                if (authentication.password.isNotEmpty()) {
-                    flagItemJob(authentication, ItemId(item.id), isFlag.not())
-                } else {
-                    withContext(Dispatchers.Main.immediate) {
-                        onNavigateLogin(LoginAction.Flag(itemId = item.id))
-                    }
+            if (authentication.password.isNotEmpty()) {
+                flagItemJob(authentication, ItemId(item.id), isFlag.not())
+            } else {
+                withContext(Dispatchers.Main.immediate) {
+                    onNavigateLogin(LoginAction.Flag(itemId = item.id))
                 }
             }
         }
 
-        override fun toggleExpanded() {
-            coroutineScope.launch {
-                if (isExpanded) {
-                    expandedDao.expandedDelete(ExpandedDb(item.id))
-                } else {
-                    expandedDao.expandedInsert(ExpandedDb(item.id))
-                }
+        override suspend fun toggleExpanded() {
+            if (isExpanded) {
+                expandedDao.expandedDelete(ExpandedDb(item.id))
+            } else {
+                expandedDao.expandedInsert(ExpandedDb(item.id))
             }
         }
     }

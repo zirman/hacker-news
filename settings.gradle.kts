@@ -96,6 +96,11 @@ dependencyResolutionManagement {
                 /* version = */ "0.27.1"
             )
 
+            version(
+                /* alias = */ "hilt",
+                /* version = */ "2.44.2"
+            )
+
             bundle(
                 /* alias = */ "kotlinx",
                 /* aliases = */ listOf(
@@ -438,6 +443,24 @@ dependencyResolutionManagement {
             ).versionRef("navigation")
 
             library(
+                /* alias = */ "hilt-android",
+                /* group = */ "com.google.dagger",
+                /* artifact = */ "hilt-android"
+            ).versionRef("hilt")
+
+            library(
+                /* alias = */ "hilt-android-compiler",
+                /* group = */ "com.google.dagger",
+                /* artifact = */ "hilt-android-compiler"
+            ).versionRef("hilt")
+
+            library(
+                "hilt-navigation-compose",
+                "androidx.hilt",
+                "hilt-navigation-compose"
+            ).version("1.0.0")
+
+            library(
                 /* alias = */ "navigation-ui-ktx",
                 /* group = */ "androidx.navigation",
                 /* artifact = */ "navigation-ui-ktx"
@@ -599,6 +622,36 @@ dependencyResolutionManagement {
                 /* group = */ "org.slf4j",
                 /* artifact = */ "slf4j-simple"
             ).version("2.0.3")
+
+            library(
+                /* alias = */ "ui-test-junit4",
+                /* group = */ "androidx.compose.ui",
+                /* artifact = */ "ui-test-junit4"
+            ).version("1.4.0-alpha02")
+
+            library(
+                /* alias = */ "ui-test-manifest",
+                /* group = */ "androidx.compose.ui",
+                /* artifact = */ "ui-test-manifest"
+            ).version("1.4.0-alpha02")
+
+            library(
+                /* alias = */ "junit",
+                /* group = */ "junit",
+                /* artifact = */ "junit"
+            ).version("4.13.2")
+
+            library(
+                /* alias = */ "junit-ext",
+                /* group = */ "androidx.test.ext",
+                /* artifact = */ "junit"
+            ).version("1.1.4")
+
+            library(
+                /* alias = */ "espresso-core",
+                /* group = */ "androidx.test.espresso",
+                /* artifact = */ "espresso-core"
+            ).version("3.5.0")
         }
     }
 }

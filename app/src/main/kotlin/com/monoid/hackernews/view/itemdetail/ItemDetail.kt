@@ -10,15 +10,11 @@ import androidx.compose.material.pullrefresh.PullRefreshState
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.shared.api.ItemId
 import com.monoid.hackernews.shared.data.ItemTreeRow
 import com.monoid.hackernews.shared.data.LoginAction
@@ -28,7 +24,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ItemDetail(
-    itemId: ItemId,
+    itemTreeRows: List<ItemTreeRow>?,
     paddingValues: PaddingValues,
     onClickUser: (Username) -> Unit,
     onClickReply: (ItemId) -> Unit,
@@ -37,12 +33,6 @@ fun ItemDetail(
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState(),
 ) {
-    val mainViewModel: MainViewModel = viewModel()
-
-    val itemListState: State<List<ItemTreeRow>?> =
-        remember(itemId) { mainViewModel.itemTreeRepository.itemUiTreeFlow(itemId) }
-            .collectAsState(initial = null)
-
     val refreshScope = rememberCoroutineScope()
 
     val (refreshing, setRefreshing) =
@@ -64,7 +54,7 @@ fun ItemDetail(
 
     Box(modifier.pullRefresh(pullRefreshState)) {
         CommentList(
-            itemListState = itemListState,
+            itemTreeRows = itemTreeRows,
             onClickUser = onClickUser,
             onClickReply = onClickReply,
             onClickBrowser = onClickBrowser,

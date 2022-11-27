@@ -16,14 +16,7 @@ import androidx.navigation.navDeepLink
 import com.google.accompanist.navigation.animation.composable
 import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.shared.api.ItemId
-import com.monoid.hackernews.shared.data.AskStoryRepository
-import com.monoid.hackernews.shared.data.BestStoryRepository
-import com.monoid.hackernews.shared.data.FavoriteStoryRepository
-import com.monoid.hackernews.shared.data.JobStoryRepository
 import com.monoid.hackernews.shared.data.LoginAction
-import com.monoid.hackernews.shared.data.NewStoryRepository
-import com.monoid.hackernews.shared.data.ShowStoryRepository
-import com.monoid.hackernews.shared.data.TopStoryRepository
 import com.monoid.hackernews.shared.data.Username
 import com.monoid.hackernews.shared.domain.LiveUpdateUseCase
 import com.monoid.hackernews.shared.view.R
@@ -35,12 +28,12 @@ import com.monoid.hackernews.view.home.HomeScreen
 fun NavGraphBuilder.homeScreen(
     context: Context,
     windowSizeClass: WindowSizeClass,
-    mainViewModel: MainViewModel,
     drawerState: DrawerState,
     snackbarHostState: SnackbarHostState,
     onNavigateToUser: (Username) -> Unit,
     onNavigateToReply: (ItemId) -> Unit,
     onNavigateToLogin: (LoginAction) -> Unit,
+    mainViewModel: MainViewModel,
 ) {
     composable(
         route = MainNavigation.Home.route,
@@ -77,7 +70,8 @@ fun NavGraphBuilder.homeScreen(
             rememberSaveable { mutableStateOf(selectedItemId != null) }
 
         HomeScreen(
-            mainViewModel = mainViewModel,
+            authentication = mainViewModel.authentication,
+            itemTreeRepository = mainViewModel.itemTreeRepository,
             drawerState = drawerState,
             windowSizeClass = windowSizeClass,
             title = stringResource(
@@ -103,40 +97,19 @@ fun NavGraphBuilder.homeScreen(
                     context.getSystemService()!!,
                     when (stories) {
                         Stories.Top ->
-                            TopStoryRepository(
-                                httpClient = mainViewModel.httpClient,
-                                topStoryDao = mainViewModel.topStoryDao,
-                            )
+                            mainViewModel.topStoryRepository
                         Stories.New ->
-                            NewStoryRepository(
-                                httpClient = mainViewModel.httpClient,
-                                newStoryDao = mainViewModel.newStoryDao,
-                            )
+                            mainViewModel.newStoryRepository
                         Stories.Best ->
-                            BestStoryRepository(
-                                httpClient = mainViewModel.httpClient,
-                                bestStoryDao = mainViewModel.bestStoryDao,
-                            )
+                            mainViewModel.bestStoryRepository
                         Stories.Ask ->
-                            AskStoryRepository(
-                                httpClient = mainViewModel.httpClient,
-                                askStoryDao = mainViewModel.askStoryDao,
-                            )
+                            mainViewModel.askStoryRepository
                         Stories.Show ->
-                            ShowStoryRepository(
-                                httpClient = mainViewModel.httpClient,
-                                showStoryDao = mainViewModel.showStoryDao,
-                            )
+                            mainViewModel.showStoryRepository
                         Stories.Job ->
-                            JobStoryRepository(
-                                httpClient = mainViewModel.httpClient,
-                                jobStoryDao = mainViewModel.jobStoryDao,
-                            )
+                            mainViewModel.jobStoryRepository
                         Stories.Favorite ->
-                            FavoriteStoryRepository(
-                                context = context,
-                                favoriteDao = mainViewModel.favoriteDao,
-                            )
+                            mainViewModel.favoriteStoryRepository
                     }
                 )
             },

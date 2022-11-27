@@ -7,8 +7,9 @@ import com.monoid.hackernews.shared.room.JobStoryDb
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class JobStoryRepository(
+class JobStoryRepository @Inject constructor(
     private val httpClient: HttpClient,
     private val jobStoryDao: JobStoryDao,
 ) : Repository<OrderedItem> {

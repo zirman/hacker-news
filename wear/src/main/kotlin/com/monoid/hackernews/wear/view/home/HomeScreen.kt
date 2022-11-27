@@ -18,9 +18,9 @@ import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import com.monoid.hackernews.shared.api.ItemId
 import com.monoid.hackernews.shared.data.ItemListRow
+import com.monoid.hackernews.shared.data.ItemTreeRepository
 import com.monoid.hackernews.shared.data.OrderedItem
 import com.monoid.hackernews.shared.domain.LiveUpdateUseCase
-import com.monoid.hackernews.wear.MainViewModel
 import com.monoid.hackernews.shared.view.R
 import com.monoid.hackernews.wear.view.itemlist.ItemList
 import kotlinx.coroutines.flow.map
@@ -28,10 +28,10 @@ import java.util.concurrent.TimeUnit
 
 @Composable
 fun HomeScreen(
-    mainViewModel: MainViewModel,
+    itemTreeRepository: ItemTreeRepository,
     title: String,
     orderedItemRepo: LiveUpdateUseCase<OrderedItem>,
-    onSelectItemId: (ItemId?) -> Unit
+    onSelectItemId: (ItemId?) -> Unit,
 ) {
     val itemStaleMinutes = integerResource(id = R.integer.item_stale_minutes)
 
@@ -40,7 +40,7 @@ fun HomeScreen(
             orderedItemRepo
                 .getItems(TimeUnit.MINUTES.toMillis(itemStaleMinutes.toLong()))
                 .map { orderedItems ->
-                    mainViewModel.itemTreeRepository.itemUiList(orderedItems.map { it.itemId })
+                    itemTreeRepository.itemUiList(orderedItems.map { it.itemId })
                 }
         }.collectAsState(initial = null)
 

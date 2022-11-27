@@ -15,7 +15,6 @@ import androidx.core.content.getSystemService
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.monoid.hackernews.MainViewModel
@@ -32,6 +31,7 @@ import kotlin.time.toDuration
 
 @Composable
 fun MainNavigation(
+    mainViewModel: MainViewModel,
     windowSizeClass: WindowSizeClass,
     mainNavController: NavHostController,
     drawerState: DrawerState,
@@ -42,8 +42,6 @@ fun MainNavigation(
     onLoginError: (Throwable) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val mainViewModel: MainViewModel = viewModel()
-
     val snackbarHostState: SnackbarHostState =
         remember { SnackbarHostState() }
 
@@ -83,8 +81,8 @@ fun MainNavigation(
         modifier = modifier,
     ) {
         mainGraph(
-            context = context,
             mainViewModel = mainViewModel,
+            context = context,
             snackbarHostState = snackbarHostState,
             windowSizeClass = windowSizeClass,
             drawerState = drawerState,

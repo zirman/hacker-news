@@ -1,6 +1,5 @@
 package com.monoid.hackernews.view.navigationdrawer
 
-import android.content.Context
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -23,13 +22,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.datastore.core.DataStore
 import androidx.navigation.NavHostController
 import com.monoid.hackernews.shared.data.LoginAction
 import com.monoid.hackernews.shared.data.Username
-import com.monoid.hackernews.shared.data.settingsDataStore
 import com.monoid.hackernews.shared.datastore.Authentication
 import com.monoid.hackernews.shared.view.R
 import com.monoid.hackernews.shared.navigation.MainNavigation
@@ -39,6 +37,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun NavigationDrawerContent(
+    authentication: DataStore<Authentication>,
     mainNavController: NavHostController,
     drawerState: DrawerState,
     onClickUser: (Username) -> Unit,
@@ -64,36 +63,33 @@ fun NavigationDrawerContent(
                 .collectAsState(initial = null)
                 .value
 
-        val context: Context =
-            LocalContext.current
-
         val authenticationState: State<Authentication?> =
-            remember { context.settingsDataStore.data }
+            remember { authentication.data }
                 .collectAsState(initial = null)
 
         val coroutineScope: CoroutineScope =
             rememberCoroutineScope()
 
-        val authentication: Authentication? =
+        val auth: Authentication? =
             authenticationState.value
 
-        if (authentication?.password?.isNotEmpty() == true) {
+        if (auth?.password?.isNotEmpty() == true) {
             NavigationDrawerItem(
                 icon = {
                     Icon(
                         imageVector = Icons.TwoTone.Face,
-                        contentDescription = authentication.username,
+                        contentDescription = auth.username,
                     )
                 },
                 label = {
                     Text(
-                        text = authentication.username,
+                        text = auth.username,
                         maxLines = 1,
                     )
                 },
                 selected = false,
                 onClick = {
-                    onClickUser(Username(authentication.username))
+                    onClickUser(Username(auth.username))
                     coroutineScope.launch { drawerState.close() }
                 },
                 modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),

@@ -4,9 +4,11 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("plugin.serialization")
+    kotlin("kapt")
     id("kotlin-parcelize")
     id("com.google.devtools.ksp")
     id("com.google.protobuf")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -79,6 +81,10 @@ protobuf {
     }
 }
 
+kapt {
+    correctErrorTypes = true
+}
+
 dependencies {
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.androidx)
@@ -86,7 +92,10 @@ dependencies {
     api(libs.bundles.ktor)
     ksp(libs.room.compiler)
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.4")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.0")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.junit.ext)
+    androidTestImplementation(libs.espresso.core)
 }

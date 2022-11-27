@@ -18,11 +18,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.datastore.core.DataStore
+import com.monoid.hackernews.shared.datastore.Authentication
 import com.monoid.hackernews.shared.view.R
 import com.monoid.hackernews.view.theme.HNFont
 
 @Composable
 fun Settings(
+    authentication: DataStore<Authentication>,
     windowSizeClass: WindowSizeClass,
     modifier: Modifier = Modifier,
 ) {
@@ -51,10 +54,25 @@ fun Settings(
         ) {
             Text(stringResource(R.string.font))
 
-            FontButton(hnFont = HNFont.SansSerif)
-            FontButton(hnFont = HNFont.Serif)
-            FontButton(hnFont = HNFont.Monospace)
-            FontButton(hnFont = HNFont.Cursive)
+            FontButton(
+                hnFont = HNFont.SansSerif,
+                authentication = authentication,
+            )
+
+            FontButton(
+                hnFont = HNFont.Serif,
+                authentication = authentication,
+            )
+
+            FontButton(
+                hnFont = HNFont.Monospace,
+                authentication = authentication,
+            )
+
+            FontButton(
+                hnFont = HNFont.Cursive,
+                authentication = authentication,
+            )
         }
     }
 }

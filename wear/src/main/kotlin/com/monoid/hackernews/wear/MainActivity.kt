@@ -5,42 +5,46 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.getSystemService
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.metrics.performance.JankStats
-import com.monoid.hackernews.shared.data.TopStoryRepository
 import com.monoid.hackernews.shared.domain.LiveUpdateUseCase
 import com.monoid.hackernews.shared.view.R
 import com.monoid.hackernews.wear.theme.HackerNewsTheme
 import com.monoid.hackernews.wear.view.home.HomeScreen
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val mainViewModel by viewModels<MainViewModel>()
+
+    @Inject
+    lateinit var newIntentChannel: Channel<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
+            val mainViewModel: MainViewModel = hiltViewModel()
+
             HackerNewsTheme {
                 HomeScreen(
-                    mainViewModel = mainViewModel,
+                    itemTreeRepository = mainViewModel.itemTreeRepository,
                     title = stringResource(id = R.string.top_stories),
-                    orderedItemRepo = remember(mainViewModel) {
+                    orderedItemRepo = remember(mainViewModel.topStoryRepository) {
                         LiveUpdateUseCase(
                             getSystemService()!!,
-                            TopStoryRepository(
-                                httpClient = mainViewModel.httpClient,
-                                topStoryDao = mainViewModel.topStoryDao
-                            )
+                            mainViewModel.topStoryRepository
                         )
                     },
                     onSelectItemId = { /*TODO*/ }
@@ -80,6 +84,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        lifecycleScope.launch { mainViewModel.newIntentChannel.send(intent) }
+        lifecycleScope.launch { newIntentChannel.send(intent) }
     }
 }

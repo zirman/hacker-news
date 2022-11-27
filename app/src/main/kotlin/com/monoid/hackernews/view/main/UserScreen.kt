@@ -14,7 +14,6 @@ import com.google.accompanist.navigation.animation.composable
 import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.shared.api.ItemId
 import com.monoid.hackernews.shared.data.LoginAction
-import com.monoid.hackernews.shared.data.UserStoryRepository
 import com.monoid.hackernews.shared.data.Username
 import com.monoid.hackernews.shared.domain.LiveUpdateUseCase
 import com.monoid.hackernews.shared.navigation.MainNavigation
@@ -22,9 +21,9 @@ import com.monoid.hackernews.shared.ui.util.itemIdSaver
 import com.monoid.hackernews.view.home.HomeScreen
 
 fun NavGraphBuilder.userScreen(
+    mainViewModel: MainViewModel,
     context: Context,
     windowSizeClass: WindowSizeClass,
-    mainViewModel: MainViewModel,
     drawerState: DrawerState,
     snackbarHostState: SnackbarHostState,
     onNavigateToUser: (Username) -> Unit,
@@ -54,19 +53,15 @@ fun NavGraphBuilder.userScreen(
             rememberSaveable { mutableStateOf(false) }
 
         HomeScreen(
-            mainViewModel = mainViewModel,
+            authentication = mainViewModel.authentication,
+            itemTreeRepository = mainViewModel.itemTreeRepository,
             drawerState = drawerState,
             windowSizeClass = windowSizeClass,
             title = username.string,
             orderedItemRepo = remember(mainViewModel, username) {
                 LiveUpdateUseCase(
                     context.getSystemService()!!,
-                    UserStoryRepository(
-                        httpClient = mainViewModel.httpClient,
-                        userDao = mainViewModel.userDao,
-                        itemDao = mainViewModel.itemDao,
-                        username = username,
-                    )
+                    mainViewModel.userStoryRepository,
                 )
             },
             snackbarHostState = snackbarHostState,

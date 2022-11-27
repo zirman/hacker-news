@@ -9,17 +9,24 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.datastore.core.DataStore
 import androidx.navigation.NavGraphBuilder
 import com.google.accompanist.navigation.material.bottomSheet
-import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.shared.api.ItemId
+import com.monoid.hackernews.shared.data.ItemTreeRepository
 import com.monoid.hackernews.shared.data.LoginAction
+import com.monoid.hackernews.shared.datastore.Authentication
 import com.monoid.hackernews.shared.navigation.MainNavigation
 import com.monoid.hackernews.view.login.LoginContent
+import io.ktor.client.HttpClient
+import kotlinx.coroutines.launch
 
 fun NavGraphBuilder.loginBottomSheet(
-    mainViewModel: MainViewModel,
+    authentication: DataStore<Authentication>,
+    itemTreeRepository: ItemTreeRepository,
+    httpClient: HttpClient,
     windowSizeClass: WindowSizeClass,
     onNavigateToReply: (ItemId) -> Unit,
     onNavigateUp: () -> Unit,
@@ -32,28 +39,38 @@ fun NavGraphBuilder.loginBottomSheet(
         val loginAction: LoginAction =
             MainNavigation.Login.argsFromRoute(navBackStackEntry = navBackStackEntry)
 
+        val coroutineScope = rememberCoroutineScope()
+
         LoginContent(
+            httpClient = httpClient,
+            authentication = authentication,
             windowSizeClass = windowSizeClass,
             onLogin = { authentication ->
                 when (loginAction) {
                     is LoginAction.Login -> {}
                     is LoginAction.Upvote -> {
-                        mainViewModel.itemTreeRepository.upvoteItemJob(
-                            authentication,
-                            ItemId(loginAction.itemId)
-                        )
+                        coroutineScope.launch {
+                            itemTreeRepository.upvoteItemJob(
+                                authentication,
+                                ItemId(loginAction.itemId)
+                            )
+                        }
                     }
                     is LoginAction.Favorite -> {
-                        mainViewModel.itemTreeRepository.favoriteItemJob(
-                            authentication,
-                            ItemId(loginAction.itemId)
-                        )
+                        coroutineScope.launch {
+                            itemTreeRepository.favoriteItemJob(
+                                authentication,
+                                ItemId(loginAction.itemId)
+                            )
+                        }
                     }
                     is LoginAction.Flag -> {
-                        mainViewModel.itemTreeRepository.flagItemJob(
-                            authentication,
-                            ItemId(loginAction.itemId)
-                        )
+                        coroutineScope.launch {
+                            itemTreeRepository.flagItemJob(
+                                authentication,
+                                ItemId(loginAction.itemId)
+                            )
+                        }
                     }
                     is LoginAction.Reply -> {
                         onNavigateToReply(ItemId(loginAction.itemId))

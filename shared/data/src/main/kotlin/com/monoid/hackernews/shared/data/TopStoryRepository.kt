@@ -7,8 +7,9 @@ import com.monoid.hackernews.shared.room.TopStoryDb
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class TopStoryRepository(
+class TopStoryRepository @Inject constructor(
     private val httpClient: HttpClient,
     private val topStoryDao: TopStoryDao,
 ) : Repository<OrderedItem> {
