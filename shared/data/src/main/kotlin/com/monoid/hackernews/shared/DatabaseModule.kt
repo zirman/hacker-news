@@ -38,73 +38,61 @@ object DatabaseModule {
             .build()
     }
 
-    @Singleton
     @Provides
     fun provideTopStoryDao(hnDatabase: HNDatabase): TopStoryDao {
         return hnDatabase.topStoryDao()
     }
 
-    @Singleton
     @Provides
     fun provideNewStoryDao(hnDatabase: HNDatabase): NewStoryDao {
         return hnDatabase.newStoryDao()
     }
 
-    @Singleton
     @Provides
     fun provideBestStoryDao(hnDatabase: HNDatabase): BestStoryDao {
         return hnDatabase.bestStoryDao()
     }
 
-    @Singleton
     @Provides
     fun provideShowStoryDao(hnDatabase: HNDatabase): ShowStoryDao {
         return hnDatabase.showStoryDao()
     }
 
-    @Singleton
     @Provides
     fun provideAskStoryDao(hnDatabase: HNDatabase): AskStoryDao {
         return hnDatabase.askStoryDao()
     }
 
-    @Singleton
     @Provides
     fun provideJobStoryDao(hnDatabase: HNDatabase): JobStoryDao {
         return hnDatabase.jobStoryDao()
     }
 
-    @Singleton
     @Provides
     fun provideItemDao(hnDatabase: HNDatabase): ItemDao {
         return hnDatabase.itemDao()
     }
 
-    @Singleton
     @Provides
     fun provideUserDao(hnDatabase: HNDatabase): UserDao {
         return hnDatabase.userDao()
     }
 
-    @Singleton
     @Provides
     fun provideUpvoteDao(hnDatabase: HNDatabase): UpvoteDao {
         return hnDatabase.upvoteDao()
     }
 
-    @Singleton
     @Provides
     fun provideFavoriteDao(hnDatabase: HNDatabase): FavoriteDao {
         return hnDatabase.favoriteDao()
     }
 
-    @Singleton
     @Provides
     fun provideFlagDao(hnDatabase: HNDatabase): FlagDao {
         return hnDatabase.flagDao()
     }
 
-    @Singleton
     @Provides
     fun provideExpandedDao(hnDatabase: HNDatabase): ExpandedDao {
         return hnDatabase.expandedDao()
