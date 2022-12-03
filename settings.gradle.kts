@@ -48,7 +48,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "protobuf",
-                /* version = */ "3.21.9"
+                /* version = */ "3.21.10"
             )
 
             version(
@@ -93,7 +93,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "accompanist",
-                /* version = */ "0.27.1"
+                /* version = */ "0.28.0"
             )
 
             version(
@@ -621,7 +621,7 @@ dependencyResolutionManagement {
                 /* alias = */ "slf4j-simple",
                 /* group = */ "org.slf4j",
                 /* artifact = */ "slf4j-simple"
-            ).version("2.0.3")
+            ).version("2.0.5")
 
             library(
                 /* alias = */ "ui-test-junit4",
