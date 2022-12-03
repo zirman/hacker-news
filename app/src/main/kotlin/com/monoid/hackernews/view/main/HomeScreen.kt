@@ -26,6 +26,7 @@ import com.monoid.hackernews.shared.ui.util.itemIdSaver
 import com.monoid.hackernews.view.home.HomeScreen
 
 fun NavGraphBuilder.homeScreen(
+    mainViewModel: MainViewModel,
     context: Context,
     windowSizeClass: WindowSizeClass,
     drawerState: DrawerState,
@@ -33,7 +34,6 @@ fun NavGraphBuilder.homeScreen(
     onNavigateToUser: (Username) -> Unit,
     onNavigateToReply: (ItemId) -> Unit,
     onNavigateToLogin: (LoginAction) -> Unit,
-    mainViewModel: MainViewModel,
 ) {
     composable(
         route = MainNavigation.Home.route,

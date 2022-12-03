@@ -48,7 +48,9 @@ import kotlinx.datetime.Instant
 import java.lang.ref.WeakReference
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class ItemTreeRepository @Inject constructor(
     private val authentication: DataStore<Authentication>,
     private val httpClient: HttpClient,

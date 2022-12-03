@@ -13,7 +13,9 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class FavoriteStoryRepository @Inject constructor(
     @ApplicationContext
     private val context: Context,

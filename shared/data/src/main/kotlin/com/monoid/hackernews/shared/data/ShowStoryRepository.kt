@@ -8,7 +8,9 @@ import io.ktor.client.HttpClient
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class ShowStoryRepository @Inject constructor(
     private val httpClient: HttpClient,
     private val showStoryDao: ShowStoryDao,
