@@ -10,9 +10,9 @@ import androidx.compose.material.icons.twotone.Star
 import androidx.compose.material.icons.twotone.TrendingUp
 import androidx.compose.material.icons.twotone.Work
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.monoid.hackernews.shared.view.R
-import com.monoid.hackernews.shared.navigation.MainNavigation
-import com.monoid.hackernews.shared.navigation.Stories
+import com.monoid.hackernews.common.view.R
+import com.monoid.hackernews.common.navigation.MainNavigation
+import com.monoid.hackernews.common.navigation.Stories
 
 data class NavigationDrawerItemData(
     val icon: ImageVector,

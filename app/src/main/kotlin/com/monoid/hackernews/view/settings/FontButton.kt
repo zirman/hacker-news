@@ -5,8 +5,8 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.datastore.core.DataStore
-import com.monoid.hackernews.shared.datastore.Authentication
-import com.monoid.hackernews.shared.datastore.copy
+import com.monoid.hackernews.common.datastore.Authentication
+import com.monoid.hackernews.common.datastore.copy
 import com.monoid.hackernews.view.theme.HNFont
 import kotlinx.coroutines.launch
 import kotlinx.serialization.encodeToString

@@ -14,11 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.datastore.core.DataStore
 import androidx.navigation.NavGraphBuilder
 import com.google.accompanist.navigation.material.bottomSheet
-import com.monoid.hackernews.shared.api.ItemId
-import com.monoid.hackernews.shared.data.ItemTreeRepository
-import com.monoid.hackernews.shared.data.LoginAction
-import com.monoid.hackernews.shared.datastore.Authentication
-import com.monoid.hackernews.shared.navigation.MainNavigation
+import com.monoid.hackernews.common.api.ItemId
+import com.monoid.hackernews.common.data.ItemTreeRepository
+import com.monoid.hackernews.common.data.LoginAction
+import com.monoid.hackernews.common.datastore.Authentication
+import com.monoid.hackernews.common.navigation.MainNavigation
 import com.monoid.hackernews.view.login.LoginContent
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.launch

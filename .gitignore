@@ -1,6 +1,8 @@
 /.gradle
 /local.properties
 /build
+*/build
+common/*/build
 .DS_Store
 .externalNativeBuild
 *.iml

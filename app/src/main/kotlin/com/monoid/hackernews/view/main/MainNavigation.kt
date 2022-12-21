@@ -18,11 +18,11 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.monoid.hackernews.MainViewModel
-import com.monoid.hackernews.shared.api.ItemId
-import com.monoid.hackernews.shared.data.LoginAction
-import com.monoid.hackernews.shared.data.Username
-import com.monoid.hackernews.shared.view.R
-import com.monoid.hackernews.shared.ui.util.getNetworkConnectivityStateFlow
+import com.monoid.hackernews.common.api.ItemId
+import com.monoid.hackernews.common.data.LoginAction
+import com.monoid.hackernews.common.data.Username
+import com.monoid.hackernews.common.view.R
+import com.monoid.hackernews.common.ui.util.getNetworkConnectivityStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.dropWhile

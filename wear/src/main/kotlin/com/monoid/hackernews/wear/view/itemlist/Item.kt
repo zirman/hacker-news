@@ -8,8 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.wear.compose.material.LocalContentColor
 import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.TitleCard
-import com.monoid.hackernews.shared.api.ItemId
-import com.monoid.hackernews.shared.data.ItemUi
+import com.monoid.hackernews.common.api.ItemId
+import com.monoid.hackernews.common.data.ItemUi
 import com.monoid.hackernews.wear.view.util.rememberAnnotatedString
 
 @Composable

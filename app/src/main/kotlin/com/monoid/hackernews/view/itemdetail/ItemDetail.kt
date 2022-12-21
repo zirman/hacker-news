@@ -15,10 +15,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.monoid.hackernews.shared.api.ItemId
-import com.monoid.hackernews.shared.data.ItemTreeRow
-import com.monoid.hackernews.shared.data.LoginAction
-import com.monoid.hackernews.shared.data.Username
+import com.monoid.hackernews.common.api.ItemId
+import com.monoid.hackernews.common.data.ItemTreeRow
+import com.monoid.hackernews.common.data.LoginAction
+import com.monoid.hackernews.common.data.Username
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

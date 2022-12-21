@@ -90,7 +90,7 @@ kapt {
 }
 
 dependencies {
-    implementation(project(":shared:view"))
+    implementation(project(":common:view"))
 
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.androidx)

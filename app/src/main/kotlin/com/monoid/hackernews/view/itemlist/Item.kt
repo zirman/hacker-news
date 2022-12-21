@@ -51,13 +51,13 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.placeholder
 import com.google.accompanist.placeholder.shimmer
-import com.monoid.hackernews.shared.data.ItemUi
-import com.monoid.hackernews.shared.data.Username
-import com.monoid.hackernews.shared.view.R
-import com.monoid.hackernews.shared.ui.text.ClickableTextBlock
+import com.monoid.hackernews.common.data.ItemUi
+import com.monoid.hackernews.common.data.Username
+import com.monoid.hackernews.common.view.R
+import com.monoid.hackernews.common.ui.text.ClickableTextBlock
 import com.monoid.hackernews.view.text.TextBlock
-import com.monoid.hackernews.shared.ui.util.rememberTimeBy
-import com.monoid.hackernews.shared.ui.util.userTag
+import com.monoid.hackernews.common.ui.util.rememberTimeBy
+import com.monoid.hackernews.common.ui.util.userTag
 import com.monoid.hackernews.view.util.rememberAnnotatedString
 
 @Composable

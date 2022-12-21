@@ -4,15 +4,15 @@ import android.app.Application
 import android.content.Intent
 import android.content.IntentFilter
 import androidx.datastore.core.DataStore
-import com.monoid.hackernews.shared.api.getFavorites
-import com.monoid.hackernews.shared.api.getUpvoted
-import com.monoid.hackernews.shared.data.ItemTreeRepository
-import com.monoid.hackernews.shared.data.Username
-import com.monoid.hackernews.shared.datastore.Authentication
-import com.monoid.hackernews.shared.room.FavoriteDao
-import com.monoid.hackernews.shared.room.HNDatabase
-import com.monoid.hackernews.shared.room.UpvoteDao
-import com.monoid.hackernews.shared.view.updateAndPushDynamicShortcuts
+import com.monoid.hackernews.common.api.getFavorites
+import com.monoid.hackernews.common.api.getUpvoted
+import com.monoid.hackernews.common.data.ItemTreeRepository
+import com.monoid.hackernews.common.data.Username
+import com.monoid.hackernews.common.datastore.Authentication
+import com.monoid.hackernews.common.room.FavoriteDao
+import com.monoid.hackernews.common.room.HNDatabase
+import com.monoid.hackernews.common.room.UpvoteDao
+import com.monoid.hackernews.common.view.updateAndPushDynamicShortcuts
 import dagger.hilt.android.HiltAndroidApp
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -95,7 +95,7 @@ class HNWearApplication : Application() {
                             delay(
                                 TimeUnit.HOURS.toMillis(
                                     resources
-                                        .getInteger(com.monoid.hackernews.shared.view.R.integer.favorites_state_hours)
+                                        .getInteger(com.monoid.hackernews.common.view.R.integer.favorites_state_hours)
                                         .toLong()
                                 )
                             )

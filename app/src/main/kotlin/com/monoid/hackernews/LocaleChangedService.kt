@@ -3,7 +3,7 @@ package com.monoid.hackernews
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import com.monoid.hackernews.shared.view.updateAndPushDynamicShortcuts
+import com.monoid.hackernews.common.view.updateAndPushDynamicShortcuts
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

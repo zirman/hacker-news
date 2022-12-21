@@ -12,7 +12,7 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import com.google.accompanist.navigation.material.bottomSheet
-import com.monoid.hackernews.shared.navigation.MainNavigation
+import com.monoid.hackernews.common.navigation.MainNavigation
 import com.monoid.hackernews.view.aboutus.AboutUs
 
 fun NavGraphBuilder.aboutUsBottomSheet(

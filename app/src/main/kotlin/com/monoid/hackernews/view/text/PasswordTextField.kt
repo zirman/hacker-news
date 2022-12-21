@@ -27,7 +27,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.monoid.hackernews.shared.view.R
+import com.monoid.hackernews.common.view.R
 
 @Composable
 fun PasswordTextField(

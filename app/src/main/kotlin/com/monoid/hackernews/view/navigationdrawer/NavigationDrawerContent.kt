@@ -26,11 +26,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.datastore.core.DataStore
 import androidx.navigation.NavHostController
-import com.monoid.hackernews.shared.data.LoginAction
-import com.monoid.hackernews.shared.data.Username
-import com.monoid.hackernews.shared.datastore.Authentication
-import com.monoid.hackernews.shared.view.R
-import com.monoid.hackernews.shared.navigation.MainNavigation
+import com.monoid.hackernews.common.data.LoginAction
+import com.monoid.hackernews.common.data.Username
+import com.monoid.hackernews.common.datastore.Authentication
+import com.monoid.hackernews.common.view.R
+import com.monoid.hackernews.common.navigation.MainNavigation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch

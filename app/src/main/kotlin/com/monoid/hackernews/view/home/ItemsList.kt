@@ -12,10 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.monoid.hackernews.shared.api.ItemId
-import com.monoid.hackernews.shared.data.ItemListRow
-import com.monoid.hackernews.shared.data.LoginAction
-import com.monoid.hackernews.shared.data.Username
+import com.monoid.hackernews.common.api.ItemId
+import com.monoid.hackernews.common.data.ItemListRow
+import com.monoid.hackernews.common.data.LoginAction
+import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.view.itemlist.ItemList
 
 @Composable

@@ -7,10 +7,10 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 import com.monoid.hackernews.MainViewModel
-import com.monoid.hackernews.shared.api.ItemId
-import com.monoid.hackernews.shared.data.LoginAction
-import com.monoid.hackernews.shared.data.Username
-import com.monoid.hackernews.shared.navigation.MainNavigation
+import com.monoid.hackernews.common.api.ItemId
+import com.monoid.hackernews.common.data.LoginAction
+import com.monoid.hackernews.common.data.Username
+import com.monoid.hackernews.common.navigation.MainNavigation
 
 val mainGraphRoutePattern = "main"
 

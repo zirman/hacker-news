@@ -15,11 +15,11 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.metrics.performance.PerformanceMetricsState
 import com.monoid.hackernews.BuildConfig
-import com.monoid.hackernews.shared.api.ItemId
-import com.monoid.hackernews.shared.data.ItemListRow
-import com.monoid.hackernews.shared.data.LoginAction
-import com.monoid.hackernews.shared.data.Username
-import com.monoid.hackernews.shared.util.rememberMetricsStateHolder
+import com.monoid.hackernews.common.api.ItemId
+import com.monoid.hackernews.common.data.ItemListRow
+import com.monoid.hackernews.common.data.LoginAction
+import com.monoid.hackernews.common.data.Username
+import com.monoid.hackernews.common.util.rememberMetricsStateHolder
 import kotlinx.coroutines.launch
 
 @Composable

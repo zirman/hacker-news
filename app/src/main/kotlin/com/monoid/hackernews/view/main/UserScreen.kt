@@ -12,12 +12,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navDeepLink
 import com.google.accompanist.navigation.animation.composable
 import com.monoid.hackernews.MainViewModel
-import com.monoid.hackernews.shared.api.ItemId
-import com.monoid.hackernews.shared.data.LoginAction
-import com.monoid.hackernews.shared.data.Username
-import com.monoid.hackernews.shared.domain.LiveUpdateUseCase
-import com.monoid.hackernews.shared.navigation.MainNavigation
-import com.monoid.hackernews.shared.ui.util.itemIdSaver
+import com.monoid.hackernews.common.api.ItemId
+import com.monoid.hackernews.common.data.LoginAction
+import com.monoid.hackernews.common.data.Username
+import com.monoid.hackernews.common.domain.LiveUpdateUseCase
+import com.monoid.hackernews.common.navigation.MainNavigation
+import com.monoid.hackernews.common.ui.util.itemIdSaver
 import com.monoid.hackernews.view.home.HomeScreen
 
 fun NavGraphBuilder.userScreen(

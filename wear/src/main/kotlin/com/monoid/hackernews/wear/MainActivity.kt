@@ -14,8 +14,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.metrics.performance.JankStats
-import com.monoid.hackernews.shared.domain.LiveUpdateUseCase
-import com.monoid.hackernews.shared.view.R
+import com.monoid.hackernews.common.domain.LiveUpdateUseCase
+import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.wear.theme.HackerNewsTheme
 import com.monoid.hackernews.wear.view.home.HomeScreen
 import dagger.hilt.android.AndroidEntryPoint

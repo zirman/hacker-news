@@ -30,11 +30,11 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.datastore.core.DataStore
-import com.monoid.hackernews.shared.api.loginRequest
-import com.monoid.hackernews.shared.datastore.Authentication
-import com.monoid.hackernews.shared.datastore.authentication
-import com.monoid.hackernews.shared.datastore.copy
-import com.monoid.hackernews.shared.view.R
+import com.monoid.hackernews.common.api.loginRequest
+import com.monoid.hackernews.common.datastore.Authentication
+import com.monoid.hackernews.common.datastore.authentication
+import com.monoid.hackernews.common.datastore.copy
+import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.view.text.PasswordTextField
 import com.monoid.hackernews.view.text.UsernameTextField
 import io.ktor.client.HttpClient
