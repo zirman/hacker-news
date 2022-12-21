@@ -11,7 +11,7 @@ dependencyResolutionManagement {
             val kotlin = "1.7.21"
 
             version(
-                /* alias = */ "gradle-plugin-kotlin",
+                /* alias = */ "kotlin",
                 /* version = */ kotlin
             )
 
@@ -29,12 +29,6 @@ dependencyResolutionManagement {
                 /* alias = */ "gradle-plugin-protobuf",
                 /* version = */ "0.9.1"
             )
-
-            version(
-                /* alias = */ "gradle-plugin-versions",
-                /* version = */ "0.44.0"
-            )
-
 
             version(
                 /* alias = */ "kotlinx-coroutines",
@@ -100,6 +94,36 @@ dependencyResolutionManagement {
                 /* alias = */ "hilt",
                 /* version = */ "2.44.2"
             )
+
+            plugin(
+                /* alias = */ "kotlin",
+                /* id = */ "org.jetbrains.kotlin.android"
+            ).versionRef("kotlin")
+
+            plugin(
+                "parcelize",
+                "org.jetbrains.kotlin.plugin.parcelize"
+            ).versionRef("kotlin")
+
+            plugin(
+                /* alias = */ "kapt",
+                /* id = */ "org.jetbrains.kotlin.kapt"
+            ).versionRef("kotlin")
+
+            plugin(
+                /* alias = */ "hilt",
+                /* id = */ "com.google.dagger.hilt.android"
+            ).versionRef("hilt")
+
+            plugin(
+                /* alias = */ "versions",
+                /* id = */ "com.github.ben-manes.versions"
+            ).version("0.44.0")
+
+//            plugin(
+//                "application",
+//                "com.android.application"
+//            )
 
             bundle(
                 /* alias = */ "kotlinx",

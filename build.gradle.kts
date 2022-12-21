@@ -1,10 +1,10 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
-    id("com.github.ben-manes.versions") version libs.versions.gradle.plugin.versions.get()
-    id("com.google.dagger.hilt.android") version "2.44.2" apply false
-    kotlin("kapt") version libs.versions.gradle.plugin.kotlin.get()
-    id("org.jetbrains.kotlin.android") version "1.7.20" apply false
+    alias(libs.plugins.kotlin) apply false
+    alias(libs.plugins.hilt) apply false
+    alias(libs.plugins.kapt)
+    alias(libs.plugins.versions)
 }
 
 buildscript {
@@ -15,12 +15,12 @@ buildscript {
     }
 
     dependencies {
-        classpath(kotlin("gradle-plugin", version = libs.versions.gradle.plugin.kotlin.get()))
-        classpath(kotlin("serialization", version = libs.versions.gradle.plugin.kotlin.get()))
+        classpath(kotlin("gradle-plugin", version = libs.versions.kotlin.get()))
+        classpath(kotlin("serialization", version = libs.versions.kotlin.get()))
         classpath("com.android.tools.build:gradle:${libs.versions.gradle.plugin.android.get()}")
         classpath("com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:${libs.versions.gradle.plugin.ksp.get()}")
         classpath("com.google.protobuf:protobuf-gradle-plugin:${libs.versions.gradle.plugin.protobuf.get()}")
-        classpath("com.github.ben-manes:gradle-versions-plugin:${libs.versions.gradle.plugin.versions.get()}")
+        classpath("com.github.ben-manes:gradle-versions-plugin:${libs.plugins.versions.get().version}")
     }
 }
 
