@@ -47,12 +47,12 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "ktor",
-                /* version = */ "2.1.3"
+                /* version = */ "2.2.1"
             )
 
             version(
                 /* alias = */ "room",
-                /* version = */ "2.5.0-beta02"
+                /* version = */ "2.5.0-rc01"
             )
 
             version(
@@ -410,7 +410,7 @@ dependencyResolutionManagement {
                 /* alias = */ "work-runtime-ktx",
                 /* group = */ "androidx.work",
                 /* artifact = */ "work-runtime-ktx"
-            ).version("2.8.0-beta02")
+            ).version("2.8.0-rc01")
 
             library(
                 /* alias = */ "preference-ktx",
@@ -500,7 +500,7 @@ dependencyResolutionManagement {
                 /* alias = */ "material",
                 /* group = */ "com.google.android.material",
                 /* artifact = */ "material"
-            ).version("1.8.0-alpha02")
+            ).version("1.8.0-beta01")
 
             library(
                 /* alias = */ "material3",
@@ -645,7 +645,7 @@ dependencyResolutionManagement {
                 /* alias = */ "slf4j-simple",
                 /* group = */ "org.slf4j",
                 /* artifact = */ "slf4j-simple"
-            ).version("2.0.5")
+            ).version("2.0.6")
 
             library(
                 /* alias = */ "ui-test-junit4",
