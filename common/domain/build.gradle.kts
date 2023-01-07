@@ -33,13 +33,9 @@ android {
         freeCompilerArgs = listOf(
             "-opt-in=kotlinx.coroutines.FlowPreview",
             "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-            "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
-            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
-            "-opt-in=androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi",
             "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
             "-opt-in=androidx.compose.ui.text.ExperimentalTextApi",
             "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
-            "-opt-in=com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi",
         )
     }
 
