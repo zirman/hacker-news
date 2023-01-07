@@ -47,7 +47,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "ktor",
-                /* version = */ "2.2.1"
+                /* version = */ "2.2.2"
             )
 
             version(
@@ -101,8 +101,8 @@ dependencyResolutionManagement {
             ).versionRef("kotlin")
 
             plugin(
-                "parcelize",
-                "org.jetbrains.kotlin.plugin.parcelize"
+                /* alias = */ "parcelize",
+                /* id = */ "org.jetbrains.kotlin.plugin.parcelize"
             ).versionRef("kotlin")
 
             plugin(
@@ -119,11 +119,6 @@ dependencyResolutionManagement {
                 /* alias = */ "versions",
                 /* id = */ "com.github.ben-manes.versions"
             ).version("0.44.0")
-
-//            plugin(
-//                "application",
-//                "com.android.application"
-//            )
 
             bundle(
                 /* alias = */ "kotlinx",
@@ -500,7 +495,7 @@ dependencyResolutionManagement {
                 /* alias = */ "material",
                 /* group = */ "com.google.android.material",
                 /* artifact = */ "material"
-            ).version("1.8.0-beta01")
+            ).version("1.8.0-rc01")
 
             library(
                 /* alias = */ "material3",
@@ -669,13 +664,13 @@ dependencyResolutionManagement {
                 /* alias = */ "junit-ext",
                 /* group = */ "androidx.test.ext",
                 /* artifact = */ "junit"
-            ).version("1.1.4")
+            ).version("1.1.5")
 
             library(
                 /* alias = */ "espresso-core",
                 /* group = */ "androidx.test.espresso",
                 /* artifact = */ "espresso-core"
-            ).version("3.5.0")
+            ).version("3.5.1")
         }
     }
 }
