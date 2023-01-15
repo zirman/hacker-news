@@ -30,6 +30,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Material3.DynamicColors.DayNight">
 
+        <!-- used for low overhead profiling  -->
+        <!-- <profileable android:shell="true" /> -->
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
