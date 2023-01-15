@@ -97,17 +97,13 @@ class ItemTreeRepository @Inject constructor(
             }
     }
 
-    suspend fun cleanupJob() {
-        while (true) {
-            delay(TimeUnit.SECONDS.toMillis(10))
-
-            sharedFlows.toList()
-                .forEach { (itemId) ->
-                    if (sharedFlows[itemId]?.get() == null) {
-                        sharedFlows.remove(itemId)
-                    }
+    fun cleanup() {
+        sharedFlows.toList()
+            .forEach { (itemId) ->
+                if (sharedFlows[itemId]?.get() == null) {
+                    sharedFlows.remove(itemId)
                 }
-        }
+            }
     }
 
     suspend fun upvoteItemJob(

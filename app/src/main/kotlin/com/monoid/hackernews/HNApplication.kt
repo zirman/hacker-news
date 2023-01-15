@@ -21,9 +21,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.selects.select
 import java.util.concurrent.CancellationException
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -32,7 +35,7 @@ import javax.inject.Inject
 class HNApplication : Application() {
 
     private val coroutineScope = CoroutineScope(
-        Dispatchers.Main.immediate + CoroutineExceptionHandler { _, error ->
+        Dispatchers.Default + CoroutineExceptionHandler { _, error ->
             error.printStackTrace()
         }
     )
@@ -55,11 +58,21 @@ class HNApplication : Application() {
     @Inject
     lateinit var itemTreeRepository: ItemTreeRepository
 
+    private val trimMemoryEvents = MutableSharedFlow<Unit>()
+
     override fun onCreate() {
         super.onCreate()
 
+        // start job to cleanup unreferenced items
         coroutineScope.launch {
-            itemTreeRepository.cleanupJob()
+            while (true) {
+                select<Unit> {
+                    async { delay(TimeUnit.SECONDS.toMillis(10)) }.onAwait
+                    async { trimMemoryEvents.first() }.onAwait
+                }
+
+                itemTreeRepository.cleanup()
+            }
         }
 
         // Update upvote and favorite table on login and then periodically.
@@ -119,6 +132,11 @@ class HNApplication : Application() {
             LocaleChangedBroadcastReceiver(),
             IntentFilter(Intent.ACTION_LOCALE_CHANGED)
         )
+    }
+
+    override fun onTrimMemory(level: Int) {
+        super.onTrimMemory(level)
+        trimMemoryEvents.tryEmit(Unit)
     }
 
     override fun onTerminate() {
