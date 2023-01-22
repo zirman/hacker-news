@@ -50,6 +50,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -138,16 +139,16 @@ fun HomeScreen(
     }
 ) {
     val showItemId: ItemId?
-            by remember(windowSizeClass.widthSizeClass, selectedItemId, detailInteraction) {
-                derivedStateOf {
-                    when (windowSizeClass.widthSizeClass) {
-                        WindowWidthSizeClass.Compact ->
-                            if (detailInteraction) selectedItemId else null
-                        else ->
-                            selectedItemId
-                    }
+        by remember(windowSizeClass.widthSizeClass, selectedItemId, detailInteraction) {
+            derivedStateOf {
+                when (windowSizeClass.widthSizeClass) {
+                    WindowWidthSizeClass.Compact ->
+                        if (detailInteraction) selectedItemId else null
+                    else ->
+                        selectedItemId
                 }
             }
+        }
 
     val scrollBehavior: TopAppBarScrollBehavior =
         TopAppBarDefaults.enterAlwaysScrollBehavior(
@@ -171,12 +172,12 @@ fun HomeScreen(
                 navigationIcon = {
                     AnimatedVisibility(
                         visible = windowSizeClass.widthSizeClass != WindowWidthSizeClass.Expanded ||
-                                windowSizeClass.heightSizeClass != WindowHeightSizeClass.Expanded,
+                            windowSizeClass.heightSizeClass != WindowHeightSizeClass.Expanded,
                     ) {
                         val showUpButton: Boolean =
                             remember(showItemId, windowSizeClass.widthSizeClass) {
                                 showItemId != null &&
-                                        windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact
+                                    windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact
                             }
 
                         if (showUpButton) {
@@ -216,19 +217,19 @@ fun HomeScreen(
         },
     ) { paddingValues ->
         val itemRows: List<ItemListRow>?
-                by remember {
-                    orderedItemRepo
-                        .getItems(
-                            TimeUnit.MINUTES
-                                .toMillis(
-                                    context.resources.getInteger(R.integer.item_stale_minutes)
-                                        .toLong()
-                                )
-                        )
-                        .map { orderedItems ->
-                            itemTreeRepository.itemUiList(orderedItems.map { it.itemId })
-                        }
-                }.collectAsState(initial = null)
+            by remember {
+                orderedItemRepo
+                    .getItems(
+                        TimeUnit.MINUTES
+                            .toMillis(
+                                context.resources.getInteger(R.integer.item_stale_minutes)
+                                    .toLong()
+                            )
+                    )
+                    .map { orderedItems ->
+                        itemTreeRepository.itemUiList(orderedItems.map { it.itemId })
+                    }
+            }.collectAsState(initial = null)
 
         ReportDrawnWhen { itemRows != null }
 
@@ -262,21 +263,22 @@ fun HomeScreen(
                     rememberLazyListState()
 
                 val detailListState: LazyListState =
-                    rememberLazyListState()
+                    rememberSaveable(
+                        selectedItemId,
+                        saver = LazyListState.Saver
+                    ) { LazyListState() }
 
                 val itemTreeRows
-                        by remember(selectedItemId) {
-                            if (selectedItemId != null) {
-                                itemTreeRepository.itemUiTreeFlow(selectedItemId)
-                            } else {
-                                emptyFlow()
-                            }
-                        }.collectAsState(initial = null)
+                    by remember(selectedItemId) {
+                        if (selectedItemId != null) {
+                            itemTreeRepository.itemUiTreeFlow(selectedItemId)
+                        } else {
+                            emptyFlow()
+                        }
+                    }.collectAsState(initial = null)
 
                 if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
-                    val showItemIdPrime = showItemId
-
-                    if (showItemIdPrime == null) {
+                    if (showItemId == null) {
                         ItemsList(
                             listState = listState,
                             pullRefreshState = pullRefreshState,
@@ -336,9 +338,7 @@ fun HomeScreen(
                             )
                         },
                         second = {
-                            val showItemIdPrime = showItemId
-
-                            if (showItemIdPrime != null) {
+                            if (showItemId != null) {
                                 ItemDetail(
                                     itemTreeRows = itemTreeRows,
                                     paddingValues = innerPadding,
