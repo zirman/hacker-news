@@ -24,7 +24,7 @@ android {
         applicationId = "com.monoid.hackernews"
         minSdk = 26
         targetSdk = 33
-        versionCode = 26
+        versionCode = 27
         versionName = "1.0"
 
         // reduces apk sizes by not including unsupported languages
