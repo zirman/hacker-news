@@ -32,8 +32,9 @@ fun ItemsList(
     onClickReply: (ItemId) -> Unit,
     onClickBrowser: (String?) -> Unit,
     onNavigateLogin: (LoginAction) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    Box(Modifier.pullRefresh(pullRefreshState)) {
+    Box(modifier.pullRefresh(pullRefreshState)) {
         CompositionLocalProvider(
             LocalContentColor provides MaterialTheme.colorScheme.primary,
         ) {

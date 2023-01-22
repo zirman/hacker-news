@@ -278,7 +278,20 @@ fun HomeScreen(
                     }.collectAsState(initial = null)
 
                 if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
-                    if (showItemId == null) {
+                    if (detailInteraction && showItemId != null) {
+                        ItemDetail(
+                            itemTreeRows = itemTreeRows,
+                            paddingValues = paddingValues,
+                            onClickReply = onClickReply,
+                            onClickUser = onClickUser,
+                            onClickBrowser = onClickBrowser,
+                            onNavigateLogin = onNavigateToLogin,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .notifyInput { setDetailInteraction(true) },
+                            listState = detailListState,
+                        )
+                    } else {
                         ItemsList(
                             listState = listState,
                             pullRefreshState = pullRefreshState,
@@ -292,19 +305,7 @@ fun HomeScreen(
                             onClickReply = onClickReply,
                             onClickBrowser = onClickBrowser,
                             onNavigateLogin = onNavigateToLogin,
-                        )
-                    } else {
-                        ItemDetail(
-                            itemTreeRows = itemTreeRows,
-                            paddingValues = paddingValues,
-                            onClickReply = onClickReply,
-                            onClickUser = onClickUser,
-                            onClickBrowser = onClickBrowser,
-                            onNavigateLogin = onNavigateToLogin,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .notifyInput { setDetailInteraction(true) },
-                            listState = detailListState,
+                            modifier = Modifier.notifyInput { setDetailInteraction(false) }
                         )
                     }
                 } else {
@@ -335,6 +336,7 @@ fun HomeScreen(
                                 onClickReply = onClickReply,
                                 onClickBrowser = onClickBrowser,
                                 onNavigateLogin = onNavigateToLogin,
+                                modifier = Modifier.notifyInput { setDetailInteraction(false) }
                             )
                         },
                         second = {
