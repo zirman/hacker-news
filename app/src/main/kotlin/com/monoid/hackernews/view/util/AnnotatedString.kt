@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
 import android.net.Uri
+import android.text.Layout
 import android.text.Spanned
+import android.text.style.AlignmentSpan
 import android.text.style.StyleSpan
 import android.text.style.URLSpan
 import androidx.compose.material3.LocalContentColor
@@ -13,10 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.core.text.HtmlCompat
 import androidx.core.text.getSpans
@@ -27,13 +31,13 @@ private const val urlTag = "URL"
 fun rememberAnnotatedString(
     text: String,
     contentColor: Color = LocalContentColor.current,
-    linkColor: Color = MaterialTheme.colorScheme.tertiary,
+    linkColor: Color = MaterialTheme.colorScheme.tertiary
 ): AnnotatedString {
     return remember(text, contentColor, linkColor) {
         getAnnotatedString(
             text = text,
             contentColor = contentColor,
-            linkColor = linkColor,
+            linkColor = linkColor
         )
     }
 }
@@ -41,40 +45,44 @@ fun rememberAnnotatedString(
 fun getAnnotatedString(
     text: String,
     contentColor: Color = Color.White,
-    linkColor: Color = Color.Blue,
+    linkColor: Color = Color.Blue
 ): AnnotatedString {
     val spanned: Spanned =
         HtmlCompat.fromHtml(text, 0)
 
     return buildAnnotatedString {
         val asString: String =
-            spanned.trimEnd().toString()
+            spanned.toString()
 
         append(asString)
 
         addStyle(
             style = SpanStyle(
-                color = contentColor,
+                color = contentColor
             ),
             start = 0,
-            end = asString.length,
+            end = asString.length
         )
 
-        spanned.getSpans<URLSpan>().forEach { urlSpan ->
-            addStringAnnotation(
-                tag = urlTag,
-                annotation = urlSpan.url,
-                start = spanned.getSpanStart(urlSpan),
-                end = spanned.getSpanEnd(urlSpan),
-            )
-            addStyle(
-                style = SpanStyle(
-                    color = linkColor,
-                    textDecoration = TextDecoration.Underline,
-                ),
-                start = spanned.getSpanStart(urlSpan),
-                end = spanned.getSpanEnd(urlSpan),
-            )
+        spanned.getSpans<AlignmentSpan>().forEach { alignmentSpan ->
+            when (alignmentSpan.alignment) {
+                Layout.Alignment.ALIGN_NORMAL ->
+                    TextAlign.Start
+                Layout.Alignment.ALIGN_OPPOSITE ->
+                    TextAlign.End
+                Layout.Alignment.ALIGN_CENTER ->
+                    TextAlign.Center
+                null ->
+                    null
+            }?.let { textAlign ->
+                addStyle(
+                    style = ParagraphStyle(
+                        textAlign = textAlign
+                    ),
+                    start = spanned.getSpanStart(alignmentSpan),
+                    end = spanned.getSpanEnd(alignmentSpan)
+                )
+            }
         }
 
         spanned.getSpans<StyleSpan>().forEach { styleSpan ->
@@ -88,7 +96,7 @@ fun getAnnotatedString(
                 Typeface.BOLD_ITALIC ->
                     SpanStyle(
                         fontStyle = FontStyle.Italic,
-                        fontWeight = FontWeight.Bold,
+                        fontWeight = FontWeight.Bold
                     )
                 else ->
                     null
@@ -96,9 +104,26 @@ fun getAnnotatedString(
                 addStyle(
                     style = spanStyle,
                     start = spanned.getSpanStart(styleSpan),
-                    end = spanned.getSpanEnd(styleSpan),
+                    end = spanned.getSpanEnd(styleSpan)
                 )
             }
+        }
+
+        spanned.getSpans<URLSpan>().forEach { urlSpan ->
+            addStringAnnotation(
+                tag = urlTag,
+                annotation = urlSpan.url,
+                start = spanned.getSpanStart(urlSpan),
+                end = spanned.getSpanEnd(urlSpan)
+            )
+            addStyle(
+                style = SpanStyle(
+                    color = linkColor,
+                    textDecoration = TextDecoration.Underline
+                ),
+                start = spanned.getSpanStart(urlSpan),
+                end = spanned.getSpanEnd(urlSpan)
+            )
         }
     }
 }
@@ -107,7 +132,7 @@ fun AnnotatedString.onClick(context: Context, offset: Int): Boolean {
     val annotation = getStringAnnotations(
         tag = urlTag,
         start = offset,
-        end = offset,
+        end = offset
     ).firstOrNull()
 
     return if (annotation != null) {
