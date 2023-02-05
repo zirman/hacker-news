@@ -66,7 +66,7 @@ fun CommentItem(
     onClickUser: (Username) -> Unit,
     onClickReply: (ItemId) -> Unit,
     onNavigateLogin: (LoginAction) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Surface(
         modifier = modifier
@@ -80,7 +80,7 @@ fun CommentItem(
             ),
         shape = MaterialTheme2.shapes.medium,
         contentColor = MaterialTheme.colorScheme.secondary,
-        tonalElevation = ((itemUiState.value?.itemUi?.kids?.size ?: 0) * 10 + 40).dp,
+        tonalElevation = ((itemUiState.value?.itemUi?.kids?.size ?: 0) * 10 + 40).dp
     ) {
         val coroutineScope = rememberCoroutineScope()
 
@@ -100,8 +100,8 @@ fun CommentItem(
                         color = Color.Transparent,
                         shape = MaterialTheme.shapes.small,
                         highlight = PlaceholderHighlight.shimmer(
-                            highlightColor = LocalContentColor.current.copy(alpha = .5f),
-                        ),
+                            highlightColor = LocalContentColor.current.copy(alpha = .5f)
+                        )
                     )
             },
         ) {
@@ -128,7 +128,7 @@ fun CommentItem(
                                 .getStringAnnotations(
                                     tag = userTag,
                                     start = offset,
-                                    end = offset,
+                                    end = offset
                                 )
                                 .firstOrNull()
                                 ?.item
@@ -148,8 +148,8 @@ fun CommentItem(
                         .align(Alignment.Top),
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.labelMedium.copy(
-                        color = LocalContentColor.current,
-                    ),
+                        color = LocalContentColor.current
+                    )
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
@@ -160,17 +160,17 @@ fun CommentItem(
 
                     IconButton(
                         onClick = { setContextExpanded(true) },
-                        enabled = itemUiState.value != null,
+                        enabled = itemUiState.value != null
                     ) {
                         Icon(
                             imageVector = Icons.TwoTone.MoreVert,
-                            contentDescription = stringResource(id = R.string.more_options),
+                            contentDescription = stringResource(id = R.string.more_options)
                         )
                     }
 
                     DropdownMenu(
                         expanded = expanded,
-                        onDismissRequest = { setContextExpanded(false) },
+                        onDismissRequest = { setContextExpanded(false) }
                     ) {
                         DropdownMenuItem(
                             text = { Text(text = stringResource(id = R.string.reply)) },
@@ -181,9 +181,9 @@ fun CommentItem(
                             leadingIcon = {
                                 Icon(
                                     imageVector = Icons.TwoTone.Reply,
-                                    contentDescription = stringResource(id = R.string.reply),
+                                    contentDescription = stringResource(id = R.string.reply)
                                 )
-                            },
+                            }
                         )
 
                         DropdownMenuItem(
@@ -194,8 +194,8 @@ fun CommentItem(
                                             R.string.un_vote
                                         } else {
                                             R.string.upvote
-                                        },
-                                    ),
+                                        }
+                                    )
                                 )
                             },
                             onClick = {
@@ -221,10 +221,10 @@ fun CommentItem(
                                             R.string.un_vote
                                         } else {
                                             R.string.upvote
-                                        },
-                                    ),
+                                        }
+                                    )
                                 )
-                            },
+                            }
                         )
 
                         DropdownMenuItem(
@@ -235,8 +235,8 @@ fun CommentItem(
                                             R.string.un_flag
                                         } else {
                                             R.string.flag
-                                        },
-                                    ),
+                                        }
+                                    )
                                 )
                             },
                             onClick = {
@@ -260,10 +260,10 @@ fun CommentItem(
                                             R.string.un_flag
                                         } else {
                                             R.string.flag
-                                        },
-                                    ),
+                                        }
+                                    )
                                 )
-                            },
+                            }
                         )
                     }
                 }
@@ -306,7 +306,7 @@ fun CommentItem(
                         modifier = Modifier.padding(horizontal = 16.dp),
                         overflow = TextOverflow.Ellipsis,
                         minHeight = true,
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 }
             } else {
@@ -320,7 +320,7 @@ fun CommentItem(
                     },
                     modifier = Modifier.padding(horizontal = 16.dp),
                     overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodyMedium
                 )
             }
 
@@ -331,11 +331,11 @@ fun CommentItem(
                     containerColor = MaterialTheme.colorScheme.surfaceVariant,
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
-                        .padding(4.dp),
+                        .padding(4.dp)
                 ) {
                     TextBlock(
                         text = "${itemUiState.value?.itemUi?.kids?.size}",
-                        lines = 1,
+                        lines = 1
                     )
                 }
             } else {
@@ -346,7 +346,7 @@ fun CommentItem(
                         Icons.TwoTone.ExpandMore
                     },
                     contentDescription = stringResource(id = R.string.expand),
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }
         }

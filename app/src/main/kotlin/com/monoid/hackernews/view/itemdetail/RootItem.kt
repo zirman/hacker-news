@@ -68,8 +68,9 @@ fun RootItem(
     onClickUser: (Username) -> Unit,
     onClickBrowser: (String) -> Unit,
     onNavigateLogin: (LoginAction) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
+    val coroutineScope = rememberCoroutineScope()
     val item = itemUiState.value?.itemUi?.item
 
     Surface(
@@ -84,18 +85,18 @@ fun RootItem(
                 }
             }
         ),
-        contentColor = MaterialTheme.colorScheme.secondary,
+        contentColor = MaterialTheme.colorScheme.secondary
     ) {
         Column {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.Top,
+                verticalAlignment = Alignment.Top
             ) {
                 SelectionContainer(modifier = Modifier.weight(1f)) {
                     TextBlock(
                         text = rememberAnnotatedString(
                             text = (if (item?.type == "comment") item.text else item?.title) ?: "",
-                            linkColor = LocalContentColor.current,
+                            linkColor = LocalContentColor.current
                         ),
                         lines = 2,
                         modifier = Modifier
@@ -105,10 +106,10 @@ fun RootItem(
                                 color = Color.Transparent,
                                 shape = MaterialTheme.shapes.small,
                                 highlight = PlaceholderHighlight.shimmer(
-                                    highlightColor = LocalContentColor.current.copy(alpha = .5f),
-                                ),
+                                    highlightColor = LocalContentColor.current.copy(alpha = .5f)
+                                )
                             ),
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.titleMedium
                     )
                 }
 
@@ -120,14 +121,14 @@ fun RootItem(
                         IconButton(onClick = { setContextExpanded(true) }) {
                             Icon(
                                 imageVector = Icons.TwoTone.MoreVert,
-                                contentDescription = stringResource(id = R.string.more_options),
+                                contentDescription = stringResource(id = R.string.more_options)
                             )
                         }
 
                         DropdownMenu(
                             expanded = contextExpanded,
                             onDismissRequest = { setContextExpanded(false) },
-                            modifier = Modifier,
+                            modifier = Modifier
                         ) {
                             DropdownMenuItem(
                                 text = { Text(text = stringResource(id = R.string.reply)) },
@@ -138,12 +139,10 @@ fun RootItem(
                                 leadingIcon = {
                                     Icon(
                                         imageVector = Icons.TwoTone.Reply,
-                                        contentDescription = stringResource(id = R.string.reply),
+                                        contentDescription = stringResource(id = R.string.reply)
                                     )
-                                },
+                                }
                             )
-
-                            val coroutineScope = rememberCoroutineScope()
 
                             if (item.type == "story") {
                                 DropdownMenuItem(
@@ -156,7 +155,7 @@ fun RootItem(
                                                     R.string.un_favorite
                                                 } else {
                                                     R.string.favorite
-                                                },
+                                                }
                                             )
                                         )
                                     },
@@ -184,10 +183,10 @@ fun RootItem(
                                                     R.string.un_favorite
                                                 } else {
                                                     R.string.favorite
-                                                },
-                                            ),
+                                                }
+                                            )
                                         )
-                                    },
+                                    }
                                 )
                             }
 
@@ -195,13 +194,11 @@ fun RootItem(
                                 text = {
                                     Text(
                                         text = stringResource(
-                                            id = if (
-                                                itemUiState.value?.itemUi?.isFlag == true
-                                            ) {
+                                            id = if (itemUiState.value?.itemUi?.isFlag == true) {
                                                 R.string.un_flag
                                             } else {
                                                 R.string.flag
-                                            },
+                                            }
                                         )
                                     )
                                 },
@@ -214,24 +211,20 @@ fun RootItem(
                                 },
                                 leadingIcon = {
                                     Icon(
-                                        imageVector = if (
-                                            itemUiState.value?.itemUi?.isFlag == true
-                                        ) {
+                                        imageVector = if (itemUiState.value?.itemUi?.isFlag == true) {
                                             Icons.Filled.Flag
                                         } else {
                                             Icons.TwoTone.Flag
                                         },
                                         contentDescription = stringResource(
-                                            id = if (
-                                                itemUiState.value?.itemUi?.isFlag == true
-                                            ) {
+                                            id = if (itemUiState.value?.itemUi?.isFlag == true) {
                                                 R.string.un_flag
                                             } else {
                                                 R.string.flag
-                                            },
-                                        ),
+                                            }
+                                        )
                                     )
-                                },
+                                }
                             )
                         }
                     }
@@ -250,7 +243,7 @@ fun RootItem(
                         .getStringAnnotations(
                             tag = userTag,
                             start = offset,
-                            end = offset,
+                            end = offset
                         )
                         .firstOrNull()
                         ?.item
@@ -270,17 +263,15 @@ fun RootItem(
                         color = Color.Transparent,
                         shape = MaterialTheme.shapes.small,
                         highlight = PlaceholderHighlight.shimmer(
-                            highlightColor = LocalContentColor.current.copy(alpha = .5f),
-                        ),
+                            highlightColor = LocalContentColor.current.copy(alpha = .5f)
+                        )
                     ),
                 style = MaterialTheme.typography.labelMedium.copy(
-                    color = LocalContentColor.current,
-                ),
+                    color = LocalContentColor.current
+                )
             )
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                val coroutineScope = rememberCoroutineScope()
-
                 if (item?.lastUpdate == null || item.type == "story") {
                     item?.score.let { score ->
                         key("score") {
@@ -290,7 +281,7 @@ fun RootItem(
                                         itemUiState.value?.itemUi?.toggleUpvote(onNavigateLogin)
                                     }
                                 },
-                                enabled = item?.type == "story",
+                                enabled = item?.type == "story"
                             ) {
                                 Icon(
                                     imageVector = if (itemUiState.value?.itemUi?.isUpvote == true) {
@@ -303,8 +294,8 @@ fun RootItem(
                                             R.string.un_vote
                                         } else {
                                             R.string.upvote
-                                        },
-                                    ),
+                                        }
+                                    )
                                 )
                             }
 
@@ -318,10 +309,10 @@ fun RootItem(
                                         shape = MaterialTheme.shapes.small,
                                         highlight = PlaceholderHighlight.shimmer(
                                             highlightColor = LocalContentColor.current
-                                                .copy(alpha = .5f),
+                                                .copy(alpha = .5f)
                                         ),
                                     ),
-                                style = MaterialTheme.typography.labelMedium,
+                                style = MaterialTheme.typography.labelMedium
                             )
                         }
                     }
@@ -347,11 +338,11 @@ fun RootItem(
                                 color = Color.Transparent,
                                 shape = MaterialTheme.shapes.small,
                                 highlight = PlaceholderHighlight.shimmer(
-                                    highlightColor = LocalContentColor.current.copy(alpha = .5f),
-                                ),
+                                    highlightColor = LocalContentColor.current.copy(alpha = .5f)
+                                )
                             ),
                         textAlign = TextAlign.End,
-                        style = MaterialTheme.typography.labelLarge,
+                        style = MaterialTheme.typography.labelLarge
                     )
                 }
             }
@@ -378,16 +369,16 @@ fun RootItem(
                             color = Color.Transparent,
                             shape = MaterialTheme.shapes.small,
                             highlight = PlaceholderHighlight.shimmer(
-                                highlightColor = LocalContentColor.current.copy(alpha = .5f),
-                            ),
+                                highlightColor = LocalContentColor.current.copy(alpha = .5f)
+                            )
                         ),
                     style = MaterialTheme.typography.bodyMedium,
                     onClick = { offset ->
                         annotatedTextState.value.onClick(
                             context = contextState.value,
-                            offset = offset,
+                            offset = offset
                         )
-                    },
+                    }
                 )
             }
         }

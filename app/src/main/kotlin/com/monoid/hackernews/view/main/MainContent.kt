@@ -63,7 +63,7 @@ import com.monoid.hackernews.common.util.rememberMetricsStateHolder
 @Composable
 fun MainContent(
     mainViewModel: MainViewModel,
-    windowSizeClass: WindowSizeClass,
+    windowSizeClass: WindowSizeClass
 ) {
     val drawerState: DrawerState =
         rememberDrawerState(DrawerValue.Closed)
@@ -106,7 +106,7 @@ fun MainContent(
 
         val modalBottomSheetState = rememberModalBottomSheetState(
             initialValue = ModalBottomSheetValue.Hidden,
-            skipHalfExpanded = true,
+            skipHalfExpanded = true
         )
 
         val bottomSheetNavigator = remember(modalBottomSheetState) {
@@ -116,7 +116,7 @@ fun MainContent(
         mainNavController.navigatorProvider += bottomSheetNavigator
 
         ModalBottomSheetLayout(
-            bottomSheetNavigator = bottomSheetNavigator,
+            bottomSheetNavigator = bottomSheetNavigator
         ) {
             val fullyExpandedState =
                 rememberUpdatedState(
@@ -143,12 +143,12 @@ fun MainContent(
                                 mainNavController.navigate(
                                     MainNavigation.User.routeWithArgs(username)
                                 )
-                            },
+                            }
                         )
                     }
                 },
                 drawerState = drawerState,
-                gesturesEnabled = fullyExpandedState.value.not(),
+                gesturesEnabled = fullyExpandedState.value.not()
             ) {
                 Row {
                     AnimatedVisibility(visible = fullyExpandedState.value) {
@@ -174,10 +174,10 @@ fun MainContent(
                                         icon = {
                                             Icon(
                                                 imageVector = Icons.TwoTone.Face,
-                                                contentDescription = authentication.username,
+                                                contentDescription = authentication.username
                                             )
                                         },
-                                        label = { Text(text = authentication.username) },
+                                        label = { Text(text = authentication.username) }
                                     )
                                 } else {
                                     NavigationRailItem(
@@ -196,13 +196,13 @@ fun MainContent(
                                         },
                                         label = {
                                             Text(text = stringResource(id = R.string.login))
-                                        },
+                                        }
                                     )
                                 }
                             },
                         ) {
                             NavigationRailContent(
-                                mainNavController = mainNavController,
+                                mainNavController = mainNavController
                             )
                         }
                     }
@@ -223,7 +223,7 @@ fun MainContent(
                                 .navigate(MainNavigation.Login.routeWithArgs(loginAction))
                         },
                         onNavigateUp = { mainNavController.navigateUp() },
-                        onLoginError = { setShowLoginErrorDialog(it) },
+                        onLoginError = { setShowLoginErrorDialog(it) }
                     )
                 }
             }
@@ -236,12 +236,12 @@ fun MainContent(
                     Brush.verticalGradient(
                         Pair(0f, MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 1f)),
                         Pair(.4f, MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.8f)),
-                        Pair(1f, MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0f)),
+                        Pair(1f, MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0f))
                     )
                 )
                 .fillMaxWidth()
                 .windowInsetsTopHeight(WindowInsets.safeDrawing)
-                .align(Alignment.TopCenter),
+                .align(Alignment.TopCenter)
         )
 
         // navigation bar scrim when on bottom
@@ -251,12 +251,12 @@ fun MainContent(
                     Brush.verticalGradient(
                         Pair(0f, MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0f)),
                         Pair(.6f, MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.8f)),
-                        Pair(1f, MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 1f)),
+                        Pair(1f, MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 1f))
                     )
                 )
                 .fillMaxWidth()
                 .windowInsetsBottomHeight(WindowInsets.safeDrawing)
-                .align(Alignment.BottomCenter),
+                .align(Alignment.BottomCenter)
         )
 
         // navigation bar scrim on start
@@ -265,7 +265,7 @@ fun MainContent(
                 .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.9f))
                 .fillMaxHeight()
                 .windowInsetsStartWidth(WindowInsets.safeDrawing)
-                .align(Alignment.CenterStart),
+                .align(Alignment.CenterStart)
         )
 
         // navigation bar scrim on end
@@ -274,7 +274,7 @@ fun MainContent(
                 .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.9f))
                 .fillMaxHeight()
                 .windowInsetsEndWidth(WindowInsets.safeDrawing)
-                .align(Alignment.CenterEnd),
+                .align(Alignment.CenterEnd)
         )
     }
 
@@ -289,19 +289,19 @@ fun MainContent(
             icon = {
                 Icon(
                     imageVector = Icons.TwoTone.Login,
-                    contentDescription = stringResource(id = R.string.login),
+                    contentDescription = stringResource(id = R.string.login)
                 )
             },
             title = { Text(text = stringResource(id = R.string.login_error)) },
             text = {
                 Text(
                     text = showLoginErrorDialog.message
-                        ?: stringResource(id = R.string.invalid_username_or_password),
+                        ?: stringResource(id = R.string.invalid_username_or_password)
                 )
             },
             iconContentColor = MaterialTheme.colorScheme.tertiary,
             titleContentColor = MaterialTheme.colorScheme.tertiary,
-            textContentColor = MaterialTheme.colorScheme.tertiary,
+            textContentColor = MaterialTheme.colorScheme.tertiary
         )
     }
 }
