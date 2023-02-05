@@ -20,11 +20,12 @@ import com.monoid.hackernews.common.data.ItemListRow
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.util.rememberMetricsStateHolder
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
 @Composable
 fun ItemList(
-    itemRows: List<ItemListRow>?,
+    itemRows: ImmutableList<ItemListRow>?,
     selectedItem: ItemId?,
     paddingValues: PaddingValues,
     onClickDetail: (ItemId?) -> Unit,
@@ -33,7 +34,7 @@ fun ItemList(
     onClickBrowser: (String?) -> Unit,
     onNavigateLogin: (LoginAction) -> Unit,
     modifier: Modifier = Modifier,
-    listState: LazyListState = rememberLazyListState(),
+    listState: LazyListState = rememberLazyListState()
 ) {
     if (BuildConfig.DEBUG.not()) {
         val metricsStateHolder: PerformanceMetricsState.Holder =
@@ -57,7 +58,7 @@ fun ItemList(
     LazyColumn(
         modifier = modifier,
         state = listState,
-        contentPadding = paddingValues,
+        contentPadding = paddingValues
     ) {
         items(itemRows ?: emptyList(), { it.itemId.long }) { itemRow ->
             val itemUiState = remember(itemRow.itemId) { itemRow.itemUiFlow }
@@ -87,7 +88,7 @@ fun ItemList(
                         itemUiState.value?.toggleFlag(onNavigateLogin)
                     }
                 },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
             )
         }
     }

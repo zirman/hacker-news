@@ -23,6 +23,8 @@ import com.monoid.hackernews.common.data.OrderedItem
 import com.monoid.hackernews.common.domain.LiveUpdateUseCase
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.wear.view.itemlist.ItemList
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.map
 import java.util.concurrent.TimeUnit
 
@@ -35,12 +37,12 @@ fun HomeScreen(
 ) {
     val itemStaleMinutes = integerResource(id = R.integer.item_stale_minutes)
 
-    val itemRows: State<List<ItemListRow>?> =
+    val itemRows: State<ImmutableList<ItemListRow>?> =
         remember(itemStaleMinutes) {
             orderedItemRepo
                 .getItems(TimeUnit.MINUTES.toMillis(itemStaleMinutes.toLong()))
                 .map { orderedItems ->
-                    itemTreeRepository.itemUiList(orderedItems.map { it.itemId })
+                    itemTreeRepository.itemUiList(orderedItems.map { it.itemId }).toImmutableList()
                 }
         }.collectAsState(initial = null)
 

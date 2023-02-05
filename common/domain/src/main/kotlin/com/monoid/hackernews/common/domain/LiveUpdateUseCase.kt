@@ -23,7 +23,7 @@ class LiveUpdateUseCase<out T>(
             launch {
                 getNetworkConnectivityStateFlow(
                     coroutineScope = this,
-                    connectivityManager = connectivityManager,
+                    connectivityManager = connectivityManager
                 ).collectLatest { hasConnectivity ->
                     while (hasConnectivity) {
                         try {

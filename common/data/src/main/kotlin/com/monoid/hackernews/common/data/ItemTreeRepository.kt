@@ -167,7 +167,7 @@ class ItemTreeRepository @Inject constructor(
         try {
             httpClient.flagRequest(
                 authentication = authentication,
-                itemId = ItemId(itemId.long),
+                itemId = ItemId(itemId.long)
             )
 
             if (isFlag) {
@@ -251,7 +251,7 @@ class ItemTreeRepository @Inject constructor(
                                         ?: ItemTree(
                                             itemId = kidItemId,
                                             kids = null,
-                                            isExpanded = false,
+                                            isExpanded = false
                                         )
                                 }
                             }
@@ -272,9 +272,7 @@ class ItemTreeRepository @Inject constructor(
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    private fun sharedItemUiFlow(
-        itemId: ItemId,
-    ): SharedFlow<ItemUiInternal> = flow {
+    private fun sharedItemUiFlow(itemId: ItemId): SharedFlow<ItemUiInternal> = flow {
         coroutineScope {
             launch {
                 val item = withContext(Dispatchers.IO) {
@@ -325,7 +323,7 @@ class ItemTreeRepository @Inject constructor(
                                     .distinctUntilChanged(),
                                 ::Triple
                             )
-                        },
+                        }
                 ) { (itemWithKids, isExpanded), (isUpvote, isFavorite, isFlag) ->
                     ItemUiInternal(
                         item = itemWithKids.item,
@@ -377,9 +375,7 @@ class ItemTreeRepository @Inject constructor(
             }
         }
 
-        override suspend fun toggleFlag(
-            onNavigateLogin: (LoginAction) -> Unit
-        ) {
+        override suspend fun toggleFlag(onNavigateLogin: (LoginAction) -> Unit) {
             val authentication = authentication.data.first()
 
             if (authentication.password.isNotEmpty()) {

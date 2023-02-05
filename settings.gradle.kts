@@ -129,6 +129,7 @@ dependencyResolutionManagement {
                     "kotlinx-serialization-json",
                     "kotlinx-serialization-protobuf",
 
+                    "kotlinx-collections-immutable",
                     "kotlinx-datetime"
                 )
             )
@@ -266,6 +267,12 @@ dependencyResolutionManagement {
                 /* group = */ "org.jetbrains.kotlinx",
                 /* artifact = */ "kotlinx-datetime"
             ).version("0.4.0")
+
+            library(
+                /* alias = */ "kotlinx-collections-immutable",
+                /* group = */ "org.jetbrains.kotlinx",
+                /* artifact = */ "kotlinx-collections-immutable"
+            ).version("0.3.5")
 
             library(
                 /* alias = */ "ktor-client-core",

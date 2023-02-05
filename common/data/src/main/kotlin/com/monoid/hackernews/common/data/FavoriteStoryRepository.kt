@@ -37,7 +37,7 @@ class FavoriteStoryRepository @Inject constructor(
                 favoriteStories.mapIndexed { index, favorite ->
                     OrderedItem(
                         itemId = ItemId(favorite.itemId),
-                        order = index,
+                        order = index
                     )
                 }
             }
@@ -52,7 +52,7 @@ class FavoriteStoryRepository @Inject constructor(
                 favorites = getFavorites(
                     context,
                     Username(authentication.username)
-                ).map { it.long },
+                ).map { it.long }
             )
         }
     }

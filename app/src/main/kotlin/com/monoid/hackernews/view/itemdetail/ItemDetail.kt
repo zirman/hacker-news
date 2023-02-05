@@ -19,19 +19,20 @@ import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.ItemTreeRow
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
 fun ItemDetail(
-    itemTreeRows: List<ItemTreeRow>?,
+    itemTreeRows: ImmutableList<ItemTreeRow>?,
     paddingValues: PaddingValues,
     onClickUser: (Username) -> Unit,
     onClickReply: (ItemId) -> Unit,
     onClickBrowser: (String) -> Unit,
     onNavigateLogin: (LoginAction) -> Unit,
     modifier: Modifier = Modifier,
-    listState: LazyListState = rememberLazyListState(),
+    listState: LazyListState = rememberLazyListState()
 ) {
     val refreshScope = rememberCoroutineScope()
 
@@ -61,7 +62,7 @@ fun ItemDetail(
             onNavigateLogin = onNavigateLogin,
             modifier = Modifier.fillMaxSize(),
             listState = listState,
-            paddingValues = paddingValues,
+            paddingValues = paddingValues
         )
 
         PullRefreshIndicator(

@@ -16,15 +16,14 @@ class JobStoryRepository @Inject constructor(
     private val jobStoryDao: JobStoryDao,
 ) : Repository<OrderedItem> {
     override fun getItems(): Flow<List<OrderedItem>> {
-        return jobStoryDao.getJobStories()
-            .map { jobStories ->
-                jobStories.map {
-                    OrderedItem(
-                        itemId = ItemId(it.itemId),
-                        order = it.order,
-                    )
-                }
+        return jobStoryDao.getJobStories().map { jobStories ->
+            jobStories.map {
+                OrderedItem(
+                    itemId = ItemId(it.itemId),
+                    order = it.order
+                )
             }
+        }
     }
 
     override suspend fun updateItems() {
@@ -32,7 +31,7 @@ class JobStoryRepository @Inject constructor(
             httpClient.getJobStories().mapIndexed { order, storyId ->
                 JobStoryDb(
                     itemId = storyId,
-                    order = order,
+                    order = order
                 )
             }
         )

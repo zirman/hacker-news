@@ -28,17 +28,18 @@ import com.monoid.hackernews.common.data.ItemUiWithThreadDepth
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.util.rememberMetricsStateHolder
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun CommentList(
-    itemTreeRows: List<ItemTreeRow>?,
+    itemTreeRows: ImmutableList<ItemTreeRow>?,
     paddingValues: PaddingValues,
     onClickUser: (Username) -> Unit,
     onClickReply: (ItemId) -> Unit,
     onClickBrowser: (String) -> Unit,
     onNavigateLogin: (LoginAction) -> Unit,
     modifier: Modifier = Modifier,
-    listState: LazyListState = rememberLazyListState(),
+    listState: LazyListState = rememberLazyListState()
 ) {
     BoxWithConstraints(modifier = modifier) {
         if (BuildConfig.DEBUG.not()) {
@@ -67,14 +68,14 @@ fun CommentList(
                 start = 16.dp + paddingValues.calculateStartPadding(LocalLayoutDirection.current),
                 top = 16.dp + paddingValues.calculateTopPadding(),
                 end = 16.dp + paddingValues.calculateEndPadding(LocalLayoutDirection.current),
-                bottom = 16.dp + paddingValues.calculateBottomPadding(),
+                bottom = 16.dp + paddingValues.calculateBottomPadding()
             ),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             itemsIndexed(
                 items = itemTreeRows ?: emptyList(),
                 key = { _, itemRow -> itemRow.itemId.long },
-                contentType = { index, _ -> index == 0 },
+                contentType = { index, _ -> index == 0 }
             ) { index, itemRow ->
                 val itemUiState: State<ItemUiWithThreadDepth?> =
                     remember { itemRow.itemUiFlow }.collectAsState(initial = null)
@@ -86,7 +87,7 @@ fun CommentList(
                         onClickUser = onClickUser,
                         onClickBrowser = onClickBrowser,
                         onNavigateLogin = onNavigateLogin,
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth()
                     )
                 } else {
                     CommentItem(
@@ -94,7 +95,7 @@ fun CommentList(
                         onClickUser = onClickUser,
                         onClickReply = onClickReply,
                         onNavigateLogin = onNavigateLogin,
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
             }

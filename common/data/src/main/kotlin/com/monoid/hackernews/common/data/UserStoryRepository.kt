@@ -35,7 +35,7 @@ class UserStoryRepository @Inject constructor(
                     ?.mapIndexed { index, item ->
                         OrderedItem(
                             itemId = ItemId(item.id),
-                            order = index,
+                            order = index
                         )
                     }
                     ?: emptyList()
