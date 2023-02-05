@@ -46,19 +46,56 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.placeholder
 import com.google.accompanist.placeholder.shimmer
+import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.ItemUi
+import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
+import com.monoid.hackernews.common.room.ItemDb
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.common.ui.text.ClickableTextBlock
 import com.monoid.hackernews.view.text.TextBlock
 import com.monoid.hackernews.common.ui.util.rememberTimeBy
 import com.monoid.hackernews.common.ui.util.userTag
 import com.monoid.hackernews.view.util.rememberAnnotatedString
+
+@Preview
+@Composable
+fun ItemPreview() {
+    Item(
+        itemUi = object : ItemUi() {
+            override val item: ItemDb = ItemDb(
+                id = 0,
+                type = "story",
+                title = "Hello World",
+                text = "Lorum Ipsum",
+                url = "https://www.google.com/"
+            )
+            override val kids: List<ItemId> = emptyList()
+            override val isUpvote: Boolean = false
+            override val isFavorite: Boolean = false
+            override val isFlag: Boolean = false
+            override val isExpanded: Boolean = false
+            override suspend fun toggleUpvote(onNavigateLogin: (LoginAction) -> Unit) {}
+            override suspend fun toggleFavorite(onNavigateLogin: (LoginAction) -> Unit) {}
+            override suspend fun toggleFlag(onNavigateLogin: (LoginAction) -> Unit) {}
+            override suspend fun toggleExpanded() {}
+        },
+        isSelected = false,
+        onClickDetail = {},
+        onClickReply = {},
+        onClickUser = {},
+        onClickBrowser = {},
+        onClickUpvote = {},
+        onClickFavorite = {},
+        onClickFlag = {}
+    )
+}
 
 @Composable
 fun Item(
@@ -71,7 +108,7 @@ fun Item(
     onClickUpvote: () -> Unit,
     onClickFavorite: () -> Unit,
     onClickFlag: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val item = itemUi?.item
     val isLoading = item == null
@@ -83,7 +120,7 @@ fun Item(
             shape = MaterialTheme.shapes.small,
             highlight = PlaceholderHighlight.shimmer(
                 highlightColor = LocalContentColor.current.copy(alpha = .5f),
-            ),
+            )
         )
 
     val isStoryOrComment = (item?.type == "story" || item?.type == "comment")
@@ -98,25 +135,25 @@ fun Item(
     Surface(
         modifier = modifier.clickable { onClickBrowser() },
         contentColor = LocalContentColor.current,
-        tonalElevation = ((item?.score ?: 0) / 10).dp,
+        tonalElevation = ((item?.score ?: 0) / 10).dp
     ) {
         Column(modifier = Modifier.padding(4.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.Top,
+                verticalAlignment = Alignment.Top
             ) {
                 SelectionContainer(modifier = Modifier.weight(1f)) {
                     TextBlock(
                         text = rememberAnnotatedString(
                             text = item?.title ?: item?.text ?: "",
-                            linkColor = LocalContentColor.current,
+                            linkColor = LocalContentColor.current
                         ),
                         lines = 2,
                         modifier = Modifier
                             .padding(start = 8.dp)
                             .then(placeholderModifier),
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.titleMedium
                     )
                 }
 
@@ -129,18 +166,18 @@ fun Item(
                         modifier = Modifier
                             .then(placeholderModifier)
                             .then(notStoryAndCommentModifier),
-                        enabled = isStoryOrComment,
+                        enabled = isStoryOrComment
                     ) {
                         Icon(
                             imageVector = Icons.TwoTone.MoreVert,
-                            contentDescription = stringResource(id = R.string.more_options),
+                            contentDescription = stringResource(id = R.string.more_options)
                         )
                     }
 
                     DropdownMenu(
                         expanded = contextExpanded,
                         onDismissRequest = { setContextExpanded(false) },
-                        modifier = Modifier,
+                        modifier = Modifier
                     ) {
                         DropdownMenuItem(
                             text = { Text(text = stringResource(id = R.string.reply)) },
@@ -151,9 +188,9 @@ fun Item(
                             leadingIcon = {
                                 Icon(
                                     imageVector = Icons.TwoTone.Reply,
-                                    contentDescription = stringResource(id = R.string.reply),
+                                    contentDescription = stringResource(id = R.string.reply)
                                 )
-                            },
+                            }
                         )
 
                         DropdownMenuItem(
@@ -164,7 +201,7 @@ fun Item(
                                             R.string.un_favorite
                                         } else {
                                             R.string.favorite
-                                        },
+                                        }
                                     )
                                 )
                             },
@@ -185,10 +222,10 @@ fun Item(
                                             R.string.un_favorite
                                         } else {
                                             R.string.favorite
-                                        },
-                                    ),
+                                        }
+                                    )
                                 )
-                            },
+                            }
                         )
 
                         DropdownMenuItem(
@@ -199,8 +236,8 @@ fun Item(
                                             R.string.un_flag
                                         } else {
                                             R.string.flag
-                                        },
-                                    ),
+                                        }
+                                    )
                                 )
                             },
                             onClick = {
@@ -209,9 +246,7 @@ fun Item(
                             },
                             leadingIcon = {
                                 Icon(
-                                    imageVector = if (
-                                        itemUi?.isFlag == true
-                                    ) {
+                                    imageVector = if (itemUi?.isFlag == true) {
                                         Icons.Filled.Flag
                                     } else {
                                         Icons.TwoTone.Flag
@@ -221,8 +256,8 @@ fun Item(
                                             R.string.un_flag
                                         } else {
                                             R.string.flag
-                                        },
-                                    ),
+                                        }
+                                    )
                                 )
                             },
                         )
@@ -265,8 +300,8 @@ fun Item(
                     .then(placeholderModifier),
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.labelMedium.copy(
-                    color = LocalContentColor.current,
-                ),
+                    color = LocalContentColor.current
+                )
             )
 
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -278,7 +313,7 @@ fun Item(
                         modifier = Modifier
                             .then(placeholderModifier)
                             .then(notStoryAndCommentModifier),
-                        enabled = isStoryOrComment,
+                        enabled = isStoryOrComment
                     ) {
                         Icon(
                             imageVector = if (itemUi?.isUpvote == true) {
@@ -291,8 +326,8 @@ fun Item(
                                     R.string.un_vote
                                 } else {
                                     R.string.upvote
-                                },
-                            ),
+                                }
+                            )
                         )
                     }
 
@@ -303,7 +338,7 @@ fun Item(
                             .widthIn(min = 24.dp)
                             .then(placeholderModifier),
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.labelMedium,
+                        style = MaterialTheme.typography.labelMedium
                     )
                 }
 
@@ -313,7 +348,7 @@ fun Item(
                     IconButton(
                         onClick = onClickDetail,
                         modifier = placeholderModifier,
-                        enabled = item != null,
+                        enabled = item != null
                     ) {
                         Icon(
                             imageVector = if (isSelected) {
@@ -321,7 +356,7 @@ fun Item(
                             } else {
                                 Icons.TwoTone.Comment
                             },
-                            contentDescription = null,
+                            contentDescription = null
                         )
                     }
 
@@ -332,7 +367,7 @@ fun Item(
                             .widthIn(min = 24.dp)
                             .then(placeholderModifier),
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.labelMedium,
+                        style = MaterialTheme.typography.labelMedium
                     )
                 }
 
@@ -350,13 +385,13 @@ fun Item(
                         .then(placeholderModifier),
                     textAlign = TextAlign.End,
                     overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.labelLarge,
+                    style = MaterialTheme.typography.labelLarge
                 )
             }
 
             Divider(
                 color = LocalContentColor.current,
-                thickness = Dp.Hairline,
+                thickness = Dp.Hairline
             )
         }
     }
