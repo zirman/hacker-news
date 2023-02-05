@@ -1,5 +1,6 @@
 package com.monoid.hackernews.common.data
 
+import android.util.Log
 import androidx.compose.runtime.Immutable
 import androidx.datastore.core.DataStore
 import com.monoid.hackernews.common.api.ItemId
@@ -26,7 +27,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -46,7 +46,6 @@ import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import java.lang.ref.WeakReference
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -58,7 +57,7 @@ class ItemTreeRepository @Inject constructor(
     private val upvoteDao: UpvoteDao,
     private val favoriteDao: FavoriteDao,
     private val flagDao: FlagDao,
-    private val expandedDao: ExpandedDao,
+    private val expandedDao: ExpandedDao
 ) {
     private val sharedFlows: MutableMap<ItemId, WeakReference<Flow<ItemUiInternal>>> =
         mutableMapOf()
@@ -68,7 +67,7 @@ class ItemTreeRepository @Inject constructor(
 
     @Immutable
     private inner class ItemRowInternal(
-        override val itemId: ItemId,
+        override val itemId: ItemId
     ) : ItemListRow() {
         override val itemUiFlow: Flow<ItemUi>
             get() {
@@ -82,7 +81,7 @@ class ItemTreeRepository @Inject constructor(
     @Immutable
     private inner class ItemThreadInternal(
         override val itemId: ItemId,
-        private val threadDepth: Int,
+        private val threadDepth: Int
     ) : ItemTreeRow() {
         override val itemUiFlow: Flow<ItemUiWithThreadDepth>
             get() {
@@ -115,7 +114,7 @@ class ItemTreeRepository @Inject constructor(
             httpClient.upvoteItem(
                 authentication = authentication,
                 itemId = itemId,
-                flag = isUpvote,
+                flag = isUpvote
             )
 
             if (isUpvote) {
@@ -125,6 +124,11 @@ class ItemTreeRepository @Inject constructor(
             }
         } catch (error: Throwable) {
             if (error is CancellationException) throw error
+
+            Log.e(
+                /* tag = */ TAG,
+                /* msg = */ error.stackTraceToString()
+            )
         }
     }
 
@@ -137,7 +141,7 @@ class ItemTreeRepository @Inject constructor(
             httpClient.favoriteRequest(
                 authentication = authentication,
                 itemId = itemId,
-                flag = isFavorite,
+                flag = isFavorite
             )
 
             if (isFavorite) {
@@ -147,6 +151,11 @@ class ItemTreeRepository @Inject constructor(
             }
         } catch (error: Throwable) {
             if (error is CancellationException) throw error
+
+            Log.e(
+                /* tag = */ TAG,
+                /* msg = */ error.stackTraceToString()
+            )
         }
     }
 
@@ -168,6 +177,11 @@ class ItemTreeRepository @Inject constructor(
             }
         } catch (error: Throwable) {
             if (error is CancellationException) throw error
+
+            Log.e(
+                /* tag = */ TAG,
+                /* msg = */ error.stackTraceToString()
+            )
         }
     }
 
@@ -187,7 +201,7 @@ class ItemTreeRepository @Inject constructor(
                     } else {
                         null
                     },
-                    isExpanded = isExpanded.await(),
+                    isExpanded = isExpanded.await()
                 )
             }
 
@@ -196,7 +210,7 @@ class ItemTreeRepository @Inject constructor(
             ItemTree(
                 itemId = rootItemId,
                 kids = rootItemWithKids?.kids?.map { async { recur(ItemId(it.id)) } }?.awaitAll(),
-                isExpanded = true,
+                isExpanded = true
             )
         }
 
@@ -206,7 +220,7 @@ class ItemTreeRepository @Inject constructor(
                     add(
                         ItemThreadInternal(
                             itemId = itemTree.itemId,
-                            threadDepth = threadDepth,
+                            threadDepth = threadDepth
                         )
                     )
 
@@ -240,7 +254,7 @@ class ItemTreeRepository @Inject constructor(
                                             isExpanded = false,
                                         )
                                 }
-                            },
+                            }
                         )
                     } else {
                         itemTree.copy(kids = itemTree.kids?.map { recur(it) })
@@ -251,8 +265,7 @@ class ItemTreeRepository @Inject constructor(
                 traverse(itemTree)
             }
         )
-    }
-        .distinctUntilChanged()
+    }.distinctUntilChanged()
 
     fun itemUiList(itemIds: List<ItemId>): List<ItemListRow> {
         return itemIds.map { itemId -> ItemRowInternal(itemId) }
@@ -272,14 +285,16 @@ class ItemTreeRepository @Inject constructor(
                     item?.lastUpdate == null ||
                     (Clock.System.now() - Instant.fromEpochSeconds(item.lastUpdate))
                         .inWholeMinutes > 5
-//                    HNApplication.instance.resources
-//                        .getInteger(R.integer.item_stale_minutes)
-//                        .toLong()
                 ) {
                     try {
                         itemDao.itemApiInsert(httpClient.getItem(itemId))
                     } catch (error: Throwable) {
                         if (error is CancellationException) throw error
+
+                        Log.e(
+                            /* tag = */ TAG,
+                            /* msg = */ error.stackTraceToString()
+                        )
                     }
                 }
             }
@@ -292,7 +307,7 @@ class ItemTreeRepository @Inject constructor(
                             .distinctUntilChanged(),
                         expandedDao.isExpandedFlow(itemId.long)
                             .distinctUntilChanged(),
-                        ::Pair,
+                        ::Pair
                     ).distinctUntilChanged(),
                     authentication.data
                         .map { it.username }
@@ -318,17 +333,16 @@ class ItemTreeRepository @Inject constructor(
                         isUpvote = isUpvote,
                         isFavorite = isFavorite,
                         isFlag = isFlag,
-                        isExpanded = isExpanded,
+                        isExpanded = isExpanded
                     )
                 }
             )
         }
-    }
-        .shareIn(
-            scope = GlobalScope, // shared flows are in global scope
-            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
-            replay = 1,
-        )
+    }.shareIn(
+        scope = GlobalScope, // shared flows are in global scope
+        started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
+        replay = 1
+    )
 
     @Immutable
     private inner class ItemUiInternal(
@@ -337,7 +351,7 @@ class ItemTreeRepository @Inject constructor(
         override val isUpvote: Boolean,
         override val isFavorite: Boolean,
         override val isFlag: Boolean,
-        override val isExpanded: Boolean,
+        override val isExpanded: Boolean
     ) : ItemUi() {
         override suspend fun toggleUpvote(onNavigateLogin: (LoginAction) -> Unit) {
             val authentication = authentication.data.first()
@@ -384,5 +398,9 @@ class ItemTreeRepository @Inject constructor(
                 expandedDao.expandedInsert(ExpandedDb(item.id))
             }
         }
+    }
+
+    companion object {
+        private const val TAG = "ItemTreeRepository"
     }
 }
