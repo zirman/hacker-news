@@ -8,7 +8,7 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("libs") {
-            val kotlin = "1.7.21"
+            val kotlin = "1.8.0"
 
             version(
                 /* alias = */ "kotlin",
@@ -17,7 +17,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "gradle-plugin-ksp",
-                /* version = */ "$kotlin-1.0.8"
+                /* version = */ "$kotlin-1.0.9"
             )
 
             version(
@@ -37,7 +37,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "kotlinx-serialization",
-                /* version = */ "1.4.1"
+                /* version = */ "1.5.0-RC"
             )
 
             version(
@@ -47,7 +47,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "ktor",
-                /* version = */ "2.2.2"
+                /* version = */ "2.2.3"
             )
 
             version(
@@ -57,7 +57,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "lifecycle",
-                /* version = */ "2.6.0-alpha04"
+                /* version = */ "2.6.0-alpha05"
             )
 
             version(
@@ -67,12 +67,12 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "compose",
-                /* version = */ "1.4.0-alpha03"
+                /* version = */ "1.4.0-alpha05"
             )
 
             version(
                 /* alias = */ "compose-compiler",
-                /* version = */ "1.4.0-alpha02"
+                /* version = */ "1.4.0"
             )
 
             version(
@@ -87,7 +87,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "accompanist",
-                /* version = */ "0.28.0"
+                /* version = */ "0.29.1-alpha"
             )
 
             version(
@@ -118,7 +118,7 @@ dependencyResolutionManagement {
             plugin(
                 /* alias = */ "versions",
                 /* id = */ "com.github.ben-manes.versions"
-            ).version("0.44.0")
+            ).version("0.45.0")
 
             bundle(
                 /* alias = */ "kotlinx",
@@ -194,7 +194,6 @@ dependencyResolutionManagement {
                     "lifecycle-viewmodel-ktx",
                     "lifecycle-viewmodel-compose",
                     "lifecycle-viewmodel-savedstate",
-                    "lifecycle-livedata-ktx",
 
                     // compose
                     "ui",
@@ -205,7 +204,6 @@ dependencyResolutionManagement {
                     "material-icons-core",
                     "material-icons-extended",
                     "foundation",
-                    "runtime-livedata",
                     "ui-text-google-fonts",
                     "constraintlayout",
                     "metrics-performance",
@@ -381,7 +379,7 @@ dependencyResolutionManagement {
                 /* alias = */ "activity-ktx",
                 /* group = */ "androidx.activity",
                 /* artifact = */ "activity-ktx"
-            ).version("1.7.0-alpha03")
+            ).version("1.7.0-alpha04")
 
             library(
                 /* alias = */ "fragment-ktx",
@@ -393,7 +391,7 @@ dependencyResolutionManagement {
                 /* alias = */ "activity-compose",
                 /* group = */ "androidx.activity",
                 /* artifact = */ "activity-compose"
-            ).version("1.7.0-alpha03")
+            ).version("1.7.0-alpha04")
 
             library(
                 /* alias = */ "palette-ktx",
@@ -450,12 +448,6 @@ dependencyResolutionManagement {
             ).versionRef("lifecycle")
 
             library(
-                /* alias = */ "lifecycle-livedata-ktx",
-                /* group = */ "androidx.lifecycle",
-                /* artifact = */ "lifecycle-livedata-ktx"
-            ).versionRef("lifecycle")
-
-            library(
                 /* alias = */ "navigation-runtime-ktx",
                 /* group = */ "androidx.navigation",
                 /* artifact = */ "navigation-runtime-ktx"
@@ -495,7 +487,7 @@ dependencyResolutionManagement {
                 /* alias = */ "material",
                 /* group = */ "com.google.android.material",
                 /* artifact = */ "material"
-            ).version("1.8.0-rc01")
+            ).version("1.9.0-alpha01")
 
             library(
                 /* alias = */ "material3",
@@ -565,22 +557,16 @@ dependencyResolutionManagement {
             ).versionRef("compose")
 
             library(
-                /* alias = */ "runtime-livedata",
-                /* group = */ "androidx.compose.runtime",
-                /* artifact = */ "runtime-livedata"
-            ).versionRef("compose")
-
-            library(
                 /* alias = */ "ui-text-google-fonts",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-text-google-fonts"
-            ).version("1.4.0-alpha04")
+            ).version("1.4.0-alpha05")
 
             library(
                 /* alias = */ "constraintlayout",
                 /* group = */ "androidx.constraintlayout",
                 /* artifact = */ "constraintlayout-compose"
-            ).version("1.1.0-alpha05")
+            ).version("1.1.0-alpha06")
 
             library(
                 /* alias = */ "metrics-performance",
@@ -646,13 +632,13 @@ dependencyResolutionManagement {
                 /* alias = */ "ui-test-junit4",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-test-junit4"
-            ).version("1.4.0-alpha04")
+            ).version("1.4.0-alpha05")
 
             library(
                 /* alias = */ "ui-test-manifest",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-test-manifest"
-            ).version("1.4.0-alpha04")
+            ).version("1.4.0-alpha05")
 
             library(
                 /* alias = */ "junit",
