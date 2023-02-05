@@ -269,7 +269,7 @@ fun CommentItem(
                 }
             }
 
-            val text =
+            val htmlText =
                 if (isDeleted) {
                     stringResource(id = R.string.deleted)
                 } else {
@@ -277,7 +277,7 @@ fun CommentItem(
                 }
 
             val annotatedText: AnnotatedString =
-                rememberAnnotatedString(text = text)
+                rememberAnnotatedString(htmlText = htmlText)
 
             val annotatedTextState: State<AnnotatedString> =
                 rememberUpdatedState(annotatedText)

@@ -29,13 +29,13 @@ private const val urlTag = "URL"
 
 @Composable
 fun rememberAnnotatedString(
-    text: String,
+    htmlText: String,
     contentColor: Color = LocalContentColor.current,
     linkColor: Color = MaterialTheme.colorScheme.tertiary
 ): AnnotatedString {
-    return remember(text, contentColor, linkColor) {
+    return remember(htmlText, contentColor, linkColor) {
         getAnnotatedString(
-            text = text,
+            htmlText = htmlText,
             contentColor = contentColor,
             linkColor = linkColor
         )
@@ -43,25 +43,29 @@ fun rememberAnnotatedString(
 }
 
 fun getAnnotatedString(
-    text: String,
+    htmlText: String,
     contentColor: Color = Color.White,
     linkColor: Color = Color.Blue
 ): AnnotatedString {
     val spanned: Spanned =
-        HtmlCompat.fromHtml(text, 0)
+        HtmlCompat.fromHtml(htmlText, 0)
 
     return buildAnnotatedString {
-        val asString: String =
-            spanned.toString()
+        // HTML paragraphs add two new lines at the end which we trim. We then need to make sure all
+        // spans inside these bounds.
+        val text: String =
+            spanned.trimEnd().toString()
 
-        append(asString)
+        fun Int.clip(): Int = minOf(this, text.length)
+
+        append(text)
 
         addStyle(
             style = SpanStyle(
                 color = contentColor
             ),
             start = 0,
-            end = asString.length
+            end = text.length
         )
 
         spanned.getSpans<AlignmentSpan>().forEach { alignmentSpan ->
@@ -79,8 +83,8 @@ fun getAnnotatedString(
                     style = ParagraphStyle(
                         textAlign = textAlign
                     ),
-                    start = spanned.getSpanStart(alignmentSpan),
-                    end = spanned.getSpanEnd(alignmentSpan)
+                    start = spanned.getSpanStart(alignmentSpan).clip(),
+                    end = spanned.getSpanEnd(alignmentSpan).clip()
                 )
             }
         }
@@ -103,8 +107,8 @@ fun getAnnotatedString(
             }?.let { spanStyle ->
                 addStyle(
                     style = spanStyle,
-                    start = spanned.getSpanStart(styleSpan),
-                    end = spanned.getSpanEnd(styleSpan)
+                    start = spanned.getSpanStart(styleSpan).clip(),
+                    end = spanned.getSpanEnd(styleSpan).clip()
                 )
             }
         }
@@ -121,8 +125,8 @@ fun getAnnotatedString(
                     color = linkColor,
                     textDecoration = TextDecoration.Underline
                 ),
-                start = spanned.getSpanStart(urlSpan),
-                end = spanned.getSpanEnd(urlSpan)
+                start = spanned.getSpanStart(urlSpan).clip(),
+                end = spanned.getSpanEnd(urlSpan).clip()
             )
         }
     }

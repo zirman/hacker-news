@@ -95,7 +95,7 @@ fun RootItem(
                 SelectionContainer(modifier = Modifier.weight(1f)) {
                     TextBlock(
                         text = rememberAnnotatedString(
-                            text = (if (item?.type == "comment") item.text else item?.title) ?: "",
+                            htmlText = (if (item?.type == "comment") item.text else item?.title) ?: "",
                             linkColor = LocalContentColor.current
                         ),
                         lines = 2,
@@ -351,7 +351,7 @@ fun RootItem(
 
             if (item?.type != "comment" && itemText != null) {
                 val annotatedText: AnnotatedString =
-                    rememberAnnotatedString(text = itemText)
+                    rememberAnnotatedString(htmlText = itemText)
 
                 // state wrapper must be used in callbacks or onClicks may not be handled
                 val annotatedTextState: State<AnnotatedString> =

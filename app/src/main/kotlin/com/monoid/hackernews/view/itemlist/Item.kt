@@ -145,7 +145,7 @@ fun Item(
                 SelectionContainer(modifier = Modifier.weight(1f)) {
                     TextBlock(
                         text = rememberAnnotatedString(
-                            text = item?.title ?: item?.text ?: "",
+                            htmlText = item?.title ?: item?.text ?: "",
                             linkColor = LocalContentColor.current
                         ),
                         lines = 2,

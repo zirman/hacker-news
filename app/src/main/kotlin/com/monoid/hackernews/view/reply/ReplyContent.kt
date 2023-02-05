@@ -97,7 +97,7 @@ fun ReplyContent(
             val (reply: String, setReply) =
                 rememberSaveable(item?.text) {
                     mutableStateOf(
-                        getAnnotatedString(text = item?.text ?: "")
+                        getAnnotatedString(htmlText = item?.text ?: "")
                             .text
                             .lines()
                             .filter { it.isNotBlank() }

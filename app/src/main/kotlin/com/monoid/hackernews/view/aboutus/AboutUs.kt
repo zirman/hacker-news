@@ -61,7 +61,7 @@ fun AboutUs(
             val annotatedTextState: State<AnnotatedString> =
                 rememberUpdatedState(
                     rememberAnnotatedString(
-                        text = stringResource(id = R.string.about_us_detail),
+                        htmlText = stringResource(id = R.string.about_us_detail_html),
                         linkColor = MaterialTheme.colorScheme.primary,
                     )
                 )
