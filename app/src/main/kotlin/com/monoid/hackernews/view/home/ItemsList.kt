@@ -24,7 +24,6 @@ fun ItemsList(
     listState: LazyListState,
     pullRefreshState: PullRefreshState,
     itemRows: ImmutableList<ItemListRow>?,
-    showItemId: ItemId?,
     refreshing: Boolean,
     paddingValues: PaddingValues,
     setSelectedItemId: (ItemId?) -> Unit,
@@ -33,7 +32,7 @@ fun ItemsList(
     onClickReply: (ItemId) -> Unit,
     onClickBrowser: (String?) -> Unit,
     onNavigateLogin: (LoginAction) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(modifier.pullRefresh(pullRefreshState)) {
         CompositionLocalProvider(
@@ -41,7 +40,6 @@ fun ItemsList(
         ) {
             ItemList(
                 itemRows = itemRows,
-                selectedItem = showItemId,
                 paddingValues = paddingValues,
                 onClickDetail = {
                     setDetailInteraction(true)

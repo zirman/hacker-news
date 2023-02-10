@@ -138,7 +138,7 @@ fun HomeScreen(
                 Toast.LENGTH_SHORT
             ).show()
         }
-    }
+    },
 ) {
     val showItemId: ItemId?
         by remember(windowSizeClass.widthSizeClass, selectedItemId, detailInteraction) {
@@ -302,7 +302,6 @@ fun HomeScreen(
                             listState = listState,
                             pullRefreshState = pullRefreshState,
                             itemRows = itemRows,
-                            showItemId = null,
                             refreshing = refreshing,
                             paddingValues = paddingValues,
                             setSelectedItemId = setSelectedItemId,
@@ -333,7 +332,6 @@ fun HomeScreen(
                                 listState = listState,
                                 pullRefreshState = pullRefreshState,
                                 itemRows = itemRows,
-                                showItemId = showItemId,
                                 refreshing = refreshing,
                                 paddingValues = innerPadding,
                                 setSelectedItemId = setSelectedItemId,

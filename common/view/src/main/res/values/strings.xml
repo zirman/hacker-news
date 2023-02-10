@@ -64,4 +64,5 @@
     <string name="jobs_shortcut_short_label">Jobs HN</string>
     <string name="favorites_shortcut_long_label">Favorites HN</string>
     <string name="favorites_shortcut_short_label">Favorites</string>
+    <string name="open_in_browser">Open in Browser</string>
 </resources>

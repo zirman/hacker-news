@@ -12,15 +12,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Comment
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Flag
+import androidx.compose.material.icons.filled.OpenInBrowser
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.twotone.Comment
 import androidx.compose.material.icons.twotone.Favorite
 import androidx.compose.material.icons.twotone.Flag
 import androidx.compose.material.icons.twotone.MoreVert
-import androidx.compose.material.icons.twotone.Reply
 import androidx.compose.material.icons.twotone.ThumbUp
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
@@ -86,7 +85,6 @@ fun ItemPreview() {
             override suspend fun toggleFlag(onNavigateLogin: (LoginAction) -> Unit) {}
             override suspend fun toggleExpanded() {}
         },
-        isSelected = false,
         onClickDetail = {},
         onClickReply = {},
         onClickUser = {},
@@ -100,7 +98,6 @@ fun ItemPreview() {
 @Composable
 fun Item(
     itemUi: ItemUi?,
-    isSelected: Boolean,
     onClickDetail: () -> Unit,
     onClickReply: () -> Unit,
     onClickUser: (Username?) -> Unit,
@@ -108,7 +105,7 @@ fun Item(
     onClickUpvote: () -> Unit,
     onClickFavorite: () -> Unit,
     onClickFlag: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val item = itemUi?.item
     val isLoading = item == null
@@ -119,7 +116,7 @@ fun Item(
             color = Color.Transparent,
             shape = MaterialTheme.shapes.small,
             highlight = PlaceholderHighlight.shimmer(
-                highlightColor = LocalContentColor.current.copy(alpha = .5f),
+                highlightColor = LocalContentColor.current.copy(alpha = .5f)
             )
         )
 
@@ -133,7 +130,7 @@ fun Item(
         }
 
     Surface(
-        modifier = modifier.clickable { onClickBrowser() },
+        modifier = modifier.clickable(onClick = onClickDetail),
         contentColor = LocalContentColor.current,
         tonalElevation = ((item?.score ?: 0) / 10).dp
     ) {
@@ -180,20 +177,6 @@ fun Item(
                         modifier = Modifier
                     ) {
                         DropdownMenuItem(
-                            text = { Text(text = stringResource(id = R.string.reply)) },
-                            onClick = {
-                                onClickReply()
-                                setContextExpanded(false)
-                            },
-                            leadingIcon = {
-                                Icon(
-                                    imageVector = Icons.TwoTone.Reply,
-                                    contentDescription = stringResource(id = R.string.reply)
-                                )
-                            }
-                        )
-
-                        DropdownMenuItem(
                             text = {
                                 Text(
                                     text = stringResource(
@@ -207,7 +190,6 @@ fun Item(
                             },
                             onClick = {
                                 onClickFavorite()
-
                                 setContextExpanded(false)
                             },
                             leadingIcon = {
@@ -259,7 +241,7 @@ fun Item(
                                         }
                                     )
                                 )
-                            },
+                            }
                         )
                     }
                 }
@@ -291,12 +273,18 @@ fun Item(
                     if (username != null) {
                         onClickUser(username)
                     } else {
-                        onClickBrowser()
+                        onClickDetail()
                     }
                 },
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
-                    .fillMaxWidth()
+                    .let {
+                        if (isLoading) {
+                            it.fillMaxWidth()
+                        } else {
+                            it
+                        }
+                    }
                     .then(placeholderModifier),
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.labelMedium.copy(
@@ -346,16 +334,12 @@ fun Item(
 
                 key("comments") {
                     IconButton(
-                        onClick = onClickDetail,
+                        onClick = onClickReply,
                         modifier = placeholderModifier,
                         enabled = item != null
                     ) {
                         Icon(
-                            imageVector = if (isSelected) {
-                                Icons.Filled.Comment
-                            } else {
-                                Icons.TwoTone.Comment
-                            },
+                            imageVector = Icons.TwoTone.Comment,
                             contentDescription = null
                         )
                     }
@@ -380,13 +364,26 @@ fun Item(
                     text = host,
                     lines = 1,
                     modifier = Modifier
-                        .padding(horizontal = 16.dp)
                         .weight(1f)
                         .then(placeholderModifier),
                     textAlign = TextAlign.End,
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.labelLarge
                 )
+
+                if (itemUi?.item == null || itemUi.item.url != null) {
+                    IconButton(
+                        onClick = onClickBrowser,
+                        modifier = Modifier
+                            .then(placeholderModifier)
+                            .then(notStoryAndCommentModifier)
+                    ) {
+                        Icon(
+                            Icons.Filled.OpenInBrowser,
+                            contentDescription = stringResource(id = R.string.open_in_browser)
+                        )
+                    }
+                }
             }
 
             Divider(

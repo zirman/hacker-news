@@ -26,7 +26,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun ItemList(
     itemRows: ImmutableList<ItemListRow>?,
-    selectedItem: ItemId?,
     paddingValues: PaddingValues,
     onClickDetail: (ItemId?) -> Unit,
     onClickUser: (Username?) -> Unit,
@@ -34,7 +33,7 @@ fun ItemList(
     onClickBrowser: (String?) -> Unit,
     onNavigateLogin: (LoginAction) -> Unit,
     modifier: Modifier = Modifier,
-    listState: LazyListState = rememberLazyListState()
+    listState: LazyListState = rememberLazyListState(),
 ) {
     if (BuildConfig.DEBUG.not()) {
         val metricsStateHolder: PerformanceMetricsState.Holder =
@@ -68,7 +67,6 @@ fun ItemList(
 
             Item(
                 itemUi = itemUiState.value,
-                isSelected = itemRow.itemId == selectedItem,
                 onClickDetail = { itemUiState.value?.item?.id?.let { onClickDetail(ItemId(it)) } },
                 onClickReply = { itemUiState.value?.item?.id?.let { onClickReply(ItemId(it)) } },
                 onClickUser = { onClickUser(it) },

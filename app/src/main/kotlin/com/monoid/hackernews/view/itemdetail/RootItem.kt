@@ -2,7 +2,6 @@ package com.monoid.hackernews.view.itemdetail
 
 import android.content.Context
 import android.net.Uri
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,7 +15,9 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Flag
+import androidx.compose.material.icons.filled.OpenInBrowser
 import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.material.icons.twotone.Comment
 import androidx.compose.material.icons.twotone.Favorite
 import androidx.compose.material.icons.twotone.Flag
 import androidx.compose.material.icons.twotone.MoreVert
@@ -45,14 +46,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.placeholder
 import com.google.accompanist.placeholder.shimmer
 import com.monoid.hackernews.common.api.ItemId
+import com.monoid.hackernews.common.data.ItemUi
 import com.monoid.hackernews.common.data.ItemUiWithThreadDepth
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
+import com.monoid.hackernews.common.room.ItemDb
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.view.text.TextBlock
 import com.monoid.hackernews.common.ui.util.rememberTimeBy
@@ -61,6 +66,40 @@ import com.monoid.hackernews.view.util.onClick
 import com.monoid.hackernews.view.util.rememberAnnotatedString
 import kotlinx.coroutines.launch
 
+@Preview
+@Composable
+fun ItemPreview() {
+    RootItem(
+        itemUiState = remember {
+            mutableStateOf(ItemUiWithThreadDepth(
+                threadDepth = 0,
+                object : ItemUi() {
+                    override val item: ItemDb = ItemDb(
+                        id = 0,
+                        type = "story",
+                        title = "Hello World",
+                        text = "Lorum Ipsum",
+                        url = "https://www.google.com/"
+                    )
+                    override val kids: List<ItemId> = emptyList()
+                    override val isUpvote: Boolean = false
+                    override val isFavorite: Boolean = false
+                    override val isFlag: Boolean = false
+                    override val isExpanded: Boolean = false
+                    override suspend fun toggleUpvote(onNavigateLogin: (LoginAction) -> Unit) {}
+                    override suspend fun toggleFavorite(onNavigateLogin: (LoginAction) -> Unit) {}
+                    override suspend fun toggleFlag(onNavigateLogin: (LoginAction) -> Unit) {}
+                    override suspend fun toggleExpanded() {}
+                }
+            ))
+        },
+        onClickReply = {},
+        onClickUser = {},
+        onClickBrowser = {},
+        onNavigateLogin = {}
+    )
+}
+
 @Composable
 fun RootItem(
     itemUiState: State<ItemUiWithThreadDepth?>,
@@ -68,23 +107,24 @@ fun RootItem(
     onClickUser: (Username) -> Unit,
     onClickBrowser: (String) -> Unit,
     onNavigateLogin: (LoginAction) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val item = itemUiState.value?.itemUi?.item
+    val isLoading = item == null
+
+    val placeholderModifier = Modifier
+        .placeholder(
+            visible = isLoading,
+            color = Color.Transparent,
+            shape = MaterialTheme.shapes.small,
+            highlight = PlaceholderHighlight.shimmer(
+                highlightColor = LocalContentColor.current.copy(alpha = .5f),
+            )
+        )
 
     Surface(
-        modifier = modifier.then(
-            run {
-                val url = item?.url
-
-                if (url == null) {
-                    Modifier
-                } else {
-                    Modifier.clickable { onClickBrowser(url) }
-                }
-            }
-        ),
+        modifier = modifier,
         contentColor = MaterialTheme.colorScheme.secondary
     ) {
         Column {
@@ -95,20 +135,14 @@ fun RootItem(
                 SelectionContainer(modifier = Modifier.weight(1f)) {
                     TextBlock(
                         text = rememberAnnotatedString(
-                            htmlText = (if (item?.type == "comment") item.text else item?.title) ?: "",
+                            htmlText = (if (item?.type == "comment") item.text else item?.title)
+                                ?: "",
                             linkColor = LocalContentColor.current
                         ),
                         lines = 2,
                         modifier = Modifier
                             .padding(horizontal = 8.dp)
-                            .placeholder(
-                                visible = itemUiState.value == null,
-                                color = Color.Transparent,
-                                shape = MaterialTheme.shapes.small,
-                                highlight = PlaceholderHighlight.shimmer(
-                                    highlightColor = LocalContentColor.current.copy(alpha = .5f)
-                                )
-                            ),
+                            .then(placeholderModifier),
                         style = MaterialTheme.typography.titleMedium
                     )
                 }
@@ -258,14 +292,7 @@ fun RootItem(
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
                     .fillMaxWidth()
-                    .placeholder(
-                        visible = itemUiState.value == null,
-                        color = Color.Transparent,
-                        shape = MaterialTheme.shapes.small,
-                        highlight = PlaceholderHighlight.shimmer(
-                            highlightColor = LocalContentColor.current.copy(alpha = .5f)
-                        )
-                    ),
+                    .then(placeholderModifier),
                 style = MaterialTheme.typography.labelMedium.copy(
                     color = LocalContentColor.current
                 )
@@ -303,19 +330,36 @@ fun RootItem(
                                 text = remember(score) { score?.toString() ?: "" },
                                 modifier = Modifier
                                     .widthIn(min = 24.dp)
-                                    .placeholder(
-                                        visible = itemUiState.value == null,
-                                        color = Color.Transparent,
-                                        shape = MaterialTheme.shapes.small,
-                                        highlight = PlaceholderHighlight.shimmer(
-                                            highlightColor = LocalContentColor.current
-                                                .copy(alpha = .5f)
-                                        ),
-                                    ),
+                                    .then(placeholderModifier),
                                 style = MaterialTheme.typography.labelMedium
                             )
                         }
                     }
+                }
+
+                val descendants = item?.descendants
+
+                key("comments") {
+                    IconButton(
+                        onClick = { item?.id?.let { onClickReply(ItemId(it)) } },
+                        modifier = placeholderModifier,
+                        enabled = isLoading.not()
+                    ) {
+                        Icon(
+                            imageVector = Icons.TwoTone.Comment,
+                            contentDescription = null
+                        )
+                    }
+
+                    TextBlock(
+                        text = remember(descendants) { descendants?.toString() ?: "" },
+                        lines = 1,
+                        modifier = Modifier
+                            .widthIn(min = 24.dp)
+                            .then(placeholderModifier),
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.labelMedium
+                    )
                 }
 
                 val host: String? =
@@ -344,6 +388,15 @@ fun RootItem(
                         textAlign = TextAlign.End,
                         style = MaterialTheme.typography.labelLarge
                     )
+
+                    IconButton(
+                        onClick = { item?.url?.let { onClickBrowser(it) } }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.OpenInBrowser,
+                            contentDescription = stringResource(id = R.string.open_in_browser)
+                        )
+                    }
                 }
             }
 

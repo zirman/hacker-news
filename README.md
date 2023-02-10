@@ -5,7 +5,6 @@ TODO:
  + notifications on responses
  + bottom sheet back button
  + register account
- + hilt
  + dark mode setting
  + customize colors
  + customize font
