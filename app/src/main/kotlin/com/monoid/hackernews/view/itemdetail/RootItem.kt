@@ -21,7 +21,6 @@ import androidx.compose.material.icons.twotone.Comment
 import androidx.compose.material.icons.twotone.Favorite
 import androidx.compose.material.icons.twotone.Flag
 import androidx.compose.material.icons.twotone.MoreVert
-import androidx.compose.material.icons.twotone.Reply
 import androidx.compose.material.icons.twotone.ThumbUp
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -164,20 +163,6 @@ fun RootItem(
                             onDismissRequest = { setContextExpanded(false) },
                             modifier = Modifier
                         ) {
-                            DropdownMenuItem(
-                                text = { Text(text = stringResource(id = R.string.reply)) },
-                                onClick = {
-                                    onClickReply(ItemId(item.id))
-                                    setContextExpanded(false)
-                                },
-                                leadingIcon = {
-                                    Icon(
-                                        imageVector = Icons.TwoTone.Reply,
-                                        contentDescription = stringResource(id = R.string.reply)
-                                    )
-                                }
-                            )
-
                             if (item.type == "story") {
                                 DropdownMenuItem(
                                     text = {

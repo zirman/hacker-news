@@ -293,8 +293,6 @@ fun Item(
             )
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                val score = item?.score
-
                 key("score") {
                     IconButton(
                         onClick = onClickUpvote,
@@ -319,6 +317,8 @@ fun Item(
                         )
                     }
 
+                    val score = item?.score
+
                     TextBlock(
                         text = remember(score) { score?.toString() ?: "" },
                         lines = 1,
@@ -330,58 +330,61 @@ fun Item(
                     )
                 }
 
-                val descendants = item?.descendants
-
                 key("comments") {
-                    IconButton(
-                        onClick = onClickReply,
-                        modifier = placeholderModifier,
-                        enabled = item != null
-                    ) {
-                        Icon(
-                            imageVector = Icons.TwoTone.Comment,
-                            contentDescription = null
+                    if (item?.type != "job") {
+                        val descendants = item?.descendants
+
+                        IconButton(
+                            onClick = onClickReply,
+                            modifier = placeholderModifier,
+                            enabled = item != null
+                        ) {
+                            Icon(
+                                imageVector = Icons.TwoTone.Comment,
+                                contentDescription = null
+                            )
+                        }
+
+                        TextBlock(
+                            text = remember(descendants) { descendants?.toString() ?: "" },
+                            lines = 1,
+                            modifier = Modifier
+                                .widthIn(min = 24.dp)
+                                .then(placeholderModifier),
+                            overflow = TextOverflow.Ellipsis,
+                            style = MaterialTheme.typography.labelMedium
                         )
                     }
-
-                    TextBlock(
-                        text = remember(descendants) { descendants?.toString() ?: "" },
-                        lines = 1,
-                        modifier = Modifier
-                            .widthIn(min = 24.dp)
-                            .then(placeholderModifier),
-                        overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.labelMedium
-                    )
                 }
 
-                val host: String =
-                    remember(itemUi?.item?.url) {
-                        itemUi?.item?.url?.let { Uri.parse(it) }?.host ?: ""
-                    }
+                key("url") {
+                    if (item?.url != null) {
+                        val host: String =
+                            remember(item.url) {
+                                item.url?.let { Uri.parse(it) }?.host ?: ""
+                            }
 
-                TextBlock(
-                    text = host,
-                    lines = 1,
-                    modifier = Modifier
-                        .weight(1f)
-                        .then(placeholderModifier),
-                    textAlign = TextAlign.End,
-                    overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.labelLarge
-                )
-
-                if (itemUi?.item == null || itemUi.item.url != null) {
-                    IconButton(
-                        onClick = onClickBrowser,
-                        modifier = Modifier
-                            .then(placeholderModifier)
-                            .then(notStoryAndCommentModifier)
-                    ) {
-                        Icon(
-                            Icons.Filled.OpenInBrowser,
-                            contentDescription = stringResource(id = R.string.open_in_browser)
+                        TextBlock(
+                            text = host,
+                            lines = 1,
+                            modifier = Modifier
+                                .weight(1f)
+                                .then(placeholderModifier),
+                            textAlign = TextAlign.End,
+                            overflow = TextOverflow.Ellipsis,
+                            style = MaterialTheme.typography.labelLarge
                         )
+
+                        IconButton(
+                            onClick = onClickBrowser,
+                            modifier = Modifier
+                                .then(placeholderModifier)
+                        ) {
+                            Icon(
+                                Icons.Filled.OpenInBrowser,
+                                contentDescription = stringResource(id = R.string.open_in_browser)
+                            )
+                        }
                     }
                 }
             }
