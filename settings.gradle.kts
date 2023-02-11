@@ -8,7 +8,7 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("libs") {
-            val kotlin = "1.8.0"
+            val kotlin = "1.8.10"
 
             version(
                 /* alias = */ "kotlin",
@@ -57,22 +57,22 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "lifecycle",
-                /* version = */ "2.6.0-alpha05"
+                /* version = */ "2.6.0-beta01"
             )
 
             version(
                 /* alias = */ "navigation",
-                /* version = */ "2.6.0-alpha04"
+                /* version = */ "2.6.0-alpha05"
             )
 
             version(
                 /* alias = */ "compose",
-                /* version = */ "1.4.0-alpha05"
+                /* version = */ "1.4.0-beta01"
             )
 
             version(
                 /* alias = */ "compose-compiler",
-                /* version = */ "1.4.0"
+                /* version = */ "1.4.2"
             )
 
             version(
@@ -92,7 +92,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "hilt",
-                /* version = */ "2.44.2"
+                /* version = */ "2.45"
             )
 
             plugin(
@@ -362,7 +362,7 @@ dependencyResolutionManagement {
                 /* alias = */ "appcompat",
                 /* group = */ "androidx.appcompat",
                 /* artifact = */ "appcompat"
-            ).version("1.7.0-alpha01")
+            ).version("1.7.0-alpha02")
 
             library(
                 /* alias = */ "core-google-shortcuts",
@@ -392,7 +392,7 @@ dependencyResolutionManagement {
                 /* alias = */ "fragment-ktx",
                 /* group = */ "androidx.fragment",
                 /* artifact = */ "fragment-ktx"
-            ).version("1.6.0-alpha04")
+            ).version("1.6.0-alpha05")
 
             library(
                 /* alias = */ "activity-compose",
@@ -567,13 +567,13 @@ dependencyResolutionManagement {
                 /* alias = */ "ui-text-google-fonts",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-text-google-fonts"
-            ).version("1.4.0-alpha05")
+            ).version("1.4.0-beta01")
 
             library(
                 /* alias = */ "constraintlayout",
                 /* group = */ "androidx.constraintlayout",
                 /* artifact = */ "constraintlayout-compose"
-            ).version("1.1.0-alpha06")
+            ).version("1.1.0-alpha07")
 
             library(
                 /* alias = */ "metrics-performance",
@@ -639,13 +639,13 @@ dependencyResolutionManagement {
                 /* alias = */ "ui-test-junit4",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-test-junit4"
-            ).version("1.4.0-alpha05")
+            ).version("1.4.0-beta01")
 
             library(
                 /* alias = */ "ui-test-manifest",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-test-manifest"
-            ).version("1.4.0-alpha05")
+            ).version("1.4.0-beta01")
 
             library(
                 /* alias = */ "junit",
