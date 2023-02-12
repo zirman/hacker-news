@@ -63,7 +63,7 @@ import com.monoid.hackernews.common.util.rememberMetricsStateHolder
 @Composable
 fun MainContent(
     mainViewModel: MainViewModel,
-    windowSizeClass: WindowSizeClass
+    windowSizeClass: WindowSizeClass,
 ) {
     val drawerState: DrawerState =
         rememberDrawerState(DrawerValue.Closed)
@@ -121,7 +121,7 @@ fun MainContent(
             val fullyExpandedState =
                 rememberUpdatedState(
                     windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded &&
-                            windowSizeClass.heightSizeClass == WindowHeightSizeClass.Expanded
+                        windowSizeClass.heightSizeClass == WindowHeightSizeClass.Expanded
                 )
 
             ModalNavigationDrawer(

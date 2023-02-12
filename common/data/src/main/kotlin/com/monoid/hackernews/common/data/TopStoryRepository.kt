@@ -5,8 +5,12 @@ import com.monoid.hackernews.common.api.getTopStories
 import com.monoid.hackernews.common.room.TopStoryDao
 import com.monoid.hackernews.common.room.TopStoryDb
 import io.ktor.client.HttpClient
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.shareIn
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -15,8 +19,8 @@ class TopStoryRepository @Inject constructor(
     private val httpClient: HttpClient,
     private val topStoryDao: TopStoryDao,
 ) : Repository<OrderedItem> {
-    override fun getItems(): Flow<List<OrderedItem>> {
-        return topStoryDao.getTopStories().map { topStories ->
+    override val items: Flow<List<OrderedItem>> = topStoryDao
+        .getTopStories().map { topStories ->
             topStories.map {
                 OrderedItem(
                     itemId = ItemId(it.itemId),
@@ -24,7 +28,11 @@ class TopStoryRepository @Inject constructor(
                 )
             }
         }
-    }
+        .shareIn(
+            scope = CoroutineScope(SupervisorJob()),
+            started = SharingStarted.Lazily,
+            replay = 1
+        )
 
     override suspend fun updateItems() {
         topStoryDao.replaceTopStories(

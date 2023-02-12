@@ -11,7 +11,7 @@ import com.monoid.hackernews.common.data.JobStoryRepository
 import com.monoid.hackernews.common.data.NewStoryRepository
 import com.monoid.hackernews.common.data.ShowStoryRepository
 import com.monoid.hackernews.common.data.TopStoryRepository
-import com.monoid.hackernews.common.data.UserStoryRepository
+import com.monoid.hackernews.common.data.UserStoryRepositoryFactory
 import com.monoid.hackernews.common.datastore.Authentication
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.ktor.client.HttpClient
@@ -22,7 +22,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     val authentication: DataStore<Authentication>,
     val httpClient: HttpClient,
-    val userStoryRepository: UserStoryRepository,
+    val userStoryRepositoryFactory: UserStoryRepositoryFactory,
     val topStoryRepository: TopStoryRepository,
     val newStoryRepository: NewStoryRepository,
     val bestStoryRepository: BestStoryRepository,

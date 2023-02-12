@@ -55,7 +55,7 @@ fun MainNavigation(
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
             getNetworkConnectivityStateFlow(
                 coroutineScope = this,
-                connectivityManager = context.getSystemService()!!,
+                connectivityManager = context.getSystemService()!!
             )
                 .debounce(2.toDuration(DurationUnit.SECONDS))
                 .dropWhile { it }
@@ -63,12 +63,12 @@ fun MainNavigation(
                     if (hasConnectivity) {
                         snackbarHostState.showSnackbar(
                             message = context.getString(R.string.back_online),
-                            duration = SnackbarDuration.Short,
+                            duration = SnackbarDuration.Short
                         )
                     } else {
                         snackbarHostState.showSnackbar(
                             message = context.getString(R.string.offline),
-                            duration = SnackbarDuration.Indefinite,
+                            duration = SnackbarDuration.Indefinite
                         )
                     }
                 }
@@ -90,7 +90,7 @@ fun MainNavigation(
             onNavigateToReply = onNavigateToReply,
             onNavigateToLogin = onNavigateToLogin,
             onNavigateUp = onNavigateUp,
-            onLoginError = onLoginError,
+            onLoginError = onLoginError
         )
     }
 }

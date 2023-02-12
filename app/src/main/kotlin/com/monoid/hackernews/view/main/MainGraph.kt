@@ -26,7 +26,10 @@ fun NavGraphBuilder.mainGraph(
     onNavigateUp: () -> Unit,
     onLoginError: (Throwable) -> Unit,
 ) {
-    navigation(startDestination = MainNavigation.Home.route, route = mainGraphRoutePattern) {
+    navigation(
+        startDestination = MainNavigation.Home.route,
+        route = mainGraphRoutePattern
+    ) {
         userScreen(
             mainViewModel = mainViewModel,
             context = context,
@@ -35,7 +38,7 @@ fun NavGraphBuilder.mainGraph(
             snackbarHostState = snackbarHostState,
             onNavigateToUser = onNavigateToUser,
             onNavigateToReply = onNavigateToReply,
-            onNavigateToLogin = onNavigateToLogin,
+            onNavigateToLogin = onNavigateToLogin
         )
 
         homeScreen(
@@ -56,7 +59,7 @@ fun NavGraphBuilder.mainGraph(
             windowSizeClass = windowSizeClass,
             onNavigateToReply = onNavigateToReply,
             onNavigateUp = onNavigateUp,
-            onLoginError = onLoginError,
+            onLoginError = onLoginError
         )
 
         replyBottomSheet(
@@ -65,16 +68,16 @@ fun NavGraphBuilder.mainGraph(
             httpClient = mainViewModel.httpClient,
             windowSizeClass = windowSizeClass,
             onNavigateUp = onNavigateUp,
-            onLoginError = onLoginError,
+            onLoginError = onLoginError
         )
 
         aboutUsBottomSheet(
-            windowSizeClass = windowSizeClass,
+            windowSizeClass = windowSizeClass
         )
 
         settingsBottomSheet(
             authentication = mainViewModel.authentication,
-            windowSizeClass = windowSizeClass,
+            windowSizeClass = windowSizeClass
         )
     }
 }

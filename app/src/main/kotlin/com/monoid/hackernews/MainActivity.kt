@@ -70,7 +70,7 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                         ?: HNFont.Default
-                },
+                }
             ) {
                 val systemUiController: SystemUiController =
                     rememberSystemUiController()
@@ -81,13 +81,13 @@ class MainActivity : ComponentActivity() {
                     systemUiController.setStatusBarColor(
                         // Opaque color is used for window bar on Chrome OS.
                         color = primaryColor.copy(alpha = 0f),
-                        darkIcons = useDarkTheme.not(),
+                        darkIcons = useDarkTheme.not()
                     )
 
                     systemUiController.setNavigationBarColor(
                         // if alpha is zero, color is ignored
                         color = Color(red = 128, green = 128, blue = 128, alpha = 1),
-                        darkIcons = useDarkTheme.not(),
+                        darkIcons = useDarkTheme.not()
                     )
                 }
 

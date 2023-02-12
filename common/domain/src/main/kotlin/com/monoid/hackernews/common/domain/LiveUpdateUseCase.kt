@@ -37,7 +37,7 @@ class LiveUpdateUseCase<out T>(
                 }
             }
 
-            emitAll(repository.getItems())
+            emitAll(repository.items)
         }
     }
 }

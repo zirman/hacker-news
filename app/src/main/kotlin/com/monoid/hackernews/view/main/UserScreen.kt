@@ -34,13 +34,13 @@ fun NavGraphBuilder.userScreen(
         route = MainNavigation.User.route,
         deepLinks = listOf(
             navDeepLink { uriPattern = "http://news.ycombinator.com/user?id={username}" },
-            navDeepLink { uriPattern = "https://news.ycombinator.com/user?id={username}" },
+            navDeepLink { uriPattern = "https://news.ycombinator.com/user?id={username}" }
         ),
         arguments = MainNavigation.User.arguments,
         enterTransition = MainNavigation.User.enterTransition,
         exitTransition = MainNavigation.User.exitTransition,
         popEnterTransition = MainNavigation.User.popEnterTransition,
-        popExitTransition = MainNavigation.User.popExitTransition,
+        popExitTransition = MainNavigation.User.popExitTransition
     ) { navBackStackEntry ->
         val username: Username =
             MainNavigation.User.argsFromRoute(navBackStackEntry = navBackStackEntry)
@@ -61,7 +61,7 @@ fun NavGraphBuilder.userScreen(
             orderedItemRepo = remember(mainViewModel, username) {
                 LiveUpdateUseCase(
                     context.getSystemService()!!,
-                    mainViewModel.userStoryRepository,
+                    mainViewModel.userStoryRepositoryFactory.repository(username = username)
                 )
             },
             snackbarHostState = snackbarHostState,
