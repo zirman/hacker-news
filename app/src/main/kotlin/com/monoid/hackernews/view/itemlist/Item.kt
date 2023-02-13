@@ -39,7 +39,6 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -61,7 +60,6 @@ import com.monoid.hackernews.common.ui.text.ClickableTextBlock
 import com.monoid.hackernews.view.text.TextBlock
 import com.monoid.hackernews.common.ui.util.rememberTimeBy
 import com.monoid.hackernews.common.ui.util.userTag
-import com.monoid.hackernews.view.util.rememberAnnotatedString
 
 @Preview
 @Composable
@@ -109,28 +107,20 @@ fun Item(
 ) {
     val item = itemUi?.item
     val isLoading = item == null
-
-    val placeholderModifier = Modifier
-        .placeholder(
-            visible = isLoading,
-            color = Color.Transparent,
-            shape = MaterialTheme.shapes.small,
-            highlight = PlaceholderHighlight.shimmer(
-                highlightColor = LocalContentColor.current.copy(alpha = .5f)
-            )
-        )
-
-    val isStoryOrComment = (item?.type == "story" || item?.type == "comment")
-
-    val notStoryAndCommentModifier =
-        if (isStoryOrComment.not()) {
-            Modifier.drawWithContent { }
-        } else {
-            Modifier
-        }
+    val isStoryOrComment = item?.type == "story" || item?.type == "comment"
 
     Surface(
-        modifier = modifier.clickable(onClick = onClickDetail),
+        modifier = modifier
+            .placeholder(
+                visible = isLoading,
+                color = Color.Transparent,
+                highlight = PlaceholderHighlight.shimmer(
+                    highlightColor = LocalContentColor.current.copy(
+                        alpha = .5f
+                    )
+                )
+            )
+            .clickable(onClick = onClickDetail),
         contentColor = LocalContentColor.current,
         tonalElevation = ((item?.score ?: 0) / 10).dp
     ) {
@@ -141,14 +131,9 @@ fun Item(
             ) {
                 SelectionContainer(modifier = Modifier.weight(1f)) {
                     TextBlock(
-                        text = rememberAnnotatedString(
-                            htmlText = item?.title ?: item?.text ?: "",
-                            linkColor = LocalContentColor.current
-                        ),
+                        text = item?.title ?: "",
                         lines = 2,
-                        modifier = Modifier
-                            .padding(start = 8.dp)
-                            .then(placeholderModifier),
+                        modifier = Modifier.padding(start = 8.dp),
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.titleMedium
                     )
@@ -160,9 +145,6 @@ fun Item(
                 Box {
                     IconButton(
                         onClick = { setContextExpanded(true) },
-                        modifier = Modifier
-                            .then(placeholderModifier)
-                            .then(notStoryAndCommentModifier),
                         enabled = isStoryOrComment
                     ) {
                         Icon(
@@ -284,8 +266,7 @@ fun Item(
                         } else {
                             it
                         }
-                    }
-                    .then(placeholderModifier),
+                    },
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.labelMedium.copy(
                     color = LocalContentColor.current
@@ -296,9 +277,6 @@ fun Item(
                 key("score") {
                     IconButton(
                         onClick = onClickUpvote,
-                        modifier = Modifier
-                            .then(placeholderModifier)
-                            .then(notStoryAndCommentModifier),
                         enabled = isStoryOrComment
                     ) {
                         Icon(
@@ -322,39 +300,32 @@ fun Item(
                     TextBlock(
                         text = remember(score) { score?.toString() ?: "" },
                         lines = 1,
-                        modifier = Modifier
-                            .widthIn(min = 24.dp)
-                            .then(placeholderModifier),
+                        modifier = Modifier.widthIn(min = 24.dp),
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.labelMedium
                     )
                 }
 
                 key("comments") {
-                    if (item?.type != "job") {
-                        val descendants = item?.descendants
+                    val descendants = item?.descendants
 
-                        IconButton(
-                            onClick = onClickReply,
-                            modifier = placeholderModifier,
-                            enabled = item != null
-                        ) {
-                            Icon(
-                                imageVector = Icons.TwoTone.Comment,
-                                contentDescription = null
-                            )
-                        }
-
-                        TextBlock(
-                            text = remember(descendants) { descendants?.toString() ?: "" },
-                            lines = 1,
-                            modifier = Modifier
-                                .widthIn(min = 24.dp)
-                                .then(placeholderModifier),
-                            overflow = TextOverflow.Ellipsis,
-                            style = MaterialTheme.typography.labelMedium
+                    IconButton(
+                        onClick = onClickReply,
+                        enabled = isStoryOrComment
+                    ) {
+                        Icon(
+                            imageVector = Icons.TwoTone.Comment,
+                            contentDescription = null
                         )
                     }
+
+                    TextBlock(
+                        text = remember(descendants) { descendants?.toString() ?: "" },
+                        lines = 1,
+                        modifier = Modifier.widthIn(min = 24.dp),
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.labelMedium
+                    )
                 }
 
                 key("url") {
@@ -367,19 +338,13 @@ fun Item(
                         TextBlock(
                             text = host,
                             lines = 1,
-                            modifier = Modifier
-                                .weight(1f)
-                                .then(placeholderModifier),
+                            modifier = Modifier.weight(1f),
                             textAlign = TextAlign.End,
                             overflow = TextOverflow.Ellipsis,
                             style = MaterialTheme.typography.labelLarge
                         )
 
-                        IconButton(
-                            onClick = onClickBrowser,
-                            modifier = Modifier
-                                .then(placeholderModifier)
-                        ) {
+                        IconButton(onClick = onClickBrowser) {
                             Icon(
                                 Icons.Filled.OpenInBrowser,
                                 contentDescription = stringResource(id = R.string.open_in_browser)

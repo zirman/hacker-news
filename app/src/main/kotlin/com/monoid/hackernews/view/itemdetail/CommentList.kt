@@ -39,7 +39,7 @@ fun CommentList(
     onClickBrowser: (String) -> Unit,
     onNavigateLogin: (LoginAction) -> Unit,
     modifier: Modifier = Modifier,
-    listState: LazyListState = rememberLazyListState()
+    listState: LazyListState = rememberLazyListState(),
 ) {
     BoxWithConstraints(modifier = modifier) {
         if (BuildConfig.DEBUG.not()) {

@@ -112,18 +112,14 @@ fun RootItem(
     val item = itemUiState.value?.itemUi?.item
     val isLoading = item == null
 
-    val placeholderModifier = Modifier
-        .placeholder(
+    Surface(
+        modifier = modifier.placeholder(
             visible = isLoading,
             color = Color.Transparent,
-            shape = MaterialTheme.shapes.small,
             highlight = PlaceholderHighlight.shimmer(
-                highlightColor = LocalContentColor.current.copy(alpha = .5f),
+                highlightColor = LocalContentColor.current.copy(alpha = .5f)
             )
-        )
-
-    Surface(
-        modifier = modifier,
+        ),
         contentColor = MaterialTheme.colorScheme.secondary
     ) {
         Column {
@@ -139,9 +135,7 @@ fun RootItem(
                             linkColor = LocalContentColor.current
                         ),
                         lines = 2,
-                        modifier = Modifier
-                            .padding(horizontal = 8.dp)
-                            .then(placeholderModifier),
+                        modifier = Modifier.padding(horizontal = 8.dp),
                         style = MaterialTheme.typography.titleMedium
                     )
                 }
@@ -160,8 +154,7 @@ fun RootItem(
 
                         DropdownMenu(
                             expanded = contextExpanded,
-                            onDismissRequest = { setContextExpanded(false) },
-                            modifier = Modifier
+                            onDismissRequest = { setContextExpanded(false) }
                         ) {
                             if (item.type == "story") {
                                 DropdownMenuItem(
@@ -270,14 +263,11 @@ fun RootItem(
 
                     if (username != null) {
                         onClickUser(username)
-                    } else {
-                        itemUiState.value?.itemUi?.item?.url?.let { onClickBrowser(it) }
                     }
                 },
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
-                    .fillMaxWidth()
-                    .then(placeholderModifier),
+                    .fillMaxWidth(),
                 style = MaterialTheme.typography.labelMedium.copy(
                     color = LocalContentColor.current
                 )
@@ -313,9 +303,7 @@ fun RootItem(
 
                             Text(
                                 text = remember(score) { score?.toString() ?: "" },
-                                modifier = Modifier
-                                    .widthIn(min = 24.dp)
-                                    .then(placeholderModifier),
+                                modifier = Modifier.widthIn(min = 24.dp),
                                 style = MaterialTheme.typography.labelMedium
                             )
                         }
@@ -327,7 +315,6 @@ fun RootItem(
                 key("comments") {
                     IconButton(
                         onClick = { item?.id?.let { onClickReply(ItemId(it)) } },
-                        modifier = placeholderModifier,
                         enabled = isLoading.not()
                     ) {
                         Icon(
@@ -339,9 +326,7 @@ fun RootItem(
                     TextBlock(
                         text = remember(descendants) { descendants?.toString() ?: "" },
                         lines = 1,
-                        modifier = Modifier
-                            .widthIn(min = 24.dp)
-                            .then(placeholderModifier),
+                        modifier = Modifier.widthIn(min = 24.dp),
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.labelMedium
                     )
@@ -374,9 +359,7 @@ fun RootItem(
                         style = MaterialTheme.typography.labelLarge
                     )
 
-                    IconButton(
-                        onClick = { item?.url?.let { onClickBrowser(it) } }
-                    ) {
+                    IconButton(onClick = { item?.url?.let { onClickBrowser(it) } }) {
                         Icon(
                             imageVector = Icons.Filled.OpenInBrowser,
                             contentDescription = stringResource(id = R.string.open_in_browser)

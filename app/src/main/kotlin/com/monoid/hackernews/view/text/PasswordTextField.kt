@@ -4,7 +4,6 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
@@ -19,6 +18,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.isShiftPressed
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -36,8 +41,9 @@ fun PasswordTextField(
     modifier: Modifier = Modifier,
     @StringRes labelId: Int = R.string.password,
     @StringRes errorLabelId: Int? = null,
-    onNext: (KeyboardActionScope.() -> Unit)? = null,
-    onDone: (KeyboardActionScope.() -> Unit)? = null,
+    onNext: (() -> Unit)? = null,
+    onPrev: (() -> Unit)? = null,
+    onDone: (() -> Unit)? = null,
 ) {
     Column(modifier = modifier) {
         val (isPasswordVisible, setPasswordVisible) =
@@ -46,13 +52,36 @@ fun PasswordTextField(
         OutlinedTextField(
             value = password,
             onValueChange = onChangePassword,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .onPreviewKeyEvent { event -> // handle hardware keyboards
+                    if (event.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
+
+                    when (event.key) {
+                        Key.Tab -> {
+                            if (event.isShiftPressed) {
+                                onPrev?.invoke()
+                            } else {
+                                onNext?.invoke()
+                            }
+
+                            true
+                        }
+                        Key.Enter -> {
+                            onDone?.invoke()
+                            true
+                        }
+                        else -> {
+                            false
+                        }
+                    }
+                }
+                .fillMaxWidth(),
             label = { Text(text = stringResource(id = labelId)) },
             placeholder = { Text(text = stringResource(id = R.string.password)) },
             trailingIcon = {
                 IconToggleButton(
                     checked = isPasswordVisible,
-                    onCheckedChange = { setPasswordVisible(it) },
+                    onCheckedChange = { setPasswordVisible(it) }
                 ) {
                     Icon(
                         imageVector = if (isPasswordVisible) {
@@ -60,7 +89,7 @@ fun PasswordTextField(
                         } else {
                             Icons.Default.VisibilityOff
                         },
-                        contentDescription = stringResource(id = R.string.password_toggle),
+                        contentDescription = stringResource(id = R.string.password_toggle)
                     )
                 }
             },
@@ -76,10 +105,10 @@ fun PasswordTextField(
                 imeAction = if (onNext != null) ImeAction.Next else ImeAction.Done,
             ),
             keyboardActions = KeyboardActions(
-                onNext = onNext,
-                onDone = onDone,
+                onNext = onNext?.let { { onNext() } },
+                onDone = onDone?.let { { onDone() } }
             ),
-            singleLine = true,
+            singleLine = true
         )
 
         if (errorLabelId != null) {
@@ -88,7 +117,7 @@ fun PasswordTextField(
                 modifier = Modifier.padding(top = 4.dp),
                 color = MaterialTheme.colorScheme.error,
                 fontWeight = FontWeight.Bold,
-                fontSize = 12.sp,
+                fontSize = 12.sp
             )
         }
     }

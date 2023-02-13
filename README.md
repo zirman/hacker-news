@@ -1,10 +1,15 @@
 TODO:
  + logout
  + register account
+ + use android.icu.text.MessageFormat to translate plurals
  + autofill login/password
- + tab to next fields
- + enter button to submit
  + synchronize expanded items between devices
+ + TalkBack
+ + Voice Access
+ + Switch Access
+ + Long Click
+ + Swipe
+ + Modifier.semantics()
  + jump to unread items
  + firebase crashlytics
  + follow item with notifications on updates

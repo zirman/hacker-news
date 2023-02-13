@@ -54,7 +54,7 @@ fun LoginContent(
 ) {
     Surface(
         modifier = modifier,
-        contentColor = MaterialTheme.colorScheme.tertiary,
+        contentColor = MaterialTheme.colorScheme.tertiary
     ) {
         Column(
             modifier = Modifier
@@ -73,7 +73,7 @@ fun LoginContent(
                         })
                         .asPaddingValues()
                 ),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             val rowModifier: Modifier =
                 if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
@@ -101,7 +101,7 @@ fun LoginContent(
             Text(
                 text = stringResource(id = R.string.hacker_news_login),
                 modifier = rowModifier,
-                style = MaterialTheme.typography.headlineMedium,
+                style = MaterialTheme.typography.headlineMedium
             )
 
             UsernameTextField(
@@ -109,12 +109,15 @@ fun LoginContent(
                 onUsernameChange = setUsername,
                 modifier = rowModifier,
                 onNext = { focusManager.moveFocus(FocusDirection.Down) },
+                onPrev = { focusManager.moveFocus(FocusDirection.Up) }
             )
 
             PasswordTextField(
                 password = password,
                 onChangePassword = setPassword,
                 modifier = rowModifier,
+                onNext = { focusManager.moveFocus(FocusDirection.Down) },
+                onPrev = { focusManager.moveFocus(FocusDirection.Up) },
                 onDone = {
                     submitJob(
                         coroutineScope = coroutineScope,
@@ -125,9 +128,9 @@ fun LoginContent(
                             this.password = password
                         },
                         onLogin = onLogin,
-                        onLoginError = onLoginError,
+                        onLoginError = onLoginError
                     )
-                },
+                }
             )
 
             Button(
@@ -141,11 +144,11 @@ fun LoginContent(
                             this.password = password
                         },
                         onLogin = onLogin,
-                        onLoginError = onLoginError,
+                        onLoginError = onLoginError
                     )
                 },
                 modifier = rowModifier,
-                enabled = username.isNotBlank() && password.isNotBlank(),
+                enabled = username.isNotBlank() && password.isNotBlank()
             ) {
                 Text(text = stringResource(id = R.string.submit))
             }

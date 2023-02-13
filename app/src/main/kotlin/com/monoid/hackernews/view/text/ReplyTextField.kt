@@ -23,7 +23,7 @@ fun ReplyTextField(
         label = { Text(text = stringResource(id = R.string.reply)) },
         keyboardOptions = KeyboardOptions(
             capitalization = KeyboardCapitalization.Sentences,
-            keyboardType = KeyboardType.Text,
-        ),
+            keyboardType = KeyboardType.Text
+        )
     )
 }

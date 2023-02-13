@@ -1,6 +1,5 @@
 package com.monoid.hackernews.view.text
 
-import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
@@ -11,6 +10,12 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.isShiftPressed
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -21,13 +26,31 @@ import com.monoid.hackernews.common.view.R
 fun UsernameTextField(
     username: String,
     onUsernameChange: (String) -> Unit,
-    onNext: KeyboardActionScope.() -> Unit,
+    onNext: () -> Unit,
+    onPrev: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     OutlinedTextField(
         value = username,
         onValueChange = onUsernameChange,
-        modifier = modifier,
+        modifier = modifier.onPreviewKeyEvent { event -> // handle hardware keyboards
+            if (event.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
+
+            when (event.key) {
+                Key.Tab, Key.Enter -> {
+                    if (event.isShiftPressed) {
+                        onPrev()
+                    } else {
+                        onNext()
+                    }
+
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
+        },
         label = { Text(text = stringResource(id = R.string.username)) },
         placeholder = { Text(text = stringResource(id = R.string.username)) },
         trailingIcon = {
@@ -45,7 +68,7 @@ fun UsernameTextField(
             keyboardType = KeyboardType.Ascii,
             imeAction = ImeAction.Next
         ),
-        keyboardActions = KeyboardActions(onNext = onNext),
+        keyboardActions = KeyboardActions(onNext = { onNext() }),
         singleLine = true
     )
 }

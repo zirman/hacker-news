@@ -66,7 +66,7 @@ fun CommentItem(
     onClickUser: (Username) -> Unit,
     onClickReply: (ItemId) -> Unit,
     onNavigateLogin: (LoginAction) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Surface(
         modifier = modifier
@@ -107,7 +107,7 @@ fun CommentItem(
         ) {
             val isDeleted =
                 itemUiState.value?.itemUi?.item?.text == null &&
-                        itemUiState.value?.itemUi?.item?.lastUpdate != null
+                    itemUiState.value?.itemUi?.item?.lastUpdate != null
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 val timeByUserAnnotatedString: State<AnnotatedString> =
@@ -120,10 +120,6 @@ fun CommentItem(
                     lines = 1,
                     onClick = { offset ->
                         if (itemUiState.value?.itemUi?.isExpanded == true) {
-                            coroutineScope.launch {
-                                itemUiState.value?.itemUi?.toggleExpanded()
-                            }
-                        } else {
                             val username: Username? = timeByUserAnnotatedString.value
                                 .getStringAnnotations(
                                     tag = userTag,
@@ -140,6 +136,10 @@ fun CommentItem(
                                 coroutineScope.launch {
                                     itemUiState.value?.itemUi?.toggleExpanded()
                                 }
+                            }
+                        } else {
+                            coroutineScope.launch {
+                                itemUiState.value?.itemUi?.toggleExpanded()
                             }
                         }
                     },

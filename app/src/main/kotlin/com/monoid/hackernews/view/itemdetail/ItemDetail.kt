@@ -32,7 +32,7 @@ fun ItemDetail(
     onClickBrowser: (String) -> Unit,
     onNavigateLogin: (LoginAction) -> Unit,
     modifier: Modifier = Modifier,
-    listState: LazyListState = rememberLazyListState()
+    listState: LazyListState = rememberLazyListState(),
 ) {
     val refreshScope = rememberCoroutineScope()
 
