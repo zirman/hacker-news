@@ -40,7 +40,6 @@ import com.monoid.hackernews.view.text.UsernameTextField
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 @Composable
@@ -93,6 +92,31 @@ fun LoginContent(
             val (password: String, setPassword) =
                 rememberSaveable { mutableStateOf("") }
 
+            fun onSubmit() {
+                if (username.isBlank() || password.isEmpty()) return
+
+                coroutineScope.launch {
+                    try {
+                        onLogin(
+                            authentication.updateData { auth ->
+                                httpClient.loginRequest(authentication = authentication {
+                                    this.username = username
+                                    this.password = password
+                                })
+
+                                auth.copy {
+                                    this.username = username
+                                    this.password = password
+                                }
+                            }
+                        )
+                    } catch (error: Throwable) {
+                        if (error is CancellationException) throw error
+                        onLoginError(error)
+                    }
+                }
+            }
+
             val focusManager: FocusManager =
                 LocalFocusManager.current
 
@@ -118,69 +142,18 @@ fun LoginContent(
                 modifier = rowModifier,
                 onNext = { focusManager.moveFocus(FocusDirection.Down) },
                 onPrev = { focusManager.moveFocus(FocusDirection.Up) },
-                onDone = {
-                    submitJob(
-                        coroutineScope = coroutineScope,
-                        httpClient = httpClient,
-                        authentication = authentication,
-                        loginAuthentication = authentication {
-                            this.username = username
-                            this.password = password
-                        },
-                        onLogin = onLogin,
-                        onLoginError = onLoginError
-                    )
-                }
+                onDone = ::onSubmit
             )
 
             Button(
-                onClick = {
-                    submitJob(
-                        coroutineScope = coroutineScope,
-                        httpClient = httpClient,
-                        authentication = authentication,
-                        loginAuthentication = authentication {
-                            this.username = username
-                            this.password = password
-                        },
-                        onLogin = onLogin,
-                        onLoginError = onLoginError
-                    )
-                },
+                onClick = ::onSubmit,
                 modifier = rowModifier,
-                enabled = username.isNotBlank() && password.isNotBlank()
+                enabled = username.isNotBlank() && password.isNotEmpty()
             ) {
                 Text(text = stringResource(id = R.string.submit))
             }
 
             Spacer(Modifier.height(12.dp))
-        }
-    }
-}
-
-fun submitJob(
-    coroutineScope: CoroutineScope,
-    httpClient: HttpClient,
-    authentication: DataStore<Authentication>,
-    loginAuthentication: Authentication,
-    onLogin: (Authentication) -> Unit,
-    onLoginError: (Throwable) -> Unit,
-): Job {
-    return coroutineScope.launch {
-        try {
-            onLogin(
-                authentication.updateData { auth ->
-                    httpClient.loginRequest(authentication = loginAuthentication)
-
-                    auth.copy {
-                        username = loginAuthentication.username
-                        password = loginAuthentication.password
-                    }
-                }
-            )
-        } catch (error: Throwable) {
-            if (error is CancellationException) throw error
-            onLoginError(error)
         }
     }
 }
