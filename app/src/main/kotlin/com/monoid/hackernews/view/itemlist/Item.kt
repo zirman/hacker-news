@@ -60,6 +60,7 @@ import com.monoid.hackernews.common.ui.text.ClickableTextBlock
 import com.monoid.hackernews.view.text.TextBlock
 import com.monoid.hackernews.common.ui.util.rememberTimeBy
 import com.monoid.hackernews.common.ui.util.userTag
+import com.monoid.hackernews.view.util.rememberAnnotatedString
 
 @Preview
 @Composable
@@ -131,7 +132,9 @@ fun Item(
             ) {
                 SelectionContainer(modifier = Modifier.weight(1f)) {
                     TextBlock(
-                        text = item?.title ?: "",
+                        text = item?.title?.let { AnnotatedString(text = it) }
+                            ?: item?.text?.let { rememberAnnotatedString(htmlText = it) }
+                            ?: AnnotatedString(text = ""),
                         lines = 2,
                         modifier = Modifier.padding(start = 8.dp),
                         overflow = TextOverflow.Ellipsis,
