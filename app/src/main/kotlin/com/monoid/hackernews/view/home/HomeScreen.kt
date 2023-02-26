@@ -201,7 +201,7 @@ fun HomeScreen(
                         }
                     }
                 },
-                colors = TopAppBarDefaults.smallTopAppBarColors(
+                colors = TopAppBarDefaults.topAppBarColors(
                     navigationIconContentColor = MaterialTheme.colorScheme.tertiary,
                     titleContentColor = MaterialTheme.colorScheme.tertiary,
                     actionIconContentColor = MaterialTheme.colorScheme.tertiary,
