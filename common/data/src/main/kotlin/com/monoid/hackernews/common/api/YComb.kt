@@ -23,7 +23,8 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.Parameters
 import io.ktor.http.ParametersBuilder
 import io.ktor.http.contentType
-import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonPrimitive
@@ -81,7 +82,7 @@ private suspend inline fun HttpClient.yCombRequest(
                     }.trim(),
                 )
             } catch (error: Throwable) {
-                if (error is CancellationException) throw error
+                currentCoroutineContext().ensureActive()
                 YCombException()
             }
         } else {

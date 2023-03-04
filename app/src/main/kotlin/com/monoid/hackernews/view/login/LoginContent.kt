@@ -38,8 +38,9 @@ import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.view.text.PasswordTextField
 import com.monoid.hackernews.view.text.UsernameTextField
 import io.ktor.client.HttpClient
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 
 @Composable
@@ -86,13 +87,15 @@ fun LoginContent(
             val coroutineScope: CoroutineScope =
                 rememberCoroutineScope()
 
-            val (username: String, setUsername) =
+            val usernameState =
                 rememberSaveable { mutableStateOf("") }
 
-            val (password: String, setPassword) =
+            val passwordState =
                 rememberSaveable { mutableStateOf("") }
 
             fun onSubmit() {
+                val username = usernameState.value
+                val password = passwordState.value
                 if (username.isBlank() || password.isEmpty()) return
 
                 coroutineScope.launch {
@@ -111,7 +114,7 @@ fun LoginContent(
                             }
                         )
                     } catch (error: Throwable) {
-                        if (error is CancellationException) throw error
+                        currentCoroutineContext().ensureActive()
                         onLoginError(error)
                     }
                 }
@@ -129,16 +132,16 @@ fun LoginContent(
             )
 
             UsernameTextField(
-                username = username,
-                onUsernameChange = setUsername,
+                username = usernameState.value,
+                onUsernameChange = { usernameState.value = it },
                 modifier = rowModifier,
                 onNext = { focusManager.moveFocus(FocusDirection.Down) },
                 onPrev = { focusManager.moveFocus(FocusDirection.Up) }
             )
 
             PasswordTextField(
-                password = password,
-                onChangePassword = setPassword,
+                password = passwordState.value,
+                onChangePassword = { passwordState.value = it },
                 modifier = rowModifier,
                 onNext = { focusManager.moveFocus(FocusDirection.Down) },
                 onPrev = { focusManager.moveFocus(FocusDirection.Up) },
@@ -148,7 +151,7 @@ fun LoginContent(
             Button(
                 onClick = ::onSubmit,
                 modifier = rowModifier,
-                enabled = username.isNotBlank() && password.isNotEmpty()
+                enabled = usernameState.value.isNotBlank() && passwordState.value.isNotEmpty()
             ) {
                 Text(text = stringResource(id = R.string.submit))
             }

@@ -37,9 +37,10 @@ import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.view.text.ReplyTextField
 import com.monoid.hackernews.view.util.getAnnotatedString
 import io.ktor.client.HttpClient
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -172,7 +173,7 @@ fun replyJob(
 
             onSuccess()
         } catch (error: Throwable) {
-            if (error is CancellationException) throw error
+            currentCoroutineContext().ensureActive()
             onError(error)
         }
     }

@@ -20,13 +20,14 @@ import com.monoid.hackernews.common.room.ItemDb
 import com.monoid.hackernews.common.room.UpvoteDao
 import com.monoid.hackernews.common.room.UpvoteDb
 import io.ktor.client.HttpClient
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -57,7 +58,7 @@ class ItemTreeRepository @Inject constructor(
     private val upvoteDao: UpvoteDao,
     private val favoriteDao: FavoriteDao,
     private val flagDao: FlagDao,
-    private val expandedDao: ExpandedDao
+    private val expandedDao: ExpandedDao,
 ) {
     private val sharedFlows: MutableMap<ItemId, WeakReference<Flow<ItemUiInternal>>> =
         mutableMapOf()
@@ -67,7 +68,7 @@ class ItemTreeRepository @Inject constructor(
 
     @Immutable
     private inner class ItemRowInternal(
-        override val itemId: ItemId
+        override val itemId: ItemId,
     ) : ItemListRow() {
         override val itemUiFlow: Flow<ItemUi>
             get() {
@@ -81,16 +82,16 @@ class ItemTreeRepository @Inject constructor(
     @Immutable
     private inner class ItemThreadInternal(
         override val itemId: ItemId,
-        private val threadDepth: Int
+        private val threadDepth: Int,
     ) : ItemTreeRow() {
         override val itemUiFlow: Flow<ItemUiWithThreadDepth>
             get() {
                 return (
-                        sharedFlows[itemId]?.get()
-                            ?: sharedItemUiFlow(itemId).also {
-                                sharedFlows[itemId] = WeakReference(it)
-                            }
-                        )
+                    sharedFlows[itemId]?.get()
+                        ?: sharedItemUiFlow(itemId).also {
+                            sharedFlows[itemId] = WeakReference(it)
+                        }
+                    )
                     .onEach { itemUpdatesSharedFlow.emit(it) }
                     .map { ItemUiWithThreadDepth(threadDepth, it) }
             }
@@ -108,7 +109,7 @@ class ItemTreeRepository @Inject constructor(
     suspend fun upvoteItemJob(
         authentication: Authentication,
         itemId: ItemId,
-        isUpvote: Boolean = true
+        isUpvote: Boolean = true,
     ) {
         try {
             httpClient.upvoteItem(
@@ -123,7 +124,7 @@ class ItemTreeRepository @Inject constructor(
                 upvoteDao.upvoteDelete(UpvoteDb(authentication.username, itemId.long))
             }
         } catch (error: Throwable) {
-            if (error is CancellationException) throw error
+            currentCoroutineContext().ensureActive()
 
             Log.e(
                 /* tag = */ TAG,
@@ -135,7 +136,7 @@ class ItemTreeRepository @Inject constructor(
     suspend fun favoriteItemJob(
         authentication: Authentication,
         itemId: ItemId,
-        isFavorite: Boolean = true
+        isFavorite: Boolean = true,
     ) {
         try {
             httpClient.favoriteRequest(
@@ -150,7 +151,7 @@ class ItemTreeRepository @Inject constructor(
                 favoriteDao.favoriteDelete(FavoriteDb(authentication.username, itemId.long))
             }
         } catch (error: Throwable) {
-            if (error is CancellationException) throw error
+            currentCoroutineContext().ensureActive()
 
             Log.e(
                 /* tag = */ TAG,
@@ -162,7 +163,7 @@ class ItemTreeRepository @Inject constructor(
     suspend fun flagItemJob(
         authentication: Authentication,
         itemId: ItemId,
-        isFlag: Boolean = true
+        isFlag: Boolean = true,
     ) {
         try {
             httpClient.flagRequest(
@@ -176,7 +177,7 @@ class ItemTreeRepository @Inject constructor(
                 flagDao.flagDelete(FlagDb(authentication.username, itemId.long))
             }
         } catch (error: Throwable) {
-            if (error is CancellationException) throw error
+            currentCoroutineContext().ensureActive()
 
             Log.e(
                 /* tag = */ TAG,
@@ -287,7 +288,7 @@ class ItemTreeRepository @Inject constructor(
                     try {
                         itemDao.itemApiInsert(httpClient.getItem(itemId))
                     } catch (error: Throwable) {
-                        if (error is CancellationException) throw error
+                        currentCoroutineContext().ensureActive()
 
                         Log.e(
                             /* tag = */ TAG,
@@ -349,7 +350,7 @@ class ItemTreeRepository @Inject constructor(
         override val isUpvote: Boolean,
         override val isFavorite: Boolean,
         override val isFlag: Boolean,
-        override val isExpanded: Boolean
+        override val isExpanded: Boolean,
     ) : ItemUi() {
         override suspend fun toggleUpvote(onNavigateLogin: (LoginAction) -> Unit) {
             val authentication = authentication.data.first()

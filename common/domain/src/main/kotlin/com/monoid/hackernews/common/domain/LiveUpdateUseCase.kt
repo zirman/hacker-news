@@ -3,9 +3,10 @@ package com.monoid.hackernews.common.domain
 import android.net.ConnectivityManager
 import com.monoid.hackernews.common.data.Repository
 import com.monoid.hackernews.common.ui.util.getNetworkConnectivityStateFlow
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.emitAll
@@ -29,7 +30,7 @@ class LiveUpdateUseCase<out T>(
                         try {
                             repository.updateItems()
                         } catch (error: Throwable) {
-                            if (error is CancellationException) throw error
+                            currentCoroutineContext().ensureActive()
                         }
 
                         delay(updatePeriod)
