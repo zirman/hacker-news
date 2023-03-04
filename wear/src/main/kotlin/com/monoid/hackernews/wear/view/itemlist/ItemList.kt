@@ -20,11 +20,10 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.rotary.onRotaryScrollEvent
 import androidx.metrics.performance.PerformanceMetricsState
+import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
+import androidx.wear.compose.foundation.lazy.ScalingLazyListState
 import androidx.wear.compose.material.ListHeader
-import androidx.wear.compose.material.ScalingLazyColumn
-import androidx.wear.compose.material.ScalingLazyListState
 import androidx.wear.compose.material.Text
-import androidx.wear.compose.material.items
 import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.ItemListRow
 import com.monoid.hackernews.common.util.rememberMetricsStateHolder
