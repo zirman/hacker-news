@@ -45,6 +45,14 @@ android {
             "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
         )
     }
+
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+    }
 }
 
 protobuf {
