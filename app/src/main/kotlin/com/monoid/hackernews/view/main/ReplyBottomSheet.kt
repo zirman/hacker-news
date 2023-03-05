@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.datastore.core.DataStore
 import androidx.navigation.NavGraphBuilder
@@ -24,7 +25,7 @@ fun NavGraphBuilder.replyBottomSheet(
     authentication: DataStore<Authentication>,
     itemTreeRepository: ItemTreeRepository,
     httpClient: HttpClient,
-    windowSizeClass: WindowSizeClass,
+    windowSizeClassState: State<WindowSizeClass>,
     onNavigateUp: () -> Unit,
     onLoginError: (Throwable) -> Unit,
 ) {
@@ -40,16 +41,13 @@ fun NavGraphBuilder.replyBottomSheet(
             itemTreeRepository = itemTreeRepository,
             authentication = authentication,
             itemId = itemId,
-            windowSizeClass = windowSizeClass,
+            windowSizeClass = windowSizeClassState.value,
             onSuccess = onNavigateUp,
             onError = onLoginError,
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(state = rememberScrollState())
-                .windowInsetsPadding(
-                    WindowInsets.safeDrawing
-                        .only(WindowInsetsSides.Horizontal)
-                ),
+                .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
         )
     }
 }

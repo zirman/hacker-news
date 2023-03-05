@@ -1,12 +1,17 @@
 package com.monoid.hackernews.view.main
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.getSystemService
@@ -24,11 +29,13 @@ import com.monoid.hackernews.common.navigation.MainNavigation
 import com.monoid.hackernews.common.navigation.Stories
 import com.monoid.hackernews.common.ui.util.itemIdSaver
 import com.monoid.hackernews.view.home.HomeScreen
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 fun NavGraphBuilder.homeScreen(
     mainViewModel: MainViewModel,
     context: Context,
-    windowSizeClass: WindowSizeClass,
+    windowSizeClassState: State<WindowSizeClass>,
     drawerState: DrawerState,
     snackbarHostState: SnackbarHostState,
     onNavigateToUser: (Username) -> Unit,
@@ -69,11 +76,12 @@ fun NavGraphBuilder.homeScreen(
         val (detailInteraction, setDetailInteraction) =
             rememberSaveable { mutableStateOf(selectedItemId != null) }
 
+        val coroutineScope = rememberCoroutineScope()
+
         HomeScreen(
-            authentication = mainViewModel.authentication,
             itemTreeRepository = mainViewModel.itemTreeRepository,
             drawerState = drawerState,
-            windowSizeClass = windowSizeClass,
+            windowSizeClass = windowSizeClassState.value,
             title = stringResource(
                 id = when (stories) {
                     Stories.Top ->
@@ -118,9 +126,42 @@ fun NavGraphBuilder.homeScreen(
             setSelectedItemId = setSelectedItemId,
             detailInteraction = detailInteraction,
             setDetailInteraction = setDetailInteraction,
-            onNavigateToUser = onNavigateToUser,
-            onNavigateToReply = onNavigateToReply,
             onNavigateToLogin = onNavigateToLogin,
+            onClickUser = { user ->
+                if (user != null) {
+                    onNavigateToUser(user)
+                } else {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.url_is_null),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            },
+            onClickReply = { itemId ->
+                coroutineScope.launch {
+                    val auth = mainViewModel.authentication.data.first()
+
+                    if (auth.password.isNotEmpty()) {
+                        onNavigateToReply(itemId)
+                    } else {
+                        onNavigateToLogin(LoginAction.Reply(itemId.long))
+                    }
+                }
+            },
+            onClickBrowser = { url ->
+                val uri = url?.let { Uri.parse(it) }
+
+                if (uri != null) {
+                    context.startActivity(Intent(Intent.ACTION_VIEW, uri))
+                } else {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.url_is_null),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         )
     }
 }

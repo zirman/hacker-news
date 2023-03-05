@@ -1,6 +1,5 @@
 package com.monoid.hackernews
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -13,7 +12,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
 import androidx.datastore.core.DataStore
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -93,7 +91,7 @@ class MainActivity : ComponentActivity() {
 
                 MainContent(
                     mainViewModel = hiltViewModel(),
-                    windowSizeClass = calculateWindowSizeClass(LocalContext.current as Activity)
+                    windowSizeClass = calculateWindowSizeClass(this)
                 )
             }
         }

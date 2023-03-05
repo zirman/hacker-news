@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import com.google.accompanist.navigation.material.bottomSheet
@@ -16,21 +17,18 @@ import com.monoid.hackernews.common.navigation.MainNavigation
 import com.monoid.hackernews.view.aboutus.AboutUs
 
 fun NavGraphBuilder.aboutUsBottomSheet(
-    windowSizeClass: WindowSizeClass,
+    windowSizeClassState: State<WindowSizeClass>,
 ) {
     bottomSheet(
         route = MainNavigation.AboutUs.route,
         arguments = MainNavigation.AboutUs.arguments,
     ) {
         AboutUs(
-            windowSizeClass = windowSizeClass,
+            windowSizeClass = windowSizeClassState.value,
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(state = rememberScrollState())
-                .windowInsetsPadding(
-                    WindowInsets.safeDrawing
-                        .only(WindowInsetsSides.Horizontal)
-                ),
+                .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
         )
     }
 }

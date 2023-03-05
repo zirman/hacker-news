@@ -58,7 +58,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.datastore.core.DataStore
 import com.google.accompanist.adaptive.FoldAwareConfiguration
 import com.google.accompanist.adaptive.HorizontalTwoPaneStrategy
 import com.google.accompanist.adaptive.TwoPane
@@ -70,7 +69,6 @@ import com.monoid.hackernews.common.data.ItemTreeRepository
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.OrderedItem
 import com.monoid.hackernews.common.data.Username
-import com.monoid.hackernews.common.datastore.Authentication
 import com.monoid.hackernews.common.domain.LiveUpdateUseCase
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.view.itemdetail.ItemDetail
@@ -80,14 +78,12 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 @Composable
 fun HomeScreen(
-    authentication: DataStore<Authentication>,
     itemTreeRepository: ItemTreeRepository,
     drawerState: DrawerState,
     windowSizeClass: WindowSizeClass,
@@ -101,44 +97,10 @@ fun HomeScreen(
     setDetailInteraction: (Boolean) -> Unit,
     context: Context = LocalContext.current,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    onNavigateToUser: (Username) -> Unit,
-    onNavigateToReply: (ItemId) -> Unit,
     onNavigateToLogin: (LoginAction) -> Unit,
-    onClickUser: (Username?) -> Unit = { user ->
-        if (user != null) {
-            onNavigateToUser(user)
-        } else {
-            Toast.makeText(
-                context,
-                context.getString(R.string.url_is_null),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-    },
-    onClickReply: (ItemId) -> Unit = { itemId ->
-        coroutineScope.launch {
-            val auth = authentication.data.first()
-
-            if (auth.password.isNotEmpty()) {
-                onNavigateToReply(itemId)
-            } else {
-                onNavigateToLogin(LoginAction.Reply(itemId.long))
-            }
-        }
-    },
-    onClickBrowser: (String?) -> Unit = { url ->
-        val uri = url?.let { Uri.parse(it) }
-
-        if (uri != null) {
-            context.startActivity(Intent(Intent.ACTION_VIEW, uri))
-        } else {
-            Toast.makeText(
-                context,
-                context.getString(R.string.url_is_null),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-    },
+    onClickUser: (Username?) -> Unit,
+    onClickReply: (ItemId) -> Unit,
+    onClickBrowser: (String?) -> Unit,
 ) {
     val showItemId: ItemId?
         by remember(windowSizeClass.widthSizeClass, selectedItemId, detailInteraction) {

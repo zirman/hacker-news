@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.runtime.State
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 import com.monoid.hackernews.MainViewModel
@@ -18,7 +19,7 @@ fun NavGraphBuilder.mainGraph(
     mainViewModel: MainViewModel,
     context: Context,
     snackbarHostState: SnackbarHostState,
-    windowSizeClass: WindowSizeClass,
+    windowSizeClassState: State<WindowSizeClass>,
     drawerState: DrawerState,
     onNavigateToUser: (Username) -> Unit,
     onNavigateToReply: (ItemId) -> Unit,
@@ -33,7 +34,7 @@ fun NavGraphBuilder.mainGraph(
         userScreen(
             mainViewModel = mainViewModel,
             context = context,
-            windowSizeClass = windowSizeClass,
+            windowSizeClassState = windowSizeClassState,
             drawerState = drawerState,
             snackbarHostState = snackbarHostState,
             onNavigateToUser = onNavigateToUser,
@@ -44,7 +45,7 @@ fun NavGraphBuilder.mainGraph(
         homeScreen(
             mainViewModel = mainViewModel,
             context = context,
-            windowSizeClass = windowSizeClass,
+            windowSizeClassState = windowSizeClassState,
             drawerState = drawerState,
             snackbarHostState = snackbarHostState,
             onNavigateToUser = onNavigateToUser,
@@ -56,7 +57,7 @@ fun NavGraphBuilder.mainGraph(
             authentication = mainViewModel.authentication,
             itemTreeRepository = mainViewModel.itemTreeRepository,
             httpClient = mainViewModel.httpClient,
-            windowSizeClass = windowSizeClass,
+            windowSizeClassState = windowSizeClassState,
             onNavigateToReply = onNavigateToReply,
             onNavigateUp = onNavigateUp,
             onLoginError = onLoginError
@@ -66,18 +67,18 @@ fun NavGraphBuilder.mainGraph(
             authentication = mainViewModel.authentication,
             itemTreeRepository = mainViewModel.itemTreeRepository,
             httpClient = mainViewModel.httpClient,
-            windowSizeClass = windowSizeClass,
+            windowSizeClassState = windowSizeClassState,
             onNavigateUp = onNavigateUp,
             onLoginError = onLoginError
         )
 
         aboutUsBottomSheet(
-            windowSizeClass = windowSizeClass
+            windowSizeClassState = windowSizeClassState
         )
 
         settingsBottomSheet(
             authentication = mainViewModel.authentication,
-            windowSizeClass = windowSizeClass
+            windowSizeClassState = windowSizeClassState
         )
     }
 }

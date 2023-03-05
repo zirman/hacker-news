@@ -8,6 +8,7 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -75,6 +76,8 @@ fun MainNavigation(
         }
     }
 
+    val windowSizeClassState = rememberUpdatedState(windowSizeClass)
+
     AnimatedNavHost(
         navController = mainNavController,
         startDestination = mainGraphRoutePattern,
@@ -84,7 +87,7 @@ fun MainNavigation(
             mainViewModel = mainViewModel,
             context = context,
             snackbarHostState = snackbarHostState,
-            windowSizeClass = windowSizeClass,
+            windowSizeClassState = windowSizeClassState,
             drawerState = drawerState,
             onNavigateToUser = onNavigateToUser,
             onNavigateToReply = onNavigateToReply,
