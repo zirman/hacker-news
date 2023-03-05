@@ -128,13 +128,13 @@ fun RootItem(
                 verticalAlignment = Alignment.Top
             ) {
                 SelectionContainer(modifier = Modifier.weight(1f)) {
-                    TextBlock(
+                    Text(
                         text = rememberAnnotatedString(
                             htmlText = (if (item?.type == "comment") item.text else item?.title)
                                 ?: "",
                             linkColor = LocalContentColor.current
                         ),
-                        lines = 2,
+                        minLines = 2,
                         modifier = Modifier.padding(horizontal = 8.dp),
                         style = MaterialTheme.typography.titleMedium
                     )
