@@ -22,7 +22,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "gradle-plugin-android",
-                /* version = */ "7.4.0"
+                /* version = */ "7.4.2"
             )
 
             version(
@@ -47,7 +47,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "ktor",
-                /* version = */ "2.2.3"
+                /* version = */ "2.2.4"
             )
 
             version(
@@ -57,22 +57,22 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "lifecycle",
-                /* version = */ "2.6.0-beta01"
+                /* version = */ "2.6.0-rc01"
             )
 
             version(
                 /* alias = */ "navigation",
-                /* version = */ "2.6.0-alpha05"
+                /* version = */ "2.6.0-alpha06"
             )
 
             version(
                 /* alias = */ "compose",
-                /* version = */ "1.4.0-beta01"
+                /* version = */ "1.4.0-beta02"
             )
 
             version(
                 /* alias = */ "compose-compiler",
-                /* version = */ "1.4.2"
+                /* version = */ "1.4.3"
             )
 
             version(
@@ -82,7 +82,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "material3",
-                /* version = */ "1.0.1"
+                /* version = */ "1.1.0-alpha07"
             )
 
             version(
@@ -118,7 +118,7 @@ dependencyResolutionManagement {
             plugin(
                 /* alias = */ "versions",
                 /* id = */ "com.github.ben-manes.versions"
-            ).version("0.45.0")
+            ).version("0.46.0")
 
             bundle(
                 /* alias = */ "kotlinx",
@@ -356,7 +356,7 @@ dependencyResolutionManagement {
                 /* alias = */ "window",
                 /* group = */ "androidx.window",
                 /* artifact = */ "window"
-            ).version("1.1.0-alpha04")
+            ).version("1.1.0-alpha06")
 
             library(
                 /* alias = */ "appcompat",
@@ -386,19 +386,19 @@ dependencyResolutionManagement {
                 /* alias = */ "activity-ktx",
                 /* group = */ "androidx.activity",
                 /* artifact = */ "activity-ktx"
-            ).version("1.7.0-alpha04")
+            ).version("1.7.0-beta01")
 
             library(
                 /* alias = */ "fragment-ktx",
                 /* group = */ "androidx.fragment",
                 /* artifact = */ "fragment-ktx"
-            ).version("1.6.0-alpha05")
+            ).version("1.6.0-alpha06")
 
             library(
                 /* alias = */ "activity-compose",
                 /* group = */ "androidx.activity",
                 /* artifact = */ "activity-compose"
-            ).version("1.7.0-alpha04")
+            ).version("1.7.0-beta01")
 
             library(
                 /* alias = */ "palette-ktx",
@@ -428,7 +428,7 @@ dependencyResolutionManagement {
                 /* alias = */ "benchmark-junit4",
                 /* group = */ "androidx.benchmark",
                 /* artifact = */ "benchmark-junit4"
-            ).version("1.2.0-alpha09")
+            ).version("1.2.0-alpha10")
 
             library(
                 /* alias = */ "lifecycle-runtime-ktx",
@@ -476,7 +476,7 @@ dependencyResolutionManagement {
                 /* alias = */ "hilt-navigation-compose",
                 /* group = */ "androidx.hilt",
                 /* artifact = */ "hilt-navigation-compose"
-            ).version("1.0.0")
+            ).version("1.1.0-alpha01")
 
             library(
                 /* alias = */ "navigation-ui-ktx",
@@ -494,7 +494,7 @@ dependencyResolutionManagement {
                 /* alias = */ "material",
                 /* group = */ "com.google.android.material",
                 /* artifact = */ "material"
-            ).version("1.9.0-alpha01")
+            ).version("1.9.0-alpha02")
 
             library(
                 /* alias = */ "material3",
@@ -567,7 +567,7 @@ dependencyResolutionManagement {
                 /* alias = */ "ui-text-google-fonts",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-text-google-fonts"
-            ).version("1.4.0-beta01")
+            ).version("1.4.0-beta02")
 
             library(
                 /* alias = */ "constraintlayout",
@@ -585,19 +585,19 @@ dependencyResolutionManagement {
                 /* alias = */ "compose-foundation",
                 /* group = */ "androidx.wear.compose",
                 /* artifact = */ "compose-foundation"
-            ).version("1.1.0")
+            ).version("1.2.0-alpha05")
 
             library(
                 /* alias = */ "compose-material-wear",
                 /* group = */ "androidx.wear.compose",
                 /* artifact = */ "compose-material"
-            ).version("1.1.0")
+            ).version("1.2.0-alpha05")
 
             library(
                 /* alias = */ "compose-navigation-wear",
                 /* group = */ "androidx.wear.compose",
                 /* artifact = */ "compose-navigation"
-            ).version("1.1.0")
+            ).version("1.2.0-alpha05")
 
             library(
                 /* alias = */ "accompanist-navigation-animation",
@@ -639,13 +639,13 @@ dependencyResolutionManagement {
                 /* alias = */ "ui-test-junit4",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-test-junit4"
-            ).version("1.4.0-beta01")
+            ).version("1.4.0-beta02")
 
             library(
                 /* alias = */ "ui-test-manifest",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-test-manifest"
-            ).version("1.4.0-beta01")
+            ).version("1.4.0-beta02")
 
             library(
                 /* alias = */ "junit",
