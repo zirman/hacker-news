@@ -86,6 +86,12 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
+
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/versions/9/previous-compilation-data.bin"
+        }
+    }
 }
 
 kapt {

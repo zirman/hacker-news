@@ -32,7 +32,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "kotlinx-coroutines",
-                /* version = */ "1.6.4"
+                /* version = */ "1.7.0-Beta"
             )
 
             version(
@@ -57,17 +57,17 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "lifecycle",
-                /* version = */ "2.6.0-rc01"
+                /* version = */ "2.6.0"
             )
 
             version(
                 /* alias = */ "navigation",
-                /* version = */ "2.6.0-alpha06"
+                /* version = */ "2.6.0-alpha07"
             )
 
             version(
                 /* alias = */ "compose",
-                /* version = */ "1.4.0-beta02"
+                /* version = */ "1.4.0-rc01"
             )
 
             version(
@@ -82,12 +82,12 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "material3",
-                /* version = */ "1.1.0-alpha07"
+                /* version = */ "1.1.0-alpha08"
             )
 
             version(
                 /* alias = */ "accompanist",
-                /* version = */ "0.29.1-alpha"
+                /* version = */ "0.29.2-rc"
             )
 
             version(
@@ -386,19 +386,19 @@ dependencyResolutionManagement {
                 /* alias = */ "activity-ktx",
                 /* group = */ "androidx.activity",
                 /* artifact = */ "activity-ktx"
-            ).version("1.7.0-beta01")
+            ).version("1.7.0-rc01")
 
             library(
                 /* alias = */ "fragment-ktx",
                 /* group = */ "androidx.fragment",
                 /* artifact = */ "fragment-ktx"
-            ).version("1.6.0-alpha06")
+            ).version("1.6.0-alpha07")
 
             library(
                 /* alias = */ "activity-compose",
                 /* group = */ "androidx.activity",
                 /* artifact = */ "activity-compose"
-            ).version("1.7.0-beta01")
+            ).version("1.7.0-rc01")
 
             library(
                 /* alias = */ "palette-ktx",
@@ -428,7 +428,7 @@ dependencyResolutionManagement {
                 /* alias = */ "benchmark-junit4",
                 /* group = */ "androidx.benchmark",
                 /* artifact = */ "benchmark-junit4"
-            ).version("1.2.0-alpha10")
+            ).version("1.2.0-alpha11")
 
             library(
                 /* alias = */ "lifecycle-runtime-ktx",
@@ -567,13 +567,13 @@ dependencyResolutionManagement {
                 /* alias = */ "ui-text-google-fonts",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-text-google-fonts"
-            ).version("1.4.0-beta02")
+            ).version("1.4.0-rc01")
 
             library(
                 /* alias = */ "constraintlayout",
                 /* group = */ "androidx.constraintlayout",
                 /* artifact = */ "constraintlayout-compose"
-            ).version("1.1.0-alpha07")
+            ).version("1.1.0-alpha08")
 
             library(
                 /* alias = */ "metrics-performance",
@@ -585,19 +585,19 @@ dependencyResolutionManagement {
                 /* alias = */ "compose-foundation",
                 /* group = */ "androidx.wear.compose",
                 /* artifact = */ "compose-foundation"
-            ).version("1.2.0-alpha05")
+            ).version("1.2.0-alpha06")
 
             library(
                 /* alias = */ "compose-material-wear",
                 /* group = */ "androidx.wear.compose",
                 /* artifact = */ "compose-material"
-            ).version("1.2.0-alpha05")
+            ).version("1.2.0-alpha06")
 
             library(
                 /* alias = */ "compose-navigation-wear",
                 /* group = */ "androidx.wear.compose",
                 /* artifact = */ "compose-navigation"
-            ).version("1.2.0-alpha05")
+            ).version("1.2.0-alpha06")
 
             library(
                 /* alias = */ "accompanist-navigation-animation",
@@ -639,13 +639,13 @@ dependencyResolutionManagement {
                 /* alias = */ "ui-test-junit4",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-test-junit4"
-            ).version("1.4.0-beta02")
+            ).version("1.4.0-rc01")
 
             library(
                 /* alias = */ "ui-test-manifest",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-test-manifest"
-            ).version("1.4.0-beta02")
+            ).version("1.4.0-rc01")
 
             library(
                 /* alias = */ "junit",
