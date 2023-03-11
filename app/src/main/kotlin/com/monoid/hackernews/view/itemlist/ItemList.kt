@@ -86,7 +86,9 @@ fun ItemList(
                         itemUiState.value?.toggleFlag(onNavigateLogin)
                     }
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .animateItemPlacement()
             )
         }
     }
