@@ -18,12 +18,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.AutofillNode
+import androidx.compose.ui.autofill.AutofillType
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.isShiftPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalAutofill
+import androidx.compose.ui.platform.LocalAutofillTree
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -49,10 +56,28 @@ fun PasswordTextField(
         val (isPasswordVisible, setPasswordVisible) =
             rememberSaveable { mutableStateOf(false) }
 
+        val autofillNode = AutofillNode(
+            autofillTypes = listOf(AutofillType.Password),
+            onFill = onChangePassword
+        )
+
+        val autofill = LocalAutofill.current
+        LocalAutofillTree.current += autofillNode
+
         OutlinedTextField(
             value = password,
             onValueChange = onChangePassword,
             modifier = Modifier
+                .onGloballyPositioned { autofillNode.boundingBox = it.boundsInWindow() }
+                .onFocusChanged { focusState ->
+                    autofill?.run {
+                        if (focusState.isFocused) {
+                            requestAutofillForNode(autofillNode)
+                        } else {
+                            cancelAutofillForNode(autofillNode)
+                        }
+                    }
+                }
                 .onPreviewKeyEvent { event -> // handle hardware keyboards
                     if (event.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
 

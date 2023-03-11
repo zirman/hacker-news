@@ -10,12 +10,19 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.AutofillNode
+import androidx.compose.ui.autofill.AutofillType
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.isShiftPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalAutofill
+import androidx.compose.ui.platform.LocalAutofillTree
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -30,27 +37,46 @@ fun UsernameTextField(
     onPrev: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val autofillNode = AutofillNode(
+        autofillTypes = listOf(AutofillType.Username),
+        onFill = onUsernameChange
+    )
+
+    val autofill = LocalAutofill.current
+    LocalAutofillTree.current += autofillNode
+
     OutlinedTextField(
         value = username,
         onValueChange = onUsernameChange,
-        modifier = modifier.onPreviewKeyEvent { event -> // handle hardware keyboards
-            if (event.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
-
-            when (event.key) {
-                Key.Tab, Key.Enter -> {
-                    if (event.isShiftPressed) {
-                        onPrev()
+        modifier = modifier
+            .onGloballyPositioned { autofillNode.boundingBox = it.boundsInWindow() }
+            .onFocusChanged { focusState ->
+                autofill?.run {
+                    if (focusState.isFocused) {
+                        requestAutofillForNode(autofillNode)
                     } else {
-                        onNext()
+                        cancelAutofillForNode(autofillNode)
                     }
-
-                    true
-                }
-                else -> {
-                    false
                 }
             }
-        },
+            .onPreviewKeyEvent { event -> // handle hardware keyboards
+                if (event.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
+
+                when (event.key) {
+                    Key.Tab, Key.Enter -> {
+                        if (event.isShiftPressed) {
+                            onPrev()
+                        } else {
+                            onNext()
+                        }
+
+                        true
+                    }
+                    else -> {
+                        false
+                    }
+                }
+            },
         label = { Text(text = stringResource(id = R.string.username)) },
         placeholder = { Text(text = stringResource(id = R.string.username)) },
         trailingIcon = {

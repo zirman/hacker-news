@@ -1,25 +1,23 @@
 TODO:
- + logout
- + register account
- + use android.icu.text.MessageFormat to translate plurals
- + autofill login/password
- + synchronize expanded items between devices
++ Firebase crashlytics
+ + Logout
+ + Register account
+ + Use android.icu.text.MessageFormat to translate plurals
+ + Post story
+ + Synchronize expanded items between devices
  + TalkBack
  + Voice Access
  + Switch Access
+ + Modifier.semantics()
+ + Read comments using voice synthesis
+ + Follow item with local notifications on updates
+ + Highlight new items
+ + Update items when back online
+ + Jump to unread items
+ + Dark mode setting
+ + Customize colors
+ + Customize font from google font lib
+ + Search
  + Long Click
  + Swipe
- + Modifier.semantics()
- + jump to unread items
- + firebase crashlytics
- + follow item with notifications on updates
- + read comments using voice synthesis
- + post story
- + notifications on responses
- + dark mode setting
- + customize colors
- + customize font from google font lib
- + search
- + highlight new items
- + favorite paging
- + update items when back online
+ + Favorites paging
