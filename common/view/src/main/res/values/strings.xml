@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Hacker News</string>
     <string name="top_stories">Top Stories</string>
@@ -65,4 +66,7 @@
     <string name="favorites_shortcut_long_label">Favorites HN</string>
     <string name="favorites_shortcut_short_label">Favorites</string>
     <string name="open_in_browser">Open in Browser</string>
+    <string name="i_agree_html"><![CDATA[
+    I agree to the <i>Hacker News</i> <a href="https://www.ycombinator.com/legal/">terms of service</a> and
+    agree to follow the <a href="https://news.ycombinator.com/newsguidelines.html">user guidelines</a>]]></string>
 </resources>

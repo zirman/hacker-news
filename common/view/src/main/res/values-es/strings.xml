@@ -65,4 +65,8 @@
     <string name="favorites_shortcut_long_label">Favoritas HN</string>
     <string name="favorites_shortcut_short_label">Favoritas</string>
     <string name="open_in_browser">Abierto en el Navegador</string>
+    <string name="i_agree_html"><![CDATA[
+    Acepto los <a href="https://www.ycombinator.com/legal/">términos de servicio</a> de <i>Hacker News</i>
+    y acepta seguir las <a href="https://news.ycombinator.com/newsguidelines.html">directrices de
+    usuario</a>]]></string>
 </resources>

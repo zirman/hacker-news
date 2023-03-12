@@ -37,7 +37,7 @@ fun AboutUs(
 ) {
     Surface(
         modifier = modifier,
-        contentColor = MaterialTheme.colorScheme.tertiary,
+        contentColor = MaterialTheme.colorScheme.tertiary
     ) {
         Column(
             modifier = Modifier
@@ -56,13 +56,13 @@ fun AboutUs(
                         })
                         .asPaddingValues()
                 ),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             val annotatedTextState: State<AnnotatedString> =
                 rememberUpdatedState(
                     rememberAnnotatedString(
                         htmlText = stringResource(id = R.string.about_us_detail_html),
-                        linkColor = MaterialTheme.colorScheme.primary,
+                        linkColor = MaterialTheme.colorScheme.primary
                     )
                 )
 
@@ -74,14 +74,14 @@ fun AboutUs(
                 onClick = { offset ->
                     annotatedTextState.value.onClick(
                         context = contextState.value,
-                        offset = offset,
+                        offset = offset
                     )
                 },
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.bodyMedium.copy(
-                    color = LocalContentColor.current,
-                ),
+                    color = LocalContentColor.current
+                )
             )
         }
     }

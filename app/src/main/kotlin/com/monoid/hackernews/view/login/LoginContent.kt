@@ -1,6 +1,8 @@
 package com.monoid.hackernews.view.login
 
+import android.content.Context
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -11,7 +13,10 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContent
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -19,15 +24,19 @@ import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.datastore.core.DataStore
 import com.monoid.hackernews.common.api.loginRequest
@@ -37,6 +46,8 @@ import com.monoid.hackernews.common.datastore.copy
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.view.text.PasswordTextField
 import com.monoid.hackernews.view.text.UsernameTextField
+import com.monoid.hackernews.view.util.onClick
+import com.monoid.hackernews.view.util.rememberAnnotatedString
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.currentCoroutineContext
@@ -63,12 +74,15 @@ fun LoginContent(
                     WindowInsets.safeContent
                         .only(run {
                             var windowInsets = WindowInsetsSides.Bottom
+
                             if (windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact) {
                                 windowInsets += WindowInsetsSides.Top
                             }
+
                             if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
                                 windowInsets += WindowInsetsSides.Horizontal
                             }
+
                             windowInsets
                         })
                         .asPaddingValues()
@@ -148,10 +162,52 @@ fun LoginContent(
                 onDone = ::onSubmit
             )
 
+            val acceptTermsState = rememberSaveable {
+                mutableStateOf(false)
+            }
+
+            Row(
+                modifier = rowModifier,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Checkbox(
+                    checked = acceptTermsState.value,
+                    onCheckedChange = {
+                        acceptTermsState.value = acceptTermsState.value.not()
+                    }
+                )
+
+                val annotatedTextState: State<AnnotatedString> =
+                    rememberUpdatedState(
+                        rememberAnnotatedString(
+                            htmlText = stringResource(id = R.string.i_agree_html),
+                            linkColor = MaterialTheme.colorScheme.primary
+                        )
+                    )
+
+                val contextState: State<Context> =
+                    rememberUpdatedState(LocalContext.current)
+
+                ClickableText(
+                    text = annotatedTextState.value,
+                    onClick = { offset ->
+                        annotatedTextState.value.onClick(
+                            context = contextState.value,
+                            offset = offset
+                        )
+                    },
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = LocalContentColor.current
+                    )
+                )
+            }
+
             Button(
                 onClick = ::onSubmit,
                 modifier = rowModifier,
-                enabled = usernameState.value.isNotBlank() && passwordState.value.isNotEmpty()
+                enabled = usernameState.value.isNotBlank() &&
+                    passwordState.value.isNotEmpty() &&
+                    acceptTermsState.value
             ) {
                 Text(text = stringResource(id = R.string.submit))
             }
