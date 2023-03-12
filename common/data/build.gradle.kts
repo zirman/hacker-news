@@ -90,6 +90,9 @@ kapt {
 }
 
 dependencies {
+    implementation(platform(libs.compose.bom))
+    implementation(platform(libs.firebase.bom))
+
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.androidx)
     implementation(libs.bundles.google)

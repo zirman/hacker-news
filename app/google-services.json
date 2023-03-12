@@ -1,0 +1,84 @@
+{
+  "project_info": {
+    "project_number": "930746568262",
+    "project_id": "hacker-news-52778",
+    "storage_bucket": "hacker-news-52778.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930746568262:android:2f4044b7808e351e350447",
+        "android_client_info": {
+          "package_name": "com.monoid.hackernews"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "930746568262-o5ad67ck4ubiqc9j1u48ke4nilltc4bg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.monoid.hackernews",
+            "certificate_hash": "8ed3360c2479ad82c5aad1076c3a4c558d38cd57"
+          }
+        },
+        {
+          "client_id": "930746568262-m1tfj7bpi1296ca1edhst09klfn0inf3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjACOOdZUs7AsBzrUP4xOKpXph7iwigkA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "930746568262-m1tfj7bpi1296ca1edhst09klfn0inf3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930746568262:android:7ec9c94214c2ba28350447",
+        "android_client_info": {
+          "package_name": "com.monoid.hackernews.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "930746568262-d459ho2kmqqipqpo20165luprfcpugga.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.monoid.hackernews.debug",
+            "certificate_hash": "a91e88dba09813116c56273a2c5c355e94c9727c"
+          }
+        },
+        {
+          "client_id": "930746568262-m1tfj7bpi1296ca1edhst09klfn0inf3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjACOOdZUs7AsBzrUP4xOKpXph7iwigkA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "930746568262-m1tfj7bpi1296ca1edhst09klfn0inf3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

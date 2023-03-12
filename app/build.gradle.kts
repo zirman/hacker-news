@@ -4,6 +4,8 @@ plugins {
     kotlin("plugin.serialization")
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -24,7 +26,7 @@ android {
         applicationId = "com.monoid.hackernews"
         minSdk = 26
         targetSdk = 33
-        versionCode = 30
+        versionCode = 31
         versionName = "1.0"
 
         // reduces apk sizes by not including unsupported languages
@@ -102,11 +104,16 @@ kapt {
 dependencies {
     implementation(project(":common:view"))
 
+    implementation(platform(libs.compose.bom))
+    implementation(platform(libs.firebase.bom))
+
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.androidx)
+    implementation(libs.bundles.androidx.compose)
     implementation(libs.bundles.androidx.app)
     implementation(libs.bundles.google)
     implementation(libs.bundles.google.app)
+    implementation(libs.bundles.firebase)
     implementation(libs.slf4j.simple)
 
     implementation(libs.hilt.android)

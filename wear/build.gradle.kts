@@ -94,8 +94,12 @@ kapt {
 dependencies {
     implementation(project(":common:view"))
 
+    implementation(platform(libs.compose.bom))
+    implementation(platform(libs.firebase.bom))
+
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.androidx)
+    implementation(libs.bundles.androidx.compose)
     implementation(libs.bundles.androidx.wear)
     implementation(libs.bundles.google)
     implementation(libs.bundles.google.wear)

@@ -51,8 +51,12 @@ android {
 dependencies {
     api(project(":common:data"))
 
+    implementation(platform(libs.compose.bom))
+    implementation(platform(libs.firebase.bom))
+
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.androidx)
+    implementation(libs.bundles.androidx.compose)
     // TODO: refactor so that this isn't a shared dependency for wear
     implementation(libs.bundles.androidx.app)
     implementation(libs.bundles.google)

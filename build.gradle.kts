@@ -20,6 +20,8 @@ buildscript {
         classpath("com.android.tools.build:gradle:${libs.versions.gradle.plugin.android.get()}")
         classpath("com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:${libs.versions.gradle.plugin.ksp.get()}")
         classpath("com.google.protobuf:protobuf-gradle-plugin:${libs.versions.gradle.plugin.protobuf.get()}")
+        classpath("com.google.gms:google-services:${libs.versions.google.services.get()}")
+        classpath("com.google.firebase:firebase-crashlytics-gradle:${libs.versions.firebase.crashlytics.gradle.get()}")
         classpath("com.github.ben-manes:gradle-versions-plugin:${libs.plugins.versions.get().version}")
     }
 }

@@ -48,8 +48,12 @@ kapt {
 dependencies {
     api(project(":common:domain"))
 
+    implementation(platform(libs.compose.bom))
+    implementation(platform(libs.firebase.bom))
+
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.androidx)
+    implementation(libs.bundles.androidx.compose)
     implementation(libs.bundles.google)
 
     implementation(libs.hilt.android)

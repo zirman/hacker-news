@@ -66,11 +66,6 @@ dependencyResolutionManagement {
             )
 
             version(
-                /* alias = */ "compose",
-                /* version = */ "1.4.0-rc01"
-            )
-
-            version(
                 /* alias = */ "compose-compiler",
                 /* version = */ "1.4.3"
             )
@@ -93,6 +88,16 @@ dependencyResolutionManagement {
             version(
                 /* alias = */ "hilt",
                 /* version = */ "2.45"
+            )
+
+            version(
+                /* alias = */ "google-services",
+                /* version = */ "4.3.15"
+            )
+
+            version(
+                /* alias = */ "firebase-crashlytics-gradle",
+                /* version = */ "2.9.4"
             )
 
             plugin(
@@ -195,20 +200,6 @@ dependencyResolutionManagement {
                     "lifecycle-viewmodel-ktx",
                     "lifecycle-viewmodel-compose",
                     "lifecycle-viewmodel-savedstate",
-
-                    // compose
-                    "ui",
-                    "ui-viewbinding",
-                    "ui-tooling",
-                    "ui-tooling-preview",
-                    "ui-util",
-                    "material-icons-core",
-                    "material-icons-extended",
-                    "foundation",
-                    "ui-text-google-fonts",
-                    "constraintlayout",
-                    "metrics-performance",
-                    "compose-foundation",
                 )
             )
 
@@ -497,77 +488,114 @@ dependencyResolutionManagement {
             ).version("1.9.0-alpha02")
 
             library(
+                /* alias = */ "compose-bom",
+                /* group = */ "dev.chrisbanes.compose",
+                /* artifact = */ "compose-bom"
+            ).version("2023.02.00-rc02")
+
+            library(
                 /* alias = */ "material3",
                 /* group = */ "androidx.compose.material3",
                 /* artifact = */ "material3"
-            ).versionRef("material3")
+            ).withoutVersion()
 
             library(
                 // cannot have `class` as alias postfix because gradle fails
                 /* alias = */ "material3-window-size",
                 /* group = */ "androidx.compose.material3",
                 /* artifact = */ "material3-window-size-class"
-            ).versionRef("material3")
+            ).withoutVersion()
 
             library(
                 /* alias = */ "ui",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui"
-            ).versionRef("compose")
+            ).withoutVersion()
 
             library(
                 /* alias = */ "ui-viewbinding",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-viewbinding"
-            ).versionRef("compose")
+            ).withoutVersion()
 
             library(
                 /* alias = */ "ui-tooling",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-tooling"
-            ).versionRef("compose")
+            ).withoutVersion()
 
             library(
                 /* alias = */ "ui-tooling-preview",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-tooling-preview"
-            ).versionRef("compose")
+            ).withoutVersion()
 
             library(
                 /* alias = */ "ui-util",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-util"
-            ).versionRef("compose")
+            ).withoutVersion()
 
             library(
                 /* alias = */ "compose-material",
                 /* group = */ "androidx.compose.material",
                 /* artifact = */ "material"
-            ).versionRef("compose")
+            ).withoutVersion()
 
             library(
                 /* alias = */ "material-icons-core",
                 /* group = */ "androidx.compose.material",
                 /* artifact = */ "material-icons-core"
-            ).versionRef("compose")
+            ).withoutVersion()
 
             library(
                 /* alias = */ "material-icons-extended",
                 /* group = */ "androidx.compose.material",
                 /* artifact = */ "material-icons-extended"
-            ).versionRef("compose")
+            ).withoutVersion()
 
             library(
                 /* alias = */ "foundation",
                 /* group = */ "androidx.compose.foundation",
                 /* artifact = */ "foundation"
-            ).versionRef("compose")
+            ).withoutVersion()
 
             library(
                 /* alias = */ "ui-text-google-fonts",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-text-google-fonts"
-            ).version("1.4.0-rc01")
+            ).withoutVersion()
+
+            bundle(
+                "androidx.compose",
+                listOf(
+                    // compose
+                    "ui",
+                    "ui-viewbinding",
+                    "ui-tooling",
+                    "ui-tooling-preview",
+                    "constraintlayout",
+                    "metrics-performance",
+                    "ui-util",
+                    "compose-foundation",
+                    "material-icons-core",
+                    "material-icons-extended",
+                    "foundation",
+                    "ui-text-google-fonts"
+                )
+            )
+
+            library(
+                /* alias = */ "ui-test-junit4",
+                /* group = */ "androidx.compose.ui",
+                /* artifact = */ "ui-test-junit4"
+            ).withoutVersion()
+
+            library(
+                /* alias = */ "ui-test-manifest",
+                /* group = */ "androidx.compose.ui",
+                /* artifact = */ "ui-test-manifest"
+            ).withoutVersion()
 
             library(
                 /* alias = */ "constraintlayout",
@@ -630,22 +658,36 @@ dependencyResolutionManagement {
             ).versionRef("accompanist")
 
             library(
+                /* alias = */ "firebase-bom",
+                /* group = */ "com.google.firebase",
+                /* artifact = */ "firebase-bom"
+            ).version("31.2.3")
+
+            library(
+                /* alias = */ "firebase-crashlytics",
+                /* group = */ "com.google.firebase",
+                /* artifact = */ "firebase-crashlytics"
+            ).withoutVersion()
+
+            library(
+                /* alias = */ "firebase-analytics-ktx",
+                /* group = */ "com.google.firebase",
+                /* artifact = */ "firebase-analytics-ktx"
+            ).withoutVersion()
+
+            bundle(
+                "firebase",
+                listOf(
+                    "firebase-crashlytics",
+                    "firebase-analytics-ktx"
+                )
+            )
+
+            library(
                 /* alias = */ "slf4j-simple",
                 /* group = */ "org.slf4j",
                 /* artifact = */ "slf4j-simple"
             ).version("2.0.6")
-
-            library(
-                /* alias = */ "ui-test-junit4",
-                /* group = */ "androidx.compose.ui",
-                /* artifact = */ "ui-test-junit4"
-            ).version("1.4.0-rc01")
-
-            library(
-                /* alias = */ "ui-test-manifest",
-                /* group = */ "androidx.compose.ui",
-                /* artifact = */ "ui-test-manifest"
-            ).version("1.4.0-rc01")
 
             library(
                 /* alias = */ "junit",
