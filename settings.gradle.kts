@@ -589,7 +589,7 @@ dependencyResolutionManagement {
                 /* alias = */ "ui-test-junit4",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-test-junit4"
-            ).withoutVersion()
+            ).version("1.3.3")
 
             library(
                 /* alias = */ "ui-test-manifest",
