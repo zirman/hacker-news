@@ -485,7 +485,7 @@ dependencyResolutionManagement {
                 /* alias = */ "material",
                 /* group = */ "com.google.android.material",
                 /* artifact = */ "material"
-            ).version("1.9.0-alpha02")
+            ).version("1.9.0-beta01")
 
             library(
                 /* alias = */ "compose-bom",
@@ -589,7 +589,7 @@ dependencyResolutionManagement {
                 /* alias = */ "ui-test-junit4",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-test-junit4"
-            ).version("1.3.3")
+            ).version("1.4.0-rc01")
 
             library(
                 /* alias = */ "ui-test-manifest",
@@ -687,7 +687,7 @@ dependencyResolutionManagement {
                 /* alias = */ "slf4j-simple",
                 /* group = */ "org.slf4j",
                 /* artifact = */ "slf4j-simple"
-            ).version("2.0.6")
+            ).version("2.0.7")
 
             library(
                 /* alias = */ "junit",
