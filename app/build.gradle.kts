@@ -102,6 +102,7 @@ kapt {
 }
 
 dependencies {
+    implementation(project(":common:injection"))
     implementation(project(":common:view"))
 
     implementation(platform(libs.compose.bom))

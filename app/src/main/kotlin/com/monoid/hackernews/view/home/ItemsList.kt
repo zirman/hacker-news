@@ -17,13 +17,12 @@ import com.monoid.hackernews.common.data.ItemListRow
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.view.itemlist.ItemList
-import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun ItemsList(
     listState: LazyListState,
     pullRefreshState: PullRefreshState,
-    itemRows: ImmutableList<ItemListRow>?,
+    itemRows: List<ItemListRow>?,
     refreshing: Boolean,
     paddingValues: PaddingValues,
     setSelectedItemId: (ItemId?) -> Unit,

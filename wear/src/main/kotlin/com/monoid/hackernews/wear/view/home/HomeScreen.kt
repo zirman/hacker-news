@@ -7,12 +7,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.integerResource
-import androidx.wear.compose.foundation.lazy.rememberScalingLazyListState
 import androidx.wear.compose.material.PositionIndicator
 import androidx.wear.compose.material.Scaffold
 import androidx.wear.compose.material.TimeText
 import androidx.wear.compose.material.Vignette
 import androidx.wear.compose.material.VignettePosition
+import androidx.wear.compose.material.rememberScalingLazyListState
 import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
@@ -23,8 +23,6 @@ import com.monoid.hackernews.common.data.OrderedItem
 import com.monoid.hackernews.common.domain.LiveUpdateUseCase
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.wear.view.itemlist.ItemList
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.map
 import java.util.concurrent.TimeUnit
 
@@ -37,12 +35,12 @@ fun HomeScreen(
 ) {
     val itemStaleMinutes = integerResource(id = R.integer.item_stale_minutes)
 
-    val itemRows: State<ImmutableList<ItemListRow>?> =
+    val itemRows: State<List<ItemListRow>?> =
         remember(itemStaleMinutes) {
             orderedItemRepo
                 .getItems(TimeUnit.MINUTES.toMillis(itemStaleMinutes.toLong()))
                 .map { orderedItems ->
-                    itemTreeRepository.itemUiList(orderedItems.map { it.itemId }).toImmutableList()
+                    itemTreeRepository.itemUiList(orderedItems.map { it.itemId })
                 }
         }.collectAsState(initial = null)
 

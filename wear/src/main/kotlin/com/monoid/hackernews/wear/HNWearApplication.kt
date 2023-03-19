@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Intent
 import android.content.IntentFilter
 import androidx.datastore.core.DataStore
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.monoid.hackernews.common.api.getFavorites
 import com.monoid.hackernews.common.api.getUpvoted
 import com.monoid.hackernews.common.data.ItemTreeRepository
@@ -17,7 +18,8 @@ import dagger.hilt.android.HiltAndroidApp
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainCoroutineDispatcher
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.currentCoroutineContext
@@ -35,11 +37,11 @@ import javax.inject.Inject
 @HiltAndroidApp
 class HNWearApplication : Application() {
 
-    private val coroutineScope = CoroutineScope(
-        Dispatchers.Default + CoroutineExceptionHandler { _, error ->
-            error.printStackTrace()
-        }
-    )
+    @Inject
+    lateinit var mainCoroutineDispatcher: MainCoroutineDispatcher
+
+    @Inject
+    lateinit var firebaseCrashlytics: FirebaseCrashlytics
 
     @Inject
     lateinit var authentication: DataStore<Authentication>
@@ -60,6 +62,15 @@ class HNWearApplication : Application() {
     lateinit var itemTreeRepository: ItemTreeRepository
 
     private val trimMemoryEvents = MutableSharedFlow<Unit>()
+
+    private val coroutineScope by lazy {
+        CoroutineScope(
+            SupervisorJob() + mainCoroutineDispatcher + CoroutineExceptionHandler { _, error ->
+                firebaseCrashlytics.recordException(error)
+                error.printStackTrace()
+            }
+        )
+    }
 
     override fun onCreate() {
         super.onCreate()

@@ -1,8 +1,11 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    kotlin("plugin.serialization")
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -83,6 +86,7 @@ android {
     packagingOptions {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/versions/9/previous-compilation-data.bin"
         }
     }
 }
@@ -92,6 +96,7 @@ kapt {
 }
 
 dependencies {
+    implementation(project(":common:injection"))
     implementation(project(":common:view"))
 
     implementation(platform(libs.compose.bom))
@@ -103,6 +108,8 @@ dependencies {
     implementation(libs.bundles.androidx.wear)
     implementation(libs.bundles.google)
     implementation(libs.bundles.google.wear)
+    implementation(libs.bundles.firebase)
+    implementation(libs.slf4j.simple)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)

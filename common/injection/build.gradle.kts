@@ -1,18 +1,13 @@
-import com.google.protobuf.gradle.id
-
 plugins {
     id("com.android.library")
     kotlin("android")
-    kotlin("plugin.serialization")
     kotlin("kapt")
-    id("kotlin-parcelize")
     id("com.google.devtools.ksp")
-    id("com.google.protobuf")
     id("com.google.dagger.hilt.android")
 }
 
 android {
-    namespace = "com.monoid.hackernews.common.data"
+    namespace = "com.monoid.hackernews.common.injection"
     compileSdk = 33
 
     defaultConfig {
@@ -55,56 +50,28 @@ android {
     }
 }
 
-protobuf {
-    protoc {
-        artifact = "com.google.protobuf:protoc:${libs.versions.protobuf.get()}"
-    }
-
-    plugins {
-        id("java")
-        id("kotlin")
-    }
-
-    generateProtoTasks {
-        all().forEach { task ->
-            task.builtins {
-                kotlin {}
-                java {}
-            }
-
-            task.plugins {
-                id("java") {
-                    option("lite")
-                }
-
-                id("kotlin") {
-                    option("lite")
-                }
-            }
-        }
-    }
-}
-
 kapt {
     correctErrorTypes = true
 }
 
 dependencies {
-    implementation(project(":common:injection"))
-
     implementation(platform(libs.compose.bom))
     implementation(platform(libs.firebase.bom))
 
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.androidx)
+    implementation(libs.bundles.androidx.compose)
+    implementation(libs.bundles.androidx.app)
     implementation(libs.bundles.google)
-    api(libs.bundles.ktor)
-    ksp(libs.room.compiler)
+    implementation(libs.bundles.google.app)
+    implementation(libs.bundles.firebase)
+    implementation(libs.slf4j.simple)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.junit.ext)
-    androidTestImplementation(libs.espresso.core)
+    implementation(libs.hilt.navigation.compose)
+
+    androidTestImplementation(libs.ui.test.junit4)
+    debugImplementation(libs.ui.test.manifest)
 }

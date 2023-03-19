@@ -134,7 +134,6 @@ dependencyResolutionManagement {
                     "kotlinx-serialization-json",
                     "kotlinx-serialization-protobuf",
 
-                    "kotlinx-collections-immutable",
                     "kotlinx-datetime"
                 )
             )
@@ -258,12 +257,6 @@ dependencyResolutionManagement {
                 /* group = */ "org.jetbrains.kotlinx",
                 /* artifact = */ "kotlinx-datetime"
             ).version("0.4.0")
-
-            library(
-                /* alias = */ "kotlinx-collections-immutable",
-                /* group = */ "org.jetbrains.kotlinx",
-                /* artifact = */ "kotlinx-collections-immutable"
-            ).version("0.3.5")
 
             library(
                 /* alias = */ "ktor-client-core",
@@ -613,19 +606,19 @@ dependencyResolutionManagement {
                 /* alias = */ "compose-foundation",
                 /* group = */ "androidx.wear.compose",
                 /* artifact = */ "compose-foundation"
-            ).version("1.2.0-alpha06")
+            ).version("1.1.2")
 
             library(
                 /* alias = */ "compose-material-wear",
                 /* group = */ "androidx.wear.compose",
                 /* artifact = */ "compose-material"
-            ).version("1.2.0-alpha06")
+            ).version("1.1.2")
 
             library(
                 /* alias = */ "compose-navigation-wear",
                 /* group = */ "androidx.wear.compose",
                 /* artifact = */ "compose-navigation"
-            ).version("1.2.0-alpha06")
+            ).version("1.1.2")
 
             library(
                 /* alias = */ "accompanist-navigation-animation",
@@ -713,6 +706,7 @@ dependencyResolutionManagement {
 rootProject.name = "Hacker News"
 include(":app")
 include(":wear")
+include(":common:injection")
 include(":common:view")
 include(":common:domain")
 include(":common:data")

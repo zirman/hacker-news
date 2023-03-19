@@ -1,7 +1,7 @@
 package com.monoid.hackernews.common.data
 
 import android.util.Log
-import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import androidx.datastore.core.DataStore
 import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.api.favoriteRequest
@@ -9,6 +9,7 @@ import com.monoid.hackernews.common.api.flagRequest
 import com.monoid.hackernews.common.api.getItem
 import com.monoid.hackernews.common.api.upvoteItem
 import com.monoid.hackernews.common.datastore.Authentication
+import com.monoid.hackernews.common.injection.IoDispatcher
 import com.monoid.hackernews.common.room.ExpandedDao
 import com.monoid.hackernews.common.room.ExpandedDb
 import com.monoid.hackernews.common.room.FavoriteDao
@@ -20,9 +21,10 @@ import com.monoid.hackernews.common.room.ItemDb
 import com.monoid.hackernews.common.room.UpvoteDao
 import com.monoid.hackernews.common.room.UpvoteDb
 import io.ktor.client.HttpClient
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainCoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -59,18 +61,21 @@ class ItemTreeRepository @Inject constructor(
     private val favoriteDao: FavoriteDao,
     private val flagDao: FlagDao,
     private val expandedDao: ExpandedDao,
+    private val mainDispatcher: MainCoroutineDispatcher,
+    @IoDispatcher
+    private val ioDispatcher: CoroutineDispatcher,
 ) {
-    private val sharedFlows: MutableMap<ItemId, WeakReference<Flow<ItemUiInternal>>> =
+    private val sharedFlows: MutableMap<ItemId, WeakReference<SharedFlow<ItemUiInternal>>> =
         mutableMapOf()
 
     private val itemUpdatesSharedFlow: MutableSharedFlow<ItemUiInternal> =
         MutableSharedFlow(extraBufferCapacity = 10)
 
-    @Immutable
+    @Stable
     private inner class ItemRowInternal(
         override val itemId: ItemId,
     ) : ItemListRow() {
-        override val itemUiFlow: Flow<ItemUi>
+        override val itemUiFlow: SharedFlow<ItemUi>
             get() {
                 return sharedFlows[itemId]?.get()
                     ?: sharedItemUiFlow(itemId).also {
@@ -79,7 +84,7 @@ class ItemTreeRepository @Inject constructor(
             }
     }
 
-    @Immutable
+    @Stable
     private inner class ItemThreadInternal(
         override val itemId: ItemId,
         private val threadDepth: Int,
@@ -187,7 +192,7 @@ class ItemTreeRepository @Inject constructor(
     }
 
     fun itemUiTreeFlow(rootItemId: ItemId): Flow<List<ItemTreeRow>> = flow {
-        var itemTree: ItemTree = withContext(Dispatchers.IO) {
+        var itemTree: ItemTree = withContext(ioDispatcher) {
             suspend fun recur(itemId: ItemId): ItemTree {
                 val itemWithKids = async { itemDao.itemByIdWithKidsById(itemId.long) }
                 val isExpanded = async { expandedDao.isExpanded(itemId.long) }
@@ -276,7 +281,7 @@ class ItemTreeRepository @Inject constructor(
     private fun sharedItemUiFlow(itemId: ItemId): SharedFlow<ItemUiInternal> = flow {
         coroutineScope {
             launch {
-                val item = withContext(Dispatchers.IO) {
+                val item = withContext(ioDispatcher) {
                     itemDao.itemById(itemId.long)
                 }
 
@@ -343,7 +348,6 @@ class ItemTreeRepository @Inject constructor(
         replay = 1
     )
 
-    @Immutable
     private inner class ItemUiInternal(
         override val item: ItemDb,
         override val kids: List<ItemId>,
@@ -358,7 +362,7 @@ class ItemTreeRepository @Inject constructor(
             if (authentication.password.isNotEmpty()) {
                 upvoteItemJob(authentication, ItemId(item.id), isUpvote.not())
             } else {
-                withContext(Dispatchers.Main.immediate) {
+                withContext(mainDispatcher.immediate) {
                     onNavigateLogin(LoginAction.Upvote(itemId = item.id))
                 }
             }
@@ -370,7 +374,7 @@ class ItemTreeRepository @Inject constructor(
             if (authentication.password.isNotEmpty()) {
                 favoriteItemJob(authentication, ItemId(item.id), isFavorite.not())
             } else {
-                withContext(Dispatchers.Main.immediate) {
+                withContext(mainDispatcher.immediate) {
                     onNavigateLogin(LoginAction.Favorite(itemId = item.id))
                 }
             }
@@ -382,7 +386,7 @@ class ItemTreeRepository @Inject constructor(
             if (authentication.password.isNotEmpty()) {
                 flagItemJob(authentication, ItemId(item.id), isFlag.not())
             } else {
-                withContext(Dispatchers.Main.immediate) {
+                withContext(mainDispatcher.immediate) {
                     onNavigateLogin(LoginAction.Flag(itemId = item.id))
                 }
             }

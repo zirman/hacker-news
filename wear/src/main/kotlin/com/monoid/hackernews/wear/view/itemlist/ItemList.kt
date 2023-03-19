@@ -20,22 +20,22 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.rotary.onRotaryScrollEvent
 import androidx.metrics.performance.PerformanceMetricsState
-import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
-import androidx.wear.compose.foundation.lazy.ScalingLazyListState
 import androidx.wear.compose.material.ListHeader
+import androidx.wear.compose.material.ScalingLazyColumn
+import androidx.wear.compose.material.ScalingLazyListState
 import androidx.wear.compose.material.Text
+import androidx.wear.compose.material.items
 import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.ItemListRow
 import com.monoid.hackernews.common.util.rememberMetricsStateHolder
 import com.monoid.hackernews.wear.BuildConfig
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
 @Composable
 fun ItemList(
     state: ScalingLazyListState,
     title: String,
-    itemRows: State<ImmutableList<ItemListRow>?>,
+    itemRows: State<List<ItemListRow>?>,
     onClickDetail: (ItemId?) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -85,7 +85,7 @@ fun ItemList(
                 Text(text = title)
             }
         }
-        items(itemRows.value ?: emptyList(), { it.itemId.long }) { itemRow ->
+        items(itemRows.value.orEmpty(), { it.itemId.long }) { itemRow ->
             Item(
                 itemUiState = remember(itemRow.itemId) { itemRow.itemUiFlow }
                     .collectAsState(initial = null),

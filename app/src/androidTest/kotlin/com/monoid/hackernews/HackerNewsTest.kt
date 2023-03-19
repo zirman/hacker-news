@@ -6,6 +6,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.monoid.hackernews.view.main.MainContent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.Rule
 import org.junit.Test
 
@@ -21,5 +25,11 @@ class HackerNewsTest {
                 windowSizeClass = calculateWindowSizeClass(LocalContext.current as Activity)
             )
         }
+    }
+
+    @Test
+    fun settingMainDispatcher() = runTest() {
+        val testDispatcher = UnconfinedTestDispatcher(testScheduler)
+        Dispatchers.setMain(testDispatcher)
     }
 }

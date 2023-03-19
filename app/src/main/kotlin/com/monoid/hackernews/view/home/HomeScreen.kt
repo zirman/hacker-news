@@ -70,8 +70,6 @@ import com.monoid.hackernews.common.domain.LiveUpdateUseCase
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.view.itemdetail.ItemDetail
 import com.monoid.hackernews.common.ui.util.notifyInput
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.emptyFlow
@@ -112,7 +110,7 @@ fun HomeScreen(
         }
 
     val scrollBehavior: TopAppBarScrollBehavior =
-        TopAppBarDefaults.enterAlwaysScrollBehavior(
+        TopAppBarDefaults.pinnedScrollBehavior(
             state = rememberTopAppBarState()
         )
 
@@ -177,7 +175,7 @@ fun HomeScreen(
             )
         },
     ) { paddingValues ->
-        val itemRows: ImmutableList<ItemListRow>?
+        val itemRows: List<ItemListRow>?
             by remember {
                 orderedItemRepo
                     .getItems(
@@ -190,7 +188,6 @@ fun HomeScreen(
                     .map { orderedItems ->
                         itemTreeRepository
                             .itemUiList(orderedItems.map { it.itemId })
-                            .toImmutableList()
                     }
             }.collectAsState(initial = null)
 
@@ -236,7 +233,6 @@ fun HomeScreen(
                         if (selectedItemId != null) {
                             itemTreeRepository
                                 .itemUiTreeFlow(selectedItemId)
-                                .map { it.toImmutableList() }
                         } else {
                             emptyFlow()
                         }

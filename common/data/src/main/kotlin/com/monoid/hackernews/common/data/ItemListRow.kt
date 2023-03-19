@@ -2,10 +2,11 @@ package com.monoid.hackernews.common.data
 
 import com.monoid.hackernews.common.api.ItemId
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
 
 abstract class ItemListRow {
     abstract val itemId: ItemId
-    abstract val itemUiFlow: Flow<ItemUi>
+    abstract val itemUiFlow: SharedFlow<ItemUi>
 
     override fun equals(other: Any?): Boolean =
         other is ItemListRow && itemId == other.itemId
