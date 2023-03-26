@@ -67,7 +67,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "compose-compiler",
-                /* version = */ "1.4.3"
+                /* version = */ "1.4.4"
             )
 
             version(
@@ -82,7 +82,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "accompanist",
-                /* version = */ "0.29.2-rc"
+                /* version = */ "0.30.0"
             )
 
             version(
@@ -196,6 +196,7 @@ dependencyResolutionManagement {
                     "room-paging",
 
                     "lifecycle-runtime-ktx",
+                    "lifecycle-runtime-compose",
                     "lifecycle-viewmodel-ktx",
                     "lifecycle-viewmodel-compose",
                     "lifecycle-viewmodel-savedstate",
@@ -418,7 +419,13 @@ dependencyResolutionManagement {
                 /* alias = */ "lifecycle-runtime-ktx",
                 /* group = */ "androidx.lifecycle",
                 /* artifact = */ "lifecycle-runtime-ktx"
-            ).versionRef("lifecycle")
+            ).withoutVersion()
+
+            library(
+                /* alias = */ "lifecycle-runtime-compose",
+                /* group = */ "androidx.lifecycle",
+                /* artifact = */ "lifecycle-runtime-compose"
+            ).withoutVersion()
 
             library(
                 /* alias = */ "lifecycle-viewmodel-ktx",
@@ -482,9 +489,9 @@ dependencyResolutionManagement {
 
             library(
                 /* alias = */ "compose-bom",
-                /* group = */ "dev.chrisbanes.compose",
+                /* group = */ "androidx.compose",
                 /* artifact = */ "compose-bom"
-            ).version("2023.02.00-rc02")
+            ).version("2023.03.00")
 
             library(
                 /* alias = */ "material3",
