@@ -8,7 +8,6 @@ import com.monoid.hackernews.common.datastore.Authentication
 import com.monoid.hackernews.common.room.FavoriteDao
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -26,7 +25,7 @@ class FavoriteStoryRepository @Inject constructor(
     private val authentication: DataStore<Authentication>,
     private val favoriteDao: FavoriteDao,
 ) : Repository<OrderedItem> {
-    override val items: Flow<List<OrderedItem>> = authentication.data
+    override fun getItems(scope: CoroutineScope): Flow<List<OrderedItem>> = authentication.data
         .map { authentication ->
             if (authentication.password.isNotEmpty()) {
                 authentication.username
@@ -45,7 +44,7 @@ class FavoriteStoryRepository @Inject constructor(
             }
         }
         .shareIn(
-            scope = CoroutineScope(SupervisorJob()),
+            scope = scope,
             started = SharingStarted.Lazily,
             replay = 1
         )

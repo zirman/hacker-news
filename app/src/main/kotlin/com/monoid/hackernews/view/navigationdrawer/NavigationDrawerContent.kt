@@ -18,13 +18,13 @@ import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.datastore.core.DataStore
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
@@ -60,12 +60,12 @@ fun NavigationDrawerContent(
                         }
                     }
             }
-                .collectAsState(initial = null)
+                .collectAsStateWithLifecycle(null)
                 .value
 
         val authenticationState: State<Authentication?> =
             remember { authentication.data }
-                .collectAsState(initial = null)
+                .collectAsStateWithLifecycle(null)
 
         val coroutineScope: CoroutineScope =
             rememberCoroutineScope()

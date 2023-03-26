@@ -9,13 +9,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
 import androidx.datastore.core.DataStore
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.metrics.performance.JankStats
@@ -29,6 +29,7 @@ import com.monoid.hackernews.common.ui.util.rememberUseDarkTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.serialization.decodeFromString
@@ -53,8 +54,8 @@ class MainActivity : ComponentActivity() {
             val useDarkTheme: Boolean =
                 rememberUseDarkTheme()
 
-            val fontState: State<String?> = remember { authentication.data.map { it.font } }
-                .collectAsState(null)
+            val fontState: State<String?> = remember<Flow<String?>> { authentication.data.map { it.font } }
+                .collectAsStateWithLifecycle(null)
 
             AppTheme(
                 useDarkTheme = useDarkTheme,

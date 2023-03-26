@@ -6,7 +6,6 @@ import com.monoid.hackernews.common.room.BestStoryDao
 import com.monoid.hackernews.common.room.BestStoryDb
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -19,7 +18,7 @@ class BestStoryRepository @Inject constructor(
     private val httpClient: HttpClient,
     private val bestStoryDao: BestStoryDao,
 ) : Repository<OrderedItem> {
-    override val items: Flow<List<OrderedItem>> = bestStoryDao
+    override fun getItems(scope: CoroutineScope): Flow<List<OrderedItem>> = bestStoryDao
         .getBestStories()
         .map { bestStories ->
             bestStories.map {
@@ -30,7 +29,7 @@ class BestStoryRepository @Inject constructor(
             }
         }
         .shareIn(
-            scope = CoroutineScope(SupervisorJob()),
+            scope = scope,
             started = SharingStarted.Lazily,
             replay = 1
         )

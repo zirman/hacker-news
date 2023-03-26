@@ -6,7 +6,6 @@ import com.monoid.hackernews.common.room.JobStoryDao
 import com.monoid.hackernews.common.room.JobStoryDb
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -19,7 +18,7 @@ class JobStoryRepository @Inject constructor(
     private val httpClient: HttpClient,
     private val jobStoryDao: JobStoryDao,
 ) : Repository<OrderedItem> {
-    override val items: Flow<List<OrderedItem>> = jobStoryDao
+    override fun getItems(scope: CoroutineScope): Flow<List<OrderedItem>> = jobStoryDao
         .getJobStories().map { jobStories ->
             jobStories.map {
                 OrderedItem(
@@ -29,7 +28,7 @@ class JobStoryRepository @Inject constructor(
             }
         }
         .shareIn(
-            scope = CoroutineScope(SupervisorJob()),
+            scope = scope,
             started = SharingStarted.Lazily,
             replay = 1
         )

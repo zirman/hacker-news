@@ -134,7 +134,7 @@ fun RootItem(
                                 ?: "",
                             linkColor = LocalContentColor.current
                         ),
-                        minLines = 2,
+//                        minLines = 2,
                         modifier = Modifier.padding(horizontal = 8.dp),
                         style = MaterialTheme.typography.titleMedium
                     )

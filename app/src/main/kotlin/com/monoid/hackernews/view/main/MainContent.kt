@@ -35,7 +35,6 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
@@ -43,6 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.metrics.performance.PerformanceMetricsState
 import androidx.navigation.NavHostController
 import androidx.navigation.plusAssign
@@ -156,7 +156,7 @@ fun MainContent(
                             header = {
                                 val authenticationState: State<Authentication?> =
                                     remember { mainViewModel.authentication.data }
-                                        .collectAsState(initial = null)
+                                        .collectAsStateWithLifecycle(null)
 
                                 val authentication: Authentication? =
                                     authenticationState.value

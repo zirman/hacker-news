@@ -1,5 +1,5 @@
 TODO:
-+ Firebase crashlytics
+ + Chat bubbles
  + Logout
  + Register account
  + Use android.icu.text.MessageFormat to translate plurals

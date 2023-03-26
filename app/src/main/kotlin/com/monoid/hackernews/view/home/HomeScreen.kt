@@ -41,7 +41,6 @@ import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -55,6 +54,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.adaptive.FoldAwareConfiguration
 import com.google.accompanist.adaptive.HorizontalTwoPaneStrategy
 import com.google.accompanist.adaptive.TwoPane
@@ -158,7 +158,7 @@ fun HomeScreen(
                         }
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
+                colors = TopAppBarDefaults.largeTopAppBarColors(
                     navigationIconContentColor = MaterialTheme.colorScheme.tertiary,
                     titleContentColor = MaterialTheme.colorScheme.tertiary,
                     actionIconContentColor = MaterialTheme.colorScheme.tertiary,
@@ -189,7 +189,7 @@ fun HomeScreen(
                         itemTreeRepository
                             .itemUiList(orderedItems.map { it.itemId })
                     }
-            }.collectAsState(initial = null)
+            }.collectAsStateWithLifecycle(null)
 
         ReportDrawnWhen { itemRows != null }
 
@@ -236,7 +236,7 @@ fun HomeScreen(
                         } else {
                             emptyFlow()
                         }
-                    }.collectAsState(initial = null)
+                    }.collectAsStateWithLifecycle(null)
 
                 if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
                     if (detailInteraction && showItemId != null) {

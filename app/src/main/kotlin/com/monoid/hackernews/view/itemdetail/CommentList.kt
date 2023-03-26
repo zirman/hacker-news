@@ -14,12 +14,12 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.metrics.performance.PerformanceMetricsState
 import com.monoid.hackernews.BuildConfig
 import com.monoid.hackernews.common.api.ItemId
@@ -72,12 +72,12 @@ fun CommentList(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             itemsIndexed(
-                items = itemTreeRows ?: emptyList(),
+                items = itemTreeRows.orEmpty(),
                 key = { _, itemRow -> itemRow.itemId.long },
                 contentType = { index, _ -> index == 0 }
             ) { index, itemRow ->
                 val itemUiState: State<ItemUiWithThreadDepth?> =
-                    remember { itemRow.itemUiFlow }.collectAsState(initial = null)
+                    remember { itemRow.itemUiFlow }.collectAsStateWithLifecycle(null)
 
                 if (index == 0) {
                     RootItem(

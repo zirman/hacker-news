@@ -3,10 +3,10 @@ package com.monoid.hackernews.wear.view.home
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.integerResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.wear.compose.material.PositionIndicator
 import androidx.wear.compose.material.Scaffold
 import androidx.wear.compose.material.TimeText
@@ -42,7 +42,7 @@ fun HomeScreen(
                 .map { orderedItems ->
                     itemTreeRepository.itemUiList(orderedItems.map { it.itemId })
                 }
-        }.collectAsState(initial = null)
+        }.collectAsStateWithLifecycle(null)
 
     val state = rememberScalingLazyListState()
 

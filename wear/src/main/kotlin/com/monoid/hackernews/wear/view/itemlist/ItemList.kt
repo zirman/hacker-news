@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
@@ -19,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.rotary.onRotaryScrollEvent
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.metrics.performance.PerformanceMetricsState
 import androidx.wear.compose.material.ListHeader
 import androidx.wear.compose.material.ScalingLazyColumn
@@ -88,7 +88,7 @@ fun ItemList(
         items(itemRows.value.orEmpty(), { it.itemId.long }) { itemRow ->
             Item(
                 itemUiState = remember(itemRow.itemId) { itemRow.itemUiFlow }
-                    .collectAsState(initial = null),
+                    .collectAsStateWithLifecycle(),
                 onClickDetail = { onClickDetail(it) },
                 modifier = Modifier.fillMaxWidth()
             )

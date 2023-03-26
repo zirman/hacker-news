@@ -8,7 +8,6 @@ import com.monoid.hackernews.common.room.ItemDb
 import com.monoid.hackernews.common.room.UserDao
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
@@ -28,7 +27,7 @@ class UserStoryRepositoryFactory @Inject constructor(
     fun repository(username: Username): Repository<OrderedItem> {
         return repositories.getOrPut(username) {
             object : Repository<OrderedItem> {
-                override val items: Flow<List<OrderedItem>> = userDao
+                override fun getItems(scope: CoroutineScope): Flow<List<OrderedItem>> = userDao
                     .userByUsernameWithSubmitted(username.string)
                     .map { userWithSubmitted ->
                         userWithSubmitted?.submitted
@@ -39,10 +38,10 @@ class UserStoryRepositoryFactory @Inject constructor(
                                     order = index
                                 )
                             }
-                            ?: emptyList()
+                            .orEmpty()
                     }
                     .shareIn(
-                        scope = CoroutineScope(SupervisorJob()),
+                        scope = scope,
                         started = SharingStarted.Lazily,
                         replay = 1
                     )

@@ -9,6 +9,7 @@ import com.monoid.hackernews.common.api.flagRequest
 import com.monoid.hackernews.common.api.getItem
 import com.monoid.hackernews.common.api.upvoteItem
 import com.monoid.hackernews.common.datastore.Authentication
+import com.monoid.hackernews.common.injection.DefaultDispatcher
 import com.monoid.hackernews.common.injection.IoDispatcher
 import com.monoid.hackernews.common.room.ExpandedDao
 import com.monoid.hackernews.common.room.ExpandedDb
@@ -22,8 +23,7 @@ import com.monoid.hackernews.common.room.UpvoteDao
 import com.monoid.hackernews.common.room.UpvoteDb
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainCoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -32,8 +32,8 @@ import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.emitAll
@@ -43,7 +43,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
@@ -51,6 +51,7 @@ import kotlinx.datetime.Instant
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.math.max
 
 @Singleton
 class ItemTreeRepository @Inject constructor(
@@ -62,24 +63,37 @@ class ItemTreeRepository @Inject constructor(
     private val flagDao: FlagDao,
     private val expandedDao: ExpandedDao,
     private val mainDispatcher: MainCoroutineDispatcher,
+    @DefaultDispatcher
+    private val defaultDispatcher: CoroutineDispatcher,
     @IoDispatcher
     private val ioDispatcher: CoroutineDispatcher,
 ) {
-    private val sharedFlows: MutableMap<ItemId, WeakReference<SharedFlow<ItemUiInternal>>> =
+    private val scope = CoroutineScope(defaultDispatcher)
+
+    // this is used to keep a minimum set of weak references alive
+    private val retainedSetSharedStateFlows: MutableSet<StateFlow<ItemUiInternal?>> =
+        mutableSetOf()
+
+    private val sharedStateFlows: MutableMap<ItemId, WeakReference<StateFlow<ItemUiInternal?>>> =
         mutableMapOf()
 
-    private val itemUpdatesSharedFlow: MutableSharedFlow<ItemUiInternal> =
+    private val itemUpdatesSharedFlow: MutableSharedFlow<ItemUiInternal?> =
         MutableSharedFlow(extraBufferCapacity = 10)
 
     @Stable
     private inner class ItemRowInternal(
         override val itemId: ItemId,
     ) : ItemListRow() {
-        override val itemUiFlow: SharedFlow<ItemUi>
+        override val itemUiFlow: StateFlow<ItemUi?>
             get() {
-                return sharedFlows[itemId]?.get()
+                return sharedStateFlows[itemId]?.get()
                     ?: sharedItemUiFlow(itemId).also {
-                        sharedFlows[itemId] = WeakReference(it)
+                        retainedSetSharedStateFlows.add(it)
+                        sharedStateFlows[itemId] = WeakReference(it)
+
+                        for (i in 1..max(retainedSetSharedStateFlows.size - retainedSize, 0)) {
+                            retainedSetSharedStateFlows.remove(retainedSetSharedStateFlows.first())
+                        }
                     }
             }
     }
@@ -92,9 +106,14 @@ class ItemTreeRepository @Inject constructor(
         override val itemUiFlow: Flow<ItemUiWithThreadDepth>
             get() {
                 return (
-                    sharedFlows[itemId]?.get()
+                    sharedStateFlows[itemId]?.get()
                         ?: sharedItemUiFlow(itemId).also {
-                            sharedFlows[itemId] = WeakReference(it)
+                            retainedSetSharedStateFlows.add(it)
+                            sharedStateFlows[itemId] = WeakReference(it)
+
+                            for (i in 1..max(retainedSetSharedStateFlows.size - retainedSize, 0)) {
+                                retainedSetSharedStateFlows.remove(retainedSetSharedStateFlows.first())
+                            }
                         }
                     )
                     .onEach { itemUpdatesSharedFlow.emit(it) }
@@ -103,10 +122,10 @@ class ItemTreeRepository @Inject constructor(
     }
 
     fun cleanup() {
-        sharedFlows.toList()
+        sharedStateFlows.toList()
             .forEach { (itemId) ->
-                if (sharedFlows[itemId]?.get() == null) {
-                    sharedFlows.remove(itemId)
+                if (sharedStateFlows[itemId]?.get() == null) {
+                    sharedStateFlows.remove(itemId)
                 }
             }
     }
@@ -242,7 +261,7 @@ class ItemTreeRepository @Inject constructor(
         emit(traverse(itemTree))
 
         emitAll(
-            itemUpdatesSharedFlow.map { itemUi ->
+            itemUpdatesSharedFlow.filterNotNull().map { itemUi ->
                 val itemId = ItemId(itemUi.item.id)
                 val isExpanded = itemUi.isExpanded
                 val kids = itemUi.kids
@@ -277,8 +296,7 @@ class ItemTreeRepository @Inject constructor(
         return itemIds.map { itemId -> ItemRowInternal(itemId) }
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
-    private fun sharedItemUiFlow(itemId: ItemId): SharedFlow<ItemUiInternal> = flow {
+    private fun sharedItemUiFlow(itemId: ItemId): StateFlow<ItemUiInternal?> = flow {
         coroutineScope {
             launch {
                 val item = withContext(ioDispatcher) {
@@ -342,10 +360,10 @@ class ItemTreeRepository @Inject constructor(
                 }
             )
         }
-    }.shareIn(
-        scope = GlobalScope, // shared flows are in global scope
-        started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
-        replay = 1
+    }.stateIn(
+        scope = scope,
+        started = SharingStarted.Eagerly,
+        initialValue = null
     )
 
     private inner class ItemUiInternal(
@@ -403,5 +421,6 @@ class ItemTreeRepository @Inject constructor(
 
     companion object {
         private const val TAG = "ItemTreeRepository"
+        private const val retainedSize = 1000
     }
 }

@@ -8,11 +8,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.metrics.performance.PerformanceMetricsState
 import com.monoid.hackernews.BuildConfig
 import com.monoid.hackernews.common.api.ItemId
@@ -58,9 +58,9 @@ fun ItemList(
         state = listState,
         contentPadding = paddingValues
     ) {
-        items(itemRows ?: emptyList(), { it.itemId.long }) { itemRow ->
+        items(itemRows.orEmpty(), { it.itemId.long }) { itemRow ->
             val itemUiState = remember(itemRow.itemId) { itemRow.itemUiFlow }
-                .collectAsState(initial = null)
+                .collectAsStateWithLifecycle()
 
             val coroutineScope = rememberCoroutineScope()
 
