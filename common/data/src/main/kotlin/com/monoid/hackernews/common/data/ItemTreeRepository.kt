@@ -70,9 +70,7 @@ class ItemTreeRepository @Inject constructor(
 ) {
     private val scope = CoroutineScope(defaultDispatcher)
 
-    // this is used to keep a minimum set of weak references alive
-    private val retainedSetSharedStateFlows: MutableSet<StateFlow<ItemUiInternal?>> =
-        mutableSetOf()
+    private val itemCache: MutableMap<ItemId, ItemUiInternal> = mutableMapOf()
 
     private val sharedStateFlows: MutableMap<ItemId, WeakReference<StateFlow<ItemUiInternal?>>> =
         mutableMapOf()
@@ -86,15 +84,27 @@ class ItemTreeRepository @Inject constructor(
     ) : ItemListRow() {
         override val itemUiFlow: StateFlow<ItemUi?>
             get() {
-                return sharedStateFlows[itemId]?.get()
-                    ?: sharedItemUiFlow(itemId).also {
-                        retainedSetSharedStateFlows.add(it)
-                        sharedStateFlows[itemId] = WeakReference(it)
+                var weakReference = sharedStateFlows.remove(itemId)
+                var stateFlow: StateFlow<ItemTreeRepository.ItemUiInternal?>?
 
-                        for (i in 1..max(retainedSetSharedStateFlows.size - retainedSize, 0)) {
-                            retainedSetSharedStateFlows.remove(retainedSetSharedStateFlows.first())
-                        }
+                if (weakReference == null) {
+                    stateFlow = sharedItemUiFlow(itemId)
+                    weakReference = WeakReference(stateFlow)
+                } else {
+                    stateFlow = weakReference.get()
+                    if (stateFlow == null) {
+                        stateFlow = sharedItemUiFlow(itemId)
+                        weakReference = WeakReference(stateFlow)
                     }
+                }
+
+                sharedStateFlows[itemId] = weakReference
+
+                if (sharedStateFlows.size > retainedSize) {
+                    cleanupWeakReferences()
+                }
+
+                return stateFlow
             }
     }
 
@@ -105,26 +115,37 @@ class ItemTreeRepository @Inject constructor(
     ) : ItemTreeRow() {
         override val itemUiFlow: Flow<ItemUiWithThreadDepth>
             get() {
-                return (
-                    sharedStateFlows[itemId]?.get()
-                        ?: sharedItemUiFlow(itemId).also {
-                            retainedSetSharedStateFlows.add(it)
-                            sharedStateFlows[itemId] = WeakReference(it)
+                var weakReference = sharedStateFlows.remove(itemId)
+                var stateFlow: StateFlow<ItemTreeRepository.ItemUiInternal?>?
 
-                            for (i in 1..max(retainedSetSharedStateFlows.size - retainedSize, 0)) {
-                                retainedSetSharedStateFlows.remove(retainedSetSharedStateFlows.first())
-                            }
-                        }
-                    )
+                if (weakReference == null) {
+                    stateFlow = sharedItemUiFlow(itemId)
+                    weakReference = WeakReference(stateFlow)
+                } else {
+                    stateFlow = weakReference.get()
+                    if (stateFlow == null) {
+                        stateFlow = sharedItemUiFlow(itemId)
+                        weakReference = WeakReference(stateFlow)
+                    }
+                }
+
+                sharedStateFlows[itemId] = weakReference
+
+                if (sharedStateFlows.size > retainedSize) {
+                    cleanupWeakReferences()
+                }
+
+                return stateFlow
                     .onEach { itemUpdatesSharedFlow.emit(it) }
                     .map { ItemUiWithThreadDepth(threadDepth, it) }
             }
     }
 
-    fun cleanup() {
-        sharedStateFlows.toList()
-            .forEach { (itemId) ->
-                if (sharedStateFlows[itemId]?.get() == null) {
+    fun cleanupWeakReferences() {
+        sharedStateFlows
+            .toList() // converted to list to prevent ConcurrentModificationException
+            .forEach { (itemId, weakReference) ->
+                if (weakReference.get() == null) {
                     sharedStateFlows.remove(itemId)
                 }
             }
@@ -360,11 +381,24 @@ class ItemTreeRepository @Inject constructor(
                 }
             )
         }
-    }.stateIn(
-        scope = scope,
-        started = SharingStarted.Eagerly,
-        initialValue = null
-    )
+    }
+        .onEach {
+            // keeps ordered by most recently updated
+            itemCache.remove(itemId)
+            itemCache[itemId] = it
+
+            itemCache.keys
+                .take(max(itemCache.size - memoryCacheSize, 0))
+                .forEach {
+
+                    itemCache.remove(it)
+                }
+        }
+        .stateIn(
+            scope = scope,
+            started = SharingStarted.Eagerly,
+            initialValue = itemCache[itemId]
+        )
 
     private inner class ItemUiInternal(
         override val item: ItemDb,
@@ -421,6 +455,7 @@ class ItemTreeRepository @Inject constructor(
 
     companion object {
         private const val TAG = "ItemTreeRepository"
-        private const val retainedSize = 1000
+        private const val retainedSize = 50
+        private const val memoryCacheSize = 500
     }
 }

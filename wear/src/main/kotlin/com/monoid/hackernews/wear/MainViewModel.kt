@@ -15,7 +15,7 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
     init {
         viewModelScope.launch {
-            itemTreeRepository.cleanup()
+            itemTreeRepository.cleanupWeakReferences()
         }
     }
 }
