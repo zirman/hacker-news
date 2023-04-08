@@ -21,3 +21,4 @@ TODO:
  + Long Click
  + Swipe
  + Favorites paging
+ + Splash screen with androidx.core:core-splashscreen:1.0.0-rc01

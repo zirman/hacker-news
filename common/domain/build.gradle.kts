@@ -33,7 +33,6 @@ android {
         freeCompilerArgs = listOf(
             "-opt-in=kotlinx.coroutines.FlowPreview",
             "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-            "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
             "-opt-in=androidx.compose.ui.text.ExperimentalTextApi",
             "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
         )

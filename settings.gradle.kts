@@ -57,12 +57,12 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "lifecycle",
-                /* version = */ "2.6.0"
+                /* version = */ "2.6.1"
             )
 
             version(
                 /* alias = */ "navigation",
-                /* version = */ "2.6.0-alpha07"
+                /* version = */ "2.6.0-alpha09"
             )
 
             version(
@@ -76,13 +76,8 @@ dependencyResolutionManagement {
             )
 
             version(
-                /* alias = */ "material3",
-                /* version = */ "1.1.0-alpha08"
-            )
-
-            version(
                 /* alias = */ "accompanist",
-                /* version = */ "0.30.0"
+                /* version = */ "0.31.0-alpha"
             )
 
             version(
@@ -311,7 +306,7 @@ dependencyResolutionManagement {
                 /* alias = */ "datastore",
                 /* group = */ "androidx.datastore",
                 /* artifact = */ "datastore"
-            ).version("1.1.0-alpha01")
+            ).version("1.1.0-alpha04")
 
             library(
                 /* alias = */ "room-runtime",
@@ -341,7 +336,7 @@ dependencyResolutionManagement {
                 /* alias = */ "window",
                 /* group = */ "androidx.window",
                 /* artifact = */ "window"
-            ).version("1.1.0-alpha06")
+            ).version("1.1.0-beta02")
 
             library(
                 /* alias = */ "appcompat",
@@ -371,19 +366,19 @@ dependencyResolutionManagement {
                 /* alias = */ "activity-ktx",
                 /* group = */ "androidx.activity",
                 /* artifact = */ "activity-ktx"
-            ).version("1.7.0-rc01")
+            ).version("1.7.0")
 
             library(
                 /* alias = */ "fragment-ktx",
                 /* group = */ "androidx.fragment",
                 /* artifact = */ "fragment-ktx"
-            ).version("1.6.0-alpha07")
+            ).version("1.6.0-alpha09")
 
             library(
                 /* alias = */ "activity-compose",
                 /* group = */ "androidx.activity",
                 /* artifact = */ "activity-compose"
-            ).version("1.7.0-rc01")
+            ).version("1.7.0")
 
             library(
                 /* alias = */ "palette-ktx",
@@ -395,7 +390,7 @@ dependencyResolutionManagement {
                 /* alias = */ "work-runtime-ktx",
                 /* group = */ "androidx.work",
                 /* artifact = */ "work-runtime-ktx"
-            ).version("2.8.0-rc01")
+            ).version("2.8.1")
 
             library(
                 /* alias = */ "preference-ktx",
@@ -413,7 +408,7 @@ dependencyResolutionManagement {
                 /* alias = */ "benchmark-junit4",
                 /* group = */ "androidx.benchmark",
                 /* artifact = */ "benchmark-junit4"
-            ).version("1.2.0-alpha11")
+            ).version("1.2.0-alpha13")
 
             library(
                 /* alias = */ "lifecycle-runtime-ktx",
@@ -525,6 +520,12 @@ dependencyResolutionManagement {
             ).withoutVersion()
 
             library(
+                /* alias = */ "ui-tooling-data",
+                /* group = */ "androidx.compose.ui",
+                /* artifact = */ "ui-tooling-data"
+            ).withoutVersion()
+
+            library(
                 /* alias = */ "ui-tooling-preview",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-tooling-preview"
@@ -573,6 +574,7 @@ dependencyResolutionManagement {
                     "ui",
                     "ui-viewbinding",
                     "ui-tooling",
+                    "ui-tooling-data",
                     "ui-tooling-preview",
                     "constraintlayout",
                     "metrics-performance",
@@ -589,7 +591,7 @@ dependencyResolutionManagement {
                 /* alias = */ "ui-test-junit4",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-test-junit4"
-            ).version("1.4.0-rc01")
+            ).withoutVersion()
 
             library(
                 /* alias = */ "ui-test-manifest",
@@ -601,13 +603,13 @@ dependencyResolutionManagement {
                 /* alias = */ "constraintlayout",
                 /* group = */ "androidx.constraintlayout",
                 /* artifact = */ "constraintlayout-compose"
-            ).version("1.1.0-alpha08")
+            ).version("1.1.0-alpha09")
 
             library(
                 /* alias = */ "metrics-performance",
                 /* group = */ "androidx.metrics",
                 /* artifact = */ "metrics-performance"
-            ).version("1.0.0-alpha03")
+            ).version("1.0.0-alpha04")
 
             library(
                 /* alias = */ "compose-foundation",
@@ -661,7 +663,7 @@ dependencyResolutionManagement {
                 /* alias = */ "firebase-bom",
                 /* group = */ "com.google.firebase",
                 /* artifact = */ "firebase-bom"
-            ).version("31.2.3")
+            ).version("31.3.0")
 
             library(
                 /* alias = */ "firebase-crashlytics",

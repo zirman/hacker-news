@@ -5,7 +5,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
-import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.fadeIn
@@ -146,18 +146,18 @@ sealed class MainNavigation<T : Any> {
     abstract fun argsFromRoute(navBackStackEntry: NavBackStackEntry): T?
 
     @Suppress("RedundantNullableReturnType")
-    val enterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? =
+    val enterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? =
         { fadeIn() }
 
     @Suppress("RedundantNullableReturnType")
-    val exitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? =
+    val exitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? =
         null
 
     @Suppress("RedundantNullableReturnType")
-    val popEnterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? =
+    val popEnterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? =
         null
 
-    val popExitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? =
+    val popExitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? =
         null
 
     object Home : MainNavigation<Stories>() {
