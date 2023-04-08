@@ -1,5 +1,6 @@
 package com.monoid.hackernews.common.data
 
+import android.os.Looper
 import android.util.Log
 import androidx.compose.runtime.Stable
 import androidx.datastore.core.DataStore
@@ -24,6 +25,7 @@ import com.monoid.hackernews.common.room.UpvoteDb
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainCoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -48,7 +50,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import java.lang.ref.WeakReference
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.math.max
@@ -72,9 +73,6 @@ class ItemTreeRepository @Inject constructor(
 
     private val itemCache: MutableMap<ItemId, ItemUiInternal> = mutableMapOf()
 
-    private val sharedStateFlows: MutableMap<ItemId, WeakReference<StateFlow<ItemUiInternal?>>> =
-        mutableMapOf()
-
     private val itemUpdatesSharedFlow: MutableSharedFlow<ItemUiInternal?> =
         MutableSharedFlow(extraBufferCapacity = 10)
 
@@ -84,27 +82,7 @@ class ItemTreeRepository @Inject constructor(
     ) : ItemListRow() {
         override val itemUiFlow: StateFlow<ItemUi?>
             get() {
-                var weakReference = sharedStateFlows.remove(itemId)
-                var stateFlow: StateFlow<ItemTreeRepository.ItemUiInternal?>?
-
-                if (weakReference == null) {
-                    stateFlow = sharedItemUiFlow(itemId)
-                    weakReference = WeakReference(stateFlow)
-                } else {
-                    stateFlow = weakReference.get()
-                    if (stateFlow == null) {
-                        stateFlow = sharedItemUiFlow(itemId)
-                        weakReference = WeakReference(stateFlow)
-                    }
-                }
-
-                sharedStateFlows[itemId] = weakReference
-
-                if (sharedStateFlows.size > retainedSize) {
-                    cleanupWeakReferences()
-                }
-
-                return stateFlow
+                return sharedItemUiFlow(itemId)
             }
     }
 
@@ -115,40 +93,15 @@ class ItemTreeRepository @Inject constructor(
     ) : ItemTreeRow() {
         override val itemUiFlow: Flow<ItemUiWithThreadDepth>
             get() {
-                var weakReference = sharedStateFlows.remove(itemId)
-                var stateFlow: StateFlow<ItemTreeRepository.ItemUiInternal?>?
 
-                if (weakReference == null) {
-                    stateFlow = sharedItemUiFlow(itemId)
-                    weakReference = WeakReference(stateFlow)
-                } else {
-                    stateFlow = weakReference.get()
-                    if (stateFlow == null) {
-                        stateFlow = sharedItemUiFlow(itemId)
-                        weakReference = WeakReference(stateFlow)
-                    }
-                }
-
-                sharedStateFlows[itemId] = weakReference
-
-                if (sharedStateFlows.size > retainedSize) {
-                    cleanupWeakReferences()
-                }
-
-                return stateFlow
+                return sharedItemUiFlow(itemId)
                     .onEach { itemUpdatesSharedFlow.emit(it) }
                     .map { ItemUiWithThreadDepth(threadDepth, it) }
             }
     }
 
-    fun cleanupWeakReferences() {
-        sharedStateFlows
-            .toList() // converted to list to prevent ConcurrentModificationException
-            .forEach { (itemId, weakReference) ->
-                if (weakReference.get() == null) {
-                    sharedStateFlows.remove(itemId)
-                }
-            }
+    fun cleanup() {
+        // no longer does anything
     }
 
     suspend fun upvoteItemJob(
@@ -383,21 +336,25 @@ class ItemTreeRepository @Inject constructor(
         }
     }
         .onEach {
-            // keeps ordered by most recently updated
-            itemCache.remove(itemId)
-            itemCache[itemId] = it
+            // make sure we're accessing itemCache from main thead
+            withContext(Dispatchers.Main) {
+                // keep ordered by most recently updated
+                itemCache.remove(itemId)
+                itemCache[itemId] = it
 
-            itemCache.keys
-                .take(max(itemCache.size - memoryCacheSize, 0))
-                .forEach {
-
-                    itemCache.remove(it)
-                }
+                itemCache.keys
+                    .take(max(itemCache.size - memoryCacheSize, 0))
+                    .forEach { itemCache.remove(it) }
+            }
         }
         .stateIn(
             scope = scope,
             started = SharingStarted.Eagerly,
-            initialValue = itemCache[itemId]
+            initialValue = run {
+                // make sure we access itemCache from main thread
+                assert(Looper.getMainLooper().isCurrentThread)
+                itemCache[itemId]
+            }
         )
 
     private inner class ItemUiInternal(
@@ -455,7 +412,6 @@ class ItemTreeRepository @Inject constructor(
 
     companion object {
         private const val TAG = "ItemTreeRepository"
-        private const val retainedSize = 50
         private const val memoryCacheSize = 500
     }
 }

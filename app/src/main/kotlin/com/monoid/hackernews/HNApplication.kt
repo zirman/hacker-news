@@ -82,7 +82,7 @@ class HNApplication : Application() {
                     async { trimMemoryEvents.first() }.onAwait
                 }
 
-                itemTreeRepository.cleanupWeakReferences()
+                itemTreeRepository.cleanup()
             }
         }
 
