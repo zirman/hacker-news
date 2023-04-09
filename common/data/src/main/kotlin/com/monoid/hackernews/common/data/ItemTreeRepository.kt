@@ -93,7 +93,6 @@ class ItemTreeRepository @Inject constructor(
     ) : ItemTreeRow() {
         override val itemUiFlow: Flow<ItemUiWithThreadDepth>
             get() {
-
                 return sharedItemUiFlow(itemId)
                     .onEach { itemUpdatesSharedFlow.emit(it) }
                     .map { ItemUiWithThreadDepth(threadDepth, it) }
@@ -101,7 +100,8 @@ class ItemTreeRepository @Inject constructor(
     }
 
     fun cleanup() {
-        // no longer does anything
+        assert(Looper.getMainLooper().isCurrentThread)
+        itemCache.clear()
     }
 
     suspend fun upvoteItemJob(
@@ -336,7 +336,7 @@ class ItemTreeRepository @Inject constructor(
         }
     }
         .onEach {
-            // make sure we're accessing itemCache from main thead
+            // make sure we're accessing itemCache from main thread
             withContext(Dispatchers.Main) {
                 // keep ordered by most recently updated
                 itemCache.remove(itemId)

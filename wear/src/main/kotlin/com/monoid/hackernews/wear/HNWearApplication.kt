@@ -25,12 +25,9 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.ensureActive
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.selects.select
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -61,8 +58,6 @@ class HNWearApplication : Application() {
     @Inject
     lateinit var itemTreeRepository: ItemTreeRepository
 
-    private val trimMemoryEvents = MutableSharedFlow<Unit>()
-
     private val coroutineScope by lazy {
         CoroutineScope(
             SupervisorJob() + mainCoroutineDispatcher + CoroutineExceptionHandler { _, error ->
@@ -74,18 +69,6 @@ class HNWearApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
-        // start job to cleanup unreferenced items
-        coroutineScope.launch {
-            while (true) {
-                select<Unit> {
-                    async { delay(TimeUnit.SECONDS.toMillis(10)) }.onAwait
-                    async { trimMemoryEvents.first() }.onAwait
-                }
-
-                itemTreeRepository.cleanup()
-            }
-        }
 
         // Update upvote and favorite table on login and then periodically.
         coroutineScope.launch {
@@ -148,7 +131,7 @@ class HNWearApplication : Application() {
 
     override fun onTrimMemory(level: Int) {
         super.onTrimMemory(level)
-        trimMemoryEvents.tryEmit(Unit)
+        itemTreeRepository.cleanup()
     }
 
     override fun onTerminate() {
