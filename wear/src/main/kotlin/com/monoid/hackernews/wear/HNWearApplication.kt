@@ -4,8 +4,10 @@ import android.app.Application
 import android.content.Intent
 import android.content.IntentFilter
 import androidx.datastore.core.DataStore
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.monoid.hackernews.common.api.getFavorites
 import com.monoid.hackernews.common.api.getUpvoted
@@ -60,56 +62,59 @@ class HNWearApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        // TODO: convert to WorkManager job
-        ProcessLifecycleOwner.get().lifecycleScope.launch(
+        val lifecycleOwner = ProcessLifecycleOwner.get()
+
+        lifecycleOwner.lifecycleScope.launch(
             CoroutineExceptionHandler { _, error ->
                 firebaseCrashlytics.recordException(error)
                 error.printStackTrace()
             }
         ) {
-            // Update upvote and favorite table on login and then periodically.
-            authentication.data.distinctUntilChanged().collectLatest { authentication ->
-                if (authentication.password?.isNotEmpty() == true) {
-                    while (true) {
-                        try {
-                            val upvoteDef =
-                                async {
-                                    upvoteDao.replaceUpvotesForUser(
-                                        username = authentication.username,
-                                        upvotes = getUpvoted(
-                                            this@HNWearApplication,
-                                            authentication,
-                                            Username(authentication.username)
+            lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                // Update upvote and favorite table on login and then periodically.
+                authentication.data.distinctUntilChanged().collectLatest { authentication ->
+                    if (authentication.password?.isNotEmpty() == true) {
+                        while (true) {
+                            try {
+                                val upvoteDef =
+                                    async {
+                                        upvoteDao.replaceUpvotesForUser(
+                                            username = authentication.username,
+                                            upvotes = getUpvoted(
+                                                this@HNWearApplication,
+                                                authentication,
+                                                Username(authentication.username)
+                                            )
+                                                .map { it.long },
                                         )
-                                            .map { it.long },
-                                    )
-                                }
+                                    }
 
-                            val favoriteDef =
-                                async {
-                                    favoriteDao.replaceFavoritesForUser(
-                                        username = authentication.username,
-                                        favorites = getFavorites(
-                                            this@HNWearApplication,
-                                            Username(authentication.username)
+                                val favoriteDef =
+                                    async {
+                                        favoriteDao.replaceFavoritesForUser(
+                                            username = authentication.username,
+                                            favorites = getFavorites(
+                                                this@HNWearApplication,
+                                                Username(authentication.username)
+                                            )
+                                                .map { it.long },
                                         )
-                                            .map { it.long },
-                                    )
-                                }
+                                    }
 
-                            delay(
-                                TimeUnit.HOURS.toMillis(
-                                    resources
-                                        .getInteger(com.monoid.hackernews.common.view.R.integer.favorites_state_hours)
-                                        .toLong()
+                                delay(
+                                    TimeUnit.HOURS.toMillis(
+                                        resources
+                                            .getInteger(com.monoid.hackernews.common.view.R.integer.favorites_state_hours)
+                                            .toLong()
+                                    )
                                 )
-                            )
 
-                            upvoteDef.await()
-                            favoriteDef.await()
-                        } catch (error: Throwable) {
-                            currentCoroutineContext().ensureActive()
-                            error.printStackTrace()
+                                upvoteDef.await()
+                                favoriteDef.await()
+                            } catch (error: Throwable) {
+                                currentCoroutineContext().ensureActive()
+                                error.printStackTrace()
+                            }
                         }
                     }
                 }
