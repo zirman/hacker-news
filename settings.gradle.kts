@@ -190,6 +190,7 @@ dependencyResolutionManagement {
                     "room-ktx",
                     "room-paging",
 
+                    "lifecycle-process",
                     "lifecycle-runtime-ktx",
                     "lifecycle-runtime-compose",
                     "lifecycle-viewmodel-ktx",
@@ -409,6 +410,12 @@ dependencyResolutionManagement {
                 /* group = */ "androidx.benchmark",
                 /* artifact = */ "benchmark-junit4"
             ).version("1.2.0-alpha13")
+
+            library(
+                /* alias = */ "lifecycle-process",
+                /* group = */ "androidx.lifecycle",
+                /* artifact = */ "lifecycle-process"
+            ).versionRef("lifecycle")
 
             library(
                 /* alias = */ "lifecycle-runtime-ktx",

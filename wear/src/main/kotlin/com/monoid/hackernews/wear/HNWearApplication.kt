@@ -4,6 +4,8 @@ import android.app.Application
 import android.content.Intent
 import android.content.IntentFilter
 import androidx.datastore.core.DataStore
+import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.monoid.hackernews.common.api.getFavorites
 import com.monoid.hackernews.common.api.getUpvoted
@@ -17,11 +19,8 @@ import com.monoid.hackernews.common.view.updateAndPushDynamicShortcuts
 import dagger.hilt.android.HiltAndroidApp
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainCoroutineDispatcher
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.ensureActive
@@ -58,20 +57,17 @@ class HNWearApplication : Application() {
     @Inject
     lateinit var itemTreeRepository: ItemTreeRepository
 
-    private val coroutineScope by lazy {
-        CoroutineScope(
-            SupervisorJob() + mainCoroutineDispatcher + CoroutineExceptionHandler { _, error ->
-                firebaseCrashlytics.recordException(error)
-                error.printStackTrace()
-            }
-        )
-    }
-
     override fun onCreate() {
         super.onCreate()
 
-        // Update upvote and favorite table on login and then periodically.
-        coroutineScope.launch {
+        // TODO: convert to WorkManager job
+        ProcessLifecycleOwner.get().lifecycleScope.launch(
+            CoroutineExceptionHandler { _, error ->
+                firebaseCrashlytics.recordException(error)
+                error.printStackTrace()
+            }
+        ) {
+            // Update upvote and favorite table on login and then periodically.
             authentication.data.distinctUntilChanged().collectLatest { authentication ->
                 if (authentication.password?.isNotEmpty() == true) {
                     while (true) {
@@ -135,7 +131,6 @@ class HNWearApplication : Application() {
     }
 
     override fun onTerminate() {
-        coroutineScope.cancel()
         httpClient.close()
         db.close()
         super.onTerminate()
