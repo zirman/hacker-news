@@ -87,7 +87,7 @@ fun ItemList(
         }
         items(itemRows.value.orEmpty(), { it.itemId.long }) { itemRow ->
             Item(
-                itemUiState = remember(itemRow.itemId) { itemRow.itemUiFlow }
+                itemUiState = remember(itemRow.itemId) { itemRow.itemUiFlow(coroutineScope) }
                     .collectAsStateWithLifecycle(),
                 onClickDetail = { onClickDetail(it) },
                 modifier = Modifier.fillMaxWidth()

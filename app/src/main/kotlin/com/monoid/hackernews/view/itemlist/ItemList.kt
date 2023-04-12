@@ -59,10 +59,10 @@ fun ItemList(
         contentPadding = paddingValues
     ) {
         items(itemRows.orEmpty(), { it.itemId.long }) { itemRow ->
-            val itemUiState = remember(itemRow.itemId) { itemRow.itemUiFlow }
-                .collectAsStateWithLifecycle()
-
             val coroutineScope = rememberCoroutineScope()
+
+            val itemUiState = remember(itemRow.itemId) { itemRow.itemUiFlow(coroutineScope) }
+                .collectAsStateWithLifecycle()
 
             Item(
                 itemUi = itemUiState.value,

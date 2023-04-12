@@ -55,8 +55,10 @@ fun ReplyContent(
     onError: (Throwable) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     val itemUi: ItemUi? = remember {
-        itemTreeRepository.itemUiList(listOf(itemId)).first().itemUiFlow
+        itemTreeRepository.itemUiList(listOf(itemId)).first().itemUiFlow(coroutineScope)
     }
         .collectAsStateWithLifecycle()
         .value
@@ -129,9 +131,6 @@ fun ReplyContent(
                 onReplyChange = setReply,
                 modifier = rowModifier.padding(top = 8.dp),
             )
-
-            val coroutineScope: CoroutineScope =
-                rememberCoroutineScope()
 
             Button(
                 onClick = {

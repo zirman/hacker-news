@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -76,8 +77,10 @@ fun CommentList(
                 key = { _, itemRow -> itemRow.itemId.long },
                 contentType = { index, _ -> index == 0 }
             ) { index, itemRow ->
+                val coroutineScope = rememberCoroutineScope()
+
                 val itemUiState: State<ItemUiWithThreadDepth?> =
-                    remember { itemRow.itemUiFlow }.collectAsStateWithLifecycle(null)
+                    remember { itemRow.itemUiFlow(coroutineScope) }.collectAsStateWithLifecycle(null)
 
                 if (index == 0) {
                     RootItem(

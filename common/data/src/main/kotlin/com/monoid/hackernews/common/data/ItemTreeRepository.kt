@@ -10,7 +10,6 @@ import com.monoid.hackernews.common.api.flagRequest
 import com.monoid.hackernews.common.api.getItem
 import com.monoid.hackernews.common.api.upvoteItem
 import com.monoid.hackernews.common.datastore.Authentication
-import com.monoid.hackernews.common.injection.DefaultDispatcher
 import com.monoid.hackernews.common.injection.IoDispatcher
 import com.monoid.hackernews.common.room.ExpandedDao
 import com.monoid.hackernews.common.room.ExpandedDb
@@ -64,13 +63,9 @@ class ItemTreeRepository @Inject constructor(
     private val flagDao: FlagDao,
     private val expandedDao: ExpandedDao,
     private val mainDispatcher: MainCoroutineDispatcher,
-    @DefaultDispatcher
-    private val defaultDispatcher: CoroutineDispatcher,
     @IoDispatcher
     private val ioDispatcher: CoroutineDispatcher,
 ) {
-    private val scope = CoroutineScope(defaultDispatcher)
-
     private val itemCache: MutableMap<ItemId, ItemUiInternal> = mutableMapOf()
 
     private val itemUpdatesSharedFlow: MutableSharedFlow<ItemUiInternal?> =
@@ -80,10 +75,9 @@ class ItemTreeRepository @Inject constructor(
     private inner class ItemRowInternal(
         override val itemId: ItemId,
     ) : ItemListRow() {
-        override val itemUiFlow: StateFlow<ItemUi?>
-            get() {
-                return sharedItemUiFlow(itemId)
-            }
+        override fun itemUiFlow(scope: CoroutineScope): StateFlow<ItemUi?> {
+            return sharedItemUiFlow(scope, itemId)
+        }
     }
 
     @Stable
@@ -91,12 +85,11 @@ class ItemTreeRepository @Inject constructor(
         override val itemId: ItemId,
         private val threadDepth: Int,
     ) : ItemTreeRow() {
-        override val itemUiFlow: Flow<ItemUiWithThreadDepth>
-            get() {
-                return sharedItemUiFlow(itemId)
-                    .onEach { itemUpdatesSharedFlow.emit(it) }
-                    .map { ItemUiWithThreadDepth(threadDepth, it) }
-            }
+        override fun itemUiFlow(scope: CoroutineScope): Flow<ItemUiWithThreadDepth> {
+            return sharedItemUiFlow(scope, itemId)
+                .onEach { itemUpdatesSharedFlow.emit(it) }
+                .map { ItemUiWithThreadDepth(threadDepth, it) }
+        }
     }
 
     fun cleanup() {
@@ -270,7 +263,10 @@ class ItemTreeRepository @Inject constructor(
         return itemIds.map { itemId -> ItemRowInternal(itemId) }
     }
 
-    private fun sharedItemUiFlow(itemId: ItemId): StateFlow<ItemUiInternal?> = flow {
+    private fun sharedItemUiFlow(
+        scope: CoroutineScope,
+        itemId: ItemId,
+    ): StateFlow<ItemUiInternal?> = flow {
         coroutineScope {
             launch {
                 val item = withContext(ioDispatcher) {
