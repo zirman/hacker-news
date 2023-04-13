@@ -4,6 +4,7 @@ import android.os.Looper
 import android.util.Log
 import androidx.compose.runtime.Stable
 import androidx.datastore.core.DataStore
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.api.favoriteRequest
 import com.monoid.hackernews.common.api.flagRequest
@@ -23,9 +24,11 @@ import com.monoid.hackernews.common.room.UpvoteDao
 import com.monoid.hackernews.common.room.UpvoteDb
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainCoroutineDispatcher
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -57,6 +60,7 @@ import kotlin.math.max
 class ItemTreeRepository @Inject constructor(
     private val authentication: DataStore<Authentication>,
     private val httpClient: HttpClient,
+    private val firebaseCrashlytics: FirebaseCrashlytics,
     private val itemDao: ItemDao,
     private val upvoteDao: UpvoteDao,
     private val favoriteDao: FavoriteDao,
@@ -67,6 +71,11 @@ class ItemTreeRepository @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher,
 ) {
     private val itemCache: MutableMap<ItemId, ItemUiInternal> = mutableMapOf()
+
+    private val coroutineScope =
+        CoroutineScope(SupervisorJob() + ioDispatcher + CoroutineExceptionHandler { _, throwable ->
+            firebaseCrashlytics
+        })
 
     private val itemUpdatesSharedFlow: MutableSharedFlow<ItemUiInternal?> =
         MutableSharedFlow(extraBufferCapacity = 10)
@@ -267,69 +276,66 @@ class ItemTreeRepository @Inject constructor(
         scope: CoroutineScope,
         itemId: ItemId,
     ): StateFlow<ItemUiInternal?> = flow {
-        coroutineScope {
-            launch {
-                val item = withContext(ioDispatcher) {
-                    itemDao.itemById(itemId.long)
-                }
+        // network requests are are not canceled when flow is canceled
+        coroutineScope.launch {
+            val item = itemDao.itemById(itemId.long)
 
-                if (
-                    item?.lastUpdate == null ||
-                    (Clock.System.now() - Instant.fromEpochSeconds(item.lastUpdate))
-                        .inWholeMinutes > 5
-                ) {
-                    try {
-                        itemDao.itemApiInsert(httpClient.getItem(itemId))
-                    } catch (error: Throwable) {
-                        currentCoroutineContext().ensureActive()
+            if (
+                item?.lastUpdate == null ||
+                (Clock.System.now() - Instant.fromEpochSeconds(item.lastUpdate))
+                    .inWholeMinutes > 5
+            ) {
+                try {
+                    itemDao.itemApiInsert(httpClient.getItem(itemId))
+                } catch (error: Throwable) {
+                    currentCoroutineContext().ensureActive()
 
-                        Log.e(
-                            /* tag = */ TAG,
-                            /* msg = */ error.stackTraceToString()
-                        )
-                    }
-                }
-            }
-
-            emitAll(
-                combine(
-                    combine(
-                        itemDao.itemByIdWithKidsByIdFlow(itemId.long)
-                            .filterNotNull()
-                            .distinctUntilChanged(),
-                        expandedDao.isExpandedFlow(itemId.long)
-                            .distinctUntilChanged(),
-                        ::Pair
-                    ).distinctUntilChanged(),
-                    authentication.data
-                        .map { it.username }
-                        .distinctUntilChanged()
-                        .flatMapLatest { username ->
-                            combine(
-                                upvoteDao
-                                    .isUpvoteFlow(itemId.long, username)
-                                    .distinctUntilChanged(),
-                                favoriteDao
-                                    .isFavoriteFlow(itemId.long, username)
-                                    .distinctUntilChanged(),
-                                flagDao
-                                    .isFlagFlow(itemId.long, username)
-                                    .distinctUntilChanged(),
-                                ::Triple
-                            )
-                        }
-                ) { (itemWithKids, isExpanded), (isUpvote, isFavorite, isFlag) ->
-                    ItemUiInternal(
-                        item = itemWithKids.item,
-                        kids = itemWithKids.kids.map { ItemId(it.id) },
-                        isUpvote = isUpvote,
-                        isFavorite = isFavorite,
-                        isFlag = isFlag,
-                        isExpanded = isExpanded
+                    Log.e(
+                        /* tag = */ TAG,
+                        /* msg = */ error.stackTraceToString()
                     )
                 }
-            )
+            }
         }
+
+        emitAll(
+            combine(
+                combine(
+                    itemDao.itemByIdWithKidsByIdFlow(itemId.long)
+                        .filterNotNull()
+                        .distinctUntilChanged(),
+                    expandedDao.isExpandedFlow(itemId.long)
+                        .distinctUntilChanged(),
+                    ::Pair
+                ).distinctUntilChanged(),
+                authentication.data
+                    .map { it.username }
+                    .distinctUntilChanged()
+                    .flatMapLatest { username ->
+                        combine(
+                            upvoteDao
+                                .isUpvoteFlow(itemId.long, username)
+                                .distinctUntilChanged(),
+                            favoriteDao
+                                .isFavoriteFlow(itemId.long, username)
+                                .distinctUntilChanged(),
+                            flagDao
+                                .isFlagFlow(itemId.long, username)
+                                .distinctUntilChanged(),
+                            ::Triple
+                        )
+                    }
+            ) { (itemWithKids, isExpanded), (isUpvote, isFavorite, isFlag) ->
+                ItemUiInternal(
+                    item = itemWithKids.item,
+                    kids = itemWithKids.kids.map { ItemId(it.id) },
+                    isUpvote = isUpvote,
+                    isFavorite = isFavorite,
+                    isFlag = isFlag,
+                    isExpanded = isExpanded
+                )
+            }
+        )
     }
         .onEach {
             // make sure we're accessing itemCache from main thread

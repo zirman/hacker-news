@@ -97,6 +97,7 @@ dependencies {
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.androidx)
     implementation(libs.bundles.google)
+    implementation(libs.bundles.firebase)
     api(libs.bundles.ktor)
     ksp(libs.room.compiler)
 
