@@ -14,8 +14,8 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.metrics.performance.PerformanceMetricsState
-import com.monoid.hackernews.BuildConfig
 import com.monoid.hackernews.common.api.ItemId
+import com.monoid.hackernews.common.data.BuildConfig
 import com.monoid.hackernews.common.data.ItemListRow
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username

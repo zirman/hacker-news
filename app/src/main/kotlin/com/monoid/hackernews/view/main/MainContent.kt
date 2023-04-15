@@ -49,8 +49,8 @@ import androidx.navigation.plusAssign
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.navigation.material.BottomSheetNavigator
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
-import com.monoid.hackernews.BuildConfig
 import com.monoid.hackernews.MainViewModel
+import com.monoid.hackernews.common.data.BuildConfig
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.datastore.Authentication

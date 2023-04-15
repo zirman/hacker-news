@@ -21,6 +21,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.metrics.performance.JankStats
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.monoid.hackernews.common.data.BuildConfig
 import com.monoid.hackernews.common.datastore.Authentication
 import com.monoid.hackernews.view.main.MainContent
 import com.monoid.hackernews.view.theme.AppTheme

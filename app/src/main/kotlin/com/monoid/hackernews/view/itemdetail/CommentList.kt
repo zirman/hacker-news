@@ -22,8 +22,8 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.metrics.performance.PerformanceMetricsState
-import com.monoid.hackernews.BuildConfig
 import com.monoid.hackernews.common.api.ItemId
+import com.monoid.hackernews.common.data.BuildConfig
 import com.monoid.hackernews.common.data.ItemTreeRow
 import com.monoid.hackernews.common.data.ItemUiWithThreadDepth
 import com.monoid.hackernews.common.data.LoginAction

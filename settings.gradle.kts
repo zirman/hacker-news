@@ -22,7 +22,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "gradle-plugin-android",
-                /* version = */ "7.4.2"
+                /* version = */ "8.0.0"
             )
 
             version(
@@ -670,7 +670,7 @@ dependencyResolutionManagement {
                 /* alias = */ "firebase-bom",
                 /* group = */ "com.google.firebase",
                 /* artifact = */ "firebase-bom"
-            ).version("31.3.0")
+            ).version("31.5.0")
 
             library(
                 /* alias = */ "firebase-crashlytics",
