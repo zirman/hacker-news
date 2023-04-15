@@ -26,9 +26,9 @@ import androidx.wear.compose.material.ScalingLazyListState
 import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.items
 import com.monoid.hackernews.common.api.ItemId
+import com.monoid.hackernews.common.data.BuildConfig
 import com.monoid.hackernews.common.data.ItemListRow
 import com.monoid.hackernews.common.util.rememberMetricsStateHolder
-import com.monoid.hackernews.wear.BuildConfig
 import kotlinx.coroutines.launch
 
 @Composable
