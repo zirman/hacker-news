@@ -74,7 +74,7 @@ class ItemTreeRepository @Inject constructor(
 
     private val coroutineScope =
         CoroutineScope(SupervisorJob() + ioDispatcher + CoroutineExceptionHandler { _, throwable ->
-            firebaseCrashlytics
+            firebaseCrashlytics.recordException(throwable)
         })
 
     private val itemUpdatesSharedFlow: MutableSharedFlow<ItemUiInternal?> =
