@@ -35,7 +35,7 @@ import com.monoid.hackernews.common.data.ItemUi
 import com.monoid.hackernews.common.datastore.Authentication
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.view.text.ReplyTextField
-import com.monoid.hackernews.view.util.getAnnotatedString
+import com.monoid.hackernews.util.getAnnotatedString
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job

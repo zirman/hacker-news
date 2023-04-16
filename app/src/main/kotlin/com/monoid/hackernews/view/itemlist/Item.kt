@@ -45,6 +45,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.placeholder.PlaceholderHighlight
@@ -60,9 +61,12 @@ import com.monoid.hackernews.common.ui.text.ClickableTextBlock
 import com.monoid.hackernews.view.text.TextBlock
 import com.monoid.hackernews.common.ui.util.rememberTimeBy
 import com.monoid.hackernews.common.ui.util.userTag
-import com.monoid.hackernews.view.util.rememberAnnotatedString
+import com.monoid.hackernews.util.rememberAnnotatedString
 
-@Preview
+@Preview(
+    showBackground = true,
+    wallpaper = Wallpapers.YELLOW_DOMINATED_EXAMPLE
+)
 @Composable
 fun ItemPreview() {
     Item(

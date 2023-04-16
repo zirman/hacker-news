@@ -584,6 +584,7 @@ dependencyResolutionManagement {
                     "ui-tooling-data",
                     "ui-tooling-preview",
                     "constraintlayout",
+                    "runtime-tracing",
                     "metrics-performance",
                     "ui-util",
                     "compose-foundation",
@@ -595,10 +596,16 @@ dependencyResolutionManagement {
             )
 
             library(
+                /* alias = */ "runtime-tracing",
+                /* group = */ "androidx.compose.runtime",
+                /* artifact = */ "runtime-tracing"
+            ).version("1.0.0-alpha03")
+
+            library(
                 /* alias = */ "ui-test-junit4",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-test-junit4"
-            ).withoutVersion()
+            ).version("1.0.0-alpha07")
 
             library(
                 /* alias = */ "ui-test-manifest",
@@ -726,3 +733,4 @@ include(":common:injection")
 include(":common:view")
 include(":common:domain")
 include(":common:data")
+include(":common:util")

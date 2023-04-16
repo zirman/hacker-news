@@ -1,11 +1,10 @@
 plugins {
     id("com.android.library")
     kotlin("android")
-    id("kotlin-parcelize")
 }
 
 android {
-    namespace = "com.monoid.hackernews.common.domain"
+    namespace = "com.monoid.hackernews.util"
     compileSdk = 33
 
     defaultConfig {
@@ -29,13 +28,6 @@ android {
 
     kotlinOptions {
         jvmTarget = "1.8"
-
-        freeCompilerArgs = listOf(
-            "-opt-in=kotlinx.coroutines.FlowPreview",
-            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-            "-opt-in=androidx.compose.ui.text.ExperimentalTextApi",
-            "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
-        )
     }
 
     buildFeatures {
@@ -48,19 +40,15 @@ android {
 }
 
 dependencies {
-    api(project(":common:data"))
-
     implementation(platform(libs.compose.bom))
     implementation(platform(libs.firebase.bom))
 
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.androidx)
     implementation(libs.bundles.androidx.compose)
-    // TODO: refactor so that this isn't a shared dependency for wear
-    implementation(libs.bundles.androidx.app)
+    implementation(libs.material3)
     implementation(libs.bundles.google)
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.junit.ext)
-    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.ui.test.junit4)
+    debugImplementation(libs.ui.test.manifest)
 }

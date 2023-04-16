@@ -1,4 +1,4 @@
-package com.monoid.hackernews.view.util
+package com.monoid.hackernews.util
 
 import android.content.Context
 import android.content.Intent
@@ -117,8 +117,8 @@ fun getAnnotatedString(
             addStringAnnotation(
                 tag = urlTag,
                 annotation = urlSpan.url,
-                start = spanned.getSpanStart(urlSpan),
-                end = spanned.getSpanEnd(urlSpan)
+                start = spanned.getSpanStart(urlSpan).clip(),
+                end = spanned.getSpanEnd(urlSpan).clip()
             )
             addStyle(
                 style = SpanStyle(

@@ -55,8 +55,8 @@ import com.monoid.hackernews.common.ui.text.ClickableTextBlock
 import com.monoid.hackernews.common.ui.util.rememberTimeBy
 import com.monoid.hackernews.common.ui.util.userTag
 import com.monoid.hackernews.view.text.TextBlock
-import com.monoid.hackernews.view.util.onClick
-import com.monoid.hackernews.view.util.rememberAnnotatedString
+import com.monoid.hackernews.util.onClick
+import com.monoid.hackernews.util.rememberAnnotatedString
 import kotlinx.coroutines.launch
 import androidx.compose.material.MaterialTheme as MaterialTheme2
 

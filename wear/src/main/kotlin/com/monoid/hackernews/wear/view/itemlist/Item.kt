@@ -10,7 +10,7 @@ import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.TitleCard
 import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.ItemUi
-import com.monoid.hackernews.wear.view.util.rememberAnnotatedString
+import com.monoid.hackernews.util.rememberAnnotatedString
 
 @Composable
 fun Item(
@@ -25,7 +25,7 @@ fun Item(
 
             val title =
                 rememberAnnotatedString(
-                    text = item?.title ?: item?.text ?: "",
+                    htmlText = item?.title ?: item?.text ?: "",
                     linkColor = LocalContentColor.current
                 )
 

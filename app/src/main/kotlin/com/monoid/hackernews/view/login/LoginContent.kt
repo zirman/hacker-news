@@ -46,8 +46,8 @@ import com.monoid.hackernews.common.datastore.copy
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.view.text.PasswordTextField
 import com.monoid.hackernews.view.text.UsernameTextField
-import com.monoid.hackernews.view.util.onClick
-import com.monoid.hackernews.view.util.rememberAnnotatedString
+import com.monoid.hackernews.util.onClick
+import com.monoid.hackernews.util.rememberAnnotatedString
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.currentCoroutineContext
