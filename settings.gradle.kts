@@ -8,7 +8,7 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("libs") {
-            val kotlin = "1.8.10"
+            val kotlin = "1.8.20"
 
             version(
                 /* alias = */ "kotlin",
@@ -17,7 +17,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "gradle-plugin-ksp",
-                /* version = */ "$kotlin-1.0.9"
+                /* version = */ "$kotlin-1.0.10"
             )
 
             version(
@@ -67,7 +67,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "compose-compiler",
-                /* version = */ "1.4.4"
+                /* version = */ "1.4.6"
             )
 
             version(
