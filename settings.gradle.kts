@@ -8,7 +8,7 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("libs") {
-            val kotlin = "1.8.20"
+            val kotlin = "1.8.21"
 
             version(
                 /* alias = */ "kotlin",
@@ -27,7 +27,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "gradle-plugin-protobuf",
-                /* version = */ "0.9.1"
+                /* version = */ "0.9.3"
             )
 
             version(
@@ -47,7 +47,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "ktor",
-                /* version = */ "2.2.4"
+                /* version = */ "2.3.0"
             )
 
             version(
@@ -62,12 +62,12 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "navigation",
-                /* version = */ "2.6.0-alpha09"
+                /* version = */ "2.6.0-beta01"
             )
 
             version(
                 /* alias = */ "compose-compiler",
-                /* version = */ "1.4.6"
+                /* version = */ "1.4.7"
             )
 
             version(
@@ -77,12 +77,12 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "accompanist",
-                /* version = */ "0.31.0-alpha"
+                /* version = */ "0.31.1-alpha"
             )
 
             version(
                 /* alias = */ "hilt",
-                /* version = */ "2.45"
+                /* version = */ "2.46"
             )
 
             version(
@@ -92,7 +92,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "firebase-crashlytics-gradle",
-                /* version = */ "2.9.4"
+                /* version = */ "2.9.5"
             )
 
             plugin(
@@ -361,7 +361,7 @@ dependencyResolutionManagement {
                 /* alias = */ "core-ktx",
                 /* group = */ "androidx.core",
                 /* artifact = */ "core-ktx"
-            ).version("1.9.0")
+            ).version("1.10.0")
 
             library(
                 /* alias = */ "activity-ktx",
@@ -493,7 +493,7 @@ dependencyResolutionManagement {
                 /* alias = */ "compose-bom",
                 /* group = */ "androidx.compose",
                 /* artifact = */ "compose-bom"
-            ).version("2023.03.00")
+            ).version("2023.05.00")
 
             library(
                 /* alias = */ "material3",
@@ -677,7 +677,7 @@ dependencyResolutionManagement {
                 /* alias = */ "firebase-bom",
                 /* group = */ "com.google.firebase",
                 /* artifact = */ "firebase-bom"
-            ).version("31.5.0")
+            ).version("32.0.0")
 
             library(
                 /* alias = */ "firebase-crashlytics",
