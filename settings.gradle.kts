@@ -17,7 +17,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "gradle-plugin-ksp",
-                /* version = */ "$kotlin-1.0.10"
+                /* version = */ "$kotlin-1.0.11"
             )
 
             version(
