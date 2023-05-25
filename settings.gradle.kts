@@ -22,7 +22,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "gradle-plugin-android",
-                /* version = */ "8.0.0"
+                /* version = */ "8.0.1"
             )
 
             version(
