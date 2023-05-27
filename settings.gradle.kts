@@ -32,17 +32,17 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "kotlinx-coroutines",
-                /* version = */ "1.7.0-Beta"
+                /* version = */ "1.7.1"
             )
 
             version(
                 /* alias = */ "kotlinx-serialization",
-                /* version = */ "1.5.0-RC"
+                /* version = */ "1.5.1"
             )
 
             version(
                 /* alias = */ "protobuf",
-                /* version = */ "3.21.12"
+                /* version = */ "3.23.2"
             )
 
             version(
@@ -52,7 +52,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "room",
-                /* version = */ "2.5.0"
+                /* version = */ "2.5.1"
             )
 
             version(
@@ -62,7 +62,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "navigation",
-                /* version = */ "2.6.0-beta01"
+                /* version = */ "2.6.0-rc02"
             )
 
             version(
@@ -77,12 +77,12 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "accompanist",
-                /* version = */ "0.31.1-alpha"
+                /* version = */ "0.31.2-alpha"
             )
 
             version(
                 /* alias = */ "hilt",
-                /* version = */ "2.46"
+                /* version = */ "2.46.1"
             )
 
             version(
@@ -337,7 +337,7 @@ dependencyResolutionManagement {
                 /* alias = */ "window",
                 /* group = */ "androidx.window",
                 /* artifact = */ "window"
-            ).version("1.1.0-beta02")
+            ).version("1.1.0-rc01")
 
             library(
                 /* alias = */ "appcompat",
@@ -361,25 +361,25 @@ dependencyResolutionManagement {
                 /* alias = */ "core-ktx",
                 /* group = */ "androidx.core",
                 /* artifact = */ "core-ktx"
-            ).version("1.10.0")
+            ).version("1.10.1")
 
             library(
                 /* alias = */ "activity-ktx",
                 /* group = */ "androidx.activity",
                 /* artifact = */ "activity-ktx"
-            ).version("1.7.0")
+            ).version("1.7.2")
 
             library(
                 /* alias = */ "fragment-ktx",
                 /* group = */ "androidx.fragment",
                 /* artifact = */ "fragment-ktx"
-            ).version("1.6.0-alpha09")
+            ).version("1.6.0-rc01")
 
             library(
                 /* alias = */ "activity-compose",
                 /* group = */ "androidx.activity",
                 /* artifact = */ "activity-compose"
-            ).version("1.7.0")
+            ).version("1.7.2")
 
             library(
                 /* alias = */ "palette-ktx",
@@ -409,7 +409,7 @@ dependencyResolutionManagement {
                 /* alias = */ "benchmark-junit4",
                 /* group = */ "androidx.benchmark",
                 /* artifact = */ "benchmark-junit4"
-            ).version("1.2.0-alpha13")
+            ).version("1.2.0-alpha14")
 
             library(
                 /* alias = */ "lifecycle-process",
@@ -493,7 +493,7 @@ dependencyResolutionManagement {
                 /* alias = */ "compose-bom",
                 /* group = */ "androidx.compose",
                 /* artifact = */ "compose-bom"
-            ).version("2023.05.00")
+            ).version("2023.05.01")
 
             library(
                 /* alias = */ "material3",
@@ -605,7 +605,7 @@ dependencyResolutionManagement {
                 /* alias = */ "ui-test-junit4",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-test-junit4"
-            ).version("1.0.0-alpha07")
+            ).withoutVersion()
 
             library(
                 /* alias = */ "ui-test-manifest",
@@ -617,7 +617,7 @@ dependencyResolutionManagement {
                 /* alias = */ "constraintlayout",
                 /* group = */ "androidx.constraintlayout",
                 /* artifact = */ "constraintlayout-compose"
-            ).version("1.1.0-alpha09")
+            ).version("1.1.0-alpha10")
 
             library(
                 /* alias = */ "metrics-performance",
@@ -677,7 +677,7 @@ dependencyResolutionManagement {
                 /* alias = */ "firebase-bom",
                 /* group = */ "com.google.firebase",
                 /* artifact = */ "firebase-bom"
-            ).version("32.0.0")
+            ).version("32.1.0")
 
             library(
                 /* alias = */ "firebase-crashlytics",
