@@ -59,7 +59,6 @@ import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.room.ItemDb
 import com.monoid.hackernews.common.view.R
-import com.monoid.hackernews.view.text.TextBlock
 import com.monoid.hackernews.common.ui.util.rememberTimeBy
 import com.monoid.hackernews.common.ui.util.userTag
 import com.monoid.hackernews.util.onClick
@@ -327,9 +326,10 @@ fun RootItem(
                         )
                     }
 
-                    TextBlock(
+                    Text(
                         text = remember(descendants) { descendants?.toString() ?: "" },
-                        lines = 1,
+                        minLines = 1,
+                        maxLines = 1,
                         modifier = Modifier.widthIn(min = 24.dp),
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.labelMedium

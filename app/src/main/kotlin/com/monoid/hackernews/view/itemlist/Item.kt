@@ -58,7 +58,6 @@ import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.room.ItemDb
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.common.ui.text.ClickableTextBlock
-import com.monoid.hackernews.view.text.TextBlock
 import com.monoid.hackernews.common.ui.util.rememberTimeBy
 import com.monoid.hackernews.common.ui.util.userTag
 import com.monoid.hackernews.util.rememberAnnotatedString
@@ -135,11 +134,12 @@ fun Item(
                 verticalAlignment = Alignment.Top
             ) {
                 SelectionContainer(modifier = Modifier.weight(1f)) {
-                    TextBlock(
+                    Text(
                         text = item?.title?.let { AnnotatedString(text = it) }
                             ?: item?.text?.let { rememberAnnotatedString(htmlText = it) }
                             ?: AnnotatedString(text = ""),
-                        lines = 2,
+                        minLines = 2,
+                        maxLines = 2,
                         modifier = Modifier.padding(start = 8.dp),
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.titleMedium
@@ -304,9 +304,10 @@ fun Item(
 
                     val score = item?.score
 
-                    TextBlock(
+                    Text(
                         text = remember(score) { score?.toString() ?: "" },
-                        lines = 1,
+                        minLines = 1,
+                        maxLines = 1,
                         modifier = Modifier.widthIn(min = 24.dp),
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.labelMedium
@@ -326,9 +327,10 @@ fun Item(
                         )
                     }
 
-                    TextBlock(
+                    Text(
                         text = remember(descendants) { descendants?.toString() ?: "" },
-                        lines = 1,
+                        minLines = 1,
+                        maxLines = 1,
                         modifier = Modifier.widthIn(min = 24.dp),
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.labelMedium
@@ -342,9 +344,10 @@ fun Item(
                                 item.url?.let { Uri.parse(it) }?.host ?: ""
                             }
 
-                        TextBlock(
+                        Text(
                             text = host,
-                            lines = 1,
+                            minLines = 1,
+                            maxLines = 1,
                             modifier = Modifier.weight(1f),
                             textAlign = TextAlign.End,
                             overflow = TextOverflow.Ellipsis,

@@ -54,7 +54,6 @@ import com.monoid.hackernews.common.room.ItemDb
 import com.monoid.hackernews.common.ui.text.ClickableTextBlock
 import com.monoid.hackernews.common.ui.util.rememberTimeBy
 import com.monoid.hackernews.common.ui.util.userTag
-import com.monoid.hackernews.view.text.TextBlock
 import com.monoid.hackernews.util.onClick
 import com.monoid.hackernews.util.rememberAnnotatedString
 import kotlinx.coroutines.launch
@@ -333,9 +332,10 @@ fun CommentItem(
                         .align(Alignment.CenterHorizontally)
                         .padding(4.dp)
                 ) {
-                    TextBlock(
+                    Text(
                         text = "${itemUiState.value?.itemUi?.kids?.size}",
-                        lines = 1
+                        minLines = 1,
+                        maxLines = 1
                     )
                 }
             } else {
