@@ -11,7 +11,7 @@ plugins {
 android {
     namespace = "com.monoid.hackernews"
     compileSdk = 33
-    buildToolsVersion = "33.0.0"
+    buildToolsVersion = "33.0.2"
 
     signingConfigs {
         create("release") {
@@ -26,8 +26,8 @@ android {
         applicationId = "com.monoid.hackernews"
         minSdk = 26
         targetSdk = 33
-        versionCode = 37
-        versionName = "1.1.0"
+        versionCode = 38
+        versionName = "1.1.1"
 
         // reduces apk sizes by not including unsupported languages
         resourceConfigurations += setOf("en", "es")
