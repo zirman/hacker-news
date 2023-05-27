@@ -2,27 +2,46 @@ package com.monoid.hackernews.common.data
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+@SerialName("LoginAction")
 sealed class LoginAction : Parcelable {
     @Serializable
+    @SerialName("Login")
     @Parcelize
     object Login : LoginAction()
 
     @Serializable
+    @SerialName("Upvote")
     @Parcelize
-    data class Upvote(val itemId: Long) : LoginAction()
+    data class Upvote(
+        @SerialName("itemId")
+        val itemId: Long,
+    ) : LoginAction()
 
     @Serializable
+    @SerialName("Favorite")
     @Parcelize
-    data class Favorite(val itemId: Long) : LoginAction()
+    data class Favorite(
+        @SerialName("itemId")
+        val itemId: Long,
+    ) : LoginAction()
 
     @Serializable
+    @SerialName("Flag")
     @Parcelize
-    data class Flag(val itemId: Long) : LoginAction()
+    data class Flag(
+        @SerialName("itemId")
+        val itemId: Long,
+    ) : LoginAction()
 
     @Serializable
+    @SerialName("Reply")
     @Parcelize
-    data class Reply(val itemId: Long) : LoginAction()
+    data class Reply(
+        @SerialName("itemId")
+        val itemId: Long,
+    ) : LoginAction()
 }

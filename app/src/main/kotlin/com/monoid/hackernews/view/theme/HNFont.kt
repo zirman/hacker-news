@@ -7,6 +7,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.googlefonts.Font
 import androidx.compose.ui.text.googlefonts.GoogleFont
 import com.monoid.hackernews.common.view.R
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 val provider = GoogleFont.Provider(
@@ -16,6 +17,7 @@ val provider = GoogleFont.Provider(
 )
 
 @Serializable
+@SerialName("HNFont")
 sealed class HNFont {
     @Composable
     abstract fun rememberFontFamily(): FontFamily
@@ -24,6 +26,7 @@ sealed class HNFont {
     abstract fun getName(): String
 
     @Serializable
+    @SerialName("Default")
     object Default : HNFont() {
         @Composable
         override fun rememberFontFamily(): FontFamily {
@@ -37,6 +40,7 @@ sealed class HNFont {
     }
 
     @Serializable
+    @SerialName("SansSerif")
     object SansSerif : HNFont() {
         @Composable
         override fun rememberFontFamily(): FontFamily {
@@ -50,6 +54,7 @@ sealed class HNFont {
     }
 
     @Serializable
+    @SerialName("Serif")
     object Serif : HNFont() {
         @Composable
         override fun rememberFontFamily(): FontFamily = FontFamily.Serif
@@ -61,6 +66,7 @@ sealed class HNFont {
     }
 
     @Serializable
+    @SerialName("Monospace")
     object Monospace : HNFont() {
         @Composable
         override fun rememberFontFamily(): FontFamily {
@@ -74,6 +80,7 @@ sealed class HNFont {
     }
 
     @Serializable
+    @SerialName("Cursive")
     object Cursive : HNFont() {
         @Composable
         override fun rememberFontFamily(): FontFamily {
@@ -87,6 +94,7 @@ sealed class HNFont {
     }
 
     @Serializable
+    @SerialName("Google")
     data class Google(val googleFontName: String) : HNFont() {
         @Composable
         override fun rememberFontFamily(): FontFamily {
