@@ -69,4 +69,14 @@
     <string name="i_agree_html"><![CDATA[
     I agree to the <i>Hacker News</i> <a href="https://www.ycombinator.com/legal/">terms of service</a> and
     agree to follow the <a href="https://news.ycombinator.com/newsguidelines.html">user guidelines</a>]]></string>
+    <string name="comment">Comment</string>
+    <string name="login_description">Login with your HN account.</string>
+    <string name="top_stories_description">Most popular stories currently.</string>
+    <string name="new_stories_description">Latest stories submitted.</string>
+    <string name="best_stories_description">The most upvoted stories.</string>
+    <string name="show_hn_description">Show HS is for something you\'ve made that other people can play with. HN users can try it out, give you feedback, and ask questions in the thread.</string>
+    <string name="ask_hn_description">Ask HN for comments.</string>
+    <string name="jobs_description">These are jobs at YC startups.</string>
+    <string name="favorites_description">Stories that you have favorited.</string>
+    <string name="dismiss">Dismiss</string>
 </resources>

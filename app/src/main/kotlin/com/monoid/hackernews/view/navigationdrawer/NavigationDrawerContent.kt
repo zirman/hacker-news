@@ -55,6 +55,7 @@ fun NavigationDrawerContent(
                         when (val mainNavigation = MainNavigation.fromRoute(it.destination.route)) {
                             is MainNavigation.Home ->
                                 mainNavigation.argsFromRoute(it)
+
                             else ->
                                 null
                         }

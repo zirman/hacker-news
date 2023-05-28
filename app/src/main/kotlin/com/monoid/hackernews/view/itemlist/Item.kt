@@ -28,6 +28,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PlainTooltipBox
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -282,31 +283,33 @@ fun Item(
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 key("score") {
-                    IconButton(
-                        onClick = onClickUpvote,
-                        enabled = isStoryOrComment
-                    ) {
-                        Icon(
-                            imageVector = if (itemUi?.isUpvote == true) {
-                                Icons.Filled.ThumbUp
-                            } else {
-                                Icons.TwoTone.ThumbUp
-                            },
-                            contentDescription = stringResource(
-                                id = if (itemUi?.isUpvote == true) {
-                                    R.string.un_vote
+                    PlainTooltipBox(tooltip = { Text(stringResource(id = R.string.upvote)) }) {
+                        IconButton(
+                            onClick = onClickUpvote,
+                            enabled = isStoryOrComment,
+                            modifier = Modifier.tooltipAnchor()
+                        ) {
+                            Icon(
+                                imageVector = if (itemUi?.isUpvote == true) {
+                                    Icons.Filled.ThumbUp
                                 } else {
-                                    R.string.upvote
-                                }
+                                    Icons.TwoTone.ThumbUp
+                                },
+                                contentDescription = stringResource(
+                                    id = if (itemUi?.isUpvote == true) {
+                                        R.string.un_vote
+                                    } else {
+                                        R.string.upvote
+                                    }
+                                )
                             )
-                        )
+                        }
                     }
 
                     val score = item?.score
 
                     Text(
                         text = remember(score) { score?.toString() ?: "" },
-                        minLines = 1,
                         maxLines = 1,
                         modifier = Modifier.widthIn(min = 24.dp),
                         overflow = TextOverflow.Ellipsis,
@@ -317,19 +320,21 @@ fun Item(
                 key("comments") {
                     val descendants = item?.descendants
 
-                    IconButton(
-                        onClick = onClickReply,
-                        enabled = isStoryOrComment
-                    ) {
-                        Icon(
-                            imageVector = Icons.TwoTone.Comment,
-                            contentDescription = null
-                        )
+                    PlainTooltipBox(tooltip = { Text(stringResource(id = R.string.comment)) }) {
+                        IconButton(
+                            onClick = onClickReply,
+                            enabled = isStoryOrComment,
+                            modifier = Modifier.tooltipAnchor()
+                        ) {
+                            Icon(
+                                imageVector = Icons.TwoTone.Comment,
+                                contentDescription = null
+                            )
+                        }
                     }
 
                     Text(
                         text = remember(descendants) { descendants?.toString() ?: "" },
-                        minLines = 1,
                         maxLines = 1,
                         modifier = Modifier.widthIn(min = 24.dp),
                         overflow = TextOverflow.Ellipsis,
@@ -339,14 +344,12 @@ fun Item(
 
                 key("url") {
                     if (item?.url != null) {
-                        val host: String =
-                            remember(item.url) {
-                                item.url?.let { Uri.parse(it) }?.host ?: ""
-                            }
+                        val host: String = remember(item.url) {
+                            item.url?.let { Uri.parse(it) }?.host ?: ""
+                        }
 
                         Text(
                             text = host,
-                            minLines = 1,
                             maxLines = 1,
                             modifier = Modifier.weight(1f),
                             textAlign = TextAlign.End,
@@ -354,11 +357,16 @@ fun Item(
                             style = MaterialTheme.typography.labelLarge
                         )
 
-                        IconButton(onClick = onClickBrowser) {
-                            Icon(
-                                Icons.Filled.OpenInBrowser,
-                                contentDescription = stringResource(id = R.string.open_in_browser)
-                            )
+                        PlainTooltipBox(tooltip = { Text(stringResource(id = R.string.open_in_browser)) }) {
+                            IconButton(
+                                onClick = onClickBrowser,
+                                modifier = Modifier.tooltipAnchor()
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.OpenInBrowser,
+                                    contentDescription = stringResource(id = R.string.open_in_browser)
+                                )
+                            }
                         }
                     }
                 }

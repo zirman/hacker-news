@@ -334,7 +334,6 @@ fun CommentItem(
                 ) {
                     Text(
                         text = "${itemUiState.value?.itemUi?.kids?.size}",
-                        minLines = 1,
                         maxLines = 1
                     )
                 }

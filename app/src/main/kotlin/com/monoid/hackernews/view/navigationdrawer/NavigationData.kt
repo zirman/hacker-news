@@ -17,6 +17,7 @@ import com.monoid.hackernews.common.navigation.Stories
 data class NavigationDrawerItemData(
     val icon: ImageVector,
     @StringRes val titleId: Int,
+    @StringRes val descriptionId: Int,
     val route: String,
 )
 
@@ -27,6 +28,7 @@ val storiesToNavigationItem: Map<Stories, NavigationDrawerItemData> =
             NavigationDrawerItemData(
                 icon = Icons.TwoTone.TrendingUp,
                 titleId = R.string.top_stories,
+                descriptionId = R.string.top_stories_description,
                 route = MainNavigation.Home.routeWithArgs(Stories.Top),
             )
         ),
@@ -35,6 +37,7 @@ val storiesToNavigationItem: Map<Stories, NavigationDrawerItemData> =
             NavigationDrawerItemData(
                 icon = Icons.TwoTone.NewReleases,
                 titleId = R.string.new_stories,
+                descriptionId = R.string.new_stories_description,
                 route = MainNavigation.Home.routeWithArgs(Stories.New),
             )
         ),
@@ -43,6 +46,7 @@ val storiesToNavigationItem: Map<Stories, NavigationDrawerItemData> =
             NavigationDrawerItemData(
                 icon = Icons.TwoTone.Star,
                 titleId = R.string.best_stories,
+                descriptionId = R.string.best_stories_description,
                 route = MainNavigation.Home.routeWithArgs(Stories.Best),
             )
         ),
@@ -51,6 +55,7 @@ val storiesToNavigationItem: Map<Stories, NavigationDrawerItemData> =
             NavigationDrawerItemData(
                 icon = Icons.TwoTone.PresentToAll,
                 titleId = R.string.show_hn,
+                descriptionId = R.string.show_hn_description,
                 route = MainNavigation.Home.routeWithArgs(Stories.Show),
             )
         ),
@@ -59,6 +64,7 @@ val storiesToNavigationItem: Map<Stories, NavigationDrawerItemData> =
             NavigationDrawerItemData(
                 icon = Icons.TwoTone.QuestionAnswer,
                 titleId = R.string.ask_hn,
+                descriptionId = R.string.ask_hn_description,
                 route = MainNavigation.Home.routeWithArgs(Stories.Ask),
             )
         ),
@@ -67,6 +73,7 @@ val storiesToNavigationItem: Map<Stories, NavigationDrawerItemData> =
             NavigationDrawerItemData(
                 icon = Icons.TwoTone.Work,
                 titleId = R.string.jobs,
+                descriptionId = R.string.jobs_description,
                 route = MainNavigation.Home.routeWithArgs(Stories.Job),
             )
         ),
@@ -75,6 +82,7 @@ val storiesToNavigationItem: Map<Stories, NavigationDrawerItemData> =
             NavigationDrawerItemData(
                 icon = Icons.TwoTone.Bookmarks,
                 titleId = R.string.favorites,
+                descriptionId = R.string.favorites_description,
                 route = MainNavigation.Home.routeWithArgs(Stories.Favorite),
             )
         ),

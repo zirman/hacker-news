@@ -26,6 +26,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
+import androidx.compose.material3.RichTooltipBox
+import androidx.compose.material3.RichTooltipState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDrawerState
@@ -37,6 +39,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -59,6 +62,7 @@ import com.monoid.hackernews.common.navigation.MainNavigation
 import com.monoid.hackernews.view.navigationdrawer.NavigationDrawerContent
 import com.monoid.hackernews.view.navigationdrawer.NavigationRailContent
 import com.monoid.hackernews.common.util.rememberMetricsStateHolder
+import kotlinx.coroutines.launch
 
 @Composable
 fun MainContent(
@@ -180,24 +184,45 @@ fun MainContent(
                                         label = { Text(text = authentication.username) }
                                     )
                                 } else {
-                                    NavigationRailItem(
-                                        selected = false,
-                                        onClick = {
-                                            mainNavController.navigate(
-                                                MainNavigation.Login
-                                                    .routeWithArgs(LoginAction.Login)
-                                            )
-                                        },
-                                        icon = {
-                                            Icon(
-                                                imageVector = Icons.TwoTone.Login,
-                                                contentDescription = stringResource(id = R.string.login),
-                                            )
-                                        },
-                                        label = {
-                                            Text(text = stringResource(id = R.string.login))
+                                    val tooltipState = remember { RichTooltipState() }
+                                    val scope = rememberCoroutineScope()
+
+                                    RichTooltipBox(
+                                        tooltipState = tooltipState,
+                                        title = { Text(text = stringResource(id = R.string.login)) },
+                                        text = { Text(text = stringResource(id = R.string.login_description)) },
+                                        action = {
+                                            Row {
+                                                Spacer(modifier = Modifier.weight(1f))
+
+                                                TextButton(
+                                                    onClick = { scope.launch { tooltipState.dismiss() } }
+                                                ) {
+                                                    Text(text = stringResource(id = R.string.dismiss))
+                                                }
+                                            }
                                         }
-                                    )
+                                    ) {
+                                        NavigationRailItem(
+                                            selected = false,
+                                            onClick = {
+                                                mainNavController.navigate(
+                                                    MainNavigation.Login
+                                                        .routeWithArgs(LoginAction.Login)
+                                                )
+                                            },
+                                            icon = {
+                                                Icon(
+                                                    imageVector = Icons.TwoTone.Login,
+                                                    contentDescription = stringResource(id = R.string.login),
+                                                )
+                                            },
+                                            label = {
+                                                Text(text = stringResource(id = R.string.login))
+                                            },
+                                            modifier = Modifier.tooltipAnchor()
+                                        )
+                                    }
                                 }
                             },
                         ) {

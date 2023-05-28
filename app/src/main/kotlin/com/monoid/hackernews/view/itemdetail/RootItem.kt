@@ -28,6 +28,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PlainTooltipBox
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -137,7 +138,6 @@ fun RootItem(
                                 ?: "",
                             linkColor = LocalContentColor.current
                         ),
-//                        minLines = 2,
                         modifier = Modifier.padding(horizontal = 8.dp),
                         style = MaterialTheme.typography.titleMedium
                     )
@@ -280,28 +280,31 @@ fun RootItem(
                 if (item?.lastUpdate == null || item.type == "story") {
                     item?.score.let { score ->
                         key("score") {
-                            IconButton(
-                                onClick = {
-                                    coroutineScope.launch {
-                                        itemUiState.value?.itemUi?.toggleUpvote(onNavigateLogin)
-                                    }
-                                },
-                                enabled = item?.type == "story"
-                            ) {
-                                Icon(
-                                    imageVector = if (itemUiState.value?.itemUi?.isUpvote == true) {
-                                        Icons.Filled.ThumbUp
-                                    } else {
-                                        Icons.TwoTone.ThumbUp
-                                    },
-                                    contentDescription = stringResource(
-                                        id = if (itemUiState.value?.itemUi?.isUpvote == true) {
-                                            R.string.un_vote
-                                        } else {
-                                            R.string.upvote
+                            PlainTooltipBox(tooltip = { Text(text = stringResource(id = R.string.upvote)) }) {
+                                IconButton(
+                                    onClick = {
+                                        coroutineScope.launch {
+                                            itemUiState.value?.itemUi?.toggleUpvote(onNavigateLogin)
                                         }
+                                    },
+                                    enabled = item?.type == "story",
+                                    modifier = Modifier.tooltipAnchor()
+                                ) {
+                                    Icon(
+                                        imageVector = if (itemUiState.value?.itemUi?.isUpvote == true) {
+                                            Icons.Filled.ThumbUp
+                                        } else {
+                                            Icons.TwoTone.ThumbUp
+                                        },
+                                        contentDescription = stringResource(
+                                            id = if (itemUiState.value?.itemUi?.isUpvote == true) {
+                                                R.string.un_vote
+                                            } else {
+                                                R.string.upvote
+                                            }
+                                        )
                                     )
-                                )
+                                }
                             }
 
                             Text(
@@ -316,19 +319,21 @@ fun RootItem(
                 val descendants = item?.descendants
 
                 key("comments") {
-                    IconButton(
-                        onClick = { item?.id?.let { onClickReply(ItemId(it)) } },
-                        enabled = isLoading.not()
-                    ) {
-                        Icon(
-                            imageVector = Icons.TwoTone.Comment,
-                            contentDescription = null
-                        )
+                    PlainTooltipBox(tooltip = { Text(text = stringResource(id = R.string.comment)) }) {
+                        IconButton(
+                            onClick = { item?.id?.let { onClickReply(ItemId(it)) } },
+                            enabled = isLoading.not(),
+                            modifier = Modifier.tooltipAnchor()
+                        ) {
+                            Icon(
+                                imageVector = Icons.TwoTone.Comment,
+                                contentDescription = null
+                            )
+                        }
                     }
 
                     Text(
                         text = remember(descendants) { descendants?.toString() ?: "" },
-                        minLines = 1,
                         maxLines = 1,
                         modifier = Modifier.widthIn(min = 24.dp),
                         overflow = TextOverflow.Ellipsis,
@@ -363,11 +368,16 @@ fun RootItem(
                         style = MaterialTheme.typography.labelLarge
                     )
 
-                    IconButton(onClick = { item?.url?.let { onClickBrowser(it) } }) {
-                        Icon(
-                            imageVector = Icons.Filled.OpenInBrowser,
-                            contentDescription = stringResource(id = R.string.open_in_browser)
-                        )
+                    PlainTooltipBox(tooltip = { Text(text = stringResource(id = R.string.open_in_browser)) }) {
+                        IconButton(
+                            onClick = { item?.url?.let { onClickBrowser(it) } },
+                            modifier = Modifier.tooltipAnchor()
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.OpenInBrowser,
+                                contentDescription = stringResource(id = R.string.open_in_browser)
+                            )
+                        }
                     }
                 }
             }
