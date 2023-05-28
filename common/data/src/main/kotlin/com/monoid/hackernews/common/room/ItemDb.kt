@@ -1,37 +1,34 @@
 package com.monoid.hackernews.common.room
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 
-@Serializable
-@SerialName("ItemDb")
 @Entity(tableName = "item")
 data class ItemDb(
-    @SerialName("id")
+    @ColumnInfo(name = "id")
     @PrimaryKey val id: Long,
     // last time item was retrieved from api
-    @SerialName("lastUpdate")
+    @ColumnInfo(name = "lastUpdate")
     val lastUpdate: Long? = null,
-    @SerialName("type")
+    @ColumnInfo(name = "type")
     val type: String? = null,
-    @SerialName("time")
+    @ColumnInfo(name = "time")
     val time: Long? = null,
-    @SerialName("deleted")
+    @ColumnInfo(name = "deleted")
     val deleted: Boolean? = null,
-    @SerialName("by")
+    @ColumnInfo(name = "by")
     val by: String? = null,
-    @SerialName("descendants")
+    @ColumnInfo(name = "descendants")
     val descendants: Int? = null,
-    @SerialName("score")
+    @ColumnInfo(name = "score")
     val score: Int? = null,
-    @SerialName("title")
+    @ColumnInfo(name = "title")
     val title: String? = null,
-    @SerialName("text")
+    @ColumnInfo(name = "text")
     val text: String? = null,
-    @SerialName("url")
+    @ColumnInfo(name = "url")
     val url: String? = null,
-    @SerialName("parent")
+    @ColumnInfo(name = "parent")
     val parent: Long? = null,
 )

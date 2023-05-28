@@ -1,15 +1,12 @@
 package com.monoid.hackernews.common.room
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 
-@Serializable
-@SerialName("FavoriteDb")
 @Entity(tableName = "favorite", primaryKeys = ["username", "itemId"])
 data class FavoriteDb(
-    @SerialName("username")
+    @ColumnInfo(name = "username")
     val username: String,
-    @SerialName("itemId")
+    @ColumnInfo(name = "itemId")
     val itemId: Long,
 )
