@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
 
@@ -605,7 +607,7 @@ dependencyResolutionManagement {
                 /* alias = */ "ui-test-junit4",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-test-junit4"
-            ).withoutVersion()
+            ).version("1.4.3")
 
             library(
                 /* alias = */ "ui-test-manifest",

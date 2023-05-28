@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -94,6 +96,10 @@ android {
         resources {
             excludes += "/META-INF/versions/9/previous-compilation-data.bin"
         }
+    }
+
+    lint {
+        baseline = file("lint-baseline.xml")
     }
 }
 
