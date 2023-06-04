@@ -1,10 +1,9 @@
 package com.monoid.hackernews.common.room
 
 import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -15,12 +14,12 @@ interface JobStoryDao {
     @Query("DELETE FROM jobstory")
     suspend fun deleteJobStories()
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertJobStories(jobStories: List<JobStoryDb>)
+    @Upsert
+    suspend fun upsertJobStories(jobStories: List<JobStoryDb>)
 
     @Transaction
     suspend fun replaceJobStories(topStories: List<JobStoryDb>) {
         deleteJobStories()
-        insertJobStories(topStories)
+        upsertJobStories(topStories)
     }
 }

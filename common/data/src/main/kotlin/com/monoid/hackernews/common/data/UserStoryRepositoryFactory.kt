@@ -54,7 +54,7 @@ class UserStoryRepositoryFactory @Inject constructor(
                             by = username.string
                         )
                     })
-                    userDao.insertReplace(user.toUserApiUpdate())
+                    userDao.upsertReplace(user.toUserApiUpdate())
                 }
             }
         }

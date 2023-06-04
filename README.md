@@ -1,5 +1,4 @@
 TODO:
- + Room refactor to use upsert
  + Room support for value classes KSP
  + Chat bubbles
  + Logout

@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Upsert
 import com.monoid.hackernews.common.api.ItemApi
 import com.monoid.hackernews.common.api.toItemDb
 import kotlinx.coroutines.flow.Flow
@@ -25,8 +26,8 @@ interface ItemDao {
     @Query("SELECT * FROM item WHERE id = :itemId")
     fun itemByIdWithKidsByIdFlow(itemId: Long): Flow<ItemWithKids?>
 
-    @Insert(entity = ItemDb::class, onConflict = OnConflictStrategy.REPLACE)
-    suspend fun itemInsert(item: ItemDb)
+    @Upsert(entity = ItemDb::class)
+    suspend fun itemUpsert(item: ItemDb)
 
     @Insert(entity = ItemDb::class, onConflict = OnConflictStrategy.IGNORE)
     suspend fun itemsInsert(items: List<ItemDb>)
@@ -36,13 +37,13 @@ interface ItemDao {
         // update children entries
         if (itemApi.kids != null) {
             itemApi.kids.forEach { itemId ->
-                itemInsert(
+                itemUpsert(
                     (itemById(itemId.long) ?: ItemDb(id = itemId.long))
                         .copy(parent = itemApi.id.long)
                 )
             }
         }
 
-        itemInsert(itemApi.toItemDb())
+        itemUpsert(itemApi.toItemDb())
     }
 }

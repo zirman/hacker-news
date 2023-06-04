@@ -1,10 +1,9 @@
 package com.monoid.hackernews.common.room
 
 import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -15,12 +14,12 @@ interface BestStoryDao {
     @Query("DELETE FROM beststory")
     suspend fun deleteBestStories()
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertBestStories(bestStories: List<BestStoryDb>)
+    @Upsert
+    suspend fun upsertBestStories(bestStories: List<BestStoryDb>)
 
     @Transaction
     suspend fun replaceBestStories(bestStories: List<BestStoryDb>) {
         deleteBestStories()
-        insertBestStories(bestStories)
+        upsertBestStories(bestStories)
     }
 }
