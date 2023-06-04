@@ -17,8 +17,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.core.content.getSystemService
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
-import com.google.accompanist.navigation.animation.composable
 import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.LoginAction

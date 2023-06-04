@@ -64,7 +64,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "navigation",
-                /* version = */ "2.6.0-rc02"
+                /* version = */ "2.7.0-alpha01"
             )
 
             version(
@@ -157,7 +157,6 @@ dependencyResolutionManagement {
             bundle(
                 /* alias = */ "google-app",
                 /* aliases = */ listOf(
-                    "accompanist-navigation-animation",
                     "accompanist-navigation-material",
                     "accompanist-systemuicontroller",
                     "accompanist-adaptive",
@@ -215,7 +214,7 @@ dependencyResolutionManagement {
                     "material3-window-size",
 
                     // compose
-                    "compose-material"
+                    "compose-material",
                 )
             )
 
@@ -644,12 +643,6 @@ dependencyResolutionManagement {
                 /* group = */ "androidx.wear.compose",
                 /* artifact = */ "compose-navigation"
             ).version("1.1.2")
-
-            library(
-                /* alias = */ "accompanist-navigation-animation",
-                /* group = */ "com.google.accompanist",
-                /* artifact = */ "accompanist-navigation-animation"
-            ).versionRef("accompanist")
 
             library(
                 /* alias = */ "accompanist-navigation-material",

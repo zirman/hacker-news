@@ -17,7 +17,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
-import com.google.accompanist.navigation.animation.AnimatedNavHost
+import androidx.navigation.compose.NavHost
 import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.LoginAction
@@ -78,7 +78,7 @@ fun MainNavigation(
 
     val windowSizeClassState = rememberUpdatedState(windowSizeClass)
 
-    AnimatedNavHost(
+    NavHost(
         navController = mainNavController,
         startDestination = mainGraphRoutePattern,
         modifier = modifier,

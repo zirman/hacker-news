@@ -48,8 +48,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.metrics.performance.PerformanceMetricsState
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.plusAssign
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.navigation.material.BottomSheetNavigator
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.monoid.hackernews.MainViewModel
@@ -77,7 +77,7 @@ fun MainContent(
 
     Box {
         val mainNavController: NavHostController =
-            rememberAnimatedNavController()
+            rememberNavController()
 
         val metricsStateHolder: PerformanceMetricsState.Holder =
             rememberMetricsStateHolder()
