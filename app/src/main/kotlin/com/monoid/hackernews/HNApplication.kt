@@ -5,7 +5,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -59,18 +59,20 @@ class HNApplication : Application() {
     @Inject
     lateinit var itemTreeRepository: ItemTreeRepository
 
+    @ApplicationLifecycleOwner
+    @Inject
+    lateinit var applicationLifecycleOwner: LifecycleOwner
+
     override fun onCreate() {
         super.onCreate()
 
-        val lifecycleOwner = ProcessLifecycleOwner.get()
-
-        lifecycleOwner.lifecycleScope.launch(
+        applicationLifecycleOwner.lifecycleScope.launch(
             CoroutineExceptionHandler { _, error ->
                 firebaseCrashlytics.recordException(error)
                 error.printStackTrace()
             }
         ) {
-            lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            applicationLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 // Update upvote and favorite table on login and then periodically.
                 authentication.data.distinctUntilChanged().collectLatest { authentication ->
                     if (authentication.password?.isNotEmpty() == true) {

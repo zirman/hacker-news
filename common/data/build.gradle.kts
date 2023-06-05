@@ -105,6 +105,9 @@ dependencies {
     kapt(libs.hilt.android.compiler)
 
     testImplementation(libs.junit)
+
+    androidTestImplementation(kotlin("test"))
+    androidTestImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.junit.ext)
     androidTestImplementation(libs.espresso.core)
 }
