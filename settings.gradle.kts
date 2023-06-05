@@ -49,7 +49,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "ktor",
-                /* version = */ "2.3.0"
+                /* version = */ "2.3.1"
             )
 
             version(
@@ -711,6 +711,7 @@ dependencyResolutionManagement {
                 /* group = */ "junit",
                 /* artifact = */ "junit"
             ).version("4.13.2")
+
 
             library(
                 /* alias = */ "junit-ext",
