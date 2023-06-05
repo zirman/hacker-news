@@ -157,10 +157,10 @@ dependencyResolutionManagement {
             bundle(
                 /* alias = */ "google-app",
                 /* aliases = */ listOf(
-                    "accompanist-navigation-material",
-                    "accompanist-systemuicontroller",
-                    "accompanist-adaptive",
-                    "accompanist-placeholder"
+                    "accompanist-navigation-material", // bottomSheet destination for navigation compose
+                    "accompanist-systemuicontroller", // control system ui from compose
+                    "accompanist-adaptive", // handle foldable devices
+                    "accompanist-placeholder", // placeholder loading animation
                 )
             )
 
@@ -237,6 +237,12 @@ dependencyResolutionManagement {
                 /* group = */ "org.jetbrains.kotlinx",
                 /* artifact = */ "kotlinx-coroutines-play-services"
             ).versionRef("kotlinx-coroutines")
+
+            library(
+                /* alias = */ "kotlinx-coroutines-test",
+                /* group = */ "org.jetbrains.kotlinx",
+                /* artifact = */ "kotlinx-coroutines-test"
+            ).version("kotlinx-coroutines")
 
             library(
                 /* alias = */ "kotlinx-serialization-json",
