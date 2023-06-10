@@ -74,6 +74,7 @@ android {
             "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
             "-opt-in=androidx.compose.ui.text.ExperimentalTextApi",
             "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
+            "-opt-in=androidx.wear.compose.material.ExperimentalWearMaterialApi",
         )
     }
 

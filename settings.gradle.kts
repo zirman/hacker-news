@@ -79,7 +79,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "accompanist",
-                /* version = */ "0.31.2-alpha"
+                /* version = */ "0.31.3-beta"
             )
 
             version(
@@ -120,7 +120,7 @@ dependencyResolutionManagement {
             plugin(
                 /* alias = */ "versions",
                 /* id = */ "com.github.ben-manes.versions"
-            ).version("0.46.0")
+            ).version("0.47.0")
 
             bundle(
                 /* alias = */ "kotlinx",
@@ -344,7 +344,7 @@ dependencyResolutionManagement {
                 /* alias = */ "window",
                 /* group = */ "androidx.window",
                 /* artifact = */ "window"
-            ).version("1.1.0-rc01")
+            ).version("1.1.0")
 
             library(
                 /* alias = */ "appcompat",
@@ -380,7 +380,7 @@ dependencyResolutionManagement {
                 /* alias = */ "fragment-ktx",
                 /* group = */ "androidx.fragment",
                 /* artifact = */ "fragment-ktx"
-            ).version("1.6.0-rc01")
+            ).version("1.6.0")
 
             library(
                 /* alias = */ "activity-compose",
@@ -416,7 +416,7 @@ dependencyResolutionManagement {
                 /* alias = */ "benchmark-junit4",
                 /* group = */ "androidx.benchmark",
                 /* artifact = */ "benchmark-junit4"
-            ).version("1.2.0-alpha14")
+            ).version("1.2.0-alpha15")
 
             library(
                 /* alias = */ "lifecycle-process",
@@ -500,7 +500,7 @@ dependencyResolutionManagement {
                 /* alias = */ "compose-bom",
                 /* group = */ "androidx.compose",
                 /* artifact = */ "compose-bom"
-            ).version("2023.05.01")
+            ).version("2023.06.00")
 
             library(
                 /* alias = */ "material3",
@@ -636,19 +636,24 @@ dependencyResolutionManagement {
                 /* alias = */ "compose-foundation",
                 /* group = */ "androidx.wear.compose",
                 /* artifact = */ "compose-foundation"
-            ).version("1.1.2")
+            ).versionRef("wear-compose")
 
             library(
                 /* alias = */ "compose-material-wear",
                 /* group = */ "androidx.wear.compose",
                 /* artifact = */ "compose-material"
-            ).version("1.1.2")
+            ).versionRef("wear-compose")
+
+            version(
+                "wear-compose",
+                "1.2.0-beta02"
+            )
 
             library(
                 /* alias = */ "compose-navigation-wear",
                 /* group = */ "androidx.wear.compose",
                 /* artifact = */ "compose-navigation"
-            ).version("1.1.2")
+            ).versionRef("wear-compose")
 
             library(
                 /* alias = */ "accompanist-navigation-material",
