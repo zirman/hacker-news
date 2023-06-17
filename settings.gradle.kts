@@ -64,7 +64,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "navigation",
-                /* version = */ "2.7.0-alpha01"
+                /* version = */ "2.7.0-beta01"
             )
 
             version(
@@ -74,7 +74,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "wear-compose",
-                /* version = */ "1.0.0-alpha18"
+                /* version = */ "1.2.0-beta02"
             )
 
             version(
@@ -683,7 +683,7 @@ dependencyResolutionManagement {
                 /* alias = */ "firebase-bom",
                 /* group = */ "com.google.firebase",
                 /* artifact = */ "firebase-bom"
-            ).version("32.1.0")
+            ).version("32.1.1")
 
             library(
                 /* alias = */ "firebase-crashlytics",
