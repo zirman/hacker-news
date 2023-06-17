@@ -45,7 +45,7 @@
     <string name="cursive">Cursiva</string>
     <string name="about_us">Sobre Nosotras</string>
     <string name="about_us_detail_html"><![CDATA[
-    <p>Estimado lector:<br><b>Hacker News</b> es Android&trade; aplicación nativa que interactúa con el popular sitio web de noticias <a href="https://news.ycombinator.com">news.ycombinator.com</a>. El código fuente está disponible bajo la licencia Apache 2.0 <a href="https://github.com/zirman/hacker_news">aquí</a>.</p>
+    <p>Estimado lector:<br /><b>Hacker News</b> es Android&#8482; aplicación nativa que interactúa con el popular sitio web de noticias <a href="https://news.ycombinator.com">news.ycombinator.com</a>. El código fuente está disponible bajo la licencia Apache 2.0 <a href="https://github.com/zirman/hacker_news">aquí</a>.</p>
     <p>Para obtener ayuda, puede ponerse en contacto conmigo aquí <a href="mailto:monoidscorp@gmail.com">monoidscorp@gmail.com</a>.</p>
     <p>Espero que disfrute usando la aplicación tanto como yo escribiéndola.</p>
     <p>Saludos cordiales,</p>
@@ -79,4 +79,6 @@
     <string name="jobs_description">Estos son trabajos en las nuevas empresas de YC.</string>
     <string name="favorites_description">Historias que has marcado como favoritas.</string>
     <string name="dismiss">Despedir</string>
+    <string name="follow">Seguir</string>
+    <string name="unfollow">Dejar de seguir</string>
 </resources>

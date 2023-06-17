@@ -80,6 +80,11 @@ fun ItemList(
                         itemUiState.value?.toggleFavorite(onNavigateLogin)
                     }
                 },
+                onClickFollow = {
+                    coroutineScope.launch {
+                        itemUiState.value?.toggleFollowed()
+                    }
+                },
                 onClickFlag = {
                     coroutineScope.launch {
                         itemUiState.value?.toggleFlag(onNavigateLogin)

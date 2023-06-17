@@ -12,27 +12,31 @@ abstract class ItemUi {
     abstract val isFavorite: Boolean
     abstract val isFlag: Boolean
     abstract val isExpanded: Boolean
+    abstract val isFollowed: Boolean
     abstract suspend fun toggleUpvote(onNavigateLogin: (LoginAction) -> Unit)
     abstract suspend fun toggleFavorite(onNavigateLogin: (LoginAction) -> Unit)
     abstract suspend fun toggleFlag(onNavigateLogin: (LoginAction) -> Unit)
     abstract suspend fun toggleExpanded()
+    abstract suspend fun toggleFollowed()
 
     override fun equals(other: Any?): Boolean {
         return other is ItemUi &&
-                item == other.item &&
-                kids == other.kids &&
-                isUpvote == other.isUpvote &&
-                isFavorite == other.isFavorite &&
-                isFlag == other.isFlag &&
-                isExpanded == other.isExpanded
+            item == other.item &&
+            kids == other.kids &&
+            isUpvote == other.isUpvote &&
+            isFavorite == other.isFavorite &&
+            isFlag == other.isFlag &&
+            isExpanded == other.isExpanded &&
+            isFollowed == other.isFollowed
     }
 
     override fun hashCode(): Int {
         return item.hashCode() xor
-                kids.hashCode() xor
-                isUpvote.hashCode() xor
-                isFavorite.hashCode() xor
-                isFlag.hashCode() xor
-                isExpanded.hashCode()
+            kids.hashCode() xor
+            isUpvote.hashCode() xor
+            isFavorite.hashCode() xor
+            isFlag.hashCode() xor
+            isExpanded.hashCode() xor
+            isFollowed.hashCode()
     }
 }

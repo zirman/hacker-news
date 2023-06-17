@@ -11,11 +11,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Flag
+import androidx.compose.material.icons.filled.Quickreply
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.twotone.ExpandLess
 import androidx.compose.material.icons.twotone.ExpandMore
 import androidx.compose.material.icons.twotone.Flag
 import androidx.compose.material.icons.twotone.MoreVert
+import androidx.compose.material.icons.twotone.Quickreply
 import androidx.compose.material.icons.twotone.Reply
 import androidx.compose.material.icons.twotone.ThumbUp
 import androidx.compose.material3.Badge
@@ -220,6 +222,45 @@ fun CommentItem(
                                             R.string.un_vote
                                         } else {
                                             R.string.upvote
+                                        }
+                                    )
+                                )
+                            }
+                        )
+
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = stringResource(
+                                        id = if (itemUiState.value?.itemUi?.isFollowed == true) {
+                                            R.string.unfollow
+                                        } else {
+                                            R.string.follow
+                                        }
+                                    )
+                                )
+                            },
+                            onClick = {
+                                coroutineScope.launch {
+                                    itemUiState.value?.itemUi?.toggleFollowed()
+                                }
+
+                                setContextExpanded(false)
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = if (
+                                        itemUiState.value?.itemUi?.isFollowed == true
+                                    ) {
+                                        Icons.Filled.Quickreply
+                                    } else {
+                                        Icons.TwoTone.Quickreply
+                                    },
+                                    contentDescription = stringResource(
+                                        id = if (itemUiState.value?.itemUi?.isFollowed == true) {
+                                            R.string.unfollow
+                                        } else {
+                                            R.string.follow
                                         }
                                     )
                                 )

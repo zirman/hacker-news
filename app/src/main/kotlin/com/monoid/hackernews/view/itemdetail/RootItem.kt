@@ -16,11 +16,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.OpenInBrowser
+import androidx.compose.material.icons.filled.Quickreply
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.twotone.Comment
 import androidx.compose.material.icons.twotone.Favorite
 import androidx.compose.material.icons.twotone.Flag
 import androidx.compose.material.icons.twotone.MoreVert
+import androidx.compose.material.icons.twotone.Quickreply
 import androidx.compose.material.icons.twotone.ThumbUp
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -89,10 +91,12 @@ fun ItemPreview() {
                     override val isFavorite: Boolean = false
                     override val isFlag: Boolean = false
                     override val isExpanded: Boolean = false
+                    override val isFollowed: Boolean = false
                     override suspend fun toggleUpvote(onNavigateLogin: (LoginAction) -> Unit) {}
                     override suspend fun toggleFavorite(onNavigateLogin: (LoginAction) -> Unit) {}
                     override suspend fun toggleFlag(onNavigateLogin: (LoginAction) -> Unit) {}
                     override suspend fun toggleExpanded() {}
+                    override suspend fun toggleFollowed() {}
                 }
             ))
         },
@@ -204,6 +208,43 @@ fun RootItem(
                                     }
                                 )
                             }
+
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        text = stringResource(
+                                            id = if (itemUiState.value?.itemUi?.isFollowed == true) {
+                                                R.string.unfollow
+                                            } else {
+                                                R.string.follow
+                                            }
+                                        )
+                                    )
+                                },
+                                onClick = {
+                                    coroutineScope.launch {
+                                        itemUiState.value?.itemUi?.toggleFollowed()
+                                    }
+
+                                    setContextExpanded(false)
+                                },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = if (itemUiState.value?.itemUi?.isFollowed == true) {
+                                            Icons.Filled.Quickreply
+                                        } else {
+                                            Icons.TwoTone.Quickreply
+                                        },
+                                        contentDescription = stringResource(
+                                            id = if (itemUiState.value?.itemUi?.isFollowed == true) {
+                                                R.string.unfollow
+                                            } else {
+                                                R.string.follow
+                                            }
+                                        )
+                                    )
+                                }
+                            )
 
                             DropdownMenuItem(
                                 text = {

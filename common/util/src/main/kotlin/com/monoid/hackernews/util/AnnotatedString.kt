@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.core.text.HtmlCompat
+import androidx.core.text.HtmlCompat.FROM_HTML_MODE_LEGACY
 import androidx.core.text.getSpans
 
 private const val urlTag = "URL"
@@ -48,7 +49,7 @@ fun getAnnotatedString(
     linkColor: Color = Color.Blue
 ): AnnotatedString {
     val spanned: Spanned =
-        HtmlCompat.fromHtml(htmlText, 0)
+        HtmlCompat.fromHtml(htmlText, FROM_HTML_MODE_LEGACY)
 
     return buildAnnotatedString {
         // HTML paragraphs add two new lines at the end which we trim. We then need to make sure all

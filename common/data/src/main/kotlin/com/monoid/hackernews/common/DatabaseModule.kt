@@ -7,6 +7,7 @@ import com.monoid.hackernews.common.room.BestStoryDao
 import com.monoid.hackernews.common.room.ExpandedDao
 import com.monoid.hackernews.common.room.FavoriteDao
 import com.monoid.hackernews.common.room.FlagDao
+import com.monoid.hackernews.common.room.FollowedDao
 import com.monoid.hackernews.common.room.HNDatabase
 import com.monoid.hackernews.common.room.ItemDao
 import com.monoid.hackernews.common.room.JobStoryDao
@@ -31,9 +32,9 @@ object DatabaseModule {
     fun provideHNDatabase(@ApplicationContext applicationContext: Context): HNDatabase {
         return Room
             .databaseBuilder(
-                applicationContext,
-                HNDatabase::class.java,
-                "hacker-news-database"
+                context = applicationContext,
+                klass = HNDatabase::class.java,
+                name = "hacker-news-database"
             )
             .build()
     }
@@ -96,5 +97,10 @@ object DatabaseModule {
     @Provides
     fun provideExpandedDao(hnDatabase: HNDatabase): ExpandedDao {
         return hnDatabase.expandedDao()
+    }
+
+    @Provides
+    fun provideFollowedDao(hnDatabase: HNDatabase): FollowedDao {
+        return hnDatabase.followedDao()
     }
 }

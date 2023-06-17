@@ -18,6 +18,8 @@ import com.monoid.hackernews.common.room.FavoriteDao
 import com.monoid.hackernews.common.room.FavoriteDb
 import com.monoid.hackernews.common.room.FlagDao
 import com.monoid.hackernews.common.room.FlagDb
+import com.monoid.hackernews.common.room.FollowedDao
+import com.monoid.hackernews.common.room.FollowedDb
 import com.monoid.hackernews.common.room.ItemDao
 import com.monoid.hackernews.common.room.ItemDb
 import com.monoid.hackernews.common.room.UpvoteDao
@@ -66,6 +68,7 @@ class ItemTreeRepository @Inject constructor(
     private val favoriteDao: FavoriteDao,
     private val flagDao: FlagDao,
     private val expandedDao: ExpandedDao,
+    private val followedDao: FollowedDao,
     private val mainDispatcher: MainCoroutineDispatcher,
     @IoDispatcher
     private val ioDispatcher: CoroutineDispatcher,
@@ -306,7 +309,9 @@ class ItemTreeRepository @Inject constructor(
                         .distinctUntilChanged(),
                     expandedDao.isExpandedFlow(itemId.long)
                         .distinctUntilChanged(),
-                    ::Pair
+                    followedDao.isFollowedFlow(itemId.long)
+                        .distinctUntilChanged(),
+                    ::Triple
                 ).distinctUntilChanged(),
                 authentication.data
                     .map { it.username }
@@ -325,14 +330,15 @@ class ItemTreeRepository @Inject constructor(
                             ::Triple
                         )
                     }
-            ) { (itemWithKids, isExpanded), (isUpvote, isFavorite, isFlag) ->
+            ) { (itemWithKids, isExpanded, isFollowed), (isUpvote, isFavorite, isFlag) ->
                 ItemUiInternal(
                     item = itemWithKids.item,
                     kids = itemWithKids.kids.map { ItemId(it.id) },
                     isUpvote = isUpvote,
                     isFavorite = isFavorite,
                     isFlag = isFlag,
-                    isExpanded = isExpanded
+                    isExpanded = isExpanded,
+                    isFollowed = isFollowed
                 )
             }
         )
@@ -366,6 +372,7 @@ class ItemTreeRepository @Inject constructor(
         override val isFavorite: Boolean,
         override val isFlag: Boolean,
         override val isExpanded: Boolean,
+        override val isFollowed: Boolean,
     ) : ItemUi() {
         override suspend fun toggleUpvote(onNavigateLogin: (LoginAction) -> Unit) {
             val authentication = authentication.data.first()
@@ -408,6 +415,14 @@ class ItemTreeRepository @Inject constructor(
                 expandedDao.expandedDelete(ExpandedDb(item.id))
             } else {
                 expandedDao.expandedInsert(ExpandedDb(item.id))
+            }
+        }
+
+        override suspend fun toggleFollowed() {
+            if (isFollowed) {
+                followedDao.followedDelete(FollowedDb(item.id))
+            } else {
+                followedDao.followedInsert(FollowedDb(item.id))
             }
         }
     }
