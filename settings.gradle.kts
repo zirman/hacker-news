@@ -54,7 +54,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "room",
-                /* version = */ "2.5.1"
+                /* version = */ "2.5.2"
             )
 
             version(
@@ -79,7 +79,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "accompanist",
-                /* version = */ "0.31.3-beta"
+                /* version = */ "0.31.4-beta"
             )
 
             version(
@@ -500,7 +500,7 @@ dependencyResolutionManagement {
                 /* alias = */ "compose-bom",
                 /* group = */ "androidx.compose",
                 /* artifact = */ "compose-bom"
-            ).version("2023.06.00")
+            ).version("2023.06.01")
 
             library(
                 /* alias = */ "material3",
