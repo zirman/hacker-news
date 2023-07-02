@@ -1,11 +1,11 @@
 @file:Suppress("UnstableApiUsage")
 
 plugins {
-    id("com.android.library")
-    kotlin("android")
-    kotlin("kapt")
-    id("com.google.devtools.ksp")
-    id("com.google.dagger.hilt.android")
+    id(libs.plugins.androidLibrary.get().pluginId)
+    alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.kapt)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -44,7 +44,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
 }
 
@@ -53,23 +53,23 @@ kapt {
 }
 
 dependencies {
-    implementation(platform(libs.compose.bom))
-    implementation(platform(libs.firebase.bom))
+    implementation(platform(libs.composeBom))
+    implementation(platform(libs.firebaseBom))
 
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.androidx)
-    implementation(libs.bundles.androidx.compose)
-    implementation(libs.bundles.androidx.app)
+    implementation(libs.bundles.androidxCompose)
+    implementation(libs.bundles.androidxApp)
     implementation(libs.bundles.google)
-    implementation(libs.bundles.google.app)
+    implementation(libs.bundles.googleApp)
     implementation(libs.bundles.firebase)
-    implementation(libs.slf4j.simple)
+    implementation(libs.slf4jSimple)
 
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
+    implementation(libs.hiltAndroid)
+    kapt(libs.hiltAndroidCompiler)
 
-    implementation(libs.hilt.navigation.compose)
+    implementation(libs.hiltNavigationCompose)
 
-    androidTestImplementation(libs.ui.test.junit4)
-    debugImplementation(libs.ui.test.manifest)
+    androidTestImplementation(libs.uiTestJunit4)
+    debugImplementation(libs.uiTestManifest)
 }

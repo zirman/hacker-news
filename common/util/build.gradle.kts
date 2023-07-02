@@ -1,8 +1,8 @@
 @file:Suppress("UnstableApiUsage")
 
 plugins {
-    id("com.android.library")
-    kotlin("android")
+    id(libs.plugins.androidLibrary.get().pluginId)
+    alias(libs.plugins.kotlinAndroid)
 }
 
 android {
@@ -34,20 +34,20 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
 }
 
 dependencies {
-    implementation(platform(libs.compose.bom))
-    implementation(platform(libs.firebase.bom))
+    implementation(platform(libs.composeBom))
+    implementation(platform(libs.firebaseBom))
 
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.androidx)
-    implementation(libs.bundles.androidx.compose)
+    implementation(libs.bundles.androidxCompose)
     implementation(libs.material3)
     implementation(libs.bundles.google)
 
-    androidTestImplementation(libs.ui.test.junit4)
-    debugImplementation(libs.ui.test.manifest)
+    androidTestImplementation(libs.uiTestJunit4)
+    debugImplementation(libs.uiTestManifest)
 }

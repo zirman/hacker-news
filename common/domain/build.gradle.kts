@@ -1,9 +1,9 @@
 @file:Suppress("UnstableApiUsage")
 
 plugins {
-    id("com.android.library")
-    kotlin("android")
-    id("kotlin-parcelize")
+    id(libs.plugins.androidLibrary.get().pluginId)
+    id(libs.plugins.kotlinxParcelize.get().pluginId)
+    alias(libs.plugins.kotlinAndroid)
 }
 
 android {
@@ -42,24 +42,24 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
 }
 
 dependencies {
     api(project(":common:data"))
 
-    implementation(platform(libs.compose.bom))
-    implementation(platform(libs.firebase.bom))
+    implementation(platform(libs.composeBom))
+    implementation(platform(libs.firebaseBom))
 
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.androidx)
-    implementation(libs.bundles.androidx.compose)
+    implementation(libs.bundles.androidxCompose)
     // TODO: refactor so that this isn't a shared dependency for wear
-    implementation(libs.bundles.androidx.app)
+    implementation(libs.bundles.androidxApp)
     implementation(libs.bundles.google)
 
     testImplementation(libs.junit)
-    androidTestImplementation(libs.junit.ext)
-    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.junitExt)
+    androidTestImplementation(libs.espressoCore)
 }

@@ -1,29 +1,16 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
-    alias(libs.plugins.kotlin) apply false
+    alias(libs.plugins.kotlinAndroid) apply false
+    alias(libs.plugins.kotlinxSerialization) apply false
+    alias(libs.plugins.kapt) apply false
+    alias(libs.plugins.androidApplication) apply false
+    alias(libs.plugins.ksp) apply false
     alias(libs.plugins.hilt) apply false
-    alias(libs.plugins.kapt)
-    alias(libs.plugins.versions)
-}
-
-buildscript {
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath(kotlin("gradle-plugin", version = libs.versions.kotlin.get()))
-        classpath(kotlin("serialization", version = libs.versions.kotlin.get()))
-        classpath("com.android.tools.build:gradle:${libs.versions.gradle.plugin.android.get()}")
-        classpath("com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:${libs.versions.gradle.plugin.ksp.get()}")
-        classpath("com.google.protobuf:protobuf-gradle-plugin:${libs.versions.gradle.plugin.protobuf.get()}")
-        classpath("com.google.gms:google-services:${libs.versions.google.services.get()}")
-        classpath("com.google.firebase:firebase-crashlytics-gradle:${libs.versions.firebase.crashlytics.gradle.get()}")
-        classpath("com.github.ben-manes:gradle-versions-plugin:${libs.plugins.versions.get().version}")
-    }
+    alias(libs.plugins.protobuf) apply false
+    alias(libs.plugins.googlePlayServices) apply false
+    alias(libs.plugins.crashlytics) apply false
+    alias(libs.plugins.versions) apply true
 }
 
 tasks.register("clean", Delete::class) {

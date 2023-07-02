@@ -10,8 +10,22 @@
                 <map>
                   <entry key="Duration" value="90" />
                   <entry key="Google&#10; brya" value="120" />
+                  <entry key="Pixel_6_Pro_API_33" value="120" />
                   <entry key="Tests" value="360" />
                   <entry key="emulator-5554" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-1797192040">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Pixel_6_Pro_API_33" value="120" />
+                  <entry key="Tests" value="360" />
                 </map>
               </option>
             </AndroidTestResultsTableState>
@@ -38,6 +52,7 @@
                 <map>
                   <entry key="Duration" value="90" />
                   <entry key="Google&#10; brya" value="120" />
+                  <entry key="Pixel_6_Pro_API_33" value="120" />
                   <entry key="Tests" value="360" />
                   <entry key="emulator-5554" value="120" />
                 </map>
@@ -52,6 +67,7 @@
                 <map>
                   <entry key="Duration" value="90" />
                   <entry key="Google&#10; brya" value="120" />
+                  <entry key="Pixel_6_Pro_API_33" value="120" />
                   <entry key="Tests" value="360" />
                   <entry key="emulator-5554" value="120" />
                 </map>
@@ -66,6 +82,7 @@
                 <map>
                   <entry key="Duration" value="90" />
                   <entry key="Google&#10; brya" value="120" />
+                  <entry key="Pixel_6_Pro_API_33" value="120" />
                   <entry key="Tests" value="360" />
                   <entry key="emulator-5554" value="120" />
                 </map>
@@ -80,6 +97,7 @@
                 <map>
                   <entry key="Duration" value="90" />
                   <entry key="Google&#10; brya" value="120" />
+                  <entry key="Pixel_6_Pro_API_33" value="120" />
                   <entry key="Tests" value="360" />
                   <entry key="emulator-5554" value="120" />
                 </map>
@@ -121,6 +139,7 @@
                 <map>
                   <entry key="Duration" value="90" />
                   <entry key="Google&#10; brya" value="120" />
+                  <entry key="Pixel_6_Pro_API_33" value="120" />
                   <entry key="Tests" value="360" />
                   <entry key="emulator-5554" value="120" />
                 </map>

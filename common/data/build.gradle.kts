@@ -3,14 +3,14 @@
 import com.google.protobuf.gradle.id
 
 plugins {
-    id("com.android.library")
-    kotlin("android")
-    kotlin("plugin.serialization")
-    kotlin("kapt")
-    id("kotlin-parcelize")
-    id("com.google.devtools.ksp")
-    id("com.google.protobuf")
-    id("com.google.dagger.hilt.android")
+    id(libs.plugins.androidLibrary.get().pluginId)
+    id(libs.plugins.kotlinxParcelize.get().pluginId)
+    alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.kapt)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.protobuf)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -50,7 +50,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
 }
 
@@ -91,25 +91,25 @@ kapt {
 dependencies {
     implementation(project(":common:injection"))
 
-    implementation(platform(libs.compose.bom))
-    implementation(platform(libs.firebase.bom))
+    implementation(platform(libs.composeBom))
+    implementation(platform(libs.firebaseBom))
 
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.androidx)
     implementation(libs.bundles.google)
     implementation(libs.bundles.firebase)
     api(libs.bundles.ktor)
-    ksp(libs.room.compiler)
+    ksp(libs.roomCompiler)
 
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
+    implementation(libs.hiltAndroid)
+    kapt(libs.hiltAndroidCompiler)
 
     testImplementation(libs.junit)
 
-    androidTestImplementation(kotlin("test"))
-    androidTestImplementation(libs.kotlinx.coroutines.test)
-    androidTestImplementation(libs.junit.ext)
-    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.kotlinTest)
+    androidTestImplementation(libs.kotlinxCoroutinesTest)
+    androidTestImplementation(libs.junitExt)
+    androidTestImplementation(libs.espressoCore)
 }
 
 java {

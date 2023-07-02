@@ -1,10 +1,10 @@
 @file:Suppress("UnstableApiUsage")
 
 plugins {
-    id("com.android.library")
-    kotlin("android")
-    kotlin("kapt")
-    id("com.google.dagger.hilt.android")
+    id(libs.plugins.androidLibrary.get().pluginId)
+    alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.kapt)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -36,7 +36,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
 }
 
@@ -47,18 +47,18 @@ kapt {
 dependencies {
     api(project(":common:domain"))
 
-    implementation(platform(libs.compose.bom))
-    implementation(platform(libs.firebase.bom))
+    implementation(platform(libs.composeBom))
+    implementation(platform(libs.firebaseBom))
 
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.androidx)
-    implementation(libs.bundles.androidx.compose)
+    implementation(libs.bundles.androidxCompose)
     implementation(libs.bundles.google)
 
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
+    implementation(libs.hiltAndroid)
+    kapt(libs.hiltAndroidCompiler)
 
     testImplementation(libs.junit)
-    androidTestImplementation(libs.junit.ext)
-    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.junitExt)
+    androidTestImplementation(libs.espressoCore)
 }
