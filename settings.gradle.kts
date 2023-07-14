@@ -213,6 +213,7 @@ dependencyResolutionManagement {
                     "workRuntimeKtx",
                     "preferenceKtx",
                     // "slice-builders-ktx",
+                    "startupRuntime",
                     "datastore",
                     "benchmarkJunit4",
 
@@ -344,6 +345,12 @@ dependencyResolutionManagement {
                 /* group = */ "com.google.devtools.ksp",
                 /* artifact = */ "symbol-processing-api"
             ).versionRef("ksp")
+
+            library(
+                "startupRuntime",
+                "androidx.startup",
+                "startup-runtime"
+            ).version("1.1.1")
 
             library(
                 /* alias = */ "datastore",
