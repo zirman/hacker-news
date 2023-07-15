@@ -47,7 +47,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "protobuf",
-                /* version = */ "3.23.2"
+                /* version = */ "3.24.0-RC1"
             )
 
             version(
@@ -77,12 +77,12 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "accompanist",
-                /* version = */ "0.31.4-beta"
+                /* version = */ "0.31.5-beta"
             )
 
             version(
                 /* alias = */ "hilt",
-                /* version = */ "2.46.1"
+                /* version = */ "2.47"
             )
 
             version(
@@ -143,7 +143,7 @@ dependencyResolutionManagement {
             plugin(
                 /* alias = */ "crashlytics",
                 /* id = */ "com.google.firebase.crashlytics"
-            ).version("2.9.6")
+            ).version("2.9.7")
 
             plugin(
                 /* alias = */ "versions",
@@ -159,6 +159,7 @@ dependencyResolutionManagement {
                     "kotlinxSerializationJson",
                     "kotlinxSerializationProtobuf",
 
+                    "kotlinxCollectionsImmutable",
                     "kotlinxDatetime"
                 )
             )
@@ -297,6 +298,12 @@ dependencyResolutionManagement {
                 /* group = */ "org.jetbrains.kotlinx",
                 /* artifact = */ "kotlinx-datetime"
             ).version("0.4.0")
+
+            library(
+                /* alias = */ "kotlinxCollectionsImmutable",
+                /* group = */ "org.jetbrains.kotlinx",
+                /* artifact = */ "kotlinx-collections-immutable"
+            ).version("0.3.5")
 
             library(
                 /* alias = */ "ktorClientCore",
@@ -720,7 +727,7 @@ dependencyResolutionManagement {
                 /* alias = */ "firebaseBom",
                 /* group = */ "com.google.firebase",
                 /* artifact = */ "firebase-bom"
-            ).version("32.1.1")
+            ).version("32.2.0")
 
             library(
                 /* alias = */ "firebaseCrashlytics",
