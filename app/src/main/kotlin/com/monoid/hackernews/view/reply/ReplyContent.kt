@@ -18,6 +18,7 @@ import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -34,8 +35,8 @@ import com.monoid.hackernews.common.data.ItemTreeRepository
 import com.monoid.hackernews.common.data.ItemUi
 import com.monoid.hackernews.common.datastore.Authentication
 import com.monoid.hackernews.common.view.R
-import com.monoid.hackernews.view.text.ReplyTextField
 import com.monoid.hackernews.util.getAnnotatedString
+import com.monoid.hackernews.view.text.ReplyTextField
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -57,11 +58,9 @@ fun ReplyContent(
 ) {
     val coroutineScope = rememberCoroutineScope()
 
-    val itemUi: ItemUi? = remember {
+    val itemUi: ItemUi? by remember {
         itemTreeRepository.itemUiList(listOf(itemId)).first().itemUiFlow(coroutineScope)
-    }
-        .collectAsStateWithLifecycle()
-        .value
+    }.collectAsStateWithLifecycle()
 
     val item = itemUi?.item
 

@@ -70,6 +70,7 @@ import com.monoid.hackernews.common.domain.LiveUpdateUseCase
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.view.itemdetail.ItemDetail
 import com.monoid.hackernews.common.ui.util.notifyInput
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.emptyFlow
@@ -103,6 +104,7 @@ fun HomeScreen(
                 when (windowSizeClass.widthSizeClass) {
                     WindowWidthSizeClass.Compact ->
                         if (detailInteraction) selectedItemId else null
+
                     else ->
                         selectedItemId
                 }
@@ -175,26 +177,27 @@ fun HomeScreen(
             )
         },
     ) { paddingValues ->
-        val itemRows: List<ItemListRow>?
-            by remember {
-                orderedItemRepo
-                    .getItems(
-                        TimeUnit.MINUTES
-                            .toMillis(
-                                context.resources.getInteger(R.integer.item_stale_minutes)
-                                    .toLong()
-                            )
-                    )
-                    .map { orderedItems ->
-                        itemTreeRepository
-                            .itemUiList(orderedItems.map { it.itemId })
-                    }
-            }.collectAsStateWithLifecycle(null)
+        val itemRows: ImmutableList<ItemListRow>? by remember {
+            orderedItemRepo
+                .getItems(
+                    TimeUnit.MINUTES
+                        .toMillis(
+                            context.resources.getInteger(R.integer.item_stale_minutes)
+                                .toLong()
+                        )
+                )
+                .map { orderedItems ->
+                    itemTreeRepository
+                        .itemUiList(orderedItems.map { it.itemId })
+                }
+        }.collectAsStateWithLifecycle(null)
 
         ReportDrawnWhen { itemRows != null }
 
         Surface(tonalElevation = 4.dp) {
-            if (itemRows == null) {
+            val localItemRows = itemRows
+
+            if (localItemRows == null) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center,
@@ -256,7 +259,7 @@ fun HomeScreen(
                         ItemsList(
                             listState = listState,
                             pullRefreshState = pullRefreshState,
-                            itemRows = itemRows,
+                            itemRows = localItemRows,
                             refreshing = refreshing,
                             paddingValues = paddingValues,
                             setSelectedItemId = setSelectedItemId,
@@ -286,7 +289,7 @@ fun HomeScreen(
                             ItemsList(
                                 listState = listState,
                                 pullRefreshState = pullRefreshState,
-                                itemRows = itemRows,
+                                itemRows = localItemRows,
                                 refreshing = refreshing,
                                 paddingValues = innerPadding,
                                 setSelectedItemId = setSelectedItemId,

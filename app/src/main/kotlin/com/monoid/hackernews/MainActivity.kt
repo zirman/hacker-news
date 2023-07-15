@@ -8,7 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
@@ -23,17 +23,16 @@ import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.monoid.hackernews.common.data.BuildConfig
 import com.monoid.hackernews.common.datastore.Authentication
+import com.monoid.hackernews.common.ui.util.rememberUseDarkTheme
 import com.monoid.hackernews.view.main.MainContent
 import com.monoid.hackernews.view.theme.AppTheme
 import com.monoid.hackernews.view.theme.HNFont
-import com.monoid.hackernews.common.ui.util.rememberUseDarkTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -55,13 +54,13 @@ class MainActivity : ComponentActivity() {
             val useDarkTheme: Boolean =
                 rememberUseDarkTheme()
 
-            val fontState: State<String?> = remember<Flow<String?>> { authentication.data.map { it.font } }
+            val fontState: String? by remember<Flow<String?>> { authentication.data.map { it.font } }
                 .collectAsStateWithLifecycle(null)
 
             AppTheme(
                 useDarkTheme = useDarkTheme,
-                hnFont = remember(fontState.value) {
-                    fontState.value
+                hnFont = remember(fontState) {
+                    fontState
                         ?.let { font ->
                             try {
                                 Json.decodeFromString<HNFont>(font)

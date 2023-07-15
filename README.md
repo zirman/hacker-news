@@ -1,8 +1,11 @@
 TODO:
+ + Immutable Lists
+ + WorkManager get update notifications
  + Room support for value classes KSP
  + Chat bubbles
  + Logout
  + Register account
+ + Google Play Review API
  + Use android.icu.text.MessageFormat to translate plurals
  + Post story
  + Synchronize expanded items between devices

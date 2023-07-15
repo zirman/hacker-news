@@ -20,11 +20,12 @@ import com.monoid.hackernews.common.data.ItemListRow
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.util.rememberMetricsStateHolder
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
 @Composable
 fun ItemList(
-    itemRows: List<ItemListRow>?,
+    itemRows: ImmutableList<ItemListRow>,
     paddingValues: PaddingValues,
     onClickDetail: (ItemId?) -> Unit,
     onClickUser: (Username?) -> Unit,
@@ -58,7 +59,7 @@ fun ItemList(
         state = listState,
         contentPadding = paddingValues
     ) {
-        items(itemRows.orEmpty(), { it.itemId.long }) { itemRow ->
+        items(itemRows, { it.itemId.long }) { itemRow ->
             val coroutineScope = rememberCoroutineScope()
 
             val itemUiState = remember(itemRow.itemId) { itemRow.itemUiFlow(coroutineScope) }
