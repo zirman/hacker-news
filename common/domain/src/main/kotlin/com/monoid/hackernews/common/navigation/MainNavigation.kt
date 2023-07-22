@@ -18,7 +18,6 @@ import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
 import kotlinx.parcelize.Parcelize
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -35,7 +34,7 @@ enum class Stories : Parcelable {
 
 val jsonDecoder: Json = Json { ignoreUnknownKeys = true }
 
-object StoriesNavType : NavType<Stories>(isNullableAllowed = false) {
+data object StoriesNavType : NavType<Stories>(isNullableAllowed = false) {
     override fun put(bundle: Bundle, key: String, value: Stories) {
         bundle.putParcelable(key, value)
     }
@@ -58,7 +57,7 @@ object StoriesNavType : NavType<Stories>(isNullableAllowed = false) {
     }
 }
 
-private object ActionNavType : NavType<LoginAction>(isNullableAllowed = true) {
+private data object ActionNavType : NavType<LoginAction>(isNullableAllowed = true) {
     override fun get(bundle: Bundle, key: String): LoginAction? {
         return if (Build.VERSION.SDK_INT >= 33) {
             bundle.getParcelable(key, LoginAction::class.java)
@@ -81,7 +80,7 @@ private object ActionNavType : NavType<LoginAction>(isNullableAllowed = true) {
     }
 }
 
-object ItemIdNavType : NavType<ItemId>(isNullableAllowed = false) {
+data object ItemIdNavType : NavType<ItemId>(isNullableAllowed = false) {
     override fun put(bundle: Bundle, key: String, value: ItemId) {
         bundle.putLong(key, value.long)
     }
@@ -99,7 +98,7 @@ object ItemIdNavType : NavType<ItemId>(isNullableAllowed = false) {
     }
 }
 
-object UsernameNavType : NavType<Username>(isNullableAllowed = false) {
+data object UsernameNavType : NavType<Username>(isNullableAllowed = false) {
     override fun put(bundle: Bundle, key: String, value: Username) {
         bundle.putString(key, value.string)
     }
@@ -149,18 +148,16 @@ sealed class MainNavigation<T : Any> {
     val enterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? =
         { fadeIn() }
 
-    @Suppress("RedundantNullableReturnType")
     val exitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? =
         null
 
-    @Suppress("RedundantNullableReturnType")
     val popEnterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? =
         null
 
     val popExitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? =
         null
 
-    object Home : MainNavigation<Stories>() {
+    data object Home : MainNavigation<Stories>() {
         override val route: String =
             "home?$storiesKey={$storiesKey}"
 
@@ -215,7 +212,7 @@ sealed class MainNavigation<T : Any> {
         }
     }
 
-    object Login : MainNavigation<LoginAction>() {
+    data object Login : MainNavigation<LoginAction>() {
         override val route: String get() = "login?$actionKey={$actionKey}"
 
         override val arguments: List<NamedNavArgument>
@@ -234,7 +231,7 @@ sealed class MainNavigation<T : Any> {
         }
     }
 
-    object Reply : MainNavigation<ItemId>() {
+    data object Reply : MainNavigation<ItemId>() {
         override val route: String get() = "reply?$itemIdKey={$itemIdKey}"
 
         override val arguments: List<NamedNavArgument>
@@ -252,7 +249,7 @@ sealed class MainNavigation<T : Any> {
         }
     }
 
-    object User : MainNavigation<Username>() {
+    data object User : MainNavigation<Username>() {
         override val route: String get() = "user?$usernameKey={$usernameKey}"
 
         override val arguments: List<NamedNavArgument>
@@ -270,7 +267,7 @@ sealed class MainNavigation<T : Any> {
         }
     }
 
-    object AboutUs : MainNavigation<Unit>() {
+    data object AboutUs : MainNavigation<Unit>() {
         override val route: String get() = "about-us"
 
         override val arguments: List<NamedNavArgument>
@@ -284,7 +281,7 @@ sealed class MainNavigation<T : Any> {
         }
     }
 
-    object Settings : MainNavigation<Unit>() {
+    data object Settings : MainNavigation<Unit>() {
         override val route: String get() = "settings"
 
         override val arguments: List<NamedNavArgument>

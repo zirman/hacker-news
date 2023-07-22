@@ -11,7 +11,7 @@ sealed class LoginAction : Parcelable {
     @Serializable
     @SerialName("Login")
     @Parcelize
-    object Login : LoginAction()
+    data object Login : LoginAction()
 
     @Serializable
     @SerialName("Upvote")

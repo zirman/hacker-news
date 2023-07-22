@@ -18,7 +18,7 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("libs") {
-            val kotlin = "1.8.22"
+            val kotlin = "1.9.0"
 
             version(
                 /* alias = */ "kotlin",
@@ -32,7 +32,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "ksp",
-                /* version = */ "$kotlin-1.0.11"
+                /* version = */ "$kotlin-1.0.12"
             )
 
             version(
@@ -47,7 +47,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "protobuf",
-                /* version = */ "3.24.0-RC1"
+                /* version = */ "3.24.0-RC2"
             )
 
             version(
@@ -72,7 +72,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "composeCompiler",
-                /* version = */ "1.4.8"
+                /* version = */ "1.5.0"
             )
 
             version(
@@ -103,7 +103,7 @@ dependencyResolutionManagement {
             plugin(
                 /* alias = */ "kotlinxParcelize",
                 /* id = */ "kotlin-parcelize"
-            ).version("1.8.22")
+            ).versionRef("kotlin")
 
             plugin(
                 /* alias = */ "kapt",
@@ -133,7 +133,7 @@ dependencyResolutionManagement {
             plugin(
                 /* alias = */ "protobuf",
                 /* id = */ "com.google.protobuf"
-            ).version("0.9.3")
+            ).version("0.9.4")
 
             plugin(
                 /* alias = */ "googlePlayServices",

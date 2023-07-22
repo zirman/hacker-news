@@ -27,7 +27,7 @@ sealed class HNFont {
 
     @Serializable
     @SerialName("Default")
-    object Default : HNFont() {
+    data object Default : HNFont() {
         @Composable
         override fun rememberFontFamily(): FontFamily {
             return FontFamily.Default
@@ -41,7 +41,7 @@ sealed class HNFont {
 
     @Serializable
     @SerialName("SansSerif")
-    object SansSerif : HNFont() {
+    data object SansSerif : HNFont() {
         @Composable
         override fun rememberFontFamily(): FontFamily {
             return FontFamily.SansSerif
@@ -55,7 +55,7 @@ sealed class HNFont {
 
     @Serializable
     @SerialName("Serif")
-    object Serif : HNFont() {
+    data object Serif : HNFont() {
         @Composable
         override fun rememberFontFamily(): FontFamily = FontFamily.Serif
 
@@ -67,7 +67,7 @@ sealed class HNFont {
 
     @Serializable
     @SerialName("Monospace")
-    object Monospace : HNFont() {
+    data object Monospace : HNFont() {
         @Composable
         override fun rememberFontFamily(): FontFamily {
             return FontFamily.Monospace
@@ -81,7 +81,7 @@ sealed class HNFont {
 
     @Serializable
     @SerialName("Cursive")
-    object Cursive : HNFont() {
+    data object Cursive : HNFont() {
         @Composable
         override fun rememberFontFamily(): FontFamily {
             return FontFamily.Cursive

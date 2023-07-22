@@ -12,7 +12,6 @@ object AuthenticationSerializer : Serializer<Authentication> {
 
     override suspend fun readFrom(input: InputStream): Authentication {
         try {
-            @Suppress("BlockingMethodInNonBlockingContext")
             return Authentication.parseFrom(input)
         } catch (exception: InvalidProtocolBufferException) {
             throw CorruptionException("Cannot read proto.", exception)
@@ -23,7 +22,6 @@ object AuthenticationSerializer : Serializer<Authentication> {
         t: Authentication,
         output: OutputStream
     ) {
-        @Suppress("BlockingMethodInNonBlockingContext")
         t.writeTo(output)
     }
 }
