@@ -1,4 +1,5 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     alias(libs.plugins.kotlinAndroid) apply false
@@ -25,8 +26,10 @@ tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
 }
 
 subprojects {
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions {
+            freeCompilerArgs = freeCompilerArgs + "-Xcontext-receivers"
+
             if (project.findProperty("hackernews.enableComposeCompilerReports") == "true") {
                 // force tasks to rerun so that metrics are generated
                 outputs.upToDateWhen { false }
