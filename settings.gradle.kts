@@ -27,7 +27,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "android",
-                /* version = */ "8.0.2"
+                /* version = */ "8.1.0"
             )
 
             version(
@@ -37,7 +37,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "kotlinxCoroutines",
-                /* version = */ "1.7.2"
+                /* version = */ "1.7.3"
             )
 
             version(

@@ -104,8 +104,8 @@ class MainActivity : ComponentActivity() {
                         val states = frameData.states.joinToString { "${it.key}:${it.value}" }
 
                         Log.w(
-                            "Jank",
-                            "Jank states[$states] ${TimeUnit.NANOSECONDS.toMillis(frameData.frameDurationUiNanos)}ms"
+                            /* tag = */ "Jank",
+                            /* msg = */ "Jank states[$states] ${TimeUnit.NANOSECONDS.toMillis(frameData.frameDurationUiNanos)}ms"
                         )
                     }
                 }
