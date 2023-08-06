@@ -1,7 +1,7 @@
 package com.monoid.hackernews
 
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ProcessLifecycleOwner as P
+import androidx.lifecycle.ProcessLifecycleOwner
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,6 +19,6 @@ object ApplicationModule {
     @ApplicationLifecycleOwner
     @Provides
     fun provideApplicationLifecycleOwner(): LifecycleOwner {
-        return P.get()
+        return ProcessLifecycleOwner.get()
     }
 }
