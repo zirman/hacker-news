@@ -773,6 +773,12 @@ dependencyResolutionManagement {
                 /* group = */ "androidx.test.espresso",
                 /* artifact = */ "espresso-core"
             ).version("3.5.1")
+
+            library(
+                /* alias = */ "desugarJdkLibs",
+                /* group = */ "com.android.tools",
+                /* artifact = */ "desugar_jdk_libs"
+            ).version("2.0.3")
         }
     }
 }
