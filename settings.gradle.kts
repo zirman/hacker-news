@@ -32,7 +32,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "ksp",
-                /* version = */ "$kotlin-1.0.12"
+                /* version = */ "$kotlin-1.0.13"
             )
 
             version(
@@ -42,17 +42,17 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "kotlinxSerialization",
-                /* version = */ "1.5.1"
+                /* version = */ "1.6.0-RC"
             )
 
             version(
                 /* alias = */ "protobuf",
-                /* version = */ "3.24.0-RC2"
+                /* version = */ "3.24.0-RC3"
             )
 
             version(
                 /* alias = */ "ktor",
-                /* version = */ "2.3.2"
+                /* version = */ "2.3.3"
             )
 
             version(
@@ -143,7 +143,7 @@ dependencyResolutionManagement {
             plugin(
                 /* alias = */ "crashlytics",
                 /* id = */ "com.google.firebase.crashlytics"
-            ).version("2.9.7")
+            ).version("2.9.8")
 
             plugin(
                 /* alias = */ "versions",
@@ -727,7 +727,7 @@ dependencyResolutionManagement {
                 /* alias = */ "firebaseBom",
                 /* group = */ "com.google.firebase",
                 /* artifact = */ "firebase-bom"
-            ).version("32.2.0")
+            ).version("32.2.2")
 
             library(
                 /* alias = */ "firebaseCrashlytics",
