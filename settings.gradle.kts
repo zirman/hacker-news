@@ -146,6 +146,11 @@ dependencyResolutionManagement {
             ).version("2.9.8")
 
             plugin(
+                /* alias = */ "firebasePerf",
+                /* id = */ "com.google.firebase.firebase-perf"
+            ).version("1.4.2")
+
+            plugin(
                 /* alias = */ "versions",
                 /* id = */ "com.github.ben-manes.versions"
             ).version("0.47.0")
@@ -741,11 +746,18 @@ dependencyResolutionManagement {
                 /* artifact = */ "firebase-analytics-ktx"
             ).withoutVersion()
 
+            library(
+                /* alias = */ "firebasePerfKtx",
+                /* group = */ "com.google.firebase",
+                /* artifact = */ "firebase-perf-ktx"
+            ).withoutVersion()
+
             bundle(
                 "firebase",
                 listOf(
                     "firebaseCrashlytics",
-                    "firebaseAnalyticsKtx"
+                    "firebaseAnalyticsKtx",
+                    "firebasePerfKtx"
                 )
             )
 

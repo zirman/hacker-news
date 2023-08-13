@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.protobuf) apply false
     alias(libs.plugins.googlePlayServices) apply false
     alias(libs.plugins.crashlytics) apply false
+    alias(libs.plugins.firebasePerf) apply false
     alias(libs.plugins.versions) apply true
 }
 

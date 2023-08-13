@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.googlePlayServices)
     alias(libs.plugins.crashlytics)
+    alias(libs.plugins.firebasePerf)
 }
 
 android {
