@@ -209,6 +209,7 @@ dependencyResolutionManagement {
                 /* alias = */ "androidx",
                 /* aliases = */ listOf(
                     "coreKtx",
+                    "coreSplashscreen",
                     "collectionKtx",
                     "appcompat",
                     "window",
@@ -413,6 +414,18 @@ dependencyResolutionManagement {
             ).version("1.10.1")
 
             library(
+                /* alias = */ "coreSplashscreen",
+                /* group = */ "androidx.core",
+                /* artifact = */ "core-splashscreen"
+            ).version("1.0.1")
+
+            library(
+                /* alias = */ "coreGoogleShortcuts",
+                /* group = */ "androidx.core",
+                /* artifact = */ "core-google-shortcuts"
+            ).version("1.1.0")
+
+            library(
                 /* alias = */ "collectionKtx",
                 /* group = */ "androidx.collection",
                 /* artifact = */ "collection-ktx"
@@ -441,12 +454,6 @@ dependencyResolutionManagement {
                 /* group = */ "androidx.palette",
                 /* artifact = */ "palette-ktx"
             ).version("1.0.0")
-
-            library(
-                /* alias = */ "coreGoogleShortcuts",
-                /* group = */ "androidx.core",
-                /* artifact = */ "core-google-shortcuts"
-            ).version("1.1.0")
 
             library(
                 /* alias = */ "workRuntimeKtx",

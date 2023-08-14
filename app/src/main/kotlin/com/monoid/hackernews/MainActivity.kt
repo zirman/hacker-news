@@ -1,8 +1,14 @@
 package com.monoid.hackernews
 
+import android.animation.ObjectAnimator
 import android.content.Intent
+import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.WindowInsetsController
+import android.view.animation.AnticipateInterpolator
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
@@ -11,6 +17,8 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import androidx.core.animation.doOnEnd
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.datastore.core.DataStore
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -49,6 +57,37 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        installSplashScreen().setOnExitAnimationListener { splashScreenView ->
+            window.statusBarColor = getColor(android.R.color.transparent)
+            window.navigationBarColor = getColor(android.R.color.transparent)
+
+            val slideUp = ObjectAnimator.ofFloat(
+                splashScreenView.view,
+                View.TRANSLATION_Y,
+                0f,
+                -splashScreenView.view.height.toFloat()
+            )
+
+            slideUp.interpolator = AnticipateInterpolator()
+            slideUp.duration = 400L
+
+            slideUp.doOnEnd {
+                splashScreenView.remove()
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R &&
+                    resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK ==
+                    Configuration.UI_MODE_NIGHT_NO
+                ) {
+                    window.insetsController?.setSystemBarsAppearance(
+                        WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+                        WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+                    )
+                }
+            }
+
+            slideUp.start()
+        }
 
         setContent {
             val useDarkTheme: Boolean =
@@ -105,7 +144,9 @@ class MainActivity : ComponentActivity() {
 
                         Log.w(
                             /* tag = */ "Jank",
-                            /* msg = */ "Jank states[$states] ${TimeUnit.NANOSECONDS.toMillis(frameData.frameDurationUiNanos)}ms"
+                            /* msg = */ "Jank states[$states] ${
+                                TimeUnit.NANOSECONDS.toMillis(frameData.frameDurationUiNanos)
+                            }ms"
                         )
                     }
                 }
