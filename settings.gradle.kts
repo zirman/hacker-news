@@ -47,7 +47,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "protobuf",
-                /* version = */ "3.24.0-RC3"
+                /* version = */ "3.24.1"
             )
 
             version(
@@ -77,7 +77,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "accompanist",
-                /* version = */ "0.31.5-beta"
+                /* version = */ "0.31.6-rc"
             )
 
             version(
@@ -87,7 +87,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "wearCompose",
-                /* version = */ "1.2.0-beta02"
+                /* version = */ "1.2.0"
             )
 
             plugin(
@@ -405,13 +405,13 @@ dependencyResolutionManagement {
                 /* alias = */ "appcompat",
                 /* group = */ "androidx.appcompat",
                 /* artifact = */ "appcompat"
-            ).version("1.7.0-alpha02")
+            ).version("1.7.0-alpha03")
 
             library(
                 /* alias = */ "coreKtx",
                 /* group = */ "androidx.core",
                 /* artifact = */ "core-ktx"
-            ).version("1.10.1")
+            ).version("1.12.0-rc01")
 
             library(
                 /* alias = */ "coreSplashscreen",
@@ -429,7 +429,7 @@ dependencyResolutionManagement {
                 /* alias = */ "collectionKtx",
                 /* group = */ "androidx.collection",
                 /* artifact = */ "collection-ktx"
-            ).version("1.2.0")
+            ).version("1.3.0-beta01")
 
             library(
                 /* alias = */ "activityKtx",
@@ -477,7 +477,7 @@ dependencyResolutionManagement {
                 /* alias = */ "benchmarkJunit4",
                 /* group = */ "androidx.benchmark",
                 /* artifact = */ "benchmark-junit4"
-            ).version("1.2.0-alpha15")
+            ).version("1.2.0-alpha15") // 1.2.0-beta03
 
             library(
                 /* alias = */ "lifecycleProcess",
