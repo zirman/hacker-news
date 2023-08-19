@@ -12,8 +12,8 @@ plugins {
 
 android {
     namespace = "com.monoid.hackernews.wear"
-    compileSdk = 33
-    buildToolsVersion = "33.0.2"
+    compileSdk = 34
+    buildToolsVersion = "34.0.0"
 
     signingConfigs {
         create("release") {
@@ -27,7 +27,7 @@ android {
     defaultConfig {
         applicationId = "com.monoid.hackernews.wear"
         minSdk = 26
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 

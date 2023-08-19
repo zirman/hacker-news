@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.monoid.hackernews.common.domain"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 26

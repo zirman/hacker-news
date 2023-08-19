@@ -27,7 +27,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "android",
-                /* version = */ "8.1.0"
+                /* version = */ "8.2.0-alpha16"
             )
 
             version(
@@ -72,7 +72,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "composeCompiler",
-                /* version = */ "1.5.0"
+                /* version = */ "1.5.1"
             )
 
             version(
@@ -465,7 +465,7 @@ dependencyResolutionManagement {
                 /* alias = */ "preferenceKtx",
                 /* group = */ "androidx.preference",
                 /* artifact = */ "preference-ktx"
-            ).version("1.2.0")
+            ).version("1.2.1")
 
             library(
                 /* alias = */ "sliceBuildersKtx",
@@ -561,7 +561,7 @@ dependencyResolutionManagement {
                 /* alias = */ "composeBom",
                 /* group = */ "androidx.compose",
                 /* artifact = */ "compose-bom"
-            ).version("2023.06.01")
+            ).version("2023.08.00")
 
             library(
                 /* alias = */ "material3",
