@@ -27,7 +27,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "android",
-                /* version = */ "8.2.0-alpha16"
+                /* version = */ "8.2.0-beta01"
             )
 
             version(
@@ -192,7 +192,6 @@ dependencyResolutionManagement {
                 /* alias = */ "googleApp",
                 /* aliases = */ listOf(
                     "accompanistNavigationMaterial", // bottomSheet destination for navigation compose
-                    "accompanistSystemuicontroller", // control system ui from compose
                     "accompanistAdaptive", // handle foldable devices
                     "accompanistPlaceholder", // placeholder loading animation
                 )
@@ -715,12 +714,6 @@ dependencyResolutionManagement {
                 /* alias = */ "accompanistNavigationMaterial",
                 /* group = */ "com.google.accompanist",
                 /* artifact = */ "accompanist-navigation-material"
-            ).versionRef("accompanist")
-
-            library(
-                /* alias = */ "accompanistSystemuicontroller",
-                /* group = */ "com.google.accompanist",
-                /* artifact = */ "accompanist-systemuicontroller"
             ).versionRef("accompanist")
 
             library(

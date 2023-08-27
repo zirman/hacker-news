@@ -3,7 +3,6 @@ package com.monoid.hackernews
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.content.res.Configuration
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -11,12 +10,9 @@ import android.view.WindowInsetsController
 import android.view.animation.AnticipateInterpolator
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.Color
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
@@ -27,8 +23,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.metrics.performance.JankStats
-import com.google.accompanist.systemuicontroller.SystemUiController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.monoid.hackernews.common.data.BuildConfig
 import com.monoid.hackernews.common.datastore.Authentication
 import com.monoid.hackernews.common.ui.util.rememberUseDarkTheme
@@ -58,6 +52,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
+        window.statusBarColor = getColor(android.R.color.transparent)
+        window.navigationBarColor = getColor(android.R.color.transparent)
+
         installSplashScreen().setOnExitAnimationListener { splashScreenView ->
             window.statusBarColor = getColor(android.R.color.transparent)
             window.navigationBarColor = getColor(android.R.color.transparent)
@@ -75,19 +72,25 @@ class MainActivity : ComponentActivity() {
             slideUp.doOnEnd {
                 splashScreenView.remove()
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R &&
-                    resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK ==
-                    Configuration.UI_MODE_NIGHT_NO
-                ) {
-                    window.insetsController?.setSystemBarsAppearance(
-                        WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
-                        WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
-                    )
-                }
+                window.insetsController?.setSystemBarsAppearance(
+                    when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                        Configuration.UI_MODE_NIGHT_NO -> WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+                        else -> 0
+                    },
+                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+                )
             }
 
             slideUp.start()
         }
+
+        window.insetsController?.setSystemBarsAppearance(
+            when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                Configuration.UI_MODE_NIGHT_NO -> WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+                else -> 0
+            },
+            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+        )
 
         setContent {
             val useDarkTheme: Boolean =
@@ -110,25 +113,6 @@ class MainActivity : ComponentActivity() {
                         ?: HNFont.Default
                 }
             ) {
-                val systemUiController: SystemUiController =
-                    rememberSystemUiController()
-
-                val primaryColor = MaterialTheme.colorScheme.primary
-
-                SideEffect {
-                    systemUiController.setStatusBarColor(
-                        // Opaque color is used for window bar on Chrome OS.
-                        color = primaryColor.copy(alpha = 0f),
-                        darkIcons = useDarkTheme.not()
-                    )
-
-                    systemUiController.setNavigationBarColor(
-                        // if alpha is zero, color is ignored
-                        color = Color(red = 128, green = 128, blue = 128, alpha = 1),
-                        darkIcons = useDarkTheme.not()
-                    )
-                }
-
                 MainContent(
                     mainViewModel = hiltViewModel(),
                     windowSizeClass = calculateWindowSizeClass(this)
