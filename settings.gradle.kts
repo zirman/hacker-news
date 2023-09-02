@@ -18,7 +18,7 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("libs") {
-            val kotlin = "1.9.0"
+            val kotlin = "1.9.10"
 
             version(
                 /* alias = */ "kotlin",
@@ -47,17 +47,17 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "protobuf",
-                /* version = */ "3.24.1"
+                /* version = */ "3.24.2"
             )
 
             version(
                 /* alias = */ "ktor",
-                /* version = */ "2.3.3"
+                /* version = */ "2.3.4"
             )
 
             version(
                 /* alias = */ "room",
-                /* version = */ "2.5.2"
+                /* version = */ "2.6.0-beta01"
             )
 
             version(
@@ -67,22 +67,22 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "navigation",
-                /* version = */ "2.7.0-beta01"
+                /* version = */ "2.7.1"
             )
 
             version(
                 /* alias = */ "composeCompiler",
-                /* version = */ "1.5.1"
+                /* version = */ "1.5.3"
             )
 
             version(
                 /* alias = */ "accompanist",
-                /* version = */ "0.31.6-rc"
+                /* version = */ "0.32.0"
             )
 
             version(
                 /* alias = */ "hilt",
-                /* version = */ "2.47"
+                /* version = */ "2.48"
             )
 
             version(
@@ -143,7 +143,7 @@ dependencyResolutionManagement {
             plugin(
                 /* alias = */ "crashlytics",
                 /* id = */ "com.google.firebase.crashlytics"
-            ).version("2.9.8")
+            ).version("2.9.9")
 
             plugin(
                 /* alias = */ "firebasePerf",
@@ -302,7 +302,7 @@ dependencyResolutionManagement {
                 /* alias = */ "kotlinxDatetime",
                 /* group = */ "org.jetbrains.kotlinx",
                 /* artifact = */ "kotlinx-datetime"
-            ).version("0.4.0")
+            ).version("0.4.1")
 
             library(
                 /* alias = */ "kotlinxCollectionsImmutable",
@@ -344,7 +344,7 @@ dependencyResolutionManagement {
                 /* alias = */ "playServicesWearable",
                 /* group = */ "com.google.android.gms",
                 /* artifact = */ "play-services-wearable"
-            ).version("18.0.0")
+            ).version("18.1.0")
 
             library(
                 /* alias = */ "protobufKotlinLite",
@@ -398,7 +398,7 @@ dependencyResolutionManagement {
                 /* alias = */ "window",
                 /* group = */ "androidx.window",
                 /* artifact = */ "window"
-            ).version("1.1.0")
+            ).version("1.2.0-beta01")
 
             library(
                 /* alias = */ "appcompat",
@@ -732,7 +732,7 @@ dependencyResolutionManagement {
                 /* alias = */ "firebaseBom",
                 /* group = */ "com.google.firebase",
                 /* artifact = */ "firebase-bom"
-            ).version("32.2.2")
+            ).version("32.2.3")
 
             library(
                 /* alias = */ "firebaseCrashlytics",
