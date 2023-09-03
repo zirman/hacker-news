@@ -68,7 +68,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = libs.versions.jvmTarget.get()
 
         freeCompilerArgs = listOf(
             "-opt-in=kotlinx.coroutines.FlowPreview",
