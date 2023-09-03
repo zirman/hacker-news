@@ -90,10 +90,14 @@ class MainActivity : ComponentActivity() {
 
         window.insetsController?.setSystemBarsAppearance(
             when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-                Configuration.UI_MODE_NIGHT_NO -> WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+                Configuration.UI_MODE_NIGHT_NO ->
+                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
+                            WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+
                 else -> 0
             },
-            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS
+            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
+                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
         )
 
         setContent {
