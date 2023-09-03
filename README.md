@@ -1,7 +1,8 @@
 TODO:
- + Immutable Lists
  + WorkManager get update notifications
- + Room support for value classes KSP
+ + Customize Light/Dark mode setting
+ + Customize colors
+ + Follow item with local notifications on updates
  + Chat bubbles
  + Logout
  + Register account
@@ -14,17 +15,14 @@ TODO:
  + Switch Access
  + Modifier.semantics()
  + Read comments using voice synthesis
- + Follow item with local notifications on updates
  + Highlight new items
- + Update items when back online
+ + Update items when back new or back online
  + Jump to unread items
- + Dark mode setting
- + Customize colors
  + Customize font from google font lib
  + Search
  + Long Click
  + Swipe
  + Favorites paging
- + Splash screen with androidx.core:core-splashscreen:1.0.0-rc01
  + Fix arrows keys leaving text field when replying to thread
- + Show comments immediately when replying
+ + Show your reply immediately when replying
+ + Replying queues when offline

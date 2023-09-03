@@ -1,6 +1,5 @@
 package com.monoid.hackernews.common.api
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.net.http.SslError
 import android.text.Html
@@ -93,7 +92,7 @@ private suspend inline fun HttpClient.yCombRequest(
     return httpResponse
 }
 
-@SuppressLint("SetJavaScriptEnabled")
+@Suppress("SetJavaScriptEnabled")
 suspend fun getHtmlItems(
     context: Context,
     path: String,

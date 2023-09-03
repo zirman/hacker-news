@@ -41,7 +41,7 @@ fun ItemDetail(
     fun refresh() = refreshScope
         .launch {
             setRefreshing(true)
-            // TODO
+            // TODO: actually make this refresh
             delay(400)
             setRefreshing(false)
         }
