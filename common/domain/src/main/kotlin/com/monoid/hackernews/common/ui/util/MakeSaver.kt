@@ -4,7 +4,6 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.SaverScope
 import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.navigation.jsonDecoder
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 
 inline fun <reified T> makeSaver(): Saver<T, String> =

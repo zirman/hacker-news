@@ -26,5 +26,5 @@ TODO:
  + Swipe
  + Favorites paging
  + Splash screen with androidx.core:core-splashscreen:1.0.0-rc01
- + Fix arrows keys leaving textfield when replying to thread
+ + Fix arrows keys leaving text field when replying to thread
  + Show comments immediately when replying

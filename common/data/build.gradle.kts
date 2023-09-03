@@ -1,5 +1,3 @@
-@file:Suppress("UnstableApiUsage")
-
 import com.google.protobuf.gradle.id
 
 plugins {

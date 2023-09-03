@@ -13,7 +13,7 @@ import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.navigation.MainNavigation
 
-val mainGraphRoutePattern = "main"
+const val mainGraphRoutePattern = "main"
 
 fun NavGraphBuilder.mainGraph(
     mainViewModel: MainViewModel,

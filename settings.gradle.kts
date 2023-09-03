@@ -254,9 +254,9 @@ dependencyResolutionManagement {
                     "lifecycleProcess",
                     "lifecycleRuntimeKtx",
                     "lifecycleRuntimeCompose",
-                    "lifecycleViewmodelKtx",
-                    "lifecycleViewmodelCompose",
-                    "lifecycleViewmodelSavedstate",
+                    "lifecycleViewModelKtx",
+                    "lifecycleViewModelCompose",
+                    "lifecycleViewModelSavedState",
                 )
             )
 
@@ -521,19 +521,19 @@ dependencyResolutionManagement {
             ).withoutVersion()
 
             library(
-                /* alias = */ "lifecycleViewmodelKtx",
+                /* alias = */ "lifecycleViewModelKtx",
                 /* group = */ "androidx.lifecycle",
                 /* artifact = */ "lifecycle-viewmodel-ktx"
             ).versionRef("lifecycle")
 
             library(
-                /* alias = */ "lifecycleViewmodelCompose",
+                /* alias = */ "lifecycleViewModelCompose",
                 /* group = */ "androidx.lifecycle",
                 /* artifact = */ "lifecycle-viewmodel-compose"
             ).versionRef("lifecycle")
 
             library(
-                /* alias = */ "lifecycleViewmodelSavedstate",
+                /* alias = */ "lifecycleViewModelSavedState",
                 /* group = */ "androidx.lifecycle",
                 /* artifact = */ "lifecycle-viewmodel-savedstate"
             ).versionRef("lifecycle")
@@ -606,7 +606,7 @@ dependencyResolutionManagement {
             ).withoutVersion()
 
             library(
-                /* alias = */ "uiViewbinding",
+                /* alias = */ "uiViewBinding",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-viewbinding"
             ).withoutVersion()
@@ -670,7 +670,7 @@ dependencyResolutionManagement {
                 listOf(
                     // compose
                     "ui",
-                    "uiViewbinding",
+                    "uiViewBinding",
                     "uiTooling",
                     "uiToolingData",
                     "uiToolingPreview",

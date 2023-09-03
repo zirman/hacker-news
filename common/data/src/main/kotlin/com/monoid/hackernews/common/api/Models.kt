@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package com.monoid.hackernews.common.api
 
 import com.monoid.hackernews.common.room.ItemDb

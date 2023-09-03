@@ -28,7 +28,7 @@ class HackerNewsTest {
     }
 
     @Test
-    fun settingMainDispatcher() = runTest() {
+    fun settingMainDispatcher() = runTest {
         val testDispatcher = UnconfinedTestDispatcher(testScheduler)
         Dispatchers.setMain(testDispatcher)
     }
