@@ -34,7 +34,7 @@
             android:launchMode="singleTask"
             android:theme="@android:style/Theme.DeviceDefault"
             android:windowSoftInputMode="adjustNothing|stateHidden"
-            android:taskAffinity="main">
+            android:taskAffinity=".main">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
