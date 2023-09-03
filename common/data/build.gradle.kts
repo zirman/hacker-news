@@ -5,7 +5,6 @@ plugins {
     id(libs.plugins.kotlinxParcelize.get().pluginId)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinxSerialization)
-    alias(libs.plugins.kapt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.protobuf)
     alias(libs.plugins.hilt)
@@ -83,10 +82,6 @@ protobuf {
     }
 }
 
-kapt {
-    correctErrorTypes = true
-}
-
 dependencies {
     coreLibraryDesugaring(libs.desugarJdkLibs)
 
@@ -103,7 +98,7 @@ dependencies {
     ksp(libs.roomCompiler)
 
     implementation(libs.hiltAndroid)
-    kapt(libs.hiltAndroidCompiler)
+    ksp(libs.hiltAndroidCompiler)
 
     testImplementation(libs.junit)
 

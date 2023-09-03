@@ -1,7 +1,7 @@
 plugins {
     id(libs.plugins.androidLibrary.get().pluginId)
     alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.kapt)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
 }
 
@@ -39,10 +39,6 @@ android {
     }
 }
 
-kapt {
-    correctErrorTypes = true
-}
-
 dependencies {
     coreLibraryDesugaring(libs.desugarJdkLibs)
 
@@ -57,7 +53,7 @@ dependencies {
     implementation(libs.bundles.google)
 
     implementation(libs.hiltAndroid)
-    kapt(libs.hiltAndroidCompiler)
+    ksp(libs.hiltAndroidCompiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.junitExt)

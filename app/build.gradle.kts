@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinxSerialization)
-    alias(libs.plugins.kapt)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.googlePlayServices)
     alias(libs.plugins.crashlytics)
@@ -103,10 +103,6 @@ android {
     }
 }
 
-kapt {
-    correctErrorTypes = true
-}
-
 dependencies {
     coreLibraryDesugaring(libs.desugarJdkLibs)
 
@@ -127,7 +123,7 @@ dependencies {
     implementation(libs.slf4jSimple)
 
     implementation(libs.hiltAndroid)
-    kapt(libs.hiltAndroidCompiler)
+    ksp(libs.hiltAndroidCompiler)
 
     implementation(libs.hiltNavigationCompose)
 

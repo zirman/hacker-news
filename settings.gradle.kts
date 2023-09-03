@@ -131,11 +131,6 @@ dependencyResolutionManagement {
             ).versionRef("kotlin")
 
             plugin(
-                /* alias = */ "kapt",
-                /* id = */ "org.jetbrains.kotlin.kapt"
-            ).versionRef("kotlin")
-
-            plugin(
                 /* alias = */ "androidApplication",
                 /* id = */ "com.android.application"
             ).versionRef("android")

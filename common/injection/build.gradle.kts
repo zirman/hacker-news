@@ -1,7 +1,6 @@
 plugins {
     id(libs.plugins.androidLibrary.get().pluginId)
     alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.kapt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
 }
@@ -47,10 +46,6 @@ android {
     }
 }
 
-kapt {
-    correctErrorTypes = true
-}
-
 dependencies {
     coreLibraryDesugaring(libs.desugarJdkLibs)
 
@@ -67,7 +62,7 @@ dependencies {
     implementation(libs.slf4jSimple)
 
     implementation(libs.hiltAndroid)
-    kapt(libs.hiltAndroidCompiler)
+    ksp(libs.hiltAndroidCompiler)
 
     implementation(libs.hiltNavigationCompose)
 
