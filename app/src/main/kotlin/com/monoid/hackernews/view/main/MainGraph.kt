@@ -69,7 +69,7 @@ fun NavGraphBuilder.mainGraph(
             httpClient = mainViewModel.httpClient,
             windowSizeClassState = windowSizeClassState,
             onNavigateUp = onNavigateUp,
-            onLoginError = onLoginError
+            onLoginError = onLoginError,
         )
 
         aboutUsBottomSheet(

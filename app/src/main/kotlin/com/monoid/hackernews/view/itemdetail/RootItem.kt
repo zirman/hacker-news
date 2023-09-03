@@ -81,10 +81,15 @@ fun ItemPreview() {
                 object : ItemUi() {
                     override val item: ItemDb = ItemDb(
                         id = 0,
+                        lastUpdate = 0,
                         type = "story",
+                        time = 0,
+                        by = "Paul Graham",
+                        descendants = 4,
                         title = "Hello World",
+                        score = 10,
                         text = "Lorum Ipsum",
-                        url = "https://www.google.com/"
+                        url = "https://www.google.com/",
                     )
                     override val kids: List<ItemId> = emptyList()
                     override val isUpvote: Boolean = false

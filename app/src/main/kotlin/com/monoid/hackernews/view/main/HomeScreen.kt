@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
@@ -13,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.getSystemService
 import androidx.core.content.pm.ShortcutManagerCompat
@@ -161,7 +163,8 @@ fun NavGraphBuilder.homeScreen(
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-            }
+            },
+            modifier = Modifier.fillMaxSize(),
         )
     }
 }
