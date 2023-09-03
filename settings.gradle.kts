@@ -21,6 +21,26 @@ dependencyResolutionManagement {
             val kotlin = "1.9.10"
 
             version(
+                /* alias = */ "compileSdk",
+                /* version = */ "34"
+            )
+
+            version(
+                /* alias = */ "targetSdk",
+                /* version = */ "34"
+            )
+
+            version(
+                /* alias = */ "minSdk",
+                /* version = */ "30"
+            )
+
+            version(
+                /* alias = */ "buildToolsVersion",
+                /* version = */ "34.0.0"
+            )
+
+            version(
                 /* alias = */ "kotlin",
                 /* version = */ kotlin
             )
