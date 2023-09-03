@@ -218,7 +218,6 @@ dependencyResolutionManagement {
                 /* aliases = */ listOf(
                     "accompanistNavigationMaterial", // bottomSheet destination for navigation compose
                     "accompanistAdaptive", // handle foldable devices
-                    "accompanistPlaceholder", // placeholder loading animation
                 )
             )
 
@@ -745,12 +744,6 @@ dependencyResolutionManagement {
                 /* alias = */ "accompanistAdaptive",
                 /* group = */ "com.google.accompanist",
                 /* artifact = */ "accompanist-adaptive"
-            ).versionRef("accompanist")
-
-            library(
-                /* alias = */ "accompanistPlaceholder",
-                /* group = */ "com.google.accompanist",
-                /* artifact = */ "accompanist-placeholder"
             ).versionRef("accompanist")
 
             library(

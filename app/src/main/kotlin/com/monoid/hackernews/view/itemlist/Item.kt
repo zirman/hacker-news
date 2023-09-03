@@ -51,9 +51,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.placeholder.PlaceholderHighlight
-import com.google.accompanist.placeholder.placeholder
-import com.google.accompanist.placeholder.shimmer
 import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.ItemUi
 import com.monoid.hackernews.common.data.LoginAction
@@ -63,6 +60,9 @@ import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.common.ui.text.ClickableTextBlock
 import com.monoid.hackernews.common.ui.util.rememberTimeBy
 import com.monoid.hackernews.common.ui.util.userTag
+import com.monoid.hackernews.common.view.placeholder.PlaceholderHighlight
+import com.monoid.hackernews.common.view.placeholder.placeholder
+import com.monoid.hackernews.common.view.placeholder.shimmer
 import com.monoid.hackernews.util.rememberAnnotatedString
 
 @Preview(
