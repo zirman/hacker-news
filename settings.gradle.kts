@@ -52,7 +52,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "android",
-                /* version = */ "8.2.0-beta01"
+                /* version = */ "8.2.0-beta03"
             )
 
             version(
@@ -72,7 +72,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "protobuf",
-                /* version = */ "3.24.2"
+                /* version = */ "3.24.3"
             )
 
             version(
@@ -86,13 +86,18 @@ dependencyResolutionManagement {
             )
 
             version(
+                /* alias = */ "activity",
+                /* version = */ "1.8.0-beta01"
+            )
+
+            version(
                 /* alias = */ "lifecycle",
                 /* version = */ "2.6.1"
             )
 
             version(
                 /* alias = */ "navigation",
-                /* version = */ "2.7.1"
+                /* version = */ "2.7.2"
             )
 
             version(
@@ -173,7 +178,7 @@ dependencyResolutionManagement {
             plugin(
                 /* alias = */ "versions",
                 /* id = */ "com.github.ben-manes.versions"
-            ).version("0.47.0")
+            ).version("0.48.0")
 
             bundle(
                 /* alias = */ "kotlinx",
@@ -453,7 +458,7 @@ dependencyResolutionManagement {
                 /* alias = */ "activityKtx",
                 /* group = */ "androidx.activity",
                 /* artifact = */ "activity-ktx"
-            ).version("1.7.2")
+            ).versionRef("activity")
 
             library(
                 /* alias = */ "fragmentKtx",
@@ -465,7 +470,7 @@ dependencyResolutionManagement {
                 /* alias = */ "activityCompose",
                 /* group = */ "androidx.activity",
                 /* artifact = */ "activity-compose"
-            ).version("1.7.2")
+            ).versionRef("activity")
 
             library(
                 /* alias = */ "paletteKtx",
@@ -477,7 +482,7 @@ dependencyResolutionManagement {
                 /* alias = */ "workRuntimeKtx",
                 /* group = */ "androidx.work",
                 /* artifact = */ "work-runtime-ktx"
-            ).version("2.8.1")
+            ).version("2.9.0-beta01")
 
             library(
                 /* alias = */ "preferenceKtx",
@@ -579,7 +584,7 @@ dependencyResolutionManagement {
                 /* alias = */ "composeBom",
                 /* group = */ "androidx.compose",
                 /* artifact = */ "compose-bom"
-            ).version("2023.08.00")
+            ).version("2023.09.00")
 
             library(
                 /* alias = */ "material3",
@@ -778,7 +783,7 @@ dependencyResolutionManagement {
                 /* alias = */ "slf4jSimple",
                 /* group = */ "org.slf4j",
                 /* artifact = */ "slf4j-simple"
-            ).version("2.0.7")
+            ).version("2.0.9")
 
             library(
                 /* alias = */ "junit",
