@@ -52,7 +52,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "android",
-                /* version = */ "8.2.0-beta03"
+                /* version = */ "8.2.0-beta04"
             )
 
             version(
@@ -163,7 +163,7 @@ dependencyResolutionManagement {
             plugin(
                 /* alias = */ "googlePlayServices",
                 /* id = */ "com.google.gms.google-services"
-            ).version("4.3.15")
+            ).version("4.4.0")
 
             plugin(
                 /* alias = */ "crashlytics",
@@ -452,7 +452,7 @@ dependencyResolutionManagement {
                 /* alias = */ "collectionKtx",
                 /* group = */ "androidx.collection",
                 /* artifact = */ "collection-ktx"
-            ).version("1.3.0-beta01")
+            ).version("1.3.0-rc01")
 
             library(
                 /* alias = */ "activityKtx",
@@ -500,7 +500,7 @@ dependencyResolutionManagement {
                 /* alias = */ "benchmarkJunit4",
                 /* group = */ "androidx.benchmark",
                 /* artifact = */ "benchmark-junit4"
-            ).version("1.2.0-alpha15") // 1.2.0-beta03
+            ).version("1.2.0-beta05")
 
             library(
                 /* alias = */ "lifecycleProcess",
@@ -750,7 +750,7 @@ dependencyResolutionManagement {
                 /* alias = */ "firebaseBom",
                 /* group = */ "com.google.firebase",
                 /* artifact = */ "firebase-bom"
-            ).version("32.2.3")
+            ).version("32.3.1")
 
             library(
                 /* alias = */ "firebaseCrashlytics",
