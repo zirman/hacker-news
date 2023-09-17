@@ -8,6 +8,14 @@ plugins {
     alias(libs.plugins.crashlytics)
 }
 
+kotlin {
+    sourceSets.all {
+        languageSettings {
+            languageVersion = "2.0"
+        }
+    }
+}
+
 android {
     namespace = "com.monoid.hackernews.wear"
     compileSdk = libs.versions.compileSdk.get().toInt()

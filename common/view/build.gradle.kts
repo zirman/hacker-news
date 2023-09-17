@@ -5,6 +5,14 @@ plugins {
     alias(libs.plugins.hilt)
 }
 
+kotlin {
+    sourceSets.all {
+        languageSettings {
+            languageVersion = "2.0"
+        }
+    }
+}
+
 android {
     namespace = "com.monoid.hackernews.common.view"
     compileSdk = libs.versions.compileSdk.get().toInt()

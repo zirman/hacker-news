@@ -3,6 +3,14 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
 }
 
+kotlin {
+    sourceSets.all {
+        languageSettings {
+            languageVersion = "2.0"
+        }
+    }
+}
+
 android {
     namespace = "com.monoid.hackernews.util"
     compileSdk = libs.versions.compileSdk.get().toInt()

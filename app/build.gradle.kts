@@ -9,6 +9,14 @@ plugins {
     alias(libs.plugins.firebasePerf)
 }
 
+kotlin {
+    sourceSets.all {
+        languageSettings {
+            languageVersion = "2.0"
+        }
+    }
+}
+
 android {
     namespace = "com.monoid.hackernews"
     compileSdk = libs.versions.compileSdk.get().toInt()
