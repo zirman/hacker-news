@@ -52,7 +52,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "android",
-                /* version = */ "8.2.0-beta04"
+                /* version = */ "8.2.0-beta06"
             )
 
             version(
@@ -72,32 +72,32 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "protobuf",
-                /* version = */ "3.24.3"
+                /* version = */ "3.24.4"
             )
 
             version(
                 /* alias = */ "ktor",
-                /* version = */ "2.3.4"
+                /* version = */ "2.3.5"
             )
 
             version(
                 /* alias = */ "room",
-                /* version = */ "2.6.0-beta01"
+                /* version = */ "2.6.0-rc01"
             )
 
             version(
                 /* alias = */ "activity",
-                /* version = */ "1.8.0-beta01"
+                /* version = */ "1.8.0-rc01"
             )
 
             version(
                 /* alias = */ "lifecycle",
-                /* version = */ "2.6.1"
+                /* version = */ "2.6.2"
             )
 
             version(
                 /* alias = */ "navigation",
-                /* version = */ "2.7.2"
+                /* version = */ "2.7.4"
             )
 
             version(
@@ -112,7 +112,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "hilt",
-                /* version = */ "2.48"
+                /* version = */ "2.48.1"
             )
 
             version(
@@ -178,7 +178,7 @@ dependencyResolutionManagement {
             plugin(
                 /* alias = */ "versions",
                 /* id = */ "com.github.ben-manes.versions"
-            ).version("0.48.0")
+            ).version("0.49.0")
 
             bundle(
                 /* alias = */ "kotlinx",
@@ -332,7 +332,7 @@ dependencyResolutionManagement {
                 /* alias = */ "kotlinxCollectionsImmutable",
                 /* group = */ "org.jetbrains.kotlinx",
                 /* artifact = */ "kotlinx-collections-immutable"
-            ).version("0.3.5")
+            ).version("0.3.6")
 
             library(
                 /* alias = */ "ktorClientCore",
@@ -422,13 +422,13 @@ dependencyResolutionManagement {
                 /* alias = */ "window",
                 /* group = */ "androidx.window",
                 /* artifact = */ "window"
-            ).version("1.2.0-beta01")
+            ).version("1.2.0-beta03")
 
             library(
                 /* alias = */ "appcompat",
                 /* group = */ "androidx.appcompat",
                 /* artifact = */ "appcompat"
-            ).version("1.7.0-alpha03")
+            ).version("1.6.1")
 
             library(
                 /* alias = */ "coreKtx",
@@ -452,7 +452,7 @@ dependencyResolutionManagement {
                 /* alias = */ "collectionKtx",
                 /* group = */ "androidx.collection",
                 /* artifact = */ "collection-ktx"
-            ).version("1.3.0-rc01")
+            ).version("1.3.0")
 
             library(
                 /* alias = */ "activityKtx",
@@ -464,7 +464,7 @@ dependencyResolutionManagement {
                 /* alias = */ "fragmentKtx",
                 /* group = */ "androidx.fragment",
                 /* artifact = */ "fragment-ktx"
-            ).version("1.6.0")
+            ).version("1.6.1")
 
             library(
                 /* alias = */ "activityCompose",
@@ -500,7 +500,7 @@ dependencyResolutionManagement {
                 /* alias = */ "benchmarkJunit4",
                 /* group = */ "androidx.benchmark",
                 /* artifact = */ "benchmark-junit4"
-            ).version("1.2.0-beta05")
+            ).version("1.2.0-alpha15") // do not update to rc02
 
             library(
                 /* alias = */ "lifecycleProcess",
@@ -560,7 +560,7 @@ dependencyResolutionManagement {
                 /* alias = */ "hiltNavigationCompose",
                 /* group = */ "androidx.hilt",
                 /* artifact = */ "hilt-navigation-compose"
-            ).version("1.1.0-alpha01")
+            ).version("1.1.0-beta01")
 
             library(
                 /* alias = */ "navigationUiKtx",
@@ -584,7 +584,7 @@ dependencyResolutionManagement {
                 /* alias = */ "composeBom",
                 /* group = */ "androidx.compose",
                 /* artifact = */ "compose-bom"
-            ).version("2023.09.00")
+            ).version("2023.10.00")
 
             library(
                 /* alias = */ "material3",
@@ -696,7 +696,7 @@ dependencyResolutionManagement {
                 /* alias = */ "uiTestJunit4",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-test-junit4"
-            ).version("1.4.3")
+            ).version("1.5.3")
 
             library(
                 /* alias = */ "uiTestManifest",
@@ -708,7 +708,7 @@ dependencyResolutionManagement {
                 /* alias = */ "constraintlayout",
                 /* group = */ "androidx.constraintlayout",
                 /* artifact = */ "constraintlayout-compose"
-            ).version("1.1.0-alpha10")
+            ).version("1.1.0-alpha13")
 
             library(
                 /* alias = */ "metricsPerformance",
