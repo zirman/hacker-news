@@ -52,7 +52,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "android",
-                /* version = */ "8.2.0-beta06"
+                /* version = */ "8.2.0-rc01"
             )
 
             version(
@@ -82,7 +82,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "room",
-                /* version = */ "2.6.0-rc01"
+                /* version = */ "2.6.0"
             )
 
             version(
@@ -117,7 +117,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "wearCompose",
-                /* version = */ "1.2.0"
+                /* version = */ "1.2.1"
             )
 
             plugin(
@@ -422,7 +422,7 @@ dependencyResolutionManagement {
                 /* alias = */ "window",
                 /* group = */ "androidx.window",
                 /* artifact = */ "window"
-            ).version("1.2.0-beta03")
+            ).version("1.2.0-beta04")
 
             library(
                 /* alias = */ "appcompat",
@@ -482,7 +482,7 @@ dependencyResolutionManagement {
                 /* alias = */ "workRuntimeKtx",
                 /* group = */ "androidx.work",
                 /* artifact = */ "work-runtime-ktx"
-            ).version("2.9.0-beta01")
+            ).version("2.9.0-rc01")
 
             library(
                 /* alias = */ "preferenceKtx",
@@ -560,7 +560,7 @@ dependencyResolutionManagement {
                 /* alias = */ "hiltNavigationCompose",
                 /* group = */ "androidx.hilt",
                 /* artifact = */ "hilt-navigation-compose"
-            ).version("1.1.0-beta01")
+            ).version("1.1.0-rc01")
 
             library(
                 /* alias = */ "navigationUiKtx",
@@ -584,7 +584,7 @@ dependencyResolutionManagement {
                 /* alias = */ "composeBom",
                 /* group = */ "androidx.compose",
                 /* artifact = */ "compose-bom"
-            ).version("2023.10.00")
+            ).version("2023.10.01")
 
             library(
                 /* alias = */ "material3",
@@ -696,7 +696,7 @@ dependencyResolutionManagement {
                 /* alias = */ "uiTestJunit4",
                 /* group = */ "androidx.compose.ui",
                 /* artifact = */ "ui-test-junit4"
-            ).version("1.5.3")
+            ).version("1.5.4")
 
             library(
                 /* alias = */ "uiTestManifest",
@@ -750,7 +750,7 @@ dependencyResolutionManagement {
                 /* alias = */ "firebaseBom",
                 /* group = */ "com.google.firebase",
                 /* artifact = */ "firebase-bom"
-            ).version("32.3.1")
+            ).version("32.4.1")
 
             library(
                 /* alias = */ "firebaseCrashlytics",
