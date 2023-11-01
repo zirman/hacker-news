@@ -52,7 +52,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "android",
-                /* version = */ "8.2.0-rc01"
+                /* version = */ "8.2.0-rc02"
             )
 
             version(
@@ -72,7 +72,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "protobuf",
-                /* version = */ "3.24.4"
+                /* version = */ "3.25.0-RC2"
             )
 
             version(
@@ -92,12 +92,12 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "lifecycle",
-                /* version = */ "2.6.2"
+                /* version = */ "2.7.0-beta01"
             )
 
             version(
                 /* alias = */ "navigation",
-                /* version = */ "2.7.4"
+                /* version = */ "2.7.5"
             )
 
             version(
@@ -422,7 +422,7 @@ dependencyResolutionManagement {
                 /* alias = */ "window",
                 /* group = */ "androidx.window",
                 /* artifact = */ "window"
-            ).version("1.2.0-beta04")
+            ).version("1.2.0-rc01")
 
             library(
                 /* alias = */ "appcompat",
@@ -464,7 +464,7 @@ dependencyResolutionManagement {
                 /* alias = */ "fragmentKtx",
                 /* group = */ "androidx.fragment",
                 /* artifact = */ "fragment-ktx"
-            ).version("1.6.1")
+            ).version("1.6.2")
 
             library(
                 /* alias = */ "activityCompose",
@@ -750,7 +750,7 @@ dependencyResolutionManagement {
                 /* alias = */ "firebaseBom",
                 /* group = */ "com.google.firebase",
                 /* artifact = */ "firebase-bom"
-            ).version("32.4.1")
+            ).version("32.5.0")
 
             library(
                 /* alias = */ "firebaseCrashlytics",
