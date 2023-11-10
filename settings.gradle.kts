@@ -52,7 +52,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "android",
-                /* version = */ "8.2.0-rc02"
+                /* version = */ "8.2.0-rc03"
             )
 
             version(
@@ -77,7 +77,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "ktor",
-                /* version = */ "2.3.5"
+                /* version = */ "2.3.6"
             )
 
             version(
@@ -808,7 +808,7 @@ dependencyResolutionManagement {
                 /* alias = */ "desugarJdkLibs",
                 /* group = */ "com.android.tools",
                 /* artifact = */ "desugar_jdk_libs"
-            ).version("2.0.3")
+            ).version("2.0.4")
         }
     }
 }
