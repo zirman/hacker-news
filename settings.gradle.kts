@@ -67,12 +67,12 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "kotlinxSerialization",
-                /* version = */ "1.6.0-RC"
+                /* version = */ "1.6.1"
             )
 
             version(
                 /* alias = */ "protobuf",
-                /* version = */ "3.25.0-RC2"
+                /* version = */ "3.25.1"
             )
 
             version(
@@ -87,12 +87,12 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "activity",
-                /* version = */ "1.8.0-rc01"
+                /* version = */ "1.8.1"
             )
 
             version(
                 /* alias = */ "lifecycle",
-                /* version = */ "2.7.0-beta01"
+                /* version = */ "2.7.0-rc01"
             )
 
             version(
@@ -117,7 +117,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "wearCompose",
-                /* version = */ "1.2.1"
+                /* version = */ "1.2.1"//3.0-beta01
             )
 
             plugin(
@@ -392,7 +392,7 @@ dependencyResolutionManagement {
                 /* alias = */ "datastore",
                 /* group = */ "androidx.datastore",
                 /* artifact = */ "datastore"
-            ).version("1.1.0-alpha04")
+            ).version("1.1.0-alpha06")
 
             library(
                 /* alias = */ "roomRuntime",
@@ -452,7 +452,7 @@ dependencyResolutionManagement {
                 /* alias = */ "collectionKtx",
                 /* group = */ "androidx.collection",
                 /* artifact = */ "collection-ktx"
-            ).version("1.3.0")
+            ).version("1.4.0-beta01")
 
             library(
                 /* alias = */ "activityKtx",
@@ -750,7 +750,7 @@ dependencyResolutionManagement {
                 /* alias = */ "firebaseBom",
                 /* group = */ "com.google.firebase",
                 /* artifact = */ "firebase-bom"
-            ).version("32.5.0")
+            ).version("32.6.0")
 
             library(
                 /* alias = */ "firebaseCrashlytics",
