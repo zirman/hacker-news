@@ -1,6 +1,7 @@
 package com.monoid.hackernews
 
 import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
@@ -55,49 +56,54 @@ class MainActivity : ComponentActivity() {
         window.statusBarColor = getColor(android.R.color.transparent)
         window.navigationBarColor = getColor(android.R.color.transparent)
 
-        installSplashScreen().setOnExitAnimationListener { splashScreenView ->
-            window.statusBarColor = getColor(android.R.color.transparent)
-            window.navigationBarColor = getColor(android.R.color.transparent)
-
-            val slideUp = ObjectAnimator.ofFloat(
-                splashScreenView.view,
-                View.TRANSLATION_Y,
-                0f,
-                -splashScreenView.view.height.toFloat()
-            )
-
-            slideUp.interpolator = AnticipateInterpolator()
-            slideUp.duration = 400L
-
-            slideUp.doOnEnd {
-                splashScreenView.remove()
-
-                window.insetsController?.setSystemBarsAppearance(
-                    when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-                        Configuration.UI_MODE_NIGHT_NO ->
-                            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
-                                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
-
-                        else -> 0
-                    },
-                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
-                            WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
-                )
+        installSplashScreen().apply {
+            setKeepOnScreenCondition {
+                false
             }
 
-            slideUp.start()
+            setOnExitAnimationListener { splashScreenView ->
+                window.statusBarColor = getColor(android.R.color.transparent)
+                window.navigationBarColor = getColor(android.R.color.transparent)
+
+                val animateIn = ObjectAnimator.ofPropertyValuesHolder(
+                    splashScreenView.iconView,
+                    PropertyValuesHolder.ofFloat(View.SCALE_X, 1f, 0f),
+                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f, 0f),
+                )
+
+                animateIn.interpolator = AnticipateInterpolator()
+                animateIn.duration = 400L
+
+                animateIn.doOnEnd {
+                    splashScreenView.remove()
+
+                    window.insetsController?.setSystemBarsAppearance(
+                        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                            Configuration.UI_MODE_NIGHT_NO ->
+                                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
+                                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+
+                            else -> 0
+                        },
+                        WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
+                            WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+                    )
+                }
+
+                animateIn.start()
+            }
         }
 
         window.insetsController?.setSystemBarsAppearance(
             when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
                 Configuration.UI_MODE_NIGHT_NO ->
                     WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
-                            WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+                        WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
 
                 else -> 0
             },
             WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
-                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+                WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
         )
 
         setContent {
