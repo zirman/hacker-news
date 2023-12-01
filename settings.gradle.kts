@@ -52,7 +52,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "android",
-                /* version = */ "8.2.0-rc03"
+                /* version = */ "8.2.0"
             )
 
             version(
@@ -67,7 +67,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "kotlinxSerialization",
-                /* version = */ "1.6.1"
+                /* version = */ "1.6.2"
             )
 
             version(
@@ -77,12 +77,12 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "ktor",
-                /* version = */ "2.3.6"
+                /* version = */ "3.0.0-beta-1"
             )
 
             version(
                 /* alias = */ "room",
-                /* version = */ "2.6.0"
+                /* version = */ "2.6.1"
             )
 
             version(
@@ -452,7 +452,7 @@ dependencyResolutionManagement {
                 /* alias = */ "collectionKtx",
                 /* group = */ "androidx.collection",
                 /* artifact = */ "collection-ktx"
-            ).version("1.4.0-beta01")
+            ).version("1.4.0-beta02")
 
             library(
                 /* alias = */ "activityKtx",
