@@ -62,7 +62,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "kotlinxCoroutines",
-                /* version = */ "1.7.3"
+                /* version = */ "1.8.0-RC"
             )
 
             version(
@@ -112,7 +112,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "hilt",
-                /* version = */ "2.48.1"
+                /* version = */ "2.49"
             )
 
             version(
@@ -326,7 +326,7 @@ dependencyResolutionManagement {
                 /* alias = */ "kotlinxDatetime",
                 /* group = */ "org.jetbrains.kotlinx",
                 /* artifact = */ "kotlinx-datetime"
-            ).version("0.4.1")
+            ).version("0.5.0")
 
             library(
                 /* alias = */ "kotlinxCollectionsImmutable",
@@ -750,7 +750,7 @@ dependencyResolutionManagement {
                 /* alias = */ "firebaseBom",
                 /* group = */ "com.google.firebase",
                 /* artifact = */ "firebase-bom"
-            ).version("32.6.0")
+            ).version("32.7.0")
 
             library(
                 /* alias = */ "firebaseCrashlytics",
