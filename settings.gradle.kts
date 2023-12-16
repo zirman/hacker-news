@@ -18,7 +18,7 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("libs") {
-            val kotlin = "1.9.10"
+            val kotlin = "1.9.21"
 
             version(
                 /* alias = */ "jvmTarget",
@@ -57,7 +57,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "ksp",
-                /* version = */ "$kotlin-1.0.13"
+                /* version = */ "$kotlin-1.0.16"
             )
 
             version(
@@ -87,22 +87,22 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "activity",
-                /* version = */ "1.8.1"
+                /* version = */ "1.8.2"
             )
 
             version(
                 /* alias = */ "lifecycle",
-                /* version = */ "2.7.0-rc01"
+                /* version = */ "2.7.0-rc02"
             )
 
             version(
                 /* alias = */ "navigation",
-                /* version = */ "2.7.5"
+                /* version = */ "2.7.6"
             )
 
             version(
                 /* alias = */ "composeCompiler",
-                /* version = */ "1.5.3"
+                /* version = */ "1.5.6"
             )
 
             version(
@@ -392,7 +392,7 @@ dependencyResolutionManagement {
                 /* alias = */ "datastore",
                 /* group = */ "androidx.datastore",
                 /* artifact = */ "datastore"
-            ).version("1.1.0-alpha06")
+            ).version("1.1.0-alpha07")
 
             library(
                 /* alias = */ "roomRuntime",
