@@ -62,7 +62,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "kotlinxCoroutines",
-                /* version = */ "1.8.0-RC"
+                /* version = */ "1.8.0-RC2"
             )
 
             version(
@@ -102,7 +102,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "composeCompiler",
-                /* version = */ "1.5.6"
+                /* version = */ "1.5.7"
             )
 
             version(
@@ -112,7 +112,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "hilt",
-                /* version = */ "2.49"
+                /* version = */ "2.50"
             )
 
             version(
@@ -332,7 +332,7 @@ dependencyResolutionManagement {
                 /* alias = */ "kotlinxCollectionsImmutable",
                 /* group = */ "org.jetbrains.kotlinx",
                 /* artifact = */ "kotlinx-collections-immutable"
-            ).version("0.3.6")
+            ).version("0.3.7")
 
             library(
                 /* alias = */ "ktorClientCore",
