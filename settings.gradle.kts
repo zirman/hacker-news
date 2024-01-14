@@ -18,7 +18,7 @@ dependencyResolutionManagement {
 
     versionCatalogs {
         create("libs") {
-            val kotlin = "1.9.21"
+            val kotlin = "1.9.22"
 
             version(
                 /* alias = */ "jvmTarget",
@@ -72,7 +72,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "protobuf",
-                /* version = */ "3.25.1"
+                /* version = */ "3.25.2"
             )
 
             version(
@@ -102,7 +102,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "composeCompiler",
-                /* version = */ "1.5.7"
+                /* version = */ "1.5.8"
             )
 
             version(
@@ -117,7 +117,7 @@ dependencyResolutionManagement {
 
             version(
                 /* alias = */ "wearCompose",
-                /* version = */ "1.2.1"//3.0-beta01
+                /* version = */ "1.2.1"//3.0-rc01
             )
 
             plugin(
@@ -272,6 +272,8 @@ dependencyResolutionManagement {
                     "material",
                     "material3",
                     "material3WindowSize",
+                    //"material3Adaptive",
+                    //"material3AdaptiveNavigationSuiteAndroid",
 
                     // compose
                     "composeMaterial",
@@ -452,7 +454,7 @@ dependencyResolutionManagement {
                 /* alias = */ "collectionKtx",
                 /* group = */ "androidx.collection",
                 /* artifact = */ "collection-ktx"
-            ).version("1.4.0-beta02")
+            ).version("1.4.0-rc01")
 
             library(
                 /* alias = */ "activityKtx",
@@ -598,6 +600,18 @@ dependencyResolutionManagement {
                 /* group = */ "androidx.compose.material3",
                 /* artifact = */ "material3-window-size-class"
             ).withoutVersion()
+
+            library(
+                /* alias = */ "material3Adaptive",
+                /* group = */ "androidx.compose.material3",
+                /* artifact = */ "material3-adaptive"
+            ).version("1.0.0-alpha03")
+
+            library(
+                /* alias = */ "material3AdaptiveNavigationSuiteAndroid",
+                /* group = */ "androidx.compose.material3",
+                /* artifact = */ "material3-adaptive-navigation-suite-android"
+            ).version("1.0.0-alpha02")
 
             library(
                 /* alias = */ "ui",
