@@ -764,7 +764,7 @@ dependencyResolutionManagement {
                 /* alias = */ "firebaseBom",
                 /* group = */ "com.google.firebase",
                 /* artifact = */ "firebase-bom"
-            ).version("32.7.0")
+            ).version("32.7.1")
 
             library(
                 /* alias = */ "firebaseCrashlytics",
