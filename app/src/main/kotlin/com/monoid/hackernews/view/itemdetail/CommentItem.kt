@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.twotone.Reply
 import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.Quickreply
 import androidx.compose.material.icons.filled.ThumbUp
@@ -18,7 +19,6 @@ import androidx.compose.material.icons.twotone.ExpandMore
 import androidx.compose.material.icons.twotone.Flag
 import androidx.compose.material.icons.twotone.MoreVert
 import androidx.compose.material.icons.twotone.Quickreply
-import androidx.compose.material.icons.twotone.Reply
 import androidx.compose.material.icons.twotone.ThumbUp
 import androidx.compose.material3.Badge
 import androidx.compose.material3.DropdownMenu
@@ -48,11 +48,11 @@ import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.ItemUiWithThreadDepth
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
-import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.common.room.ItemDb
 import com.monoid.hackernews.common.ui.text.ClickableTextBlock
 import com.monoid.hackernews.common.ui.util.rememberTimeBy
 import com.monoid.hackernews.common.ui.util.userTag
+import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.common.view.placeholder.PlaceholderHighlight
 import com.monoid.hackernews.common.view.placeholder.placeholder
 import com.monoid.hackernews.common.view.placeholder.shimmer
@@ -165,7 +165,7 @@ fun CommentItem(
                     ) {
                         Icon(
                             imageVector = Icons.TwoTone.MoreVert,
-                            contentDescription = stringResource(id = R.string.more_options)
+                            contentDescription = stringResource(id = R.string.more_options),
                         )
                     }
 
@@ -181,7 +181,7 @@ fun CommentItem(
                             },
                             leadingIcon = {
                                 Icon(
-                                    imageVector = Icons.TwoTone.Reply,
+                                    imageVector = Icons.AutoMirrored.TwoTone.Reply,
                                     contentDescription = stringResource(id = R.string.reply)
                                 )
                             }
@@ -386,7 +386,7 @@ fun CommentItem(
                         Icons.TwoTone.ExpandMore
                     },
                     contentDescription = stringResource(id = R.string.expand),
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
                 )
             }
         }

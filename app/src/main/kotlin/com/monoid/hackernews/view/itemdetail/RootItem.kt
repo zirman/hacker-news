@@ -13,12 +13,12 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.twotone.Comment
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.OpenInBrowser
 import androidx.compose.material.icons.filled.Quickreply
 import androidx.compose.material.icons.filled.ThumbUp
-import androidx.compose.material.icons.twotone.Comment
 import androidx.compose.material.icons.twotone.Favorite
 import androidx.compose.material.icons.twotone.Flag
 import androidx.compose.material.icons.twotone.MoreVert
@@ -30,9 +30,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.PlainTooltipBox
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TooltipBox
+import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.key
@@ -58,9 +59,10 @@ import com.monoid.hackernews.common.data.ItemUiWithThreadDepth
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.room.ItemDb
-import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.common.ui.util.rememberTimeBy
 import com.monoid.hackernews.common.ui.util.userTag
+import com.monoid.hackernews.common.view.R
+import com.monoid.hackernews.common.view.TooltipPopupPositionProvider
 import com.monoid.hackernews.common.view.placeholder.PlaceholderHighlight
 import com.monoid.hackernews.common.view.placeholder.placeholder
 import com.monoid.hackernews.common.view.placeholder.shimmer
@@ -73,7 +75,7 @@ import kotlinx.coroutines.launch
     wallpaper = Wallpapers.YELLOW_DOMINATED_EXAMPLE
 )
 @Composable
-fun ItemPreview() {
+private fun ItemPreview() {
     RootItem(
         itemUiState = remember {
             mutableStateOf(ItemUiWithThreadDepth(
@@ -160,13 +162,13 @@ fun RootItem(
                         IconButton(onClick = { setContextExpanded(true) }) {
                             Icon(
                                 imageVector = Icons.TwoTone.MoreVert,
-                                contentDescription = stringResource(id = R.string.more_options)
+                                contentDescription = stringResource(id = R.string.more_options),
                             )
                         }
 
                         DropdownMenu(
                             expanded = contextExpanded,
-                            onDismissRequest = { setContextExpanded(false) }
+                            onDismissRequest = { setContextExpanded(false) },
                         ) {
                             if (item.type == "story") {
                                 DropdownMenuItem(
@@ -207,8 +209,8 @@ fun RootItem(
                                                     R.string.un_favorite
                                                 } else {
                                                     R.string.favorite
-                                                }
-                                            )
+                                                },
+                                            ),
                                         )
                                     }
                                 )
@@ -245,8 +247,8 @@ fun RootItem(
                                                 R.string.unfollow
                                             } else {
                                                 R.string.follow
-                                            }
-                                        )
+                                            },
+                                        ),
                                     )
                                 }
                             )
@@ -282,8 +284,8 @@ fun RootItem(
                                                 R.string.un_flag
                                             } else {
                                                 R.string.flag
-                                            }
-                                        )
+                                            },
+                                        ),
                                     )
                                 }
                             )
@@ -326,7 +328,13 @@ fun RootItem(
                 if (item?.lastUpdate == null || item.type == "story") {
                     item?.score.let { score ->
                         key("score") {
-                            PlainTooltipBox(tooltip = { Text(text = stringResource(id = R.string.upvote)) }) {
+                            TooltipBox(
+                                positionProvider = TooltipPopupPositionProvider(),
+                                tooltip = {
+                                    Surface { Text(text = stringResource(id = R.string.upvote)) }
+                                },
+                                state = rememberTooltipState(),
+                            ) {
                                 IconButton(
                                     onClick = {
                                         coroutineScope.launch {
@@ -334,7 +342,6 @@ fun RootItem(
                                         }
                                     },
                                     enabled = item?.type == "story",
-                                    modifier = Modifier.tooltipAnchor()
                                 ) {
                                     Icon(
                                         imageVector = if (itemUiState.value?.itemUi?.isUpvote == true) {
@@ -347,8 +354,8 @@ fun RootItem(
                                                 R.string.un_vote
                                             } else {
                                                 R.string.upvote
-                                            }
-                                        )
+                                            },
+                                        ),
                                     )
                                 }
                             }
@@ -365,15 +372,20 @@ fun RootItem(
                 val descendants = item?.descendants
 
                 key("comments") {
-                    PlainTooltipBox(tooltip = { Text(text = stringResource(id = R.string.comment)) }) {
+                    TooltipBox(
+                        positionProvider = TooltipPopupPositionProvider(),
+                        tooltip = {
+                            Surface { Text(text = stringResource(id = R.string.comment)) }
+                        },
+                        state = rememberTooltipState(),
+                    ) {
                         IconButton(
                             onClick = { item?.id?.let { onClickReply(ItemId(it)) } },
                             enabled = isLoading.not(),
-                            modifier = Modifier.tooltipAnchor()
                         ) {
                             Icon(
-                                imageVector = Icons.TwoTone.Comment,
-                                contentDescription = null
+                                imageVector = Icons.AutoMirrored.TwoTone.Comment,
+                                contentDescription = null,
                             )
                         }
                     }
@@ -383,7 +395,7 @@ fun RootItem(
                         maxLines = 1,
                         modifier = Modifier.widthIn(min = 24.dp),
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.labelMedium
+                        style = MaterialTheme.typography.labelMedium,
                     )
                 }
 
@@ -414,11 +426,16 @@ fun RootItem(
                         style = MaterialTheme.typography.labelLarge
                     )
 
-                    PlainTooltipBox(tooltip = { Text(text = stringResource(id = R.string.open_in_browser)) }) {
-                        IconButton(
-                            onClick = { item?.url?.let { onClickBrowser(it) } },
-                            modifier = Modifier.tooltipAnchor()
-                        ) {
+                    TooltipBox(
+                        positionProvider = TooltipPopupPositionProvider(),
+                        tooltip = {
+                            Surface {
+                                Text(text = stringResource(id = R.string.open_in_browser))
+                            }
+                        },
+                        state = rememberTooltipState(),
+                    ) {
+                        IconButton(onClick = { item?.url?.let { onClickBrowser(it) } }) {
                             Icon(
                                 imageVector = Icons.Filled.OpenInBrowser,
                                 contentDescription = stringResource(id = R.string.open_in_browser)

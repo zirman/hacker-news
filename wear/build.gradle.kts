@@ -9,11 +9,6 @@ plugins {
 }
 
 kotlin {
-    sourceSets.all {
-        languageSettings {
-            languageVersion = "2.0"
-        }
-    }
 }
 
 android {
@@ -76,11 +71,7 @@ android {
     kotlinOptions {
         jvmTarget = libs.versions.jvmTarget.get()
 
-        freeCompilerArgs = listOf(
-            "-opt-in=kotlinx.coroutines.FlowPreview",
-            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-            "-opt-in=androidx.compose.ui.text.ExperimentalTextApi",
-            "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
+        freeCompilerArgs += listOf(
             "-opt-in=androidx.wear.compose.material.ExperimentalWearMaterialApi",
         )
     }
@@ -102,7 +93,7 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring(libs.desugarJdkLibs)
+    coreLibraryDesugaring(libs.desugarJdkLibsNio)
 
     implementation(project(":common:injection"))
     implementation(project(":common:view"))
@@ -114,6 +105,7 @@ dependencies {
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.androidx)
     implementation(libs.bundles.androidxCompose)
+    lintChecks(libs.composeLintChecks)
     implementation(libs.bundles.androidxWear)
     implementation(libs.bundles.google)
     implementation(libs.bundles.googleWear)

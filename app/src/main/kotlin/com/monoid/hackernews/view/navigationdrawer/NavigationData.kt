@@ -2,17 +2,17 @@ package com.monoid.hackernews.view.navigationdrawer
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.twotone.TrendingUp
 import androidx.compose.material.icons.twotone.Bookmarks
 import androidx.compose.material.icons.twotone.NewReleases
 import androidx.compose.material.icons.twotone.PresentToAll
 import androidx.compose.material.icons.twotone.QuestionAnswer
 import androidx.compose.material.icons.twotone.Star
-import androidx.compose.material.icons.twotone.TrendingUp
 import androidx.compose.material.icons.twotone.Work
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.common.navigation.MainNavigation
 import com.monoid.hackernews.common.navigation.Stories
+import com.monoid.hackernews.common.view.R
 
 data class NavigationDrawerItemData(
     val icon: ImageVector,
@@ -26,7 +26,7 @@ val storiesToNavigationItem: Map<Stories, NavigationDrawerItemData> =
         Pair(
             Stories.Top,
             NavigationDrawerItemData(
-                icon = Icons.TwoTone.TrendingUp,
+                icon = Icons.AutoMirrored.TwoTone.TrendingUp,
                 titleId = R.string.top_stories,
                 descriptionId = R.string.top_stories_description,
                 route = MainNavigation.Home.routeWithArgs(Stories.Top),

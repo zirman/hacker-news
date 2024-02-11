@@ -1,14 +1,9 @@
 plugins {
-    id(libs.plugins.androidLibrary.get().pluginId)
+    alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
 }
 
 kotlin {
-    sourceSets.all {
-        languageSettings {
-            languageVersion = "2.0"
-        }
-    }
 }
 
 android {
@@ -46,7 +41,7 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring(libs.desugarJdkLibs)
+    coreLibraryDesugaring(libs.desugarJdkLibsNio)
 
     implementation(platform(libs.composeBom))
     implementation(platform(libs.firebaseBom))
@@ -54,9 +49,10 @@ dependencies {
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.androidx)
     implementation(libs.bundles.androidxCompose)
+    lintChecks(libs.composeLintChecks)
     implementation(libs.material3)
     implementation(libs.bundles.google)
 
-    androidTestImplementation(libs.uiTestJunit4)
+    testImplementation(libs.bundles.test)
     debugImplementation(libs.uiTestManifest)
 }

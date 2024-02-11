@@ -129,7 +129,7 @@ class MainActivity : ComponentActivity() {
             ) {
                 MainContent(
                     mainViewModel = hiltViewModel(),
-                    windowSizeClass = calculateWindowSizeClass(this)
+                    windowSizeClass = calculateWindowSizeClass(this),
                 )
             }
         }

@@ -78,7 +78,6 @@ fun ItemList(
         contentPadding = WindowInsets.safeDrawing
             .only(WindowInsetsSides.Bottom)
             .asPaddingValues(),
-//        autoCentering = AutoCenteringParams,
     ) {
         item {
             ListHeader {

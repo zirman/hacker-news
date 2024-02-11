@@ -1,5 +1,7 @@
 package com.monoid.hackernews.view.navigationdrawer
 
+import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material.icons.Icons
@@ -7,10 +9,11 @@ import androidx.compose.material.icons.twotone.Info
 import androidx.compose.material.icons.twotone.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationRailItem
-import androidx.compose.material3.RichTooltipBox
-import androidx.compose.material3.RichTooltipState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TooltipBox
+import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -21,11 +24,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.monoid.hackernews.common.navigation.MainNavigation
 import com.monoid.hackernews.common.view.R
+import com.monoid.hackernews.common.view.TooltipPopupPositionProvider
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
+@SuppressLint("ComposeModifierMissing")
 @Composable
-fun NavigationRailContent(
+fun ColumnScope.NavigationRailContent(
     mainNavController: NavHostController,
 ) {
     val selectedStories =
@@ -48,20 +53,24 @@ fun NavigationRailContent(
     val scope = rememberCoroutineScope()
 
     navigationItemList.forEach { item ->
-        val tooltipState = remember { RichTooltipState() }
-
-        RichTooltipBox(
-            tooltipState = tooltipState,
-            title = { Text(text = stringResource(id = item.titleId)) },
-            text = { Text(text = stringResource(id = item.descriptionId)) },
-            action = {
-                Row {
-                    Spacer(modifier = Modifier.weight(1f))
-                    TextButton(
-                        onClick = { scope.launch { tooltipState.dismiss() } },
-                    ) { Text(text = stringResource(id = R.string.dismiss)) }
+        val state = rememberTooltipState()
+        TooltipBox(
+            positionProvider = TooltipPopupPositionProvider(),
+            tooltip = {
+                Surface {
+                    Row {
+                        Text(text = stringResource(id = item.titleId))
+                        Text(text = stringResource(id = item.descriptionId))
+                        Row {
+                            Spacer(modifier = Modifier.weight(1f))
+                            TextButton(
+                                onClick = { scope.launch { state.dismiss() } },
+                            ) { Text(text = stringResource(id = R.string.dismiss)) }
+                        }
+                    }
                 }
-            }
+            },
+            state = state,
         ) {
             NavigationRailItem(
                 icon = {
@@ -81,7 +90,6 @@ fun NavigationRailContent(
                 onClick = {
                     mainNavController.navigate(route = item.route)
                 },
-                modifier = Modifier.tooltipAnchor(),
             )
         }
     }

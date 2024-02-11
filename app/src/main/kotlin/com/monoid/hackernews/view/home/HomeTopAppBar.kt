@@ -4,7 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.twotone.ArrowBack
+import androidx.compose.material.icons.automirrored.twotone.ArrowBack
 import androidx.compose.material.icons.twotone.Menu
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.Icon
@@ -65,7 +65,7 @@ fun HomeTopAppBar(
 
                     IconButton(onClick = { setSelectedItemId(null) }) {
                         Icon(
-                            imageVector = Icons.TwoTone.ArrowBack,
+                            imageVector = Icons.AutoMirrored.TwoTone.ArrowBack,
                             contentDescription = stringResource(id = R.string.back),
                         )
                     }

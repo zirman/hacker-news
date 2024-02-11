@@ -1,0 +1,245 @@
+[versions]
+jvmTarget = "17"
+compileSdk = "34"
+targetSdk = "34"
+minSdk = "30"
+buildToolsVersion = "34.0.0"
+composeCompiler = "1.5.8"
+android = "8.3.0-rc01"
+desugarJdkLibs = "2.0.4"
+kotlin = "1.9.22"
+ksp = "1.9.22-1.0.17"
+kotlinxCoroutines = "1.7.3"
+kotlinxSerialization = "1.6.2"
+kotlinxCollectionsImmutable = "0.3.7"
+kotlinxDatetime = "0.5.0"
+ktor = "2.3.7"
+room = "2.6.1"
+activityKtx = "1.8.2"
+fragmentKtx = "1.6.2"
+lifecycle = "2.7.0"
+navigation = "2.7.6"
+hilt = "2.50"
+protobufPlugin = "0.9.4"
+protobuf = "3.25.2"
+googlePlayServices = "4.4.0"
+playServicesWearable = "18.1.0"
+crashlytics = "2.9.9"
+firebasePerf = "1.4.2"
+firebaseBom = "32.7.2"
+window = "1.2.0"
+appcompat = "1.6.1"
+coreKtx = "1.12.0"
+coreSplashscreen = "1.0.1"
+collectionKtx = "1.4.0"
+paletteKtx = "1.0.0"
+workRuntimeKtx = "2.9.0"
+preferenceKtx = "1.2.1"
+metricsPerformance = "1.0.0-beta01"
+hiltNavigationCompose = "1.1.0"
+composeLintChecks = "1.3.1"
+material = "1.11.0"
+material3 = "1.2.0"
+composeBom = "2024.01.00"
+wearCompose = "1.3.0"
+accompanist = "0.32.0"
+uiTestJunit4 = "1.6.0"
+slf4jSimple = "2.0.11"
+junitExt = "1.1.5"
+coil = "2.5.0"
+mockk = "1.13.9"
+
+[plugins]
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlinxParcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+androidApplication = { id = "com.android.application", version.ref = "android" }
+androidLibrary = { id = "com.android.library", version.ref = "android" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
+googlePlayServices = { id = "com.google.gms.google-services", version.ref = "googlePlayServices" }
+crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics" }
+firebasePerf = { id = "com.google.firebase.firebase-perf", version.ref = "firebasePerf" }
+
+[bundles]
+kotlinx = [
+    "kotlinxCoroutinesAndroid",
+    "kotlinxSerializationJson",
+    "kotlinxCollectionsImmutable",
+    "kotlinxDatetime",
+]
+ktor = [
+    "ktorClientCore",
+    "ktorClientAndroid",
+    "ktorClientLogging",
+    "ktorClientContentNegotiation",
+    "ktorSerializationKotlinxJson"
+]
+google = [
+    "kspSymbolProcessingApi",
+    "protobufKotlinLite",
+]
+androidx = [
+    "coreKtx",
+    "coreSplashscreen",
+    "collectionKtx",
+    "appcompat",
+    "window",
+    "activityKtx",
+    "activityCompose",
+    "fragmentKtx",
+    "paletteKtx",
+    "workRuntimeKtx",
+    "preferenceKtx",
+    "roomRuntime",
+    "roomKtx",
+    "roomPaging",
+    "lifecycleProcess",
+    "lifecycleRuntimeKtx",
+    "lifecycleRuntimeCompose",
+    "lifecycleViewModelKtx",
+    "lifecycleViewModelCompose",
+    "lifecycleViewModelSavedState",
+]
+androidxApp = [
+    "navigationRuntimeKtx",
+    "navigationUiKtx",
+    "navigationCompose",
+    "composeMaterial",
+]
+androidxWear = [
+    "composeMaterialWear",
+    "composeNavigationWear",
+]
+androidxCompose = [
+    "ui",
+    "uiViewBinding",
+    "uiTooling",
+    "uiToolingData",
+    "uiToolingPreview",
+    "metricsPerformance",
+    "uiUtil",
+    "material",
+    "material3",
+    "material3WindowSize",
+    "materialIconsCore",
+    "materialIconsExtended",
+    "foundation",
+    "uiTextGoogleFonts",
+    "coilCompose",
+]
+googleApp = [
+    "accompanistNavigationMaterial", # bottomSheet destination for navigation compose
+    "accompanistAdaptive", # handle foldable devices
+]
+googleWear = [
+    "playServicesWearable",
+]
+firebase = [
+    "firebaseCrashlytics",
+    "firebaseAnalyticsKtx",
+    "firebasePerfKtx",
+]
+test = [
+    "mockk",
+    "kotlinTest",
+    "kotlinxCoroutinesTest",
+    "uiTestJunit4",
+    "junitExt",
+]
+
+[libraries]
+kotlinTest = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
+kotlinxCoroutinesAndroid = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
+kotlinxCoroutinesTest = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
+kotlinxSerializationJson = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+kotlinxCollectionsImmutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
+kotlinxDatetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
+
+desugarJdkLibsNio = { group = "com.android.tools", name = "desugar_jdk_libs_nio", version.ref = "desugarJdkLibs" }
+
+kspSymbolProcessingApi = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
+protobufKotlinLite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
+
+firebaseBom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+firebaseCrashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
+firebaseAnalyticsKtx = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
+firebasePerfKtx = { group = "com.google.firebase", name = "firebase-perf-ktx" }
+
+ktorClientCore = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+ktorClientAndroid = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }
+ktorClientLogging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
+ktorClientContentNegotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+ktorSerializationKotlinxJson = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+
+roomRuntime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+roomKtx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+roomPaging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
+roomCompiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+
+window = { group = "androidx.window", name = "window", version.ref = "window" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+coreKtx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+coreSplashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplashscreen" }
+
+collectionKtx = { group = "androidx.collection", name = "collection-ktx", version.ref = "collectionKtx" }
+activityKtx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
+activityCompose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityKtx" }
+fragmentKtx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }
+paletteKtx = { group = "androidx.palette", name = "palette-ktx", version.ref = "paletteKtx" }
+workRuntimeKtx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workRuntimeKtx" }
+preferenceKtx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preferenceKtx" }
+metricsPerformance = { group = "androidx.metrics", name = "metrics-performance", version.ref = "metricsPerformance" }
+
+lifecycleProcess = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "lifecycle" }
+lifecycleRuntimeKtx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
+lifecycleViewModelKtx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+lifecycleRuntimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
+lifecycleViewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+lifecycleViewModelSavedState = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-savedstate", version.ref = "lifecycle" }
+
+navigationRuntimeKtx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigation" }
+
+hiltAndroid = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hiltAndroidCompiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+hiltNavigationCompose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+
+navigationUiKtx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
+navigationCompose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+
+composeLintChecks = { group = "com.slack.lint.compose", name = "compose-lint-checks", version.ref = "composeLintChecks" }
+
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+
+composeBom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+material3WindowSize = { group = "androidx.compose.material3", name = "material3-window-size-class" }
+ui = { group = "androidx.compose.ui", name = "ui" }
+uiViewBinding = { group = "androidx.compose.ui", name = "ui-viewbinding" }
+uiTooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+uiToolingData = { group = "androidx.compose.ui", name = "ui-tooling-data" }
+uiToolingPreview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+uiUtil = { group = "androidx.compose.ui", name = "ui-util" }
+composeMaterial = { group = "androidx.compose.material", name = "material" }
+materialIconsCore = { group = "androidx.compose.material", name = "material-icons-core" }
+materialIconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
+foundation = { group = "androidx.compose.foundation", name = "foundation" }
+uiTextGoogleFonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts" }
+uiTestJunit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "uiTestJunit4" }
+uiTestManifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+
+composeMaterialWear = { group = "androidx.wear.compose", name = "compose-material", version.ref = "wearCompose" }
+composeNavigationWear = { group = "androidx.wear.compose", name = "compose-navigation", version.ref = "wearCompose" }
+
+accompanistNavigationMaterial = { group = "com.google.accompanist", name = "accompanist-navigation-material", version.ref = "accompanist" }
+accompanistAdaptive = { group = "com.google.accompanist", name = "accompanist-adaptive", version.ref = "accompanist" }
+
+playServicesWearable = { group = "com.google.android.gms", name = "play-services-wearable", version.ref = "playServicesWearable" }
+
+slf4jSimple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4jSimple" }
+
+coilCompose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+
+junitExt = { group = "androidx.test.ext", name = "junit", version.ref = "junitExt" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }

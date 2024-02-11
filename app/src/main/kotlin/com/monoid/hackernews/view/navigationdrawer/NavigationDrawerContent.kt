@@ -5,12 +5,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.twotone.Login
 import androidx.compose.material.icons.twotone.Face
 import androidx.compose.material.icons.twotone.Info
-import androidx.compose.material.icons.twotone.Login
 import androidx.compose.material.icons.twotone.Settings
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.NavigationDrawerItem
@@ -29,8 +29,8 @@ import androidx.navigation.NavHostController
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.datastore.Authentication
-import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.common.navigation.MainNavigation
+import com.monoid.hackernews.common.view.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -99,7 +99,7 @@ fun NavigationDrawerContent(
             NavigationDrawerItem(
                 icon = {
                     Icon(
-                        imageVector = Icons.TwoTone.Login,
+                        imageVector = Icons.AutoMirrored.TwoTone.Login,
                         contentDescription = stringResource(id = R.string.login),
                     )
                 },
@@ -121,7 +121,7 @@ fun NavigationDrawerContent(
             )
         }
 
-        Divider(
+        HorizontalDivider(
             modifier = Modifier
                 .padding(vertical = 4.dp)
                 .padding(NavigationDrawerItemDefaults.ItemPadding),
@@ -150,7 +150,7 @@ fun NavigationDrawerContent(
             )
         }
 
-        Divider(
+        HorizontalDivider(
             modifier = Modifier
                 .padding(vertical = 4.dp)
                 .padding(NavigationDrawerItemDefaults.ItemPadding),

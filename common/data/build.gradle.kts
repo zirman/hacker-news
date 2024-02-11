@@ -3,8 +3,8 @@ import org.gradle.configurationcache.extensions.capitalized
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id(libs.plugins.androidLibrary.get().pluginId)
-    id(libs.plugins.kotlinxParcelize.get().pluginId)
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinxParcelize)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.ksp)
@@ -13,11 +13,6 @@ plugins {
 }
 
 kotlin {
-    sourceSets.all {
-        languageSettings {
-            languageVersion = "2.0"
-        }
-    }
 }
 
 android {
@@ -43,13 +38,6 @@ android {
 
     kotlinOptions {
         jvmTarget = libs.versions.jvmTarget.get()
-
-        freeCompilerArgs = listOf(
-            "-opt-in=kotlinx.coroutines.FlowPreview",
-            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-            "-opt-in=androidx.compose.ui.text.ExperimentalTextApi",
-            "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
-        )
     }
 
     buildFeatures {
@@ -104,7 +92,7 @@ androidComponents {
 }
 
 dependencies {
-    coreLibraryDesugaring(libs.desugarJdkLibs)
+    coreLibraryDesugaring(libs.desugarJdkLibsNio)
 
     implementation(project(":common:injection"))
 
@@ -121,12 +109,7 @@ dependencies {
     implementation(libs.hiltAndroid)
     ksp(libs.hiltAndroidCompiler)
 
-    testImplementation(libs.junit)
-
-    androidTestImplementation(libs.kotlinTest)
-    androidTestImplementation(libs.kotlinxCoroutinesTest)
-    androidTestImplementation(libs.junitExt)
-    androidTestImplementation(libs.espressoCore)
+    testImplementation(libs.bundles.test)
 }
 
 java {

@@ -15,8 +15,8 @@ import androidx.compose.foundation.layout.windowInsetsStartWidth
 import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.twotone.Login
 import androidx.compose.material.icons.twotone.Face
-import androidx.compose.material.icons.twotone.Login
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DrawerState
@@ -26,11 +26,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
-import androidx.compose.material3.RichTooltipBox
-import androidx.compose.material3.RichTooltipState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.rememberDrawerState
+import androidx.compose.material3.rememberTooltipState
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -57,17 +58,19 @@ import com.monoid.hackernews.common.data.BuildConfig
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.datastore.Authentication
-import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.common.navigation.MainNavigation
+import com.monoid.hackernews.common.util.rememberMetricsStateHolder
+import com.monoid.hackernews.common.view.R
+import com.monoid.hackernews.common.view.TooltipPopupPositionProvider
 import com.monoid.hackernews.view.navigationdrawer.NavigationDrawerContent
 import com.monoid.hackernews.view.navigationdrawer.NavigationRailContent
-import com.monoid.hackernews.common.util.rememberMetricsStateHolder
 import kotlinx.coroutines.launch
 
 @Composable
 fun MainContent(
     mainViewModel: MainViewModel,
     windowSizeClass: WindowSizeClass,
+    modifier: Modifier = Modifier,
 ) {
     val drawerState: DrawerState =
         rememberDrawerState(DrawerValue.Closed)
@@ -75,7 +78,7 @@ fun MainContent(
     val (showLoginErrorDialog, setShowLoginErrorDialog) =
         remember { mutableStateOf<Throwable?>(null) }
 
-    Box {
+    Box(modifier = modifier) {
         val mainNavController: NavHostController =
             rememberNavController()
 
@@ -178,30 +181,37 @@ fun MainContent(
                                         icon = {
                                             Icon(
                                                 imageVector = Icons.TwoTone.Face,
-                                                contentDescription = authentication.username
+                                                contentDescription = authentication.username,
                                             )
                                         },
-                                        label = { Text(text = authentication.username) }
+                                        label = { Text(text = authentication.username) },
                                     )
                                 } else {
-                                    val tooltipState = remember { RichTooltipState() }
                                     val scope = rememberCoroutineScope()
+                                    val state = rememberTooltipState()
 
-                                    RichTooltipBox(
-                                        tooltipState = tooltipState,
-                                        title = { Text(text = stringResource(id = R.string.login)) },
-                                        text = { Text(text = stringResource(id = R.string.login_description)) },
-                                        action = {
-                                            Row {
-                                                Spacer(modifier = Modifier.weight(1f))
+                                    TooltipBox(
+                                        positionProvider = TooltipPopupPositionProvider(),
+                                        tooltip = {
+                                            Surface {
+                                                Row {
+                                                    Text(text = stringResource(id = R.string.login))
+                                                    Text(text = stringResource(id = R.string.login_description))
 
-                                                TextButton(
-                                                    onClick = { scope.launch { tooltipState.dismiss() } }
-                                                ) {
-                                                    Text(text = stringResource(id = R.string.dismiss))
+                                                    Row {
+                                                        Spacer(modifier = Modifier.weight(1f))
+
+                                                        TextButton(
+                                                            onClick = { scope.launch { state.dismiss() } }
+                                                        ) {
+                                                            Text(text = stringResource(id = R.string.dismiss))
+                                                        }
+                                                    }
+
                                                 }
                                             }
-                                        }
+                                        },
+                                        state = state,
                                     ) {
                                         NavigationRailItem(
                                             selected = false,
@@ -213,22 +223,19 @@ fun MainContent(
                                             },
                                             icon = {
                                                 Icon(
-                                                    imageVector = Icons.TwoTone.Login,
+                                                    imageVector = Icons.AutoMirrored.TwoTone.Login,
                                                     contentDescription = stringResource(id = R.string.login),
                                                 )
                                             },
                                             label = {
                                                 Text(text = stringResource(id = R.string.login))
                                             },
-                                            modifier = Modifier.tooltipAnchor()
                                         )
                                     }
                                 }
                             },
                         ) {
-                            NavigationRailContent(
-                                mainNavController = mainNavController
-                            )
+                            NavigationRailContent(mainNavController = mainNavController)
                         }
                     }
 
@@ -248,7 +255,7 @@ fun MainContent(
                                 .navigate(MainNavigation.Login.routeWithArgs(loginAction))
                         },
                         onNavigateUp = { mainNavController.navigateUp() },
-                        onLoginError = { setShowLoginErrorDialog(it) }
+                        onLoginError = { setShowLoginErrorDialog(it) },
                     )
                 }
             }
@@ -266,7 +273,7 @@ fun MainContent(
                 )
                 .fillMaxWidth()
                 .windowInsetsTopHeight(WindowInsets.safeDrawing)
-                .align(Alignment.TopCenter)
+                .align(Alignment.TopCenter),
         )
 
         // navigation bar scrim when on bottom
@@ -281,7 +288,7 @@ fun MainContent(
                 )
                 .fillMaxWidth()
                 .windowInsetsBottomHeight(WindowInsets.safeDrawing)
-                .align(Alignment.BottomCenter)
+                .align(Alignment.BottomCenter),
         )
 
         // navigation bar scrim on start
@@ -290,7 +297,7 @@ fun MainContent(
                 .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.9f))
                 .fillMaxHeight()
                 .windowInsetsStartWidth(WindowInsets.safeDrawing)
-                .align(Alignment.CenterStart)
+                .align(Alignment.CenterStart),
         )
 
         // navigation bar scrim on end
@@ -299,7 +306,7 @@ fun MainContent(
                 .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.9f))
                 .fillMaxHeight()
                 .windowInsetsEndWidth(WindowInsets.safeDrawing)
-                .align(Alignment.CenterEnd)
+                .align(Alignment.CenterEnd),
         )
     }
 
@@ -313,20 +320,20 @@ fun MainContent(
             },
             icon = {
                 Icon(
-                    imageVector = Icons.TwoTone.Login,
-                    contentDescription = stringResource(id = R.string.login)
+                    imageVector = Icons.AutoMirrored.TwoTone.Login,
+                    contentDescription = stringResource(id = R.string.login),
                 )
             },
             title = { Text(text = stringResource(id = R.string.login_error)) },
             text = {
                 Text(
                     text = showLoginErrorDialog.message
-                        ?: stringResource(id = R.string.invalid_username_or_password)
+                        ?: stringResource(id = R.string.invalid_username_or_password),
                 )
             },
             iconContentColor = MaterialTheme.colorScheme.tertiary,
             titleContentColor = MaterialTheme.colorScheme.tertiary,
-            textContentColor = MaterialTheme.colorScheme.tertiary
+            textContentColor = MaterialTheme.colorScheme.tertiary,
         )
     }
 }

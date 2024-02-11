@@ -1,15 +1,10 @@
 plugins {
-    id(libs.plugins.androidLibrary.get().pluginId)
-    id(libs.plugins.kotlinxParcelize.get().pluginId)
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinxParcelize)
     alias(libs.plugins.kotlinAndroid)
 }
 
 kotlin {
-    sourceSets.all {
-        languageSettings {
-            languageVersion = "2.0"
-        }
-    }
 }
 
 android {
@@ -35,13 +30,6 @@ android {
 
     kotlinOptions {
         jvmTarget = libs.versions.jvmTarget.get()
-
-        freeCompilerArgs = listOf(
-            "-opt-in=kotlinx.coroutines.FlowPreview",
-            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-            "-opt-in=androidx.compose.ui.text.ExperimentalTextApi",
-            "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
-        )
     }
 
     buildFeatures {
@@ -54,7 +42,7 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring(libs.desugarJdkLibs)
+    coreLibraryDesugaring(libs.desugarJdkLibsNio)
 
     api(project(":common:data"))
 
@@ -64,11 +52,10 @@ dependencies {
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.androidx)
     implementation(libs.bundles.androidxCompose)
+    lintChecks(libs.composeLintChecks)
     // TODO: refactor so that this isn't a shared dependency for wear
     implementation(libs.bundles.androidxApp)
     implementation(libs.bundles.google)
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.junitExt)
-    androidTestImplementation(libs.espressoCore)
+    testImplementation(libs.bundles.test)
 }

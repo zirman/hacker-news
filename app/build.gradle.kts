@@ -10,11 +10,6 @@ plugins {
 }
 
 kotlin {
-    sourceSets.all {
-        languageSettings {
-            languageVersion = "2.0"
-        }
-    }
 }
 
 android {
@@ -77,17 +72,13 @@ android {
     kotlinOptions {
         jvmTarget = libs.versions.jvmTarget.get()
 
-        freeCompilerArgs = listOf(
-            "-opt-in=kotlinx.coroutines.FlowPreview",
-            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+        freeCompilerArgs += listOf(
             "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
             "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
             "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
             "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
             "-opt-in=androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi",
             "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
-            "-opt-in=androidx.compose.ui.text.ExperimentalTextApi",
-            "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
             "-opt-in=com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi",
         )
     }
@@ -112,7 +103,7 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring(libs.desugarJdkLibs)
+    coreLibraryDesugaring(libs.desugarJdkLibsNio)
 
     implementation(project(":common:injection"))
     implementation(project(":common:view"))
@@ -124,6 +115,7 @@ dependencies {
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.androidx)
     implementation(libs.bundles.androidxCompose)
+    lintChecks(libs.composeLintChecks)
     implementation(libs.bundles.androidxApp)
     implementation(libs.bundles.google)
     implementation(libs.bundles.googleApp)
@@ -135,6 +127,6 @@ dependencies {
 
     implementation(libs.hiltNavigationCompose)
 
-    androidTestImplementation(libs.uiTestJunit4)
+    testImplementation(libs.bundles.test)
     debugImplementation(libs.uiTestManifest)
 }

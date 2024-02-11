@@ -12,27 +12,28 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.twotone.Comment
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.OpenInBrowser
 import androidx.compose.material.icons.filled.Quickreply
 import androidx.compose.material.icons.filled.ThumbUp
-import androidx.compose.material.icons.twotone.Comment
 import androidx.compose.material.icons.twotone.Favorite
 import androidx.compose.material.icons.twotone.Flag
 import androidx.compose.material.icons.twotone.MoreVert
 import androidx.compose.material.icons.twotone.Quickreply
 import androidx.compose.material.icons.twotone.ThumbUp
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.PlainTooltipBox
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TooltipBox
+import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.key
@@ -56,21 +57,22 @@ import com.monoid.hackernews.common.data.ItemUi
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.room.ItemDb
-import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.common.ui.text.ClickableTextBlock
 import com.monoid.hackernews.common.ui.util.rememberTimeBy
 import com.monoid.hackernews.common.ui.util.userTag
+import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.common.view.placeholder.PlaceholderHighlight
 import com.monoid.hackernews.common.view.placeholder.placeholder
 import com.monoid.hackernews.common.view.placeholder.shimmer
 import com.monoid.hackernews.util.rememberAnnotatedString
+import com.monoid.hackernews.common.view.TooltipPopupPositionProvider
 
 @Preview(
     showBackground = true,
     wallpaper = Wallpapers.YELLOW_DOMINATED_EXAMPLE
 )
 @Composable
-fun ItemPreview() {
+private fun ItemPreview() {
     Item(
         itemUi = object : ItemUi() {
             override val item: ItemDb = ItemDb(
@@ -163,7 +165,7 @@ fun Item(
                     ) {
                         Icon(
                             imageVector = Icons.TwoTone.MoreVert,
-                            contentDescription = stringResource(id = R.string.more_options)
+                            contentDescription = stringResource(id = R.string.more_options),
                         )
                     }
 
@@ -323,11 +325,14 @@ fun Item(
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 key("score") {
-                    PlainTooltipBox(tooltip = { Text(stringResource(id = R.string.upvote)) }) {
+                    TooltipBox(
+                        positionProvider = TooltipPopupPositionProvider(),
+                        tooltip = { Surface { Text(stringResource(id = R.string.upvote)) } },
+                        state = rememberTooltipState(),
+                    ) {
                         IconButton(
                             onClick = onClickUpvote,
                             enabled = isStoryOrComment,
-                            modifier = Modifier.tooltipAnchor()
                         ) {
                             Icon(
                                 imageVector = if (itemUi?.isUpvote == true) {
@@ -360,15 +365,18 @@ fun Item(
                 key("comments") {
                     val descendants = item?.descendants
 
-                    PlainTooltipBox(tooltip = { Text(stringResource(id = R.string.comment)) }) {
+                    TooltipBox(
+                        positionProvider = TooltipPopupPositionProvider(),
+                        tooltip = { Surface { Text(stringResource(id = R.string.comment)) } },
+                        state = rememberTooltipState(),
+                    ) {
                         IconButton(
                             onClick = onClickReply,
                             enabled = isStoryOrComment,
-                            modifier = Modifier.tooltipAnchor()
                         ) {
                             Icon(
-                                imageVector = Icons.TwoTone.Comment,
-                                contentDescription = null
+                                imageVector = Icons.AutoMirrored.TwoTone.Comment,
+                                contentDescription = null,
                             )
                         }
                     }
@@ -378,7 +386,7 @@ fun Item(
                         maxLines = 1,
                         modifier = Modifier.widthIn(min = 24.dp),
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.labelMedium
+                        style = MaterialTheme.typography.labelMedium,
                     )
                 }
 
@@ -394,17 +402,18 @@ fun Item(
                             modifier = Modifier.weight(1f),
                             textAlign = TextAlign.End,
                             overflow = TextOverflow.Ellipsis,
-                            style = MaterialTheme.typography.labelLarge
+                            style = MaterialTheme.typography.labelLarge,
                         )
 
-                        PlainTooltipBox(tooltip = { Text(stringResource(id = R.string.open_in_browser)) }) {
-                            IconButton(
-                                onClick = onClickBrowser,
-                                modifier = Modifier.tooltipAnchor()
-                            ) {
+                        TooltipBox(
+                            positionProvider = TooltipPopupPositionProvider(),
+                            tooltip = { Surface { Text(stringResource(id = R.string.open_in_browser)) } },
+                            state = rememberTooltipState(),
+                        ) {
+                            IconButton(onClick = onClickBrowser) {
                                 Icon(
                                     imageVector = Icons.Filled.OpenInBrowser,
-                                    contentDescription = stringResource(id = R.string.open_in_browser)
+                                    contentDescription = stringResource(id = R.string.open_in_browser),
                                 )
                             }
                         }
@@ -412,9 +421,9 @@ fun Item(
                 }
             }
 
-            Divider(
+            HorizontalDivider(
+                thickness = Dp.Hairline,
                 color = LocalContentColor.current,
-                thickness = Dp.Hairline
             )
         }
     }

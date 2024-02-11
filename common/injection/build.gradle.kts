@@ -1,16 +1,11 @@
 plugins {
-    id(libs.plugins.androidLibrary.get().pluginId)
+    alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
 }
 
 kotlin {
-    sourceSets.all {
-        languageSettings {
-            languageVersion = "2.0"
-        }
-    }
 }
 
 android {
@@ -36,13 +31,6 @@ android {
 
     kotlinOptions {
         jvmTarget = libs.versions.jvmTarget.get()
-
-        freeCompilerArgs = listOf(
-            "-opt-in=kotlinx.coroutines.FlowPreview",
-            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-            "-opt-in=androidx.compose.ui.text.ExperimentalTextApi",
-            "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
-        )
     }
 
     buildFeatures {
@@ -55,7 +43,7 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring(libs.desugarJdkLibs)
+    coreLibraryDesugaring(libs.desugarJdkLibsNio)
 
     implementation(platform(libs.composeBom))
     implementation(platform(libs.firebaseBom))
@@ -63,6 +51,7 @@ dependencies {
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.androidx)
     implementation(libs.bundles.androidxCompose)
+    lintChecks(libs.composeLintChecks)
     implementation(libs.bundles.androidxApp)
     implementation(libs.bundles.google)
     implementation(libs.bundles.googleApp)
@@ -74,6 +63,6 @@ dependencies {
 
     implementation(libs.hiltNavigationCompose)
 
-    androidTestImplementation(libs.uiTestJunit4)
+    testImplementation(libs.bundles.test)
     debugImplementation(libs.uiTestManifest)
 }

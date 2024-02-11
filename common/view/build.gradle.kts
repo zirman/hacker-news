@@ -1,16 +1,11 @@
 plugins {
-    id(libs.plugins.androidLibrary.get().pluginId)
+    alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
 }
 
 kotlin {
-    sourceSets.all {
-        languageSettings {
-            languageVersion = "2.0"
-        }
-    }
 }
 
 android {
@@ -48,7 +43,7 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring(libs.desugarJdkLibs)
+    coreLibraryDesugaring(libs.desugarJdkLibsNio)
 
     api(project(":common:domain"))
 
@@ -58,12 +53,11 @@ dependencies {
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.androidx)
     implementation(libs.bundles.androidxCompose)
+    lintChecks(libs.composeLintChecks)
     implementation(libs.bundles.google)
 
     implementation(libs.hiltAndroid)
     ksp(libs.hiltAndroidCompiler)
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.junitExt)
-    androidTestImplementation(libs.espressoCore)
+    testImplementation(libs.bundles.test)
 }
