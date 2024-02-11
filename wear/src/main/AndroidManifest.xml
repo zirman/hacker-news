@@ -41,26 +41,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <intent-filter>
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:host="news.ycombinator.com" />
                 <data android:scheme="http" />
                 <data android:scheme="https" />
-                <data android:pathPrefix="/" />
-                <data android:pathPrefix="/news" />
-                <data android:pathPrefix="/newest" />
-                <data android:pathPrefix="/best" />
-                <data android:pathPrefix="/show" />
+                <data android:host="news.ycombinator.com" />
                 <data android:pathPrefix="/ask" />
-                <data android:pathPrefix="/jobs" />
-                <data android:pathPrefix="/item" />
-                <data android:pathPrefix="/user" />
+                <data android:pathPrefix="/best" />
                 <data android:pathPrefix="/favorites" />
+                <data android:pathPrefix="/item" />
+                <data android:pathPrefix="/jobs" />
+                <data android:pathPrefix="/newest" />
+                <data android:pathPrefix="/news" />
+                <data android:pathPrefix="/show" />
                 <data android:pathPrefix="/submitted" />
+                <data android:pathPrefix="/user" />
             </intent-filter>
 
             <meta-data
