@@ -1,3 +1,9 @@
+Build for Android:
+`gradle :app:assembleDebug`
+
+Build for Wear OS
+`gradle :wear:assembleDebug`
+
 TODO:
  + WorkManager get update follow notifications
  + Customize Light/Dark mode setting
