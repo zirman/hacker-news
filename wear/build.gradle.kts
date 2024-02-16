@@ -95,6 +95,9 @@ android {
 dependencies {
     coreLibraryDesugaring(libs.desugarJdkLibsNio)
 
+    ksp(libs.bundles.hiltCompiler)
+    implementation(libs.bundles.hilt)
+
     implementation(project(":common:injection"))
     implementation(project(":common:view"))
     implementation(project(":common:util"))
@@ -111,9 +114,4 @@ dependencies {
     implementation(libs.bundles.googleWear)
     implementation(libs.bundles.firebase)
     implementation(libs.slf4jSimple)
-
-    implementation(libs.hiltAndroid)
-    ksp(libs.hiltAndroidCompiler)
-
-    implementation(libs.hiltNavigationCompose)
 }

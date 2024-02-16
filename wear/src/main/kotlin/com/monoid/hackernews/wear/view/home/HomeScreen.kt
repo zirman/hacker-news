@@ -34,6 +34,7 @@ fun HomeScreen(
     title: String,
     orderedItemRepo: LiveUpdateUseCase<OrderedItem>,
     onSelectItemId: (ItemId?) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val itemStaleMinutes = integerResource(id = R.integer.item_stale_minutes)
 
@@ -54,7 +55,8 @@ fun HomeScreen(
                 PositionIndicator(state)
             }
         },
-        timeText = { TimeText() }
+        timeText = { TimeText() },
+        modifier = modifier,
     ) {
         val navController = rememberSwipeDismissableNavController()
 

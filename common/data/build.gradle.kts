@@ -94,6 +94,9 @@ androidComponents {
 dependencies {
     coreLibraryDesugaring(libs.desugarJdkLibsNio)
 
+    ksp(libs.bundles.hiltCompiler)
+    implementation(libs.bundles.hilt)
+
     implementation(project(":common:injection"))
 
     implementation(platform(libs.composeBom))
@@ -105,9 +108,6 @@ dependencies {
     implementation(libs.bundles.firebase)
     api(libs.bundles.ktor)
     ksp(libs.roomCompiler)
-
-    implementation(libs.hiltAndroid)
-    ksp(libs.hiltAndroidCompiler)
 
     testImplementation(libs.bundles.test)
 }

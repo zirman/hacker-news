@@ -45,6 +45,9 @@ android {
 dependencies {
     coreLibraryDesugaring(libs.desugarJdkLibsNio)
 
+    ksp(libs.bundles.hiltCompiler)
+    implementation(libs.bundles.hilt)
+
     implementation(platform(libs.composeBom))
     implementation(platform(libs.firebaseBom))
 
@@ -57,11 +60,6 @@ dependencies {
     implementation(libs.bundles.googleApp)
     implementation(libs.bundles.firebase)
     implementation(libs.slf4jSimple)
-
-    implementation(libs.hiltAndroid)
-    ksp(libs.hiltAndroidCompiler)
-
-    implementation(libs.hiltNavigationCompose)
 
     testImplementation(libs.bundles.test)
     debugImplementation(libs.uiTestManifest)

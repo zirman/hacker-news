@@ -45,6 +45,9 @@ android {
 dependencies {
     coreLibraryDesugaring(libs.desugarJdkLibsNio)
 
+    ksp(libs.bundles.hiltCompiler)
+    implementation(libs.bundles.hilt)
+
     api(project(":common:domain"))
 
     implementation(platform(libs.composeBom))
@@ -55,9 +58,6 @@ dependencies {
     implementation(libs.bundles.androidxCompose)
     lintChecks(libs.composeLintChecks)
     implementation(libs.bundles.google)
-
-    implementation(libs.hiltAndroid)
-    ksp(libs.hiltAndroidCompiler)
 
     testImplementation(libs.bundles.test)
 }

@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
                             mainViewModel.topStoryRepository
                         )
                     },
-                    onSelectItemId = { /*TODO*/ }
+                    onSelectItemId = { /*TODO*/ },
                 )
             }
 

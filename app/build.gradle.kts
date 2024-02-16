@@ -30,8 +30,8 @@ android {
         applicationId = "com.monoid.hackernews"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 40
-        versionName = "1.1.1"
+        versionCode = 42
+        versionName = "1.1.3"
 
         // reduces apk sizes by not including unsupported languages
         resourceConfigurations += setOf("en", "es")
@@ -105,6 +105,9 @@ android {
 dependencies {
     coreLibraryDesugaring(libs.desugarJdkLibsNio)
 
+    ksp(libs.bundles.hiltCompiler)
+    implementation(libs.bundles.hilt)
+
     implementation(project(":common:injection"))
     implementation(project(":common:view"))
     implementation(project(":common:util"))
@@ -121,11 +124,6 @@ dependencies {
     implementation(libs.bundles.googleApp)
     implementation(libs.bundles.firebase)
     implementation(libs.slf4jSimple)
-
-    implementation(libs.hiltAndroid)
-    ksp(libs.hiltAndroidCompiler)
-
-    implementation(libs.hiltNavigationCompose)
 
     testImplementation(libs.bundles.test)
     debugImplementation(libs.uiTestManifest)
