@@ -24,6 +24,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.metrics.performance.JankStats
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.monoid.hackernews.common.data.BuildConfig
 import com.monoid.hackernews.common.datastore.Authentication
 import com.monoid.hackernews.common.ui.util.rememberUseDarkTheme
@@ -62,35 +63,39 @@ class MainActivity : ComponentActivity() {
             }
 
             setOnExitAnimationListener { splashScreenView ->
-                window.statusBarColor = getColor(android.R.color.transparent)
-                window.navigationBarColor = getColor(android.R.color.transparent)
+                try {
+                    window.statusBarColor = getColor(android.R.color.transparent)
+                    window.navigationBarColor = getColor(android.R.color.transparent)
 
-                val animateIn = ObjectAnimator.ofPropertyValuesHolder(
-                    splashScreenView.iconView,
-                    PropertyValuesHolder.ofFloat(View.SCALE_X, 1f, 0f),
-                    PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f, 0f),
-                )
-
-                animateIn.interpolator = AnticipateInterpolator()
-                animateIn.duration = 400L
-
-                animateIn.doOnEnd {
-                    splashScreenView.remove()
-
-                    window.insetsController?.setSystemBarsAppearance(
-                        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-                            Configuration.UI_MODE_NIGHT_NO ->
-                                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
-                                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
-
-                            else -> 0
-                        },
-                        WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
-                            WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+                    val animateIn = ObjectAnimator.ofPropertyValuesHolder(
+                        splashScreenView.iconView,
+                        PropertyValuesHolder.ofFloat(View.SCALE_X, 1f, 0f),
+                        PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f, 0f),
                     )
-                }
 
-                animateIn.start()
+                    animateIn.interpolator = AnticipateInterpolator()
+                    animateIn.duration = 400L
+
+                    animateIn.doOnEnd {
+                        splashScreenView.remove()
+
+                        window.insetsController?.setSystemBarsAppearance(
+                            when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                                Configuration.UI_MODE_NIGHT_NO ->
+                                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
+                                        WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+
+                                else -> 0
+                            },
+                            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
+                                WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+                        )
+                    }
+
+                    animateIn.start()
+                } catch (error: Throwable) {
+                    FirebaseCrashlytics.getInstance().recordException(error)
+                }
             }
         }
 
