@@ -134,7 +134,7 @@ androidxCompose = [
     "material",
     "material3",
     "material3WindowSize",
-    "material3AdaptiveAndroid",
+#    "material3AdaptiveAndroid",
     "material3AdaptiveNavigationSuiteAndroid",
     "materialIconsCore",
     "materialIconsExtended",
