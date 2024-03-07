@@ -30,8 +30,8 @@ android {
         applicationId = "com.monoid.hackernews"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 42
-        versionName = "1.1.3"
+        versionCode = 43
+        versionName = "1.1.4"
 
         // reduces apk sizes by not including unsupported languages
         resourceConfigurations += setOf("en", "es")
