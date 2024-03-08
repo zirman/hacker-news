@@ -19,12 +19,13 @@ import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.ItemTreeRow
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
 fun ItemDetail(
-    itemTreeRows: List<ItemTreeRow>?,
+    itemTreeRows: ImmutableList<ItemTreeRow>?,
     paddingValues: PaddingValues,
     onClickUser: (Username) -> Unit,
     onClickReply: (ItemId) -> Unit,

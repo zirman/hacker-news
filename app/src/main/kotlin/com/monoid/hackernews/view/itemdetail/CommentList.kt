@@ -1,7 +1,7 @@
 package com.monoid.hackernews.view.itemdetail
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -29,10 +29,11 @@ import com.monoid.hackernews.common.data.ItemUiWithThreadDepth
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.util.rememberMetricsStateHolder
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun CommentList(
-    itemTreeRows: List<ItemTreeRow>?,
+    itemTreeRows: ImmutableList<ItemTreeRow>?,
     paddingValues: PaddingValues,
     onClickUser: (Username) -> Unit,
     onClickReply: (ItemId) -> Unit,
@@ -41,7 +42,7 @@ fun CommentList(
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState(),
 ) {
-    BoxWithConstraints(modifier = modifier) {
+    Box(modifier = modifier) {
         if (BuildConfig.DEBUG.not()) {
             val metricsStateHolder: PerformanceMetricsState.Holder =
                 rememberMetricsStateHolder()

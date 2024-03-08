@@ -1,9 +1,10 @@
 package com.monoid.hackernews.view.settings
 
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.datastore.core.DataStore
 import com.monoid.hackernews.common.datastore.Authentication
 import com.monoid.hackernews.common.datastore.copy
@@ -16,6 +17,7 @@ import kotlinx.serialization.json.Json
 fun FontButton(
     hnFont: HNFont,
     authentication: DataStore<Authentication>,
+    modifier: Modifier = Modifier
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -29,6 +31,7 @@ fun FontButton(
                 }
             }
         },
+        modifier = modifier,
     ) {
         Text(
             text = hnFont.getName(),

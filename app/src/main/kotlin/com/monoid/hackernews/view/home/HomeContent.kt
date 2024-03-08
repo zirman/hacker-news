@@ -49,6 +49,7 @@ import com.monoid.hackernews.common.ui.util.notifyInput
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.view.itemdetail.ItemDetail
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map
@@ -133,6 +134,7 @@ fun HomeContent(
                     if (selectedItemId != null) {
                         itemTreeRepository
                             .itemUiTreeFlow(selectedItemId)
+                            .map { it.toImmutableList() }
                     } else {
                         emptyFlow()
                     }
