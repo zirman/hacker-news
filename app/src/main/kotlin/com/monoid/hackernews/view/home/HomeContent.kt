@@ -4,10 +4,13 @@ import android.content.Context
 import androidx.activity.compose.ReportDrawnWhen
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.pullrefresh.PullRefreshState
@@ -126,14 +129,14 @@ fun HomeContent(
                 ) { LazyListState() }
 
             val itemTreeRows
-                    by remember(selectedItemId) {
-                        if (selectedItemId != null) {
-                            itemTreeRepository
-                                .itemUiTreeFlow(selectedItemId)
-                        } else {
-                            emptyFlow()
-                        }
-                    }.collectAsStateWithLifecycle(null)
+                by remember(selectedItemId) {
+                    if (selectedItemId != null) {
+                        itemTreeRepository
+                            .itemUiTreeFlow(selectedItemId)
+                    } else {
+                        emptyFlow()
+                    }
+                }.collectAsStateWithLifecycle(null)
 
             if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
                 if (detailInteraction && showItemId != null) {
@@ -167,11 +170,12 @@ fun HomeContent(
                 }
             } else {
                 val layoutDirection = LocalLayoutDirection.current
+                val safeDrawingPadding = WindowInsets.safeDrawing.asPaddingValues()
 
                 val twoPanePadding = PaddingValues(
-                    start = paddingValues.calculateStartPadding(layoutDirection),
+                    start = safeDrawingPadding.calculateStartPadding(layoutDirection),
                     top = paddingValues.calculateTopPadding(),
-                    end = paddingValues.calculateEndPadding(layoutDirection),
+                    end = safeDrawingPadding.calculateEndPadding(layoutDirection),
                 )
 
                 val innerPadding = PaddingValues(
@@ -192,7 +196,8 @@ fun HomeContent(
                             onClickReply = onClickReply,
                             onClickBrowser = onClickBrowser,
                             onNavigateLogin = onNavigateToLogin,
-                            modifier = Modifier.notifyInput { setDetailInteraction(false) }
+                            modifier = Modifier
+                                .notifyInput { setDetailInteraction(false) }
                         )
                     },
                     second = {

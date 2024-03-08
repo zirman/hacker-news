@@ -150,12 +150,12 @@ fun MainContent(
                                 mainNavController.navigate(
                                     MainNavigation.User.routeWithArgs(username)
                                 )
-                            }
+                            },
                         )
                     }
                 },
                 drawerState = drawerState,
-                gesturesEnabled = fullyExpandedState.value.not()
+                gesturesEnabled = fullyExpandedState.value.not(),
             ) {
                 Row {
                     AnimatedVisibility(visible = fullyExpandedState.value) {

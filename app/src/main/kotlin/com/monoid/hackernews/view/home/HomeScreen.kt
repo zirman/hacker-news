@@ -1,9 +1,15 @@
 package com.monoid.hackernews.view.home
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContent
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.Scaffold
@@ -20,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalLayoutDirection
 import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.ItemTreeRepository
 import com.monoid.hackernews.common.data.LoginAction
@@ -47,17 +54,17 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
 ) {
     val showItemId: ItemId?
-            by remember(windowSizeClass.widthSizeClass, selectedItemId, detailInteraction) {
-                derivedStateOf {
-                    when (windowSizeClass.widthSizeClass) {
-                        WindowWidthSizeClass.Compact ->
-                            if (detailInteraction) selectedItemId else null
+        by remember(windowSizeClass.widthSizeClass, selectedItemId, detailInteraction) {
+            derivedStateOf {
+                when (windowSizeClass.widthSizeClass) {
+                    WindowWidthSizeClass.Compact ->
+                        if (detailInteraction) selectedItemId else null
 
-                        else ->
-                            selectedItemId
-                    }
+                    else ->
+                        selectedItemId
                 }
             }
+        }
 
     val scrollBehavior: TopAppBarScrollBehavior =
         TopAppBarDefaults.pinnedScrollBehavior(
@@ -66,6 +73,9 @@ fun HomeScreen(
 
     Scaffold(
         topBar = {
+            val layoutDirection = LocalLayoutDirection.current
+            val safeDrawingPadding = WindowInsets.safeDrawing.asPaddingValues()
+
             HomeTopAppBar(
                 showItemId = showItemId,
                 drawerState = drawerState,
@@ -73,6 +83,12 @@ fun HomeScreen(
                 title = title,
                 setSelectedItemId = setSelectedItemId,
                 scrollBehavior = scrollBehavior,
+                modifier = Modifier.padding(
+                    PaddingValues(
+                        start = safeDrawingPadding.calculateStartPadding(layoutDirection),
+                        end = safeDrawingPadding.calculateEndPadding(layoutDirection),
+                    )
+                ),
             )
         },
         snackbarHost = {

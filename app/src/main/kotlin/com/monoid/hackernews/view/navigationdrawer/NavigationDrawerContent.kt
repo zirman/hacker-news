@@ -1,7 +1,12 @@
 package com.monoid.hackernews.view.navigationdrawer
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -21,6 +26,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.datastore.core.DataStore
@@ -43,9 +49,15 @@ fun NavigationDrawerContent(
     onClickUser: (Username) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val layoutDirection = LocalLayoutDirection.current
+    val safeDrawingPadding = WindowInsets.safeDrawing.asPaddingValues()
     ModalDrawerSheet(
         modifier = modifier
             .fillMaxHeight()
+            .padding(
+                start = safeDrawingPadding.calculateStartPadding(layoutDirection),
+                end = safeDrawingPadding.calculateEndPadding(layoutDirection),
+            )
             .verticalScroll(state = rememberScrollState())
     ) {
         val selectedStories =
