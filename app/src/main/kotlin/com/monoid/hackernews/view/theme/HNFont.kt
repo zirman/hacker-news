@@ -1,6 +1,7 @@
 package com.monoid.hackernews.view.theme
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -16,6 +17,7 @@ val provider = GoogleFont.Provider(
     certificates = R.array.com_google_android_gms_fonts_certs
 )
 
+@Stable
 @Serializable
 @SerialName("HNFont")
 sealed class HNFont {

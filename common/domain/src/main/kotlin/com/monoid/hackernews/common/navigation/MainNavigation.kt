@@ -118,10 +118,10 @@ data object UsernameNavType : NavType<Username>(isNullableAllowed = false) {
 
 sealed class MainNavigation<T : Any> {
     companion object {
-        private const val storiesKey = "stories"
-        private const val usernameKey = "username"
-        private const val actionKey = "action"
-        private const val itemIdKey = "itemId"
+        private const val STORIES_KEY = "stories"
+        private const val USERNAME_KEY = "username"
+        private const val ACTION_KEY = "action"
+        private const val ITEM_ID_KEY = "itemId"
 
         fun fromRoute(route: String?): MainNavigation<*>? {
             return when (route) {
@@ -159,12 +159,12 @@ sealed class MainNavigation<T : Any> {
 
     data object Home : MainNavigation<Stories>() {
         override val route: String =
-            "home?$storiesKey={$storiesKey}"
+            "home?$STORIES_KEY={$STORIES_KEY}"
 
         override val arguments: List<NamedNavArgument>
             get() =
                 listOf(
-                    navArgument(storiesKey) {
+                    navArgument(STORIES_KEY) {
                         type = StoriesNavType
                         defaultValue = Stories.Top
                         nullable = false
@@ -172,7 +172,7 @@ sealed class MainNavigation<T : Any> {
                 )
 
         override fun routeWithArgs(args: Stories): String =
-            "home?$storiesKey=${StoriesNavType.encodeValue(args)}"
+            "home?$STORIES_KEY=${StoriesNavType.encodeValue(args)}"
 
         override fun argsFromRoute(navBackStackEntry: NavBackStackEntry): Stories {
             val arguments = navBackStackEntry.arguments!!
@@ -203,67 +203,67 @@ sealed class MainNavigation<T : Any> {
                     Stories.Favorite
                 else ->
                     if (Build.VERSION.SDK_INT >= 33) {
-                        navBackStackEntry.arguments?.getParcelable(storiesKey, Stories::class.java)
+                        navBackStackEntry.arguments?.getParcelable(STORIES_KEY, Stories::class.java)
                     } else {
                         @Suppress("DEPRECATION")
-                        navBackStackEntry.arguments?.getParcelable(storiesKey)
+                        navBackStackEntry.arguments?.getParcelable(STORIES_KEY)
                     } ?: Stories.Top
             }
         }
     }
 
     data object Login : MainNavigation<LoginAction>() {
-        override val route: String get() = "login?$actionKey={$actionKey}"
+        override val route: String get() = "login?$ACTION_KEY={$ACTION_KEY}"
 
         override val arguments: List<NamedNavArgument>
             get() = listOf(
-                navArgument(actionKey) {
+                navArgument(ACTION_KEY) {
                     type = ActionNavType
                     defaultValue = LoginAction.Login
                 }
             )
 
         override fun routeWithArgs(args: LoginAction): String =
-            "login?$actionKey=${ActionNavType.encode(args)}"
+            "login?$ACTION_KEY=${ActionNavType.encode(args)}"
 
         override fun argsFromRoute(navBackStackEntry: NavBackStackEntry): LoginAction {
-            return ActionNavType[navBackStackEntry.arguments!!, actionKey]!!
+            return ActionNavType[navBackStackEntry.arguments!!, ACTION_KEY]!!
         }
     }
 
     data object Reply : MainNavigation<ItemId>() {
-        override val route: String get() = "reply?$itemIdKey={$itemIdKey}"
+        override val route: String get() = "reply?$ITEM_ID_KEY={$ITEM_ID_KEY}"
 
         override val arguments: List<NamedNavArgument>
             get() = listOf(
-                navArgument(itemIdKey) {
+                navArgument(ITEM_ID_KEY) {
                     type = ItemIdNavType
                 }
             )
 
         override fun routeWithArgs(args: ItemId): String =
-            "reply?$itemIdKey=${ItemIdNavType.encodeValue(args)}"
+            "reply?$ITEM_ID_KEY=${ItemIdNavType.encodeValue(args)}"
 
         override fun argsFromRoute(navBackStackEntry: NavBackStackEntry): ItemId {
-            return ItemIdNavType[navBackStackEntry.arguments!!, itemIdKey]
+            return ItemIdNavType[navBackStackEntry.arguments!!, ITEM_ID_KEY]
         }
     }
 
     data object User : MainNavigation<Username>() {
-        override val route: String get() = "user?$usernameKey={$usernameKey}"
+        override val route: String get() = "user?$USERNAME_KEY={$USERNAME_KEY}"
 
         override val arguments: List<NamedNavArgument>
             get() = listOf(
-                navArgument(usernameKey) {
+                navArgument(USERNAME_KEY) {
                     type = UsernameNavType
                 }
             )
 
     override fun routeWithArgs(args: Username): String =
-            "user?$usernameKey=${UsernameNavType.encodeValue(args)}"
+            "user?$USERNAME_KEY=${UsernameNavType.encodeValue(args)}"
 
         override fun argsFromRoute(navBackStackEntry: NavBackStackEntry): Username {
-            return UsernameNavType[navBackStackEntry.arguments!!, usernameKey]
+            return UsernameNavType[navBackStackEntry.arguments!!, USERNAME_KEY]
         }
     }
 

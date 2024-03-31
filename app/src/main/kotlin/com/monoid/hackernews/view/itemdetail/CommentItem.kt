@@ -59,7 +59,6 @@ import com.monoid.hackernews.common.view.placeholder.shimmer
 import com.monoid.hackernews.util.onClick
 import com.monoid.hackernews.util.rememberAnnotatedString
 import kotlinx.coroutines.launch
-import androidx.compose.material.MaterialTheme as MaterialTheme2
 
 @Composable
 fun CommentItem(
@@ -79,7 +78,7 @@ fun CommentItem(
                     Modifier
                 }
             ),
-        shape = MaterialTheme2.shapes.medium,
+        shape = MaterialTheme.shapes.medium,
         contentColor = MaterialTheme.colorScheme.secondary,
         tonalElevation = ((itemUiState.value?.itemUi?.kids?.size ?: 0) * 10 + 40).dp
     ) {
