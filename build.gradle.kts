@@ -31,6 +31,12 @@ subprojects {
                 "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
             )
 
+            freeCompilerArgs += listOf(
+                "-P",
+                "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=" +
+                    project.rootDir + "/compose_compiler_config.conf",
+            )
+
             if (project.findProperty("hackernews.enableComposeCompilerReports") == "true") {
                 // force tasks to rerun so that metrics are generated
                 outputs.upToDateWhen { false }

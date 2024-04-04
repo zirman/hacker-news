@@ -28,14 +28,13 @@ import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.BuildConfig
 import com.monoid.hackernews.common.data.ItemListRow
 import com.monoid.hackernews.common.util.rememberMetricsStateHolder
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
 @Composable
 fun ItemList(
     state: ScalingLazyListState,
     title: String,
-    itemRows: ImmutableList<ItemListRow>,
+    itemRows: List<ItemListRow>,
     onClickDetail: (ItemId?) -> Unit,
     modifier: Modifier = Modifier
 ) {

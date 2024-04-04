@@ -25,8 +25,6 @@ import com.monoid.hackernews.common.room.ItemDb
 import com.monoid.hackernews.common.room.UpvoteDao
 import com.monoid.hackernews.common.room.UpvoteDb
 import io.ktor.client.HttpClient
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -273,8 +271,8 @@ class ItemTreeRepository @Inject constructor(
         )
     }.distinctUntilChanged()
 
-    fun itemUiList(itemIds: List<ItemId>): ImmutableList<ItemListRow> {
-        return itemIds.map { itemId -> ItemRowInternal(itemId) }.toImmutableList()
+    fun itemUiList(itemIds: List<ItemId>): List<ItemListRow> {
+        return itemIds.map { itemId -> ItemRowInternal(itemId) }
     }
 
     private fun sharedItemUiFlow(

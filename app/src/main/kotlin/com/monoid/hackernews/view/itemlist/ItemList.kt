@@ -20,12 +20,11 @@ import com.monoid.hackernews.common.data.ItemListRow
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.util.rememberMetricsStateHolder
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.launch
 
 @Composable
 fun ItemList(
-    itemRows: ImmutableList<ItemListRow>,
+    itemRows: List<ItemListRow>,
     paddingValues: PaddingValues,
     onClickDetail: (ItemId?) -> Unit,
     onClickUser: (Username?) -> Unit,

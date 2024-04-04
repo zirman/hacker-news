@@ -23,7 +23,6 @@ import com.monoid.hackernews.common.data.OrderedItem
 import com.monoid.hackernews.common.domain.LiveUpdateUseCase
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.wear.view.itemlist.ItemList
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.map
 import java.util.concurrent.TimeUnit
@@ -38,7 +37,7 @@ fun HomeScreen(
 ) {
     val itemStaleMinutes = integerResource(id = R.integer.item_stale_minutes)
 
-    val itemRows: ImmutableList<ItemListRow> by remember(itemStaleMinutes) {
+    val itemRows: List<ItemListRow> by remember(itemStaleMinutes) {
         orderedItemRepo
             .getItems(TimeUnit.MINUTES.toMillis(itemStaleMinutes.toLong()))
             .map { orderedItems ->

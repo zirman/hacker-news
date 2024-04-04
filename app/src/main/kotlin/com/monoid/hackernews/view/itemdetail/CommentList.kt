@@ -29,11 +29,10 @@ import com.monoid.hackernews.common.data.ItemUiWithThreadDepth
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.util.rememberMetricsStateHolder
-import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun CommentList(
-    itemTreeRows: ImmutableList<ItemTreeRow>?,
+    itemTreeRows: List<ItemTreeRow>?,
     paddingValues: PaddingValues,
     onClickUser: (Username) -> Unit,
     onClickReply: (ItemId) -> Unit,
