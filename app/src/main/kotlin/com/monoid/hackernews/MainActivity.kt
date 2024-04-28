@@ -18,7 +18,6 @@ import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.datastore.core.DataStore
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -31,24 +30,22 @@ import com.monoid.hackernews.common.ui.util.rememberUseDarkTheme
 import com.monoid.hackernews.view.main.MainContent
 import com.monoid.hackernews.view.theme.AppTheme
 import com.monoid.hackernews.view.theme.HNFont
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.awaitCancellation
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
+import org.koin.android.ext.android.inject
+import org.koin.android.scope.AndroidScopeComponent
+import org.koin.androidx.scope.activityRetainedScope
+import org.koin.core.scope.Scope
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
-@AndroidEntryPoint
-class MainActivity : ComponentActivity() {
-
-    @Inject
-    lateinit var authentication: DataStore<Authentication>
-
-    @Inject
-    lateinit var newIntentChannel: Channel<Intent>
+class MainActivity : ComponentActivity(), AndroidScopeComponent {
+    override val scope: Scope by activityRetainedScope()
+    private val authentication: DataStore<Authentication> by inject()
+    private val viewModel: MainViewModel by inject()
+    private val crashlytics: FirebaseCrashlytics by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,7 +91,7 @@ class MainActivity : ComponentActivity() {
 
                     animateIn.start()
                 } catch (error: Throwable) {
-                    FirebaseCrashlytics.getInstance().recordException(error)
+                    crashlytics.recordException(error)
                 }
             }
         }
@@ -132,10 +129,7 @@ class MainActivity : ComponentActivity() {
                         ?: HNFont.Default
                 }
             ) {
-                MainContent(
-                    mainViewModel = hiltViewModel(),
-                    windowSizeClass = calculateWindowSizeClass(this),
-                )
+                MainContent(windowSizeClass = calculateWindowSizeClass(this))
             }
         }
 
@@ -169,6 +163,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        lifecycleScope.launch { newIntentChannel.send(intent) }
+        lifecycleScope.launch { viewModel.newIntentChannel.send(intent) }
     }
 }

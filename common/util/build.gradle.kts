@@ -45,8 +45,10 @@ dependencies {
 
     implementation(platform(libs.composeBom))
     implementation(platform(libs.firebaseBom))
+    implementation(platform(libs.koinBom))
 
     implementation(libs.bundles.kotlinx)
+    implementation(libs.bundles.koin)
     implementation(libs.bundles.androidx)
     implementation(libs.bundles.androidxCompose)
     lintChecks(libs.composeLintChecks)

@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
     alias(libs.plugins.googlePlayServices)
     alias(libs.plugins.crashlytics)
     alias(libs.plugins.firebasePerf)
@@ -105,17 +104,16 @@ android {
 dependencies {
     coreLibraryDesugaring(libs.desugarJdkLibsNio)
 
-    ksp(libs.bundles.hiltCompiler)
-    implementation(libs.bundles.hilt)
-
     implementation(project(":common:injection"))
     implementation(project(":common:view"))
     implementation(project(":common:util"))
 
     implementation(platform(libs.composeBom))
     implementation(platform(libs.firebaseBom))
+    implementation(platform(libs.koinBom))
 
     implementation(libs.bundles.kotlinx)
+    implementation(libs.bundles.koin)
     implementation(libs.bundles.androidx)
     implementation(libs.bundles.androidxCompose)
     lintChecks(libs.composeLintChecks)

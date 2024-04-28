@@ -12,7 +12,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.getSystemService
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -22,18 +21,14 @@ import com.monoid.hackernews.common.domain.LiveUpdateUseCase
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.wear.theme.HackerNewsTheme
 import com.monoid.hackernews.wear.view.home.HomeScreen
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.awaitCancellation
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
+import org.koin.androidx.compose.koinViewModel
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    @Inject
-    lateinit var newIntentChannel: Channel<Intent>
+    private val viewModel: MainViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +42,7 @@ class MainActivity : ComponentActivity() {
                 contentComposed
             }
 
-            val mainViewModel: MainViewModel = hiltViewModel()
+            val mainViewModel: MainViewModel = koinViewModel()
 
             HackerNewsTheme {
                 HomeScreen(
@@ -56,7 +51,7 @@ class MainActivity : ComponentActivity() {
                     orderedItemRepo = remember(mainViewModel.topStoryRepository) {
                         LiveUpdateUseCase(
                             getSystemService()!!,
-                            mainViewModel.topStoryRepository
+                            mainViewModel.topStoryRepository,
                         )
                     },
                     onSelectItemId = { /*TODO*/ },
@@ -94,6 +89,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        lifecycleScope.launch { newIntentChannel.send(intent) }
+        lifecycleScope.launch { viewModel.newIntentChannel.send(intent) }
     }
 }

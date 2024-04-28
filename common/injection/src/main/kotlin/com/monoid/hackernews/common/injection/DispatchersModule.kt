@@ -1,50 +1,19 @@
 package com.monoid.hackernews.common.injection
 
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainCoroutineDispatcher
-import javax.inject.Qualifier
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
 
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class IoDispatcher
+enum class DispatcherQualifier {
+    Default,
+    Io,
+    Unconfined,
+}
 
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class DefaultDispatcher
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class UnconfinedDispatcher
-
-@Module
-@InstallIn(SingletonComponent::class)
-object DispatchersModule {
-
-    @Provides
-    fun provideMainDispatcher(): MainCoroutineDispatcher {
-        return Dispatchers.Main
-    }
-
-    @IoDispatcher
-    @Provides
-    fun provideIoDispatcher(): CoroutineDispatcher {
-        return Dispatchers.IO
-    }
-
-    @DefaultDispatcher
-    @Provides
-    fun provideDefaultDispatcher(): CoroutineDispatcher {
-        return Dispatchers.Default
-    }
-
-    @UnconfinedDispatcher
-    @Provides
-    fun provideUnconfinedDispatcher(): CoroutineDispatcher {
-        return Dispatchers.Unconfined
-    }
+val dispatcherModule = module {
+    single { Dispatchers.Main }
+    single<CoroutineDispatcher>(named(DispatcherQualifier.Default)) { Dispatchers.Default }
+    single<CoroutineDispatcher>(named(DispatcherQualifier.Io)) { Dispatchers.IO }
+    single<CoroutineDispatcher>(named(DispatcherQualifier.Unconfined)) { Dispatchers.Unconfined }
 }

@@ -4,10 +4,13 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import com.monoid.hackernews.common.view.updateAndPushDynamicShortcuts
-import dagger.hilt.android.AndroidEntryPoint
+import org.koin.android.scope.AndroidScopeComponent
+import org.koin.android.scope.createServiceScope
+import org.koin.core.scope.Scope
 
-@AndroidEntryPoint
-class LocaleChangedService : Service() {
+class LocaleChangedService : Service(), AndroidScopeComponent {
+    override val scope: Scope = createServiceScope()
+
     override fun onBind(intent: Intent): IBinder? {
         return null
     }

@@ -11,7 +11,6 @@ import com.monoid.hackernews.common.api.flagRequest
 import com.monoid.hackernews.common.api.getItem
 import com.monoid.hackernews.common.api.upvoteItem
 import com.monoid.hackernews.common.datastore.Authentication
-import com.monoid.hackernews.common.injection.IoDispatcher
 import com.monoid.hackernews.common.room.ExpandedDao
 import com.monoid.hackernews.common.room.ExpandedDb
 import com.monoid.hackernews.common.room.FavoriteDao
@@ -54,12 +53,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.math.max
 
-@Singleton
-class ItemTreeRepository @Inject constructor(
+class ItemTreeRepository(
     private val authentication: DataStore<Authentication>,
     private val httpClient: HttpClient,
     private val firebaseCrashlytics: FirebaseCrashlytics,
@@ -70,7 +66,6 @@ class ItemTreeRepository @Inject constructor(
     private val expandedDao: ExpandedDao,
     private val followedDao: FollowedDao,
     private val mainDispatcher: MainCoroutineDispatcher,
-    @IoDispatcher
     private val ioDispatcher: CoroutineDispatcher,
 ) {
     private val itemCache: MutableMap<ItemId, ItemUiInternal> = mutableMapOf()

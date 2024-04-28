@@ -13,13 +13,10 @@ import com.monoid.hackernews.common.data.ShowStoryRepository
 import com.monoid.hackernews.common.data.TopStoryRepository
 import com.monoid.hackernews.common.data.UserStoryRepositoryFactory
 import com.monoid.hackernews.common.datastore.Authentication
-import dagger.hilt.android.lifecycle.HiltViewModel
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.channels.Channel
-import javax.inject.Inject
 
-@HiltViewModel
-class MainViewModel @Inject constructor(
+class MainViewModel(
     val authentication: DataStore<Authentication>,
     val httpClient: HttpClient,
     val userStoryRepositoryFactory: UserStoryRepositoryFactory,

@@ -6,6 +6,7 @@ minSdk = "30"
 buildToolsVersion = "34.0.0"
 composeCompiler = "1.5.8"
 android = "8.3.2"
+lint = "31.3.2"
 desugarJdkLibs = "2.0.4"
 kotlin = "1.9.22"
 ksp = "1.9.22-1.0.17"
@@ -15,12 +16,10 @@ kotlinxCollectionsImmutable = "0.3.7"
 kotlinxDatetime = "0.5.0"
 ktor = "2.3.7"
 room = "2.6.1"
-activityKtx = "1.8.2"
+activityKtx = "1.9.0"
 fragmentKtx = "1.6.2"
 lifecycle = "2.7.0"
 navigation = "2.7.7"
-hiltAndroid = "2.50"
-hiltJetpack = "1.2.0"
 protobufPlugin = "0.9.4"
 protobuf = "3.25.2"
 googlePlayServices = "4.4.1"
@@ -42,23 +41,26 @@ material = "1.11.0"
 material3 = "1.2.1"
 material3AdaptiveAndroid = "1.0.0-alpha06"
 material3AdaptiveNavigationSuiteAndroid = "1.0.0-alpha05"
-composeBom = "2024.03.00"
-wearCompose = "1.3.0"
+composeBom = "2024.04.01"
+wearCompose = "1.3.1"
 accompanist = "0.32.0"
-uiTestJunit4 = "1.6.4"
+uiTestJunit4 = "1.6.6"
 slf4jSimple = "2.0.11"
 junitExt = "1.1.5"
 coil = "2.5.0"
+espressoCore = "3.5.1"
+junit = "4.13.2"
 mockk = "1.13.9"
 
 [plugins]
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlinxParcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 androidApplication = { id = "com.android.application", version.ref = "android" }
 androidLibrary = { id = "com.android.library", version.ref = "android" }
+androidLint = { id = "com.android.lint", version.ref = "android" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
 googlePlayServices = { id = "com.google.gms.google-services", version.ref = "googlePlayServices" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics" }
@@ -71,14 +73,14 @@ kotlinx = [
     "kotlinxCollectionsImmutable",
     "kotlinxDatetime",
 ]
-hiltCompiler = [
-    "hiltAndroidCompiler",
-    "hiltCompilerJetpack",
-]
-hilt = [
-    "hiltAndroid",
-    "hiltWork",
-    "hiltNavigationCompose",
+koin = [
+    "koinCore",
+    "koinKtor",
+    "koinLoggerSlf4j",
+    "koinAndroid",
+    "koinAndroidxCompose",
+    "koinAndroidxNavigation",
+    "koinAndroidxWorkmanager",
 ]
 ktor = [
     "ktorClientCore",
@@ -154,23 +156,39 @@ firebase = [
     "firebaseAnalyticsKtx",
     "firebasePerfKtx",
 ]
+lintApi = [
+    "kotlinStdlib",
+    "lintApi",
+    "lintChecks",
+]
+lintTests = [
+    "junit",
+    "lintCli",
+    "lintTests"
+]
 test = [
-    "mockk",
     "kotlinTest",
     "kotlinxCoroutinesTest",
     "uiTestJunit4",
     "junitExt",
+    "espressoCore",
+    "mockk",
 ]
 
 [libraries]
-kotlinTest = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
+kotlinStdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 kotlinxCoroutinesAndroid = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 kotlinxCoroutinesTest = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 kotlinxSerializationJson = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 kotlinxCollectionsImmutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
 kotlinxDatetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
+kotlinTest = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
 
 desugarJdkLibsNio = { group = "com.android.tools", name = "desugar_jdk_libs_nio", version.ref = "desugarJdkLibs" }
+lintApi = { group = "com.android.tools.lint", name = "lint-api", version.ref = "lint" }
+lintChecks = { group = "com.android.tools.lint", name = "lint-checks", version.ref = "lint" }
+lintCli = { group = "com.android.tools.lint", name = "lint", version.ref = "lint" }
+lintTests = { group = "com.android.tools.lint", name = "lint-tests", version.ref = "lint" }
 
 kspSymbolProcessingApi = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
 protobufKotlinLite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
@@ -214,11 +232,14 @@ lifecycleViewModelSavedState = { group = "androidx.lifecycle", name = "lifecycle
 
 navigationRuntimeKtx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigation" }
 
-hiltAndroidCompiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hiltAndroid" }
-hiltAndroid = { group = "com.google.dagger", name = "hilt-android", version.ref = "hiltAndroid" }
-hiltCompilerJetpack = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hiltJetpack" }
-hiltWork = { group = "androidx.hilt", name = "hilt-work", version.ref = "hiltJetpack" }
-hiltNavigationCompose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltJetpack" }
+koinBom = { group = "io.insert-koin", name = "koin-bom", version = "3.6.0-wasm-alpha2" }
+koinCore = { group = "io.insert-koin", name = "koin-core" }
+koinKtor = { group = "io.insert-koin", name = "koin-ktor" }
+koinLoggerSlf4j = { group = "io.insert-koin", name = "koin-logger-slf4j" }
+koinAndroid = { group = "io.insert-koin", name = "koin-android" }
+koinAndroidxCompose = { group = "io.insert-koin", name = "koin-androidx-compose" }
+koinAndroidxNavigation = { group = "io.insert-koin", name = "koin-androidx-navigation" }
+koinAndroidxWorkmanager = { group = "io.insert-koin", name = "koin-androidx-workmanager" }
 
 navigationUiKtx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
 navigationCompose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
@@ -258,5 +279,7 @@ slf4jSimple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4j
 
 coilCompose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 
+espressoCore = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 junitExt = { group = "androidx.test.ext", name = "junit", version.ref = "junitExt" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }

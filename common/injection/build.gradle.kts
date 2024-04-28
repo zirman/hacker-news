@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
 }
 
 kotlin {
@@ -45,13 +44,12 @@ android {
 dependencies {
     coreLibraryDesugaring(libs.desugarJdkLibsNio)
 
-    ksp(libs.bundles.hiltCompiler)
-    implementation(libs.bundles.hilt)
-
     implementation(platform(libs.composeBom))
     implementation(platform(libs.firebaseBom))
+    implementation(platform(libs.koinBom))
 
     implementation(libs.bundles.kotlinx)
+    implementation(libs.bundles.koin)
     implementation(libs.bundles.androidx)
     implementation(libs.bundles.androidxCompose)
     lintChecks(libs.composeLintChecks)

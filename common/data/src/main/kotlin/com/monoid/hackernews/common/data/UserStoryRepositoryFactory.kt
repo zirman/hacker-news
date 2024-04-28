@@ -12,11 +12,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class UserStoryRepositoryFactory @Inject constructor(
+class UserStoryRepositoryFactory(
     private val httpClient: HttpClient,
     private val userDao: UserDao,
     private val itemDao: ItemDao,
@@ -35,7 +32,7 @@ class UserStoryRepositoryFactory @Inject constructor(
                             ?.mapIndexed { index, item ->
                                 OrderedItem(
                                     itemId = ItemId(item.id),
-                                    order = index
+                                    order = index,
                                 )
                             }
                             .orEmpty()
@@ -43,7 +40,7 @@ class UserStoryRepositoryFactory @Inject constructor(
                     .shareIn(
                         scope = scope,
                         started = SharingStarted.Lazily,
-                        replay = 1
+                        replay = 1,
                     )
 
                 override suspend fun updateItems() {
@@ -51,7 +48,7 @@ class UserStoryRepositoryFactory @Inject constructor(
                     itemDao.itemsInsert(user.submitted.map {
                         ItemDb(
                             id = it.long,
-                            by = username.string
+                            by = username.string,
                         )
                     })
                     userDao.upsertReplace(user.toUserApiUpdate())

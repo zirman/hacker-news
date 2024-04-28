@@ -5,26 +5,16 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import com.monoid.hackernews.common.data.AuthenticationSerializer
 import com.monoid.hackernews.common.datastore.Authentication
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
+import org.koin.android.ext.koin.androidContext
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-object DataStoreModule {
-
-    @Provides
-    fun provideAuthentication(
-        @ApplicationContext
-        context: Context,
-    ): DataStore<Authentication> {
-        return context.dataStore
+val dataStoreModule = module {
+    single<DataStore<Authentication>> {
+        androidContext().dataStore
     }
-
-    private val Context.dataStore by dataStore(
-        fileName = "settings.pb",
-        serializer = AuthenticationSerializer,
-    )
 }
+
+private val Context.dataStore: DataStore<Authentication> by dataStore(
+    fileName = "settings.pb",
+    serializer = AuthenticationSerializer,
+)

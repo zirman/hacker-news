@@ -1,106 +1,71 @@
 package com.monoid.hackernews.common
 
-import android.content.Context
 import androidx.room.Room
-import com.monoid.hackernews.common.room.AskStoryDao
-import com.monoid.hackernews.common.room.BestStoryDao
-import com.monoid.hackernews.common.room.ExpandedDao
-import com.monoid.hackernews.common.room.FavoriteDao
-import com.monoid.hackernews.common.room.FlagDao
-import com.monoid.hackernews.common.room.FollowedDao
 import com.monoid.hackernews.common.room.HNDatabase
-import com.monoid.hackernews.common.room.ItemDao
-import com.monoid.hackernews.common.room.JobStoryDao
-import com.monoid.hackernews.common.room.NewStoryDao
-import com.monoid.hackernews.common.room.ShowStoryDao
-import com.monoid.hackernews.common.room.TopStoryDao
-import com.monoid.hackernews.common.room.UpvoteDao
-import com.monoid.hackernews.common.room.UserDao
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import org.koin.android.ext.koin.androidContext
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-object DatabaseModule {
+val databaseModule = module {
 
-    @Singleton
-    @Provides
-    fun provideHNDatabase(@ApplicationContext applicationContext: Context): HNDatabase {
-        return Room
+    single {
+        Room
             .databaseBuilder(
-                context = applicationContext,
+                context = androidContext(),
                 klass = HNDatabase::class.java,
-                name = "hacker-news-database"
+                name = "hacker-news-database",
             )
             .build()
     }
 
-    @Provides
-    fun provideTopStoryDao(hnDatabase: HNDatabase): TopStoryDao {
-        return hnDatabase.topStoryDao()
+    single {
+        get<HNDatabase>().topStoryDao()
     }
 
-    @Provides
-    fun provideNewStoryDao(hnDatabase: HNDatabase): NewStoryDao {
-        return hnDatabase.newStoryDao()
+    single {
+        get<HNDatabase>().newStoryDao()
     }
 
-    @Provides
-    fun provideBestStoryDao(hnDatabase: HNDatabase): BestStoryDao {
-        return hnDatabase.bestStoryDao()
+    single {
+        get<HNDatabase>().bestStoryDao()
     }
 
-    @Provides
-    fun provideShowStoryDao(hnDatabase: HNDatabase): ShowStoryDao {
-        return hnDatabase.showStoryDao()
+    single {
+        get<HNDatabase>().showStoryDao()
     }
 
-    @Provides
-    fun provideAskStoryDao(hnDatabase: HNDatabase): AskStoryDao {
-        return hnDatabase.askStoryDao()
+    single {
+        get<HNDatabase>().askStoryDao()
     }
 
-    @Provides
-    fun provideJobStoryDao(hnDatabase: HNDatabase): JobStoryDao {
-        return hnDatabase.jobStoryDao()
+    single {
+        get<HNDatabase>().jobStoryDao()
     }
 
-    @Provides
-    fun provideItemDao(hnDatabase: HNDatabase): ItemDao {
-        return hnDatabase.itemDao()
+    single {
+        get<HNDatabase>().itemDao()
     }
 
-    @Provides
-    fun provideUserDao(hnDatabase: HNDatabase): UserDao {
-        return hnDatabase.userDao()
+    single {
+        get<HNDatabase>().userDao()
     }
 
-    @Provides
-    fun provideUpvoteDao(hnDatabase: HNDatabase): UpvoteDao {
-        return hnDatabase.upvoteDao()
+    single {
+        get<HNDatabase>().upvoteDao()
     }
 
-    @Provides
-    fun provideFavoriteDao(hnDatabase: HNDatabase): FavoriteDao {
-        return hnDatabase.favoriteDao()
+    single {
+        get<HNDatabase>().favoriteDao()
     }
 
-    @Provides
-    fun provideFlagDao(hnDatabase: HNDatabase): FlagDao {
-        return hnDatabase.flagDao()
+    single {
+        get<HNDatabase>().flagDao()
     }
 
-    @Provides
-    fun provideExpandedDao(hnDatabase: HNDatabase): ExpandedDao {
-        return hnDatabase.expandedDao()
+    single {
+        get<HNDatabase>().expandedDao()
     }
 
-    @Provides
-    fun provideFollowedDao(hnDatabase: HNDatabase): FollowedDao {
-        return hnDatabase.followedDao()
+    single {
+        get<HNDatabase>().followedDao()
     }
 }

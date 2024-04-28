@@ -6,7 +6,6 @@ import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.api.getFavorites
 import com.monoid.hackernews.common.datastore.Authentication
 import com.monoid.hackernews.common.room.FavoriteDao
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -15,12 +14,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class FavoriteStoryRepository @Inject constructor(
-    @ApplicationContext
+class FavoriteStoryRepository(
     private val context: Context,
     private val authentication: DataStore<Authentication>,
     private val favoriteDao: FavoriteDao,

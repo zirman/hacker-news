@@ -65,12 +65,13 @@ import com.monoid.hackernews.common.view.TooltipPopupPositionProvider
 import com.monoid.hackernews.view.navigationdrawer.NavigationDrawerContent
 import com.monoid.hackernews.view.navigationdrawer.NavigationRailContent
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MainContent(
-    mainViewModel: MainViewModel,
     windowSizeClass: WindowSizeClass,
     modifier: Modifier = Modifier,
+    mainViewModel: MainViewModel = koinViewModel(),
 ) {
     val drawerState: DrawerState =
         rememberDrawerState(DrawerValue.Closed)
@@ -207,7 +208,6 @@ fun MainContent(
                                                             Text(text = stringResource(id = R.string.dismiss))
                                                         }
                                                     }
-
                                                 }
                                             }
                                         },
@@ -218,7 +218,7 @@ fun MainContent(
                                             onClick = {
                                                 mainNavController.navigate(
                                                     MainNavigation.Login
-                                                        .routeWithArgs(LoginAction.Login)
+                                                        .routeWithArgs(LoginAction.Login),
                                                 )
                                             },
                                             icon = {
@@ -268,8 +268,8 @@ fun MainContent(
                     Brush.verticalGradient(
                         Pair(0f, MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 1f)),
                         Pair(.4f, MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.8f)),
-                        Pair(1f, MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0f))
-                    )
+                        Pair(1f, MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0f)),
+                    ),
                 )
                 .fillMaxWidth()
                 .windowInsetsTopHeight(WindowInsets.safeDrawing)
@@ -283,8 +283,8 @@ fun MainContent(
                     Brush.verticalGradient(
                         Pair(0f, MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0f)),
                         Pair(.6f, MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.8f)),
-                        Pair(1f, MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 1f))
-                    )
+                        Pair(1f, MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 1f)),
+                    ),
                 )
                 .fillMaxWidth()
                 .windowInsetsBottomHeight(WindowInsets.safeDrawing)

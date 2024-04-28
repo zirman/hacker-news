@@ -9,7 +9,6 @@ plugins {
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.protobuf)
-    alias(libs.plugins.hilt)
 }
 
 kotlin {
@@ -94,15 +93,14 @@ androidComponents {
 dependencies {
     coreLibraryDesugaring(libs.desugarJdkLibsNio)
 
-    ksp(libs.bundles.hiltCompiler)
-    implementation(libs.bundles.hilt)
-
     implementation(project(":common:injection"))
 
     implementation(platform(libs.composeBom))
     implementation(platform(libs.firebaseBom))
+    implementation(platform(libs.koinBom))
 
     implementation(libs.bundles.kotlinx)
+    implementation(libs.bundles.koin)
     implementation(libs.bundles.androidx)
     implementation(libs.bundles.google)
     implementation(libs.bundles.firebase)

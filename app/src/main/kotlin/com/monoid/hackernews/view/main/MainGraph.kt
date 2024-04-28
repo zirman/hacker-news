@@ -39,7 +39,7 @@ fun NavGraphBuilder.mainGraph(
             snackbarHostState = snackbarHostState,
             onNavigateToUser = onNavigateToUser,
             onNavigateToReply = onNavigateToReply,
-            onNavigateToLogin = onNavigateToLogin
+            onNavigateToLogin = onNavigateToLogin,
         )
 
         homeScreen(
@@ -60,7 +60,7 @@ fun NavGraphBuilder.mainGraph(
             windowSizeClassState = windowSizeClassState,
             onNavigateToReply = onNavigateToReply,
             onNavigateUp = onNavigateUp,
-            onLoginError = onLoginError
+            onLoginError = onLoginError,
         )
 
         replyBottomSheet(

@@ -13,15 +13,18 @@ import com.monoid.hackernews.common.api.getFavorites
 import com.monoid.hackernews.common.api.getUpvoted
 import com.monoid.hackernews.common.data.ItemTreeRepository
 import com.monoid.hackernews.common.data.Username
+import com.monoid.hackernews.common.dataStoreModule
+import com.monoid.hackernews.common.databaseModule
 import com.monoid.hackernews.common.datastore.Authentication
+import com.monoid.hackernews.common.injection.dispatcherModule
+import com.monoid.hackernews.common.injection.firebaseModule
+import com.monoid.hackernews.common.networkModule
 import com.monoid.hackernews.common.room.FavoriteDao
 import com.monoid.hackernews.common.room.HNDatabase
 import com.monoid.hackernews.common.room.UpvoteDao
 import com.monoid.hackernews.common.view.updateAndPushDynamicShortcuts
-import dagger.hilt.android.HiltAndroidApp
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.MainCoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
@@ -29,42 +32,40 @@ import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidFileProperties
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.GlobalContext.startKoin
+import org.koin.core.qualifier.named
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
-@HiltAndroidApp
 class HNApplication : Application() {
-
-    @Inject
-    lateinit var mainCoroutineDispatcher: MainCoroutineDispatcher
-
-    @Inject
-    lateinit var firebaseCrashlytics: FirebaseCrashlytics
-
-    @Inject
-    lateinit var authentication: DataStore<Authentication>
-
-    @Inject
-    lateinit var db: HNDatabase
-
-    @Inject
-    lateinit var upvoteDao: UpvoteDao
-
-    @Inject
-    lateinit var favoriteDao: FavoriteDao
-
-    @Inject
-    lateinit var httpClient: HttpClient
-
-    @Inject
-    lateinit var itemTreeRepository: ItemTreeRepository
-
-    @ApplicationLifecycleOwner
-    @Inject
-    lateinit var applicationLifecycleOwner: LifecycleOwner
+    private val firebaseCrashlytics: FirebaseCrashlytics by inject()
+    private val authentication: DataStore<Authentication> by inject()
+    private val db: HNDatabase by inject()
+    private val upvoteDao: UpvoteDao by inject()
+    private val favoriteDao: FavoriteDao by inject()
+    private val httpClient: HttpClient by inject()
+    private val itemTreeRepository: ItemTreeRepository by inject()
+    private val applicationLifecycleOwner: LifecycleOwner by inject(named(LifecycleOwnerQualifier.ApplicationLifecycleOwner))
 
     override fun onCreate() {
         super.onCreate()
+
+        startKoin {
+            androidContext(this@HNApplication)
+            androidLogger()
+            androidFileProperties()
+            modules(
+                applicationModule,
+                dispatcherModule,
+                networkModule,
+                databaseModule,
+                dataStoreModule,
+                firebaseModule,
+            )
+        }
 
         applicationLifecycleOwner.lifecycleScope.launch(
             CoroutineExceptionHandler { _, error ->
@@ -83,11 +84,10 @@ class HNApplication : Application() {
                                         upvoteDao.replaceUpvotesForUser(
                                             username = authentication.username,
                                             upvotes = getUpvoted(
-                                                this@HNApplication,
-                                                authentication,
-                                                Username(authentication.username)
-                                            )
-                                                .map { it.long },
+                                                context = this@HNApplication,
+                                                authentication = authentication,
+                                                username = Username(authentication.username),
+                                            ).map { it.long },
                                         )
                                     }
 
@@ -96,10 +96,9 @@ class HNApplication : Application() {
                                         favoriteDao.replaceFavoritesForUser(
                                             username = authentication.username,
                                             favorites = getFavorites(
-                                                this@HNApplication,
-                                                Username(authentication.username)
-                                            )
-                                                .map { it.long },
+                                                context = this@HNApplication,
+                                                username = Username(authentication.username),
+                                            ).map { it.long },
                                         )
                                     }
 
@@ -127,8 +126,8 @@ class HNApplication : Application() {
 
         // register locale changed broadcast receiver
         registerReceiver(
-            LocaleChangedBroadcastReceiver(),
-            IntentFilter(Intent.ACTION_LOCALE_CHANGED)
+            /* receiver = */ LocaleChangedBroadcastReceiver(),
+            /* filter = */ IntentFilter(Intent.ACTION_LOCALE_CHANGED),
         )
     }
 

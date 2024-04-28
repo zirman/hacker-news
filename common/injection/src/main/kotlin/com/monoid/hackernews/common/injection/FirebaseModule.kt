@@ -1,17 +1,10 @@
 package com.monoid.hackernews.common.injection
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-object FirebaseModule {
-
-    @Provides
-    fun provideFirebaseCrashlytics(): FirebaseCrashlytics {
-        return FirebaseCrashlytics.getInstance()
+val firebaseModule = module {
+    single {
+        FirebaseCrashlytics.getInstance()
     }
 }
