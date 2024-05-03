@@ -29,7 +29,7 @@ fun NavGraphBuilder.mainGraph(
 ) {
     navigation(
         startDestination = MainNavigation.Home.route,
-        route = mainGraphRoutePattern
+        route = mainGraphRoutePattern,
     ) {
         userScreen(
             mainViewModel = mainViewModel,

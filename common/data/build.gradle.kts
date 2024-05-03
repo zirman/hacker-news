@@ -104,6 +104,8 @@ dependencies {
     implementation(libs.bundles.androidx)
     implementation(libs.bundles.google)
     implementation(libs.bundles.firebase)
+    api(libs.datastore)
+
     api(libs.bundles.ktor)
     ksp(libs.roomCompiler)
 
