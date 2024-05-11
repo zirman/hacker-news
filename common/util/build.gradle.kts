@@ -44,7 +44,6 @@ dependencies {
     coreLibraryDesugaring(libs.desugarJdkLibsNio)
 
     implementation(platform(libs.composeBom))
-    implementation(platform(libs.firebaseBom))
     implementation(platform(libs.koinBom))
 
     implementation(libs.bundles.kotlinx)

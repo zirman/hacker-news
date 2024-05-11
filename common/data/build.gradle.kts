@@ -92,19 +92,16 @@ androidComponents {
 
 dependencies {
     coreLibraryDesugaring(libs.desugarJdkLibsNio)
-    implementation(project(":common:data-multiplatform"))
 
     implementation(project(":common:injection"))
 
     implementation(platform(libs.composeBom))
-    implementation(platform(libs.firebaseBom))
     implementation(platform(libs.koinBom))
 
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.koin)
     implementation(libs.bundles.androidx)
     implementation(libs.bundles.google)
-    implementation(libs.bundles.firebase)
     api(libs.datastore)
 
     api(libs.bundles.ktor)

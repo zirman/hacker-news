@@ -10,11 +10,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class JobStoryRepository @Inject constructor(
+class JobStoryRepository(
     private val httpClient: HttpClient,
     private val jobStoryDao: JobStoryDao,
 ) : Repository<OrderedItem> {

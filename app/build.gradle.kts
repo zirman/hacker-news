@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinxSerialization)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.googlePlayServices)
     alias(libs.plugins.crashlytics)
     alias(libs.plugins.firebasePerf)
@@ -109,7 +108,6 @@ dependencies {
     implementation(project(":common:util"))
 
     implementation(platform(libs.composeBom))
-    implementation(platform(libs.firebaseBom))
     implementation(platform(libs.koinBom))
 
     implementation(libs.bundles.kotlinx)
@@ -120,7 +118,6 @@ dependencies {
     implementation(libs.bundles.androidxApp)
     implementation(libs.bundles.google)
     implementation(libs.bundles.googleApp)
-    implementation(libs.bundles.firebase)
     implementation(libs.slf4jSimple)
 
     testImplementation(libs.bundles.test)

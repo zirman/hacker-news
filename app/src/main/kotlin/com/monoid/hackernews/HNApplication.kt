@@ -8,7 +8,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.monoid.hackernews.common.api.getFavorites
 import com.monoid.hackernews.common.api.getUpvoted
 import com.monoid.hackernews.common.data.ItemTreeRepository
@@ -16,6 +15,7 @@ import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.dataStoreModule
 import com.monoid.hackernews.common.databaseModule
 import com.monoid.hackernews.common.datastore.Authentication
+import com.monoid.hackernews.common.injection.FirebaseAdapter
 import com.monoid.hackernews.common.injection.dispatcherModule
 import com.monoid.hackernews.common.injection.firebaseModule
 import com.monoid.hackernews.common.networkModule
@@ -41,7 +41,7 @@ import org.koin.core.qualifier.named
 import java.util.concurrent.TimeUnit
 
 class HNApplication : Application() {
-    private val firebaseCrashlytics: FirebaseCrashlytics by inject()
+    private val firebaseCrashlytics: FirebaseAdapter by inject()
     private val authentication: DataStore<Authentication> by inject()
     private val db: HNDatabase by inject()
     private val upvoteDao: UpvoteDao by inject()

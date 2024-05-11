@@ -99,7 +99,6 @@ dependencies {
     implementation(project(":common:util"))
 
     implementation(platform(libs.composeBom))
-    implementation(platform(libs.firebaseBom))
     implementation(platform(libs.koinBom))
 
     implementation(libs.bundles.kotlinx)
@@ -110,6 +109,5 @@ dependencies {
     implementation(libs.bundles.androidxWear)
     implementation(libs.bundles.google)
     implementation(libs.bundles.googleWear)
-    implementation(libs.bundles.firebase)
     implementation(libs.slf4jSimple)
 }

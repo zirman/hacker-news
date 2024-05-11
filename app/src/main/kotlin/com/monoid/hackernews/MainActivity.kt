@@ -23,9 +23,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.metrics.performance.JankStats
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.monoid.hackernews.common.data.BuildConfig
 import com.monoid.hackernews.common.datastore.Authentication
+import com.monoid.hackernews.common.injection.FirebaseAdapter
 import com.monoid.hackernews.common.ui.util.rememberUseDarkTheme
 import com.monoid.hackernews.view.main.MainContent
 import com.monoid.hackernews.view.theme.AppTheme
@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
     override val scope: Scope by activityRetainedScope()
     private val authentication: DataStore<Authentication> by inject()
     private val viewModel: MainViewModel by inject()
-    private val crashlytics: FirebaseCrashlytics by inject()
+    private val crashlytics: FirebaseAdapter by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

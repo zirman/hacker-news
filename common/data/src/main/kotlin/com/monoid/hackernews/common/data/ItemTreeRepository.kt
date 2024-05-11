@@ -4,13 +4,13 @@ import android.os.Looper
 import android.util.Log
 import androidx.compose.runtime.Stable
 import androidx.datastore.core.DataStore
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.api.favoriteRequest
 import com.monoid.hackernews.common.api.flagRequest
 import com.monoid.hackernews.common.api.getItem
 import com.monoid.hackernews.common.api.upvoteItem
 import com.monoid.hackernews.common.datastore.Authentication
+import com.monoid.hackernews.common.injection.FirebaseAdapter
 import com.monoid.hackernews.common.room.ExpandedDao
 import com.monoid.hackernews.common.room.ExpandedDb
 import com.monoid.hackernews.common.room.FavoriteDao
@@ -58,7 +58,7 @@ import kotlin.math.max
 class ItemTreeRepository(
     private val authentication: DataStore<Authentication>,
     private val httpClient: HttpClient,
-    private val firebaseCrashlytics: FirebaseCrashlytics,
+    private val firebaseCrashlytics: FirebaseAdapter,
     private val itemDao: ItemDao,
     private val upvoteDao: UpvoteDao,
     private val favoriteDao: FavoriteDao,
