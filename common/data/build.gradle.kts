@@ -92,6 +92,7 @@ androidComponents {
 
 dependencies {
     coreLibraryDesugaring(libs.desugarJdkLibsNio)
+    implementation(project(":common:data-multiplatform"))
 
     implementation(project(":common:injection"))
 
