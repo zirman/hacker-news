@@ -5,6 +5,7 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
 }
 
@@ -20,6 +21,7 @@ dependencyResolutionManagement {
 rootProject.name = "Hacker News"
 include(":app")
 include(":wear")
+include(":desktop")
 include(":common:injection")
 include(":common:view")
 include(":common:domain")

@@ -7,6 +7,9 @@ plugins {
 }
 
 kotlin {
+    jvm {
+    }
+
     androidTarget {
         compilations.all {
             kotlinOptions {
@@ -15,31 +18,31 @@ kotlin {
         }
     }
 
-    dependencies {
-        implementation(platform(libs.kotilnxCoroutinesBom))
-        implementation(platform(libs.kotlinWrappersBom))
-        implementation(platform(libs.koinBom))
-        implementation(platform(libs.firebaseBom))
-        implementation(platform(libs.composeBom))
-        compileOnly(libs.koinCore)
-        coreLibraryDesugaring(libs.desugarJdkLibsNio)
-        implementation(libs.bundles.androidxCompose)
-        implementation(libs.bundles.kotlinx)
-        implementation(libs.bundles.koin)
-    }
-
     sourceSets {
         commonMain.dependencies {
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.material)
+            implementation(compose.ui)
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
+
+            implementation(project.dependencies.platform(libs.kotilnxCoroutinesBom))
+            implementation(project.dependencies.platform(libs.kotlinWrappersBom))
+            implementation(project.dependencies.platform(libs.koinBom))
+            compileOnly(libs.koinCore)
+            implementation(libs.bundles.kotlinx)
+            implementation(libs.bundles.koin)
         }
+
         commonTest.dependencies {
             implementation(libs.kotlinTest)
         }
 
         androidMain.dependencies {
+            implementation(project.dependencies.platform(libs.firebaseBom))
+            project.dependencies.coreLibraryDesugaring(libs.desugarJdkLibsNio)
             implementation(libs.bundles.firebase)
-        }
-
-        nativeMain.dependencies {
         }
     }
 }
@@ -50,7 +53,6 @@ android {
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     compileOptions {
