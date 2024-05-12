@@ -253,7 +253,7 @@ lifecycleViewModelSavedState = { group = "androidx.lifecycle", name = "lifecycle
 
 navigationRuntimeKtx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigation" }
 
-koinBom = { group = "io.insert-koin", name = "koin-bom", version = "3.5.6" }
+koinBom = { group = "io.insert-koin", name = "koin-bom", version = "3.6.0-wasm-alpha2" }
 koinCore = { group = "io.insert-koin", name = "koin-core" }
 koinKtor = { group = "io.insert-koin", name = "koin-ktor" }
 koinLoggerSlf4j = { group = "io.insert-koin", name = "koin-logger-slf4j" }
