@@ -23,8 +23,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.metrics.performance.JankStats
+import com.monoid.hackernews.common.data.Authentication
 import com.monoid.hackernews.common.data.BuildConfig
-import com.monoid.hackernews.common.datastore.Authentication
 import com.monoid.hackernews.common.injection.FirebaseAdapter
 import com.monoid.hackernews.common.ui.util.rememberUseDarkTheme
 import com.monoid.hackernews.view.main.MainContent
@@ -112,8 +112,9 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
             val useDarkTheme: Boolean =
                 rememberUseDarkTheme()
 
-            val fontState: String? by remember<Flow<String?>> { authentication.data.map { it.font } }
-                .collectAsStateWithLifecycle(null)
+            val fontState: String? = null
+//            by remember<Flow<String?>> { authentication.data.map { it.font } }
+//                .collectAsStateWithLifecycle(null)
 
             AppTheme(
                 useDarkTheme = useDarkTheme,

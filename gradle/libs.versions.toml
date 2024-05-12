@@ -1,4 +1,6 @@
 [versions]
+annotation = "1.7.1"
+collection = "1.4.0"
 jvmTarget = "17"
 compileSdk = "34"
 targetSdk = "34"
@@ -10,18 +12,20 @@ lint = "31.4.0"
 desugarJdkLibs = "2.0.4"
 kotlin = "1.9.23"
 kotlinWrappersBom = "1.0.0-pre.746"
-compose = "1.6.1"
+compose = "1.6.2"
 ksp = "1.9.23-1.0.19"
-kotlinxCoroutines = "1.7.3"
+kotlinxCoroutines = "1.8.1"
 kotlinxSerialization = "1.6.3"
 kotlinxCollectionsImmutable = "0.3.7"
 kotlinxDatetime = "0.5.0"
 ktor = "2.3.11"
+kermit = "2.0.3"
 room = "2.7.0-alpha01"
+sqlite = "2.5.0-SNAPSHOT"
 datastore = "1.1.1"
 activityKtx = "1.9.0"
 fragmentKtx = "1.7.0"
-lifecycle = "2.8.0-alpha03"
+#lifecycle = "2.8.0-rc01"
 navigation = "2.7.7"
 protobufPlugin = "0.9.4"
 protobuf = "3.25.2"
@@ -61,12 +65,13 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlinxParcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
-compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose" }
 androidApplication = { id = "com.android.application", version.ref = "android" }
 androidLibrary = { id = "com.android.library", version.ref = "android" }
 androidLint = { id = "com.android.lint", version.ref = "android" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
+room = { id = "androidx.room", version.ref = "room" }
 googlePlayServices = { id = "com.google.gms.google-services", version.ref = "googlePlayServices" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics" }
 firebasePerf = { id = "com.google.firebase.firebase-perf", version.ref = "firebasePerf" }
@@ -211,12 +216,18 @@ ktorClientLogging = { group = "io.ktor", name = "ktor-client-logging", version.r
 ktorClientContentNegotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktorSerializationKotlinxJson = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 
+kermit = { group = "co.touchlab", name = "kermit", version.ref = "kermit" }
+
+roomCompiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 roomRuntime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 roomKtx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 roomPaging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
-roomCompiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+sqliteBundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "sqlite" }
 
-datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
+datastore = { group = "androidx.datastore", name = "datastore", version.ref = "datastore" }
+datastoreCoreOkio = { group = "androidx.datastore", name = "datastore-core-okio", version.ref = "datastore" }
+datastorePreferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+datastorePreferencesCore = { group = "androidx.datastore", name = "datastore-preferences-core", version.ref = "datastore" }
 
 window = { group = "androidx.window", name = "window", version.ref = "window" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
@@ -224,6 +235,7 @@ coreKtx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" 
 coreSplashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplashscreen" }
 
 collectionKtx = { group = "androidx.collection", name = "collection-ktx", version.ref = "collectionKtx" }
+annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
 activityKtx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
 activityCompose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityKtx" }
 fragmentKtx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }
@@ -232,16 +244,16 @@ workRuntimeKtx = { group = "androidx.work", name = "work-runtime-ktx", version.r
 preferenceKtx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preferenceKtx" }
 metricsPerformance = { group = "androidx.metrics", name = "metrics-performance", version.ref = "metricsPerformance" }
 
-lifecycleProcess = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "lifecycle" }
-lifecycleRuntimeKtx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
-lifecycleViewModelKtx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
-lifecycleRuntimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
-lifecycleViewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
-lifecycleViewModelSavedState = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-savedstate", version.ref = "lifecycle" }
+lifecycleProcess = { group = "androidx.lifecycle", name = "lifecycle-process" }
+lifecycleRuntimeKtx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx" }
+lifecycleViewModelKtx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx" }
+lifecycleRuntimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose" }
+lifecycleViewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose" }
+lifecycleViewModelSavedState = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-savedstate" }
 
 navigationRuntimeKtx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigation" }
 
-koinBom = { group = "io.insert-koin", name = "koin-bom", version = "3.6.0-wasm-alpha2" }
+koinBom = { group = "io.insert-koin", name = "koin-bom", version = "3.5.6" }
 koinCore = { group = "io.insert-koin", name = "koin-core" }
 koinKtor = { group = "io.insert-koin", name = "koin-ktor" }
 koinLoggerSlf4j = { group = "io.insert-koin", name = "koin-logger-slf4j" }

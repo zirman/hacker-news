@@ -1,0 +1,40 @@
+package com.monoid.hackernews.common.data
+
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
+@SerialName("LoginAction")
+sealed class LoginAction {
+    @Serializable
+    @SerialName("Login")
+    data object Login : LoginAction()
+
+    @Serializable
+    @SerialName("Upvote")
+    data class Upvote(
+        @SerialName("itemId")
+        val itemId: Long,
+    ) : LoginAction()
+
+    @Serializable
+    @SerialName("Favorite")
+    data class Favorite(
+        @SerialName("itemId")
+        val itemId: Long,
+    ) : LoginAction()
+
+    @Serializable
+    @SerialName("Flag")
+    data class Flag(
+        @SerialName("itemId")
+        val itemId: Long,
+    ) : LoginAction()
+
+    @Serializable
+    @SerialName("Reply")
+    data class Reply(
+        @SerialName("itemId")
+        val itemId: Long,
+    ) : LoginAction()
+}

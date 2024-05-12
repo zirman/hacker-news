@@ -10,11 +10,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.monoid.hackernews.common.api.getFavorites
 import com.monoid.hackernews.common.api.getUpvoted
+import com.monoid.hackernews.common.data.Authentication
 import com.monoid.hackernews.common.data.ItemTreeRepository
 import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.dataStoreModule
 import com.monoid.hackernews.common.databaseModule
-import com.monoid.hackernews.common.datastore.Authentication
 import com.monoid.hackernews.common.injection.FirebaseAdapter
 import com.monoid.hackernews.common.injection.dispatcherModule
 import com.monoid.hackernews.common.injection.firebaseModule
@@ -84,7 +84,6 @@ class HNApplication : Application() {
                                         upvoteDao.replaceUpvotesForUser(
                                             username = authentication.username,
                                             upvotes = getUpvoted(
-                                                context = this@HNApplication,
                                                 authentication = authentication,
                                                 username = Username(authentication.username),
                                             ).map { it.long },
@@ -96,7 +95,6 @@ class HNApplication : Application() {
                                         favoriteDao.replaceFavoritesForUser(
                                             username = authentication.username,
                                             favorites = getFavorites(
-                                                context = this@HNApplication,
                                                 username = Username(authentication.username),
                                             ).map { it.long },
                                         )

@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.compose)
+    //alias(libs.plugins.jetbrainsCompose)
 }
 
 kotlin {
@@ -20,12 +20,12 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
+//            implementation(compose.runtime)
+//            implementation(compose.foundation)
+//            implementation(compose.material)
+//            implementation(compose.ui)
+//            implementation(compose.components.resources)
+//            implementation(compose.components.uiToolingPreview)
 
             implementation(project.dependencies.platform(libs.kotilnxCoroutinesBom))
             implementation(project.dependencies.platform(libs.kotlinWrappersBom))
@@ -63,7 +63,7 @@ android {
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("src/androidMain/res")
-    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
+//    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 
     packaging {
         resources {

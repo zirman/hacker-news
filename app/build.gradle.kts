@@ -120,6 +120,9 @@ dependencies {
     implementation(libs.bundles.googleApp)
     implementation(libs.slf4jSimple)
 
+    implementation(libs.datastore)
+    implementation(libs.bundles.ktor)
+
     testImplementation(libs.bundles.test)
     debugImplementation(libs.uiTestManifest)
 }

@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.datastore.core.DataStore
 import androidx.navigation.NavGraphBuilder
 import com.google.accompanist.navigation.material.bottomSheet
-import com.monoid.hackernews.common.datastore.Authentication
+import com.monoid.hackernews.common.data.Authentication
 import com.monoid.hackernews.common.navigation.MainNavigation
 import com.monoid.hackernews.view.settings.Settings
 

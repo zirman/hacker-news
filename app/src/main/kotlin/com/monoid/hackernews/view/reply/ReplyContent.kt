@@ -31,9 +31,9 @@ import androidx.datastore.core.DataStore
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.api.commentRequest
+import com.monoid.hackernews.common.data.Authentication
 import com.monoid.hackernews.common.data.ItemTreeRepository
 import com.monoid.hackernews.common.data.ItemUi
-import com.monoid.hackernews.common.datastore.Authentication
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.util.getAnnotatedString
 import com.monoid.hackernews.view.text.ReplyTextField

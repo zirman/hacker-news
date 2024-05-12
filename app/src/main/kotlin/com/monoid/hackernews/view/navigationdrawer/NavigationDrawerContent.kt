@@ -32,9 +32,9 @@ import androidx.compose.ui.unit.dp
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import com.monoid.hackernews.common.data.Authentication
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
-import com.monoid.hackernews.common.datastore.Authentication
 import com.monoid.hackernews.common.navigation.MainNavigation
 import com.monoid.hackernews.common.view.R
 import kotlinx.coroutines.CoroutineScope

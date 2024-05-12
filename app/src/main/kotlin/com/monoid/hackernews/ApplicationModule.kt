@@ -14,7 +14,6 @@ import com.monoid.hackernews.common.data.TopStoryRepository
 import com.monoid.hackernews.common.data.UserStoryRepositoryFactory
 import com.monoid.hackernews.common.injection.DispatcherQualifier
 import kotlinx.coroutines.channels.Channel
-import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -47,7 +46,6 @@ val applicationModule = module {
 
     single {
         FavoriteStoryRepository(
-            context = androidContext(),
             authentication = get(),
             favoriteDao = get(),
         )
@@ -105,7 +103,6 @@ val applicationModule = module {
 
     single {
         FavoriteStoryRepository(
-            context = get(),
             authentication = get(),
             favoriteDao = get(),
         )

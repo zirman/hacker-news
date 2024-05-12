@@ -6,8 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.datastore.core.DataStore
-import com.monoid.hackernews.common.datastore.Authentication
-import com.monoid.hackernews.common.datastore.copy
+import com.monoid.hackernews.common.data.Authentication
 import com.monoid.hackernews.view.theme.HNFont
 import kotlinx.coroutines.launch
 import kotlinx.serialization.encodeToString
@@ -25,9 +24,9 @@ fun FontButton(
         onClick = {
             coroutineScope.launch {
                 authentication.updateData {
-                    it.copy {
-                        font = Json.encodeToString(hnFont)
-                    }
+                    it.copy(
+                        font = Json.encodeToString(hnFont),
+                    )
                 }
             }
         },

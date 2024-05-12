@@ -54,10 +54,10 @@ import androidx.navigation.plusAssign
 import com.google.accompanist.navigation.material.BottomSheetNavigator
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.monoid.hackernews.MainViewModel
+import com.monoid.hackernews.common.data.Authentication
 import com.monoid.hackernews.common.data.BuildConfig
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
-import com.monoid.hackernews.common.datastore.Authentication
 import com.monoid.hackernews.common.navigation.MainNavigation
 import com.monoid.hackernews.common.util.rememberMetricsStateHolder
 import com.monoid.hackernews.common.view.R

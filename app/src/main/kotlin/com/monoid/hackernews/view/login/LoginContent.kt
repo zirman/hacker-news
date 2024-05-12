@@ -40,14 +40,12 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.datastore.core.DataStore
 import com.monoid.hackernews.common.api.loginRequest
-import com.monoid.hackernews.common.datastore.Authentication
-import com.monoid.hackernews.common.datastore.authentication
-import com.monoid.hackernews.common.datastore.copy
+import com.monoid.hackernews.common.data.Authentication
 import com.monoid.hackernews.common.view.R
-import com.monoid.hackernews.view.text.PasswordTextField
-import com.monoid.hackernews.view.text.UsernameTextField
 import com.monoid.hackernews.util.onClick
 import com.monoid.hackernews.util.rememberAnnotatedString
+import com.monoid.hackernews.view.text.PasswordTextField
+import com.monoid.hackernews.view.text.UsernameTextField
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.currentCoroutineContext
@@ -116,15 +114,17 @@ fun LoginContent(
                     try {
                         onLogin(
                             authentication.updateData { auth ->
-                                httpClient.loginRequest(authentication = authentication {
-                                    this.username = username
-                                    this.password = password
-                                })
+                                httpClient.loginRequest(
+                                    authentication = Authentication(
+                                        username = username,
+                                        password = password,
+                                    )
+                                )
 
-                                auth.copy {
-                                    this.username = username
-                                    this.password = password
-                                }
+                                auth.copy(
+                                    username = username,
+                                    password = password,
+                                )
                             }
                         )
                     } catch (error: Throwable) {

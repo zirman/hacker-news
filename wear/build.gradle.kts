@@ -110,4 +110,7 @@ dependencies {
     implementation(libs.bundles.google)
     implementation(libs.bundles.googleWear)
     implementation(libs.slf4jSimple)
+
+    implementation(libs.datastore)
+    implementation(libs.bundles.ktor)
 }

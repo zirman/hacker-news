@@ -18,6 +18,7 @@ import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -59,12 +60,7 @@ data object StoriesNavType : NavType<Stories>(isNullableAllowed = false) {
 
 private data object ActionNavType : NavType<LoginAction>(isNullableAllowed = true) {
     override fun get(bundle: Bundle, key: String): LoginAction? {
-        return if (Build.VERSION.SDK_INT >= 33) {
-            bundle.getParcelable(key, LoginAction::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            bundle.getParcelable(key)
-        }
+        return bundle.getString(key)?.let { Json.decodeFromString(it) }
     }
 
     override fun parseValue(value: String): LoginAction {
@@ -72,7 +68,7 @@ private data object ActionNavType : NavType<LoginAction>(isNullableAllowed = tru
     }
 
     override fun put(bundle: Bundle, key: String, value: LoginAction) {
-        bundle.putParcelable(key, value)
+        bundle.putString(key, Json.encodeToString(value))
     }
 
     fun encode(action: LoginAction): String {
@@ -127,12 +123,16 @@ sealed class MainNavigation<T : Any> {
             return when (route) {
                 Home.route ->
                     Home
+
                 Login.route ->
                     Login
+
                 Reply.route ->
                     Reply
+
                 User.route ->
                     User
+
                 else ->
                     null
             }
@@ -189,18 +189,25 @@ sealed class MainNavigation<T : Any> {
             ) {
                 "news" ->
                     Stories.Top
+
                 "newest" ->
                     Stories.New
+
                 "best" ->
                     Stories.Best
+
                 "show" ->
                     Stories.Show
+
                 "ask" ->
                     Stories.Ask
+
                 "jobs" ->
                     Stories.Job
+
                 "favorites" ->
                     Stories.Favorite
+
                 else ->
                     if (Build.VERSION.SDK_INT >= 33) {
                         navBackStackEntry.arguments?.getParcelable(STORIES_KEY, Stories::class.java)
@@ -259,7 +266,7 @@ sealed class MainNavigation<T : Any> {
                 }
             )
 
-    override fun routeWithArgs(args: Username): String =
+        override fun routeWithArgs(args: Username): String =
             "user?$USERNAME_KEY=${UsernameNavType.encodeValue(args)}"
 
         override fun argsFromRoute(navBackStackEntry: NavBackStackEntry): Username {

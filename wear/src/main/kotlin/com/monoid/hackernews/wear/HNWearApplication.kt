@@ -8,14 +8,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.monoid.hackernews.common.api.getFavorites
 import com.monoid.hackernews.common.api.getUpvoted
+import com.monoid.hackernews.common.data.Authentication
 import com.monoid.hackernews.common.data.ItemTreeRepository
 import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.dataStoreModule
 import com.monoid.hackernews.common.databaseModule
-import com.monoid.hackernews.common.datastore.Authentication
+import com.monoid.hackernews.common.injection.FirebaseAdapter
 import com.monoid.hackernews.common.injection.dispatcherModule
 import com.monoid.hackernews.common.injection.firebaseModule
 import com.monoid.hackernews.common.networkModule
@@ -40,7 +40,7 @@ import org.koin.core.context.startKoin
 import java.util.concurrent.TimeUnit
 
 class HNWearApplication : Application() {
-    private val firebaseCrashlytics: FirebaseCrashlytics by inject()
+    private val firebaseCrashlytics: FirebaseAdapter by inject()
     private val authentication: DataStore<Authentication> by inject()
     private val db: HNDatabase by inject()
     private val upvoteDao: UpvoteDao by inject()
@@ -76,33 +76,26 @@ class HNWearApplication : Application() {
             lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 // Update upvote and favorite table on login and then periodically.
                 authentication.data.distinctUntilChanged().collectLatest { authentication ->
-                    if (authentication.password?.isNotEmpty() == true) {
+                    if (authentication.password.isNotEmpty()) {
                         while (true) {
                             try {
-                                val upvoteDef =
-                                    async {
-                                        upvoteDao.replaceUpvotesForUser(
-                                            username = authentication.username,
-                                            upvotes = getUpvoted(
-                                                this@HNWearApplication,
-                                                authentication,
-                                                Username(authentication.username)
-                                            )
-                                                .map { it.long },
-                                        )
-                                    }
+                                val upvoteDef = async {
+                                    upvoteDao.replaceUpvotesForUser(
+                                        username = authentication.username,
+                                        upvotes = getUpvoted(
+                                            authentication,
+                                            Username(authentication.username)
+                                        ).map { it.long },
+                                    )
+                                }
 
-                                val favoriteDef =
-                                    async {
-                                        favoriteDao.replaceFavoritesForUser(
-                                            username = authentication.username,
-                                            favorites = getFavorites(
-                                                this@HNWearApplication,
-                                                Username(authentication.username)
-                                            )
-                                                .map { it.long },
-                                        )
-                                    }
+                                val favoriteDef = async {
+                                    favoriteDao.replaceFavoritesForUser(
+                                        username = authentication.username,
+                                        favorites = getFavorites(Username(authentication.username))
+                                            .map { it.long },
+                                    )
+                                }
 
                                 delay(
                                     TimeUnit.HOURS.toMillis(
