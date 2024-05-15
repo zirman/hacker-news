@@ -11,7 +11,7 @@ import org.koin.dsl.module
 
 actual val databaseModule: Module = module {
     single {
-        Room.databaseBuilder<HNDatabase>("hndatabase.db")
+        Room.databaseBuilder<HNDatabase>(name = "hndatabase.db")
             .setDriver(BundledSQLiteDriver())
             .setQueryCoroutineContext(get<CoroutineDispatcher>(named(DispatcherQualifier.Io)))
             .build()

@@ -13,7 +13,7 @@ interface FlagDao {
     fun getFlagsForUser(username: String): Flow<List<FlagDb>>
 
     @Query("SELECT EXISTS (SELECT * FROM flag WHERE itemId = :itemId AND username = :username)")
-    fun isFlag(itemId: Long, username: String): Boolean
+    suspend fun isFlag(itemId: Long, username: String): Boolean
 
     @Query("SELECT EXISTS (SELECT * FROM flag WHERE itemId = :itemId AND username = :username)")
     fun isFlagFlow(itemId: Long, username: String): Flow<Boolean>

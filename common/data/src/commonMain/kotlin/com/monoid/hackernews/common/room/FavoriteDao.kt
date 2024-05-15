@@ -14,7 +14,7 @@ interface FavoriteDao {
     fun getFavoritesForUser(username: String): Flow<List<FavoriteDb>>
 
     @Query("SELECT EXISTS (SELECT * FROM favorite WHERE itemId = :itemId AND username = :username)")
-    fun isFavorite(itemId: Long, username: String): Boolean
+    suspend fun isFavorite(itemId: Long, username: String): Boolean
 
     @Query("SELECT EXISTS (SELECT * FROM favorite WHERE itemId = :itemId AND username = :username)")
     fun isFavoriteFlow(itemId: Long, username: String): Flow<Boolean>

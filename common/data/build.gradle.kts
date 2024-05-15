@@ -4,11 +4,12 @@ plugins {
     alias(libs.plugins.kotlinxParcelize)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.ksp)
-//    alias(libs.plugins.protobuf)
     alias(libs.plugins.room)
 }
 
 kotlin {
+    jvmToolchain(17)
+
     jvm {
     }
 
@@ -43,12 +44,6 @@ kotlin {
 
             implementation(libs.collectionKtx)
 
-            // Lower-level APIs with support for custom serialization
-//            implementation(libs.datastoreCoreOkio)
-            // Higher-level APIs for storing values of basic types
-//            implementation(libs.datastorePreferencesCore)
-//            project.dependencies.annotationProcessor(libs.roomCompiler)
-
             implementation(project(":common:injection"))
         }
 
@@ -58,22 +53,17 @@ kotlin {
 
         androidMain.dependencies {
             project.dependencies.coreLibraryDesugaring(libs.desugarJdkLibsNio)
-//            project.dependencies.annotationProcessor(libs.roomCompiler)
+        }
 
-//    implementation(project(":common:injection"))
-//            implementation(project.dependencies.platform(libs.composeBom))
-//            implementation(project.dependencies.platform(libs.koinBom))
-
-
-//    ksp(libs.roomCompiler)
-//
-//    testImplementation(libs.bundles.test)
+        jvmMain.dependencies {
+            implementation(libs.ktorClientJava)
         }
     }
 }
 
 dependencies {
     add("kspAndroid", libs.roomCompiler)
+    add("kspJvm", libs.roomCompiler)
 }
 
 android {
@@ -92,85 +82,11 @@ android {
     }
 
     compileOptions {
-//        isCoreLibraryDesugaringEnabled = true
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-
-//    kotlinOptions {
-//        jvmTarget = libs.versions.jvmTarget.get()
-//    }
-
-    buildFeatures {
-        buildConfig = true
-//        compose = true
-    }
-//
-//    composeOptions {
-//        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
-//    }
 }
-
-//protobuf {
-//    protoc {
-//        artifact = "com.google.protobuf:protoc:${libs.versions.protobuf.get()}"
-//    }
-//
-//    plugins {
-//        id("java")
-//        id("kotlin")
-//    }
-//
-//    generateProtoTasks {
-//        all().forEach { task ->
-//            task.builtins {
-//                kotlin {}
-//                java {}
-//            }
-//
-//            task.plugins {
-//                id("java") {
-//                    option("lite")
-//                }
-//
-//                id("kotlin") {
-//                    option("lite")
-//                }
-//            }
-//        }
-//    }
-//}
-
-//androidComponents {
-//    onVariants(selector().all()) { variant ->
-//        afterEvaluate {
-//            val capName = variant.name.capitalized()
-//            tasks.getByName<KotlinCompile>("ksp${capName}Kotlin") {
-//                setSource(tasks.getByName("generate${capName}Proto").outputs)
-//            }
-//        }
-//    }
-//}
-
-//dependencies {
-//    coreLibraryDesugaring(libs.desugarJdkLibsNio)
-//
-//    implementation(project(":common:injection"))
-//
-//    implementation(platform(libs.composeBom))
-//    implementation(platform(libs.koinBom))
-//
-//    implementation(libs.bundles.kotlinx)
-//    implementation(libs.bundles.koin)
-//    implementation(libs.bundles.androidx)
-//    implementation(libs.bundles.google)
-//    api(libs.datastore)
-//
-//    api(libs.bundles.ktor)
-//    ksp(libs.roomCompiler)
-//
-//    testImplementation(libs.bundles.test)
-//}
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17

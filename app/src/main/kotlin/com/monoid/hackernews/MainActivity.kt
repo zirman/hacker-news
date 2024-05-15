@@ -24,7 +24,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.metrics.performance.JankStats
 import com.monoid.hackernews.common.data.Authentication
-import com.monoid.hackernews.common.data.BuildConfig
 import com.monoid.hackernews.common.injection.FirebaseAdapter
 import com.monoid.hackernews.common.ui.util.rememberUseDarkTheme
 import com.monoid.hackernews.view.main.MainContent
@@ -134,7 +133,7 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
             }
         }
 
-        if (BuildConfig.DEBUG.not()) {
+        if (false) { // TODO: prod build
             val jankStats: JankStats = JankStats
                 .createAndTrack(window) { frameData ->
                     if (frameData.isJank) {

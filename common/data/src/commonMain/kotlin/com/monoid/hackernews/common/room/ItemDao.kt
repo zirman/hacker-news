@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ItemDao {
     @Query("SELECT * FROM item WHERE id = :itemId")
-    fun itemById(itemId: Long): ItemDb?
+    suspend fun itemById(itemId: Long): ItemDb?
 
     @Query("SELECT * FROM item WHERE id = :itemId")
     fun itemByIdFlow(itemId: Long): Flow<ItemDb?>

@@ -55,7 +55,6 @@ import com.google.accompanist.navigation.material.BottomSheetNavigator
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.common.data.Authentication
-import com.monoid.hackernews.common.data.BuildConfig
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.navigation.MainNavigation
@@ -88,7 +87,7 @@ fun MainContent(
 
         // save route to jank stats
         LaunchedEffect(Unit) {
-            if (BuildConfig.DEBUG.not()) {
+            if (false) { // TODO: prod build
                 var route: String? = null
 
                 mainNavController.addOnDestinationChangedListener { _, destination, _ ->

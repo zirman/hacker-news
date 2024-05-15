@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface FollowedDao {
     @Query("SELECT EXISTS (SELECT * FROM followed WHERE itemId = :itemId)")
-    fun isFollowed(itemId: Long): Boolean
+    suspend fun isFollowed(itemId: Long): Boolean
 
     @Query("SELECT EXISTS (SELECT * FROM followed WHERE itemId = :itemId)")
     fun isFollowedFlow(itemId: Long): Flow<Boolean>

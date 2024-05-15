@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface UpvoteDao {
     @Query("SELECT EXISTS (SELECT * FROM upvote WHERE itemId = :itemId AND username = :username)")
-    fun isUpvote(itemId: Long, username: String): Boolean
+    suspend fun isUpvote(itemId: Long, username: String): Boolean
 
     @Query("SELECT EXISTS (SELECT * FROM upvote WHERE itemId = :itemId AND username = :username)")
     fun isUpvoteFlow(itemId: Long, username: String): Flow<Boolean>
