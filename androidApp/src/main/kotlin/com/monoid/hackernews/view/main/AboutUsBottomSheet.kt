@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterialNavigationApi::class)
+
 package com.monoid.hackernews.view.main
 
 import androidx.compose.foundation.layout.WindowInsets
@@ -9,22 +11,20 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
+import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.bottomSheet
 import com.monoid.hackernews.common.navigation.MainNavigation
 import com.monoid.hackernews.view.aboutus.AboutUs
 
-fun NavGraphBuilder.aboutUsBottomSheet(
-    windowSizeClassState: State<WindowSizeClass>,
-) {
+fun NavGraphBuilder.aboutUsBottomSheet(windowSizeClassState: WindowSizeClass) {
     bottomSheet(
         route = MainNavigation.AboutUs.route,
         arguments = MainNavigation.AboutUs.arguments,
     ) {
         AboutUs(
-            windowSizeClass = windowSizeClassState.value,
+            windowSizeClass = windowSizeClassState,
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(state = rememberScrollState())

@@ -1,6 +1,7 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.monoid.hackernews.view.itemdetail
 
-import android.content.Context
 import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.twotone.Comment
@@ -26,6 +26,7 @@ import androidx.compose.material.icons.twotone.Quickreply
 import androidx.compose.material.icons.twotone.ThumbUp
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
@@ -35,7 +36,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,7 +46,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
@@ -60,13 +60,11 @@ import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.room.ItemDb
 import com.monoid.hackernews.common.ui.util.rememberTimeBy
-import com.monoid.hackernews.common.ui.util.userTag
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.common.view.TooltipPopupPositionProvider
 import com.monoid.hackernews.common.view.placeholder.PlaceholderHighlight
 import com.monoid.hackernews.common.view.placeholder.placeholder
 import com.monoid.hackernews.common.view.placeholder.shimmer
-import com.monoid.hackernews.util.onClick
 import com.monoid.hackernews.util.rememberAnnotatedString
 import kotlinx.coroutines.launch
 
@@ -77,36 +75,34 @@ import kotlinx.coroutines.launch
 @Composable
 private fun ItemPreview() {
     RootItem(
-        itemUiState = remember {
-            mutableStateOf(ItemUiWithThreadDepth(
-                threadDepth = 0,
-                object : ItemUi() {
-                    override val item: ItemDb = ItemDb(
-                        id = 0,
-                        lastUpdate = 0,
-                        type = "story",
-                        time = 0,
-                        by = "Paul Graham",
-                        descendants = 4,
-                        title = "Hello World",
-                        score = 10,
-                        text = "Lorum Ipsum",
-                        url = "https://www.google.com/",
-                    )
-                    override val kids: List<ItemId> = emptyList()
-                    override val isUpvote: Boolean = false
-                    override val isFavorite: Boolean = false
-                    override val isFlag: Boolean = false
-                    override val isExpanded: Boolean = false
-                    override val isFollowed: Boolean = false
-                    override suspend fun toggleUpvote(onNavigateLogin: (LoginAction) -> Unit) {}
-                    override suspend fun toggleFavorite(onNavigateLogin: (LoginAction) -> Unit) {}
-                    override suspend fun toggleFlag(onNavigateLogin: (LoginAction) -> Unit) {}
-                    override suspend fun toggleExpanded() {}
-                    override suspend fun toggleFollowed() {}
-                }
-            ))
-        },
+        itemUi = ItemUiWithThreadDepth(
+            threadDepth = 0,
+            object : ItemUi() {
+                override val item: ItemDb = ItemDb(
+                    id = 0,
+                    lastUpdate = 0,
+                    type = "story",
+                    time = 0,
+                    by = "Paul Graham",
+                    descendants = 4,
+                    title = "Hello World",
+                    score = 10,
+                    text = "Lorum Ipsum",
+                    url = "https://www.google.com/",
+                )
+                override val kids: List<ItemId> = emptyList()
+                override val isUpvote: Boolean = false
+                override val isFavorite: Boolean = false
+                override val isFlag: Boolean = false
+                override val isExpanded: Boolean = false
+                override val isFollowed: Boolean = false
+                override suspend fun toggleUpvote(onNavigateLogin: (LoginAction) -> Unit) {}
+                override suspend fun toggleFavorite(onNavigateLogin: (LoginAction) -> Unit) {}
+                override suspend fun toggleFlag(onNavigateLogin: (LoginAction) -> Unit) {}
+                override suspend fun toggleExpanded() {}
+                override suspend fun toggleFollowed() {}
+            }
+        ),
         onClickReply = {},
         onClickUser = {},
         onClickBrowser = {},
@@ -116,7 +112,7 @@ private fun ItemPreview() {
 
 @Composable
 fun RootItem(
-    itemUiState: State<ItemUiWithThreadDepth?>,
+    itemUi: ItemUiWithThreadDepth?,
     onClickReply: (ItemId) -> Unit,
     onClickUser: (Username) -> Unit,
     onClickBrowser: (String) -> Unit,
@@ -124,7 +120,7 @@ fun RootItem(
     modifier: Modifier = Modifier,
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val item = itemUiState.value?.itemUi?.item
+    val item = itemUi?.itemUi?.item
     val isLoading = item == null
 
     Surface(
@@ -176,7 +172,7 @@ fun RootItem(
                                         Text(
                                             text = stringResource(
                                                 id = if (
-                                                    itemUiState.value?.itemUi?.isFavorite == true
+                                                    itemUi.itemUi?.isFavorite == true
                                                 ) {
                                                     R.string.un_favorite
                                                 } else {
@@ -187,8 +183,7 @@ fun RootItem(
                                     },
                                     onClick = {
                                         coroutineScope.launch {
-                                            itemUiState.value?.itemUi
-                                                ?.toggleFavorite(onNavigateLogin)
+                                            itemUi.itemUi?.toggleFavorite(onNavigateLogin)
                                         }
 
                                         setContextExpanded(false)
@@ -196,7 +191,7 @@ fun RootItem(
                                     leadingIcon = {
                                         Icon(
                                             imageVector = if (
-                                                itemUiState.value?.itemUi?.isFavorite == true
+                                                itemUi.itemUi?.isFavorite == true
                                             ) {
                                                 Icons.Filled.Favorite
                                             } else {
@@ -204,7 +199,7 @@ fun RootItem(
                                             },
                                             contentDescription = stringResource(
                                                 id = if (
-                                                    itemUiState.value?.itemUi?.isFavorite == true
+                                                    itemUi.itemUi?.isFavorite == true
                                                 ) {
                                                     R.string.un_favorite
                                                 } else {
@@ -220,7 +215,7 @@ fun RootItem(
                                 text = {
                                     Text(
                                         text = stringResource(
-                                            id = if (itemUiState.value?.itemUi?.isFollowed == true) {
+                                            id = if (itemUi.itemUi?.isFollowed == true) {
                                                 R.string.unfollow
                                             } else {
                                                 R.string.follow
@@ -230,20 +225,20 @@ fun RootItem(
                                 },
                                 onClick = {
                                     coroutineScope.launch {
-                                        itemUiState.value?.itemUi?.toggleFollowed()
+                                        itemUi.itemUi?.toggleFollowed()
                                     }
 
                                     setContextExpanded(false)
                                 },
                                 leadingIcon = {
                                     Icon(
-                                        imageVector = if (itemUiState.value?.itemUi?.isFollowed == true) {
+                                        imageVector = if (itemUi.itemUi?.isFollowed == true) {
                                             Icons.Filled.Quickreply
                                         } else {
                                             Icons.TwoTone.Quickreply
                                         },
                                         contentDescription = stringResource(
-                                            id = if (itemUiState.value?.itemUi?.isFollowed == true) {
+                                            id = if (itemUi.itemUi?.isFollowed == true) {
                                                 R.string.unfollow
                                             } else {
                                                 R.string.follow
@@ -257,7 +252,7 @@ fun RootItem(
                                 text = {
                                     Text(
                                         text = stringResource(
-                                            id = if (itemUiState.value?.itemUi?.isFlag == true) {
+                                            id = if (itemUi.itemUi?.isFlag == true) {
                                                 R.string.un_flag
                                             } else {
                                                 R.string.flag
@@ -267,20 +262,20 @@ fun RootItem(
                                 },
                                 onClick = {
                                     coroutineScope.launch {
-                                        itemUiState.value?.itemUi?.toggleFlag(onNavigateLogin)
+                                        itemUi.itemUi?.toggleFlag(onNavigateLogin)
                                     }
 
                                     setContextExpanded(false)
                                 },
                                 leadingIcon = {
                                     Icon(
-                                        imageVector = if (itemUiState.value?.itemUi?.isFlag == true) {
+                                        imageVector = if (itemUi.itemUi?.isFlag == true) {
                                             Icons.Filled.Flag
                                         } else {
                                             Icons.TwoTone.Flag
                                         },
                                         contentDescription = stringResource(
-                                            id = if (itemUiState.value?.itemUi?.isFlag == true) {
+                                            id = if (itemUi.itemUi?.isFlag == true) {
                                                 R.string.un_flag
                                             } else {
                                                 R.string.flag
@@ -296,26 +291,25 @@ fun RootItem(
 
             Spacer(modifier = Modifier.height(4.dp))
 
-            val timeUserAnnotatedString: State<AnnotatedString> =
-                rememberUpdatedState(rememberTimeBy(item))
+            val timeUserAnnotatedString: AnnotatedString by rememberUpdatedState(rememberTimeBy(item))
 
-            ClickableText(
-                text = timeUserAnnotatedString.value,
-                onClick = { offset ->
-                    val username = timeUserAnnotatedString.value
-                        .getStringAnnotations(
-                            tag = userTag,
-                            start = offset,
-                            end = offset
-                        )
-                        .firstOrNull()
-                        ?.item
-                        ?.let { Username(it) }
-
-                    if (username != null) {
-                        onClickUser(username)
-                    }
-                },
+            Text(
+                text = timeUserAnnotatedString,
+//                onClick = { offset ->
+//                    val username = timeUserAnnotatedString.value
+//                        .getStringAnnotations(
+//                            tag = userTag,
+//                            start = offset,
+//                            end = offset
+//                        )
+//                        .firstOrNull()
+//                        ?.item
+//                        ?.let { Username(it) }
+//
+//                    if (username != null) {
+//                        onClickUser(username)
+//                    }
+//                },
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
                     .fillMaxWidth(),
@@ -338,19 +332,19 @@ fun RootItem(
                                 IconButton(
                                     onClick = {
                                         coroutineScope.launch {
-                                            itemUiState.value?.itemUi?.toggleUpvote(onNavigateLogin)
+                                            itemUi?.itemUi?.toggleUpvote(onNavigateLogin)
                                         }
                                     },
                                     enabled = item?.type == "story",
                                 ) {
                                     Icon(
-                                        imageVector = if (itemUiState.value?.itemUi?.isUpvote == true) {
+                                        imageVector = if (itemUi?.itemUi?.isUpvote == true) {
                                             Icons.Filled.ThumbUp
                                         } else {
                                             Icons.TwoTone.ThumbUp
                                         },
                                         contentDescription = stringResource(
-                                            id = if (itemUiState.value?.itemUi?.isUpvote == true) {
+                                            id = if (itemUi?.itemUi?.isUpvote == true) {
                                                 R.string.un_vote
                                             } else {
                                                 R.string.upvote
@@ -415,15 +409,15 @@ fun RootItem(
                             .padding(start = 16.dp)
                             .weight(1f)
                             .placeholder(
-                                visible = itemUiState.value == null,
+                                visible = itemUi == null,
                                 color = Color.Transparent,
                                 shape = MaterialTheme.shapes.small,
                                 highlight = PlaceholderHighlight.shimmer(
                                     highlightColor = LocalContentColor.current.copy(alpha = .5f)
-                                )
+                                ),
                             ),
                         textAlign = TextAlign.End,
-                        style = MaterialTheme.typography.labelLarge
+                        style = MaterialTheme.typography.labelLarge,
                     )
 
                     TooltipBox(
@@ -451,32 +445,19 @@ fun RootItem(
                 val annotatedText: AnnotatedString =
                     rememberAnnotatedString(htmlText = itemText)
 
-                // state wrapper must be used in callbacks or onClicks may not be handled
-                val annotatedTextState: State<AnnotatedString> =
-                    rememberUpdatedState(annotatedText)
-
-                val contextState: State<Context> =
-                    rememberUpdatedState(LocalContext.current)
-
-                ClickableText(
+                Text(
                     text = annotatedText,
                     modifier = Modifier
                         .padding(8.dp)
                         .placeholder(
-                            visible = itemUiState.value == null,
+                            visible = false,
                             color = Color.Transparent,
                             shape = MaterialTheme.shapes.small,
                             highlight = PlaceholderHighlight.shimmer(
-                                highlightColor = LocalContentColor.current.copy(alpha = .5f)
-                            )
+                                highlightColor = LocalContentColor.current.copy(alpha = .5f),
+                            ),
                         ),
                     style = MaterialTheme.typography.bodyMedium,
-                    onClick = { offset ->
-                        annotatedTextState.value.onClick(
-                            context = contextState.value,
-                            offset = offset
-                        )
-                    }
                 )
             }
         }

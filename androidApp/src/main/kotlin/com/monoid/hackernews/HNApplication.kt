@@ -76,7 +76,7 @@ class HNApplication : Application() {
             applicationLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 // Update upvote and favorite table on login and then periodically.
                 authentication.data.distinctUntilChanged().collectLatest { authentication ->
-                    if (authentication.password?.isNotEmpty() == true) {
+                    if (authentication.password.isNotEmpty()) {
                         while (true) {
                             try {
                                 val upvoteDef =

@@ -7,14 +7,15 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.core.content.getSystemService
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -22,8 +23,8 @@ import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
-import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.common.ui.util.getNetworkConnectivityStateFlow
+import com.monoid.hackernews.common.view.R
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.dropWhile
@@ -43,14 +44,9 @@ fun MainNavigation(
     onLoginError: (Throwable) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val snackbarHostState: SnackbarHostState =
-        remember { SnackbarHostState() }
-
-    val context: Context =
-        LocalContext.current
-
-    val lifecycleOwner: LifecycleOwner =
-        LocalLifecycleOwner.current
+    val snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
+    val context: Context = LocalContext.current
+    val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(lifecycleOwner) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
@@ -76,7 +72,7 @@ fun MainNavigation(
         }
     }
 
-    val windowSizeClassState = rememberUpdatedState(windowSizeClass)
+    val windowSizeClassState by rememberUpdatedState(windowSizeClass)
 
     NavHost(
         navController = mainNavController,

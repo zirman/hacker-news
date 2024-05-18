@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
@@ -35,7 +36,7 @@ fun ItemList(
     title: String,
     itemRows: List<ItemListRow>,
     onClickDetail: (ItemId?) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     if (true) { // TODO: debug config
         val metricsStateHolder: PerformanceMetricsState.Holder =
@@ -84,11 +85,12 @@ fun ItemList(
         }
 
         items(itemRows, { it.itemId.long }) { itemRow ->
+            val itemUi by remember(itemRow.itemId) { itemRow.itemUiFlow(coroutineScope) }
+                .collectAsStateWithLifecycle()
             Item(
-                itemUiState = remember(itemRow.itemId) { itemRow.itemUiFlow(coroutineScope) }
-                    .collectAsStateWithLifecycle(),
+                itemUi = itemUi,
                 onClickDetail = { onClickDetail(it) },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         }
     }

@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalComposeUiApi::class)
+
 package com.monoid.hackernews.view.text
 
 import androidx.annotation.StringRes
@@ -17,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.autofill.AutofillNode
 import androidx.compose.ui.autofill.AutofillType
@@ -91,10 +94,12 @@ fun PasswordTextField(
 
                             true
                         }
+
                         Key.Enter -> {
                             onDone?.invoke()
                             true
                         }
+
                         else -> {
                             false
                         }
@@ -106,7 +111,7 @@ fun PasswordTextField(
             trailingIcon = {
                 IconToggleButton(
                     checked = isPasswordVisible,
-                    onCheckedChange = { setPasswordVisible(it) }
+                    onCheckedChange = { setPasswordVisible(it) },
                 ) {
                     Icon(
                         imageVector = if (isPasswordVisible) {
@@ -114,7 +119,7 @@ fun PasswordTextField(
                         } else {
                             Icons.Default.VisibilityOff
                         },
-                        contentDescription = stringResource(id = R.string.password_toggle)
+                        contentDescription = stringResource(id = R.string.password_toggle),
                     )
                 }
             },
@@ -125,15 +130,15 @@ fun PasswordTextField(
             },
             isError = errorLabelId != null,
             keyboardOptions = KeyboardOptions(
-                autoCorrect = false,
+                autoCorrectEnabled = false,
                 keyboardType = KeyboardType.Password,
                 imeAction = if (onNext != null) ImeAction.Next else ImeAction.Done,
             ),
             keyboardActions = KeyboardActions(
                 onNext = onNext?.let { { onNext() } },
-                onDone = onDone?.let { { onDone() } }
+                onDone = onDone?.let { { onDone() } },
             ),
-            singleLine = true
+            singleLine = true,
         )
 
         if (errorLabelId != null) {
@@ -142,7 +147,7 @@ fun PasswordTextField(
                 modifier = Modifier.padding(top = 4.dp),
                 color = MaterialTheme.colorScheme.error,
                 fontWeight = FontWeight.Bold,
-                fontSize = 12.sp
+                fontSize = 12.sp,
             )
         }
     }

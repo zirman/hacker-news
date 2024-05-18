@@ -24,21 +24,18 @@ val wearApplicationModule = module {
 
     single {
         FavoriteStoryRepository(
-            context = androidContext(),
             authentication = get(),
             favoriteDao = get(),
         )
     }
 
     viewModel {
-        androidContext()
         MainViewModel(
             newIntentChannel = get(),
             topStoryRepository = get(),
             itemTreeRepository = get(),
         )
     }
-
 
     single {
         TopStoryRepository(

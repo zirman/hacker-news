@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.runtime.State
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 import com.monoid.hackernews.MainViewModel
@@ -19,7 +18,7 @@ fun NavGraphBuilder.mainGraph(
     mainViewModel: MainViewModel,
     context: Context,
     snackbarHostState: SnackbarHostState,
-    windowSizeClassState: State<WindowSizeClass>,
+    windowSizeClassState: WindowSizeClass,
     drawerState: DrawerState,
     onNavigateToUser: (Username) -> Unit,
     onNavigateToReply: (ItemId) -> Unit,
@@ -73,12 +72,12 @@ fun NavGraphBuilder.mainGraph(
         )
 
         aboutUsBottomSheet(
-            windowSizeClassState = windowSizeClassState
+            windowSizeClassState = windowSizeClassState,
         )
 
         settingsBottomSheet(
             authentication = mainViewModel.authentication,
-            windowSizeClassState = windowSizeClassState
+            windowSizeClassState = windowSizeClassState,
         )
     }
 }

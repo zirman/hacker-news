@@ -26,7 +26,6 @@ activityKtx = "1.9.0"
 fragmentKtx = "1.7.1"
 #lifecycle = "2.8.0-rc01"
 navigation = "2.8.0-beta01"
-protobufPlugin = "0.9.4"
 protobuf = "3.25.2"
 googlePlayServices = "4.4.1"
 playServicesWearable = "18.1.0"
@@ -62,7 +61,6 @@ mockk = "1.13.9"
 [plugins]
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlinxParcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose" }
@@ -70,7 +68,6 @@ androidApplication = { id = "com.android.application", version.ref = "android" }
 androidLibrary = { id = "com.android.library", version.ref = "android" }
 androidLint = { id = "com.android.lint", version.ref = "android" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-protobuf = { id = "com.google.protobuf", version.ref = "protobufPlugin" }
 room = { id = "androidx.room", version.ref = "room" }
 googlePlayServices = { id = "com.google.gms.google-services", version.ref = "googlePlayServices" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics" }
@@ -97,7 +94,7 @@ ktor = [
     "ktorClientAndroid",
     "ktorClientLogging",
     "ktorClientContentNegotiation",
-    "ktorSerializationKotlinxJson"
+    "ktorSerializationKotlinxJson",
 ]
 google = [
     "kspSymbolProcessingApi",
@@ -284,7 +281,7 @@ uiUtil = { group = "androidx.compose.ui", name = "ui-util" }
 composeMaterial = { group = "androidx.compose.material", name = "material" }
 materialIconsCore = { group = "androidx.compose.material", name = "material-icons-core" }
 materialIconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+foundation = { group = "androidx.compose.foundation", name = "foundation", version = "1.7.0-beta01" }
 uiTextGoogleFonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts" }
 uiTestJunit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "uiTestJunit4" }
 uiTestManifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }

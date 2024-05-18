@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -33,7 +32,7 @@ import kotlinx.coroutines.launch
 fun NavGraphBuilder.userScreen(
     mainViewModel: MainViewModel,
     context: Context,
-    windowSizeClassState: State<WindowSizeClass>,
+    windowSizeClassState: WindowSizeClass,
     drawerState: DrawerState,
     snackbarHostState: SnackbarHostState,
     onNavigateToUser: (Username) -> Unit,
@@ -67,7 +66,7 @@ fun NavGraphBuilder.userScreen(
         HomeScreen(
             itemTreeRepository = mainViewModel.itemTreeRepository,
             drawerState = drawerState,
-            windowSizeClass = windowSizeClassState.value,
+            windowSizeClass = windowSizeClassState,
             title = username.string,
             orderedItemRepo = remember(mainViewModel, username) {
                 LiveUpdateUseCase(

@@ -1,3 +1,7 @@
+@file:OptIn(ExperimentalMaterialApi::class, ExperimentalMaterialNavigationApi::class,
+    ExperimentalMaterial3Api::class
+)
+
 package com.monoid.hackernews.view.main
 
 import androidx.compose.animation.AnimatedVisibility
@@ -13,6 +17,7 @@ import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.windowInsetsEndWidth
 import androidx.compose.foundation.layout.windowInsetsStartWidth
 import androidx.compose.foundation.layout.windowInsetsTopHeight
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.twotone.Login
@@ -21,6 +26,7 @@ import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
@@ -37,7 +43,7 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -52,6 +58,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.plusAssign
 import com.google.accompanist.navigation.material.BottomSheetNavigator
+import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.common.data.Authentication
@@ -113,7 +120,7 @@ fun MainContent(
 
         val modalBottomSheetState = rememberModalBottomSheetState(
             initialValue = ModalBottomSheetValue.Hidden,
-            skipHalfExpanded = true
+            skipHalfExpanded = true,
         )
 
         val bottomSheetNavigator = remember(modalBottomSheetState) {
@@ -161,12 +168,12 @@ fun MainContent(
                     AnimatedVisibility(visible = fullyExpandedState.value) {
                         NavigationRail(
                             header = {
-                                val authenticationState: State<Authentication?> =
+                                val authenticationState: Authentication? by
                                     remember { mainViewModel.authentication.data }
                                         .collectAsStateWithLifecycle(null)
 
                                 val authentication: Authentication? =
-                                    authenticationState.value
+                                    authenticationState
 
                                 if (authentication?.password?.isNotEmpty() == true) {
                                     NavigationRailItem(

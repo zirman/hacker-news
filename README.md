@@ -1,11 +1,11 @@
 Build for Android:
-`gradle :app:assembleDebug`
+`gradle :androidApp:assembleDebug`
 
 Build for Wear OS
-`gradle :wear:assembleDebug`
+`gradle :wearApp:assembleDebug`
 
 Run Desktop
-`gradle :desktop:run`
+`gradle :desktopApp:run`
 
 TODO:
  + WorkManager get update follow notifications

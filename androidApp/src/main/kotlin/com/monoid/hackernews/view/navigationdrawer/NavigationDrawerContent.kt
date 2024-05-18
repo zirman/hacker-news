@@ -22,7 +22,7 @@ import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -76,16 +76,15 @@ fun NavigationDrawerContent(
                 .collectAsStateWithLifecycle(null)
                 .value
 
-        val authenticationState: State<Authentication?> =
-            remember { authentication.data }
-                .collectAsStateWithLifecycle(null)
+
 
         val coroutineScope: CoroutineScope =
             rememberCoroutineScope()
 
-        val auth: Authentication? =
-            authenticationState.value
+        val authenticationState: Authentication? by remember { authentication.data }
+            .collectAsStateWithLifecycle(null)
 
+        val auth = authenticationState
         if (auth?.password?.isNotEmpty() == true) {
             NavigationDrawerItem(
                 icon = {

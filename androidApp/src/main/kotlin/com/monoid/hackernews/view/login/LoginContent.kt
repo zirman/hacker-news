@@ -1,6 +1,5 @@
 package com.monoid.hackernews.view.login
 
-import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContent
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.LocalContentColor
@@ -24,7 +22,7 @@ import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
@@ -33,16 +31,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.datastore.core.DataStore
 import com.monoid.hackernews.common.api.loginRequest
 import com.monoid.hackernews.common.data.Authentication
 import com.monoid.hackernews.common.view.R
-import com.monoid.hackernews.util.onClick
 import com.monoid.hackernews.util.rememberAnnotatedString
 import com.monoid.hackernews.view.text.PasswordTextField
 import com.monoid.hackernews.view.text.UsernameTextField
@@ -177,28 +172,18 @@ fun LoginContent(
                     }
                 )
 
-                val annotatedTextState: State<AnnotatedString> =
-                    rememberUpdatedState(
-                        rememberAnnotatedString(
-                            htmlText = stringResource(id = R.string.i_agree_html),
-                            linkColor = MaterialTheme.colorScheme.primary
-                        )
-                    )
+                val annotatedText by rememberUpdatedState(
+                    rememberAnnotatedString(
+                        htmlText = stringResource(id = R.string.i_agree_html),
+                        linkColor = MaterialTheme.colorScheme.primary,
+                    ),
+                )
 
-                val contextState: State<Context> =
-                    rememberUpdatedState(LocalContext.current)
-
-                ClickableText(
-                    text = annotatedTextState.value,
-                    onClick = { offset ->
-                        annotatedTextState.value.onClick(
-                            context = contextState.value,
-                            offset = offset
-                        )
-                    },
+                Text(
+                    text = annotatedText,
                     style = MaterialTheme.typography.bodyMedium.copy(
-                        color = LocalContentColor.current
-                    )
+                        color = LocalContentColor.current,
+                    ),
                 )
             }
 
@@ -207,7 +192,7 @@ fun LoginContent(
                 modifier = rowModifier,
                 enabled = usernameState.value.isNotBlank() &&
                     passwordState.value.isNotEmpty() &&
-                    acceptTermsState.value
+                    acceptTermsState.value,
             ) {
                 Text(text = stringResource(id = R.string.submit))
             }

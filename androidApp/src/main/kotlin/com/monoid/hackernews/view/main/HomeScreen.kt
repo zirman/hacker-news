@@ -9,7 +9,6 @@ import androidx.compose.material3.DrawerState
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -26,10 +25,10 @@ import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.domain.LiveUpdateUseCase
-import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.common.navigation.MainNavigation
 import com.monoid.hackernews.common.navigation.Stories
 import com.monoid.hackernews.common.ui.util.itemIdSaver
+import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.view.home.HomeScreen
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -37,7 +36,7 @@ import kotlinx.coroutines.launch
 fun NavGraphBuilder.homeScreen(
     mainViewModel: MainViewModel,
     context: Context,
-    windowSizeClassState: State<WindowSizeClass>,
+    windowSizeClassState: WindowSizeClass,
     drawerState: DrawerState,
     snackbarHostState: SnackbarHostState,
     onNavigateToUser: (Username) -> Unit,
@@ -83,7 +82,7 @@ fun NavGraphBuilder.homeScreen(
         HomeScreen(
             itemTreeRepository = mainViewModel.itemTreeRepository,
             drawerState = drawerState,
-            windowSizeClass = windowSizeClassState.value,
+            windowSizeClass = windowSizeClassState,
             title = stringResource(
                 id = when (stories) {
                     Stories.Top ->

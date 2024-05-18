@@ -1,9 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    alias(libs.plugins.kotlinAndroid) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
-    alias(libs.plugins.kotlinJvm) apply false
+    alias(libs.plugins.kotlinAndroid) apply false
     alias(libs.plugins.kotlinxSerialization) apply false
     alias(libs.plugins.kotlinxParcelize) apply false
     alias(libs.plugins.jetbrainsCompose) apply false
@@ -11,7 +10,6 @@ plugins {
     alias(libs.plugins.androidLibrary) apply false
     alias(libs.plugins.androidLint) apply false
     alias(libs.plugins.ksp) apply false
-    alias(libs.plugins.protobuf) apply false
     alias(libs.plugins.googlePlayServices) apply false
     alias(libs.plugins.crashlytics) apply false
     alias(libs.plugins.firebasePerf) apply false
@@ -26,18 +24,13 @@ subprojects {
         kotlinOptions {
             allWarningsAsErrors = false
 
-            freeCompilerArgs += listOf(
-                "-Xcontext-receivers",
-                "-opt-in=kotlinx.coroutines.FlowPreview",
-                "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-                "-opt-in=androidx.compose.ui.text.ExperimentalTextApi",
-                "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
-            )
+            jvmTarget = libs.versions.jvmTarget.get()
 
             freeCompilerArgs += listOf(
+                "-opt-in=kotlinx.coroutines.FlowPreview",
+                "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
                 "-P",
-                "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=" +
-                    project.rootDir + "/compose_compiler_config.conf",
+                "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=${project.rootDir}/compose_compiler_config.conf",
             )
 
             if (project.findProperty("hackernews.enableComposeCompilerReports") == "true") {

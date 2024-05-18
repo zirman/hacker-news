@@ -66,14 +66,6 @@ android {
         isCoreLibraryDesugaringEnabled = true
     }
 
-    kotlinOptions {
-        jvmTarget = libs.versions.jvmTarget.get()
-
-        freeCompilerArgs += listOf(
-            "-opt-in=androidx.wear.compose.material.ExperimentalWearMaterialApi",
-        )
-    }
-
     buildFeatures {
         compose = true
     }

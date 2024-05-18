@@ -1,7 +1,8 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.monoid.hackernews.view.itemlist
 
 import android.net.Uri
-import android.widget.Space
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.twotone.Comment
 import androidx.compose.material.icons.filled.Favorite
@@ -26,6 +26,7 @@ import androidx.compose.material.icons.twotone.Quickreply
 import androidx.compose.material.icons.twotone.ThumbUp
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -36,7 +37,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -60,13 +61,12 @@ import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.room.ItemDb
 import com.monoid.hackernews.common.ui.text.ClickableTextBlock
 import com.monoid.hackernews.common.ui.util.rememberTimeBy
-import com.monoid.hackernews.common.ui.util.userTag
 import com.monoid.hackernews.common.view.R
+import com.monoid.hackernews.common.view.TooltipPopupPositionProvider
 import com.monoid.hackernews.common.view.placeholder.PlaceholderHighlight
 import com.monoid.hackernews.common.view.placeholder.placeholder
 import com.monoid.hackernews.common.view.placeholder.shimmer
 import com.monoid.hackernews.util.rememberAnnotatedString
-import com.monoid.hackernews.common.view.TooltipPopupPositionProvider
 
 @Preview(
     showBackground = true,
@@ -152,22 +152,6 @@ fun Item(
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.titleMedium
                 )
-//                SelectionContainer() {
-//                    Text(
-////                        modifier = Modifier,
-//                        text = item?.title?.let { AnnotatedString(text = it) }
-//                            ?: item?.text?.let { rememberAnnotatedString(htmlText = it) }
-//                            ?: AnnotatedString(text = ""),
-//                        minLines = 2,
-//                        maxLines = 2,
-//                        modifier = Modifier
-//                            .padding(start = 8.dp).weight(1f),
-//                        overflow = TextOverflow.Ellipsis,
-//                        style = MaterialTheme.typography.titleMedium
-//                    )
-//                }
-
-//                Spacer(modifier = Modifier.weight(1f))
 
                 val (contextExpanded: Boolean, setContextExpanded) =
                     rememberSaveable { mutableStateOf(false) }
@@ -295,33 +279,32 @@ fun Item(
 
             Spacer(modifier = Modifier.height(4.dp))
 
-            val timeUserAnnotatedString: State<AnnotatedString> =
-                rememberUpdatedState(
-                    item
-                        ?.let { rememberTimeBy(it) }
-                        ?: AnnotatedString("")
-                )
+            val timeUserAnnotatedString: AnnotatedString by rememberUpdatedState(
+                item
+                    ?.let { rememberTimeBy(it) }
+                    ?: AnnotatedString(""),
+            )
 
             ClickableTextBlock(
-                text = timeUserAnnotatedString.value,
+                text = timeUserAnnotatedString,
                 lines = 1,
-                onClick = { offset ->
-                    val username = timeUserAnnotatedString.value
-                        .getStringAnnotations(
-                            tag = userTag,
-                            start = offset,
-                            end = offset,
-                        )
-                        .firstOrNull()
-                        ?.item
-                        ?.let { Username(it) }
-
-                    if (username != null) {
-                        onClickUser(username)
-                    } else {
-                        onClickDetail()
-                    }
-                },
+//                onClick = { offset ->
+//                    val username = timeUserAnnotatedString.value
+//                        .getStringAnnotations(
+//                            tag = userTag,
+//                            start = offset,
+//                            end = offset,
+//                        )
+//                        .firstOrNull()
+//                        ?.item
+//                        ?.let { Username(it) }
+//
+//                    if (username != null) {
+//                        onClickUser(username)
+//                    } else {
+//                        onClickDetail()
+//                    }
+//                },
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
                     .let {

@@ -2,7 +2,7 @@ package com.monoid.hackernews.common.ui.text
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
@@ -23,7 +23,6 @@ fun ClickableTextBlock(
     overflow: TextOverflow = TextOverflow.Clip,
     minHeight: Boolean = false,
     onTextLayout: (TextLayoutResult) -> Unit = {},
-    onClick: (Int) -> Unit,
 ) {
     val blockHeightSp: TextUnit =
         style.lineHeight * lines
@@ -31,7 +30,7 @@ fun ClickableTextBlock(
     val blockHeightDp: Dp =
         with(LocalDensity.current) { blockHeightSp.toDp() }
 
-    ClickableText(
+    Text(
         text = text,
         modifier = if (minHeight) modifier.heightIn(min = blockHeightDp, max = Dp.Infinity)
         else modifier.height(blockHeightDp),
@@ -40,6 +39,5 @@ fun ClickableTextBlock(
         overflow = overflow,
         maxLines = if (minHeight) Int.MAX_VALUE else lines,
         onTextLayout = onTextLayout,
-        onClick = onClick,
     )
 }

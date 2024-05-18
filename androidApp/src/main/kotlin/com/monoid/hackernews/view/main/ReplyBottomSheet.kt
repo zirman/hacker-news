@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterialNavigationApi::class)
+
 package com.monoid.hackernews.view.main
 
 import androidx.compose.foundation.layout.WindowInsets
@@ -9,10 +11,10 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.datastore.core.DataStore
 import androidx.navigation.NavGraphBuilder
+import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.bottomSheet
 import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.Authentication
@@ -25,7 +27,7 @@ fun NavGraphBuilder.replyBottomSheet(
     authentication: DataStore<Authentication>,
     itemTreeRepository: ItemTreeRepository,
     httpClient: HttpClient,
-    windowSizeClassState: State<WindowSizeClass>,
+    windowSizeClassState: WindowSizeClass,
     onNavigateUp: () -> Unit,
     onLoginError: (Throwable) -> Unit,
 ) {
@@ -41,13 +43,13 @@ fun NavGraphBuilder.replyBottomSheet(
             itemTreeRepository = itemTreeRepository,
             authentication = authentication,
             itemId = itemId,
-            windowSizeClass = windowSizeClassState.value,
+            windowSizeClass = windowSizeClassState,
             onSuccess = onNavigateUp,
             onError = onLoginError,
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(state = rememberScrollState())
-                .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
+                .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)),
         )
     }
 }

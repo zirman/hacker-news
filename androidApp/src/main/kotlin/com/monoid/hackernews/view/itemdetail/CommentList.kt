@@ -13,7 +13,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
@@ -74,29 +74,30 @@ fun CommentList(
             itemsIndexed(
                 items = itemTreeRows.orEmpty(),
                 key = { _, itemRow -> itemRow.itemId.long },
-                contentType = { index, _ -> index == 0 }
+                contentType = { index, _ -> index == 0 },
             ) { index, itemRow ->
                 val coroutineScope = rememberCoroutineScope()
 
-                val itemUiState: State<ItemUiWithThreadDepth?> =
-                    remember { itemRow.itemUiFlow(coroutineScope) }.collectAsStateWithLifecycle(null)
+                val itemUi: ItemUiWithThreadDepth? by remember {
+                    itemRow.itemUiFlow(coroutineScope)
+                }.collectAsStateWithLifecycle(null)
 
                 if (index == 0) {
                     RootItem(
-                        itemUiState = itemUiState,
+                        itemUi = itemUi,
                         onClickReply = onClickReply,
                         onClickUser = onClickUser,
                         onClickBrowser = onClickBrowser,
                         onNavigateLogin = onNavigateLogin,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 } else {
                     CommentItem(
-                        itemUiState = itemUiState,
+                        itemUi = itemUi,
                         onClickUser = onClickUser,
                         onClickReply = onClickReply,
                         onNavigateLogin = onNavigateLogin,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 }
             }
