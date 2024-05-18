@@ -1,6 +1,7 @@
 package com.monoid.hackernews.view.itemlist
 
 import android.net.Uri
+import android.widget.Space
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -138,22 +139,35 @@ fun Item(
         tonalElevation = ((item?.score ?: 0) / 10).dp
     ) {
         Column(modifier = Modifier.padding(4.dp)) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.Top
-            ) {
-                SelectionContainer(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = item?.title?.let { AnnotatedString(text = it) }
-                            ?: item?.text?.let { rememberAnnotatedString(htmlText = it) }
-                            ?: AnnotatedString(text = ""),
-                        minLines = 2,
-                        maxLines = 2,
-                        modifier = Modifier.padding(start = 8.dp),
-                        overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                }
+            Row(verticalAlignment = Alignment.Top) {
+                Text(
+                    text = item?.title?.let { AnnotatedString(text = it) }
+                        ?: item?.text?.let { rememberAnnotatedString(htmlText = it) }
+                        ?: AnnotatedString(text = ""),
+                    minLines = 2,
+                    maxLines = 2,
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .weight(1f),
+                    overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.titleMedium
+                )
+//                SelectionContainer() {
+//                    Text(
+////                        modifier = Modifier,
+//                        text = item?.title?.let { AnnotatedString(text = it) }
+//                            ?: item?.text?.let { rememberAnnotatedString(htmlText = it) }
+//                            ?: AnnotatedString(text = ""),
+//                        minLines = 2,
+//                        maxLines = 2,
+//                        modifier = Modifier
+//                            .padding(start = 8.dp).weight(1f),
+//                        overflow = TextOverflow.Ellipsis,
+//                        style = MaterialTheme.typography.titleMedium
+//                    )
+//                }
+
+//                Spacer(modifier = Modifier.weight(1f))
 
                 val (contextExpanded: Boolean, setContextExpanded) =
                     rememberSaveable { mutableStateOf(false) }

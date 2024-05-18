@@ -8,7 +8,7 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(libs.versions.jvmToolchain.get().toInt())
 
     jvm {
     }
@@ -61,19 +61,12 @@ kotlin {
     }
 }
 
-dependencies {
-    add("kspAndroid", libs.roomCompiler)
-    add("kspJvm", libs.roomCompiler)
-}
-
 android {
     namespace = "com.monoid.hackernews.common.data"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -83,14 +76,12 @@ android {
 
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+dependencies {
+    add("kspAndroid", libs.roomCompiler)
+    add("kspJvm", libs.roomCompiler)
 }
 
 room {

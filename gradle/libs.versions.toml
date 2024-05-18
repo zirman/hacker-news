@@ -1,18 +1,18 @@
 [versions]
-collection = "1.4.0"
+jvmToolchain = "17"
 jvmTarget = "17"
 compileSdk = "34"
 targetSdk = "34"
 minSdk = "30"
 buildToolsVersion = "34.0.0"
 composeCompiler = "1.5.13"
-android = "8.2.0"
-lint = "31.4.0"
+android = "8.2.2"
+#lint = "31.4.0"
 desugarJdkLibs = "2.0.4"
 kotlin = "1.9.23"
 kotlinWrappersBom = "1.0.0-pre.746"
 compose = "1.6.2"
-ksp = "1.9.23-1.0.19"
+ksp = "1.9.23-1.0.20"
 kotlinxCoroutines = "1.8.1"
 kotlinxSerialization = "1.6.3"
 kotlinxCollectionsImmutable = "0.3.7"
@@ -25,7 +25,7 @@ datastore = "1.1.1"
 activityKtx = "1.9.0"
 fragmentKtx = "1.7.1"
 #lifecycle = "2.8.0-rc01"
-navigation = "2.7.7"
+navigation = "2.8.0-beta01"
 protobufPlugin = "0.9.4"
 protobuf = "3.25.2"
 googlePlayServices = "4.4.1"
@@ -46,7 +46,7 @@ metricsPerformance = "1.0.0-beta01"
 composeLintChecks = "1.3.1"
 material = "1.12.0"
 material3 = "1.2.1"
-material3AdaptiveAndroid = "1.0.0-alpha06"
+#material3AdaptiveAndroid = "1.0.0-alpha06"
 #material3AdaptiveNavigationSuiteAndroid = "1.0.0-alpha05"
 composeBom = "2024.05.00"
 wearCompose = "1.3.1"
@@ -56,7 +56,7 @@ slf4jSimple = "2.0.12"
 junitExt = "1.1.5"
 coil = "2.6.0"
 espressoCore = "3.5.1"
-junit = "4.13.2"
+#junit = "4.13.2"
 mockk = "1.13.9"
 
 [plugins]
@@ -166,16 +166,16 @@ firebase = [
     "firebaseAnalyticsKtx",
     "firebasePerfKtx",
 ]
-lintApi = [
-    "kotlinStdlib",
-    "lintApi",
-    "lintChecks",
-]
-lintTests = [
-    "junit",
-    "lintCli",
-    "lintTests"
-]
+#lintApi = [
+#    "kotlinStdlib",
+#    "lintApi",
+#    "lintChecks",
+#]
+#lintTests = [
+#    "junit",
+#    "lintCli",
+#    "lintTests"
+#]
 test = [
     "kotlinTest",
     "kotlinxCoroutinesTest",
@@ -187,7 +187,7 @@ test = [
 
 [libraries]
 kotilnxCoroutinesBom = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-bom", version.ref = "kotlinxCoroutines" }
-kotlinStdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
+#kotlinStdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 kotlinxCoroutinesAndroid = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android" }
 kotlinxCoroutinesTest = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test" }
 kotlinxSerializationJson = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
@@ -197,10 +197,10 @@ kotlinWrappersBom = { group = "org.jetbrains.kotlin-wrappers", name = "kotlin-wr
 kotlinTest = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
 
 desugarJdkLibsNio = { group = "com.android.tools", name = "desugar_jdk_libs_nio", version.ref = "desugarJdkLibs" }
-lintApi = { group = "com.android.tools.lint", name = "lint-api", version.ref = "lint" }
-lintChecks = { group = "com.android.tools.lint", name = "lint-checks", version.ref = "lint" }
-lintCli = { group = "com.android.tools.lint", name = "lint", version.ref = "lint" }
-lintTests = { group = "com.android.tools.lint", name = "lint-tests", version.ref = "lint" }
+#lintApi = { group = "com.android.tools.lint", name = "lint-api", version.ref = "lint" }
+#lintChecks = { group = "com.android.tools.lint", name = "lint-checks", version.ref = "lint" }
+#lintCli = { group = "com.android.tools.lint", name = "lint", version.ref = "lint" }
+#lintTests = { group = "com.android.tools.lint", name = "lint-tests", version.ref = "lint" }
 
 kspSymbolProcessingApi = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
 protobufKotlinLite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
@@ -226,9 +226,9 @@ roomPaging = { group = "androidx.room", name = "room-paging", version.ref = "roo
 sqliteBundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "sqlite" }
 
 datastore = { group = "androidx.datastore", name = "datastore", version.ref = "datastore" }
-datastoreCoreOkio = { group = "androidx.datastore", name = "datastore-core-okio", version.ref = "datastore" }
+#datastoreCoreOkio = { group = "androidx.datastore", name = "datastore-core-okio", version.ref = "datastore" }
 datastorePreferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
-datastorePreferencesCore = { group = "androidx.datastore", name = "datastore-preferences-core", version.ref = "datastore" }
+#datastorePreferencesCore = { group = "androidx.datastore", name = "datastore-preferences-core", version.ref = "datastore" }
 
 window = { group = "androidx.window", name = "window", version.ref = "window" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
@@ -303,5 +303,5 @@ coilCompose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil
 
 espressoCore = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 junitExt = { group = "androidx.test.ext", name = "junit", version.ref = "junitExt" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
+#junit = { group = "junit", name = "junit", version.ref = "junit" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }

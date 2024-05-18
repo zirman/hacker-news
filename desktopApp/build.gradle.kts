@@ -6,7 +6,7 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(libs.versions.jvmToolchain.get().toInt())
 
     jvm {
     }

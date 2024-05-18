@@ -25,7 +25,6 @@ import androidx.wear.compose.foundation.lazy.items
 import androidx.wear.compose.material.ListHeader
 import androidx.wear.compose.material.Text
 import com.monoid.hackernews.common.api.ItemId
-import com.monoid.hackernews.common.data.BuildConfig
 import com.monoid.hackernews.common.data.ItemListRow
 import com.monoid.hackernews.common.util.rememberMetricsStateHolder
 import kotlinx.coroutines.launch
@@ -38,7 +37,7 @@ fun ItemList(
     onClickDetail: (ItemId?) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    if (BuildConfig.DEBUG.not()) {
+    if (true) { // TODO: debug config
         val metricsStateHolder: PerformanceMetricsState.Holder =
             rememberMetricsStateHolder()
 

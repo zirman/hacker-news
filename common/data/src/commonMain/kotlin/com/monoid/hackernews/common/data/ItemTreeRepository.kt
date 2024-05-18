@@ -95,7 +95,6 @@ class ItemTreeRepository(
     }
 
     fun cleanup() {
-//        assert(Looper.getMainLooper().isCurrentThread)
         itemCache.clear()
     }
 
@@ -305,7 +304,7 @@ class ItemTreeRepository(
                         .distinctUntilChanged(),
                     followedDao.isFollowedFlow(itemId.long)
                         .distinctUntilChanged(),
-                    ::Triple
+                    ::Triple,
                 ).distinctUntilChanged(),
                 authentication.data
                     .map { it.username }
@@ -321,7 +320,7 @@ class ItemTreeRepository(
                             flagDao
                                 .isFlagFlow(itemId.long, username)
                                 .distinctUntilChanged(),
-                            ::Triple
+                            ::Triple,
                         )
                     }
             ) { (itemWithKids, isExpanded, isFollowed), (isUpvote, isFavorite, isFlag) ->
@@ -353,8 +352,6 @@ class ItemTreeRepository(
             scope = scope,
             started = SharingStarted.Eagerly,
             initialValue = run {
-                // make sure we access itemCache from main thread
-//                assert(Looper.getMainLooper().isCurrentThread)
                 itemCache[itemId]
             }
         )

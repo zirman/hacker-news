@@ -7,7 +7,7 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(libs.versions.jvmToolchain.get().toInt())
 
     jvm {
     }
@@ -59,8 +59,6 @@ android {
 
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
     }
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
