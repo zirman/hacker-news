@@ -17,19 +17,19 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
 
 class FavoriteStoryRepository(
-    private val authentication: DataStore<Authentication>,
-    private val favoriteDao: FavoriteDao,
+    private val preferencesDataSource: DataStore<Preferences>,
+    private val favoriteLocalDataSource: FavoriteDao,
 ) : Repository<OrderedItem> {
-    override fun getItems(scope: CoroutineScope): Flow<List<OrderedItem>> = authentication.data
+    override fun getItems(scope: CoroutineScope): Flow<List<OrderedItem>> = preferencesDataSource.data
         .map { authentication ->
-            if (authentication.password.isNotEmpty()) {
+            if (authentication.password.string.isNotEmpty()) {
                 authentication.username
             } else {
-                ""
+                Username("")
             }
         }
         .distinctUntilChanged()
-        .flatMapLatest { username -> favoriteDao.getFavoritesForUser(username) }
+        .flatMapLatest { username -> favoriteLocalDataSource.getFavoritesForUser(username.string) }
         .map { favoriteStories ->
             favoriteStories.mapIndexed { index, favorite ->
                 OrderedItem(
@@ -45,12 +45,12 @@ class FavoriteStoryRepository(
         )
 
     override suspend fun updateItems() {
-        val authentication = authentication.data.first()
+        val authentication = preferencesDataSource.data.first()
 
-        if (authentication.password.isNotEmpty()) {
-            favoriteDao.replaceFavoritesForUser(
-                username = authentication.username,
-                favorites = getFavorites(Username(authentication.username)).map { it.long }
+        if (authentication.password.string.isNotEmpty()) {
+            favoriteLocalDataSource.replaceFavoritesForUser(
+                username = authentication.username.string,
+                favorites = getFavorites(Username(authentication.username.string)).map { it.long }
             )
         }
     }

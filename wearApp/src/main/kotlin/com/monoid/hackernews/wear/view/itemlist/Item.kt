@@ -22,20 +22,18 @@ fun Item(
         title = {
             val item = itemUi?.item
 
-            val title =
-                rememberAnnotatedString(
+            Text(
+                text = rememberAnnotatedString(
                     htmlText = item?.title ?: item?.text ?: "",
                     linkColor = LocalContentColor.current
-                )
-
-            Text(text = title)
+                ),
+            )
         },
-        modifier = modifier
+        modifier = modifier,
     ) {
-        val host =
-            remember(itemUi?.item?.url) {
-                itemUi?.item?.url?.let { Uri.parse(it) }?.host ?: ""
-            }
+        val host = remember(itemUi?.item?.url) {
+            itemUi?.item?.url?.let { Uri.parse(it) }?.host ?: ""
+        }
 
         if (host.isNotBlank()) {
             Text(text = host)

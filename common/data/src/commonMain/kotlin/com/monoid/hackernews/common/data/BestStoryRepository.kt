@@ -12,10 +12,10 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
 
 class BestStoryRepository(
-    private val httpClient: HttpClient,
-    private val bestStoryDao: BestStoryDao,
+    private val remoteDataSource: HttpClient,
+    private val bestStoryLocalDataSource: BestStoryDao,
 ) : Repository<OrderedItem> {
-    override fun getItems(scope: CoroutineScope): Flow<List<OrderedItem>> = bestStoryDao
+    override fun getItems(scope: CoroutineScope): Flow<List<OrderedItem>> = bestStoryLocalDataSource
         .getBestStories()
         .map { bestStories ->
             bestStories.map {
@@ -32,8 +32,8 @@ class BestStoryRepository(
         )
 
     override suspend fun updateItems() {
-        bestStoryDao.replaceBestStories(
-            httpClient.getBestStories().mapIndexed { order, storyId ->
+        bestStoryLocalDataSource.replaceBestStories(
+            remoteDataSource.getBestStories().mapIndexed { order, storyId ->
                 BestStoryDb(
                     itemId = storyId,
                     order = order,

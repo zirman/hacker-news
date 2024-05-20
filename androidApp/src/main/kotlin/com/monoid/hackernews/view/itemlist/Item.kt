@@ -37,11 +37,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -279,11 +277,9 @@ fun Item(
 
             Spacer(modifier = Modifier.height(4.dp))
 
-            val timeUserAnnotatedString: AnnotatedString by rememberUpdatedState(
-                item
-                    ?.let { rememberTimeBy(it) }
-                    ?: AnnotatedString(""),
-            )
+            val timeUserAnnotatedString: AnnotatedString = item
+                ?.let { rememberTimeBy(it) }
+                ?: AnnotatedString("")
 
             ClickableTextBlock(
                 text = timeUserAnnotatedString,

@@ -14,9 +14,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.shareIn
 
 class UserStoryRepositoryFactory(
-    private val httpClient: HttpClient,
-    private val userDao: UserDao,
-    private val itemDao: ItemDao,
+    private val remoteDataSource: HttpClient,
+    private val userLocalDataSource: UserDao,
+    private val itemLocalDataSource: ItemDao,
 ) {
     private val repositories: MutableMap<Username, Repository<OrderedItem>> =
         mutableMapOf()
@@ -24,7 +24,7 @@ class UserStoryRepositoryFactory(
     fun repository(username: Username): Repository<OrderedItem> {
         return repositories.getOrPut(username) {
             object : Repository<OrderedItem> {
-                override fun getItems(scope: CoroutineScope): Flow<List<OrderedItem>> = userDao
+                override fun getItems(scope: CoroutineScope): Flow<List<OrderedItem>> = userLocalDataSource
                     .userByUsernameWithSubmitted(username.string)
                     .map { userWithSubmitted ->
                         userWithSubmitted?.submitted
@@ -44,14 +44,14 @@ class UserStoryRepositoryFactory(
                     )
 
                 override suspend fun updateItems() {
-                    val user = httpClient.getUser(username = username)
-                    itemDao.itemsInsert(user.submitted.map {
+                    val user = remoteDataSource.getUser(username = username)
+                    itemLocalDataSource.itemsInsert(user.submitted.map {
                         ItemDb(
                             id = it.long,
                             by = username.string,
                         )
                     })
-                    userDao.upsertReplace(user.toUserApiUpdate())
+                    userLocalDataSource.upsertReplace(user.toUserApiUpdate())
                 }
             }
         }

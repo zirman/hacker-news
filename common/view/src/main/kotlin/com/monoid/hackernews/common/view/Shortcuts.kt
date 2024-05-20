@@ -2,13 +2,13 @@ package com.monoid.hackernews.common.view
 
 import android.content.Context
 import androidx.core.content.pm.ShortcutManagerCompat
-import com.monoid.hackernews.common.navigation.Stories
+import com.monoid.hackernews.common.navigation.Story
 
 fun <T : Context> Context.updateAndPushDynamicShortcuts(contextClass: Class<T>) {
     val shortcuts = ShortcutManagerCompat
         .getShortcuts(this, ShortcutManagerCompat.FLAG_MATCH_DYNAMIC)
 
-    val stories = Stories.entries
+    val stories = Story.entries
 
     val (update, push) = stories
         .partition { story -> shortcuts.any { it.id == story.name } }

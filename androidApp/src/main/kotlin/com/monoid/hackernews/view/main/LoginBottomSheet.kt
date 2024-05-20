@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalMaterialNavigationApi::class)
+@file:OptIn(ExperimentalMaterial3Api::class)
 
 package com.monoid.hackernews.view.main
 
@@ -10,86 +10,59 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.datastore.core.DataStore
-import androidx.navigation.NavGraphBuilder
-import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
-import com.google.accompanist.navigation.material.bottomSheet
-import com.monoid.hackernews.common.api.ItemId
-import com.monoid.hackernews.common.data.Authentication
-import com.monoid.hackernews.common.data.ItemTreeRepository
-import com.monoid.hackernews.common.data.LoginAction
-import com.monoid.hackernews.common.navigation.MainNavigation
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import com.monoid.hackernews.view.login.LoginContent
-import io.ktor.client.HttpClient
-import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
-fun NavGraphBuilder.loginBottomSheet(
-    authentication: DataStore<Authentication>,
-    itemTreeRepository: ItemTreeRepository,
-    httpClient: HttpClient,
-    windowSizeClassState: WindowSizeClass,
-    onNavigateToReply: (ItemId) -> Unit,
-    onNavigateUp: () -> Unit,
-    onLoginError: (Throwable) -> Unit,
+@Composable
+fun LoginBottomSheet(
+    windowSizeClass: WindowSizeClass,
+    modifier: Modifier = Modifier,
+    viewModel: LoginViewModel = koinViewModel(),
 ) {
-    bottomSheet(
-        route = MainNavigation.Login.route,
-        arguments = MainNavigation.Login.arguments,
-    ) { navBackStackEntry ->
-        val loginAction: LoginAction =
-            MainNavigation.Login.argsFromRoute(navBackStackEntry = navBackStackEntry)
-
-        val coroutineScope = rememberCoroutineScope()
-
-        LoginContent(
-            httpClient = httpClient,
-            authentication = authentication,
-            windowSizeClass = windowSizeClassState,
-            onLogin = { authentication ->
-                when (loginAction) {
-                    is LoginAction.Login -> {}
-                    is LoginAction.Upvote -> {
-                        coroutineScope.launch {
-                            itemTreeRepository.upvoteItemJob(
-                                authentication,
-                                ItemId(loginAction.itemId)
-                            )
-                        }
-                    }
-                    is LoginAction.Favorite -> {
-                        coroutineScope.launch {
-                            itemTreeRepository.favoriteItemJob(
-                                authentication,
-                                ItemId(loginAction.itemId)
-                            )
-                        }
-                    }
-                    is LoginAction.Flag -> {
-                        coroutineScope.launch {
-                            itemTreeRepository.flagItemJob(
-                                authentication,
-                                ItemId(loginAction.itemId)
-                            )
-                        }
-                    }
-                    is LoginAction.Reply -> {
-                        onNavigateToReply(ItemId(loginAction.itemId))
-                    }
+    var showBottomSheet by remember { mutableStateOf(false) }
+    val owner = LocalLifecycleOwner.current
+    LaunchedEffect(owner) {
+        owner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewModel.events.collect { event ->
+                showBottomSheet = when (event) {
+                    LoginViewModel.Event.LoginRequest -> true
+                    LoginViewModel.Event.DismissRequest -> false
                 }
+            }
+        }
+    }
 
-                onNavigateUp()
+    if (showBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                showBottomSheet = false
             },
-            onLoginError = onLoginError,
-            modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(state = rememberScrollState())
-                .windowInsetsPadding(
-                    WindowInsets.safeDrawing
-                        .only(WindowInsetsSides.Horizontal)
-                ),
-        )
+            modifier = modifier,
+        ) {
+            LoginContent(
+                windowSizeClass = windowSizeClass,
+                onSubmit = viewModel::onSubmit,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(state = rememberScrollState())
+                    .windowInsetsPadding(
+                        WindowInsets.safeDrawing
+                            .only(WindowInsetsSides.Horizontal),
+                    ),
+            )
+        }
     }
 }

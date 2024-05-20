@@ -41,19 +41,17 @@ fun ItemDetail(
     val (refreshing, setRefreshing) =
         remember { mutableStateOf(false) }
 
-    fun refresh() = refreshScope
-        .launch {
-            setRefreshing(true)
-            // TODO: actually make this refresh
-            delay(400)
-            setRefreshing(false)
-        }
+    fun refresh() = refreshScope.launch {
+        setRefreshing(true)
+        // TODO: actually make this refresh
+        delay(400)
+        setRefreshing(false)
+    }
 
-    val pullRefreshState: PullRefreshState =
-        rememberPullRefreshState(
-            refreshing = refreshing,
-            onRefresh = ::refresh
-        )
+    val pullRefreshState: PullRefreshState = rememberPullRefreshState(
+        refreshing = refreshing,
+        onRefresh = ::refresh,
+    )
 
     Box(modifier.pullRefresh(pullRefreshState)) {
         CommentList(
@@ -64,13 +62,13 @@ fun ItemDetail(
             onNavigateLogin = onNavigateLogin,
             modifier = Modifier.fillMaxSize(),
             listState = listState,
-            paddingValues = paddingValues
+            paddingValues = paddingValues,
         )
 
         PullRefreshIndicator(
             refreshing = refreshing,
             state = pullRefreshState,
-            modifier = Modifier.align(Alignment.TopCenter)
+            modifier = Modifier.align(Alignment.TopCenter),
         )
     }
 }

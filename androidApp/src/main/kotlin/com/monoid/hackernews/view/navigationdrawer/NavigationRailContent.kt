@@ -18,17 +18,13 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.monoid.hackernews.common.navigation.MainNavigation
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.common.view.TooltipPopupPositionProvider
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @SuppressLint("ComposeModifierMissing")
@@ -36,23 +32,24 @@ import kotlinx.coroutines.launch
 fun ColumnScope.NavigationRailContent(
     mainNavController: NavHostController,
 ) {
-    val selectedStories =
-        remember {
-            mainNavController.currentBackStackEntryFlow
-                .map {
-                    when (val mainNavigation =
-                        MainNavigation.fromRoute(it.destination.route)) {
-                        is MainNavigation.Home ->
-                            mainNavigation.argsFromRoute(it)
-
-                        else ->
-                            null
-                    }
-                }
-        }
-            .collectAsStateWithLifecycle(null)
-            .value
-
+//    val selectedStories =
+//        remember {
+//            mainNavController.currentBackStackEntryFlow
+//                .map {
+//                    it.toRoute<MainNavigation>()
+//                    when (val mainNavigation =
+//                        MainNavigation.fromRoute(it.destination.route)) {
+//                        is MainNavigation.Home ->
+//                            mainNavigation.argsFromRoute(it)
+//
+//                        else ->
+//                            null
+//                    }
+//                }
+//        }
+//            .collectAsStateWithLifecycle(null)
+//            .value
+//
     val scope = rememberCoroutineScope()
 
     navigationItemList.forEach { item ->
@@ -89,9 +86,9 @@ fun ColumnScope.NavigationRailContent(
                         maxLines = 1,
                     )
                 },
-                selected = item == storiesToNavigationItem[selectedStories],
+                selected = false,//item == storiesToNavigationItem[selectedStories],
                 onClick = {
-                    mainNavController.navigate(route = item.route)
+//                    mainNavController.navigate(route = item.route)
                 },
             )
         }
@@ -113,7 +110,7 @@ fun ColumnScope.NavigationRailContent(
         },
         selected = false,
         onClick = {
-            mainNavController.navigate(MainNavigation.AboutUs.routeWithArgs(Unit))
+//            mainNavController.navigate(MainNavigation.AboutUs)
         },
     )
 
@@ -133,7 +130,7 @@ fun ColumnScope.NavigationRailContent(
         },
         selected = false,
         onClick = {
-            mainNavController.navigate(MainNavigation.Settings.routeWithArgs(Unit))
+//            mainNavController.navigate(MainNavigation.Settings)
         },
     )
 }

@@ -1,13 +1,12 @@
 package com.monoid.hackernews.common.data
 
 import androidx.datastore.core.DataStore
-import co.touchlab.kermit.Logger
 import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.api.favoriteRequest
 import com.monoid.hackernews.common.api.flagRequest
 import com.monoid.hackernews.common.api.getItem
 import com.monoid.hackernews.common.api.upvoteItem
-import com.monoid.hackernews.common.injection.FirebaseAdapter
+import com.monoid.hackernews.common.injection.LoggerAdapter
 import com.monoid.hackernews.common.room.ExpandedDao
 import com.monoid.hackernews.common.room.ExpandedDb
 import com.monoid.hackernews.common.room.FavoriteDao
@@ -53,15 +52,15 @@ import kotlinx.datetime.Instant
 import kotlin.math.max
 
 class ItemTreeRepository(
-    private val authentication: DataStore<Authentication>,
-    private val httpClient: HttpClient,
-    private val firebaseCrashlytics: FirebaseAdapter,
-    private val itemDao: ItemDao,
-    private val upvoteDao: UpvoteDao,
-    private val favoriteDao: FavoriteDao,
-    private val flagDao: FlagDao,
-    private val expandedDao: ExpandedDao,
-    private val followedDao: FollowedDao,
+    private val preferences: DataStore<Preferences>,
+    private val remoteDataSource: HttpClient,
+    private val logger: LoggerAdapter,
+    private val itemLocalDataSource: ItemDao,
+    private val upvoteLocalDataSource: UpvoteDao,
+    private val favoriteLocalDataSource: FavoriteDao,
+    private val flagLocalDataSource: FlagDao,
+    private val expandedLocalDataSource: ExpandedDao,
+    private val followedLocalDataSource: FollowedDao,
     private val mainDispatcher: MainCoroutineDispatcher,
     private val ioDispatcher: CoroutineDispatcher,
 ) {
@@ -69,7 +68,11 @@ class ItemTreeRepository(
 
     private val coroutineScope =
         CoroutineScope(SupervisorJob() + ioDispatcher + CoroutineExceptionHandler { _, throwable ->
-            firebaseCrashlytics.recordException(throwable)
+            logger.recordException(
+                messageString = "CoroutineScope",
+                throwable = throwable,
+                tag = TAG,
+            )
         })
 
     private val itemUpdatesSharedFlow: MutableSharedFlow<ItemUiInternal?> =
@@ -99,83 +102,100 @@ class ItemTreeRepository(
     }
 
     suspend fun upvoteItemJob(
-        authentication: Authentication,
+        preferences: Preferences,
         itemId: ItemId,
         isUpvote: Boolean = true,
     ) {
         try {
-            httpClient.upvoteItem(
-                authentication = authentication,
+            remoteDataSource.upvoteItem(
+                preferences = preferences,
                 itemId = itemId,
-                flag = isUpvote
+                flag = isUpvote,
             )
 
             if (isUpvote) {
-                upvoteDao.upvoteInsert(UpvoteDb(authentication.username, itemId.long))
+                upvoteLocalDataSource.upvoteInsert(
+                    UpvoteDb(
+                        preferences.username.string,
+                        itemId.long
+                    )
+                )
             } else {
-                upvoteDao.upvoteDelete(UpvoteDb(authentication.username, itemId.long))
+                upvoteLocalDataSource.upvoteDelete(
+                    UpvoteDb(
+                        preferences.username.string,
+                        itemId.long
+                    )
+                )
             }
-        } catch (error: Throwable) {
+        } catch (throwable: Throwable) {
             currentCoroutineContext().ensureActive()
-
-            Logger.e(
+            logger.recordException(
                 messageString = "upvoteItemJob",
-                throwable = error,
+                throwable = throwable,
                 tag = TAG,
             )
         }
     }
 
     suspend fun favoriteItemJob(
-        authentication: Authentication,
+        preferences: Preferences,
         itemId: ItemId,
         isFavorite: Boolean = true,
     ) {
         try {
-            httpClient.favoriteRequest(
-                authentication = authentication,
+            remoteDataSource.favoriteRequest(
+                preferences = preferences,
                 itemId = itemId,
-                flag = isFavorite
+                flag = isFavorite,
             )
 
             if (isFavorite) {
-                favoriteDao.favoriteInsert(FavoriteDb(authentication.username, itemId.long))
+                favoriteLocalDataSource.favoriteInsert(
+                    FavoriteDb(
+                        preferences.username.string,
+                        itemId.long
+                    )
+                )
             } else {
-                favoriteDao.favoriteDelete(FavoriteDb(authentication.username, itemId.long))
+                favoriteLocalDataSource.favoriteDelete(
+                    FavoriteDb(
+                        preferences.username.string,
+                        itemId.long
+                    )
+                )
             }
-        } catch (error: Throwable) {
+        } catch (throwable: Throwable) {
             currentCoroutineContext().ensureActive()
-
-            Logger.e(
+            logger.recordException(
                 messageString = "favoriteItemJob",
-                throwable = error,
+                throwable = throwable,
                 tag = TAG,
             )
         }
     }
 
     suspend fun flagItemJob(
-        authentication: Authentication,
+        preferences: Preferences,
         itemId: ItemId,
         isFlag: Boolean = true,
     ) {
         try {
-            httpClient.flagRequest(
-                authentication = authentication,
-                itemId = ItemId(itemId.long)
+            remoteDataSource.flagRequest(
+                preferences = preferences,
+                itemId = ItemId(itemId.long),
             )
 
             if (isFlag) {
-                flagDao.flagInsert(FlagDb(authentication.username, itemId.long))
+                flagLocalDataSource.flagInsert(FlagDb(preferences.username.string, itemId.long))
             } else {
-                flagDao.flagDelete(FlagDb(authentication.username, itemId.long))
+                flagLocalDataSource.flagDelete(FlagDb(preferences.username.string, itemId.long))
             }
-        } catch (error: Throwable) {
+        } catch (throwable: Throwable) {
             currentCoroutineContext().ensureActive()
-
-            Logger.e(
+            logger.recordException(
                 messageString = "flagItemJob",
-                throwable = error,
+                throwable = throwable,
                 tag = TAG,
             )
         }
@@ -184,8 +204,8 @@ class ItemTreeRepository(
     fun itemUiTreeFlow(rootItemId: ItemId): Flow<List<ItemTreeRow>> = flow {
         var itemTree: ItemTree = withContext(ioDispatcher) {
             suspend fun recur(itemId: ItemId): ItemTree {
-                val itemWithKids = async { itemDao.itemByIdWithKidsById(itemId.long) }
-                val isExpanded = async { expandedDao.isExpanded(itemId.long) }
+                val itemWithKids = async { itemLocalDataSource.itemByIdWithKidsById(itemId.long) }
+                val isExpanded = async { expandedLocalDataSource.isExpanded(itemId.long) }
 
                 return ItemTree(
                     itemId = itemId,
@@ -201,7 +221,7 @@ class ItemTreeRepository(
                 )
             }
 
-            val rootItemWithKids = itemDao.itemByIdWithKidsById(rootItemId.long)
+            val rootItemWithKids = itemLocalDataSource.itemByIdWithKidsById(rootItemId.long)
 
             ItemTree(
                 itemId = rootItemId,
@@ -273,7 +293,7 @@ class ItemTreeRepository(
     ): StateFlow<ItemUiInternal?> = flow {
         // network requests are are not canceled when flow is canceled
         coroutineScope.launch {
-            val item = itemDao.itemById(itemId.long)
+            val item = itemLocalDataSource.itemById(itemId.long)
 
             if (
                 item?.lastUpdate == null ||
@@ -281,13 +301,12 @@ class ItemTreeRepository(
                     .inWholeMinutes > 5
             ) {
                 try {
-                    itemDao.itemApiInsert(httpClient.getItem(itemId))
-                } catch (error: Throwable) {
+                    itemLocalDataSource.itemApiInsert(remoteDataSource.getItem(itemId))
+                } catch (throwable: Throwable) {
                     currentCoroutineContext().ensureActive()
-
-                    Logger.e(
+                    logger.recordException(
                         messageString = "sharedItemUiFlow",
-                        throwable = error,
+                        throwable = throwable,
                         tag = TAG,
                     )
                 }
@@ -297,28 +316,28 @@ class ItemTreeRepository(
         emitAll(
             combine(
                 combine(
-                    itemDao.itemByIdWithKidsByIdFlow(itemId.long)
+                    itemLocalDataSource.itemByIdWithKidsByIdFlow(itemId.long)
                         .filterNotNull()
                         .distinctUntilChanged(),
-                    expandedDao.isExpandedFlow(itemId.long)
+                    expandedLocalDataSource.isExpandedFlow(itemId.long)
                         .distinctUntilChanged(),
-                    followedDao.isFollowedFlow(itemId.long)
+                    followedLocalDataSource.isFollowedFlow(itemId.long)
                         .distinctUntilChanged(),
                     ::Triple,
                 ).distinctUntilChanged(),
-                authentication.data
+                preferences.data
                     .map { it.username }
                     .distinctUntilChanged()
                     .flatMapLatest { username ->
                         combine(
-                            upvoteDao
-                                .isUpvoteFlow(itemId.long, username)
+                            upvoteLocalDataSource
+                                .isUpvoteFlow(itemId.long, username.string)
                                 .distinctUntilChanged(),
-                            favoriteDao
-                                .isFavoriteFlow(itemId.long, username)
+                            favoriteLocalDataSource
+                                .isFavoriteFlow(itemId.long, username.string)
                                 .distinctUntilChanged(),
-                            flagDao
-                                .isFlagFlow(itemId.long, username)
+                            flagLocalDataSource
+                                .isFlagFlow(itemId.long, username.string)
                                 .distinctUntilChanged(),
                             ::Triple,
                         )
@@ -331,7 +350,7 @@ class ItemTreeRepository(
                     isFavorite = isFavorite,
                     isFlag = isFlag,
                     isExpanded = isExpanded,
-                    isFollowed = isFollowed
+                    isFollowed = isFollowed,
                 )
             }
         )
@@ -366,9 +385,9 @@ class ItemTreeRepository(
         override val isFollowed: Boolean,
     ) : ItemUi() {
         override suspend fun toggleUpvote(onNavigateLogin: (LoginAction) -> Unit) {
-            val authentication = authentication.data.first()
+            val authentication = preferences.data.first()
 
-            if (authentication.password.isNotEmpty()) {
+            if (authentication.password.string.isNotEmpty()) {
                 upvoteItemJob(authentication, ItemId(item.id), isUpvote.not())
             } else {
                 withContext(mainDispatcher.immediate) {
@@ -378,9 +397,9 @@ class ItemTreeRepository(
         }
 
         override suspend fun toggleFavorite(onNavigateLogin: (LoginAction) -> Unit) {
-            val authentication = authentication.data.first()
+            val authentication = preferences.data.first()
 
-            if (authentication.password.isNotEmpty()) {
+            if (authentication.password.string.isNotEmpty()) {
                 favoriteItemJob(authentication, ItemId(item.id), isFavorite.not())
             } else {
                 withContext(mainDispatcher.immediate) {
@@ -390,9 +409,9 @@ class ItemTreeRepository(
         }
 
         override suspend fun toggleFlag(onNavigateLogin: (LoginAction) -> Unit) {
-            val authentication = authentication.data.first()
+            val authentication = preferences.data.first()
 
-            if (authentication.password.isNotEmpty()) {
+            if (authentication.password.string.isNotEmpty()) {
                 flagItemJob(authentication, ItemId(item.id), isFlag.not())
             } else {
                 withContext(mainDispatcher.immediate) {
@@ -403,17 +422,17 @@ class ItemTreeRepository(
 
         override suspend fun toggleExpanded() {
             if (isExpanded) {
-                expandedDao.expandedDelete(ExpandedDb(item.id))
+                expandedLocalDataSource.expandedDelete(ExpandedDb(item.id))
             } else {
-                expandedDao.expandedInsert(ExpandedDb(item.id))
+                expandedLocalDataSource.expandedInsert(ExpandedDb(item.id))
             }
         }
 
         override suspend fun toggleFollowed() {
             if (isFollowed) {
-                followedDao.followedDelete(FollowedDb(item.id))
+                followedLocalDataSource.followedDelete(FollowedDb(item.id))
             } else {
-                followedDao.followedInsert(FollowedDb(item.id))
+                followedLocalDataSource.followedInsert(FollowedDb(item.id))
             }
         }
     }

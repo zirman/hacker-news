@@ -33,8 +33,6 @@ kotlin {
             implementation(libs.roomKtx)
             implementation(libs.sqliteBundled)
 
-            implementation(libs.kermit)
-
             implementation(libs.annotation)
 
             implementation(libs.collectionKtx)
@@ -75,6 +73,7 @@ android {
 }
 
 dependencies {
+//    ksp(libs.roomCompiler)
     add("kspAndroid", libs.roomCompiler)
     add("kspJvm", libs.roomCompiler)
 }

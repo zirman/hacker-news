@@ -16,8 +16,6 @@ import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -54,15 +52,11 @@ fun AboutUs(
                 ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val annotatedText by rememberUpdatedState(
-                rememberAnnotatedString(
+            Text(
+                text = rememberAnnotatedString(
                     htmlText = stringResource(id = R.string.about_us_detail_html),
                     linkColor = MaterialTheme.colorScheme.primary,
                 ),
-            )
-
-            Text(
-                text = annotatedText,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.bodyMedium.copy(

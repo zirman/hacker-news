@@ -32,10 +32,10 @@ import androidx.compose.ui.unit.dp
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.monoid.hackernews.common.data.Authentication
-import com.monoid.hackernews.common.data.LoginAction
+import androidx.navigation.toRoute
+import com.monoid.hackernews.common.data.Preferences
 import com.monoid.hackernews.common.data.Username
-import com.monoid.hackernews.common.navigation.MainNavigation
+import com.monoid.hackernews.common.navigation.Route
 import com.monoid.hackernews.common.view.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.map
@@ -43,10 +43,12 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun NavigationDrawerContent(
-    authentication: DataStore<Authentication>,
+    preferences: DataStore<Preferences>,
     mainNavController: NavHostController,
     drawerState: DrawerState,
-    onClickUser: (Username) -> Unit,
+    onClickUser: (Username?) -> Unit,
+    onClickAboutUs: () -> Unit,
+    onClickSettings: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val layoutDirection = LocalLayoutDirection.current
@@ -58,50 +60,45 @@ fun NavigationDrawerContent(
                 start = safeDrawingPadding.calculateStartPadding(layoutDirection),
                 end = safeDrawingPadding.calculateEndPadding(layoutDirection),
             )
-            .verticalScroll(state = rememberScrollState())
+            .verticalScroll(state = rememberScrollState()),
     ) {
-        val selectedStories =
+        val selectedStory =
             remember {
                 mainNavController.currentBackStackEntryFlow
-                    .map {
-                        when (val mainNavigation = MainNavigation.fromRoute(it.destination.route)) {
-                            is MainNavigation.Home ->
-                                mainNavigation.argsFromRoute(it)
-
-                            else ->
-                                null
+                    .map { backStackEntry ->
+                        when (backStackEntry.destination.route?.takeWhile { it != '/' }) {
+                            Route.Home::class.simpleName -> backStackEntry.toRoute<Route.Home>().story
+                            else -> null
                         }
                     }
             }
                 .collectAsStateWithLifecycle(null)
                 .value
 
-
-
         val coroutineScope: CoroutineScope =
             rememberCoroutineScope()
 
-        val authenticationState: Authentication? by remember { authentication.data }
-            .collectAsStateWithLifecycle(null)
+        val preferencesState: Preferences by remember { preferences.data }
+            .collectAsStateWithLifecycle(Preferences())
 
-        val auth = authenticationState
-        if (auth?.password?.isNotEmpty() == true) {
+        val auth = preferencesState
+        if (auth.password.string.isNotEmpty()) {
             NavigationDrawerItem(
                 icon = {
                     Icon(
                         imageVector = Icons.TwoTone.Face,
-                        contentDescription = auth.username,
+                        contentDescription = auth.username.string,
                     )
                 },
                 label = {
                     Text(
-                        text = auth.username,
+                        text = auth.username.string,
                         maxLines = 1,
                     )
                 },
                 selected = false,
                 onClick = {
-                    onClickUser(Username(auth.username))
+                    onClickUser(Username(auth.username.string))
                     coroutineScope.launch { drawerState.close() }
                 },
                 modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
@@ -122,11 +119,10 @@ fun NavigationDrawerContent(
                 },
                 selected = false,
                 onClick = {
-                    coroutineScope.launch { drawerState.close() }
-
-                    mainNavController.navigate(
-                        route = MainNavigation.Login.routeWithArgs(LoginAction.Login)
-                    )
+                    onClickUser(auth.username)
+                    coroutineScope.launch {
+                        drawerState.close()
+                    }
                 },
                 modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
             )
@@ -152,10 +148,10 @@ fun NavigationDrawerContent(
                         maxLines = 1,
                     )
                 },
-                selected = item == storiesToNavigationItem[selectedStories],
+                selected = item == storyToNavigationItem[selectedStory],
                 onClick = {
                     coroutineScope.launch { drawerState.close() }
-                    mainNavController.navigate(route = item.route)
+                    mainNavController.navigate(item.route)
                 },
                 modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
             )
@@ -182,11 +178,8 @@ fun NavigationDrawerContent(
             },
             selected = false,
             onClick = {
+                onClickAboutUs()
                 coroutineScope.launch { drawerState.close() }
-
-                mainNavController.navigate(
-                    route = MainNavigation.AboutUs.routeWithArgs(Unit)
-                )
             },
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
         )
@@ -206,11 +199,8 @@ fun NavigationDrawerContent(
             },
             selected = false,
             onClick = {
+                onClickSettings()
                 coroutineScope.launch { drawerState.close() }
-
-                mainNavController.navigate(
-                    route = MainNavigation.Settings.routeWithArgs(Unit)
-                )
             },
             modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
         )

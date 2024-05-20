@@ -11,15 +11,15 @@ import kotlinx.serialization.json.encodeToStream
 import java.io.InputStream
 import java.io.OutputStream
 
-object AuthenticationSerializer : Serializer<Authentication> {
-    override val defaultValue: Authentication = Authentication()
-    override suspend fun readFrom(input: InputStream): Authentication = try {
-        Json.decodeFromStream<Authentication>(input)
+object AuthenticationSerializer : Serializer<Preferences> {
+    override val defaultValue: Preferences = Preferences()
+    override suspend fun readFrom(input: InputStream): Preferences = try {
+        Json.decodeFromStream<Preferences>(input)
     } catch (throwable: Throwable) {
         throw CorruptionException("Cannot read authentication.", throwable)
     }
 
-    override suspend fun writeTo(t: Authentication, output: OutputStream) {
+    override suspend fun writeTo(t: Preferences, output: OutputStream) {
         Json.encodeToStream(t, output)
     }
 }

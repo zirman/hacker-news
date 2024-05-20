@@ -8,7 +8,6 @@ import com.monoid.hackernews.common.data.ItemTreeRepository
 import com.monoid.hackernews.common.data.TopStoryRepository
 import com.monoid.hackernews.common.injection.DispatcherQualifier
 import kotlinx.coroutines.channels.Channel
-import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -24,8 +23,8 @@ val wearApplicationModule = module {
 
     single {
         FavoriteStoryRepository(
-            authentication = get(),
-            favoriteDao = get(),
+            preferencesDataSource = get(),
+            favoriteLocalDataSource = get(),
         )
     }
 
@@ -39,22 +38,22 @@ val wearApplicationModule = module {
 
     single {
         TopStoryRepository(
-            httpClient = get(),
-            topStoryDao = get(),
+            remoteDataSource = get(),
+            topStoryLocalDataSource = get(),
         )
     }
 
     single {
         ItemTreeRepository(
-            authentication = get(),
-            httpClient = get(),
-            firebaseCrashlytics = get(),
-            itemDao = get(),
-            upvoteDao = get(),
-            favoriteDao = get(),
-            flagDao = get(),
-            expandedDao = get(),
-            followedDao = get(),
+            preferences = get(),
+            remoteDataSource = get(),
+            logger = get(),
+            itemLocalDataSource = get(),
+            upvoteLocalDataSource = get(),
+            favoriteLocalDataSource = get(),
+            flagLocalDataSource = get(),
+            expandedLocalDataSource = get(),
+            followedLocalDataSource = get(),
             mainDispatcher = get(),
             ioDispatcher = get(named(DispatcherQualifier.Io)),
         )

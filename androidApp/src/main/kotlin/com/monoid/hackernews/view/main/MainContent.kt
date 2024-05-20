@@ -1,9 +1,8 @@
-@file:OptIn(ExperimentalMaterialApi::class, ExperimentalMaterialNavigationApi::class,
-    ExperimentalMaterial3Api::class
-)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3WindowSizeClassApi::class)
 
 package com.monoid.hackernews.view.main
 
+import android.app.Activity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -17,14 +16,10 @@ import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.windowInsetsEndWidth
 import androidx.compose.foundation.layout.windowInsetsStartWidth
 import androidx.compose.foundation.layout.windowInsetsTopHeight
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.twotone.Login
 import androidx.compose.material.icons.twotone.Face
-import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -38,33 +33,30 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.rememberTooltipState
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.metrics.performance.PerformanceMetricsState
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.plusAssign
-import com.google.accompanist.navigation.material.BottomSheetNavigator
-import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
-import com.google.accompanist.navigation.material.ModalBottomSheetLayout
 import com.monoid.hackernews.MainViewModel
-import com.monoid.hackernews.common.data.Authentication
-import com.monoid.hackernews.common.data.LoginAction
-import com.monoid.hackernews.common.data.Username
-import com.monoid.hackernews.common.navigation.MainNavigation
+import com.monoid.hackernews.common.data.Preferences
+import com.monoid.hackernews.common.navigation.Route
 import com.monoid.hackernews.common.util.rememberMetricsStateHolder
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.common.view.TooltipPopupPositionProvider
@@ -75,13 +67,13 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MainContent(
-    windowSizeClass: WindowSizeClass,
     modifier: Modifier = Modifier,
     mainViewModel: MainViewModel = koinViewModel(),
+    windowSizeClass: WindowSizeClass = calculateWindowSizeClass(LocalContext.current as Activity),
 ) {
-    val drawerState: DrawerState =
-        rememberDrawerState(DrawerValue.Closed)
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
 
+    // TODO: refactor to not use Throwable
     val (showLoginErrorDialog, setShowLoginErrorDialog) =
         remember { mutableStateOf<Throwable?>(null) }
 
@@ -118,152 +110,212 @@ fun MainContent(
             }
         }
 
-        val modalBottomSheetState = rememberModalBottomSheetState(
-            initialValue = ModalBottomSheetValue.Hidden,
-            skipHalfExpanded = true,
-        )
+//        val modalBottomSheetState = androidx.compose.material.rememberModalBottomSheetState(
+//            initialValue = ModalBottomSheetValue.Hidden,
+//            skipHalfExpanded = true,
+//        )
 
-        val bottomSheetNavigator = remember(modalBottomSheetState) {
-            BottomSheetNavigator(sheetState = modalBottomSheetState)
-        }
+//        val bottomSheetNavigator = remember(modalBottomSheetState) {
+//            BottomSheetNavigator(sheetState = modalBottomSheetState)
+//        }
 
-        mainNavController.navigatorProvider += bottomSheetNavigator
+//        mainNavController.navigatorProvider += bottomSheetNavigator
+//
+//        ModalBottomSheetLayout(
+//            bottomSheetNavigator = bottomSheetNavigator
+//        ) {
+//            val fullyExpandedState =
+//                rememberUpdatedState(
+//                    windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded &&
+//                        windowSizeClass.heightSizeClass == WindowHeightSizeClass.Expanded
+//                )
+//
+//
+//        }
 
-        ModalBottomSheetLayout(
-            bottomSheetNavigator = bottomSheetNavigator
+//        MainNavigation(
+//            mainViewModel = mainViewModel,
+//            windowSizeClass = windowSizeClass,
+//            mainNavController = mainNavController,
+//            drawerState = drawerState,
+//            onNavigateToUser = { username ->
+////                mainNavController.navigate(User(username))
+//            },
+//            onNavigateToReply = { itemId ->
+////                mainNavController.navigate(Reply(itemId))
+//            },
+//            onNavigateToLogin = { loginAction ->
+////                loginViewModel
+////                mainNavController.navigate(Login(loginAction))
+//            },
+//            onNavigateUp = { mainNavController.navigateUp() },
+//            onLoginError = { setShowLoginErrorDialog(it) },
+//        )
+        val fullyExpandedState = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded &&
+            windowSizeClass.heightSizeClass == WindowHeightSizeClass.Expanded
+
+        var showLogin by remember { mutableStateOf(false) }
+        var showAboutUs by remember { mutableStateOf(false) }
+        var showSettings by remember { mutableStateOf(false) }
+
+        ModalNavigationDrawer(
+            drawerContent = {
+                // hide drawer when expanded
+                LaunchedEffect(fullyExpandedState) {
+                    if (fullyExpandedState) {
+                        drawerState.close()
+                    }
+                }
+
+                // hide drawer content because it may layout under navigation bars.
+                AnimatedVisibility(visible = fullyExpandedState.not()) {
+                    NavigationDrawerContent(
+                        preferences = mainViewModel.preferencesDataSource,
+                        mainNavController = mainNavController,
+                        drawerState = drawerState,
+                        onClickUser = { username ->
+                            if (username?.takeIf { it.string.isNotBlank() } == null) {
+                                showLogin = true
+                            } else {
+                                mainNavController.navigate(Route.User(username))
+                            }
+                        },
+                        onClickAboutUs = {
+                            showAboutUs = true
+                        },
+                        onClickSettings = {
+                            showSettings = true
+                        },
+                    )
+                }
+            },
+            drawerState = drawerState,
+            gesturesEnabled = fullyExpandedState.not(),
         ) {
-            val fullyExpandedState =
-                rememberUpdatedState(
-                    windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded &&
-                        windowSizeClass.heightSizeClass == WindowHeightSizeClass.Expanded
-                )
+            Row {
+                AnimatedVisibility(visible = fullyExpandedState) {
+                    NavigationRail(
+                        header = {
+                            val preferencesState: Preferences? by
+                            remember { mainViewModel.preferencesDataSource.data }
+                                .collectAsStateWithLifecycle(null)
 
-            ModalNavigationDrawer(
-                drawerContent = {
-                    // hide drawer when expanded
-                    LaunchedEffect(fullyExpandedState.value) {
-                        if (fullyExpandedState.value) {
-                            drawerState.close()
-                        }
-                    }
+                            val preferences: Preferences? =
+                                preferencesState
 
-                    // hide drawer content because it may layout under navigation bars.
-                    AnimatedVisibility(visible = fullyExpandedState.value.not()) {
-                        NavigationDrawerContent(
-                            authentication = mainViewModel.authentication,
-                            mainNavController = mainNavController,
-                            drawerState = drawerState,
-                            onClickUser = { username ->
-                                mainNavController.navigate(
-                                    MainNavigation.User.routeWithArgs(username)
+                            if (preferences?.password?.string?.isNotEmpty() == true) {
+                                NavigationRailItem(
+                                    selected = false,
+                                    onClick = {
+//                                        mainNavController.navigate(
+//                                            MainNavigation.User(
+//                                                authentication.username,
+//                                            ),
+//                                        )
+                                    },
+                                    icon = {
+                                        Icon(
+                                            imageVector = Icons.TwoTone.Face,
+                                            contentDescription = preferences.username.string,
+                                        )
+                                    },
+                                    label = { Text(text = preferences.username.string) },
                                 )
-                            },
-                        )
-                    }
-                },
-                drawerState = drawerState,
-                gesturesEnabled = fullyExpandedState.value.not(),
-            ) {
-                Row {
-                    AnimatedVisibility(visible = fullyExpandedState.value) {
-                        NavigationRail(
-                            header = {
-                                val authenticationState: Authentication? by
-                                    remember { mainViewModel.authentication.data }
-                                        .collectAsStateWithLifecycle(null)
+                            } else {
+                                val scope = rememberCoroutineScope()
+                                val state = rememberTooltipState()
 
-                                val authentication: Authentication? =
-                                    authenticationState
+                                TooltipBox(
+                                    positionProvider = TooltipPopupPositionProvider(),
+                                    tooltip = {
+                                        Surface {
+                                            Row {
+                                                Text(text = stringResource(id = R.string.login))
+                                                Text(text = stringResource(id = R.string.login_description))
 
-                                if (authentication?.password?.isNotEmpty() == true) {
-                                    NavigationRailItem(
-                                        selected = false,
-                                        onClick = {
-                                            mainNavController.navigate(
-                                                MainNavigation.User.routeWithArgs(
-                                                    Username(authentication.username)
-                                                )
-                                            )
-                                        },
-                                        icon = {
-                                            Icon(
-                                                imageVector = Icons.TwoTone.Face,
-                                                contentDescription = authentication.username,
-                                            )
-                                        },
-                                        label = { Text(text = authentication.username) },
-                                    )
-                                } else {
-                                    val scope = rememberCoroutineScope()
-                                    val state = rememberTooltipState()
-
-                                    TooltipBox(
-                                        positionProvider = TooltipPopupPositionProvider(),
-                                        tooltip = {
-                                            Surface {
                                                 Row {
-                                                    Text(text = stringResource(id = R.string.login))
-                                                    Text(text = stringResource(id = R.string.login_description))
+                                                    Spacer(modifier = Modifier.weight(1f))
 
-                                                    Row {
-                                                        Spacer(modifier = Modifier.weight(1f))
-
-                                                        TextButton(
-                                                            onClick = { scope.launch { state.dismiss() } }
-                                                        ) {
-                                                            Text(text = stringResource(id = R.string.dismiss))
-                                                        }
+                                                    TextButton(
+                                                        onClick = { scope.launch { state.dismiss() } }
+                                                    ) {
+                                                        Text(text = stringResource(id = R.string.dismiss))
                                                     }
                                                 }
                                             }
+                                        }
+                                    },
+                                    state = state,
+                                ) {
+                                    NavigationRailItem(
+                                        selected = false,
+                                        onClick = {
+//                                            mainNavController.navigate(
+//                                                MainNavigation.Login(LoginAction.Login),
+//                                            )
                                         },
-                                        state = state,
-                                    ) {
-                                        NavigationRailItem(
-                                            selected = false,
-                                            onClick = {
-                                                mainNavController.navigate(
-                                                    MainNavigation.Login
-                                                        .routeWithArgs(LoginAction.Login),
-                                                )
-                                            },
-                                            icon = {
-                                                Icon(
-                                                    imageVector = Icons.AutoMirrored.TwoTone.Login,
-                                                    contentDescription = stringResource(id = R.string.login),
-                                                )
-                                            },
-                                            label = {
-                                                Text(text = stringResource(id = R.string.login))
-                                            },
-                                        )
-                                    }
+                                        icon = {
+                                            Icon(
+                                                imageVector = Icons.AutoMirrored.TwoTone.Login,
+                                                contentDescription = stringResource(id = R.string.login),
+                                            )
+                                        },
+                                        label = {
+                                            Text(text = stringResource(id = R.string.login))
+                                        },
+                                    )
                                 }
-                            },
-                        ) {
-                            NavigationRailContent(mainNavController = mainNavController)
-                        }
+                            }
+                        },
+                    ) {
+                        NavigationRailContent(mainNavController = mainNavController)
                     }
+                }
 
-                    MainNavigation(
-                        mainViewModel = mainViewModel,
+                LoginBottomSheet(windowSizeClass = windowSizeClass)
+
+                if (showAboutUs) {
+                    AboutUsBottomSheet(
                         windowSizeClass = windowSizeClass,
-                        mainNavController = mainNavController,
-                        drawerState = drawerState,
-                        onNavigateToUser = { username ->
-                            mainNavController.navigate(MainNavigation.User.routeWithArgs(username))
-                        },
-                        onNavigateToReply = { itemId ->
-                            mainNavController.navigate(MainNavigation.Reply.routeWithArgs(itemId))
-                        },
-                        onNavigateToLogin = { loginAction ->
-                            mainNavController
-                                .navigate(MainNavigation.Login.routeWithArgs(loginAction))
-                        },
-                        onNavigateUp = { mainNavController.navigateUp() },
-                        onLoginError = { setShowLoginErrorDialog(it) },
+                        onHide = { showAboutUs = false },
                     )
                 }
+
+                if (showSettings) {
+                    SettingsBottomSheet(
+                        windowSizeClass = windowSizeClass,
+                        onHide = { showSettings = false },
+                    )
+                }
+
+//                if (showReply) {
+//                    ReplyBottomSheet(
+//                        authentication = mainViewModel.authentication,
+//                        itemTreeRepository = mainViewModel.itemTreeRepository,
+//                        httpClient = mainViewModel.httpClient,
+//                        windowSizeClassState = windowSizeClassState,
+//                        onNavigateUp = onNavigateUp,
+//                        onLoginError = onLoginError,
+//                    )
+//                }
+
+                MainNavigation(
+                    mainViewModel = mainViewModel,
+                    windowSizeClass = windowSizeClass,
+                    mainNavController = mainNavController,
+                    drawerState = drawerState,
+                    onNavigateToUser = { username ->
+//                        mainNavController.navigate(MainNavigation.User(username))
+                    },
+                    onNavigateToReply = { itemId ->
+//                        mainNavController.navigate(MainNavigation.Reply(itemId))
+                    },
+                    onNavigateToLogin = { loginAction ->
+//                        mainNavController.navigate(MainNavigation.Login(loginAction))
+                    },
+                    onNavigateUp = { mainNavController.navigateUp() },
+                    onLoginError = { setShowLoginErrorDialog(it) },
+                )
             }
         }
 

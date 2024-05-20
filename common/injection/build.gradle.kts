@@ -20,6 +20,7 @@ kotlin {
             compileOnly(libs.koinCore)
             implementation(libs.bundles.kotlinx)
             implementation(libs.bundles.koin)
+            implementation(libs.kermit)
         }
 
         commonTest.dependencies {

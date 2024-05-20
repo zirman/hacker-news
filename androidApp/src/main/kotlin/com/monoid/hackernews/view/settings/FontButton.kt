@@ -1,40 +1,30 @@
 package com.monoid.hackernews.view.settings
 
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.datastore.core.DataStore
-import com.monoid.hackernews.common.data.Authentication
+import androidx.compose.ui.res.stringResource
 import com.monoid.hackernews.view.theme.HNFont
-import kotlinx.coroutines.launch
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+import com.monoid.hackernews.view.theme.toFontFamily
+import com.monoid.hackernews.view.theme.toNameId
 
 @Composable
 fun FontButton(
     hnFont: HNFont,
-    authentication: DataStore<Authentication>,
-    modifier: Modifier = Modifier
+    selected: Boolean,
+    onClickFont: (HNFont) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    val coroutineScope = rememberCoroutineScope()
-
     TextButton(
-        onClick = {
-            coroutineScope.launch {
-                authentication.updateData {
-                    it.copy(
-                        font = Json.encodeToString(hnFont),
-                    )
-                }
-            }
-        },
+        onClick = { onClickFont(hnFont) },
+        elevation = if (selected) ButtonDefaults.elevatedButtonElevation() else null,
         modifier = modifier,
     ) {
         Text(
-            text = hnFont.getName(),
-            fontFamily = hnFont.rememberFontFamily(),
+            text = stringResource(id = hnFont.toNameId()),
+            fontFamily = hnFont.toFontFamily(),
         )
     }
 }

@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-
 package com.monoid.hackernews
 
 import android.animation.ObjectAnimator
@@ -13,9 +11,6 @@ import android.view.WindowInsetsController
 import android.view.animation.AnticipateInterpolator
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
-import androidx.compose.runtime.remember
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
@@ -24,15 +19,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.metrics.performance.JankStats
-import com.monoid.hackernews.common.data.Authentication
-import com.monoid.hackernews.common.injection.FirebaseAdapter
-import com.monoid.hackernews.common.ui.util.rememberUseDarkTheme
+import com.monoid.hackernews.common.data.Preferences
+import com.monoid.hackernews.common.injection.LoggerAdapter
 import com.monoid.hackernews.view.main.MainContent
 import com.monoid.hackernews.view.theme.AppTheme
-import com.monoid.hackernews.view.theme.HNFont
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
 import org.koin.android.ext.android.inject
 import org.koin.android.scope.AndroidScopeComponent
 import org.koin.androidx.scope.activityRetainedScope
@@ -41,9 +33,9 @@ import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity(), AndroidScopeComponent {
     override val scope: Scope by activityRetainedScope()
-    private val authentication: DataStore<Authentication> by inject()
+    private val preferences: DataStore<Preferences> by inject()
     private val viewModel: MainViewModel by inject()
-    private val crashlytics: FirebaseAdapter by inject()
+    private val logger: LoggerAdapter by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,8 +80,12 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                     }
 
                     animateIn.start()
-                } catch (error: Throwable) {
-                    crashlytics.recordException(error)
+                } catch (throwable: Throwable) {
+                    logger.recordException(
+                        messageString = "CoroutineExceptionHandler",
+                        throwable = throwable,
+                        tag = TAG,
+                    )
                 }
             }
         }
@@ -107,28 +103,8 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
         )
 
         setContent {
-            val useDarkTheme: Boolean =
-                rememberUseDarkTheme()
-
-            val fontState: String? = null
-//            by remember<Flow<String?>> { authentication.data.map { it.font } }
-//                .collectAsStateWithLifecycle(null)
-
-            AppTheme(
-                useDarkTheme = useDarkTheme,
-                hnFont = remember(fontState) {
-                    fontState
-                        ?.let { font ->
-                            try {
-                                Json.decodeFromString<HNFont>(font)
-                            } catch (error: Throwable) {
-                                null
-                            }
-                        }
-                        ?: HNFont.Default
-                }
-            ) {
-                MainContent(windowSizeClass = calculateWindowSizeClass(this))
+            AppTheme {
+                MainContent()
             }
         }
 
@@ -163,5 +139,9 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         lifecycleScope.launch { viewModel.newIntentChannel.send(intent) }
+    }
+
+    companion object {
+        private const val TAG = "MainActivity"
     }
 }

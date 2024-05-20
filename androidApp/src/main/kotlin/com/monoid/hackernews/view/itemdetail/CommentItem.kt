@@ -29,11 +29,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -100,9 +98,8 @@ fun CommentItem(
                     itemUi?.itemUi?.item?.lastUpdate != null
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                val timeByUserAnnotatedString: AnnotatedString by rememberUpdatedState(
+                val timeByUserAnnotatedString: AnnotatedString =
                     rememberTimeBy(itemUi?.itemUi?.item ?: ItemDb(id = 0))
-                )
 
                 ClickableTextBlock(
                     text = timeByUserAnnotatedString,

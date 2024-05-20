@@ -13,6 +13,8 @@ import com.monoid.hackernews.common.data.ShowStoryRepository
 import com.monoid.hackernews.common.data.TopStoryRepository
 import com.monoid.hackernews.common.data.UserStoryRepositoryFactory
 import com.monoid.hackernews.common.injection.DispatcherQualifier
+import com.monoid.hackernews.view.main.LoginViewModel
+import com.monoid.hackernews.view.main.SettingsViewModel
 import kotlinx.coroutines.channels.Channel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -25,8 +27,8 @@ enum class LifecycleOwnerQualifier {
 val applicationModule = module {
     viewModel {
         MainViewModel(
-            authentication = get(),
-            httpClient = get(),
+            preferencesDataSource = get(),
+            remoteDataSource = get(),
             userStoryRepositoryFactory = get(),
             topStoryRepository = get(),
             newStoryRepository = get(),
@@ -37,6 +39,28 @@ val applicationModule = module {
             favoriteStoryRepository = get(),
             itemTreeRepository = get(),
             newIntentChannel = get(),
+            logger = get(),
+        )
+    }
+
+    viewModel {
+        ThemeViewModel(
+            preferencesDataSource = get(),
+        )
+    }
+
+    viewModel {
+        LoginViewModel(
+            preferencesDataSource = get(),
+            remoteDataSource = get(),
+            logger = get(),
+        )
+    }
+
+    viewModel {
+        SettingsViewModel(
+            preferencesDataSource = get(),
+            logger = get(),
         )
     }
 
@@ -46,79 +70,79 @@ val applicationModule = module {
 
     single {
         FavoriteStoryRepository(
-            authentication = get(),
-            favoriteDao = get(),
+            preferencesDataSource = get(),
+            favoriteLocalDataSource = get(),
         )
     }
 
     single {
         UserStoryRepositoryFactory(
-            httpClient = get(),
-            userDao = get(),
-            itemDao = get(),
+            remoteDataSource = get(),
+            userLocalDataSource = get(),
+            itemLocalDataSource = get(),
         )
     }
 
     single {
         TopStoryRepository(
-            httpClient = get(),
-            topStoryDao = get(),
+            remoteDataSource = get(),
+            topStoryLocalDataSource = get(),
         )
     }
 
     single {
         NewStoryRepository(
-            httpClient = get(),
-            newStoryDao = get(),
+            remoteDataSource = get(),
+            newStoryLocalDataSource = get(),
         )
     }
 
     single {
         BestStoryRepository(
-            httpClient = get(),
-            bestStoryDao = get(),
+            remoteDataSource = get(),
+            bestStoryLocalDataSource = get(),
         )
     }
 
     single {
         AskStoryRepository(
-            httpClient = get(),
-            askStoryDao = get(),
+            remoteDataSource = get(),
+            askStoryLocalDataSource = get(),
         )
     }
 
     single {
         ShowStoryRepository(
             httpClient = get(),
-            showStoryDao = get(),
+            showStoryLocalDataSource = get(),
         )
     }
 
     single {
         JobStoryRepository(
-            httpClient = get(),
-            jobStoryDao = get(),
+            remoteDataSource = get(),
+            jobStoryLocalDataSource = get(),
         )
     }
 
     single {
         FavoriteStoryRepository(
-            authentication = get(),
-            favoriteDao = get(),
+            preferencesDataSource = get(),
+            favoriteLocalDataSource = get(),
         )
     }
 
     single {
         ItemTreeRepository(
-            authentication = get(),
-            httpClient = get(),
-            firebaseCrashlytics = get(),
-            itemDao = get(),
-            upvoteDao = get(),
-            favoriteDao = get(),
-            flagDao = get(),
-            expandedDao = get(),
-            followedDao = get(),
+            preferences = get(),
+            remoteDataSource = get(),
+            logger = get(),
+            itemLocalDataSource = get(),
+            upvoteLocalDataSource = get(),
+            favoriteLocalDataSource = get(),
+            flagLocalDataSource = get(),
+            expandedLocalDataSource = get(),
+            followedLocalDataSource = get(),
             mainDispatcher = get(),
             ioDispatcher = get(named(DispatcherQualifier.Io)),
         )

@@ -24,9 +24,8 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -34,26 +33,17 @@ import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.datastore.core.DataStore
-import com.monoid.hackernews.common.api.loginRequest
-import com.monoid.hackernews.common.data.Authentication
+import com.monoid.hackernews.common.data.Password
+import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.util.rememberAnnotatedString
 import com.monoid.hackernews.view.text.PasswordTextField
 import com.monoid.hackernews.view.text.UsernameTextField
-import io.ktor.client.HttpClient
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.currentCoroutineContext
-import kotlinx.coroutines.ensureActive
-import kotlinx.coroutines.launch
 
 @Composable
 fun LoginContent(
-    httpClient: HttpClient,
-    authentication: DataStore<Authentication>,
     windowSizeClass: WindowSizeClass,
-    onLogin: (Authentication) -> Unit,
-    onLoginError: (Throwable) -> Unit,
+    onSubmit: (Username, Password) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Surface(
@@ -78,9 +68,9 @@ fun LoginContent(
 
                             windowInsets
                         })
-                        .asPaddingValues()
+                        .asPaddingValues(),
                 ),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             val rowModifier: Modifier =
                 if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
@@ -91,43 +81,11 @@ fun LoginContent(
                     Modifier.width(320.dp)
                 }.padding(vertical = 4.dp)
 
-            val coroutineScope: CoroutineScope =
-                rememberCoroutineScope()
-
-            val usernameState =
+            var username by
                 rememberSaveable { mutableStateOf("") }
 
-            val passwordState =
+            var password by
                 rememberSaveable { mutableStateOf("") }
-
-            fun onSubmit() {
-                val username = usernameState.value
-                val password = passwordState.value
-                if (username.isBlank() || password.isEmpty()) return
-
-                coroutineScope.launch {
-                    try {
-                        onLogin(
-                            authentication.updateData { auth ->
-                                httpClient.loginRequest(
-                                    authentication = Authentication(
-                                        username = username,
-                                        password = password,
-                                    )
-                                )
-
-                                auth.copy(
-                                    username = username,
-                                    password = password,
-                                )
-                            }
-                        )
-                    } catch (error: Throwable) {
-                        currentCoroutineContext().ensureActive()
-                        onLoginError(error)
-                    }
-                }
-            }
 
             val focusManager: FocusManager =
                 LocalFocusManager.current
@@ -137,24 +95,28 @@ fun LoginContent(
             Text(
                 text = stringResource(id = R.string.hacker_news_login),
                 modifier = rowModifier,
-                style = MaterialTheme.typography.headlineMedium
+                style = MaterialTheme.typography.headlineMedium,
             )
 
             UsernameTextField(
-                username = usernameState.value,
-                onUsernameChange = { usernameState.value = it },
-                modifier = rowModifier,
-                onNext = { focusManager.moveFocus(FocusDirection.Down) },
-                onPrev = { focusManager.moveFocus(FocusDirection.Up) }
-            )
-
-            PasswordTextField(
-                password = passwordState.value,
-                onChangePassword = { passwordState.value = it },
+                username = username,
+                onUsernameChange = { username = it },
                 modifier = rowModifier,
                 onNext = { focusManager.moveFocus(FocusDirection.Down) },
                 onPrev = { focusManager.moveFocus(FocusDirection.Up) },
-                onDone = ::onSubmit
+            )
+
+            PasswordTextField(
+                password = password,
+                onChangePassword = { password = it },
+                modifier = rowModifier,
+                onNext = { focusManager.moveFocus(FocusDirection.Down) },
+                onPrev = { focusManager.moveFocus(FocusDirection.Up) },
+                onDone = {
+                    if (username.isNotBlank() && password.isNotEmpty()) {
+                        onSubmit(Username(username), Password(password))
+                    }
+                },
             )
 
             val acceptTermsState = rememberSaveable {
@@ -163,24 +125,20 @@ fun LoginContent(
 
             Row(
                 modifier = rowModifier,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Checkbox(
                     checked = acceptTermsState.value,
                     onCheckedChange = {
                         acceptTermsState.value = acceptTermsState.value.not()
-                    }
-                )
-
-                val annotatedText by rememberUpdatedState(
-                    rememberAnnotatedString(
-                        htmlText = stringResource(id = R.string.i_agree_html),
-                        linkColor = MaterialTheme.colorScheme.primary,
-                    ),
+                    },
                 )
 
                 Text(
-                    text = annotatedText,
+                    text = rememberAnnotatedString(
+                        htmlText = stringResource(id = R.string.i_agree_html),
+                        linkColor = MaterialTheme.colorScheme.primary,
+                    ),
                     style = MaterialTheme.typography.bodyMedium.copy(
                         color = LocalContentColor.current,
                     ),
@@ -188,10 +146,14 @@ fun LoginContent(
             }
 
             Button(
-                onClick = ::onSubmit,
+                onClick = {
+                    if (username.isNotBlank() && password.isNotEmpty()) {
+                        onSubmit(Username(username), Password(password))
+                    }
+                },
                 modifier = rowModifier,
-                enabled = usernameState.value.isNotBlank() &&
-                    passwordState.value.isNotEmpty() &&
+                enabled = username.isNotBlank() &&
+                    password.isNotEmpty() &&
                     acceptTermsState.value,
             ) {
                 Text(text = stringResource(id = R.string.submit))

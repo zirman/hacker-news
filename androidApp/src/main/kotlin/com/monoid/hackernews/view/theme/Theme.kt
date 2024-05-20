@@ -2,16 +2,21 @@ package com.monoid.hackernews.view.theme
 
 import android.content.Context
 import android.os.Build
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.annotation.StringRes
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
-import androidx.compose.material.MaterialTheme as MaterialTheme2
+import androidx.compose.ui.text.font.FontFamily
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.monoid.hackernews.ThemeViewModel
+import com.monoid.hackernews.common.ui.util.rememberUseDarkTheme
+import com.monoid.hackernews.common.view.R
+import org.koin.androidx.compose.koinViewModel
 
 private val LightThemeColors = lightColorScheme(
     primary = md_theme_light_primary,
@@ -71,13 +76,14 @@ private val DarkThemeColors = darkColorScheme(
 
 @Composable
 fun AppTheme(
-    useDarkTheme: Boolean = false,
-    dynamicIfAvailable: Boolean = true,
-    hnFont: HNFont = HNFont.Default,
+    viewModel: ThemeViewModel = koinViewModel(),
     content: @Composable () -> Unit,
 ) {
+    val useDarkTheme: Boolean = rememberUseDarkTheme()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     MaterialTheme(
-        colorScheme = if (dynamicIfAvailable && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        colorScheme = if (uiState.dynamicIfAvailable && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val context: Context =
                 LocalContext.current
 
@@ -91,46 +97,22 @@ fun AppTheme(
         } else {
             LightThemeColors
         },
-        typography = rememberAppTypography(hnFont.rememberFontFamily()),
-    ) {
-        // Shim in Material 3 styles into Material 2 components.
-        MaterialTheme2(
-            colors = MaterialTheme2.colors.copy(
-                primary = MaterialTheme.colorScheme.primary,
-                primaryVariant = MaterialTheme.colorScheme.primaryContainer,
-                secondary = MaterialTheme.colorScheme.secondary,
-                secondaryVariant = MaterialTheme.colorScheme.secondaryContainer,
-                background = MaterialTheme.colorScheme.background,
-                surface = MaterialTheme.colorScheme.surface,
-                error = MaterialTheme.colorScheme.error,
-                onPrimary = MaterialTheme.colorScheme.onPrimary,
-                onSecondary = MaterialTheme.colorScheme.onSecondary,
-                onBackground = MaterialTheme.colorScheme.onBackground,
-                onSurface = MaterialTheme.colorScheme.onSurface,
-                onError = MaterialTheme.colorScheme.onError,
-                isLight = useDarkTheme.not(),
-            ),
-            typography = MaterialTheme2.typography.copy(
-                h1 = MaterialTheme.typography.displayLarge,
-                h2 = MaterialTheme.typography.displayMedium,
-                h3 = MaterialTheme.typography.displaySmall,
-                h4 = MaterialTheme.typography.headlineLarge,
-                h5 = MaterialTheme.typography.headlineMedium,
-                h6 = MaterialTheme.typography.headlineSmall,
-                subtitle1 = MaterialTheme.typography.titleMedium,
-                subtitle2 = MaterialTheme.typography.titleSmall,
-                body1 = MaterialTheme.typography.bodyMedium,
-                body2 = MaterialTheme.typography.bodySmall,
-                button = MaterialTheme.typography.labelLarge,
-                caption = MaterialTheme.typography.labelMedium,
-                overline = MaterialTheme.typography.labelSmall,
-            ),
-            shapes = MaterialTheme2.shapes.copy(
-                small = RoundedCornerShape(8.dp),
-                medium = RoundedCornerShape(16.dp),
-                large = RoundedCornerShape(32.dp)
-            ),
-            content = content,
-        )
-    }
+        typography = rememberAppTypography(uiState.font.toFontFamily()),
+        content = content,
+    )
+}
+
+fun HNFont.toFontFamily(): FontFamily = when (this) {
+    HNFont.Cursive -> FontFamily.Cursive
+    HNFont.Monospace -> FontFamily.Monospace
+    HNFont.SansSerif -> FontFamily.SansSerif
+    HNFont.Serif -> FontFamily.Serif
+}
+
+@StringRes
+fun HNFont.toNameId(): Int = when (this) {
+    HNFont.Cursive -> R.string.cursive
+    HNFont.Monospace, -> R.string.monospace
+    HNFont.SansSerif -> R.string.sans_serif
+    HNFont.Serif -> R.string.serif
 }

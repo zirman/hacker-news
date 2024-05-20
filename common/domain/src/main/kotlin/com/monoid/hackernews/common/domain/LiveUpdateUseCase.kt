@@ -1,8 +1,8 @@
 package com.monoid.hackernews.common.domain
 
 import android.net.ConnectivityManager
-import android.util.Log
 import com.monoid.hackernews.common.data.Repository
+import com.monoid.hackernews.common.injection.LoggerAdapter
 import com.monoid.hackernews.common.ui.util.getNetworkConnectivityStateFlow
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.currentCoroutineContext
@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.onEach
 class LiveUpdateUseCase<out T>(
     private val connectivityManager: ConnectivityManager,
     private val repository: Repository<T>,
+    private val logger: LoggerAdapter,
 ) {
     fun getItems(updatePeriod: Long): Flow<List<T>> = flow {
         coroutineScope {
@@ -31,15 +32,23 @@ class LiveUpdateUseCase<out T>(
                     while (hasConnectivity) {
                         try {
                             repository.updateItems()
-                        } catch (error: Throwable) {
+                        } catch (throwable: Throwable) {
                             currentCoroutineContext().ensureActive()
-                            Log.e(TAG, "getItems", error)
+                            logger.recordException(
+                                messageString = "getItems",
+                                throwable = throwable,
+                                tag = TAG,
+                            )
                         }
 
                         delay(updatePeriod)
                     }
                 }
-                .catch { Log.e(TAG, "getItems", it) }
+                .catch { logger.recordException(
+                    messageString = "getItems",
+                    throwable = it,
+                    tag = TAG,
+                ) }
                 .launchIn(this)
 
             emitAll(repository.getItems(this))

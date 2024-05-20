@@ -10,14 +10,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.monoid.hackernews.common.api.getFavorites
 import com.monoid.hackernews.common.api.getUpvoted
-import com.monoid.hackernews.common.data.Authentication
 import com.monoid.hackernews.common.data.ItemTreeRepository
+import com.monoid.hackernews.common.data.Preferences
 import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.dataStoreModule
 import com.monoid.hackernews.common.databaseModule
-import com.monoid.hackernews.common.injection.FirebaseAdapter
+import com.monoid.hackernews.common.injection.LoggerAdapter
 import com.monoid.hackernews.common.injection.dispatcherModule
-import com.monoid.hackernews.common.injection.firebaseModule
+import com.monoid.hackernews.common.injection.loggerModule
 import com.monoid.hackernews.common.networkModule
 import com.monoid.hackernews.common.room.FavoriteDao
 import com.monoid.hackernews.common.room.HNDatabase
@@ -40,13 +40,21 @@ import org.koin.core.context.startKoin
 import java.util.concurrent.TimeUnit
 
 class HNWearApplication : Application() {
-    private val firebaseCrashlytics: FirebaseAdapter by inject()
-    private val authentication: DataStore<Authentication> by inject()
+    private val logger: LoggerAdapter by inject()
+    private val preferences: DataStore<Preferences> by inject()
     private val db: HNDatabase by inject()
     private val upvoteDao: UpvoteDao by inject()
     private val favoriteDao: FavoriteDao by inject()
     private val httpClient: HttpClient by inject()
     private val itemTreeRepository: ItemTreeRepository by inject()
+
+    private val context = CoroutineExceptionHandler { _, throwable ->
+        logger.recordException(
+            messageString = "upvoteItemJob",
+            throwable = throwable,
+            tag = TAG,
+        )
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -61,38 +69,33 @@ class HNWearApplication : Application() {
                 networkModule,
                 databaseModule,
                 dataStoreModule,
-                firebaseModule,
+                loggerModule,
             )
         }
 
         val lifecycleOwner = ProcessLifecycleOwner.get()
 
-        lifecycleOwner.lifecycleScope.launch(
-            CoroutineExceptionHandler { _, error ->
-                firebaseCrashlytics.recordException(error)
-                error.printStackTrace()
-            }
-        ) {
+        lifecycleOwner.lifecycleScope.launch(context) {
             lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 // Update upvote and favorite table on login and then periodically.
-                authentication.data.distinctUntilChanged().collectLatest { authentication ->
-                    if (authentication.password.isNotEmpty()) {
+                preferences.data.distinctUntilChanged().collectLatest { authentication ->
+                    if (authentication.password.string.isNotEmpty()) {
                         while (true) {
                             try {
                                 val upvoteDef = async {
                                     upvoteDao.replaceUpvotesForUser(
-                                        username = authentication.username,
+                                        username = authentication.username.string,
                                         upvotes = getUpvoted(
                                             authentication,
-                                            Username(authentication.username)
+                                            Username(authentication.username.string)
                                         ).map { it.long },
                                     )
                                 }
 
                                 val favoriteDef = async {
                                     favoriteDao.replaceFavoritesForUser(
-                                        username = authentication.username,
-                                        favorites = getFavorites(Username(authentication.username))
+                                        username = authentication.username.string,
+                                        favorites = getFavorites(Username(authentication.username.string))
                                             .map { it.long },
                                     )
                                 }
@@ -107,9 +110,13 @@ class HNWearApplication : Application() {
 
                                 upvoteDef.await()
                                 favoriteDef.await()
-                            } catch (error: Throwable) {
+                            } catch (throwable: Throwable) {
                                 currentCoroutineContext().ensureActive()
-                                error.printStackTrace()
+                                logger.recordException(
+                                    messageString = "OnCreate",
+                                    throwable = throwable,
+                                    tag = TAG,
+                                )
                             }
                         }
                     }
@@ -135,5 +142,9 @@ class HNWearApplication : Application() {
         httpClient.close()
         db.close()
         super.onTerminate()
+    }
+
+    companion object {
+        private const val TAG = "HNWearApplication"
     }
 }

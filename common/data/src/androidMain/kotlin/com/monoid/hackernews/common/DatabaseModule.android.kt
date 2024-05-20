@@ -14,7 +14,11 @@ actual val databaseModule: Module = module {
     single {
         val context = androidContext()
         val dbFile = context.getDatabasePath("hacker-news-database")
-        Room.databaseBuilder<HNDatabase>(context, dbFile.absolutePath)
+        Room.databaseBuilder<HNDatabase>(
+            context = context,
+            name = dbFile.absolutePath,
+            //factory = { HNDatabase::class.instantiateImpl() },
+        )
             .setDriver(BundledSQLiteDriver())
             .setQueryCoroutineContext(get<CoroutineDispatcher>(named(DispatcherQualifier.Io)))
             .build()

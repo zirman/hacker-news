@@ -31,9 +31,9 @@ import androidx.datastore.core.DataStore
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.api.commentRequest
-import com.monoid.hackernews.common.data.Authentication
 import com.monoid.hackernews.common.data.ItemTreeRepository
 import com.monoid.hackernews.common.data.ItemUi
+import com.monoid.hackernews.common.data.Preferences
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.util.getAnnotatedString
 import com.monoid.hackernews.view.text.ReplyTextField
@@ -49,7 +49,7 @@ import kotlinx.coroutines.launch
 fun ReplyContent(
     httpClient: HttpClient,
     itemTreeRepository: ItemTreeRepository,
-    authentication: DataStore<Authentication>,
+    preferences: DataStore<Preferences>,
     itemId: ItemId,
     windowSizeClass: WindowSizeClass,
     onSuccess: () -> Unit,
@@ -134,7 +134,7 @@ fun ReplyContent(
             Button(
                 onClick = {
                     replyJob(
-                        authentication = authentication,
+                        preferences = preferences,
                         coroutineScope = coroutineScope,
                         httpClient = httpClient,
                         itemId = itemId,
@@ -153,7 +153,7 @@ fun ReplyContent(
 }
 
 fun replyJob(
-    authentication: DataStore<Authentication>,
+    preferences: DataStore<Preferences>,
     coroutineScope: CoroutineScope,
     httpClient: HttpClient,
     itemId: ItemId,
@@ -164,15 +164,15 @@ fun replyJob(
     return coroutineScope.launch {
         try {
             httpClient.commentRequest(
-                authentication = authentication.data.first(),
+                preferences = preferences.data.first(),
                 parentId = itemId,
                 text = text,
             )
 
             onSuccess()
-        } catch (error: Throwable) {
+        } catch (throwable: Throwable) {
             currentCoroutineContext().ensureActive()
-            onError(error)
+            onError(throwable)
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.monoid.hackernews.common.api
 
-import com.monoid.hackernews.common.data.Authentication
+import com.monoid.hackernews.common.data.Preferences
 import com.monoid.hackernews.common.data.Username
 import io.ktor.client.HttpClient
 
@@ -9,29 +9,29 @@ class WebViewException : Exception()
 
 internal const val yCombinatorBaseUrl = "https://news.ycombinator.com"
 
-suspend fun HttpClient.registerRequest(authentication: Authentication) {
+suspend fun HttpClient.registerRequest(preferences: Preferences) {
     yCombRequest(
-        authentication = authentication,
+        preferences = preferences,
         path = "login",
     ) {
         append("creating", "t")
     }
 }
 
-suspend fun HttpClient.loginRequest(authentication: Authentication) {
+suspend fun HttpClient.loginRequest(preferences: Preferences) {
     yCombRequest(
-        authentication = authentication,
+        preferences = preferences,
         path = "login",
     )
 }
 
 suspend fun HttpClient.favoriteRequest(
-    authentication: Authentication,
+    preferences: Preferences,
     itemId: ItemId,
     flag: Boolean = true,
 ) {
     yCombRequest(
-        authentication = authentication,
+        preferences = preferences,
         path = "fave",
     ) {
         append("id", itemId.long.toString())
@@ -40,12 +40,12 @@ suspend fun HttpClient.favoriteRequest(
 }
 
 suspend fun HttpClient.flagRequest(
-    authentication: Authentication,
+    preferences: Preferences,
     itemId: ItemId,
     flag: Boolean = true,
 ) {
     yCombRequest(
-        authentication = authentication,
+        preferences = preferences,
         path = "flag",
     ) {
         append("id", itemId.long.toString())
@@ -54,12 +54,12 @@ suspend fun HttpClient.flagRequest(
 }
 
 suspend fun HttpClient.upvoteItem(
-    authentication: Authentication,
+    preferences: Preferences,
     itemId: ItemId,
     flag: Boolean = true,
 ) {
     yCombRequest(
-        authentication = authentication,
+        preferences = preferences,
         path = "vote",
     ) {
         append("id", itemId.long.toString())
@@ -68,12 +68,12 @@ suspend fun HttpClient.upvoteItem(
 }
 
 suspend fun HttpClient.commentRequest(
-    authentication: Authentication,
+    preferences: Preferences,
     parentId: ItemId,
     text: String,
 ) {
     yCombRequest(
-        authentication = authentication,
+        preferences = preferences,
         path = "comment",
     ) {
         append("parent", parentId.long.toString())
@@ -94,10 +94,10 @@ suspend fun getComments(username: Username): List<ItemId> {
 }
 
 suspend fun getUpvoted(
-    authentication: Authentication,
+    preferences: Preferences,
     username: Username,
 ): List<ItemId> {
     return getHtmlItems(
-        path = "upvoted?id=${username.string}&acct=${authentication.username}&pw=${authentication.password}",
+        path = "upvoted?id=${username.string}&acct=${preferences.username}&pw=${preferences.password}",
     )
 }

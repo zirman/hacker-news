@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinxParcelize)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.kotlinxSerialization)
 }
 
 kotlin {
@@ -37,6 +38,7 @@ android {
 dependencies {
     coreLibraryDesugaring(libs.desugarJdkLibsNio)
 
+    api(project(":common:injection"))
     api(project(":common:data"))
 
     implementation(platform(libs.composeBom))

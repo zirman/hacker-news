@@ -4,8 +4,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-@SerialName("Username")
-data class Username(
+@SerialName("Password")
+@JvmInline
+value class Password(
     @SerialName("string")
     val string: String,
 )

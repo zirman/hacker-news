@@ -36,12 +36,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -106,7 +104,7 @@ private fun ItemPreview() {
         onClickReply = {},
         onClickUser = {},
         onClickBrowser = {},
-        onNavigateLogin = {}
+        onNavigateLogin = {},
     )
 }
 
@@ -291,7 +289,7 @@ fun RootItem(
 
             Spacer(modifier = Modifier.height(4.dp))
 
-            val timeUserAnnotatedString: AnnotatedString by rememberUpdatedState(rememberTimeBy(item))
+            val timeUserAnnotatedString: AnnotatedString = rememberTimeBy(item)
 
             Text(
                 text = timeUserAnnotatedString,
@@ -442,11 +440,8 @@ fun RootItem(
             val itemText = item?.text
 
             if (item?.type != "comment" && itemText != null) {
-                val annotatedText: AnnotatedString =
-                    rememberAnnotatedString(htmlText = itemText)
-
                 Text(
-                    text = annotatedText,
+                    text = rememberAnnotatedString(htmlText = itemText),
                     modifier = Modifier
                         .padding(8.dp)
                         .placeholder(

@@ -152,7 +152,6 @@ androidxCompose = [
     "coilCompose",
 ]
 googleApp = [
-    "accompanistNavigationMaterial", # bottomSheet destination for navigation compose
     "accompanistAdaptive", # handle foldable devices
 ]
 googleWear = [
@@ -289,7 +288,6 @@ uiTestManifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 composeMaterialWear = { group = "androidx.wear.compose", name = "compose-material", version.ref = "wearCompose" }
 composeNavigationWear = { group = "androidx.wear.compose", name = "compose-navigation", version.ref = "wearCompose" }
 
-accompanistNavigationMaterial = { group = "com.google.accompanist", name = "accompanist-navigation-material", version.ref = "accompanist" }
 accompanistAdaptive = { group = "com.google.accompanist", name = "accompanist-adaptive", version.ref = "accompanist" }
 
 playServicesWearable = { group = "com.google.android.gms", name = "play-services-wearable", version.ref = "playServicesWearable" }

@@ -10,49 +10,47 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.core.content.getSystemService
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navDeepLink
+import androidx.navigation.toRoute
 import com.monoid.hackernews.MainViewModel
 import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.domain.LiveUpdateUseCase
-import com.monoid.hackernews.common.navigation.MainNavigation
+import com.monoid.hackernews.common.navigation.Route
+import com.monoid.hackernews.common.navigation.UsernameNavType
 import com.monoid.hackernews.common.ui.util.itemIdSaver
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.view.home.HomeScreen
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
+import kotlin.reflect.typeOf
 
 fun NavGraphBuilder.userScreen(
     mainViewModel: MainViewModel,
     context: Context,
-    windowSizeClassState: WindowSizeClass,
+    windowSizeClass: WindowSizeClass,
     drawerState: DrawerState,
     snackbarHostState: SnackbarHostState,
     onNavigateToUser: (Username) -> Unit,
     onNavigateToReply: (ItemId) -> Unit,
     onNavigateToLogin: (LoginAction) -> Unit,
 ) {
-    composable(
-        route = MainNavigation.User.route,
-        deepLinks = listOf(
-            navDeepLink { uriPattern = "http://news.ycombinator.com/user?id={username}" },
-            navDeepLink { uriPattern = "https://news.ycombinator.com/user?id={username}" }
-        ),
-        arguments = MainNavigation.User.arguments,
-        enterTransition = MainNavigation.User.enterTransition,
-        exitTransition = MainNavigation.User.exitTransition,
-        popEnterTransition = MainNavigation.User.popEnterTransition,
-        popExitTransition = MainNavigation.User.popExitTransition
+    composable<Route.User>(
+        typeMap = mapOf(typeOf<Username>() to NavType.UsernameNavType),
+//        deepLinks = listOf(
+//            navDeepLink { uriPattern = "http://news.ycombinator.com/user?id={username}" },
+//            navDeepLink { uriPattern = "https://news.ycombinator.com/user?id={username}" },
+//        ),
+//        enterTransition = MainNavigation.User.enterTransition,
+//        exitTransition = MainNavigation.User.exitTransition,
+//        popEnterTransition = MainNavigation.User.popEnterTransition,
+//        popExitTransition = MainNavigation.User.popExitTransition,
     ) { navBackStackEntry ->
-        val username: Username =
-            MainNavigation.User.argsFromRoute(navBackStackEntry = navBackStackEntry)
+        val username: Username = navBackStackEntry.toRoute<Route.User>().username
 
         val (selectedItemId, setSelectedItemId) =
             rememberSaveable(stateSaver = itemIdSaver) { mutableStateOf(null) }
@@ -61,17 +59,16 @@ fun NavGraphBuilder.userScreen(
         val (detailInteraction, setDetailInteraction) =
             rememberSaveable { mutableStateOf(false) }
 
-        val coroutineScope = rememberCoroutineScope()
-
         HomeScreen(
             itemTreeRepository = mainViewModel.itemTreeRepository,
             drawerState = drawerState,
-            windowSizeClass = windowSizeClassState,
+            windowSizeClass = windowSizeClass,
             title = username.string,
             orderedItemRepo = remember(mainViewModel, username) {
                 LiveUpdateUseCase(
-                    context.getSystemService()!!,
-                    mainViewModel.userStoryRepositoryFactory.repository(username = username)
+                    connectivityManager = context.getSystemService()!!,
+                    repository = mainViewModel.userStoryRepositoryFactory.repository(username = username),
+                    logger = mainViewModel.logger,
                 )
             },
             snackbarHostState = snackbarHostState,
@@ -80,28 +77,8 @@ fun NavGraphBuilder.userScreen(
             detailInteraction = detailInteraction,
             setDetailInteraction = setDetailInteraction,
             onNavigateToLogin = onNavigateToLogin,
-            onClickUser = { user ->
-                if (user != null) {
-                    onNavigateToUser(user)
-                } else {
-                    Toast.makeText(
-                        context,
-                        context.getString(R.string.url_is_null),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            },
-            onClickReply = { itemId ->
-                coroutineScope.launch {
-                    val auth = mainViewModel.authentication.data.first()
-
-                    if (auth.password.isNotEmpty()) {
-                        onNavigateToReply(itemId)
-                    } else {
-                        onNavigateToLogin(LoginAction.Reply(itemId.long))
-                    }
-                }
-            },
+            onClickUser = mainViewModel::clickUser,
+            onClickReply = mainViewModel::clickReply,
             onClickBrowser = { url ->
                 val uri = url?.let { Uri.parse(it) }
 
