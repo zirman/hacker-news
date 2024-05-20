@@ -49,8 +49,9 @@ class MainActivity : ComponentActivity() {
                     title = stringResource(id = R.string.top_stories),
                     orderedItemRepo = remember(mainViewModel.topStoryRepository) {
                         LiveUpdateUseCase(
-                            getSystemService()!!,
-                            mainViewModel.topStoryRepository,
+                            connectivityManager = getSystemService()!!,
+                            repository = mainViewModel.topStoryRepository,
+                            logger = mainViewModel.logger,
                         )
                     },
                     onSelectItemId = { /*TODO*/ },

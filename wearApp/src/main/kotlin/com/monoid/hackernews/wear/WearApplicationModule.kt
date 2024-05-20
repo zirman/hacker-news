@@ -33,6 +33,7 @@ val wearApplicationModule = module {
             newIntentChannel = get(),
             topStoryRepository = get(),
             itemTreeRepository = get(),
+            logger = get(),
         )
     }
 
