@@ -24,6 +24,7 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -32,11 +33,12 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.unit.dp
 import com.monoid.hackernews.common.data.Password
 import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.view.R
-import com.monoid.hackernews.util.rememberAnnotatedString
 import com.monoid.hackernews.view.text.PasswordTextField
 import com.monoid.hackernews.view.text.UsernameTextField
 
@@ -81,11 +83,9 @@ fun LoginContent(
                     Modifier.width(320.dp)
                 }.padding(vertical = 4.dp)
 
-            var username by
-                rememberSaveable { mutableStateOf("") }
+            var username by rememberSaveable { mutableStateOf("") }
 
-            var password by
-                rememberSaveable { mutableStateOf("") }
+            var password by rememberSaveable { mutableStateOf("") }
 
             val focusManager: FocusManager =
                 LocalFocusManager.current
@@ -133,12 +133,9 @@ fun LoginContent(
                         acceptTermsState.value = acceptTermsState.value.not()
                     },
                 )
-
+                val htmlString = stringResource(id = R.string.i_agree_html)
                 Text(
-                    text = rememberAnnotatedString(
-                        htmlText = stringResource(id = R.string.i_agree_html),
-                        linkColor = MaterialTheme.colorScheme.primary,
-                    ),
+                    text = remember(htmlString) { AnnotatedString.fromHtml(htmlString = htmlString) },
                     style = MaterialTheme.typography.bodyMedium.copy(
                         color = LocalContentColor.current,
                     ),

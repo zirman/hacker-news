@@ -87,7 +87,6 @@ dependencies {
 
     implementation(project(":common:injection"))
     implementation(project(":common:view"))
-    implementation(project(":common:util"))
 
     implementation(platform(libs.composeBom))
     implementation(platform(libs.koinBom))

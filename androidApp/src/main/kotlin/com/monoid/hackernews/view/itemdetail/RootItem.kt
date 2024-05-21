@@ -46,6 +46,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -63,7 +64,6 @@ import com.monoid.hackernews.common.view.TooltipPopupPositionProvider
 import com.monoid.hackernews.common.view.placeholder.PlaceholderHighlight
 import com.monoid.hackernews.common.view.placeholder.placeholder
 import com.monoid.hackernews.common.view.placeholder.shimmer
-import com.monoid.hackernews.util.rememberAnnotatedString
 import kotlinx.coroutines.launch
 
 @Preview(
@@ -137,12 +137,9 @@ fun RootItem(
                 verticalAlignment = Alignment.Top
             ) {
                 SelectionContainer(modifier = Modifier.weight(1f)) {
+                    val htmlString = (if (item?.type == "comment") item.text else item?.title) ?: ""
                     Text(
-                        text = rememberAnnotatedString(
-                            htmlText = (if (item?.type == "comment") item.text else item?.title)
-                                ?: "",
-                            linkColor = LocalContentColor.current
-                        ),
+                        text = remember(htmlString) { AnnotatedString.fromHtml(htmlString = htmlString) },
                         modifier = Modifier.padding(horizontal = 8.dp),
                         style = MaterialTheme.typography.titleMedium
                     )
@@ -441,7 +438,7 @@ fun RootItem(
 
             if (item?.type != "comment" && itemText != null) {
                 Text(
-                    text = rememberAnnotatedString(htmlText = itemText),
+                    text = remember(itemText) { AnnotatedString.fromHtml(htmlString = itemText) },
                     modifier = Modifier
                         .padding(8.dp)
                         .placeholder(

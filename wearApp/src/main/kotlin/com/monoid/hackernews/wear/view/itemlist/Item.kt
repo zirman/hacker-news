@@ -4,12 +4,12 @@ import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.wear.compose.material.LocalContentColor
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.fromHtml
 import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.TitleCard
 import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.ItemUi
-import com.monoid.hackernews.util.rememberAnnotatedString
 
 @Composable
 fun Item(
@@ -22,11 +22,9 @@ fun Item(
         title = {
             val item = itemUi?.item
 
+            val htmlString = item?.title ?: item?.text ?: ""
             Text(
-                text = rememberAnnotatedString(
-                    htmlText = item?.title ?: item?.text ?: "",
-                    linkColor = LocalContentColor.current
-                ),
+                text = remember(htmlString) { AnnotatedString.fromHtml(htmlString = htmlString) },
             )
         },
         modifier = modifier,

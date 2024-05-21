@@ -271,7 +271,7 @@ material3WindowSize = { group = "androidx.compose.material3", name = "material3-
 #material3AdaptiveNavigationSuiteAndroid = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite-android", version.ref = "material3AdaptiveNavigationSuiteAndroid" }
 
 composeBom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
-ui = { group = "androidx.compose.ui", name = "ui" }
+ui = { group = "androidx.compose.ui", name = "ui", version = "1.7.0-beta01" }
 uiViewBinding = { group = "androidx.compose.ui", name = "ui-viewbinding" }
 uiTooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 uiToolingData = { group = "androidx.compose.ui", name = "ui-tooling-data" }

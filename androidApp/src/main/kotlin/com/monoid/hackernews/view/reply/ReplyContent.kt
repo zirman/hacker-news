@@ -26,6 +26,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.unit.dp
 import androidx.datastore.core.DataStore
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -35,7 +37,6 @@ import com.monoid.hackernews.common.data.ItemTreeRepository
 import com.monoid.hackernews.common.data.ItemUi
 import com.monoid.hackernews.common.data.Preferences
 import com.monoid.hackernews.common.view.R
-import com.monoid.hackernews.util.getAnnotatedString
 import com.monoid.hackernews.view.text.ReplyTextField
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineScope
@@ -99,7 +100,7 @@ fun ReplyContent(
             val (reply: String, setReply) =
                 rememberSaveable(item?.text) {
                     mutableStateOf(
-                        getAnnotatedString(htmlText = item?.text ?: "")
+                        AnnotatedString.fromHtml(htmlString = item?.text ?: "")
                             .text
                             .lines()
                             .filter { it.isNotBlank() }

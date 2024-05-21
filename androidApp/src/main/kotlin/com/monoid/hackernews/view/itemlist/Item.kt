@@ -46,6 +46,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -64,7 +65,6 @@ import com.monoid.hackernews.common.view.TooltipPopupPositionProvider
 import com.monoid.hackernews.common.view.placeholder.PlaceholderHighlight
 import com.monoid.hackernews.common.view.placeholder.placeholder
 import com.monoid.hackernews.common.view.placeholder.shimmer
-import com.monoid.hackernews.util.rememberAnnotatedString
 
 @Preview(
     showBackground = true,
@@ -140,7 +140,9 @@ fun Item(
             Row(verticalAlignment = Alignment.Top) {
                 Text(
                     text = item?.title?.let { AnnotatedString(text = it) }
-                        ?: item?.text?.let { rememberAnnotatedString(htmlText = it) }
+                        ?: item?.text?.let {
+                            remember(it) { AnnotatedString.fromHtml(htmlString = it) }
+                        }
                         ?: AnnotatedString(text = ""),
                     minLines = 2,
                     maxLines = 2,

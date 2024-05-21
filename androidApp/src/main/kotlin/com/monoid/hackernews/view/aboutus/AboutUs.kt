@@ -16,13 +16,15 @@ import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.monoid.hackernews.common.view.R
-import com.monoid.hackernews.util.rememberAnnotatedString
 
 @Composable
 fun AboutUs(
@@ -52,11 +54,9 @@ fun AboutUs(
                 ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            val htmlString = stringResource(id = R.string.about_us_detail_html)
             Text(
-                text = rememberAnnotatedString(
-                    htmlText = stringResource(id = R.string.about_us_detail_html),
-                    linkColor = MaterialTheme.colorScheme.primary,
-                ),
+                text = remember(htmlString) { AnnotatedString.fromHtml(htmlString = htmlString) },
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.bodyMedium.copy(

@@ -38,6 +38,7 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.monoid.hackernews.common.api.ItemId
@@ -51,7 +52,6 @@ import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.common.view.placeholder.PlaceholderHighlight
 import com.monoid.hackernews.common.view.placeholder.placeholder
 import com.monoid.hackernews.common.view.placeholder.shimmer
-import com.monoid.hackernews.util.rememberAnnotatedString
 import kotlinx.coroutines.launch
 
 @Composable
@@ -266,10 +266,10 @@ fun CommentItem(
                 }
             }
 
-            val htmlText = if (isDeleted) stringResource(id = R.string.deleted)
+            val htmlString = if (isDeleted) stringResource(id = R.string.deleted)
             else itemUi?.itemUi?.item?.text ?: ""
 
-            val annotatedText = rememberAnnotatedString(htmlText = htmlText)
+            val annotatedText = remember(htmlString) { AnnotatedString.fromHtml(htmlString) }
 
             if (itemUi?.itemUi?.isExpanded == true) {
                 SelectionContainer {
