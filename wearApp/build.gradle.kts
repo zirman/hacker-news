@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.googlePlayServices)
     alias(libs.plugins.crashlytics)
+    alias(libs.plugins.composeCompiler)
 }
 
 kotlin {
@@ -67,7 +68,6 @@ android {
     }
 
     buildFeatures {
-        compose = true
     }
 
     composeOptions {

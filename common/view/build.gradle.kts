@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.composeCompiler)
 }
 
 kotlin {
@@ -26,7 +27,6 @@ android {
     }
 
     buildFeatures {
-        compose = true
     }
 
     composeOptions {

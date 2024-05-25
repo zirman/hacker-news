@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlinxParcelize)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.composeCompiler)
 }
 
 kotlin {
@@ -27,7 +28,6 @@ android {
     }
 
     buildFeatures {
-        compose = true
     }
 
     composeOptions {
