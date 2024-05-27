@@ -48,7 +48,7 @@ fun HomeScaffold(
     var currentDestination by rememberSaveable { mutableStateOf(BottomNav.Stories) }
     NavigationSuiteScaffold(
         navigationSuiteItems = {
-            BottomNav.entries.take(5).forEach { story ->
+            BottomNav.entries.forEach { story ->
                 item(
                     icon = {
                         Icon(

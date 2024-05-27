@@ -5,6 +5,7 @@ package com.monoid.hackernews.common.api
 import com.monoid.hackernews.common.room.ItemDb
 import com.monoid.hackernews.common.room.UserDb
 import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -143,8 +144,9 @@ sealed class ItemApi(
 }
 
 fun ItemApi.toItemDb(
-    lastUpdate: Long? = Clock.System.now().epochSeconds,
+    instant: Instant,
 ): ItemDb {
+    val lastUpdate = instant.epochSeconds
     return when (this) {
         is ItemApi.Comment -> {
             ItemDb(

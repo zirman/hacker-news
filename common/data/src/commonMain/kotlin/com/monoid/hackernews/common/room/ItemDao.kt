@@ -32,18 +32,18 @@ interface ItemDao {
     @Insert(entity = ItemDb::class, onConflict = OnConflictStrategy.IGNORE)
     suspend fun itemsInsert(items: List<ItemDb>)
 
-    @Transaction
-    suspend fun itemApiInsert(itemApi: ItemApi) {
-        // update children entries
-        if (itemApi.kids != null) {
-            itemApi.kids.forEach { itemId ->
-                itemUpsert(
-                    (itemById(itemId.long) ?: ItemDb(id = itemId.long))
-                        .copy(parent = itemApi.id.long)
-                )
-            }
-        }
-
-        itemUpsert(itemApi.toItemDb())
-    }
+//    @Transaction
+//    suspend fun itemApiInsert(itemApi: ItemApi) {
+//        // update children entries
+//        if (itemApi.kids != null) {
+//            itemApi.kids.forEach { itemId ->
+//                itemUpsert(
+//                    (itemById(itemId.long) ?: ItemDb(id = itemId.long))
+//                        .copy(parent = itemApi.id.long)
+//                )
+//            }
+//        }
+//
+//        itemUpsert(itemApi.toItemDb())
+//    }
 }

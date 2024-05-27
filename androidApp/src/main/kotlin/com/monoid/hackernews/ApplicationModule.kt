@@ -55,7 +55,7 @@ val applicationModule = module {
         StoriesRepository(
             logger = get(),
             remoteDataSource = get(),
-            bestStoryLocalDataSource = get(),
+            topStoryLocalDataSource = get(),
             itemLocalDataSource = get(),
         )
     }

@@ -1,21 +1,17 @@
 package com.monoid.hackernews.common.data
 
-import com.monoid.hackernews.common.api.ItemApi
 import com.monoid.hackernews.common.api.ItemId
-import com.monoid.hackernews.common.api.getBestStories
 import com.monoid.hackernews.common.api.getItem
+import com.monoid.hackernews.common.api.getTopStories
 import com.monoid.hackernews.common.api.toItemDb
 import com.monoid.hackernews.common.injection.LoggerAdapter
-import com.monoid.hackernews.common.room.BestStoryDao
-import com.monoid.hackernews.common.room.BestStoryDb
 import com.monoid.hackernews.common.room.ItemDao
-import com.monoid.hackernews.common.room.ItemDb
+import com.monoid.hackernews.common.room.TopStoryDao
+import com.monoid.hackernews.common.room.TopStoryDb
 import io.ktor.client.HttpClient
 import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -24,11 +20,13 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 
 class StoriesRepository(
     private val logger: LoggerAdapter,
     private val remoteDataSource: HttpClient,
-    private val bestStoryLocalDataSource: BestStoryDao,
+    private val topStoryLocalDataSource: TopStoryDao,
     private val itemLocalDataSource: ItemDao,
 ) {
     private val context = CoroutineExceptionHandler { _, throwable ->
@@ -42,8 +40,8 @@ class StoriesRepository(
     private val scope = CoroutineScope(context)
     private val cache = MutableStateFlow(persistentMapOf<ItemId, SimpleItemUiState>())
 
-    private val bestStoryIds: StateFlow<List<ItemId>?> = bestStoryLocalDataSource
-        .getBestStories()
+    private val topStoryIds: StateFlow<List<ItemId>?> = topStoryLocalDataSource
+        .getTopStories()
         .map { items ->
             items.sortedBy { it.order }.map { item -> ItemId(item.itemId) }
         }
@@ -53,7 +51,7 @@ class StoriesRepository(
             initialValue = null,
         )
 
-    val bestStories = combine(cache, bestStoryIds, ::Pair)
+    val topStories = combine(cache, topStoryIds, ::Pair)
         .map { (cache, itemIds) ->
             itemIds?.map { id ->
                 cache[id] ?: makeSimpleItemUiState(id = id)
@@ -66,9 +64,9 @@ class StoriesRepository(
         )
 
     suspend fun updateBestStories() {
-        bestStoryLocalDataSource.replaceBestStories(
-            remoteDataSource.getBestStories().mapIndexed { order, storyId ->
-                BestStoryDb(
+        topStoryLocalDataSource.replaceTopStories(
+            remoteDataSource.getTopStories().mapIndexed { order, storyId ->
+                TopStoryDb(
                     itemId = storyId,
                     order = order,
                 )
@@ -77,96 +75,31 @@ class StoriesRepository(
     }
 
     suspend fun updateItem(itemId: ItemId): Unit = coroutineScope {
-        val localDataAsync = async { itemLocalDataSource.itemById(itemId = itemId.long) }
-        val remoteDataAsync = async { remoteDataSource.getItem(itemId = itemId) }
-        val localData = localDataAsync.await()
+        val currentInstant = Clock.System.now()
+        val localData = itemLocalDataSource.itemById(itemId = itemId.long)
+        val lastUpdate = localData?.lastUpdate?.let { Instant.fromEpochSeconds(it) }
         if (localData != null) {
             cache.update { map ->
                 map.put(itemId, localData.toSimpleItemUiState())
             }
         }
-        val remoteData = remoteDataAsync.await()
-        cache.update { map ->
-            map.put(itemId, remoteData.toSimpleItemUiState())
+        // Only query remote if data is older than 5 minutes
+        if (lastUpdate == null || (currentInstant - lastUpdate).inWholeMinutes > 5) {
+            val remoteData = remoteDataSource.getItem(itemId = itemId)
+            cache.update { map ->
+                map.put(itemId, remoteData.toSimpleItemUiState(currentInstant))
+            }
+            itemLocalDataSource.itemUpsert(remoteData.toItemDb(currentInstant))
         }
-        itemLocalDataSource.itemUpsert(remoteData.toItemDb())
+    }
+
+    fun clearCache() {
+        cache.update {
+            it.clear()
+        }
     }
 
     companion object {
         private const val TAG = "StoriesRepository"
     }
-}
-
-fun ItemDb.toSimpleItemUiState(): SimpleItemUiState = makeSimpleItemUiState(
-    id = ItemId(id),
-    lastUpdate = lastUpdate,
-    type = type,
-    time = time,
-    deleted = deleted,
-    by = by,
-    descendants = descendants,
-    score = score,
-    title = title,
-    text = title,
-    url = url,
-    parent = parent?.let { ItemId(it) },
-)
-
-fun ItemApi.toSimpleItemUiState(): SimpleItemUiState = when (this) {
-    is ItemApi.Comment -> makeSimpleItemUiState(
-        id = id,
-        type = "comment",
-        time = time,
-        deleted = deleted,
-        by = by,
-        parent = parent,
-    )
-
-    is ItemApi.Job -> makeSimpleItemUiState(
-        id = id,
-        type = "job",
-        time = time,
-        deleted = deleted,
-        by = by,
-        title = title,
-        text = title,
-        url = url,
-    )
-
-    is ItemApi.Poll -> makeSimpleItemUiState(
-        id = id,
-        type = "poll",
-        time = time,
-        deleted = deleted,
-        by = by,
-        descendants = descendants,
-        score = score,
-        title = title,
-        text = title,
-    )
-
-    is ItemApi.PollOpt -> makeSimpleItemUiState(
-        id = id,
-        lastUpdate = null,
-        type = "poll_opt",
-        time = time,
-        deleted = deleted,
-        by = by,
-        score = score,
-        title = title,
-        text = title,
-    )
-
-    is ItemApi.Story -> makeSimpleItemUiState(
-        id = id,
-        type = "story",
-        time = time,
-        deleted = deleted,
-        by = by,
-        descendants = descendants,
-        score = score,
-        title = title,
-        text = title,
-        url = url,
-    )
 }

@@ -48,7 +48,7 @@ class HomeViewModel(
 
     init {
         viewModelScope.launch {
-            repository.bestStories.collect {
+            repository.topStories.collect {
                 _uiState.update { uiState ->
                     uiState.copy(itemsList = it)
                 }
