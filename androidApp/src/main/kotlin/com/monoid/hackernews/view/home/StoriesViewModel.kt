@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.WeakHashMap
 
-class HomeViewModel(
+class StoriesViewModel(
     private val logger: LoggerAdapter,
     private val repository: StoriesRepository,
 ) : ViewModel() {

@@ -14,7 +14,7 @@ import kotlinx.serialization.json.Json
 enum class BottomNav {
     Stories,
     Favorites,
-    You,
+    Profile,
 }
 
 enum class Story {
@@ -27,10 +27,14 @@ enum class Story {
     Favorite,
 }
 
-object Route {
+object RouteMain {
     @Serializable
     @SerialName("Home")
     data object Home
+
+    @Serializable
+    @SerialName("Browser")
+    data class Browser(val url: String)
 }
 
 val jsonDecoder: Json = Json { ignoreUnknownKeys = true }

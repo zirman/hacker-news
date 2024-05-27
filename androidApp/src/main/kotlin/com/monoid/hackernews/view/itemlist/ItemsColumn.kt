@@ -1,6 +1,10 @@
 package com.monoid.hackernews.view.itemlist
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -13,9 +17,15 @@ fun ItemsColumn(
     itemsList: List<SimpleItemUiState>?,
     onItemVisible: (SimpleItemUiState) -> Unit,
     onItemClick: (SimpleItemUiState) -> Unit,
+    onOpenBrowser: (SimpleItemUiState) -> Unit,
+    listState: LazyListState,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn(modifier = modifier) {
+    LazyColumn(
+        modifier = modifier,
+        state = listState,
+        contentPadding = WindowInsets.safeDrawing.asPaddingValues(),
+    ) {
         items(itemsList.orEmpty(), { it.id.long }) { item ->
             LifecycleEventEffect(event = Lifecycle.Event.ON_START) {
                 onItemVisible(item)
@@ -30,6 +40,7 @@ fun ItemsColumn(
                 onClickUser = {
                 },
                 onClickBrowser = {
+                    onOpenBrowser(item)
                 },
                 onClickUpvote = {
                 },

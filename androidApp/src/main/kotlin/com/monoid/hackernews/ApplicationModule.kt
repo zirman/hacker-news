@@ -6,7 +6,7 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import com.monoid.hackernews.common.data.FavoriteStoryRepository
 import com.monoid.hackernews.common.data.StoriesRepository
 import com.monoid.hackernews.common.data.UserStoryRepositoryFactory
-import com.monoid.hackernews.view.home.HomeViewModel
+import com.monoid.hackernews.view.home.StoriesViewModel
 import com.monoid.hackernews.view.main.LoginViewModel
 import com.monoid.hackernews.view.main.SettingsViewModel
 import kotlinx.coroutines.channels.Channel
@@ -26,7 +26,7 @@ val applicationModule = module {
     }
 
     viewModel {
-        HomeViewModel(
+        StoriesViewModel(
             logger = get(),
             repository = get(),
         )
