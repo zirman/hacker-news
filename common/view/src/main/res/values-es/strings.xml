@@ -12,6 +12,7 @@
     <string name="upvote">Votar a favor</string>
     <string name="un_vote">No votar</string>
     <string name="favorite">Favorita</string>
+    <string name="profile">Perfil</string>
     <string name="un_favorite">No favorito</string>
     <string name="flag">Bandera</string>
     <string name="un_flag">Desmarcar</string>
@@ -64,6 +65,8 @@
     <string name="jobs_shortcut_short_label">Trabajos</string>
     <string name="favorites_shortcut_long_label">Favoritas HN</string>
     <string name="favorites_shortcut_short_label">Favoritas</string>
+    <string name="profile_shortcut_short_label">Perfil</string>
+    <string name="profile_shortcut_long_label">Perfil</string>
     <string name="open_in_browser">Abierto en el Navegador</string>
     <string name="i_agree_html"><![CDATA[
     Acepto los <a href="https://www.ycombinator.com/legal/">términos de servicio</a> de <i>Hacker News</i>
@@ -78,6 +81,7 @@
     <string name="ask_hn_description">Pida comentarios a HN.</string>
     <string name="jobs_description">Estos son trabajos en las nuevas empresas de YC.</string>
     <string name="favorites_description">Historias que has marcado como favoritas.</string>
+    <string name="profile_description">Cambia la configuración de tu perfil.</string>
     <string name="dismiss">Despedir</string>
     <string name="follow">Seguir</string>
     <string name="unfollow">Dejar de seguir</string>

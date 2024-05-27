@@ -2,7 +2,6 @@ package com.monoid.hackernews
 
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
-import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
@@ -14,14 +13,12 @@ import androidx.activity.compose.setContent
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
-import androidx.datastore.core.DataStore
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.metrics.performance.JankStats
-import com.monoid.hackernews.common.data.Preferences
 import com.monoid.hackernews.common.injection.LoggerAdapter
-import com.monoid.hackernews.view.main.MainContent
+import com.monoid.hackernews.view.main.MainNavHost
 import com.monoid.hackernews.view.theme.AppTheme
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.launch
@@ -33,12 +30,22 @@ import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity(), AndroidScopeComponent {
     override val scope: Scope by activityRetainedScope()
-    private val preferences: DataStore<Preferences> by inject()
-    private val viewModel: MainViewModel by inject()
     private val logger: LoggerAdapter by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        windowSetup()
+
+        setContent {
+            AppTheme {
+                MainNavHost()
+            }
+        }
+
+        jankStats()
+    }
+
+    private fun windowSetup() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         window.statusBarColor = getColor(android.R.color.transparent)
@@ -101,13 +108,9 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
             WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
                 WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
         )
+    }
 
-        setContent {
-            AppTheme {
-                MainContent()
-            }
-        }
-
+    private fun jankStats() {
         if (false) { // TODO: prod build
             val jankStats: JankStats = JankStats
                 .createAndTrack(window) { frameData ->
@@ -134,11 +137,6 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                 }
             }
         }
-    }
-
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        lifecycleScope.launch { viewModel.newIntentChannel.send(intent) }
     }
 
     companion object {

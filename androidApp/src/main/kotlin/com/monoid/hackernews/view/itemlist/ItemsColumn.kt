@@ -1,0 +1,46 @@
+package com.monoid.hackernews.view.itemlist
+
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
+import com.monoid.hackernews.common.data.SimpleItemUiState
+
+@Composable
+fun ItemsColumn(
+    itemsList: List<SimpleItemUiState>?,
+    onItemVisible: (SimpleItemUiState) -> Unit,
+    onItemClick: (SimpleItemUiState) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    LazyColumn(modifier = modifier) {
+        items(itemsList.orEmpty(), { it.id.long }) { item ->
+            LifecycleEventEffect(event = Lifecycle.Event.ON_START) {
+                onItemVisible(item)
+            }
+            Item(
+                item = item,
+                onClickDetail = {
+                    onItemClick(item)
+                },
+                onClickReply = {
+                },
+                onClickUser = {
+                },
+                onClickBrowser = {
+                },
+                onClickUpvote = {
+                },
+                onClickFavorite = {
+                },
+                onClickFollow = {
+                },
+                onClickFlag = {
+                },
+                modifier = Modifier.animateItem(),
+            )
+        }
+    }
+}

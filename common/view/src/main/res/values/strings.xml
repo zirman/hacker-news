@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Hacker News</string>
-    <string name="top_stories">Top Stories</string>
+    <string name="top_stories">Top</string>
     <string name="more_options">More Options</string>
     <string name="no_story_selected">no story selected</string>
     <string name="hacker_news">Hacker News</string>
@@ -17,11 +17,12 @@
     <string name="flag">Flag</string>
     <string name="un_flag">UnFlag</string>
     <string name="favorites">Favorites</string>
+    <string name="profile">You</string>
     <string name="reply">Reply</string>
-    <string name="new_stories">New Stories</string>
-    <string name="best_stories">Best Stories</string>
-    <string name="show_hn">Show HN</string>
-    <string name="ask_hn">Ask HN</string>
+    <string name="new_stories">New</string>
+    <string name="best_stories">Best</string>
+    <string name="show_hn">Show</string>
+    <string name="ask_hn">Ask</string>
     <string name="jobs">Jobs</string>
     <string name="ask_hacker_news">Ask Hacker News</string>
     <string name="show_hacker_news">Show Hacker News</string>
@@ -65,6 +66,8 @@
     <string name="jobs_shortcut_short_label">Jobs HN</string>
     <string name="favorites_shortcut_long_label">Favorites HN</string>
     <string name="favorites_shortcut_short_label">Favorites</string>
+    <string name="profile_shortcut_short_label">Profile</string>
+    <string name="profile_shortcut_long_label">Profile</string>
     <string name="open_in_browser">Open in Browser</string>
     <string name="i_agree_html"><![CDATA[
     I agree to the <i>Hacker News</i> <a href="https://www.ycombinator.com/legal/">terms of service</a> and
@@ -78,6 +81,7 @@
     <string name="ask_hn_description">Ask HN for comments.</string>
     <string name="jobs_description">These are jobs at YC startups.</string>
     <string name="favorites_description">Stories that you have favorited.</string>
+    <string name="profile_description">Change your profile settings.</string>
     <string name="dismiss">Dismiss</string>
     <string name="follow">Follow</string>
     <string name="unfollow">Unfollow</string>

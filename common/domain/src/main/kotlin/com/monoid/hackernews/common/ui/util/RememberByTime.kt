@@ -11,7 +11,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withAnnotation
 import androidx.compose.ui.text.withStyle
-import com.monoid.hackernews.common.room.ItemDb
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
@@ -20,14 +19,14 @@ import kotlinx.datetime.periodUntil
 const val userTag = "USER"
 
 @Composable
-fun rememberTimeBy(story: ItemDb?): AnnotatedString =
-    remember(story?.time, story?.by) {
+fun rememberTimeBy(time: Long?, by: String?): AnnotatedString =
+    remember(time, by) {
         buildAnnotatedString {
             val userSpanStyle = TextStyle()
                 .copy(textDecoration = TextDecoration.Underline)
                 .toSpanStyle()
 
-            val dateTimePeriod = story?.time
+            val dateTimePeriod = time
                 ?.let { Instant.fromEpochSeconds(it) }
                 ?.periodUntil(Clock.System.now(), TimeZone.UTC)
 
@@ -44,7 +43,7 @@ fun rememberTimeBy(story: ItemDb?): AnnotatedString =
 
             withAnnotation(
                 tag = userTag,
-                annotation = story?.by ?: "",
-            ) { withStyle(style = userSpanStyle) { append(story?.by ?: "") } }
+                annotation = by ?: "",
+            ) { withStyle(style = userSpanStyle) { append(by ?: "") } }
         }
     }

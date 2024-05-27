@@ -10,7 +10,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.monoid.hackernews.common.api.getFavorites
 import com.monoid.hackernews.common.api.getUpvoted
-import com.monoid.hackernews.common.data.ItemTreeRepository
 import com.monoid.hackernews.common.data.Preferences
 import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.dataStoreModule
@@ -43,11 +42,10 @@ import java.util.concurrent.TimeUnit
 class HNApplication : Application() {
     private val logger: LoggerAdapter by inject()
     private val preferences: DataStore<Preferences> by inject()
-    private val db: HNDatabase by inject()
-    private val upvoteDao: UpvoteDao by inject()
-    private val favoriteDao: FavoriteDao by inject()
-    private val httpClient: HttpClient by inject()
-    private val itemTreeRepository: ItemTreeRepository by inject()
+    private val upvoteLocalDataSource: UpvoteDao by inject()
+    private val favoriteLocalDataSource: FavoriteDao by inject()
+    private val remoteDataSource: HttpClient by inject()
+    private val database: HNDatabase by inject()
     private val applicationLifecycleOwner: LifecycleOwner by inject(named(LifecycleOwnerQualifier.ApplicationLifecycleOwner))
 
     private val context = CoroutineExceptionHandler { _, throwable ->
@@ -84,7 +82,7 @@ class HNApplication : Application() {
                             try {
                                 val upvoteDef =
                                     async {
-                                        upvoteDao.replaceUpvotesForUser(
+                                        upvoteLocalDataSource.replaceUpvotesForUser(
                                             username = authentication.username.string,
                                             upvotes = getUpvoted(
                                                 preferences = authentication,
@@ -95,7 +93,7 @@ class HNApplication : Application() {
 
                                 val favoriteDef =
                                     async {
-                                        favoriteDao.replaceFavoritesForUser(
+                                        favoriteLocalDataSource.replaceFavoritesForUser(
                                             username = authentication.username.string,
                                             favorites = getFavorites(
                                                 username = Username(authentication.username.string),
@@ -136,14 +134,9 @@ class HNApplication : Application() {
         )
     }
 
-    override fun onTrimMemory(level: Int) {
-        super.onTrimMemory(level)
-        itemTreeRepository.cleanup()
-    }
-
     override fun onTerminate() {
-        httpClient.close()
-        db.close()
+        remoteDataSource.close()
+        database.close()
         super.onTerminate()
     }
 

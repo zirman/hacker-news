@@ -1,0 +1,101 @@
+package com.monoid.hackernews.view.home
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.monoid.hackernews.common.api.ItemId
+import com.monoid.hackernews.common.data.SimpleItemUiState
+import com.monoid.hackernews.common.data.StoriesRepository
+import com.monoid.hackernews.common.injection.LoggerAdapter
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import java.util.WeakHashMap
+
+class HomeViewModel(
+    private val logger: LoggerAdapter,
+    private val repository: StoriesRepository,
+) : ViewModel() {
+    data class UiState(
+        val loading: Boolean = true,
+        val itemsList: List<SimpleItemUiState>? = null,
+    )
+
+    sealed interface Event {
+        data class Error(val message: String?) : Event
+    }
+
+    private val context = CoroutineExceptionHandler { _, throwable ->
+        logger.recordException(
+            messageString = "CoroutineExceptionHandler",
+            throwable = throwable,
+            tag = TAG,
+        )
+    }
+
+    private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState())
+    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
+
+    private val _events: Channel<Event> = Channel()
+    val events = _events.receiveAsFlow()
+
+    init {
+        viewModelScope.launch {
+            repository.bestStories.collect {
+                _uiState.update { uiState ->
+                    uiState.copy(itemsList = it)
+                }
+            }
+        }
+        updateItems()
+    }
+
+    private var updateItemsJob: Job? = null
+
+    private fun updateItems(): Job = updateItemsJob.takeIf { it?.isActive == true } ?: viewModelScope
+        .launch(context) {
+            try {
+                _uiState.update { it.copy(loading = true) }
+                repository.updateBestStories()
+            } catch (throwable: Throwable) {
+                currentCoroutineContext().ensureActive()
+                _events.send(Event.Error(throwable.message))
+                throw throwable
+            } finally {
+                _uiState.update { it.copy(loading = false) }
+            }
+        }
+        .also {
+            updateItemsJob = it
+        }
+
+    private val updateItemJob: MutableMap<ItemId, Job> = WeakHashMap()
+
+    fun updateItem(itemId: ItemId): Job {
+        updateItemJob[itemId]?.takeIf { it.isActive }?.run { return this }
+        return viewModelScope
+            .launch(context) {
+                try {
+                    repository.updateItem(itemId)
+                } catch (throwable: Throwable) {
+                    currentCoroutineContext().ensureActive()
+                    _events.send(Event.Error(throwable.message))
+                    throw throwable
+                }
+            }
+            .also {
+                updateItemJob[itemId] = it
+            }
+    }
+
+    companion object {
+        private const val TAG = "HomeViewModel"
+    }
+}

@@ -11,6 +11,12 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
+enum class BottomNav {
+    Stories,
+    Favorites,
+    You,
+}
+
 enum class Story {
     Top,
     New,
@@ -24,23 +30,13 @@ enum class Story {
 object Route {
     @Serializable
     @SerialName("Home")
-    data class Home(
-        @SerialName("stories")
-        val story: Story,
-    )
-
-    @Serializable
-    @SerialName("User")
-    data class User(
-        @SerialName("username")
-        val username: Username,
-    )
+    data object Home
 }
 
 val jsonDecoder: Json = Json { ignoreUnknownKeys = true }
 val ActualStoriesNavType =  NavType.EnumType(Story::class.java)
 
-inline val NavType.Companion.StoryNavType: NavType<Story> get() = ActualStoriesNavType
+inline val NavType.Companion.StoryType: NavType<Story> get() = ActualStoriesNavType
 
 data object ActualActionNavType : NavType<LoginAction>(isNullableAllowed = true) {
     override fun get(bundle: Bundle, key: String): LoginAction? {

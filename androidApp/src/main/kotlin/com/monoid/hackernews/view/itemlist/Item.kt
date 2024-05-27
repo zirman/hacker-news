@@ -54,10 +54,9 @@ import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.monoid.hackernews.common.api.ItemId
-import com.monoid.hackernews.common.data.ItemUi
-import com.monoid.hackernews.common.data.LoginAction
+import com.monoid.hackernews.common.data.SimpleItemUiState
 import com.monoid.hackernews.common.data.Username
-import com.monoid.hackernews.common.room.ItemDb
+import com.monoid.hackernews.common.data.makeSimpleItemUiState
 import com.monoid.hackernews.common.ui.text.ClickableTextBlock
 import com.monoid.hackernews.common.ui.util.rememberTimeBy
 import com.monoid.hackernews.common.view.R
@@ -73,26 +72,26 @@ import com.monoid.hackernews.common.view.placeholder.shimmer
 @Composable
 private fun ItemPreview() {
     Item(
-        itemUi = object : ItemUi() {
-            override val item: ItemDb = ItemDb(
-                id = 0,
-                type = "story",
-                title = "Hello World",
-                text = "Lorum Ipsum",
-                url = "https://www.google.com/"
-            )
-            override val kids: List<ItemId> = emptyList()
-            override val isUpvote: Boolean = false
-            override val isFavorite: Boolean = false
-            override val isFlag: Boolean = false
-            override val isExpanded: Boolean = false
-            override val isFollowed: Boolean = false
-            override suspend fun toggleUpvote(onNavigateLogin: (LoginAction) -> Unit) {}
-            override suspend fun toggleFavorite(onNavigateLogin: (LoginAction) -> Unit) {}
-            override suspend fun toggleFlag(onNavigateLogin: (LoginAction) -> Unit) {}
-            override suspend fun toggleExpanded() {}
-            override suspend fun toggleFollowed() {}
-        },
+        item = makeSimpleItemUiState(
+            id = ItemId(0),
+            type = "story",
+            title = "Hello World",
+            text = "Lorum Ipsum",
+            url = "https://www.google.com/",
+            kids = emptyList(),
+            isUpvote = false,
+            isFavorite = false,
+            isFlag = false,
+            isExpanded = false,
+            isFollowed = false,
+            by = null,
+            deleted = null,
+            descendants = null,
+            parent = null,
+            lastUpdate = null,
+            score = null,
+            time = null,
+        ),
         onClickDetail = {},
         onClickReply = {},
         onClickUser = {},
@@ -100,13 +99,13 @@ private fun ItemPreview() {
         onClickUpvote = {},
         onClickFavorite = {},
         onClickFollow = {},
-        onClickFlag = {}
+        onClickFlag = {},
     )
 }
 
 @Composable
 fun Item(
-    itemUi: ItemUi?,
+    item: SimpleItemUiState?,
     onClickDetail: () -> Unit,
     onClickReply: () -> Unit,
     onClickUser: (Username?) -> Unit,
@@ -117,7 +116,6 @@ fun Item(
     onClickFlag: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val item = itemUi?.item
     val isLoading = item == null
     val isStoryOrComment = item?.type == "story" || item?.type == "comment"
 
@@ -176,7 +174,7 @@ fun Item(
                             text = {
                                 Text(
                                     text = stringResource(
-                                        id = if (itemUi?.isFavorite == true) {
+                                        id = if (item?.isFavorite == true) {
                                             R.string.un_favorite
                                         } else {
                                             R.string.favorite
@@ -190,13 +188,13 @@ fun Item(
                             },
                             leadingIcon = {
                                 Icon(
-                                    imageVector = if (itemUi?.isFavorite == true) {
+                                    imageVector = if (item?.isFavorite == true) {
                                         Icons.Filled.Favorite
                                     } else {
                                         Icons.TwoTone.Favorite
                                     },
                                     contentDescription = stringResource(
-                                        id = if (itemUi?.isFavorite == true) {
+                                        id = if (item?.isFavorite == true) {
                                             R.string.un_favorite
                                         } else {
                                             R.string.favorite
@@ -210,7 +208,7 @@ fun Item(
                             text = {
                                 Text(
                                     text = stringResource(
-                                        id = if (itemUi?.isFollowed == true) {
+                                        id = if (item?.isFollowed == true) {
                                             R.string.unfollow
                                         } else {
                                             R.string.follow
@@ -224,13 +222,13 @@ fun Item(
                             },
                             leadingIcon = {
                                 Icon(
-                                    imageVector = if (itemUi?.isFollowed == true) {
+                                    imageVector = if (item?.isFollowed == true) {
                                         Icons.Filled.Quickreply
                                     } else {
                                         Icons.TwoTone.Quickreply
                                     },
                                     contentDescription = stringResource(
-                                        id = if (itemUi?.isFollowed == true) {
+                                        id = if (item?.isFollowed == true) {
                                             R.string.unfollow
                                         } else {
                                             R.string.follow
@@ -244,7 +242,7 @@ fun Item(
                             text = {
                                 Text(
                                     text = stringResource(
-                                        id = if (itemUi?.isFlag == true) {
+                                        id = if (item?.isFlag == true) {
                                             R.string.un_flag
                                         } else {
                                             R.string.flag
@@ -258,13 +256,13 @@ fun Item(
                             },
                             leadingIcon = {
                                 Icon(
-                                    imageVector = if (itemUi?.isFlag == true) {
+                                    imageVector = if (item?.isFlag == true) {
                                         Icons.Filled.Flag
                                     } else {
                                         Icons.TwoTone.Flag
                                     },
                                     contentDescription = stringResource(
-                                        id = if (itemUi?.isFlag == true) {
+                                        id = if (item?.isFlag == true) {
                                             R.string.un_flag
                                         } else {
                                             R.string.flag
@@ -280,7 +278,7 @@ fun Item(
             Spacer(modifier = Modifier.height(4.dp))
 
             val timeUserAnnotatedString: AnnotatedString = item
-                ?.let { rememberTimeBy(it) }
+                ?.let { rememberTimeBy(time = it.time, by = it.by) }
                 ?: AnnotatedString("")
 
             ClickableTextBlock(
@@ -330,13 +328,13 @@ fun Item(
                             enabled = isStoryOrComment,
                         ) {
                             Icon(
-                                imageVector = if (itemUi?.isUpvote == true) {
+                                imageVector = if (item?.isUpvote == true) {
                                     Icons.Filled.ThumbUp
                                 } else {
                                     Icons.TwoTone.ThumbUp
                                 },
                                 contentDescription = stringResource(
-                                    id = if (itemUi?.isUpvote == true) {
+                                    id = if (item?.isUpvote == true) {
                                         R.string.un_vote
                                     } else {
                                         R.string.upvote

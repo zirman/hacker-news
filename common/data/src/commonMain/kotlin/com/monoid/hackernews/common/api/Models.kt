@@ -1,3 +1,5 @@
+@file:Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
+
 package com.monoid.hackernews.common.api
 
 import com.monoid.hackernews.common.room.ItemDb
@@ -7,10 +9,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-@SerialName("ItemId")
 @JvmInline
-value class ItemId(
-    @SerialName("long")
+expect value class ItemId(
     val long: Long,
 )
 
