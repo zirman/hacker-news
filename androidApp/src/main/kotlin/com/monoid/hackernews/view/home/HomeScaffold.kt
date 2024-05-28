@@ -1,10 +1,7 @@
-@file:OptIn(ExperimentalMaterial3AdaptiveApi::class, ExperimentalMaterial3Api::class)
-
 package com.monoid.hackernews.view.home
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Bookmarks
@@ -12,11 +9,8 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.twotone.AccountCircle
 import androidx.compose.material.icons.twotone.Bookmarks
 import androidx.compose.material.icons.twotone.Home
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
-import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -60,47 +54,10 @@ fun HomeScaffold(onClickBrowser: (SimpleItemUiState) -> Unit, modifier: Modifier
         },
         modifier = modifier.fillMaxSize(),
         content = {
-            val storiesNavigator = rememberListDetailPaneScaffoldNavigator<SimpleItemUiState>()
-            val storiesListState = rememberLazyListState()
-            val storiesDetailListState = rememberLazyListState()
-
-            val favoritesNavigator =
-                rememberListDetailPaneScaffoldNavigator<SimpleItemUiState>()
-            val favoritesListState = rememberLazyListState()
-            val favoritesDetailListState = rememberLazyListState()
-
-            val profileNavigator = rememberListDetailPaneScaffoldNavigator<SimpleItemUiState>()
-            val profileListState = rememberLazyListState()
-            val profileDetailListState = rememberLazyListState()
-
-            when (currentDestination) {
-                BottomNav.Stories -> {
-                    StoriesNavHost(
-                        listState = storiesListState,
-                        detailListState = storiesDetailListState,
-                        onClickBrowser = onClickBrowser,
-                        navigator = storiesNavigator,
-                    )
-                }
-
-                BottomNav.Favorites -> {
-                    FavoritesNavHost(
-                        listState = favoritesListState,
-                        detailListState = favoritesDetailListState,
-                        onClickBrowser = onClickBrowser,
-                        navigator = favoritesNavigator,
-                    )
-                }
-
-                BottomNav.Profile -> {
-                    ProfileNavHost(
-                        listState = profileListState,
-                        detailListState = profileDetailListState,
-                        onClickBrowser = onClickBrowser,
-                        navigator = profileNavigator,
-                    )
-                }
-            }
+            HomeContent(
+                currentDestination = currentDestination,
+                onClickBrowser = onClickBrowser,
+            )
         },
     )
 }

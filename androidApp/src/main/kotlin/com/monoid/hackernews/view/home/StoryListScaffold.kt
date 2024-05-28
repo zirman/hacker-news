@@ -19,7 +19,7 @@ import com.monoid.hackernews.view.itemdetail.ItemDetail
 import com.monoid.hackernews.view.itemlist.ItemsColumn
 
 @Composable
-fun StoryListDetailPaneScaffold(
+fun StoryListScaffold(
     navigator: ThreePaneScaffoldNavigator<SimpleItemUiState>,
     listState: LazyListState,
     detailListState: LazyListState,

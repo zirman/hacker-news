@@ -26,7 +26,7 @@ fun FavoritesNavHost(
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         val itemsList = uiState.itemsList
         if (itemsList != null) {
-            StoryListDetailPaneScaffold(
+            StoryListScaffold(
                 navigator = navigator,
                 listState = listState,
                 detailListState = detailListState,
