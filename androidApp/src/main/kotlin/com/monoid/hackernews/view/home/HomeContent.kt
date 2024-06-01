@@ -10,6 +10,9 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.data.SimpleItemUiState
 import com.monoid.hackernews.common.navigation.BottomNav
+import com.monoid.hackernews.view.profile.ProfileScaffold
+import com.monoid.hackernews.view.stories.StoriesScaffold
+import com.monoid.hackernews.view.stories.StoriesViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -34,7 +37,7 @@ fun HomeContent(currentDestination: BottomNav, onClickBrowser: (SimpleItemUiStat
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             val itemsList = uiState.itemsList
             if (itemsList != null) {
-                StoryListScaffold(
+                StoriesScaffold(
                     navigator = storiesNavigator,
                     listState = storiesListState,
                     detailListState = storiesDetailListState,
@@ -51,7 +54,7 @@ fun HomeContent(currentDestination: BottomNav, onClickBrowser: (SimpleItemUiStat
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             val itemsList = uiState.itemsList
             if (itemsList != null) {
-                StoryListScaffold(
+                StoriesScaffold(
                     navigator = favoritesNavigator,
                     listState = favoritesListState,
                     detailListState = favoritesDetailListState,
@@ -65,7 +68,7 @@ fun HomeContent(currentDestination: BottomNav, onClickBrowser: (SimpleItemUiStat
         }
 
         BottomNav.Profile -> {
-            ProfileNavHost(
+            ProfileScaffold(
                 listState = profileListState,
                 detailListState = profileDetailListState,
                 onClickBrowser = onClickBrowser,

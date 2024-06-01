@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3AdaptiveApi::class)
 
-package com.monoid.hackernews.view.home
+package com.monoid.hackernews.view.profile
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.lazy.LazyListState
@@ -11,10 +11,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.data.SimpleItemUiState
+import com.monoid.hackernews.view.stories.StoriesScaffold
+import com.monoid.hackernews.view.stories.StoriesViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun FavoritesNavHost(
+fun ProfileScaffold(
     listState: LazyListState,
     detailListState: LazyListState,
     onClickBrowser: (SimpleItemUiState) -> Unit,
@@ -26,7 +28,7 @@ fun FavoritesNavHost(
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         val itemsList = uiState.itemsList
         if (itemsList != null) {
-            StoryListScaffold(
+            StoriesScaffold(
                 navigator = navigator,
                 listState = listState,
                 detailListState = detailListState,

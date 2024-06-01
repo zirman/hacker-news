@@ -6,9 +6,9 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import com.monoid.hackernews.common.data.FavoriteStoryRepository
 import com.monoid.hackernews.common.data.StoriesRepository
 import com.monoid.hackernews.common.data.UserStoryRepositoryFactory
-import com.monoid.hackernews.view.home.StoriesViewModel
 import com.monoid.hackernews.view.main.LoginViewModel
 import com.monoid.hackernews.view.main.SettingsViewModel
+import com.monoid.hackernews.view.stories.StoriesViewModel
 import kotlinx.coroutines.channels.Channel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named

@@ -1,4 +1,4 @@
-package com.monoid.hackernews.view.home
+package com.monoid.hackernews.view.stories
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
