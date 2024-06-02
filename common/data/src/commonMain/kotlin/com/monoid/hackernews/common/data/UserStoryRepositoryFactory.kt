@@ -45,12 +45,12 @@ class UserStoryRepositoryFactory(
 
                 override suspend fun updateItems() {
                     val user = remoteDataSource.getUser(username = username)
-                    itemLocalDataSource.itemsInsert(user.submitted.map {
-                        ItemDb(
-                            id = it.long,
-                            by = username.string,
-                        )
-                    })
+//                    itemLocalDataSource.itemsInsert(user.submitted.map {
+//                        ItemDb(
+//                            id = it.long,
+//                            by = username.string,
+//                        )
+//                    })
                     userLocalDataSource.upsertReplace(user.toUserApiUpdate())
                 }
             }

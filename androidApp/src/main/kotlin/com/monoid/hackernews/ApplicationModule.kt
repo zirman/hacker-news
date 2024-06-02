@@ -6,8 +6,10 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import com.monoid.hackernews.common.data.FavoriteStoryRepository
 import com.monoid.hackernews.common.data.StoriesRepository
 import com.monoid.hackernews.common.data.UserStoryRepositoryFactory
+import com.monoid.hackernews.view.itemdetail.ItemDetailViewModel
 import com.monoid.hackernews.view.main.LoginViewModel
 import com.monoid.hackernews.view.main.SettingsViewModel
+import com.monoid.hackernews.view.profile.ProfileViewModel
 import com.monoid.hackernews.view.stories.StoriesViewModel
 import kotlinx.coroutines.channels.Channel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -27,6 +29,22 @@ val applicationModule = module {
 
     viewModel {
         StoriesViewModel(
+            logger = get(),
+            repository = get(),
+        )
+    }
+
+    viewModel {
+        ItemDetailViewModel(
+            savedStateHandle = get(),
+            logger = get(),
+            repository = get(),
+        )
+    }
+
+    viewModel {
+        ProfileViewModel(
+            savedStateHandle = get(),
             logger = get(),
             repository = get(),
         )

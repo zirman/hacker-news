@@ -7,15 +7,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.twotone.Comment
@@ -63,191 +58,181 @@ import com.monoid.hackernews.common.view.placeholder.placeholder
 import com.monoid.hackernews.common.view.placeholder.shimmer
 
 @Composable
-fun ItemDetail(
-    item: SimpleItemUiState,
-    listState: LazyListState,
-    modifier: Modifier = Modifier,
-) {
-    LazyColumn(
-        state = listState,
-        modifier = modifier,
-        contentPadding = WindowInsets.safeDrawing.asPaddingValues(),
+fun ItemDetail(item: SimpleItemUiState?, onOpenBrowser: (String) -> Unit, modifier: Modifier = Modifier) {
+    val isLoading = false // item.lastUpdate == null
+    Surface(
+        modifier = modifier.placeholder(
+            visible = isLoading,
+            color = Color.Transparent,
+            highlight = PlaceholderHighlight.shimmer(
+                highlightColor = LocalContentColor.current.copy(alpha = .5f),
+            ),
+        ),
+        contentColor = MaterialTheme.colorScheme.secondary,
     ) {
-        item {
-            val isLoading = false // item.lastUpdate == null
-            Surface(
-                modifier = Modifier.placeholder(
-                    visible = isLoading,
-                    color = Color.Transparent,
-                    highlight = PlaceholderHighlight.shimmer(
-                        highlightColor = LocalContentColor.current.copy(alpha = .5f),
-                    ),
-                ),
-                contentColor = MaterialTheme.colorScheme.secondary,
+        Column {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.Top,
             ) {
-                Column {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.Top,
-                    ) {
-                        SelectionContainer(modifier = Modifier.weight(1f)) {
-                            val htmlString =
-                                (if (item.type == "comment") item.text else item.title) ?: ""
-                            Text(
-                                text = remember(htmlString) { AnnotatedString.fromHtml(htmlString = htmlString) },
-                                modifier = Modifier.padding(horizontal = 8.dp),
-                                style = MaterialTheme.typography.titleMedium,
+                SelectionContainer(modifier = Modifier.weight(1f)) {
+                    val htmlString =
+                        (if (item?.type == "comment") item.text else item?.title) ?: ""
+                    Text(
+                        text = remember(htmlString) { AnnotatedString.fromHtml(htmlString = htmlString) },
+                        modifier = Modifier.padding(horizontal = 8.dp),
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                }
+
+                val (contextExpanded: Boolean, setContextExpanded) =
+                    rememberSaveable { mutableStateOf(false) }
+
+                if (item?.lastUpdate != null) {
+                    Box {
+                        IconButton(onClick = { setContextExpanded(true) }) {
+                            Icon(
+                                imageVector = Icons.TwoTone.MoreVert,
+                                contentDescription = stringResource(id = R.string.more_options),
                             )
                         }
 
-                        val (contextExpanded: Boolean, setContextExpanded) =
-                            rememberSaveable { mutableStateOf(false) }
-
-                        if (item.lastUpdate != null) {
-                            Box {
-                                IconButton(onClick = { setContextExpanded(true) }) {
-                                    Icon(
-                                        imageVector = Icons.TwoTone.MoreVert,
-                                        contentDescription = stringResource(id = R.string.more_options),
-                                    )
-                                }
-
-                                DropdownMenu(
-                                    expanded = contextExpanded,
-                                    onDismissRequest = { setContextExpanded(false) },
-                                ) {
-                                    if (item.type == "story") {
-                                        DropdownMenuItem(
-                                            text = {
-                                                Text(
-                                                    text = stringResource(
-                                                        id = if (
-                                                            item.isFavorite == true
-                                                        ) {
-                                                            R.string.un_favorite
-                                                        } else {
-                                                            R.string.favorite
-                                                        }
-                                                    )
-                                                )
-                                            },
-                                            onClick = {
+                        DropdownMenu(
+                            expanded = contextExpanded,
+                            onDismissRequest = { setContextExpanded(false) },
+                        ) {
+                            if (item.type == "story") {
+                                DropdownMenuItem(
+                                    text = {
+                                        Text(
+                                            text = stringResource(
+                                                id = if (
+                                                    item.isFavorite == true
+                                                ) {
+                                                    R.string.un_favorite
+                                                } else {
+                                                    R.string.favorite
+                                                }
+                                            )
+                                        )
+                                    },
+                                    onClick = {
 //                                        coroutineScope.launch {
 //                                            itemUi.itemUi?.toggleFavorite(onNavigateLogin)
 //                                        }
 //
 //                                        setContextExpanded(false)
+                                    },
+                                    leadingIcon = {
+                                        Icon(
+                                            imageVector = if (
+                                                item.isFavorite == true
+                                            ) {
+                                                Icons.Filled.Favorite
+                                            } else {
+                                                Icons.TwoTone.Favorite
                                             },
-                                            leadingIcon = {
-                                                Icon(
-                                                    imageVector = if (
-                                                        item.isFavorite == true
-                                                    ) {
-                                                        Icons.Filled.Favorite
-                                                    } else {
-                                                        Icons.TwoTone.Favorite
-                                                    },
-                                                    contentDescription = stringResource(
-                                                        id = if (
-                                                            item.isFavorite == true
-                                                        ) {
-                                                            R.string.un_favorite
-                                                        } else {
-                                                            R.string.favorite
-                                                        },
-                                                    ),
-                                                )
-                                            }
+                                            contentDescription = stringResource(
+                                                id = if (
+                                                    item.isFavorite == true
+                                                ) {
+                                                    R.string.un_favorite
+                                                } else {
+                                                    R.string.favorite
+                                                },
+                                            ),
                                         )
                                     }
+                                )
+                            }
 
-                                    DropdownMenuItem(
-                                        text = {
-                                            Text(
-                                                text = stringResource(
-                                                    id = if (item.isFollowed == true) {
-                                                        R.string.unfollow
-                                                    } else {
-                                                        R.string.follow
-                                                    }
-                                                )
-                                            )
-                                        },
-                                        onClick = {
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        text = stringResource(
+                                            id = if (item.isFollowed == true) {
+                                                R.string.unfollow
+                                            } else {
+                                                R.string.follow
+                                            }
+                                        )
+                                    )
+                                },
+                                onClick = {
 //                                    coroutineScope.launch {
 //                                        itemUi.itemUi?.toggleFollowed()
 //                                    }
 //
 //                                    setContextExpanded(false)
+                                },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = if (item.isFollowed == true) {
+                                            Icons.Filled.Quickreply
+                                        } else {
+                                            Icons.TwoTone.Quickreply
                                         },
-                                        leadingIcon = {
-                                            Icon(
-                                                imageVector = if (item.isFollowed == true) {
-                                                    Icons.Filled.Quickreply
-                                                } else {
-                                                    Icons.TwoTone.Quickreply
-                                                },
-                                                contentDescription = stringResource(
-                                                    id = if (item.isFollowed == true) {
-                                                        R.string.unfollow
-                                                    } else {
-                                                        R.string.follow
-                                                    },
-                                                ),
-                                            )
-                                        }
+                                        contentDescription = stringResource(
+                                            id = if (item.isFollowed == true) {
+                                                R.string.unfollow
+                                            } else {
+                                                R.string.follow
+                                            },
+                                        ),
                                     )
+                                }
+                            )
 
-                                    DropdownMenuItem(
-                                        text = {
-                                            Text(
-                                                text = stringResource(
-                                                    id = if (item.isFlag == true) {
-                                                        R.string.un_flag
-                                                    } else {
-                                                        R.string.flag
-                                                    }
-                                                )
-                                            )
-                                        },
-                                        onClick = {
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        text = stringResource(
+                                            id = if (item.isFlag == true) {
+                                                R.string.un_flag
+                                            } else {
+                                                R.string.flag
+                                            }
+                                        )
+                                    )
+                                },
+                                onClick = {
 //                                    coroutineScope.launch {
 //                                        itemUi.itemUi?.toggleFlag(onNavigateLogin)
 //                                    }
 //
 //                                    setContextExpanded(false)
+                                },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = if (item.isFlag == true) {
+                                            Icons.Filled.Flag
+                                        } else {
+                                            Icons.TwoTone.Flag
                                         },
-                                        leadingIcon = {
-                                            Icon(
-                                                imageVector = if (item.isFlag == true) {
-                                                    Icons.Filled.Flag
-                                                } else {
-                                                    Icons.TwoTone.Flag
-                                                },
-                                                contentDescription = stringResource(
-                                                    id = if (item.isFlag == true) {
-                                                        R.string.un_flag
-                                                    } else {
-                                                        R.string.flag
-                                                    },
-                                                ),
-                                            )
-                                        }
+                                        contentDescription = stringResource(
+                                            id = if (item.isFlag == true) {
+                                                R.string.un_flag
+                                            } else {
+                                                R.string.flag
+                                            },
+                                        ),
                                     )
                                 }
-                            }
+                            )
                         }
                     }
+                }
+            }
 
-                    Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(4.dp))
 
-                    val timeUserAnnotatedString: AnnotatedString = rememberTimeBy(
-                        time = item.time,
-                        by = item.by,
-                    )
+            val timeUserAnnotatedString: AnnotatedString = rememberTimeBy(
+                time = item?.time,
+                by = item?.by,
+            )
 
-                    Text(
-                        text = timeUserAnnotatedString,
+            Text(
+                text = timeUserAnnotatedString,
 //                onClick = { offset ->
 //                    val username = timeUserAnnotatedString.value
 //                        .getStringAnnotations(
@@ -263,106 +248,106 @@ fun ItemDetail(
 //                        onClickUser(username)
 //                    }
 //                },
-                        modifier = Modifier
-                            .padding(horizontal = 8.dp)
-                            .fillMaxWidth(),
-                        style = MaterialTheme.typography.labelMedium.copy(
-                            color = LocalContentColor.current
-                        )
-                    )
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .fillMaxWidth(),
+                style = MaterialTheme.typography.labelMedium.copy(
+                    color = LocalContentColor.current
+                )
+            )
 
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        if (item.lastUpdate == null || item.type == "story") {
-                            item.score.let { score ->
-                                key("score") {
-                                    TooltipBox(
-                                        positionProvider = TooltipPopupPositionProvider(),
-                                        tooltip = {
-                                            Surface { Text(text = stringResource(id = R.string.upvote)) }
-                                        },
-                                        state = rememberTooltipState(),
-                                    ) {
-                                        IconButton(
-                                            onClick = {
-//                                        coroutineScope.launch {
-//                                            itemUi?.itemUi?.toggleUpvote(onNavigateLogin)
-//                                        }
-                                            },
-                                            enabled = item.type == "story",
-                                        ) {
-                                            Icon(
-                                                imageVector = if (item.isUpvote == true) {
-                                                    Icons.Filled.ThumbUp
-                                                } else {
-                                                    Icons.TwoTone.ThumbUp
-                                                },
-                                                contentDescription = stringResource(
-                                                    id = if (item.isUpvote == true) {
-                                                        R.string.un_vote
-                                                    } else {
-                                                        R.string.upvote
-                                                    },
-                                                ),
-                                            )
-                                        }
-                                    }
-
-                                    Text(
-                                        text = remember(score) { score?.toString() ?: "" },
-                                        modifier = Modifier.widthIn(min = 24.dp),
-                                        style = MaterialTheme.typography.labelMedium
-                                    )
-                                }
-                            }
-                        }
-
-                        val descendants = item.descendants
-
-                        key("comments") {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                if (item?.lastUpdate == null || item.type == "story") {
+                    item?.score.let { score ->
+                        key("score") {
                             TooltipBox(
                                 positionProvider = TooltipPopupPositionProvider(),
                                 tooltip = {
-                                    Surface { Text(text = stringResource(id = R.string.comment)) }
+                                    Surface { Text(text = stringResource(id = R.string.upvote)) }
                                 },
                                 state = rememberTooltipState(),
                             ) {
                                 IconButton(
                                     onClick = {
-//                                item.id.let { onClickReply(ItemId(it)) }
+//                                        coroutineScope.launch {
+//                                            itemUi?.itemUi?.toggleUpvote(onNavigateLogin)
+//                                        }
                                     },
-                                    enabled = isLoading.not(),
+                                    enabled = item?.type == "story",
                                 ) {
                                     Icon(
-                                        imageVector = Icons.AutoMirrored.TwoTone.Comment,
-                                        contentDescription = null,
+                                        imageVector = if (item?.isUpvote == true) {
+                                            Icons.Filled.ThumbUp
+                                        } else {
+                                            Icons.TwoTone.ThumbUp
+                                        },
+                                        contentDescription = stringResource(
+                                            id = if (item?.isUpvote == true) {
+                                                R.string.un_vote
+                                            } else {
+                                                R.string.upvote
+                                            },
+                                        ),
                                     )
                                 }
                             }
 
                             Text(
-                                text = remember(descendants) { descendants?.toString() ?: "" },
-                                maxLines = 1,
+                                text = remember(score) { score?.toString() ?: "" },
                                 modifier = Modifier.widthIn(min = 24.dp),
-                                overflow = TextOverflow.Ellipsis,
-                                style = MaterialTheme.typography.labelMedium,
+                                style = MaterialTheme.typography.labelMedium
                             )
                         }
+                    }
+                }
 
-                        val host: String? =
-                            remember(item, item.url) {
-                                if (item.lastUpdate != null) {
-                                    item.url?.let { Uri.parse(it) }?.host
-                                } else {
-                                    ""
-                                }
-                            }
+                val descendants = item?.descendants
 
-                        if (host != null) {
-                            Text(
-                                text = host,
-                                modifier = Modifier
-                                    .padding(start = 16.dp)
-                                    .weight(1f),
+                key("comments") {
+                    TooltipBox(
+                        positionProvider = TooltipPopupPositionProvider(),
+                        tooltip = {
+                            Surface { Text(text = stringResource(id = R.string.comment)) }
+                        },
+                        state = rememberTooltipState(),
+                    ) {
+                        IconButton(
+                            onClick = {
+//                                item.id.let { onClickReply(ItemId(it)) }
+                            },
+                            enabled = isLoading.not(),
+                        ) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.TwoTone.Comment,
+                                contentDescription = null,
+                            )
+                        }
+                    }
+
+                    Text(
+                        text = remember(descendants) { descendants?.toString() ?: "" },
+                        maxLines = 1,
+                        modifier = Modifier.widthIn(min = 24.dp),
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.labelMedium,
+                    )
+                }
+
+                val host: String? =
+                    remember(item, item?.url) {
+                        if (item?.lastUpdate != null) {
+                            item.url?.let { Uri.parse(it) }?.host
+                        } else {
+                            ""
+                        }
+                    }
+
+                if (host != null) {
+                    Text(
+                        text = host,
+                        modifier = Modifier
+                            .padding(start = 16.dp)
+                            .weight(1f),
 //                            .placeholder(
 //                                visible = false,
 //                                color = Color.Transparent,
@@ -371,52 +356,50 @@ fun ItemDetail(
 //                                    highlightColor = LocalContentColor.current.copy(alpha = .5f)
 //                                ),
 //                            ),
-                                textAlign = TextAlign.End,
-                                style = MaterialTheme.typography.labelLarge,
-                            )
+                        textAlign = TextAlign.End,
+                        style = MaterialTheme.typography.labelLarge,
+                    )
 
-                            TooltipBox(
-                                positionProvider = TooltipPopupPositionProvider(),
-                                tooltip = {
-                                    Surface {
-                                        Text(text = stringResource(id = R.string.open_in_browser))
-                                    }
-                                },
-                                state = rememberTooltipState(),
-                            ) {
-                                IconButton(
-                                    onClick = {
-//                                item.url.let { onClickBrowser(it) }
-                                    },
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Filled.OpenInBrowser,
-                                        contentDescription = stringResource(id = R.string.open_in_browser)
-                                    )
-                                }
+                    TooltipBox(
+                        positionProvider = TooltipPopupPositionProvider(),
+                        tooltip = {
+                            Surface {
+                                Text(text = stringResource(id = R.string.open_in_browser))
                             }
+                        },
+                        state = rememberTooltipState(),
+                    ) {
+                        IconButton(
+                            onClick = {
+                                item?.url?.let { onOpenBrowser(it) }
+                            },
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.OpenInBrowser,
+                                contentDescription = stringResource(id = R.string.open_in_browser)
+                            )
                         }
                     }
-
-                    val itemText = item.text
-
-                    if (item.type != "comment" && itemText != null) {
-                        Text(
-                            text = remember(itemText) { AnnotatedString.fromHtml(htmlString = itemText) },
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .placeholder(
-                                    visible = false,
-                                    color = Color.Transparent,
-                                    shape = MaterialTheme.shapes.small,
-                                    highlight = PlaceholderHighlight.shimmer(
-                                        highlightColor = LocalContentColor.current.copy(alpha = .5f),
-                                    ),
-                                ),
-                            style = MaterialTheme.typography.bodyMedium,
-                        )
-                    }
                 }
+            }
+
+            val itemText = item?.text
+
+            if (item?.type != "comment" && itemText != null) {
+                Text(
+                    text = remember(itemText) { AnnotatedString.fromHtml(htmlString = itemText) },
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .placeholder(
+                            visible = false,
+                            color = Color.Transparent,
+                            shape = MaterialTheme.shapes.small,
+                            highlight = PlaceholderHighlight.shimmer(
+                                highlightColor = LocalContentColor.current.copy(alpha = .5f),
+                            ),
+                        ),
+                    style = MaterialTheme.typography.bodyMedium,
+                )
             }
         }
     }

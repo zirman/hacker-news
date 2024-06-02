@@ -5,8 +5,10 @@ import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.room.ItemDb
 import kotlinx.datetime.Instant
 
-fun ItemDb.toSimpleItemUiState(): SimpleItemUiState = makeSimpleItemUiState(
+fun ItemDb.toSimpleItemUiState(kids: List<ItemId>): SimpleItemUiState = makeSimpleItemUiState(
     id = ItemId(id),
+    lastUpdate = lastUpdate,
+    kids = kids,
     type = type,
     time = time,
     deleted = deleted,
@@ -25,6 +27,7 @@ fun ItemApi.toSimpleItemUiState(instant: Instant): SimpleItemUiState {
         is ItemApi.Comment -> makeSimpleItemUiState(
             id = id,
             lastUpdate = lastUpdate,
+            kids = kids,
             type = "comment",
             time = time,
             deleted = deleted,
@@ -35,6 +38,7 @@ fun ItemApi.toSimpleItemUiState(instant: Instant): SimpleItemUiState {
         is ItemApi.Job -> makeSimpleItemUiState(
             id = id,
             lastUpdate = lastUpdate,
+            kids = kids,
             type = "job",
             time = time,
             deleted = deleted,
@@ -47,6 +51,7 @@ fun ItemApi.toSimpleItemUiState(instant: Instant): SimpleItemUiState {
         is ItemApi.Poll -> makeSimpleItemUiState(
             id = id,
             lastUpdate = lastUpdate,
+            kids = kids,
             type = "poll",
             time = time,
             deleted = deleted,
@@ -60,6 +65,7 @@ fun ItemApi.toSimpleItemUiState(instant: Instant): SimpleItemUiState {
         is ItemApi.PollOpt -> makeSimpleItemUiState(
             id = id,
             lastUpdate = lastUpdate,
+            kids = kids,
             type = "poll_opt",
             time = time,
             deleted = deleted,
@@ -72,6 +78,7 @@ fun ItemApi.toSimpleItemUiState(instant: Instant): SimpleItemUiState {
         is ItemApi.Story -> makeSimpleItemUiState(
             id = id,
             lastUpdate = lastUpdate,
+            kids = kids,
             type = "story",
             time = time,
             deleted = deleted,

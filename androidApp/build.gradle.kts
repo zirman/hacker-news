@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.kotlinxParcelize)
     alias(libs.plugins.googlePlayServices)
     alias(libs.plugins.crashlytics)
     alias(libs.plugins.firebasePerf)

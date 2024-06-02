@@ -4,6 +4,7 @@ package com.monoid.hackernews.view.main
 
 import android.view.ViewGroup
 import android.webkit.WebView
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.twotone.ArrowBack
@@ -76,7 +77,7 @@ fun MainNavHost(modifier: Modifier = Modifier) {
                                 )
                             }
                         },
-                        modifier = Modifier.padding(paddingValues),
+                        modifier = Modifier.fillMaxSize().padding(paddingValues),
                         update = {
                             it.loadUrl(url)
                         },
