@@ -29,7 +29,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -37,6 +36,8 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.SimpleItemUiState
@@ -51,8 +52,12 @@ fun ItemComment(
     onClickUser: (Username) -> Unit,
     onClickReply: (ItemId) -> Unit,
     onNavigateLogin: (LoginAction) -> Unit,
+    onItemVisible: (ItemId) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    LifecycleEventEffect(Lifecycle.Event.ON_START) {
+        onItemVisible(itemUi.id)
+    }
     Surface(
         modifier = modifier,
 //            .padding(start = (((itemUi?.threadDepth ?: 1) - 1) * 16).dp)
@@ -61,8 +66,6 @@ fun ItemComment(
         contentColor = MaterialTheme.colorScheme.secondary,
         tonalElevation = ((itemUi.kids?.size ?: 0) * 10 + 40).dp
     ) {
-        val coroutineScope = rememberCoroutineScope()
-
         Column(
 //            modifier = if (itemUi == null) {
 //                Modifier
@@ -135,10 +138,7 @@ fun ItemComment(
                     val (expanded: Boolean, setContextExpanded) =
                         remember { mutableStateOf(false) }
 
-                    IconButton(
-                        onClick = { setContextExpanded(true) },
-                        enabled = itemUi != null,
-                    ) {
+                    IconButton(onClick = { setContextExpanded(true) }) {
                         Icon(
                             imageVector = Icons.TwoTone.MoreVert,
                             contentDescription = stringResource(id = R.string.more_options),
@@ -218,7 +218,7 @@ fun ItemComment(
                                     contentDescription = stringResource(
                                         id =
                                         if (itemUi.isFollowed == true) R.string.unfollow
-                                        else R.string.follow
+                                        else R.string.follow,
                                     ),
                                 )
                             },

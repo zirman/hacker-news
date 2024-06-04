@@ -46,7 +46,6 @@ val applicationModule = module {
         ProfileViewModel(
             savedStateHandle = get(),
             logger = get(),
-            repository = get(),
         )
     }
 

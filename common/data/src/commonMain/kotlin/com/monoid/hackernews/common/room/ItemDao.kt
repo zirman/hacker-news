@@ -1,6 +1,8 @@
 package com.monoid.hackernews.common.room
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
@@ -20,16 +22,14 @@ interface ItemDao {
     @Upsert(entity = ItemDb::class)
     suspend fun itemUpsert(item: ItemDb)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun itemInsertStub(item: ItemDb)
+
     @Transaction
     suspend fun itemApiInsert(itemApi: ItemApi, instant: Instant) {
         // update children entries
-        if (itemApi.kids != null) {
-            itemApi.kids.forEach { itemId ->
-                itemUpsert(
-                    (itemById(itemId.long) ?: ItemDb(id = itemId.long))
-                        .copy(parent = itemApi.id.long)
-                )
-            }
+        itemApi.kids.orEmpty().forEach { itemId ->
+            itemInsertStub(ItemDb(id = itemId.long, parent = itemApi.id.long))
         }
 
         itemUpsert(itemApi.toItemDb(instant))

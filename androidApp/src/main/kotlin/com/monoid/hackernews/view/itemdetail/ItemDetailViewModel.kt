@@ -71,10 +71,10 @@ class ItemDetailViewModel(
 
     val lazyListState = LazyListState()
 
-    private val updateItemJob: MutableMap<ItemId, Job> = WeakHashMap()
+    private val updateItemJob = WeakHashMap<ItemId, Job>()
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(context) {
             repository.cache
                 .map { cache -> cache[itemId] }
                 .filterNotNull()
@@ -129,20 +129,24 @@ class ItemDetailViewModel(
     }
 
     fun updateItem(itemId: ItemId): Job {
-        updateItemJob[itemId]?.takeIf { it.isActive }?.run { return this }
-        return viewModelScope.launch {
-            val commentItem = repository.getItem(itemId)
-            _uiState.update { uiState ->
-                val commentIndex = uiState.commentMap?.get(itemId)
-                if (commentIndex != null) {
-                    uiState.copy(
-                        commentItems = uiState.commentItems?.set(commentIndex, commentItem),
-                    )
-                } else {
-                    uiState
+        var job = updateItemJob[itemId]
+        if (job?.isActive != true) {
+            job = viewModelScope.launch(context) {
+                val commentItem = repository.getItem(itemId)
+                _uiState.update { uiState ->
+                    val commentIndex = uiState.commentMap?.get(itemId)
+                    if (commentIndex != null) {
+                        uiState.copy(
+                            commentItems = uiState.commentItems?.set(commentIndex, commentItem),
+                        )
+                    } else {
+                        uiState
+                    }
                 }
             }
+            updateItemJob[itemId] = job
         }
+        return job
     }
 
     companion object {

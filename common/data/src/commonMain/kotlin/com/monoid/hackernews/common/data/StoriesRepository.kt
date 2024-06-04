@@ -81,7 +81,10 @@ class StoriesRepository(
         val lastUpdate = localData?.item?.lastUpdate?.let { Instant.fromEpochSeconds(it) }
         if (localData != null) {
             _cache.update { cache ->
-                cache.put(itemId, localData.item.toSimpleItemUiState(localData.kids.map { ItemId(it.id) }))
+                cache.put(
+                    itemId,
+                    localData.item.toSimpleItemUiState(localData.kids.map { ItemId(it.id) })
+                )
             }
         }
         // Only query remote if data is older than 5 minutes
@@ -98,24 +101,34 @@ class StoriesRepository(
 
     suspend fun getItem(itemId: ItemId): SimpleItemUiState {
         val currentInstant = Clock.System.now()
-        val localData = itemLocalDataSource.itemByIdWithKidsById(itemId = itemId.long)
-        val lastUpdate = localData?.item?.lastUpdate?.let { Instant.fromEpochSeconds(it) }
-        if (localData != null) {
+        val cacheData = cache.value[itemId]
+        var lastUpdate = cacheData?.lastUpdate?.let { Instant.fromEpochSeconds(it) }
+        // Return memory cached data if less than 5 minutes old
+        if (cacheData != null && lastUpdate != null && (currentInstant - lastUpdate).inWholeMinutes <= 5) {
+            return cacheData
+        }
+        val itemWithKids = itemLocalDataSource.itemByIdWithKidsById(itemId = itemId.long)
+        val localData =
+            itemWithKids?.item?.toSimpleItemUiState(itemWithKids.kids.map { ItemId(it.id) })
+        // Only update memory cache if it's different
+        if (localData != null && cacheData != localData) {
             _cache.update { cache ->
-                cache.put(itemId, localData.item.toSimpleItemUiState(localData.kids.map { ItemId(it.id) }))
+                cache.put(itemId, localData)
             }
         }
         // Only query remote if data is older than 5 minutes
-        return if (lastUpdate == null || (currentInstant - lastUpdate).inWholeMinutes > 5) {
-            val remoteData = remoteDataSource.getItem(itemId = itemId)
-            _cache.update { cache ->
-                cache.put(itemId, remoteData.toSimpleItemUiState(currentInstant))
-            }
-            itemLocalDataSource.itemApiInsert(itemApi = remoteData, instant = currentInstant)
-            remoteData.toSimpleItemUiState(currentInstant)
-        } else {
-            localData.item.toSimpleItemUiState(localData.kids.map { ItemId(it.id) })
+        lastUpdate = localData?.lastUpdate?.let { Instant.fromEpochSeconds(it) }
+        if (localData != null && lastUpdate != null && (currentInstant - lastUpdate).inWholeMinutes <= 5) {
+            return localData
         }
+        val itemApi = remoteDataSource.getItem(itemId = itemId)
+        val remoteData = itemApi.toSimpleItemUiState(currentInstant)
+        // Update memory cache
+        _cache.update { cache ->
+            cache.put(itemId, remoteData)
+        }
+        itemLocalDataSource.itemApiInsert(itemApi = itemApi, instant = currentInstant)
+        return remoteData
     }
 
     fun clearCache() {

@@ -16,7 +16,7 @@ fun ItemDb.toSimpleItemUiState(kids: List<ItemId>): SimpleItemUiState = makeSimp
     descendants = descendants,
     score = score,
     title = title,
-    text = title,
+    text = text,
     url = url,
     parent = parent?.let { ItemId(it) },
 )
@@ -32,6 +32,7 @@ fun ItemApi.toSimpleItemUiState(instant: Instant): SimpleItemUiState {
             time = time,
             deleted = deleted,
             by = by,
+            text = text,
             parent = parent,
         )
 

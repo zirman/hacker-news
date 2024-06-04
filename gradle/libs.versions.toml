@@ -25,7 +25,6 @@ activityKtx = "1.9.0"
 fragmentKtx = "1.7.1"
 #lifecycle = "2.8.0-rc01"
 navigation = "2.8.0-beta02"
-protobuf = "3.25.2"
 googlePlayServices = "4.4.2"
 playServicesWearable = "18.2.0"
 crashlytics = "3.0.1"
@@ -99,7 +98,6 @@ ktor = [
 ]
 google = [
     "kspSymbolProcessingApi",
-    "protobufKotlinLite",
 ]
 androidx = [
     "coreKtx",
@@ -203,7 +201,6 @@ desugarJdkLibsNio = { group = "com.android.tools", name = "desugar_jdk_libs_nio"
 #lintTests = { group = "com.android.tools.lint", name = "lint-tests", version.ref = "lint" }
 
 kspSymbolProcessingApi = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
-protobufKotlinLite = { group = "com.google.protobuf", name = "protobuf-kotlin-lite", version.ref = "protobuf" }
 
 firebaseBom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebaseCrashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
