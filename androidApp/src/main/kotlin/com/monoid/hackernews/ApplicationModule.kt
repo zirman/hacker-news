@@ -3,7 +3,6 @@ package com.monoid.hackernews
 import android.content.Intent
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.monoid.hackernews.common.data.FavoriteStoryRepository
 import com.monoid.hackernews.common.data.StoriesRepository
 import com.monoid.hackernews.common.data.UserStoryRepositoryFactory
 import com.monoid.hackernews.view.itemdetail.ItemDetailViewModel
@@ -82,13 +81,6 @@ val applicationModule = module {
             remoteDataSource = get(),
             userLocalDataSource = get(),
             itemLocalDataSource = get(),
-        )
-    }
-
-    single {
-        FavoriteStoryRepository(
-            preferencesDataSource = get(),
-            favoriteLocalDataSource = get(),
         )
     }
 
