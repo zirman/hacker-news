@@ -36,24 +36,4 @@ val databaseDaoModule: Module = module {
     single {
         get<HNDatabase>().userDao()
     }
-
-    single {
-        get<HNDatabase>().upvoteDao()
-    }
-
-    single {
-        get<HNDatabase>().favoriteDao()
-    }
-
-    single {
-        get<HNDatabase>().flagDao()
-    }
-
-    single {
-        get<HNDatabase>().expandedDao()
-    }
-
-    single {
-        get<HNDatabase>().followedDao()
-    }
 }

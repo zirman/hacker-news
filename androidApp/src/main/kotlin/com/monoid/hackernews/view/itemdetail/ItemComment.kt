@@ -1,5 +1,6 @@
 package com.monoid.hackernews.view.itemdetail
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -53,13 +54,14 @@ fun ItemComment(
     onClickReply: (ItemId) -> Unit,
     onNavigateLogin: (LoginAction) -> Unit,
     onItemVisible: (ItemId) -> Unit,
+    onItemClick: (ItemId) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LifecycleEventEffect(Lifecycle.Event.ON_START) {
         onItemVisible(itemUi.id)
     }
     Surface(
-        modifier = modifier,
+        modifier = modifier.clickable { onItemClick(itemUi.id) },
 //            .padding(start = (((itemUi?.threadDepth ?: 1) - 1) * 16).dp)
 //            .then(if (itemUi == null) Modifier.drawWithContent {} else Modifier),
         shape = MaterialTheme.shapes.medium,

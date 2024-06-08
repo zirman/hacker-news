@@ -31,4 +31,14 @@ data class ItemDb(
     val url: String? = null,
     @ColumnInfo(name = "parent")
     val parent: Long? = null,
+    @ColumnInfo(name = "upvoted")
+    val upvoted: Boolean? = null,
+    @ColumnInfo(name = "favourited")
+    val favourited: Boolean? = null,
+    @ColumnInfo(name = "flagged")
+    val flagged: Boolean? = null,
+    @ColumnInfo(name = "expanded")
+    val expanded: Boolean? = null,
+    @ColumnInfo(name = "followed")
+    val followed: Boolean? = null,
 )

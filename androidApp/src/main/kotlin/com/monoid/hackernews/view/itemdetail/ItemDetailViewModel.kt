@@ -17,6 +17,7 @@ import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.SimpleItemUiState
 import com.monoid.hackernews.common.data.StoriesRepository
 import com.monoid.hackernews.common.data.makeSimpleItemUiState
+import com.monoid.hackernews.common.data.toggleExpanded
 import com.monoid.hackernews.common.injection.LoggerAdapter
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.PersistentMap
@@ -147,6 +148,52 @@ class ItemDetailViewModel(
             updateItemJob[itemId] = job
         }
         return job
+    }
+
+    fun expandToggleItem(itemId: ItemId): Job = viewModelScope.launch(context) {
+        _uiState.update { uiState ->
+            val commentItems = uiState.commentItems ?: return@update uiState
+            val commentMap = uiState.commentMap ?: return@update uiState
+            val itemIndex = commentMap[itemId] ?: return@update uiState
+            val item = commentItems[itemIndex]
+            val toggledItem = item.toggleExpanded()
+            if (item == toggledItem) return@update uiState
+            val kids = item.kids ?: return@update uiState
+
+            val commentItemsUpdate = if (toggledItem.isExpanded == true) {
+                println("FOOBAR expanded $kids")
+                persistentListOf(
+                    *Array(commentItems.size + kids.size) { i ->
+                        when {
+                            i < itemIndex -> commentItems[i]
+                            i == itemIndex -> toggledItem
+                            i <= itemIndex + kids.size -> repository.getItem(kids[i - itemIndex])
+                            else -> commentItems[i - kids.size]
+                        }
+                    },
+                )
+            } else {
+                println("FOOBAR unexpanded $kids")
+                persistentListOf(
+                    *Array(commentItems.size - kids.size) { i ->
+                        when {
+                            i < itemIndex -> commentItems[i]
+                            i == itemIndex -> toggledItem
+                            else -> commentItems[i + kids.size]
+                        }
+                    },
+                )
+            }
+
+            uiState.copy(
+                commentItems = commentItemsUpdate,
+                commentMap = persistentMapOf(
+                    *Array(commentItemsUpdate.size) { i ->
+                        Pair(commentItemsUpdate[i].id, i)
+                    },
+                ),
+            )
+        }
     }
 
     companion object {

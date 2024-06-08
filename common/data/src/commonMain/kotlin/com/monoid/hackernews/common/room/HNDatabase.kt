@@ -1,6 +1,5 @@
 package com.monoid.hackernews.common.room
 
-import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 
@@ -14,17 +13,13 @@ import androidx.room.RoomDatabase
         JobStoryDb::class,
         ItemDb::class,
         UserDb::class,
-        UpvoteDb::class,
-        FavoriteDb::class,
-        FlagDb::class,
-        ExpandedDb::class,
-        FollowedDb::class,
     ],
-    version = 2,
-    exportSchema = true,
-    autoMigrations = [
-        AutoMigration(from = 1, to = 2)
-    ]
+    version = 3,
+    exportSchema = false,
+//    autoMigrations = [
+//        AutoMigration(from = 1, to = 2),
+//        AutoMigration(from = 2, to = 3),
+//    ]
 )
 abstract class HNDatabase : RoomDatabase() {
     abstract fun topStoryDao(): TopStoryDao
@@ -35,9 +30,4 @@ abstract class HNDatabase : RoomDatabase() {
     abstract fun jobStoryDao(): JobStoryDao
     abstract fun itemDao(): ItemDao
     abstract fun userDao(): UserDao
-    abstract fun upvoteDao(): UpvoteDao
-    abstract fun favoriteDao(): FavoriteDao
-    abstract fun flagDao(): FlagDao
-    abstract fun expandedDao(): ExpandedDao
-    abstract fun followedDao(): FollowedDao
 }

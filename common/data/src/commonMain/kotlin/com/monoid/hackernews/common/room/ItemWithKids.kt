@@ -10,14 +10,4 @@ data class ItemWithKids(
         entityColumn = "parent",
     )
     val kids: List<ItemDb>,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "itemId",
-    )
-    val favorites: List<FavoriteDb>,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "itemId",
-    )
-    val upvotes: List<UpvoteDb>,
 )

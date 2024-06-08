@@ -45,6 +45,7 @@ fun ItemDetailPane(
                     onClickReply = {},
                     onNavigateLogin = {},
                     onItemVisible = viewModel::updateItem,
+                    onItemClick = viewModel::expandToggleItem,
                 )
             }
         }
