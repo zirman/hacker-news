@@ -9,11 +9,11 @@ android = "8.4.1"
 #lint = "31.4.0"
 desugarJdkLibs = "2.0.4"
 kotlin = "2.0.0"
-kotlinWrappersBom = "1.0.0-pre.752"
+kotlinWrappersBom = "1.0.0-pre.754"
 jetbrainsCompose = "1.6.10"
 ksp = "2.0.0-1.0.21"
 kotlinxCoroutines = "1.8.1"
-kotlinxSerialization = "1.6.3"
+kotlinxSerialization = "1.7.0"
 kotlinxCollectionsImmutable = "0.3.7"
 kotlinxDatetime = "0.5.0"
 ktor = "2.3.11"
@@ -122,7 +122,6 @@ androidx = [
     "lifecycleViewModelSavedState",
 ]
 androidxApp = [
-    "navigationRuntimeKtx",
     "navigationUiKtx",
     "navigationCompose",
     "composeMaterial",
@@ -249,8 +248,6 @@ lifecycleRuntimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runt
 lifecycleViewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose" }
 lifecycleViewModelSavedState = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-savedstate" }
 
-navigationRuntimeKtx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigation" }
-
 koinBom = { group = "io.insert-koin", name = "koin-bom", version = "3.6.0-wasm-alpha2" }
 koinCore = { group = "io.insert-koin", name = "koin-core" }
 koinKtor = { group = "io.insert-koin", name = "koin-ktor" }
@@ -261,7 +258,7 @@ koinAndroidxNavigation = { group = "io.insert-koin", name = "koin-androidx-navig
 koinAndroidxWorkmanager = { group = "io.insert-koin", name = "koin-androidx-workmanager" }
 
 navigationUiKtx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
-navigationCompose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+navigationCompose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version = "2.7.0-alpha07" }
 
 composeLintChecks = { group = "com.slack.lint.compose", name = "compose-lint-checks", version.ref = "composeLintChecks" }
 
