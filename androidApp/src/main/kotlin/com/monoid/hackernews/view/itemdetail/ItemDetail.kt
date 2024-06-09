@@ -58,7 +58,11 @@ import com.monoid.hackernews.common.view.placeholder.placeholder
 import com.monoid.hackernews.common.view.placeholder.shimmer
 
 @Composable
-fun ItemDetail(item: SimpleItemUiState?, onOpenBrowser: (String) -> Unit, modifier: Modifier = Modifier) {
+fun ItemDetail(
+    item: SimpleItemUiState?,
+    onOpenBrowser: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val isLoading = false // item.lastUpdate == null
     Surface(
         modifier = modifier.placeholder(

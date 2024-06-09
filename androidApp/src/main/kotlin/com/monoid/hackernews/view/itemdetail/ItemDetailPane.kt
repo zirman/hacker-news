@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -32,13 +32,13 @@ fun ItemDetailPane(
         modifier = modifier.fillMaxSize(),
         contentPadding = WindowInsets.safeDrawing.asPaddingValues(),
     ) {
-        items(
+        itemsIndexed(
             items = commentItems.orEmpty(),
-            key = { it.id.long },
-            contentType = { it.type },
-        ) { item ->
-            when {
-                item.type == "comment" -> {
+            key = { _, item -> item.id.long },
+            contentType = { _, item -> item.type },
+        ) { index, item ->
+            when (item.type ?: if (index == 0) "story" else "comment") {
+                "comment" -> {
                     ItemComment(
                         itemUi = item,
                         onClickUser = {},
@@ -48,7 +48,8 @@ fun ItemDetailPane(
                         onClick = viewModel::toggleCommentExpanded,
                     )
                 }
-                else -> {
+
+                "story" -> {
                     ItemDetail(item, onOpenBrowser)
                 }
             }
