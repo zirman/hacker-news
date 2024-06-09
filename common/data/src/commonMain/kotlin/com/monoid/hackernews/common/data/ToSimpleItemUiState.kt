@@ -78,7 +78,7 @@ fun ItemApi.toSimpleItemUiState(instant: Instant): SimpleItemUiState {
             id = id,
             lastUpdate = lastUpdate,
             kids = kids,
-            type = "poll_opt",
+            type = "pollopt",
             time = time,
             deleted = deleted,
             by = by,

@@ -49,7 +49,7 @@ fun ItemDetailPane(
                     )
                 }
 
-                "story" -> {
+                "story", "job", "poll", "pollopt" -> {
                     ItemDetail(item, onOpenBrowser)
                 }
             }
