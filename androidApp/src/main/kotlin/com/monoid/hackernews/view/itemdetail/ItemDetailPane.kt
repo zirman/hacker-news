@@ -25,28 +25,32 @@ fun ItemDetailPane(
     LifecycleEventEffect(Lifecycle.Event.ON_START) {
         viewModel.updateItem(itemId)
     }
-    val item = uiState.item
-    val commentItems = uiState.commentItems
+    val commentItems = uiState.comments
 
     LazyColumn(
         state = viewModel.lazyListState,
         modifier = modifier.fillMaxSize(),
         contentPadding = WindowInsets.safeDrawing.asPaddingValues(),
     ) {
-        item {
-            ItemDetail(item, onOpenBrowser)
-        }
-
-        if (commentItems != null) {
-            items(items = commentItems, key = { it.id }) { commentItem ->
-                ItemComment(
-                    itemUi = commentItem,
-                    onClickUser = {},
-                    onClickReply = {},
-                    onNavigateLogin = {},
-                    onItemVisible = viewModel::updateItem,
-                    onItemClick = viewModel::expandToggleItem,
-                )
+        items(
+            items = commentItems.orEmpty(),
+            key = { it.id.long },
+            contentType = { it.type },
+        ) { item ->
+            when {
+                item.type == "comment" -> {
+                    ItemComment(
+                        itemUi = item,
+                        onClickUser = {},
+                        onClickReply = {},
+                        onNavigateLogin = {},
+                        onVisible = viewModel::updateItem,
+                        onClick = viewModel::toggleCommentExpanded,
+                    )
+                }
+                else -> {
+                    ItemDetail(item, onOpenBrowser)
+                }
             }
         }
     }

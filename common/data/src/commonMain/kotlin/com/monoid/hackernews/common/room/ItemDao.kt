@@ -22,6 +22,13 @@ interface ItemDao {
     @Upsert(entity = ItemDb::class)
     suspend fun itemUpsert(item: ItemDb)
 
+    @Transaction
+    suspend fun itemToggleExpanded(itemId: Long): ItemWithKids? = itemByIdWithKidsById(itemId = itemId)
+        ?.let { item ->
+            item.copy(item = item.item.copy(expanded = item.item.expanded.not()))
+        }
+        ?.also { itemUpsert(it.item) }
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun itemInsertStub(item: ItemDb)
 

@@ -16,12 +16,12 @@ interface SimpleItemUiState {
     val url: String?
     val parent: ItemId?
     val kids: List<ItemId>?
-    val isUpvote: Boolean?
-    val isFavorite: Boolean?
-    val isFlag: Boolean?
+    val upvoted: Boolean?
+    val favourited: Boolean?
+    val flagged: Boolean?
     // local only data
-    val isExpanded: Boolean?
-    val isFollowed: Boolean?
+    val expanded: Boolean
+    val followed: Boolean
 }
 
 expect fun makeSimpleItemUiState(
@@ -38,30 +38,9 @@ expect fun makeSimpleItemUiState(
     url: String? = null,
     parent: ItemId? = null,
     kids: List<ItemId>? = null,
-    isUpvote: Boolean? = null,
-    isFavorite: Boolean? = null,
-    isFlag: Boolean? = null,
-    isExpanded: Boolean? = null,
-    isFollowed: Boolean? = null,
+    upvoted: Boolean? = null,
+    favourited: Boolean? = null,
+    flagged: Boolean? = null,
+    expanded: Boolean = true,
+    followed: Boolean = false,
 ): SimpleItemUiState
-
-fun SimpleItemUiState.toggleExpanded(): SimpleItemUiState = makeSimpleItemUiState(
-    id = id,
-    lastUpdate = lastUpdate,
-    type = type,
-    time = time,
-    deleted = deleted,
-    by = by,
-    descendants = descendants,
-    score = score,
-    title = title,
-    text = text,
-    url = url,
-    parent = parent,
-    kids = kids,
-    isUpvote = isUpvote,
-    isFavorite = isFavorite,
-    isFlag = isFlag,
-    isExpanded = isExpanded?.not(),
-    isFollowed = isFollowed,
-)

@@ -53,15 +53,15 @@ fun ItemComment(
     onClickUser: (Username) -> Unit,
     onClickReply: (ItemId) -> Unit,
     onNavigateLogin: (LoginAction) -> Unit,
-    onItemVisible: (ItemId) -> Unit,
-    onItemClick: (ItemId) -> Unit,
+    onVisible: (ItemId) -> Unit,
+    onClick: (ItemId) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LifecycleEventEffect(Lifecycle.Event.ON_START) {
-        onItemVisible(itemUi.id)
+        onVisible(itemUi.id)
     }
     Surface(
-        modifier = modifier.clickable { onItemClick(itemUi.id) },
+        modifier = modifier.clickable { onClick(itemUi.id) },
 //            .padding(start = (((itemUi?.threadDepth ?: 1) - 1) * 16).dp)
 //            .then(if (itemUi == null) Modifier.drawWithContent {} else Modifier),
         shape = MaterialTheme.shapes.medium,
@@ -89,10 +89,6 @@ fun ItemComment(
 //                    )
 //            },
         ) {
-            val isDeleted =
-                itemUi.text == null &&
-                    itemUi.lastUpdate != null
-
             Row(verticalAlignment = Alignment.CenterVertically) {
                 val timeByUserAnnotatedString: AnnotatedString =
                     rememberTimeBy(time = itemUi.time, by = itemUi.by)
@@ -169,7 +165,7 @@ fun ItemComment(
                             text = {
                                 Text(
                                     text = stringResource(
-                                        id = if (itemUi.isUpvote == true) R.string.un_vote
+                                        id = if (itemUi.upvoted == true) R.string.un_vote
                                         else R.string.upvote,
                                     ),
                                 )
@@ -184,11 +180,11 @@ fun ItemComment(
                             leadingIcon = {
                                 Icon(
                                     imageVector =
-                                    if (itemUi.isUpvote == true) Icons.Filled.ThumbUp
+                                    if (itemUi.upvoted == true) Icons.Filled.ThumbUp
                                     else Icons.TwoTone.ThumbUp,
                                     contentDescription = stringResource(
                                         id =
-                                        if (itemUi.isUpvote == true) R.string.un_vote
+                                        if (itemUi.upvoted == true) R.string.un_vote
                                         else R.string.upvote,
                                     ),
                                 )
@@ -200,7 +196,7 @@ fun ItemComment(
                                 Text(
                                     text = stringResource(
                                         id =
-                                        if (itemUi.isFollowed == true) R.string.unfollow
+                                        if (itemUi.followed == true) R.string.unfollow
                                         else R.string.follow,
                                     )
                                 )
@@ -215,11 +211,11 @@ fun ItemComment(
                             leadingIcon = {
                                 Icon(
                                     imageVector =
-                                    if (itemUi.isFollowed == true) Icons.Filled.Quickreply
+                                    if (itemUi.followed == true) Icons.Filled.Quickreply
                                     else Icons.TwoTone.Quickreply,
                                     contentDescription = stringResource(
                                         id =
-                                        if (itemUi.isFollowed == true) R.string.unfollow
+                                        if (itemUi.followed == true) R.string.unfollow
                                         else R.string.follow,
                                     ),
                                 )
@@ -231,7 +227,7 @@ fun ItemComment(
                                 Text(
                                     text = stringResource(
                                         id =
-                                        if (itemUi.isFlag == true) R.string.un_flag
+                                        if (itemUi.flagged == true) R.string.un_flag
                                         else R.string.flag,
                                     ),
                                 )
@@ -246,10 +242,10 @@ fun ItemComment(
                             leadingIcon = {
                                 Icon(
                                     imageVector =
-                                    if (itemUi.isFlag == true) Icons.Filled.Flag
+                                    if (itemUi.flagged == true) Icons.Filled.Flag
                                     else Icons.TwoTone.Flag,
                                     contentDescription = stringResource(
-                                        id = if (itemUi.isFlag == true) R.string.un_flag
+                                        id = if (itemUi.flagged == true) R.string.un_flag
                                         else R.string.flag,
                                     ),
                                 )
@@ -259,12 +255,12 @@ fun ItemComment(
                 }
             }
 
-            val htmlString = if (isDeleted) stringResource(id = R.string.deleted)
+            val htmlString = if (itemUi.deleted == true) stringResource(id = R.string.deleted)
             else itemUi.text ?: ""
 
             val annotatedText = remember(htmlString) { AnnotatedString.fromHtml(htmlString) }
 
-            if (itemUi.isExpanded == true) {
+            if (itemUi.expanded == true) {
                 SelectionContainer {
                     ClickableTextBlock(
                         text = annotatedText,
@@ -285,7 +281,7 @@ fun ItemComment(
                 )
             }
 
-            if (itemUi.isExpanded?.not() == true &&
+            if (itemUi.expanded?.not() == true &&
                 (itemUi.kids?.size ?: 0) > 0
             ) {
                 Badge(
@@ -301,7 +297,7 @@ fun ItemComment(
                 }
             } else {
                 Icon(
-                    imageVector = if (itemUi.isExpanded == true) Icons.TwoTone.ExpandLess
+                    imageVector = if (itemUi.expanded == true) Icons.TwoTone.ExpandLess
                     else Icons.TwoTone.ExpandMore,
                     contentDescription = stringResource(id = R.string.expand),
                     modifier = Modifier.align(Alignment.CenterHorizontally),

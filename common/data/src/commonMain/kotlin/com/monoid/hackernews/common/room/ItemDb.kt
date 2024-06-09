@@ -37,8 +37,9 @@ data class ItemDb(
     val favourited: Boolean? = null,
     @ColumnInfo(name = "flagged")
     val flagged: Boolean? = null,
+    // local only data
     @ColumnInfo(name = "expanded")
-    val expanded: Boolean? = null,
+    val expanded: Boolean = true,
     @ColumnInfo(name = "followed")
-    val followed: Boolean? = null,
+    val followed: Boolean = false,
 )

@@ -19,6 +19,11 @@ fun ItemDb.toSimpleItemUiState(kids: List<ItemId>): SimpleItemUiState = makeSimp
     text = text,
     url = url,
     parent = parent?.let { ItemId(it) },
+    upvoted = upvoted,
+    favourited = favourited,
+    flagged = flagged,
+    expanded = expanded,
+    followed = followed,
 )
 
 fun ItemApi.toSimpleItemUiState(instant: Instant): SimpleItemUiState {
@@ -34,6 +39,8 @@ fun ItemApi.toSimpleItemUiState(instant: Instant): SimpleItemUiState {
             by = by,
             text = text,
             parent = parent,
+            expanded = true,
+            followed = false,
         )
 
         is ItemApi.Job -> makeSimpleItemUiState(
@@ -47,6 +54,8 @@ fun ItemApi.toSimpleItemUiState(instant: Instant): SimpleItemUiState {
             title = title,
             text = title,
             url = url,
+            expanded = true,
+            followed = false,
         )
 
         is ItemApi.Poll -> makeSimpleItemUiState(
@@ -61,6 +70,8 @@ fun ItemApi.toSimpleItemUiState(instant: Instant): SimpleItemUiState {
             score = score,
             title = title,
             text = title,
+            expanded = true,
+            followed = false,
         )
 
         is ItemApi.PollOpt -> makeSimpleItemUiState(
@@ -74,6 +85,8 @@ fun ItemApi.toSimpleItemUiState(instant: Instant): SimpleItemUiState {
             score = score,
             title = title,
             text = title,
+            expanded = true,
+            followed = false,
         )
 
         is ItemApi.Story -> makeSimpleItemUiState(
@@ -89,6 +102,8 @@ fun ItemApi.toSimpleItemUiState(instant: Instant): SimpleItemUiState {
             title = title,
             text = title,
             url = url,
+            expanded = true,
+            followed = false,
         )
     }
 }

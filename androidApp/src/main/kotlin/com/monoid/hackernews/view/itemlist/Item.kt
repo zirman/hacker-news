@@ -79,11 +79,11 @@ private fun ItemPreview() {
             text = "Lorum Ipsum",
             url = "https://www.google.com/",
             kids = emptyList(),
-            isUpvote = false,
-            isFavorite = false,
-            isFlag = false,
-            isExpanded = false,
-            isFollowed = false,
+            upvoted = false,
+            favourited = false,
+            flagged = false,
+            expanded = false,
+            followed = false,
             by = null,
             deleted = null,
             descendants = null,
@@ -174,7 +174,7 @@ fun Item(
                             text = {
                                 Text(
                                     text = stringResource(
-                                        id = if (item?.isFavorite == true) {
+                                        id = if (item?.favourited == true) {
                                             R.string.un_favorite
                                         } else {
                                             R.string.favorite
@@ -188,13 +188,13 @@ fun Item(
                             },
                             leadingIcon = {
                                 Icon(
-                                    imageVector = if (item?.isFavorite == true) {
+                                    imageVector = if (item?.favourited == true) {
                                         Icons.Filled.Favorite
                                     } else {
                                         Icons.TwoTone.Favorite
                                     },
                                     contentDescription = stringResource(
-                                        id = if (item?.isFavorite == true) {
+                                        id = if (item?.favourited == true) {
                                             R.string.un_favorite
                                         } else {
                                             R.string.favorite
@@ -208,7 +208,7 @@ fun Item(
                             text = {
                                 Text(
                                     text = stringResource(
-                                        id = if (item?.isFollowed == true) {
+                                        id = if (item?.followed == true) {
                                             R.string.unfollow
                                         } else {
                                             R.string.follow
@@ -222,13 +222,13 @@ fun Item(
                             },
                             leadingIcon = {
                                 Icon(
-                                    imageVector = if (item?.isFollowed == true) {
+                                    imageVector = if (item?.followed == true) {
                                         Icons.Filled.Quickreply
                                     } else {
                                         Icons.TwoTone.Quickreply
                                     },
                                     contentDescription = stringResource(
-                                        id = if (item?.isFollowed == true) {
+                                        id = if (item?.followed == true) {
                                             R.string.unfollow
                                         } else {
                                             R.string.follow
@@ -242,7 +242,7 @@ fun Item(
                             text = {
                                 Text(
                                     text = stringResource(
-                                        id = if (item?.isFlag == true) {
+                                        id = if (item?.flagged == true) {
                                             R.string.un_flag
                                         } else {
                                             R.string.flag
@@ -256,13 +256,13 @@ fun Item(
                             },
                             leadingIcon = {
                                 Icon(
-                                    imageVector = if (item?.isFlag == true) {
+                                    imageVector = if (item?.flagged == true) {
                                         Icons.Filled.Flag
                                     } else {
                                         Icons.TwoTone.Flag
                                     },
                                     contentDescription = stringResource(
-                                        id = if (item?.isFlag == true) {
+                                        id = if (item?.flagged == true) {
                                             R.string.un_flag
                                         } else {
                                             R.string.flag
@@ -328,13 +328,13 @@ fun Item(
                             enabled = isStoryOrComment,
                         ) {
                             Icon(
-                                imageVector = if (item?.isUpvote == true) {
+                                imageVector = if (item?.upvoted == true) {
                                     Icons.Filled.ThumbUp
                                 } else {
                                     Icons.TwoTone.ThumbUp
                                 },
                                 contentDescription = stringResource(
-                                    id = if (item?.isUpvote == true) {
+                                    id = if (item?.upvoted == true) {
                                         R.string.un_vote
                                     } else {
                                         R.string.upvote

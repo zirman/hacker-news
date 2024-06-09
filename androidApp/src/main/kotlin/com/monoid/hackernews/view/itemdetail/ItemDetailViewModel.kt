@@ -17,24 +17,20 @@ import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.SimpleItemUiState
 import com.monoid.hackernews.common.data.StoriesRepository
 import com.monoid.hackernews.common.data.makeSimpleItemUiState
-import com.monoid.hackernews.common.data.toggleExpanded
 import com.monoid.hackernews.common.injection.LoggerAdapter
-import kotlinx.collections.immutable.PersistentList
-import kotlinx.collections.immutable.PersistentMap
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.koinViewModel
 import java.util.WeakHashMap
 
@@ -45,16 +41,14 @@ class ItemDetailViewModel(
 ) : ViewModel() {
     data class UiState(
         val loading: Boolean = true,
-        val item: SimpleItemUiState? = null,
-        val commentMap: PersistentMap<ItemId, Int>? = null,
-        val commentItems: PersistentList<SimpleItemUiState>? = null,
+        val comments: List<SimpleItemUiState>? = null,
     )
 
     sealed interface Event {
         data class Error(val message: String?) : Event
     }
 
-    private val itemId: ItemId = savedStateHandle[ITEM_ID]!!
+    private val itemId: ItemId by lazy { savedStateHandle[ITEM_ID]!! }
 
     private val context = CoroutineExceptionHandler { _, throwable ->
         logger.recordException(
@@ -64,8 +58,24 @@ class ItemDetailViewModel(
         )
     }
 
-    private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState())
-    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
+    private val loading: MutableStateFlow<Boolean> = MutableStateFlow(false)
+
+    val uiState: StateFlow<UiState> = combine(
+        loading,
+        repository.cache.map { cache ->
+            withContext(Dispatchers.Default) {
+                cache.traverse(itemId)
+            }
+        },
+        ::UiState,
+    ).stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
+        initialValue = UiState(
+            loading = false,
+            comments = listOf(repository.cache.value[itemId] ?: makeSimpleItemUiState(id = itemId)),
+        ),
+    )
 
     private val _events: Channel<Event> = Channel()
     val events = _events.receiveAsFlow()
@@ -74,126 +84,14 @@ class ItemDetailViewModel(
 
     private val updateItemJob = WeakHashMap<ItemId, Job>()
 
-    init {
-        viewModelScope.launch(context) {
-            repository.cache
-                .map { cache -> cache[itemId] }
-                .filterNotNull()
-                .distinctUntilChanged()
-                .collect { item ->
-                    // ensures collection doesn't suspend
-                    fun collect() {
-                        val kids = item.kids.orEmpty()
-                        val commentMap = persistentMapOf(
-                            *Array(kids.size) { index ->
-                                kids[index] to index
-                            },
-                        )
-                        val commentItems = persistentListOf(
-                            *Array(kids.size) { index ->
-                                val x = repository.getCachedItem(kids[index])
-                                makeSimpleItemUiState(
-                                    id = kids[index],
-                                    lastUpdate = x?.lastUpdate,
-                                    type = x?.type,
-                                    time = x?.time,
-                                    deleted = x?.deleted,
-                                    by = x?.by,
-                                    descendants = x?.descendants,
-                                    score = x?.score,
-                                    title = x?.title,
-                                    text = x?.text,
-                                    url = x?.url,
-                                    parent = x?.parent,
-                                    kids = x?.kids,
-                                    isUpvote = x?.isUpvote,
-                                    isFavorite = x?.isFavorite,
-                                    isFlag = x?.isFlag,
-                                    isExpanded = x?.isExpanded,
-                                    isFollowed = x?.isFollowed,
-                                )
-                            },
-                        )
-                        _uiState.update { uiState ->
-                            uiState.copy(
-                                item = item,
-                                commentMap = commentMap,
-                                commentItems = commentItems,
-                            )
-                        }
-                    }
-                    collect()
-                }
-
-            repository.updateItem(itemId)
-        }
-    }
-
     fun updateItem(itemId: ItemId): Job {
-        var job = updateItemJob[itemId]
-        if (job?.isActive != true) {
-            job = viewModelScope.launch(context) {
-                val commentItem = repository.getItem(itemId)
-                _uiState.update { uiState ->
-                    val commentIndex = uiState.commentMap?.get(itemId)
-                    if (commentIndex != null) {
-                        uiState.copy(
-                            commentItems = uiState.commentItems?.set(commentIndex, commentItem),
-                        )
-                    } else {
-                        uiState
-                    }
-                }
-            }
-            updateItemJob[itemId] = job
-        }
-        return job
+        return updateItemJob[itemId]?.takeIf { it.isActive }
+            ?: viewModelScope.launch(context) { repository.updateItem(itemId) }
+                .also { updateItemJob[itemId] = it }
     }
 
-    fun expandToggleItem(itemId: ItemId): Job = viewModelScope.launch(context) {
-        _uiState.update { uiState ->
-            val commentItems = uiState.commentItems ?: return@update uiState
-            val commentMap = uiState.commentMap ?: return@update uiState
-            val itemIndex = commentMap[itemId] ?: return@update uiState
-            val item = commentItems[itemIndex]
-            val toggledItem = item.toggleExpanded()
-            if (item == toggledItem) return@update uiState
-            val kids = item.kids ?: return@update uiState
-
-            val commentItemsUpdate = if (toggledItem.isExpanded == true) {
-                println("FOOBAR expanded $kids")
-                persistentListOf(
-                    *Array(commentItems.size + kids.size) { i ->
-                        when {
-                            i < itemIndex -> commentItems[i]
-                            i == itemIndex -> toggledItem
-                            i <= itemIndex + kids.size -> repository.getItem(kids[i - itemIndex])
-                            else -> commentItems[i - kids.size]
-                        }
-                    },
-                )
-            } else {
-                println("FOOBAR unexpanded $kids")
-                persistentListOf(
-                    *Array(commentItems.size - kids.size) { i ->
-                        when {
-                            i < itemIndex -> commentItems[i]
-                            i == itemIndex -> toggledItem
-                            else -> commentItems[i + kids.size]
-                        }
-                    },
-                )
-            }
-
-            uiState.copy(
-                commentItems = commentItemsUpdate,
-                commentMap = persistentMapOf(
-                    *Array(commentItemsUpdate.size) { i ->
-                        Pair(commentItemsUpdate[i].id, i)
-                    },
-                ),
-            )
-        }
+    fun toggleCommentExpanded(itemId: ItemId): Job = viewModelScope.launch(context) {
+        repository.itemToggleExpanded(itemId)
     }
 
     companion object {
@@ -219,4 +117,19 @@ class ItemDetailViewModel(
             set(SAVED_STATE_REGISTRY_OWNER_KEY, viewModelStoreOwner as SavedStateRegistryOwner)
         }
     }
+}
+
+private fun Map<ItemId, SimpleItemUiState>.traverse(
+    itemId: ItemId,
+): List<SimpleItemUiState> = buildList {
+    fun recur(itemId: ItemId) {
+        val item = this@traverse[itemId] ?: makeSimpleItemUiState(id = itemId)
+        add(item)
+        if (item.expanded) {
+            item.kids?.forEach {
+                recur(it)
+            }
+        }
+    }
+    recur(itemId)
 }
