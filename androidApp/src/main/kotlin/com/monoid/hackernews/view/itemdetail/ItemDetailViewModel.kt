@@ -14,9 +14,9 @@ import androidx.lifecycle.viewmodel.MutableCreationExtras
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.savedstate.SavedStateRegistryOwner
 import com.monoid.hackernews.common.api.ItemId
-import com.monoid.hackernews.common.data.SimpleItemUiState
+import com.monoid.hackernews.common.data.Item
 import com.monoid.hackernews.common.data.StoriesRepository
-import com.monoid.hackernews.common.data.makeSimpleItemUiState
+import com.monoid.hackernews.common.data.makeItem
 import com.monoid.hackernews.common.injection.LoggerAdapter
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
@@ -41,8 +41,10 @@ class ItemDetailViewModel(
 ) : ViewModel() {
     data class UiState(
         val loading: Boolean = true,
-        val comments: List<SimpleItemUiState>? = null,
+        val comments: List<ThreadItemUiState>? = null,
     )
+
+    data class ThreadItemUiState(val item: Item, val depth: Int)
 
     sealed interface Event {
         data class Error(val message: String?) : Event
@@ -73,7 +75,12 @@ class ItemDetailViewModel(
         started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
         initialValue = UiState(
             loading = false,
-            comments = listOf(repository.cache.value[itemId] ?: makeSimpleItemUiState(id = itemId)),
+            comments = listOf(
+                ThreadItemUiState(
+                    item = repository.cache.value[itemId] ?: makeItem(id = itemId),
+                    depth = 0,
+                ),
+            ),
         ),
     )
 
@@ -119,17 +126,17 @@ class ItemDetailViewModel(
     }
 }
 
-private fun Map<ItemId, SimpleItemUiState>.traverse(
+private fun Map<ItemId, Item>.traverse(
     itemId: ItemId,
-): List<SimpleItemUiState> = buildList {
-    fun recur(itemId: ItemId) {
-        val item = this@traverse[itemId] ?: makeSimpleItemUiState(id = itemId)
-        add(item)
+): List<ItemDetailViewModel.ThreadItemUiState> = buildList {
+    fun recur(itemId: ItemId, depth: Int) {
+        val item = this@traverse[itemId] ?: makeItem(id = itemId)
+        add(ItemDetailViewModel.ThreadItemUiState(item, depth))
         if (item.expanded) {
             item.kids?.forEach {
-                recur(it)
+                recur(it, depth = depth + 1)
             }
         }
     }
-    recur(itemId)
+    recur(itemId, depth = 0)
 }

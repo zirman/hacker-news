@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.monoid.hackernews.common.api.ItemId
-import com.monoid.hackernews.common.data.SimpleItemUiState
+import com.monoid.hackernews.common.data.Item
 import com.monoid.hackernews.common.data.StoriesRepository
 import com.monoid.hackernews.common.injection.LoggerAdapter
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -28,7 +28,7 @@ class StoriesViewModel(
 ) : ViewModel() {
     data class UiState(
         val loading: Boolean = true,
-        val itemsList: List<SimpleItemUiState>? = null,
+        val itemsList: List<Item>? = null,
     )
 
     sealed interface Event {

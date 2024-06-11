@@ -41,7 +41,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.LoginAction
-import com.monoid.hackernews.common.data.SimpleItemUiState
 import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.ui.text.ClickableTextBlock
 import com.monoid.hackernews.common.ui.util.rememberTimeBy
@@ -49,7 +48,7 @@ import com.monoid.hackernews.common.view.R
 
 @Composable
 fun ItemComment(
-    itemUi: SimpleItemUiState,
+    threadItem: ItemDetailViewModel.ThreadItemUiState,
     onClickUser: (Username) -> Unit,
     onClickReply: (ItemId) -> Unit,
     onNavigateLogin: (LoginAction) -> Unit,
@@ -57,16 +56,17 @@ fun ItemComment(
     onClick: (ItemId) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val item = threadItem.item
     LifecycleEventEffect(Lifecycle.Event.ON_START) {
-        onVisible(itemUi.id)
+        onVisible(item.id)
     }
     Surface(
-        modifier = modifier.clickable { onClick(itemUi.id) },
-//            .padding(start = (((itemUi?.threadDepth ?: 1) - 1) * 16).dp)
+        modifier = modifier.clickable { onClick(item.id) }
+            .padding(start = ((threadItem.depth - 1) * 16).dp),
 //            .then(if (itemUi == null) Modifier.drawWithContent {} else Modifier),
         shape = MaterialTheme.shapes.medium,
         contentColor = MaterialTheme.colorScheme.secondary,
-        tonalElevation = ((itemUi.kids?.size ?: 0) * 10 + 40).dp
+        tonalElevation = ((item.kids?.size ?: 0) * 10 + 40).dp
     ) {
         Column(
 //            modifier = if (itemUi == null) {
@@ -91,7 +91,7 @@ fun ItemComment(
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 val timeByUserAnnotatedString: AnnotatedString =
-                    rememberTimeBy(time = itemUi.time, by = itemUi.by)
+                    rememberTimeBy(time = item.time, by = item.by)
 
                 ClickableTextBlock(
                     text = timeByUserAnnotatedString,
@@ -165,7 +165,7 @@ fun ItemComment(
                             text = {
                                 Text(
                                     text = stringResource(
-                                        id = if (itemUi.upvoted == true) R.string.un_vote
+                                        id = if (item.upvoted == true) R.string.un_vote
                                         else R.string.upvote,
                                     ),
                                 )
@@ -180,11 +180,11 @@ fun ItemComment(
                             leadingIcon = {
                                 Icon(
                                     imageVector =
-                                    if (itemUi.upvoted == true) Icons.Filled.ThumbUp
+                                    if (item.upvoted == true) Icons.Filled.ThumbUp
                                     else Icons.TwoTone.ThumbUp,
                                     contentDescription = stringResource(
                                         id =
-                                        if (itemUi.upvoted == true) R.string.un_vote
+                                        if (item.upvoted == true) R.string.un_vote
                                         else R.string.upvote,
                                     ),
                                 )
@@ -196,7 +196,7 @@ fun ItemComment(
                                 Text(
                                     text = stringResource(
                                         id =
-                                        if (itemUi.followed == true) R.string.unfollow
+                                        if (item.followed == true) R.string.unfollow
                                         else R.string.follow,
                                     )
                                 )
@@ -211,11 +211,11 @@ fun ItemComment(
                             leadingIcon = {
                                 Icon(
                                     imageVector =
-                                    if (itemUi.followed == true) Icons.Filled.Quickreply
+                                    if (item.followed) Icons.Filled.Quickreply
                                     else Icons.TwoTone.Quickreply,
                                     contentDescription = stringResource(
                                         id =
-                                        if (itemUi.followed == true) R.string.unfollow
+                                        if (item.followed == true) R.string.unfollow
                                         else R.string.follow,
                                     ),
                                 )
@@ -227,7 +227,7 @@ fun ItemComment(
                                 Text(
                                     text = stringResource(
                                         id =
-                                        if (itemUi.flagged == true) R.string.un_flag
+                                        if (item.flagged == true) R.string.un_flag
                                         else R.string.flag,
                                     ),
                                 )
@@ -242,10 +242,10 @@ fun ItemComment(
                             leadingIcon = {
                                 Icon(
                                     imageVector =
-                                    if (itemUi.flagged == true) Icons.Filled.Flag
+                                    if (item.flagged == true) Icons.Filled.Flag
                                     else Icons.TwoTone.Flag,
                                     contentDescription = stringResource(
-                                        id = if (itemUi.flagged == true) R.string.un_flag
+                                        id = if (item.flagged == true) R.string.un_flag
                                         else R.string.flag,
                                     ),
                                 )
@@ -255,12 +255,12 @@ fun ItemComment(
                 }
             }
 
-            val htmlString = if (itemUi.deleted == true) stringResource(id = R.string.deleted)
-            else itemUi.text ?: ""
+            val htmlString = if (item.deleted == true) stringResource(id = R.string.deleted)
+            else item.text ?: ""
 
             val annotatedText = remember(htmlString) { AnnotatedString.fromHtml(htmlString) }
 
-            if (itemUi.expanded == true) {
+            if (item.expanded) {
                 SelectionContainer {
                     ClickableTextBlock(
                         text = annotatedText,
@@ -281,8 +281,7 @@ fun ItemComment(
                 )
             }
 
-            if (itemUi.expanded?.not() == true &&
-                (itemUi.kids?.size ?: 0) > 0
+            if (item.expanded.not() && (item.kids?.size ?: 0) > 0
             ) {
                 Badge(
                     containerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -291,13 +290,13 @@ fun ItemComment(
                         .padding(4.dp),
                 ) {
                     Text(
-                        text = "${itemUi.kids?.size}",
+                        text = "${item.kids?.size}",
                         maxLines = 1,
                     )
                 }
             } else {
                 Icon(
-                    imageVector = if (itemUi.expanded == true) Icons.TwoTone.ExpandLess
+                    imageVector = if (item.expanded) Icons.TwoTone.ExpandLess
                     else Icons.TwoTone.ExpandMore,
                     contentDescription = stringResource(id = R.string.expand),
                     modifier = Modifier.align(Alignment.CenterHorizontally),

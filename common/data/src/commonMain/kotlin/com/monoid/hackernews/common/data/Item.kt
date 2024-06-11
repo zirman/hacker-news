@@ -2,7 +2,7 @@ package com.monoid.hackernews.common.data
 
 import com.monoid.hackernews.common.api.ItemId
 
-interface SimpleItemUiState {
+interface Item {
     val id: ItemId
     val lastUpdate: Long?
     val type: String?
@@ -24,7 +24,7 @@ interface SimpleItemUiState {
     val followed: Boolean
 }
 
-expect fun makeSimpleItemUiState(
+expect fun makeItem(
     id: ItemId,
     lastUpdate: Long? = null,
     type: String? = null,
@@ -43,4 +43,4 @@ expect fun makeSimpleItemUiState(
     flagged: Boolean? = null,
     expanded: Boolean = true,
     followed: Boolean = false,
-): SimpleItemUiState
+): Item

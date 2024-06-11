@@ -25,7 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.monoid.hackernews.common.data.SimpleItemUiState
+import com.monoid.hackernews.common.data.Item
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.view.itemdetail.ItemDetailPane
 import com.monoid.hackernews.view.itemdetail.ListItemDetailContentUiState
@@ -35,7 +35,7 @@ import com.monoid.hackernews.view.itemlist.ItemsColumn
 @Composable
 fun StoriesScaffold(
     navigator: ThreePaneScaffoldNavigator<Any>,
-    onClickBrowser: (SimpleItemUiState) -> Unit,
+    onClickBrowser: (Item) -> Unit,
     modifier: Modifier = Modifier,
     key: String = "default",
     viewModel: StoriesViewModel = StoriesViewModel.create(key),

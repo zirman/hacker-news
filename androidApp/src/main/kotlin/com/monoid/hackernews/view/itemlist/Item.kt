@@ -54,9 +54,9 @@ import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.monoid.hackernews.common.api.ItemId
-import com.monoid.hackernews.common.data.SimpleItemUiState
+import com.monoid.hackernews.common.data.Item
 import com.monoid.hackernews.common.data.Username
-import com.monoid.hackernews.common.data.makeSimpleItemUiState
+import com.monoid.hackernews.common.data.makeItem
 import com.monoid.hackernews.common.ui.text.ClickableTextBlock
 import com.monoid.hackernews.common.ui.util.rememberTimeBy
 import com.monoid.hackernews.common.view.R
@@ -72,7 +72,7 @@ import com.monoid.hackernews.common.view.placeholder.shimmer
 @Composable
 private fun ItemPreview() {
     Item(
-        item = makeSimpleItemUiState(
+        item = makeItem(
             id = ItemId(0),
             type = "story",
             title = "Hello World",
@@ -105,7 +105,7 @@ private fun ItemPreview() {
 
 @Composable
 fun Item(
-    item: SimpleItemUiState?,
+    item: Item?,
     onClickDetail: () -> Unit,
     onClickReply: () -> Unit,
     onClickUser: (Username?) -> Unit,

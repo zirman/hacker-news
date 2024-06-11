@@ -24,9 +24,9 @@ data class SimpleItemUiStateImpl(
     override val flagged: Boolean?,
     override val expanded: Boolean,
     override val followed: Boolean,
-) : SimpleItemUiState, Parcelable
+) : Item, Parcelable
 
-actual fun makeSimpleItemUiState(
+actual fun makeItem(
     id: ItemId,
     lastUpdate: Long?,
     type: String?,
@@ -45,7 +45,7 @@ actual fun makeSimpleItemUiState(
     flagged: Boolean?,
     expanded: Boolean,
     followed: Boolean,
-): SimpleItemUiState = SimpleItemUiStateImpl(
+): Item = SimpleItemUiStateImpl(
     id = id,
     lastUpdate = lastUpdate,
     type = type,

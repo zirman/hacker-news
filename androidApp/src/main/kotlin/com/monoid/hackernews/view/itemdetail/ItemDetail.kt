@@ -49,7 +49,7 @@ import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.monoid.hackernews.common.data.SimpleItemUiState
+import com.monoid.hackernews.common.data.Item
 import com.monoid.hackernews.common.ui.util.rememberTimeBy
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.common.view.TooltipPopupPositionProvider
@@ -59,7 +59,7 @@ import com.monoid.hackernews.common.view.placeholder.shimmer
 
 @Composable
 fun ItemDetail(
-    item: SimpleItemUiState?,
+    item: Item?,
     onOpenBrowser: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -154,7 +154,7 @@ fun ItemDetail(
                                 text = {
                                     Text(
                                         text = stringResource(
-                                            id = if (item.followed == true) {
+                                            id = if (item.followed) {
                                                 R.string.unfollow
                                             } else {
                                                 R.string.follow
@@ -171,13 +171,13 @@ fun ItemDetail(
                                 },
                                 leadingIcon = {
                                     Icon(
-                                        imageVector = if (item.followed == true) {
+                                        imageVector = if (item.followed) {
                                             Icons.Filled.Quickreply
                                         } else {
                                             Icons.TwoTone.Quickreply
                                         },
                                         contentDescription = stringResource(
-                                            id = if (item.followed == true) {
+                                            id = if (item.followed) {
                                                 R.string.unfollow
                                             } else {
                                                 R.string.follow

@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.monoid.hackernews.common.api.ItemId
-import com.monoid.hackernews.common.data.SimpleItemUiState
+import com.monoid.hackernews.common.data.Item
 import com.monoid.hackernews.common.injection.LoggerAdapter
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.PersistentMap
@@ -23,9 +23,9 @@ class ProfileViewModel(
 ) : ViewModel() {
     data class UiState(
         val loading: Boolean = true,
-        val item: SimpleItemUiState? = null,
+        val item: Item? = null,
         val commentMap: PersistentMap<ItemId, Int>? = null,
-        val commentItems: PersistentList<SimpleItemUiState>? = null,
+        val commentItems: PersistentList<Item>? = null,
     )
 
     sealed interface Event {

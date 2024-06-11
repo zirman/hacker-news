@@ -21,12 +21,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import com.monoid.hackernews.common.data.SimpleItemUiState
+import com.monoid.hackernews.common.data.Item
 import com.monoid.hackernews.common.navigation.BottomNav
 import com.monoid.hackernews.common.view.R
 
 @Composable
-fun HomeScaffold(onClickBrowser: (SimpleItemUiState) -> Unit, modifier: Modifier = Modifier) {
+fun HomeScaffold(onClickBrowser: (Item) -> Unit, modifier: Modifier = Modifier) {
     var currentDestination by rememberSaveable { mutableIntStateOf(0) }
     BackHandler(currentDestination != 0) {
         currentDestination = 0

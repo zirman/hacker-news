@@ -5,7 +5,7 @@ import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.room.ItemDb
 import kotlinx.datetime.Instant
 
-fun ItemDb.toSimpleItemUiState(kids: List<ItemId>): SimpleItemUiState = makeSimpleItemUiState(
+fun ItemDb.toSimpleItemUiState(kids: List<ItemId>): Item = makeItem(
     id = ItemId(id),
     lastUpdate = lastUpdate,
     kids = kids,
@@ -26,10 +26,10 @@ fun ItemDb.toSimpleItemUiState(kids: List<ItemId>): SimpleItemUiState = makeSimp
     followed = followed,
 )
 
-fun ItemApi.toSimpleItemUiState(instant: Instant): SimpleItemUiState {
+fun ItemApi.toSimpleItemUiState(instant: Instant): Item {
     val lastUpdate = instant.epochSeconds
     return when (this) {
-        is ItemApi.Comment -> makeSimpleItemUiState(
+        is ItemApi.Comment -> makeItem(
             id = id,
             lastUpdate = lastUpdate,
             kids = kids,
@@ -43,7 +43,7 @@ fun ItemApi.toSimpleItemUiState(instant: Instant): SimpleItemUiState {
             followed = false,
         )
 
-        is ItemApi.Job -> makeSimpleItemUiState(
+        is ItemApi.Job -> makeItem(
             id = id,
             lastUpdate = lastUpdate,
             kids = kids,
@@ -58,7 +58,7 @@ fun ItemApi.toSimpleItemUiState(instant: Instant): SimpleItemUiState {
             followed = false,
         )
 
-        is ItemApi.Poll -> makeSimpleItemUiState(
+        is ItemApi.Poll -> makeItem(
             id = id,
             lastUpdate = lastUpdate,
             kids = kids,
@@ -74,7 +74,7 @@ fun ItemApi.toSimpleItemUiState(instant: Instant): SimpleItemUiState {
             followed = false,
         )
 
-        is ItemApi.PollOpt -> makeSimpleItemUiState(
+        is ItemApi.PollOpt -> makeItem(
             id = id,
             lastUpdate = lastUpdate,
             kids = kids,
@@ -89,7 +89,7 @@ fun ItemApi.toSimpleItemUiState(instant: Instant): SimpleItemUiState {
             followed = false,
         )
 
-        is ItemApi.Story -> makeSimpleItemUiState(
+        is ItemApi.Story -> makeItem(
             id = id,
             lastUpdate = lastUpdate,
             kids = kids,

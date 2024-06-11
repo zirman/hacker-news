@@ -34,13 +34,13 @@ fun ItemDetailPane(
     ) {
         itemsIndexed(
             items = commentItems.orEmpty(),
-            key = { _, item -> item.id.long },
-            contentType = { _, item -> item.type },
+            key = { _, item -> item.item.id.long },
+            contentType = { _, item -> item.item.type },
         ) { index, item ->
-            when (item.type ?: if (index == 0) "story" else "comment") {
+            when (item.item.type ?: if (index == 0) "story" else "comment") {
                 "comment" -> {
                     ItemComment(
-                        itemUi = item,
+                        threadItem = item,
                         onClickUser = {},
                         onClickReply = {},
                         onNavigateLogin = {},
@@ -50,7 +50,7 @@ fun ItemDetailPane(
                 }
 
                 "story", "job", "poll", "pollopt" -> {
-                    ItemDetail(item, onOpenBrowser)
+                    ItemDetail(item.item, onOpenBrowser)
                 }
             }
         }

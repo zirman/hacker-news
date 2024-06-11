@@ -10,14 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
-import com.monoid.hackernews.common.data.SimpleItemUiState
+import com.monoid.hackernews.common.data.Item
 
 @Composable
 fun ItemsColumn(
-    itemsList: List<SimpleItemUiState>?,
-    onItemVisible: (SimpleItemUiState) -> Unit,
-    onItemClick: (SimpleItemUiState) -> Unit,
-    onOpenBrowser: (SimpleItemUiState) -> Unit,
+    itemsList: List<Item>?,
+    onItemVisible: (Item) -> Unit,
+    onItemClick: (Item) -> Unit,
+    onOpenBrowser: (Item) -> Unit,
     listState: LazyListState,
     modifier: Modifier = Modifier,
 ) {

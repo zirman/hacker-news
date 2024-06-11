@@ -38,7 +38,7 @@ class StoriesRepository(
     }
 
     private val scope = CoroutineScope(context)
-    private val _cache = MutableStateFlow(persistentMapOf<ItemId, SimpleItemUiState>())
+    private val _cache = MutableStateFlow(persistentMapOf<ItemId, Item>())
     val cache = _cache.asStateFlow()
 
     private val topStoryIds: StateFlow<List<ItemId>?> = topStoryLocalDataSource
@@ -55,7 +55,7 @@ class StoriesRepository(
     val topStories = combine(_cache, topStoryIds, ::Pair)
         .map { (cache, itemIds) ->
             itemIds?.map { id ->
-                cache[id] ?: makeSimpleItemUiState(id = id)
+                cache[id] ?: makeItem(id = id)
             }
         }
         .stateIn(
