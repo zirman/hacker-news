@@ -3,8 +3,10 @@ package com.monoid.hackernews.view.itemdetail
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
@@ -12,8 +14,6 @@ import androidx.compose.material.icons.automirrored.twotone.Reply
 import androidx.compose.material.icons.filled.Flag
 import androidx.compose.material.icons.filled.Quickreply
 import androidx.compose.material.icons.filled.ThumbUp
-import androidx.compose.material.icons.twotone.ExpandLess
-import androidx.compose.material.icons.twotone.ExpandMore
 import androidx.compose.material.icons.twotone.Flag
 import androidx.compose.material.icons.twotone.MoreVert
 import androidx.compose.material.icons.twotone.Quickreply
@@ -25,8 +25,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -60,14 +60,18 @@ fun ItemComment(
     LifecycleEventEffect(Lifecycle.Event.ON_START) {
         onVisible(item.id)
     }
-    Surface(
-        modifier = modifier.clickable { onClick(item.id) }
-            .padding(start = ((threadItem.depth - 1) * 16).dp),
-//            .then(if (itemUi == null) Modifier.drawWithContent {} else Modifier),
-        shape = MaterialTheme.shapes.medium,
-        contentColor = MaterialTheme.colorScheme.secondary,
-        tonalElevation = ((item.kids?.size ?: 0) * 10 + 40).dp
-    ) {
+    Row(modifier = modifier.clickable { onClick(item.id) }.height(IntrinsicSize.Min)) {
+        repeat(threadItem.depth - 1) { x ->
+            VerticalDivider(
+                modifier = Modifier.padding(start = 8.dp),
+                color = when (x.mod(3)) {
+                    0 -> MaterialTheme.colorScheme.primary
+                    1 -> MaterialTheme.colorScheme.secondary
+                    else -> MaterialTheme.colorScheme.tertiary
+                }
+            )
+        }
+
         Column(
 //            modifier = if (itemUi == null) {
 //                Modifier
@@ -258,7 +262,8 @@ fun ItemComment(
             val htmlString = if (item.deleted == true) stringResource(id = R.string.deleted)
             else item.text ?: ""
 
-            val annotatedText = remember(htmlString) { AnnotatedString.fromHtml(htmlString) }
+            val annotatedText =
+                remember(htmlString) { AnnotatedString.fromHtml(htmlString) }
 
             if (item.expanded) {
                 SelectionContainer {
@@ -294,13 +299,6 @@ fun ItemComment(
                         maxLines = 1,
                     )
                 }
-            } else {
-                Icon(
-                    imageVector = if (item.expanded) Icons.TwoTone.ExpandLess
-                    else Icons.TwoTone.ExpandMore,
-                    contentDescription = stringResource(id = R.string.expand),
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                )
             }
         }
     }
