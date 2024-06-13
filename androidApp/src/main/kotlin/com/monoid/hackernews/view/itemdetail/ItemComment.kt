@@ -1,14 +1,17 @@
 package com.monoid.hackernews.view.itemdetail
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.twotone.Reply
 import androidx.compose.material.icons.filled.Flag
@@ -25,13 +28,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.fromHtml
@@ -60,46 +64,24 @@ fun ItemComment(
     LifecycleEventEffect(Lifecycle.Event.ON_START) {
         onVisible(item.id)
     }
-    Row(modifier = modifier.clickable { onClick(item.id) }.height(IntrinsicSize.Min)) {
-        repeat(threadItem.depth - 1) { x ->
-            VerticalDivider(
-                modifier = Modifier.padding(start = 8.dp),
-                color = when (x.mod(3)) {
-                    0 -> MaterialTheme.colorScheme.primary
-                    1 -> MaterialTheme.colorScheme.secondary
-                    else -> MaterialTheme.colorScheme.tertiary
-                }
-            )
-        }
-
-        Column(
-//            modifier = if (itemUi == null) {
-//                Modifier
-//            } else {
-//                Modifier
-//                    .clickable {
-//                        coroutineScope.launch {
-//                            itemUi.itemUi?.toggleExpanded()
-//                        }
-//                    }
-//                    .animateContentSize()
-//                    .placeholder(
-//                        visible = itemUi.itemUi?.item?.lastUpdate == null,
-//                        color = Color.Transparent,
-//                        shape = MaterialTheme.shapes.small,
-//                        highlight = PlaceholderHighlight.shimmer(
-//                            highlightColor = LocalContentColor.current.copy(alpha = .5f),
-//                        ),
-//                    )
-//            },
+    Surface(
+        modifier = modifier
+            .clickable { onClick(item.id) }
+            .animateContentSize(),
+        tonalElevation = (threadItem.decendents * 4).dp,
+    ) {
+        Row(
+            modifier = Modifier.height(IntrinsicSize.Min),
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                val timeByUserAnnotatedString: AnnotatedString =
-                    rememberTimeBy(time = item.time, by = item.by)
+            ThreadDepth(threadItem.depth)
+            Column(modifier = Modifier) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    val timeByUserAnnotatedString: AnnotatedString =
+                        rememberTimeBy(time = item.time, by = item.by)
 
-                ClickableTextBlock(
-                    text = timeByUserAnnotatedString,
-                    lines = 1,
+                    ClickableTextBlock(
+                        text = timeByUserAnnotatedString,
+                        lines = 1,
 //                    onClick = { offset ->
 //                        if (itemUiState.value?.itemUi?.isExpanded == true) {
 //                            val username: Username? = timeByUserAnnotatedString.value
@@ -125,148 +107,160 @@ fun ItemComment(
 //                            }
 //                        }
 //                    },
-                    modifier = Modifier
-                        .padding(start = 16.dp, top = 16.dp)
-                        .align(Alignment.Top),
-                    overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.labelMedium.copy(
-                        color = LocalContentColor.current,
-                    ),
-                )
+                        modifier = Modifier
+                            .padding(start = 16.dp, top = 16.dp)
+                            .align(Alignment.Top),
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.labelMedium.copy(
+                            color = LocalContentColor.current,
+                        ),
+                    )
 
-                Spacer(modifier = Modifier.weight(1f))
-
-                Box {
-                    val (expanded: Boolean, setContextExpanded) =
-                        remember { mutableStateOf(false) }
-
-                    IconButton(onClick = { setContextExpanded(true) }) {
-                        Icon(
-                            imageVector = Icons.TwoTone.MoreVert,
-                            contentDescription = stringResource(id = R.string.more_options),
-                        )
+                    if (item.expanded.not()) {
+                        Badge(
+                            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                            modifier = Modifier
+                                .padding(4.dp),
+                        ) {
+                            Text(
+                                text = "${threadItem.decendents} responses",
+                                maxLines = 1,
+                            )
+                        }
                     }
 
-                    DropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { setContextExpanded(false) },
-                    ) {
-                        DropdownMenuItem(
-                            text = { Text(text = stringResource(id = R.string.reply)) },
-                            onClick = {
-//                                itemUi.id.let { onClickReply(ItemId(it)) }
-                                setContextExpanded(false)
-                            },
-                            leadingIcon = {
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.TwoTone.Reply,
-                                    contentDescription = stringResource(id = R.string.reply),
-                                )
-                            },
-                        )
+                    Spacer(modifier = Modifier.weight(1f))
 
-                        DropdownMenuItem(
-                            text = {
-                                Text(
-                                    text = stringResource(
-                                        id = if (item.upvoted == true) R.string.un_vote
-                                        else R.string.upvote,
-                                    ),
-                                )
-                            },
-                            onClick = {
+                    Box {
+                        val (expanded: Boolean, setContextExpanded) =
+                            remember { mutableStateOf(false) }
+
+                        IconButton(onClick = { setContextExpanded(true) }) {
+                            Icon(
+                                imageVector = Icons.TwoTone.MoreVert,
+                                contentDescription = stringResource(id = R.string.more_options),
+                            )
+                        }
+
+                        DropdownMenu(
+                            expanded = expanded,
+                            onDismissRequest = { setContextExpanded(false) },
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text(text = stringResource(id = R.string.reply)) },
+                                onClick = {
+//                                itemUi.id.let { onClickReply(ItemId(it)) }
+                                    setContextExpanded(false)
+                                },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = Icons.AutoMirrored.TwoTone.Reply,
+                                        contentDescription = stringResource(id = R.string.reply),
+                                    )
+                                },
+                            )
+
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        text = stringResource(
+                                            id = if (item.upvoted == true) R.string.un_vote
+                                            else R.string.upvote,
+                                        ),
+                                    )
+                                },
+                                onClick = {
 //                                coroutineScope.launch {
 //                                    itemUi?.itemUi?.toggleUpvote(onNavigateLogin = onNavigateLogin)
 //                                }
 
-                                setContextExpanded(false)
-                            },
-                            leadingIcon = {
-                                Icon(
-                                    imageVector =
-                                    if (item.upvoted == true) Icons.Filled.ThumbUp
-                                    else Icons.TwoTone.ThumbUp,
-                                    contentDescription = stringResource(
-                                        id =
-                                        if (item.upvoted == true) R.string.un_vote
-                                        else R.string.upvote,
-                                    ),
-                                )
-                            }
-                        )
-
-                        DropdownMenuItem(
-                            text = {
-                                Text(
-                                    text = stringResource(
-                                        id =
-                                        if (item.followed == true) R.string.unfollow
-                                        else R.string.follow,
+                                    setContextExpanded(false)
+                                },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector =
+                                        if (item.upvoted == true) Icons.Filled.ThumbUp
+                                        else Icons.TwoTone.ThumbUp,
+                                        contentDescription = stringResource(
+                                            id =
+                                            if (item.upvoted == true) R.string.un_vote
+                                            else R.string.upvote,
+                                        ),
                                     )
-                                )
-                            },
-                            onClick = {
+                                }
+                            )
+
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        text = stringResource(
+                                            id =
+                                            if (item.followed == true) R.string.unfollow
+                                            else R.string.follow,
+                                        )
+                                    )
+                                },
+                                onClick = {
 //                                coroutineScope.launch {
 //                                    itemUi.toggleFollowed()
 //                                }
 
-                                setContextExpanded(false)
-                            },
-                            leadingIcon = {
-                                Icon(
-                                    imageVector =
-                                    if (item.followed) Icons.Filled.Quickreply
-                                    else Icons.TwoTone.Quickreply,
-                                    contentDescription = stringResource(
-                                        id =
-                                        if (item.followed == true) R.string.unfollow
-                                        else R.string.follow,
-                                    ),
-                                )
-                            },
-                        )
+                                    setContextExpanded(false)
+                                },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector =
+                                        if (item.followed) Icons.Filled.Quickreply
+                                        else Icons.TwoTone.Quickreply,
+                                        contentDescription = stringResource(
+                                            id =
+                                            if (item.followed == true) R.string.unfollow
+                                            else R.string.follow,
+                                        ),
+                                    )
+                                },
+                            )
 
-                        DropdownMenuItem(
-                            text = {
-                                Text(
-                                    text = stringResource(
-                                        id =
-                                        if (item.flagged == true) R.string.un_flag
-                                        else R.string.flag,
-                                    ),
-                                )
-                            },
-                            onClick = {
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        text = stringResource(
+                                            id =
+                                            if (item.flagged == true) R.string.un_flag
+                                            else R.string.flag,
+                                        ),
+                                    )
+                                },
+                                onClick = {
 //                                coroutineScope.launch {
 //                                    itemUi.toggleFlag(onNavigateLogin)
 //                                }
 
-                                setContextExpanded(false)
-                            },
-                            leadingIcon = {
-                                Icon(
-                                    imageVector =
-                                    if (item.flagged == true) Icons.Filled.Flag
-                                    else Icons.TwoTone.Flag,
-                                    contentDescription = stringResource(
-                                        id = if (item.flagged == true) R.string.un_flag
-                                        else R.string.flag,
-                                    ),
-                                )
-                            },
-                        )
+                                    setContextExpanded(false)
+                                },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector =
+                                        if (item.flagged == true) Icons.Filled.Flag
+                                        else Icons.TwoTone.Flag,
+                                        contentDescription = stringResource(
+                                            id = if (item.flagged == true) R.string.un_flag
+                                            else R.string.flag,
+                                        ),
+                                    )
+                                },
+                            )
+                        }
                     }
                 }
-            }
 
-            val htmlString = if (item.deleted == true) stringResource(id = R.string.deleted)
-            else item.text ?: ""
+                val htmlString = if (item.deleted == true) stringResource(id = R.string.deleted)
+                else item.text ?: ""
 
-            val annotatedText =
-                remember(htmlString) { AnnotatedString.fromHtml(htmlString) }
+                val annotatedText =
+                    remember(htmlString) { AnnotatedString.fromHtml(htmlString) }
 
-            if (item.expanded) {
-                SelectionContainer {
+                if (item.expanded) {
                     ClickableTextBlock(
                         text = annotatedText,
                         lines = 2,
@@ -276,30 +270,33 @@ fun ItemComment(
                         style = MaterialTheme.typography.bodyMedium,
                     )
                 }
-            } else {
-                ClickableTextBlock(
-                    text = annotatedText,
-                    lines = 2,
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.bodyMedium,
-                )
             }
+        }
+    }
+}
 
-            if (item.expanded.not() && (item.kids?.size ?: 0) > 0
-            ) {
-                Badge(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(4.dp),
-                ) {
-                    Text(
-                        text = "${item.kids?.size}",
-                        maxLines = 1,
-                    )
-                }
-            }
+@Composable
+fun ThreadDepth(depth: Int, modifier: Modifier = Modifier) {
+    val primary = MaterialTheme.colorScheme.primary
+    val secondary = MaterialTheme.colorScheme.secondary
+    val tertiary = MaterialTheme.colorScheme.tertiary
+    val threadGap = 8.dp
+    Canvas(modifier = modifier.fillMaxHeight().width(threadGap * (depth - 1))) {
+        val threadGapPx = 8.dp.toPx()
+        val thicknessPx = 1.dp.toPx()
+        val thicknessPx2 = thicknessPx / 2
+        for (d in 1..<depth) {
+            val x = d * threadGapPx - thicknessPx2
+            drawLine(
+                color = when ((d - 1).mod(3)) {
+                    0 -> primary
+                    1 -> secondary
+                    else -> tertiary
+                },
+                strokeWidth = thicknessPx,
+                start = Offset(x, 0f),
+                end = Offset(x, size.height),
+            )
         }
     }
 }

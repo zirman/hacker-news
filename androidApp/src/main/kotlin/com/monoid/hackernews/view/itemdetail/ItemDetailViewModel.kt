@@ -44,7 +44,7 @@ class ItemDetailViewModel(
         val comments: List<ThreadItemUiState>? = null,
     )
 
-    data class ThreadItemUiState(val item: Item, val depth: Int)
+    data class ThreadItemUiState(val item: Item, val depth: Int, val decendents: Int)
 
     sealed interface Event {
         data class Error(val message: String?) : Event
@@ -79,6 +79,7 @@ class ItemDetailViewModel(
                 ThreadItemUiState(
                     item = repository.cache.value[itemId] ?: makeItem(id = itemId),
                     depth = 0,
+                    decendents = 0,
                 ),
             ),
         ),
@@ -126,17 +127,46 @@ class ItemDetailViewModel(
     }
 }
 
+/**
+ * Traverses an Item and it's descendants and builds a list with depth and descendant count.
+ */
 private fun Map<ItemId, Item>.traverse(
     itemId: ItemId,
 ): List<ItemDetailViewModel.ThreadItemUiState> = buildList {
-    fun recur(itemId: ItemId, depth: Int) {
+    fun recurDescendants(itemId: ItemId): Int = 1 + this@traverse[itemId]?.kids.orEmpty().sumOf {
+        recurDescendants(it)
+    }
+
+    fun recur(itemId: ItemId, depth: Int): Int {
         val item = this@traverse[itemId] ?: makeItem(id = itemId)
-        add(ItemDetailViewModel.ThreadItemUiState(item, depth))
-        if (item.expanded) {
-            item.kids?.forEach {
-                recur(it, depth = depth + 1)
+        val kids = item.kids.orEmpty()
+        return 1 + if (item.expanded) {
+            var decendents = 0
+            for (i in kids.size - 1 downTo 0) {
+                decendents += recur(kids[i], depth = depth + 1)
             }
+            add(
+                ItemDetailViewModel.ThreadItemUiState(
+                    item = item,
+                    depth = depth,
+                    decendents = decendents,
+                )
+            )
+            decendents
+        } else {
+            var decendents = 0
+            for (i in kids.size - 1 downTo 0) {
+                decendents += recurDescendants(kids[i])
+            }
+            add(
+                ItemDetailViewModel.ThreadItemUiState(
+                    item = item,
+                    depth = depth,
+                    decendents = decendents,
+                )
+            )
+            decendents
         }
     }
     recur(itemId, depth = 0)
-}
+}.asReversed()
