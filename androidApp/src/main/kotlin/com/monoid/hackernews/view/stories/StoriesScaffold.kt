@@ -38,7 +38,7 @@ fun StoriesScaffold(
     onClickBrowser: (Item) -> Unit,
     modifier: Modifier = Modifier,
     key: String = "default",
-    viewModel: StoriesViewModel = StoriesViewModel.create(key),
+    viewModel: StoriesViewModel = createStoriesViewModel(key),
 ) {
     Box(modifier = modifier) {
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()

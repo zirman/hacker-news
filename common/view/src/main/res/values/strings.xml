@@ -85,4 +85,5 @@
     <string name="dismiss">Dismiss</string>
     <string name="follow">Follow</string>
     <string name="unfollow">Unfollow</string>
+    <string name="no_item_selected">no item selected</string>
 </resources>

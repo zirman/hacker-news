@@ -27,6 +27,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -38,9 +39,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.fromHtml
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextIndent
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import com.monoid.hackernews.common.api.ItemId
@@ -49,6 +52,7 @@ import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.ui.text.ClickableTextBlock
 import com.monoid.hackernews.common.ui.util.rememberTimeBy
 import com.monoid.hackernews.common.view.R
+import com.monoid.hackernews.common.view.rememberAnnotatedHtmlString
 
 @Composable
 fun ItemComment(
@@ -195,7 +199,7 @@ fun ItemComment(
                                     Text(
                                         text = stringResource(
                                             id =
-                                            if (item.followed == true) R.string.unfollow
+                                            if (item.followed) R.string.unfollow
                                             else R.string.follow,
                                         )
                                     )
@@ -257,17 +261,16 @@ fun ItemComment(
                 val htmlString = if (item.deleted == true) stringResource(id = R.string.deleted)
                 else item.text ?: ""
 
-                val annotatedText =
-                    remember(htmlString) { AnnotatedString.fromHtml(htmlString) }
-
                 if (item.expanded) {
-                    ClickableTextBlock(
-                        text = annotatedText,
-                        lines = 2,
+                    Text(
+                        text = rememberAnnotatedHtmlString(htmlString),
                         modifier = Modifier.padding(horizontal = 16.dp),
                         overflow = TextOverflow.Ellipsis,
-                        minHeight = true,
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = LocalTextStyle.current.merge(
+                            TextStyle(
+                                textIndent = TextIndent(firstLine = 1.em),
+                            ),
+                        ),
                     )
                 }
             }

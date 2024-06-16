@@ -48,7 +48,9 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
     private fun windowSetup() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
+        @Suppress("DEPRECATION")
         window.statusBarColor = getColor(android.R.color.transparent)
+        @Suppress("DEPRECATION")
         window.navigationBarColor = getColor(android.R.color.transparent)
 
         installSplashScreen().apply {
@@ -58,7 +60,9 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
 
             setOnExitAnimationListener { splashScreenView ->
                 try {
+                    @Suppress("DEPRECATION")
                     window.statusBarColor = getColor(android.R.color.transparent)
+                    @Suppress("DEPRECATION")
                     window.navigationBarColor = getColor(android.R.color.transparent)
 
                     val animateIn = ObjectAnimator.ofPropertyValuesHolder(

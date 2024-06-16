@@ -3,6 +3,7 @@ package com.monoid.hackernews.common.room
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.monoid.hackernews.common.data.ItemType
 
 @Entity(tableName = "item")
 data class ItemDb(
@@ -12,7 +13,7 @@ data class ItemDb(
     @ColumnInfo(name = "lastUpdate")
     val lastUpdate: Long? = null,
     @ColumnInfo(name = "type")
-    val type: String? = null,
+    val type: ItemType? = null,
     @ColumnInfo(name = "time")
     val time: Long? = null,
     @ColumnInfo(name = "deleted")

@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.api.ItemId
+import com.monoid.hackernews.common.data.ItemType
 
 @Composable
 fun ItemDetailPane(
@@ -20,7 +21,7 @@ fun ItemDetailPane(
     onOpenBrowser: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val viewModel = ItemDetailViewModel.create(itemId)
+    val viewModel = createItemDetailViewModel(itemId)
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     LifecycleEventEffect(Lifecycle.Event.ON_START) {
         viewModel.updateItem(itemId)
@@ -37,8 +38,8 @@ fun ItemDetailPane(
             key = { _, item -> item.item.id.long },
             contentType = { _, item -> item.item.type },
         ) { index, item ->
-            when (item.item.type ?: if (index == 0) "story" else "comment") {
-                "comment" -> {
+            when (item.item.type ?: if (index == 0) ItemType.Story else ItemType.Comment) {
+                ItemType.Comment -> {
                     ItemComment(
                         threadItem = item,
                         onClickUser = {},
@@ -49,7 +50,7 @@ fun ItemDetailPane(
                     )
                 }
 
-                "story", "job", "poll", "pollopt" -> {
+                ItemType.Story, ItemType.Job, ItemType.Poll, ItemType.PollOpt -> {
                     ItemDetail(item.item, onOpenBrowser)
                 }
             }

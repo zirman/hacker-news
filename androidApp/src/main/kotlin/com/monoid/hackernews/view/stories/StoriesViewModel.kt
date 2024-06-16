@@ -1,7 +1,6 @@
 package com.monoid.hackernews.view.stories
 
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.monoid.hackernews.common.api.ItemId
@@ -19,7 +18,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
 import java.util.WeakHashMap
 
 class StoriesViewModel(
@@ -102,10 +100,5 @@ class StoriesViewModel(
 
     companion object {
         private const val TAG = "HomeViewModel"
-
-        @Composable
-        fun create(key: String): StoriesViewModel {
-            return koinViewModel(key = key)
-        }
     }
 }

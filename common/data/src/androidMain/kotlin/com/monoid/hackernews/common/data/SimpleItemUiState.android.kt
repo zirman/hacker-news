@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 data class SimpleItemUiStateImpl(
     override val id: ItemId,
     override val lastUpdate: Long?,
-    override val type: String?,
+    override val type: ItemType?,
     override val time: Long?,
     override val deleted: Boolean?,
     override val by: String?,
@@ -29,7 +29,7 @@ data class SimpleItemUiStateImpl(
 actual fun makeItem(
     id: ItemId,
     lastUpdate: Long?,
-    type: String?,
+    type: ItemType?,
     time: Long?,
     deleted: Boolean?,
     by: String?,

@@ -46,7 +46,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -55,6 +54,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.Item
+import com.monoid.hackernews.common.data.ItemType
 import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.data.makeItem
 import com.monoid.hackernews.common.ui.text.ClickableTextBlock
@@ -64,17 +64,18 @@ import com.monoid.hackernews.common.view.TooltipPopupPositionProvider
 import com.monoid.hackernews.common.view.placeholder.PlaceholderHighlight
 import com.monoid.hackernews.common.view.placeholder.placeholder
 import com.monoid.hackernews.common.view.placeholder.shimmer
+import com.monoid.hackernews.common.view.rememberAnnotatedHtmlString
 
 @Preview(
     showBackground = true,
-    wallpaper = Wallpapers.YELLOW_DOMINATED_EXAMPLE
+    wallpaper = Wallpapers.YELLOW_DOMINATED_EXAMPLE,
 )
 @Composable
 private fun ItemPreview() {
     Item(
         item = makeItem(
             id = ItemId(0),
-            type = "story",
+            type = ItemType.Story,
             title = "Hello World",
             text = "Lorum Ipsum",
             url = "https://www.google.com/",
@@ -117,7 +118,7 @@ fun Item(
     modifier: Modifier = Modifier,
 ) {
     val isLoading = item == null
-    val isStoryOrComment = item?.type == "story" || item?.type == "comment"
+    val isStoryOrComment = item?.type == ItemType.Story || item?.type == ItemType.Comment
 
     Surface(
         modifier = modifier
@@ -138,9 +139,7 @@ fun Item(
             Row(verticalAlignment = Alignment.Top) {
                 Text(
                     text = item?.title?.let { AnnotatedString(text = it) }
-                        ?: item?.text?.let {
-                            remember(it) { AnnotatedString.fromHtml(htmlString = it) }
-                        }
+                        ?: item?.text?.let { rememberAnnotatedHtmlString(it) }
                         ?: AnnotatedString(text = ""),
                     minLines = 2,
                     maxLines = 2,

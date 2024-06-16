@@ -1,7 +1,6 @@
 package com.monoid.hackernews.view.profile
 
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.runtime.Composable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.monoid.hackernews.common.api.ItemId
@@ -15,14 +14,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
-import org.koin.androidx.compose.koinViewModel
 
 class ProfileViewModel(
     savedStateHandle: SavedStateHandle,
     private val logger: LoggerAdapter,
 ) : ViewModel() {
     data class UiState(
-        val loading: Boolean = true,
         val item: Item? = null,
         val commentMap: PersistentMap<ItemId, Int>? = null,
         val commentItems: PersistentList<Item>? = null,
@@ -50,8 +47,5 @@ class ProfileViewModel(
 
     companion object {
         private const val TAG = "ProfileViewModel"
-
-        @Composable
-        fun create(): ProfileViewModel = koinViewModel()
     }
 }

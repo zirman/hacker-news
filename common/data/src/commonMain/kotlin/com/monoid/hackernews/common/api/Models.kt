@@ -2,6 +2,7 @@
 
 package com.monoid.hackernews.common.api
 
+import com.monoid.hackernews.common.data.ItemType
 import com.monoid.hackernews.common.room.ItemDb
 import com.monoid.hackernews.common.room.UserDb
 import kotlinx.datetime.Clock
@@ -152,7 +153,7 @@ fun ItemApi.toItemDb(
             ItemDb(
                 id = id.long,
                 lastUpdate = lastUpdate,
-                type = "comment",
+                type = ItemType.Comment,
                 time = time,
                 deleted = deleted,
                 by = by,
@@ -165,7 +166,7 @@ fun ItemApi.toItemDb(
             ItemDb(
                 id = id.long,
                 lastUpdate = lastUpdate,
-                type = "job",
+                type = ItemType.Job,
                 time = time,
                 deleted = deleted,
                 by = by,
@@ -179,7 +180,7 @@ fun ItemApi.toItemDb(
             ItemDb(
                 id = id.long,
                 lastUpdate = lastUpdate,
-                type = "poll",
+                type = ItemType.Poll,
                 time = time,
                 deleted = deleted,
                 by = by,
@@ -193,7 +194,7 @@ fun ItemApi.toItemDb(
             ItemDb(
                 id = id.long,
                 lastUpdate = lastUpdate,
-                type = "pollopt",
+                type = ItemType.PollOpt,
                 time = time,
                 deleted = deleted,
                 by = by,
@@ -206,7 +207,7 @@ fun ItemApi.toItemDb(
             ItemDb(
                 id = id.long,
                 lastUpdate = lastUpdate,
-                type = "story",
+                type = ItemType.Story,
                 time = time,
                 deleted = deleted,
                 by = by,

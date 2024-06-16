@@ -4,16 +4,15 @@ import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.fromHtml
 import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.TitleCard
 import com.monoid.hackernews.common.api.ItemId
-import com.monoid.hackernews.common.data.ItemUi
+import com.monoid.hackernews.common.data.Item
+import com.monoid.hackernews.common.view.rememberAnnotatedHtmlString
 
 @Composable
 fun Item(
-    itemUi: ItemUi?,
+    itemUi: Item?,
     onClickDetail: (ItemId?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -24,7 +23,7 @@ fun Item(
 
             val htmlString = item?.title ?: item?.text ?: ""
             Text(
-                text = remember(htmlString) { AnnotatedString.fromHtml(htmlString = htmlString) },
+                text = rememberAnnotatedHtmlString(htmlString),
             )
         },
         modifier = modifier,

@@ -12,5 +12,5 @@ data class Preferences(
     @SerialName("password")
     val password: Password = Password(""),
     @SerialName("font")
-    val font: HNFont = HNFont.Serif,
+    val font: HNFont = HNFont.SansSerif,
 )

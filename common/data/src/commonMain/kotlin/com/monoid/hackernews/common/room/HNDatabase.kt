@@ -2,6 +2,8 @@ package com.monoid.hackernews.common.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.monoid.hackernews.common.data.ItemType
 
 @Database(
     entities = [
@@ -19,8 +21,9 @@ import androidx.room.RoomDatabase
 //    autoMigrations = [
 //        AutoMigration(from = 1, to = 2),
 //        AutoMigration(from = 2, to = 3),
-//    ]
+//    ],
 )
+@TypeConverters(ItemType.Converter::class)
 abstract class HNDatabase : RoomDatabase() {
     abstract fun topStoryDao(): TopStoryDao
     abstract fun newStoryDao(): NewStoryDao

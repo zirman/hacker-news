@@ -5,7 +5,7 @@ import com.monoid.hackernews.common.api.ItemId
 interface Item {
     val id: ItemId
     val lastUpdate: Long?
-    val type: String?
+    val type: ItemType?
     val time: Long?
     val deleted: Boolean?
     val by: String?
@@ -27,7 +27,7 @@ interface Item {
 expect fun makeItem(
     id: ItemId,
     lastUpdate: Long? = null,
-    type: String? = null,
+    type: ItemType? = null,
     time: Long? = null,
     deleted: Boolean? = null,
     by: String? = null,

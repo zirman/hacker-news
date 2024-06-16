@@ -12,6 +12,7 @@ kotlin {
 android {
     namespace = "com.monoid.hackernews.common.view"
     compileSdk = libs.versions.compileSdk.get().toInt()
+    compileSdkPreview = libs.versions.compileSdkPreview.get()
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()

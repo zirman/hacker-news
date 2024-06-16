@@ -45,17 +45,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.monoid.hackernews.common.data.Item
+import com.monoid.hackernews.common.data.ItemType
 import com.monoid.hackernews.common.ui.util.rememberTimeBy
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.common.view.TooltipPopupPositionProvider
 import com.monoid.hackernews.common.view.placeholder.PlaceholderHighlight
 import com.monoid.hackernews.common.view.placeholder.placeholder
 import com.monoid.hackernews.common.view.placeholder.shimmer
+import com.monoid.hackernews.common.view.rememberAnnotatedHtmlString
 
 @Composable
 fun ItemDetail(
@@ -80,10 +81,10 @@ fun ItemDetail(
                 verticalAlignment = Alignment.Top,
             ) {
                 SelectionContainer(modifier = Modifier.weight(1f)) {
-                    val htmlString =
-                        (if (item?.type == "comment") item.text else item?.title) ?: ""
                     Text(
-                        text = remember(htmlString) { AnnotatedString.fromHtml(htmlString = htmlString) },
+                        text = rememberAnnotatedHtmlString(
+                            (if (item?.type == ItemType.Comment) item.text else item?.title) ?: "",
+                        ),
                         modifier = Modifier.padding(horizontal = 8.dp),
                         style = MaterialTheme.typography.titleMedium,
                     )
@@ -105,7 +106,7 @@ fun ItemDetail(
                             expanded = contextExpanded,
                             onDismissRequest = { setContextExpanded(false) },
                         ) {
-                            if (item.type == "story") {
+                            if (item.type == ItemType.Story) {
                                 DropdownMenuItem(
                                     text = {
                                         Text(
@@ -261,7 +262,7 @@ fun ItemDetail(
             )
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                if (item?.lastUpdate == null || item.type == "story") {
+                if (item?.lastUpdate == null || item.type == ItemType.Story) {
                     item?.score.let { score ->
                         key("score") {
                             TooltipBox(
@@ -277,7 +278,7 @@ fun ItemDetail(
 //                                            itemUi?.itemUi?.toggleUpvote(onNavigateLogin)
 //                                        }
                                     },
-                                    enabled = item?.type == "story",
+                                    enabled = item?.type == ItemType.Story,
                                 ) {
                                     Icon(
                                         imageVector = if (item?.upvoted == true) {
@@ -389,9 +390,9 @@ fun ItemDetail(
 
             val itemText = item?.text
 
-            if (item?.type != "comment" && itemText != null) {
+            if (item?.type != ItemType.Comment && itemText != null) {
                 Text(
-                    text = remember(itemText) { AnnotatedString.fromHtml(htmlString = itemText) },
+                    text = rememberAnnotatedHtmlString(itemText),
                     modifier = Modifier
                         .padding(8.dp)
                         .placeholder(

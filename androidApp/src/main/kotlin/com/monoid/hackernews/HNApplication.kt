@@ -3,6 +3,7 @@ package com.monoid.hackernews
 import android.app.Application
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.StrictMode
 import com.monoid.hackernews.common.dataStoreModule
 import com.monoid.hackernews.common.databaseModule
 import com.monoid.hackernews.common.injection.dispatcherModule
@@ -23,6 +24,12 @@ class HNApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        StrictMode.setVmPolicy(
+            StrictMode.VmPolicy.Builder()
+                .detectUnsafeIntentLaunch()
+                .build()
+        )
 
         startKoin {
             androidContext(this@HNApplication)

@@ -85,4 +85,5 @@
     <string name="dismiss">Despedir</string>
     <string name="follow">Seguir</string>
     <string name="unfollow">Dejar de seguir</string>
+    <string name="no_item_selected">ningún elemento seleccionado</string>
 </resources>

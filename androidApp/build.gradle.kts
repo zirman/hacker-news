@@ -16,6 +16,7 @@ kotlin {
 android {
     namespace = "com.monoid.hackernews"
     compileSdk = libs.versions.compileSdk.get().toInt()
+    compileSdkPreview = libs.versions.compileSdkPreview.get()
     buildToolsVersion = libs.versions.buildToolsVersion.get()
 
     signingConfigs {
@@ -31,6 +32,7 @@ android {
         applicationId = "com.monoid.hackernews"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
+        targetSdkPreview = libs.versions.targetSdk.get()
         versionCode = 44
         versionName = "1.1.5"
 
