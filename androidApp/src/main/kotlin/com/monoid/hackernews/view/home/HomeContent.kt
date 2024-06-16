@@ -9,13 +9,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.monoid.hackernews.common.data.Item
 import com.monoid.hackernews.common.navigation.BottomNav
-import com.monoid.hackernews.view.profile.ProfileScaffold
+import com.monoid.hackernews.view.settings.SettingsScaffold
 import com.monoid.hackernews.view.stories.StoriesScaffold
 
 @Composable
 fun HomeContent(
     currentDestination: BottomNav,
     onClickBrowser: (Item) -> Unit,
+    onClickLogin: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {
@@ -39,9 +40,10 @@ fun HomeContent(
                 )
             }
 
-            BottomNav.Profile -> {
-                ProfileScaffold(
+            BottomNav.Settings -> {
+                SettingsScaffold(
                     navigator = profileNavigator,
+                    onClickLogin = onClickLogin,
                 )
             }
         }

@@ -48,7 +48,11 @@ fun StoriesScaffold(
             navigator = navigator,
             listPane = {
                 // TODO: AnimatedPane(modifier = Modifier.preferredWidth(320.dp)).
-                Box(modifier = Modifier.preferredWidth(320.dp).fillMaxHeight()) {
+                Box(
+                    modifier = Modifier
+                        .preferredWidth(320.dp)
+                        .fillMaxHeight(),
+                ) {
                     ItemsColumn(
                         listState = viewModel.listState,
                         itemsList = itemsList,
@@ -67,9 +71,7 @@ fun StoriesScaffold(
             },
             detailPane = {
                 // TODO: AnimatedPane(modifier = Modifier.fillMaxSize())
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                ) {
+                Box(modifier = Modifier.fillMaxSize()) {
                     val itemId =
                         (navigator.currentDestination?.content as? ListItemDetailContentUiState)?.itemId
 
@@ -95,7 +97,8 @@ fun StoriesScaffold(
                 }
             },
             extraPane = {
-                val url = (navigator.currentDestination?.content as? ListItemDetailContentUiState)?.url
+                val url =
+                    (navigator.currentDestination?.content as? ListItemDetailContentUiState)?.url
                 // TODO: AnimatedPane(modifier = Modifier.fillMaxSize())
                 Box(modifier = Modifier.padding(WindowInsets.safeDrawing.asPaddingValues())) {
                     WebViewPane(

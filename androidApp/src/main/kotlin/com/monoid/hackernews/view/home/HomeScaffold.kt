@@ -3,12 +3,12 @@ package com.monoid.hackernews.view.home
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Bookmarks
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.twotone.AccountCircle
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.twotone.Bookmarks
 import androidx.compose.material.icons.twotone.Home
+import androidx.compose.material.icons.twotone.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
@@ -26,7 +26,11 @@ import com.monoid.hackernews.common.navigation.BottomNav
 import com.monoid.hackernews.common.view.R
 
 @Composable
-fun HomeScaffold(onClickBrowser: (Item) -> Unit, modifier: Modifier = Modifier) {
+fun HomeScaffold(
+    onClickBrowser: (Item) -> Unit,
+    onClickLogin: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     var currentDestination by rememberSaveable { mutableIntStateOf(0) }
     BackHandler(currentDestination != 0) {
         currentDestination = 0
@@ -57,6 +61,7 @@ fun HomeScaffold(onClickBrowser: (Item) -> Unit, modifier: Modifier = Modifier) 
             HomeContent(
                 currentDestination = BottomNav.entries[currentDestination],
                 onClickBrowser = onClickBrowser,
+                onClickLogin = onClickLogin,
             )
         },
     )
@@ -66,26 +71,26 @@ private inline val BottomNav.icon: ImageVector
     get() = when (this) {
         BottomNav.Stories -> Icons.TwoTone.Home
         BottomNav.Favorites -> Icons.TwoTone.Bookmarks
-        BottomNav.Profile -> Icons.TwoTone.AccountCircle
+        BottomNav.Settings -> Icons.TwoTone.Settings
     }
 
 private inline val BottomNav.selectedIcon: ImageVector
     get() = when (this) {
         BottomNav.Stories -> Icons.Default.Home
         BottomNav.Favorites -> Icons.Default.Bookmarks
-        BottomNav.Profile -> Icons.Default.AccountCircle
+        BottomNav.Settings -> Icons.Default.Settings
     }
 
 private inline val BottomNav.contentDescription: Int
     get() = when (this) {
         BottomNav.Stories -> R.string.top_stories_description
         BottomNav.Favorites -> R.string.favorites_description
-        BottomNav.Profile -> R.string.profile_description
+        BottomNav.Settings -> R.string.profile_description
     }
 
 private inline val BottomNav.label: Int
     get() = when (this) {
         BottomNav.Stories -> R.string.top_stories
         BottomNav.Favorites -> R.string.favorites
-        BottomNav.Profile -> R.string.profile
+        BottomNav.Settings -> R.string.settings
     }

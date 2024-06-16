@@ -3,12 +3,12 @@ package com.monoid.hackernews
 import android.content.Intent
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.monoid.hackernews.common.data.LoginRepository
 import com.monoid.hackernews.common.data.StoriesRepository
 import com.monoid.hackernews.common.data.UserStoryRepositoryFactory
 import com.monoid.hackernews.view.itemdetail.ItemDetailViewModel
 import com.monoid.hackernews.view.main.LoginViewModel
-import com.monoid.hackernews.view.main.SettingsViewModel
-import com.monoid.hackernews.view.profile.ProfileViewModel
+import com.monoid.hackernews.view.settings.SettingsViewModel
 import com.monoid.hackernews.view.stories.StoriesViewModel
 import kotlinx.coroutines.channels.Channel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -42,24 +42,16 @@ val applicationModule = module {
     }
 
     viewModel {
-        ProfileViewModel(
-            savedStateHandle = get(),
+        SettingsViewModel(
             logger = get(),
+            loginRepository = get(),
         )
     }
 
     viewModel {
         LoginViewModel(
-            preferencesDataSource = get(),
-            remoteDataSource = get(),
             logger = get(),
-        )
-    }
-
-    viewModel {
-        SettingsViewModel(
-            preferencesDataSource = get(),
-            logger = get(),
+            loginRepository = get(),
         )
     }
 
@@ -73,6 +65,14 @@ val applicationModule = module {
             remoteDataSource = get(),
             topStoryLocalDataSource = get(),
             itemLocalDataSource = get(),
+        )
+    }
+
+    single {
+        LoginRepository(
+            logger = get(),
+            remoteDataSource = get(),
+            localDataSource = get(),
         )
     }
 

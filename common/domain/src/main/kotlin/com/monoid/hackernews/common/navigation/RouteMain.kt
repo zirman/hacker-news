@@ -14,7 +14,7 @@ import kotlinx.serialization.json.Json
 enum class BottomNav {
     Stories,
     Favorites,
-    Profile,
+    Settings,
 }
 
 enum class Story {

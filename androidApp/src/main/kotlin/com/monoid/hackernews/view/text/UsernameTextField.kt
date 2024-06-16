@@ -2,6 +2,7 @@
 
 package com.monoid.hackernews.view.text
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -79,7 +80,8 @@ fun UsernameTextField(
                         false
                     }
                 }
-            },
+            }
+            .fillMaxWidth(),
         label = { Text(text = stringResource(id = R.string.username)) },
         placeholder = { Text(text = stringResource(id = R.string.username)) },
         trailingIcon = {

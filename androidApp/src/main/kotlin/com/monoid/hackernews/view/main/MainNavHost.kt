@@ -4,6 +4,7 @@ package com.monoid.hackernews.view.main
 
 import android.view.ViewGroup
 import android.webkit.WebView
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -15,6 +16,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
@@ -28,62 +33,75 @@ import com.monoid.hackernews.view.home.HomeScaffold
 
 @Composable
 fun MainNavHost(modifier: Modifier = Modifier) {
+    var showLoginDialog by rememberSaveable {
+        mutableStateOf(false)
+    }
+
     val navController = rememberNavController()
-    NavHost(
-        navController = navController,
-        startDestination = RouteMain.Home,
-        modifier = modifier,
-    ) {
-        composable<RouteMain.Home> {
-            HomeScaffold(
-                onClickBrowser = { item ->
-                    item.url?.run {
-                        navController.navigate(RouteMain.Browser(this))
-                    }
-                },
-            )
+
+    Box(modifier = modifier) {
+        NavHost(
+            navController = navController,
+            startDestination = RouteMain.Home,
+        ) {
+            composable<RouteMain.Home> {
+                HomeScaffold(
+                    onClickBrowser = { item ->
+                        item.url?.run {
+                            navController.navigate(RouteMain.Browser(this))
+                        }
+                    },
+                    onClickLogin = {
+                        showLoginDialog = true
+                    },
+                )
+            }
+
+            composable<RouteMain.Browser> { backStackEntry ->
+                val url = backStackEntry.toRoute<RouteMain.Browser>().url
+                Scaffold(
+                    topBar = {
+                        TopAppBar(
+                            title = {
+                                Text(text = url)
+                            },
+                            navigationIcon = {
+                                IconButton(
+                                    onClick = {
+                                        navController.navigateUp()
+                                    },
+                                    content = {
+                                        Icon(
+                                            imageVector = Icons.AutoMirrored.TwoTone.ArrowBack,
+                                            contentDescription = stringResource(id = R.string.back),
+                                        )
+                                    },
+                                )
+                            },
+                        )
+                    },
+                    content = { paddingValues ->
+                        AndroidView(
+                            factory = {
+                                WebView(it).apply {
+                                    layoutParams = ViewGroup.LayoutParams(
+                                        ViewGroup.LayoutParams.MATCH_PARENT,
+                                        ViewGroup.LayoutParams.MATCH_PARENT,
+                                    )
+                                }
+                            },
+                            modifier = Modifier.fillMaxSize().padding(paddingValues),
+                            update = {
+                                it.loadUrl(url)
+                            },
+                        )
+                    },
+                )
+            }
         }
 
-        composable<RouteMain.Browser> { backStackEntry ->
-            val url = backStackEntry.toRoute<RouteMain.Browser>().url
-            Scaffold(
-                topBar = {
-                    TopAppBar(
-                        title = {
-                            Text(text = url)
-                        },
-                        navigationIcon = {
-                            IconButton(
-                                onClick = {
-                                    navController.navigateUp()
-                                },
-                                content = {
-                                    Icon(
-                                        imageVector = Icons.AutoMirrored.TwoTone.ArrowBack,
-                                        contentDescription = stringResource(id = R.string.back),
-                                    )
-                                },
-                            )
-                        },
-                    )
-                },
-                content = { paddingValues ->
-                    AndroidView(
-                        factory = {
-                            WebView(it).apply {
-                                layoutParams = ViewGroup.LayoutParams(
-                                    ViewGroup.LayoutParams.MATCH_PARENT,
-                                    ViewGroup.LayoutParams.MATCH_PARENT,
-                                )
-                            }
-                        },
-                        modifier = Modifier.fillMaxSize().padding(paddingValues),
-                        update = {
-                            it.loadUrl(url)
-                        },
-                    )
-                },
-            )
+        if (showLoginDialog) {
+            LoginDialog(onDismissRequest = { showLoginDialog = false })
         }
     }
 }

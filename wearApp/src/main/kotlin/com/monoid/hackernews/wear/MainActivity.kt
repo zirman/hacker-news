@@ -10,16 +10,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.res.stringResource
-import androidx.core.content.getSystemService
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.metrics.performance.JankStats
-import com.monoid.hackernews.common.domain.LiveUpdateUseCase
-import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.wear.theme.HackerNewsTheme
-import com.monoid.hackernews.wear.view.home.HomeScreen
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -44,18 +39,7 @@ class MainActivity : ComponentActivity() {
             val mainViewModel: MainViewModel = koinViewModel()
 
             HackerNewsTheme {
-                HomeScreen(
-                    itemTreeRepository = mainViewModel.itemTreeRepository,
-                    title = stringResource(id = R.string.top_stories),
-                    orderedItemRepo = remember(mainViewModel.topStoryRepository) {
-                        LiveUpdateUseCase(
-                            connectivityManager = getSystemService()!!,
-                            repository = mainViewModel.topStoryRepository,
-                            logger = mainViewModel.logger,
-                        )
-                    },
-                    onSelectItemId = { /*TODO*/ },
-                )
+
             }
 
             contentComposed = true
