@@ -27,7 +27,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.monoid.hackernews.common.navigation.RouteMain
+import com.monoid.hackernews.common.navigation.Route
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.view.home.HomeScaffold
 
@@ -36,19 +36,17 @@ fun MainNavHost(modifier: Modifier = Modifier) {
     var showLoginDialog by rememberSaveable {
         mutableStateOf(false)
     }
-
     val navController = rememberNavController()
-
     Box(modifier = modifier) {
         NavHost(
             navController = navController,
-            startDestination = RouteMain.Home,
+            startDestination = Route.Home,
         ) {
-            composable<RouteMain.Home> {
+            composable<Route.Home> {
                 HomeScaffold(
                     onClickBrowser = { item ->
                         item.url?.run {
-                            navController.navigate(RouteMain.Browser(this))
+                            navController.navigate(Route.Browser(this))
                         }
                     },
                     onClickLogin = {
@@ -56,9 +54,8 @@ fun MainNavHost(modifier: Modifier = Modifier) {
                     },
                 )
             }
-
-            composable<RouteMain.Browser> { backStackEntry ->
-                val url = backStackEntry.toRoute<RouteMain.Browser>().url
+            composable<Route.Browser> { backStackEntry ->
+                val url = backStackEntry.toRoute<Route.Browser>().url
                 Scaffold(
                     topBar = {
                         TopAppBar(
@@ -99,7 +96,6 @@ fun MainNavHost(modifier: Modifier = Modifier) {
                 )
             }
         }
-
         if (showLoginDialog) {
             LoginDialog(onDismissRequest = { showLoginDialog = false })
         }

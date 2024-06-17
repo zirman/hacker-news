@@ -12,19 +12,21 @@ import com.monoid.hackernews.view.theme.toNameId
 
 @Composable
 fun FontButton(
-    hnFont: HNFont,
+    font: HNFont,
     selected: Boolean,
     onClickFont: (HNFont) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     TextButton(
-        onClick = { onClickFont(hnFont) },
+        onClick = {
+            onClickFont(font)
+        },
         elevation = if (selected) ButtonDefaults.elevatedButtonElevation() else null,
         modifier = modifier,
     ) {
         Text(
-            text = stringResource(id = hnFont.toNameId()),
-            fontFamily = hnFont.toFontFamily(),
+            text = stringResource(id = font.toNameId()),
+            fontFamily = font.toFontFamily(),
         )
     }
 }

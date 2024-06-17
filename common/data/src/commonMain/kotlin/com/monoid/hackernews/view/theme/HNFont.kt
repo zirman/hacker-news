@@ -5,21 +5,21 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @SerialName("HNFont")
-sealed interface HNFont {
-
-    @Serializable
+enum class HNFont {
     @SerialName("SansSerif")
-    data object SansSerif : HNFont
+    SansSerif,
 
-    @Serializable
     @SerialName("Serif")
-    data object Serif : HNFont
+    Serif,
 
-    @Serializable
     @SerialName("Monospace")
-    data object Monospace : HNFont
+    Monospace,
 
-    @Serializable
     @SerialName("Cursive")
-    data object Cursive : HNFont
+    Cursive,
+    ;
+
+    companion object {
+        val default = SansSerif
+    }
 }

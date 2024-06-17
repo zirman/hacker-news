@@ -4,11 +4,13 @@ import android.content.Intent
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.monoid.hackernews.common.data.LoginRepository
+import com.monoid.hackernews.common.data.PreferencesRepository
 import com.monoid.hackernews.common.data.StoriesRepository
 import com.monoid.hackernews.common.data.UserStoryRepositoryFactory
 import com.monoid.hackernews.view.itemdetail.ItemDetailViewModel
 import com.monoid.hackernews.view.main.LoginViewModel
 import com.monoid.hackernews.view.settings.SettingsViewModel
+import com.monoid.hackernews.view.settings.PreferencesViewModel
 import com.monoid.hackernews.view.stories.StoriesViewModel
 import kotlinx.coroutines.channels.Channel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -20,12 +22,6 @@ enum class LifecycleOwnerQualifier {
 }
 
 val applicationModule = module {
-    viewModel {
-        ThemeViewModel(
-            preferencesDataSource = get(),
-        )
-    }
-
     viewModel {
         StoriesViewModel(
             logger = get(),
@@ -55,6 +51,13 @@ val applicationModule = module {
         )
     }
 
+    viewModel {
+        PreferencesViewModel(
+            repository = get(),
+            logger = get(),
+        )
+    }
+
     single<LifecycleOwner>(named(LifecycleOwnerQualifier.ApplicationLifecycleOwner)) {
         ProcessLifecycleOwner.get()
     }
@@ -72,6 +75,13 @@ val applicationModule = module {
         LoginRepository(
             logger = get(),
             remoteDataSource = get(),
+            localDataSource = get(),
+        )
+    }
+
+    single {
+        PreferencesRepository(
+            logger = get(),
             localDataSource = get(),
         )
     }

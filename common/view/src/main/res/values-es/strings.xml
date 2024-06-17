@@ -38,7 +38,6 @@
     <string name="offline">Desconectada</string>
     <string name="expand">Expandir</string>
     <string name="settings">Ajustes</string>
-    <string name="font">Fuente</string>
     <string name="default_string">Defecto</string>
     <string name="sans_serif">Sans Serif</string>
     <string name="serif">Serif</string>
@@ -85,5 +84,4 @@
     <string name="dismiss">Despedir</string>
     <string name="follow">Seguir</string>
     <string name="unfollow">Dejar de seguir</string>
-    <string name="no_item_selected">ningún elemento seleccionado</string>
 </resources>

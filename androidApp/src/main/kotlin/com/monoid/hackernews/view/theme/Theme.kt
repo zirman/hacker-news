@@ -1,21 +1,23 @@
 package com.monoid.hackernews.view.theme
 
-import android.content.Context
-import android.os.Build
+import android.content.res.Configuration
 import androidx.annotation.StringRes
+import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Shapes
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontFamily
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.monoid.hackernews.ThemeViewModel
-import com.monoid.hackernews.common.ui.util.rememberUseDarkTheme
+import com.monoid.hackernews.common.data.Colors
+import com.monoid.hackernews.common.data.LightDarkMode
+import com.monoid.hackernews.common.data.Shape
 import com.monoid.hackernews.common.view.R
+import com.monoid.hackernews.view.settings.PreferencesViewModel
 import org.koin.androidx.compose.koinViewModel
 
 private val LightThemeColors = lightColorScheme(
@@ -76,28 +78,15 @@ private val DarkThemeColors = darkColorScheme(
 
 @Composable
 fun AppTheme(
-    viewModel: ThemeViewModel = koinViewModel(),
+    viewModel: PreferencesViewModel = koinViewModel(),
     content: @Composable () -> Unit,
 ) {
-    val useDarkTheme: Boolean = rememberUseDarkTheme()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     MaterialTheme(
-        colorScheme = if (uiState.dynamicIfAvailable && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val context: Context =
-                LocalContext.current
-
-            if (useDarkTheme) {
-                dynamicDarkColorScheme(context)
-            } else {
-                dynamicLightColorScheme(context)
-            }
-        } else if (useDarkTheme) {
-            DarkThemeColors
-        } else {
-            LightThemeColors
-        },
+        colorScheme = rememberColorScheme(uiState.lightDarkMode, uiState.colors),
         typography = rememberAppTypography(uiState.font.toFontFamily()),
+        shapes = rememberShapes(uiState.shape),
         content = content,
     )
 }
@@ -112,7 +101,72 @@ fun HNFont.toFontFamily(): FontFamily = when (this) {
 @StringRes
 fun HNFont.toNameId(): Int = when (this) {
     HNFont.Cursive -> R.string.cursive
-    HNFont.Monospace, -> R.string.monospace
+    HNFont.Monospace -> R.string.monospace
     HNFont.SansSerif -> R.string.sans_serif
     HNFont.Serif -> R.string.serif
+}
+
+@StringRes
+fun Shape.toNameId(): Int = when (this) {
+    Shape.Rounded -> R.string.rounded
+    Shape.Cut -> R.string.cut
+}
+
+@StringRes
+fun LightDarkMode.toNameId(): Int = when (this) {
+    LightDarkMode.System -> R.string.system
+    LightDarkMode.Light -> R.string.light_mode
+    LightDarkMode.Dark -> R.string.dark_mode
+}
+
+@Composable
+fun rememberShapes(shape: Shape, shapes: Shapes = MaterialTheme.shapes): Shapes = when (shape) {
+    Shape.Rounded -> shapes
+    Shape.Cut -> shapes.copy(
+        extraSmall = CutCornerShape(
+            topStart = shapes.extraSmall.topStart,
+            topEnd = shapes.extraSmall.topEnd,
+            bottomEnd = shapes.extraSmall.bottomEnd,
+            bottomStart = shapes.extraSmall.bottomStart,
+        ),
+        small = CutCornerShape(
+            topStart = shapes.small.topStart,
+            topEnd = shapes.small.topEnd,
+            bottomEnd = shapes.small.bottomEnd,
+            bottomStart = shapes.small.bottomStart,
+        ),
+        medium = CutCornerShape(
+            topStart = shapes.medium.topStart,
+            topEnd = shapes.medium.topEnd,
+            bottomEnd = shapes.medium.bottomEnd,
+            bottomStart = shapes.medium.bottomStart,
+        ),
+        large = CutCornerShape(
+            topStart = shapes.large.topStart,
+            topEnd = shapes.large.topEnd,
+            bottomEnd = shapes.large.bottomEnd,
+            bottomStart = shapes.large.bottomStart,
+        ),
+        extraLarge = CutCornerShape(
+            topStart = shapes.extraLarge.topStart,
+            topEnd = shapes.extraLarge.topEnd,
+            bottomEnd = shapes.extraLarge.bottomEnd,
+            bottomStart = shapes.extraLarge.bottomStart,
+        ),
+    )
+}
+
+@Composable
+fun rememberColorScheme(
+    lightDarkMode: LightDarkMode,
+    colors: Colors, // TODO
+    configuration: Configuration = LocalConfiguration.current,
+): ColorScheme = when (lightDarkMode) {
+    LightDarkMode.System -> {
+        if (configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) DarkThemeColors
+        else LightThemeColors
+    }
+
+    LightDarkMode.Light -> LightThemeColors
+    LightDarkMode.Dark -> DarkThemeColors
 }

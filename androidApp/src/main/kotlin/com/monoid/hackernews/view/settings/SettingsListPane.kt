@@ -1,6 +1,9 @@
 package com.monoid.hackernews.view.settings
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -18,7 +21,10 @@ fun SettingsListPane(
     onClickStyle: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn(modifier = modifier.fillMaxHeight()) {
+    LazyColumn(
+        modifier = modifier.fillMaxHeight(),
+        contentPadding = WindowInsets.safeDrawing.asPaddingValues(),
+    ) {
         item {
             if (username == null) {
                 Button(onClick = onClickLogin) {
@@ -27,9 +33,7 @@ fun SettingsListPane(
             } else {
                 Text(text = username.string)
 
-                Button(
-                    onClick = onClickLogout,
-                ) {
+                Button(onClick = onClickLogout) {
                     Text(text = stringResource(R.string.logout))
                 }
             }

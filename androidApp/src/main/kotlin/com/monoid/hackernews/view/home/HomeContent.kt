@@ -23,7 +23,6 @@ fun HomeContent(
         val storiesNavigator = rememberListDetailPaneScaffoldNavigator<Any>()
         val favoritesNavigator = rememberListDetailPaneScaffoldNavigator<Any>()
         val profileNavigator = rememberListDetailPaneScaffoldNavigator<Any>()
-
         when (currentDestination) {
             BottomNav.Stories -> {
                 StoriesScaffold(

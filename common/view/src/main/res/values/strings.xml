@@ -41,7 +41,8 @@
     <string name="offline">Offline</string>
     <string name="expand">Expand</string>
     <string name="settings">Settings</string>
-    <string name="font">Font</string>
+    <string name="fonts">Fonts</string>
+    <string name="shapes">Shapes</string>
     <string name="default_string">Default</string>
     <string name="sans_serif">Sans Serif</string>
     <string name="serif">Serif</string>
@@ -87,5 +88,11 @@
     <string name="dismiss">Dismiss</string>
     <string name="follow">Follow</string>
     <string name="unfollow">Unfollow</string>
-    <string name="no_item_selected">no item selected</string>
+    <string name="no_setting_selected">no setting selected</string>
+    <string name="rounded">Rounded</string>
+    <string name="cut">Cut</string>
+    <string name="light_dark_mode">Light Dark Mode</string>
+    <string name="system">System</string>
+    <string name="light_mode">Light Mode</string>
+    <string name="dark_mode">Dark Mode</string>
 </resources>

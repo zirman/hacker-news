@@ -27,7 +27,7 @@ enum class Story {
     Favorite,
 }
 
-object RouteMain {
+object Route {
     @Serializable
     @SerialName("Home")
     data object Home
