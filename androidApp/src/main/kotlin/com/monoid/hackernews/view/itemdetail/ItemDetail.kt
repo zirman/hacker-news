@@ -61,7 +61,7 @@ import com.monoid.hackernews.common.view.rememberAnnotatedHtmlString
 @Composable
 fun ItemDetail(
     item: Item?,
-    onOpenBrowser: (String) -> Unit,
+    onOpenBrowser: (Item) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val isLoading = false // item.lastUpdate == null
@@ -376,7 +376,7 @@ fun ItemDetail(
                     ) {
                         IconButton(
                             onClick = {
-                                item?.url?.let { onOpenBrowser(it) }
+                                item?.url?.let { onOpenBrowser(item) }
                             },
                         ) {
                             Icon(

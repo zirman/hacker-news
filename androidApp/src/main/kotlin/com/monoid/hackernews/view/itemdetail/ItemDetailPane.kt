@@ -15,12 +15,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.api.ItemId
+import com.monoid.hackernews.common.data.Item
 import com.monoid.hackernews.common.data.ItemType
 
 @Composable
 fun ItemDetailPane(
     itemId: ItemId,
-    onOpenBrowser: (String) -> Unit,
+    onOpenBrowser: (Item) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val viewModel = createItemDetailViewModel(itemId)
