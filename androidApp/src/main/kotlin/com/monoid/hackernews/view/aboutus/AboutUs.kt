@@ -34,8 +34,7 @@ fun AboutUs(
         contentColor = MaterialTheme.colorScheme.tertiary
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
                 .padding(
                     WindowInsets.safeContent
                         .only(run {
@@ -48,7 +47,7 @@ fun AboutUs(
                             }
                             windowInsets
                         })
-                        .asPaddingValues()
+                        .asPaddingValues(),
                 ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

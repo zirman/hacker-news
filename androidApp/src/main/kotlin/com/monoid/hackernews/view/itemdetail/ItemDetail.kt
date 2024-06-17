@@ -257,7 +257,7 @@ fun ItemDetail(
                     .padding(horizontal = 8.dp)
                     .fillMaxWidth(),
                 style = MaterialTheme.typography.labelMedium.copy(
-                    color = LocalContentColor.current
+                    color = LocalContentColor.current,
                 )
             )
 

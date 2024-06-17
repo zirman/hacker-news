@@ -69,9 +69,7 @@ fun ItemComment(
         onVisible(item.id)
     }
     Surface(
-        modifier = modifier
-            .clickable { onClick(item.id) }
-            .animateContentSize(),
+        modifier = modifier.clickable { onClick(item.id) }.animateContentSize(),
         tonalElevation = (threadItem.decendents * 4).dp,
     ) {
         Row(
@@ -111,8 +109,7 @@ fun ItemComment(
 //                            }
 //                        }
 //                    },
-                        modifier = Modifier
-                            .padding(start = 16.dp, top = 16.dp)
+                        modifier = Modifier.padding(start = 16.dp, top = 16.dp)
                             .align(Alignment.Top),
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.labelMedium.copy(
@@ -123,8 +120,7 @@ fun ItemComment(
                     if (item.expanded.not()) {
                         Badge(
                             containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                            modifier = Modifier
-                                .padding(4.dp),
+                            modifier = Modifier.padding(4.dp),
                         ) {
                             Text(
                                 text = "${threadItem.decendents} responses",
@@ -136,8 +132,11 @@ fun ItemComment(
                     Spacer(modifier = Modifier.weight(1f))
 
                     Box {
-                        val (expanded: Boolean, setContextExpanded) =
-                            remember { mutableStateOf(false) }
+                        val (expanded: Boolean, setContextExpanded) = remember {
+                            mutableStateOf(
+                                false
+                            )
+                        }
 
                         IconButton(onClick = { setContextExpanded(true) }) {
                             Icon(
@@ -164,42 +163,35 @@ fun ItemComment(
                                 },
                             )
 
-                            DropdownMenuItem(
-                                text = {
-                                    Text(
-                                        text = stringResource(
-                                            id = if (item.upvoted == true) R.string.un_vote
-                                            else R.string.upvote,
-                                        ),
-                                    )
-                                },
-                                onClick = {
+                            DropdownMenuItem(text = {
+                                Text(
+                                    text = stringResource(
+                                        id = if (item.upvoted == true) R.string.un_vote
+                                        else R.string.upvote,
+                                    ),
+                                )
+                            }, onClick = {
 //                                coroutineScope.launch {
 //                                    itemUi?.itemUi?.toggleUpvote(onNavigateLogin = onNavigateLogin)
 //                                }
 
-                                    setContextExpanded(false)
-                                },
-                                leadingIcon = {
-                                    Icon(
-                                        imageVector =
-                                        if (item.upvoted == true) Icons.Filled.ThumbUp
-                                        else Icons.TwoTone.ThumbUp,
-                                        contentDescription = stringResource(
-                                            id =
-                                            if (item.upvoted == true) R.string.un_vote
-                                            else R.string.upvote,
-                                        ),
-                                    )
-                                }
-                            )
+                                setContextExpanded(false)
+                            }, leadingIcon = {
+                                Icon(
+                                    imageVector = if (item.upvoted == true) Icons.Filled.ThumbUp
+                                    else Icons.TwoTone.ThumbUp,
+                                    contentDescription = stringResource(
+                                        id = if (item.upvoted == true) R.string.un_vote
+                                        else R.string.upvote,
+                                    ),
+                                )
+                            })
 
                             DropdownMenuItem(
                                 text = {
                                     Text(
                                         text = stringResource(
-                                            id =
-                                            if (item.followed) R.string.unfollow
+                                            id = if (item.followed) R.string.unfollow
                                             else R.string.follow,
                                         )
                                     )
@@ -213,12 +205,10 @@ fun ItemComment(
                                 },
                                 leadingIcon = {
                                     Icon(
-                                        imageVector =
-                                        if (item.followed) Icons.Filled.Quickreply
+                                        imageVector = if (item.followed) Icons.Filled.Quickreply
                                         else Icons.TwoTone.Quickreply,
                                         contentDescription = stringResource(
-                                            id =
-                                            if (item.followed == true) R.string.unfollow
+                                            id = if (item.followed == true) R.string.unfollow
                                             else R.string.follow,
                                         ),
                                     )
@@ -229,8 +219,7 @@ fun ItemComment(
                                 text = {
                                     Text(
                                         text = stringResource(
-                                            id =
-                                            if (item.flagged == true) R.string.un_flag
+                                            id = if (item.flagged == true) R.string.un_flag
                                             else R.string.flag,
                                         ),
                                     )
@@ -244,8 +233,7 @@ fun ItemComment(
                                 },
                                 leadingIcon = {
                                     Icon(
-                                        imageVector =
-                                        if (item.flagged == true) Icons.Filled.Flag
+                                        imageVector = if (item.flagged == true) Icons.Filled.Flag
                                         else Icons.TwoTone.Flag,
                                         contentDescription = stringResource(
                                             id = if (item.flagged == true) R.string.un_flag
