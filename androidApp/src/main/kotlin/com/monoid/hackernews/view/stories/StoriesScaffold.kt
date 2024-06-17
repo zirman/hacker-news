@@ -48,51 +48,49 @@ fun StoriesScaffold(
             navigator = navigator,
             listPane = {
                 // TODO: AnimatedPane(modifier = Modifier.preferredWidth(320.dp)).
-                Box(
+                ItemsColumn(
+                    listState = viewModel.listState,
+                    itemsList = itemsList,
+                    onItemVisible = { item ->
+                        viewModel.updateItem(item.id)
+                    },
+                    onItemClick = { item ->
+                        navigator.navigateTo(
+                            pane = ListDetailPaneScaffoldRole.Detail,
+                            content = ListItemDetailContentUiState(item.id, null),
+                        )
+                    },
+                    onOpenBrowser = onClickBrowser,
                     modifier = Modifier
                         .preferredWidth(320.dp)
                         .fillMaxHeight(),
-                ) {
-                    ItemsColumn(
-                        listState = viewModel.listState,
-                        itemsList = itemsList,
-                        onItemVisible = { item ->
-                            viewModel.updateItem(item.id)
-                        },
-                        onItemClick = { item ->
-                            navigator.navigateTo(
-                                pane = ListDetailPaneScaffoldRole.Detail,
-                                content = ListItemDetailContentUiState(item.id, null),
-                            )
-                        },
-                        onOpenBrowser = onClickBrowser,
-                    )
-                }
+                )
             },
             detailPane = {
                 // TODO: AnimatedPane(modifier = Modifier.fillMaxSize())
-                Box(modifier = Modifier.fillMaxSize()) {
-                    val itemId =
-                        (navigator.currentDestination?.content as? ListItemDetailContentUiState)?.itemId
-
-                    if (itemId == null) {
+                val itemId =
+                    (navigator.currentDestination?.content as? ListItemDetailContentUiState)?.itemId
+                if (itemId == null) {
+                    Box(modifier = Modifier.fillMaxSize()) {
                         Text(
                             text = stringResource(id = R.string.no_story_selected),
-                            modifier = Modifier.align(Alignment.Center),
+                            modifier = Modifier.fillMaxSize().align(Alignment.Center),
                         )
-                    } else {
-                        key(itemId) {
-                            ItemDetailPane(
-                                itemId = itemId,
-                                onOpenBrowser = { url ->
-                                    navigator.navigateTo(
-                                        pane = ListDetailPaneScaffoldRole.Extra,
-                                        content = ListItemDetailContentUiState(itemId, url),
-                                    )
-                                },
-                                modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer),
-                            )
-                        }
+                    }
+                } else {
+                    key(itemId) {
+                        ItemDetailPane(
+                            itemId = itemId,
+                            onOpenBrowser = { url ->
+                                navigator.navigateTo(
+                                    pane = ListDetailPaneScaffoldRole.Extra,
+                                    content = ListItemDetailContentUiState(itemId, url),
+                                )
+                            },
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(MaterialTheme.colorScheme.primaryContainer),
+                        )
                     }
                 }
             },
