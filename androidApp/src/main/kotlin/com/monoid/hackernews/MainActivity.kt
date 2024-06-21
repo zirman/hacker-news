@@ -24,8 +24,7 @@ import com.monoid.hackernews.view.main.MainNavHost
 import com.monoid.hackernews.view.theme.AppTheme
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.awaitCancellation
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.android.scope.AndroidScopeComponent
@@ -63,37 +62,30 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
         lifecycleScope.launch(context) {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 repository.preferences
-                    .map { it.lightDarkMode }
-                    .distinctUntilChanged()
-                    .collect { lightDarkMode ->
-                        foo(lightDarkMode)
-                    }
+                    .distinctUntilChangedBy { it.lightDarkMode }
+                    .collect { preferences -> setSystemBarsAppearance(preferences.lightDarkMode) }
             }
         }
     }
 
-    private fun foo(lightDarkMode: LightDarkMode) {
+    private fun setSystemBarsAppearance(lightDarkMode: LightDarkMode) {
         val darkMode: Boolean = when (lightDarkMode) {
-            LightDarkMode.System -> {
-                resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
-            }
+            LightDarkMode.System -> resources.configuration.uiMode and
+                    Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
 
-            LightDarkMode.Light -> {
-                false
-            }
-
-            LightDarkMode.Dark -> {
-                true
-            }
+            LightDarkMode.Light -> false
+            LightDarkMode.Dark -> true
         }
 
         window.insetsController?.setSystemBarsAppearance(
+            /* appearance = */
             if (darkMode) {
                 0
             } else {
                 WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
                         WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
             },
+            /* mask = */
             WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
                     WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
         )
@@ -130,7 +122,7 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
 
                     animateIn.doOnEnd {
                         splashScreenView.remove()
-                        foo(repository.preferences.value.lightDarkMode)
+                        setSystemBarsAppearance(repository.preferences.value.lightDarkMode)
                     }
 
                     animateIn.start()
