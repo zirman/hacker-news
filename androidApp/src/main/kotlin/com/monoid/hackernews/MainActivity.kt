@@ -17,10 +17,15 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.metrics.performance.JankStats
+import com.monoid.hackernews.common.data.LightDarkMode
+import com.monoid.hackernews.common.data.PreferencesRepository
 import com.monoid.hackernews.common.injection.LoggerAdapter
 import com.monoid.hackernews.view.main.MainNavHost
 import com.monoid.hackernews.view.theme.AppTheme
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.android.scope.AndroidScopeComponent
@@ -31,6 +36,15 @@ import java.util.concurrent.TimeUnit
 class MainActivity : ComponentActivity(), AndroidScopeComponent {
     override val scope: Scope by activityRetainedScope()
     private val logger: LoggerAdapter by inject()
+    private val repository: PreferencesRepository by inject()
+
+    private val context = CoroutineExceptionHandler { _, throwable ->
+        logger.recordException(
+            messageString = "CoroutineExceptionHandler",
+            throwable = throwable,
+            tag = TAG,
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,11 +52,51 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
 
         setContent {
             AppTheme {
-                MainNavHost()
+                Scrim {
+                    MainNavHost()
+                }
             }
         }
 
         jankStats()
+
+        lifecycleScope.launch(context) {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                repository.preferences
+                    .map { it.lightDarkMode }
+                    .distinctUntilChanged()
+                    .collect { lightDarkMode ->
+                        foo(lightDarkMode)
+                    }
+            }
+        }
+    }
+
+    private fun foo(lightDarkMode: LightDarkMode) {
+        val darkMode: Boolean = when (lightDarkMode) {
+            LightDarkMode.System -> {
+                resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+            }
+
+            LightDarkMode.Light -> {
+                false
+            }
+
+            LightDarkMode.Dark -> {
+                true
+            }
+        }
+
+        window.insetsController?.setSystemBarsAppearance(
+            if (darkMode) {
+                0
+            } else {
+                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
+                        WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+            },
+            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
+                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
+        )
     }
 
     private fun windowSetup() {
@@ -76,18 +130,7 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
 
                     animateIn.doOnEnd {
                         splashScreenView.remove()
-
-                        window.insetsController?.setSystemBarsAppearance(
-                            when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-                                Configuration.UI_MODE_NIGHT_NO ->
-                                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
-                                        WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
-
-                                else -> 0
-                            },
-                            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
-                                WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
-                        )
+                        foo(repository.preferences.value.lightDarkMode)
                     }
 
                     animateIn.start()
@@ -100,18 +143,6 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                 }
             }
         }
-
-        window.insetsController?.setSystemBarsAppearance(
-            when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-                Configuration.UI_MODE_NIGHT_NO ->
-                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
-                        WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
-
-                else -> 0
-            },
-            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
-                WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
-        )
     }
 
     private fun jankStats() {
