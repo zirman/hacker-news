@@ -32,6 +32,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -45,7 +46,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LifecycleEventEffect
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
@@ -53,6 +55,8 @@ import com.monoid.hackernews.common.ui.text.ClickableTextBlock
 import com.monoid.hackernews.common.ui.util.rememberTimeBy
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.common.view.rememberAnnotatedHtmlString
+import com.monoid.hackernews.view.theme.LocalCommentIndentation
+import kotlinx.coroutines.delay
 
 @Composable
 fun ItemComment(
@@ -65,18 +69,21 @@ fun ItemComment(
     modifier: Modifier = Modifier,
 ) {
     val item = threadItem.item
-    LifecycleEventEffect(Lifecycle.Event.ON_START) {
-        onVisible(item.id)
+    val lifecycleOwner = LocalLifecycleOwner.current
+    LaunchedEffect(item.id) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            while (true) {
+                onVisible(item.id)
+                delay(timeMillis = 5_000)
+            }
+        }
     }
-    Surface(
-        modifier = modifier.clickable { onClick(item.id) }.animateContentSize(),
-        tonalElevation = (threadItem.decendents * 4).dp,
+    Row(
+        modifier = modifier.height(IntrinsicSize.Min).clickable { onClick(item.id) }.animateContentSize(),
     ) {
-        Row(
-            modifier = Modifier.height(IntrinsicSize.Min),
-        ) {
-            ThreadDepth(threadItem.depth)
-            Column(modifier = Modifier) {
+        ThreadDepth(threadItem.depth)
+        Surface(tonalElevation = (threadItem.decendents * 4).dp) {
+            Column {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     val timeByUserAnnotatedString: AnnotatedString =
                         rememberTimeBy(time = item.time, by = item.by)
@@ -109,7 +116,8 @@ fun ItemComment(
 //                            }
 //                        }
 //                    },
-                        modifier = Modifier.padding(start = 16.dp, top = 16.dp)
+                        modifier = Modifier
+                            .padding(start = 16.dp, top = 16.dp)
                             .align(Alignment.Top),
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.labelMedium.copy(
@@ -256,7 +264,9 @@ fun ItemComment(
                         overflow = TextOverflow.Ellipsis,
                         style = LocalTextStyle.current.merge(
                             TextStyle(
-                                textIndent = TextIndent(firstLine = 1.em),
+                                textIndent = TextIndent(
+                                    firstLine = LocalCommentIndentation.current.em,
+                                ),
                             ),
                         ),
                     )

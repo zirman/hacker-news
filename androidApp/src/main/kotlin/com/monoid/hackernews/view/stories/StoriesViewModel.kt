@@ -25,7 +25,7 @@ class StoriesViewModel(
     private val repository: StoriesRepository,
 ) : ViewModel() {
     data class UiState(
-        val loading: Boolean = true,
+        val loading: Boolean = false,
         val itemsList: List<Item>? = null,
     )
 

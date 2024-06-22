@@ -40,6 +40,42 @@ class PreferencesRepository(
         }
     }
 
+    suspend fun increaseFontSize() {
+        localDataSource.updateData { preferences ->
+            preferences.copy(fontSize = preferences.fontSize.increaseSize())
+        }
+    }
+
+    suspend fun decreaseFontSize() {
+        localDataSource.updateData { preferences ->
+            preferences.copy(fontSize = preferences.fontSize.decreaseSize())
+        }
+    }
+
+    suspend fun increaseLineHeight() {
+        localDataSource.updateData { preferences ->
+            preferences.copy(lineHeight = preferences.lineHeight.increaseSize())
+        }
+    }
+
+    suspend fun decreaseLineHeight() {
+        localDataSource.updateData { preferences ->
+            preferences.copy(lineHeight = preferences.lineHeight.decreaseSize())
+        }
+    }
+
+    suspend fun increaseParagraphIndent() {
+        localDataSource.updateData { preferences ->
+            preferences.copy(paragraphIndent = preferences.paragraphIndent.increaseSize())
+        }
+    }
+
+    suspend fun decreaseParagraphIndent() {
+        localDataSource.updateData { preferences ->
+            preferences.copy(paragraphIndent = preferences.paragraphIndent.decreaseSize())
+        }
+    }
+
     suspend fun setShape(shape: Shape) {
         localDataSource.updateData { preferences ->
             preferences.copy(shape = shape)

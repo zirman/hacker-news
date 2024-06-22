@@ -1,5 +1,6 @@
 package com.monoid.hackernews.view.theme
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.annotation.StringRes
 import androidx.compose.foundation.shape.CutCornerShape
@@ -9,7 +10,10 @@ import androidx.compose.material3.Shapes
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.structuralEqualityPolicy
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontFamily
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -82,13 +86,19 @@ fun AppTheme(
     content: @Composable () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    MaterialTheme(
-        colorScheme = rememberColorScheme(uiState.lightDarkMode, uiState.colors),
-        typography = rememberAppTypography(uiState.font.toFontFamily()),
-        shapes = rememberShapes(uiState.shape),
-        content = content,
-    )
+    CompositionLocalProvider(LocalCommentIndentation provides uiState.paragraphIndent.em) {
+        MaterialTheme(
+            colorScheme = rememberColorScheme(uiState.lightDarkMode, uiState.colors),
+            typography = rememberAppTypography(
+                fontFamily = uiState.font.toFontFamily(),
+                fontSizeDelta = uiState.fontSize,
+                lineHeightDelta = uiState.lineHeight,
+                paragraphIndent = uiState.paragraphIndent,
+            ),
+            shapes = rememberShapes(uiState.shape),
+            content = content,
+        )
+    }
 }
 
 fun HNFont.toFontFamily(): FontFamily = when (this) {
@@ -170,3 +180,6 @@ fun rememberColorScheme(
     LightDarkMode.Light -> LightThemeColors
     LightDarkMode.Dark -> DarkThemeColors
 }
+
+@SuppressLint("ComposeCompositionLocalUsage")
+val LocalCommentIndentation = compositionLocalOf(structuralEqualityPolicy()) { 0 }

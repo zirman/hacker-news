@@ -15,6 +15,12 @@ data class Preferences(
     val lightDarkMode: LightDarkMode = LightDarkMode.default,
     @SerialName("font")
     val font: HNFont = HNFont.default,
+    @SerialName("font_size")
+    val fontSize: FontSize = FontSize.default,
+    @SerialName("line_height")
+    val lineHeight: LineHeight = LineHeight.default,
+    @SerialName("paragraph_indent")
+    val paragraphIndent: ParagraphIndent = ParagraphIndent.default,
     @SerialName("shape")
     val shape: Shape = Shape.default,
     @SerialName("Colors")
@@ -41,22 +47,38 @@ enum class LightDarkMode {
 
 @Serializable
 @SerialName("FontSize")
-enum class FontSize {
-    @SerialName("system")
-    System,
-
-    @SerialName("small")
-    Small,
-
-    @SerialName("large")
-    Large,
-    ;
+data class FontSize(val delta: Int) {
+    fun increaseSize(): FontSize {
+        return copy(delta = delta + 1)
+    }
+    fun decreaseSize(): FontSize = copy(delta = delta - 1)
 
     companion object {
-        val default = System
+        val default = FontSize(delta = 0)
     }
 }
 
+@Serializable
+@SerialName("LineSpacing")
+data class LineHeight(val delta: Int) {
+    fun increaseSize(): LineHeight = copy(delta = delta + 1)
+    fun decreaseSize(): LineHeight = copy(delta = delta - 1)
+
+    companion object {
+        val default = LineHeight(delta = 0)
+    }
+}
+
+@Serializable
+@SerialName("ParagraphIndent")
+data class ParagraphIndent(val em: Int) {
+    fun increaseSize(): ParagraphIndent = copy(em = em + 1)
+    fun decreaseSize(): ParagraphIndent = copy(em = (em - 1).coerceAtLeast(0))
+
+    companion object {
+        val default = ParagraphIndent(em = 1)
+    }
+}
 
 @Serializable
 @SerialName("Shape")

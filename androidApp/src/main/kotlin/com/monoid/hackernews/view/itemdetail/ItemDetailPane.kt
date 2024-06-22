@@ -9,14 +9,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LifecycleEventEffect
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.Item
 import com.monoid.hackernews.common.data.ItemType
+import kotlinx.coroutines.delay
 
 @Composable
 fun ItemDetailPane(
@@ -26,8 +29,14 @@ fun ItemDetailPane(
 ) {
     val viewModel = createItemDetailViewModel(itemId)
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    LifecycleEventEffect(Lifecycle.Event.ON_START) {
-        viewModel.updateItem(itemId)
+    val lifecycleOwner = LocalLifecycleOwner.current
+    LaunchedEffect(itemId) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            while (true) {
+                viewModel.updateItem(itemId)
+                delay(timeMillis = 5_000)
+            }
+        }
     }
     val commentItems = uiState.comments
 

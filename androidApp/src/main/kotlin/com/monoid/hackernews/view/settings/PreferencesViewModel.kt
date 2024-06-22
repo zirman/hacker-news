@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.monoid.hackernews.common.data.Colors
 import com.monoid.hackernews.common.data.FontSize
 import com.monoid.hackernews.common.data.LightDarkMode
+import com.monoid.hackernews.common.data.LineHeight
+import com.monoid.hackernews.common.data.ParagraphIndent
 import com.monoid.hackernews.common.data.Preferences
 import com.monoid.hackernews.common.data.PreferencesRepository
 import com.monoid.hackernews.common.data.Shape
@@ -25,8 +27,10 @@ class PreferencesViewModel(
         val lightDarkMode: LightDarkMode = LightDarkMode.default,
         val font: HNFont = HNFont.default,
         val fontSize: FontSize = FontSize.default,
-        val colors: Colors = Colors.default,
+        val lineHeight: LineHeight = LineHeight.default,
+        val paragraphIndent: ParagraphIndent = ParagraphIndent.default,
         val shape: Shape = Shape.default,
+        val colors: Colors = Colors.default,
     )
 
     val uiState = repository.preferences
@@ -52,6 +56,30 @@ class PreferencesViewModel(
         repository.setFont(font)
     }
 
+    fun onClickIncreaseFontSize(): Job = viewModelScope.launch(context) {
+        repository.increaseFontSize()
+    }
+
+    fun onClickDecreaseFontSize(): Job = viewModelScope.launch(context) {
+        repository.decreaseFontSize()
+    }
+
+    fun onClickIncreaseLineHeight(): Job = viewModelScope.launch(context) {
+        repository.increaseLineHeight()
+    }
+
+    fun onClickDecreaseLineHeight(): Job = viewModelScope.launch(context) {
+        repository.decreaseLineHeight()
+    }
+
+    fun onClickIncreaseParagraphIndent(): Job = viewModelScope.launch(context) {
+        repository.increaseParagraphIndent()
+    }
+
+    fun onClickDecreaseParagraphIndent(): Job = viewModelScope.launch(context) {
+        repository.decreaseParagraphIndent()
+    }
+
     fun onClickShape(shape: Shape): Job = viewModelScope.launch(context) {
         repository.setShape(shape)
     }
@@ -62,8 +90,11 @@ class PreferencesViewModel(
         private fun Preferences.toUiState(): UiState = UiState(
             lightDarkMode = lightDarkMode,
             font = font,
-            colors = colors,
+            fontSize = fontSize,
+            lineHeight = lineHeight,
+            paragraphIndent = paragraphIndent,
             shape = shape,
+            colors = colors,
         )
     }
 }
