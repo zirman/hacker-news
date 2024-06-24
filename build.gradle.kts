@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.kotlinAndroid) apply false
+    alias(libs.plugins.kotlinPowerAssert) apply false
     alias(libs.plugins.kotlinxSerialization) apply false
     alias(libs.plugins.kotlinxParcelize) apply false
     alias(libs.plugins.jetbrainsCompose) apply false
