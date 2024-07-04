@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.composeCompiler)
+    id("hackernews.detekt")
 }
 
 kotlin {
@@ -49,7 +50,6 @@ dependencies {
     implementation(libs.bundles.androidx)
     implementation(libs.bundles.androidxCompose)
     lintChecks(libs.composeLintChecks)
-    // TODO: refactor so that this isn't a shared dependency for wear
     implementation(libs.bundles.androidxApp)
     implementation(libs.bundles.google)
 

@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
+    id("hackernews.detekt")
 }
 
 kotlin {

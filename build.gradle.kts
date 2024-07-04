@@ -1,4 +1,5 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform) apply false
@@ -14,6 +15,7 @@ plugins {
     alias(libs.plugins.googlePlayServices) apply false
     alias(libs.plugins.crashlytics) apply false
     alias(libs.plugins.firebasePerf) apply false
+    alias(libs.plugins.detekt) apply false
 }
 
 tasks.register("clean", Delete::class) {
@@ -21,25 +23,28 @@ tasks.register("clean", Delete::class) {
 }
 
 subprojects {
-    tasks.withType<KotlinCompile>().configureEach {
-        kotlinOptions {
+    tasks.withType<KotlinJvmCompile>().configureEach {
+        compilerOptions {
             allWarningsAsErrors = false
 
-            jvmTarget = libs.versions.jvmTarget.get()
+            jvmTarget.set(JvmTarget.JVM_17)
 
-            freeCompilerArgs += listOf(
+            freeCompilerArgs = listOf(
                 "-opt-in=kotlinx.coroutines.FlowPreview",
                 "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
                 "-P",
-                "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=${project.rootDir}/compose_compiler_config.conf",
+                "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=" +
+                        rootDir.absolutePath + "/compose_compiler_config.conf",
             )
 
             if (project.findProperty("hackernews.enableComposeCompilerReports") == "true") {
                 // force tasks to rerun so that metrics are generated
                 outputs.upToDateWhen { false }
-                freeCompilerArgs += listOf(
-                    "-P=plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=${project.projectDir.absolutePath}/build/compose_metrics/",
-                    "-P=plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=${project.projectDir.absolutePath}/build/compose_metrics/",
+                freeCompilerArgs = listOf(
+                    "-P=plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" +
+                            projectDir.absolutePath + "/build/compose_metrics/",
+                    "-P=plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" +
+                            projectDir.absolutePath + "/build/compose_metrics/",
                 )
             }
         }

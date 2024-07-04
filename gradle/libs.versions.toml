@@ -58,6 +58,7 @@ coil = "2.6.0"
 espressoCore = "3.6.1"
 #junit = "4.13.2"
 mockk = "1.13.9"
+detekt = "1.23.3"
 
 [plugins]
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -75,6 +76,7 @@ room = { id = "androidx.room", version.ref = "room" }
 googlePlayServices = { id = "com.google.gms.google-services", version.ref = "googlePlayServices" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics" }
 firebasePerf = { id = "com.google.firebase.firebase-perf", version.ref = "firebasePerf" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
 [bundles]
 kotlinx = [
@@ -307,3 +309,6 @@ espressoCore = { group = "androidx.test.espresso", name = "espresso-core", versi
 junitExt = { group = "androidx.test.ext", name = "junit", version.ref = "junitExt" }
 #junit = { group = "junit", name = "junit", version.ref = "junit" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+
+detektGradlePlugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+detektFormatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }

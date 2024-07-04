@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.crashlytics)
     alias(libs.plugins.firebasePerf)
     alias(libs.plugins.composeCompiler)
+    id("hackernews.detekt")
 }
 
 kotlin {

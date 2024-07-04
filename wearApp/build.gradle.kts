@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.googlePlayServices)
     alias(libs.plugins.crashlytics)
     alias(libs.plugins.composeCompiler)
+    id("hackernews.detekt")
 }
 
 kotlin {

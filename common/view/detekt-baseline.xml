@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues>
+
+
+  </ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>LongMethod:PlaceholderDefaults.kt$fun Modifier.placeholder( visible: Boolean, color: Color, shape: Shape = RectangleShape, highlight: PlaceholderHighlight? = null, placeholderFadeTransitionSpec: @Composable Transition.Segment&lt;Boolean&gt;.() -&gt; FiniteAnimationSpec&lt;Float&gt; = { spring() }, contentFadeTransitionSpec: @Composable Transition.Segment&lt;Boolean&gt;.() -&gt; FiniteAnimationSpec&lt;Float&gt; = { spring() }, ): Modifier</ID>
+    <ID>LongParameterList:PlaceholderDefaults.kt$( shape: Shape, color: Color, highlight: PlaceholderHighlight?, progress: Float, lastOutline: Outline?, lastLayoutDirection: LayoutDirection?, lastSize: Size?, )</ID>
+    <ID>LongParameterList:PlaceholderDefaults.kt$( visible: Boolean, color: Color, shape: Shape = RectangleShape, highlight: PlaceholderHighlight? = null, placeholderFadeTransitionSpec: @Composable Transition.Segment&lt;Boolean&gt;.() -&gt; FiniteAnimationSpec&lt;Float&gt; = { spring() }, contentFadeTransitionSpec: @Composable Transition.Segment&lt;Boolean&gt;.() -&gt; FiniteAnimationSpec&lt;Float&gt; = { spring() }, )</ID>
+    <ID>MagicNumber:PlaceholderDefaults.kt$0.01f</ID>
+    <ID>MagicNumber:PlaceholderDefaults.kt$0.99f</ID>
+    <ID>MagicNumber:PlaceholderHighlight.kt$Shimmer$0.01f</ID>
+    <ID>MaxLineLength:PlaceholderDefaults.kt$placeholderFadeTransitionSpec: @Composable Transition.Segment&lt;Boolean&gt;.() -&gt; FiniteAnimationSpec&lt;Float&gt; = { spring() }</ID>
+    <ID>MaximumLineLength:PlaceholderDefaults.kt$ </ID>
+  </CurrentIssues>
+</SmellBaseline>

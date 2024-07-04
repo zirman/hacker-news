@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="17" />
+    <bytecodeTargetLevel target="17">
+      <module name="hacker-news-conventions" target="21" />
+      <module name="hacker-news-conventions.main" target="21" />
+      <module name="hacker-news-conventions.test" target="21" />
+      <module name="Hacker_News.buildSrc" target="21" />
+      <module name="Hacker_News.buildSrc.main" target="21" />
+      <module name="Hacker_News.buildSrc.test" target="21" />
+      <module name="my-org-conventions" target="21" />
+      <module name="my-org-conventions.main" target="21" />
+      <module name="my-org-conventions.test" target="21" />
+    </bytecodeTargetLevel>
   </component>
 </project>
