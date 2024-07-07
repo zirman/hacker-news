@@ -1,403 +1,210 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-    <ManuallySuppressedIssues>
-
-
-    </ManuallySuppressedIssues>
-    <CurrentIssues>
-        <ID>ArgumentListWrapping:PreferencesViewModel.kt$PreferencesViewModel$( viewModelScope,
-            SharingStarted.WhileSubscribed(5_000), repository.preferences.value.toUiState(), )
-        </ID>
-        <ID>CommentSpacing:HNFont.kt$//)</ID>
-        <ID>CommentSpacing:HNFont.kt$//@SerialName("HNFont")</ID>
-        <ID>CommentSpacing:HNFont.kt$//@Serializable</ID>
-        <ID>CommentSpacing:HNFont.kt$//@Stable</ID>
-        <ID>CommentSpacing:HNFont.kt$//import androidx.compose.runtime.Composable</ID>
-        <ID>CommentSpacing:HNFont.kt$//import androidx.compose.runtime.Stable</ID>
-        <ID>CommentSpacing:HNFont.kt$//import androidx.compose.runtime.remember</ID>
-        <ID>CommentSpacing:HNFont.kt$//import androidx.compose.ui.res.stringResource</ID>
-        <ID>CommentSpacing:HNFont.kt$//import androidx.compose.ui.text.font.FontFamily</ID>
-        <ID>CommentSpacing:HNFont.kt$//import androidx.compose.ui.text.googlefonts.Font</ID>
-        <ID>CommentSpacing:HNFont.kt$//import androidx.compose.ui.text.googlefonts.GoogleFont</ID>
-        <ID>CommentSpacing:HNFont.kt$//import com.monoid.hackernews.common.view.R</ID>
-        <ID>CommentSpacing:HNFont.kt$//import kotlinx.serialization.SerialName</ID>
-        <ID>CommentSpacing:HNFont.kt$//import kotlinx.serialization.Serializable</ID>
-        <ID>CommentSpacing:HNFont.kt$//package com.monoid.hackernews.view.theme</ID>
-        <ID>CommentSpacing:HNFont.kt$//sealed class HNFont {</ID>
-        <ID>CommentSpacing:HNFont.kt$//val provider = GoogleFont.Provider(</ID>
-        <ID>CommentSpacing:HNFont.kt$//}</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//) {</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//): Job {</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//@Composable</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//fun ReplyContent(</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//fun replyJob(</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.foundation.layout.Column</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import
-            androidx.compose.foundation.layout.WindowInsets
-        </ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import
-            androidx.compose.foundation.layout.WindowInsetsSides
-        </ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import
-            androidx.compose.foundation.layout.asPaddingValues
-        </ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import
-            androidx.compose.foundation.layout.fillMaxWidth
-        </ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.foundation.layout.only</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.foundation.layout.padding</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.foundation.layout.safeContent
-        </ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.foundation.layout.width</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import
-            androidx.compose.foundation.text.selection.SelectionContainer
-        </ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.material3.Button</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.material3.MaterialTheme</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.material3.Surface</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.material3.Text</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import
-            androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
-        </ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import
-            androidx.compose.material3.windowsizeclass.WindowSizeClass
-        </ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import
-            androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
-        </ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.runtime.Composable</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.runtime.getValue</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.runtime.mutableStateOf</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.runtime.remember</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import
-            androidx.compose.runtime.rememberCoroutineScope
-        </ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import
-            androidx.compose.runtime.saveable.rememberSaveable
-        </ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.ui.Alignment</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.ui.Modifier</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.ui.res.stringResource</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.ui.text.AnnotatedString</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.ui.text.fromHtml</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.ui.unit.dp</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import androidx.datastore.core.DataStore</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import
-            androidx.lifecycle.compose.collectAsStateWithLifecycle
-        </ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import com.monoid.hackernews.common.api.ItemId</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import
-            com.monoid.hackernews.common.api.commentRequest
-        </ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import com.monoid.hackernews.common.data.ItemUi</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import com.monoid.hackernews.common.data.Preferences
-        </ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import com.monoid.hackernews.common.view.R</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import com.monoid.hackernews.view.text.ReplyTextField
-        </ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import io.ktor.client.HttpClient</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import kotlinx.coroutines.CoroutineScope</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import kotlinx.coroutines.Job</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import kotlinx.coroutines.currentCoroutineContext</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import kotlinx.coroutines.ensureActive</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import kotlinx.coroutines.flow.first</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//import kotlinx.coroutines.launch</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//package com.monoid.hackernews.view.reply</ID>
-        <ID>CommentSpacing:ReplyContent.kt$//}</ID>
-        <ID>CommentWrapping:HNApplication.kt$HNApplication$/* filter = */</ID>
-        <ID>CommentWrapping:HNApplication.kt$HNApplication$/* receiver = */</ID>
-        <ID>CommentWrapping:MainActivity.kt$MainActivity$/* msg = */</ID>
-        <ID>CommentWrapping:MainActivity.kt$MainActivity$/* tag = */</ID>
-        <ID>CyclomaticComplexMethod:Item.kt$@Composable fun Item( item: Item?, onClickDetail: () -&gt;
-            Unit, onClickReply: () -&gt; Unit, onClickUser: (Username?) -&gt; Unit, onClickBrowser:
-            () -&gt; Unit, onClickUpvote: () -&gt; Unit, onClickFavorite: () -&gt; Unit,
-            onClickFollow: () -&gt; Unit, onClickFlag: () -&gt; Unit, modifier: Modifier = Modifier,
-            )
-        </ID>
-        <ID>CyclomaticComplexMethod:ItemComment.kt$@Composable fun ItemComment( threadItem:
-            ItemDetailViewModel.ThreadItemUiState, onClickUser: (Username) -&gt; Unit, onClickReply:
-            (ItemId) -&gt; Unit, onNavigateLogin: (LoginAction) -&gt; Unit, onVisible: (ItemId) -&gt;
-            Unit, onClick: (ItemId) -&gt; Unit, modifier: Modifier = Modifier, )
-        </ID>
-        <ID>CyclomaticComplexMethod:ItemDetail.kt$@Composable fun ItemDetail( item: Item?,
-            onOpenBrowser: (Item) -&gt; Unit, modifier: Modifier = Modifier, )
-        </ID>
-        <ID>DestructuringDeclarationWithTooManyEntries:PreferencesDetail.kt$val
-            (selectedLightDarkMode, selectedFont, fontSize, lineSpacing, paragraphIndent,
-            selectedShape, colors) = uiState
-        </ID>
-        <ID>EmptyFunctionBlock:ProfileDetail.kt${ }</ID>
-        <ID>ForbiddenComment:MainActivity.kt$MainActivity$// TODO: prod build</ID>
-        <ID>ForbiddenComment:PreferencesDetail.kt$// TODO: colors</ID>
-        <ID>FunctionNaming:AboutUs.kt$@Composable fun AboutUs( windowSizeClass: WindowSizeClass,
-            modifier: Modifier = Modifier, )
-        </ID>
-        <ID>FunctionNaming:AboutUsBottomSheet.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable
-            fun AboutUsBottomSheet( windowSizeClass: WindowSizeClass, onHide: () -&gt; Unit,
-            modifier: Modifier = Modifier, )
-        </ID>
-        <ID>FunctionNaming:FontButton.kt$@Composable fun FontButton( font: HNFont, selected:
-            Boolean, onClickFont: (HNFont) -&gt; Unit, modifier: Modifier = Modifier, )
-        </ID>
-        <ID>FunctionNaming:HomeContent.kt$@Composable fun HomeContent( currentDestination:
-            BottomNav, onClickBrowser: (Item) -&gt; Unit, onClickLogin: () -&gt; Unit, modifier:
-            Modifier = Modifier, )
-        </ID>
-        <ID>FunctionNaming:HomeScaffold.kt$@Composable fun HomeScaffold( onClickBrowser: (Item) -&gt;
-            Unit, onClickLogin: () -&gt; Unit, modifier: Modifier = Modifier, )
-        </ID>
-        <ID>FunctionNaming:Item.kt$@Composable fun Item( item: Item?, onClickDetail: () -&gt; Unit,
-            onClickReply: () -&gt; Unit, onClickUser: (Username?) -&gt; Unit, onClickBrowser: () -&gt;
-            Unit, onClickUpvote: () -&gt; Unit, onClickFavorite: () -&gt; Unit, onClickFollow: () -&gt;
-            Unit, onClickFlag: () -&gt; Unit, modifier: Modifier = Modifier, )
-        </ID>
-        <ID>FunctionNaming:Item.kt$@Preview( showBackground = true, wallpaper =
-            Wallpapers.YELLOW_DOMINATED_EXAMPLE, ) @Composable private fun ItemPreview()
-        </ID>
-        <ID>FunctionNaming:ItemComment.kt$@Composable fun ItemComment( threadItem:
-            ItemDetailViewModel.ThreadItemUiState, onClickUser: (Username) -&gt; Unit, onClickReply:
-            (ItemId) -&gt; Unit, onNavigateLogin: (LoginAction) -&gt; Unit, onVisible: (ItemId) -&gt;
-            Unit, onClick: (ItemId) -&gt; Unit, modifier: Modifier = Modifier, )
-        </ID>
-        <ID>FunctionNaming:ItemComment.kt$@Composable fun ThreadDepth(depth: Int, modifier: Modifier
-            = Modifier)
-        </ID>
-        <ID>FunctionNaming:ItemDetail.kt$@Composable fun ItemDetail( item: Item?, onOpenBrowser:
-            (Item) -&gt; Unit, modifier: Modifier = Modifier, )
-        </ID>
-        <ID>FunctionNaming:ItemDetailPane.kt$@Composable fun ItemDetailPane( itemId: ItemId,
-            onOpenBrowser: (Item) -&gt; Unit, modifier: Modifier = Modifier, )
-        </ID>
-        <ID>FunctionNaming:ItemsColumn.kt$@Composable fun ItemsColumn( itemsList: List&lt;Item&gt;?,
-            onItemVisible: (Item) -&gt; Unit, onItemClick: (Item) -&gt; Unit, onOpenBrowser: (Item)
-            -&gt; Unit, listState: LazyListState, modifier: Modifier = Modifier, )
-        </ID>
-        <ID>FunctionNaming:LighDarkButton.kt$@Composable fun LightDarkButton( lightDarkMode:
-            LightDarkMode, selected: Boolean, onClickLightDarkMode: (LightDarkMode) -&gt; Unit,
-            modifier: Modifier = Modifier, )
-        </ID>
-        <ID>FunctionNaming:LoginDialog.kt$@Composable fun LoginDialog( onDismissRequest: () -&gt;
-            Unit, modifier: Modifier = Modifier, loginViewModel: LoginViewModel = koinViewModel(), )
-        </ID>
-        <ID>FunctionNaming:LoginDialogContent.kt$@Composable fun LoginDialogContent( onClickSubmit:
-            (Username, Password) -&gt; Unit, modifier: Modifier = Modifier, )
-        </ID>
-        <ID>FunctionNaming:MainNavHost.kt$@Composable fun MainNavHost(modifier: Modifier =
-            Modifier)
-        </ID>
-        <ID>FunctionNaming:PasswordTextField.kt$@Composable fun PasswordTextField( password: String,
-            onChangePassword: (String) -&gt; Unit, modifier: Modifier = Modifier, @StringRes
-            labelId: Int = R.string.password, @StringRes errorLabelId: Int? = null, onNext: (() -&gt;
-            Unit)? = null, onPrev: (() -&gt; Unit)? = null, onDone: (() -&gt; Unit)? = null, )
-        </ID>
-        <ID>FunctionNaming:PreferencesDetail.kt$@Composable fun PreferencesDetail( modifier:
-            Modifier = Modifier, viewModel: PreferencesViewModel = koinViewModel(), )
-        </ID>
-        <ID>FunctionNaming:ProfileDetail.kt$@Composable fun ProfileDetail(modifier: Modifier =
-            Modifier)
-        </ID>
-        <ID>FunctionNaming:ReplyTextField.kt$@Composable fun ReplyTextField( reply: String,
-            onReplyChange: (String) -&gt; Unit, modifier: Modifier = Modifier, )
-        </ID>
-        <ID>FunctionNaming:Scrim.kt$@Composable fun Scrim(modifier: Modifier = Modifier, content:
-            @Composable () -&gt; Unit)
-        </ID>
-        <ID>FunctionNaming:SettingsDetailPane.kt$@Suppress("ComposeUnstableReceiver") @Composable
-            fun ThreePaneScaffoldScope.SettingsDetailPane( settingsDetailUiState:
-            SettingsDetailUiState?, modifier: Modifier = Modifier, )
-        </ID>
-        <ID>FunctionNaming:SettingsListPane.kt$@Suppress("ComposeUnstableReceiver") @Composable fun
-            ThreePaneScaffoldScope.SettingsListPane( username: Username?, onClickLogin: () -&gt;
-            Unit, onClickLogout: () -&gt; Unit, onClickStyle: () -&gt; Unit, modifier: Modifier =
-            Modifier, )
-        </ID>
-        <ID>FunctionNaming:SettingsScaffold.kt$@Composable fun SettingsScaffold( navigator:
-            ThreePaneScaffoldNavigator&lt;Any&gt;, onClickLogin: () -&gt; Unit, modifier: Modifier =
-            Modifier, viewModel: SettingsViewModel = koinViewModel(), )
-        </ID>
-        <ID>FunctionNaming:ShapeButton.kt$@Composable fun ShapeButton( shape: Shape, selected:
-            Boolean, onClickShape: (Shape) -&gt; Unit, modifier: Modifier = Modifier, )
-        </ID>
-        <ID>FunctionNaming:StoriesDetailPane.kt$@Suppress("ComposeUnstableReceiver") @Composable fun
-            ThreePaneScaffoldScope.StoriesDetailPane( itemId: ItemId?, onOpenBrowser: (Item) -&gt;
-            Unit, modifier: Modifier = Modifier, )
-        </ID>
-        <ID>FunctionNaming:StoriesExtraPane.kt$@Suppress("ComposeUnstableReceiver") @Composable fun
-            ThreePaneScaffoldScope.StoriesExtraPane(url: String?, modifier: Modifier = Modifier)
-        </ID>
-        <ID>FunctionNaming:StoriesListPane.kt$@Suppress("ComposeUnstableReceiver") @Composable fun
-            ThreePaneScaffoldScope.StoriesListPane( listState: LazyListState, itemsList: List&lt;Item&gt;?,
-            onVisibleItem: (Item) -&gt; Unit, onClickItem: (Item) -&gt; Unit, onClickBrowser: (Item)
-            -&gt; Unit, modifier: Modifier = Modifier, )
-        </ID>
-        <ID>FunctionNaming:StoriesScaffold.kt$@Composable fun StoriesScaffold( navigator:
-            ThreePaneScaffoldNavigator&lt;Any&gt;, onClickBrowser: (Item) -&gt; Unit, modifier:
-            Modifier = Modifier, key: String = "default", viewModel: StoriesViewModel =
-            createStoriesViewModel(key), )
-        </ID>
-        <ID>FunctionNaming:Theme.kt$@Composable fun AppTheme( viewModel: PreferencesViewModel =
-            koinViewModel(), content: @Composable () -&gt; Unit, )
-        </ID>
-        <ID>FunctionNaming:UsernameTextField.kt$@Composable fun UsernameTextField( username: String,
-            onUsernameChange: (String) -&gt; Unit, onNext: () -&gt; Unit, onPrev: () -&gt; Unit,
-            modifier: Modifier = Modifier, )
-        </ID>
-        <ID>FunctionNaming:WebViewPane.kt$@Composable fun WebViewPane(url: String?, modifier:
-            Modifier = Modifier)
-        </ID>
-        <ID>ImportOrdering:ApplicationModule.kt$import android.content.Intent import
-            androidx.lifecycle.LifecycleOwner import androidx.lifecycle.ProcessLifecycleOwner import
-            com.monoid.hackernews.common.data.LoginRepository import
-            com.monoid.hackernews.common.data.PreferencesRepository import
-            com.monoid.hackernews.common.data.StoriesRepository import
-            com.monoid.hackernews.common.data.UserStoryRepositoryFactory import
-            com.monoid.hackernews.view.itemdetail.ItemDetailViewModel import
-            com.monoid.hackernews.view.main.LoginViewModel import
-            com.monoid.hackernews.view.settings.SettingsViewModel import
-            com.monoid.hackernews.view.settings.PreferencesViewModel import
-            com.monoid.hackernews.view.stories.StoriesViewModel import
-            kotlinx.coroutines.channels.Channel import org.koin.androidx.viewmodel.dsl.viewModel
-            import org.koin.core.qualifier.named import org.koin.dsl.module
-        </ID>
-        <ID>Indentation:MainActivity.kt$MainActivity$</ID>
-        <ID>LongMethod:Item.kt$@Composable fun Item( item: Item?, onClickDetail: () -&gt; Unit,
-            onClickReply: () -&gt; Unit, onClickUser: (Username?) -&gt; Unit, onClickBrowser: () -&gt;
-            Unit, onClickUpvote: () -&gt; Unit, onClickFavorite: () -&gt; Unit, onClickFollow: () -&gt;
-            Unit, onClickFlag: () -&gt; Unit, modifier: Modifier = Modifier, )
-        </ID>
-        <ID>LongMethod:ItemComment.kt$@Composable fun ItemComment( threadItem:
-            ItemDetailViewModel.ThreadItemUiState, onClickUser: (Username) -&gt; Unit, onClickReply:
-            (ItemId) -&gt; Unit, onNavigateLogin: (LoginAction) -&gt; Unit, onVisible: (ItemId) -&gt;
-            Unit, onClick: (ItemId) -&gt; Unit, modifier: Modifier = Modifier, )
-        </ID>
-        <ID>LongMethod:ItemDetail.kt$@Composable fun ItemDetail( item: Item?, onOpenBrowser: (Item)
-            -&gt; Unit, modifier: Modifier = Modifier, )
-        </ID>
-        <ID>LongMethod:LoginDialogContent.kt$@Composable fun LoginDialogContent( onClickSubmit:
-            (Username, Password) -&gt; Unit, modifier: Modifier = Modifier, )
-        </ID>
-        <ID>LongMethod:MainNavHost.kt$@Composable fun MainNavHost(modifier: Modifier = Modifier)
-        </ID>
-        <ID>LongMethod:PasswordTextField.kt$@Composable fun PasswordTextField( password: String,
-            onChangePassword: (String) -&gt; Unit, modifier: Modifier = Modifier, @StringRes
-            labelId: Int = R.string.password, @StringRes errorLabelId: Int? = null, onNext: (() -&gt;
-            Unit)? = null, onPrev: (() -&gt; Unit)? = null, onDone: (() -&gt; Unit)? = null, )
-        </ID>
-        <ID>LongMethod:PreferencesDetail.kt$@Composable fun PreferencesDetail( modifier: Modifier =
-            Modifier, viewModel: PreferencesViewModel = koinViewModel(), )
-        </ID>
-        <ID>LongMethod:Scrim.kt$@Composable fun Scrim(modifier: Modifier = Modifier, content:
-            @Composable () -&gt; Unit)
-        </ID>
-        <ID>LongMethod:Type.kt$@Composable fun rememberAppTypography( fontFamily: FontFamily,
-            fontSizeDelta: FontSize, lineHeightDelta: LineHeight, paragraphIndent: ParagraphIndent,
-            ): Typography
-        </ID>
-        <ID>LongParameterList:Item.kt$( item: Item?, onClickDetail: () -&gt; Unit, onClickReply: ()
-            -&gt; Unit, onClickUser: (Username?) -&gt; Unit, onClickBrowser: () -&gt; Unit,
-            onClickUpvote: () -&gt; Unit, onClickFavorite: () -&gt; Unit, onClickFollow: () -&gt;
-            Unit, onClickFlag: () -&gt; Unit, modifier: Modifier = Modifier, )
-        </ID>
-        <ID>LongParameterList:ItemComment.kt$( threadItem: ItemDetailViewModel.ThreadItemUiState,
-            onClickUser: (Username) -&gt; Unit, onClickReply: (ItemId) -&gt; Unit, onNavigateLogin:
-            (LoginAction) -&gt; Unit, onVisible: (ItemId) -&gt; Unit, onClick: (ItemId) -&gt; Unit,
-            modifier: Modifier = Modifier, )
-        </ID>
-        <ID>LongParameterList:ItemsColumn.kt$( itemsList: List&lt;Item&gt;?, onItemVisible: (Item) -&gt;
-            Unit, onItemClick: (Item) -&gt; Unit, onOpenBrowser: (Item) -&gt; Unit, listState:
-            LazyListState, modifier: Modifier = Modifier, )
-        </ID>
-        <ID>LongParameterList:PasswordTextField.kt$( password: String, onChangePassword: (String) -&gt;
-            Unit, modifier: Modifier = Modifier, @StringRes labelId: Int = R.string.password,
-            @StringRes errorLabelId: Int? = null, onNext: (() -&gt; Unit)? = null, onPrev: (() -&gt;
-            Unit)? = null, onDone: (() -&gt; Unit)? = null, )
-        </ID>
-        <ID>LongParameterList:StoriesListPane.kt$( listState: LazyListState, itemsList: List&lt;Item&gt;?,
-            onVisibleItem: (Item) -&gt; Unit, onClickItem: (Item) -&gt; Unit, onClickBrowser: (Item)
-            -&gt; Unit, modifier: Modifier = Modifier, )
-        </ID>
-        <ID>MagicNumber:Color.kt$0xFF1C1B1F</ID>
-        <ID>MagicNumber:Color.kt$0xFF1D192B</ID>
-        <ID>MagicNumber:Color.kt$0xFF21005D</ID>
-        <ID>MagicNumber:Color.kt$0xFF31111D</ID>
-        <ID>MagicNumber:Color.kt$0xFF313033</ID>
-        <ID>MagicNumber:Color.kt$0xFF332D41</ID>
-        <ID>MagicNumber:Color.kt$0xFF381E72</ID>
-        <ID>MagicNumber:Color.kt$0xFF410E0B</ID>
-        <ID>MagicNumber:Color.kt$0xFF492532</ID>
-        <ID>MagicNumber:Color.kt$0xFF49454F</ID>
-        <ID>MagicNumber:Color.kt$0xFF4A4458</ID>
-        <ID>MagicNumber:Color.kt$0xFF4F378B</ID>
-        <ID>MagicNumber:Color.kt$0xFF601410</ID>
-        <ID>MagicNumber:Color.kt$0xFF625B71</ID>
-        <ID>MagicNumber:Color.kt$0xFF633B48</ID>
-        <ID>MagicNumber:Color.kt$0xFF6750A4</ID>
-        <ID>MagicNumber:Color.kt$0xFF79747E</ID>
-        <ID>MagicNumber:Color.kt$0xFF7D5260</ID>
-        <ID>MagicNumber:Color.kt$0xFF8C1D18</ID>
-        <ID>MagicNumber:Color.kt$0xFF938F99</ID>
-        <ID>MagicNumber:Color.kt$0xFFB3261E</ID>
-        <ID>MagicNumber:Color.kt$0xFFCAC4D0</ID>
-        <ID>MagicNumber:Color.kt$0xFFCCC2DC</ID>
-        <ID>MagicNumber:Color.kt$0xFFD0BCFF</ID>
-        <ID>MagicNumber:Color.kt$0xFFE6E1E5</ID>
-        <ID>MagicNumber:Color.kt$0xFFE7E0EC</ID>
-        <ID>MagicNumber:Color.kt$0xFFE8DEF8</ID>
-        <ID>MagicNumber:Color.kt$0xFFEADDFF</ID>
-        <ID>MagicNumber:Color.kt$0xFFEFB8C8</ID>
-        <ID>MagicNumber:Color.kt$0xFFF2B8B5</ID>
-        <ID>MagicNumber:Color.kt$0xFFF4EFF4</ID>
-        <ID>MagicNumber:Color.kt$0xFFF9DEDC</ID>
-        <ID>MagicNumber:Color.kt$0xFFFFD8E4</ID>
-        <ID>MagicNumber:Color.kt$0xFFFFFBFE</ID>
-        <ID>MagicNumber:Color.kt$0xFFFFFFFF</ID>
-        <ID>MagicNumber:ItemComment.kt$3</ID>
-        <ID>MagicNumber:MainActivity.kt$MainActivity$400L</ID>
-        <ID>MagicNumber:PreferencesViewModel.kt$PreferencesViewModel$5_000</ID>
-        <ID>MagicNumber:Type.kt$10</ID>
-        <ID>MatchingDeclarationName:ApplicationModule.kt$LifecycleOwnerQualifier</ID>
-        <ID>MaxLineLength:HomeScaffold.kt$imageVector = if (story ==
-            BottomNav.entries[currentDestination]) story.selectedIcon else story.icon
-        </ID>
-        <ID>MaxLineLength:Theme.kt$if</ID>
-        <ID>MaximumLineLength:HomeScaffold.kt$</ID>
-        <ID>MaximumLineLength:Theme.kt$</ID>
-        <ID>MultiLineIfElse:ItemComment.kt$Icons.Filled.Flag</ID>
-        <ID>MultiLineIfElse:ItemComment.kt$Icons.Filled.Quickreply</ID>
-        <ID>MultiLineIfElse:ItemComment.kt$Icons.Filled.ThumbUp</ID>
-        <ID>MultiLineIfElse:ItemComment.kt$Icons.TwoTone.Flag</ID>
-        <ID>MultiLineIfElse:ItemComment.kt$Icons.TwoTone.Quickreply</ID>
-        <ID>MultiLineIfElse:ItemComment.kt$Icons.TwoTone.ThumbUp</ID>
-        <ID>MultiLineIfElse:ItemComment.kt$R.string.flag</ID>
-        <ID>MultiLineIfElse:ItemComment.kt$R.string.follow</ID>
-        <ID>MultiLineIfElse:ItemComment.kt$R.string.un_flag</ID>
-        <ID>MultiLineIfElse:ItemComment.kt$R.string.un_vote</ID>
-        <ID>MultiLineIfElse:ItemComment.kt$R.string.unfollow</ID>
-        <ID>MultiLineIfElse:ItemComment.kt$R.string.upvote</ID>
-        <ID>MultiLineIfElse:ItemComment.kt$item.text ?: ""</ID>
-        <ID>MultiLineIfElse:ItemComment.kt$stringResource(id = R.string.deleted)</ID>
-        <ID>MultiLineIfElse:Theme.kt$DarkThemeColors</ID>
-        <ID>MultiLineIfElse:Theme.kt$LightThemeColors</ID>
-        <ID>NoBlankLineBeforeRbrace:ProfileDetail.kt$</ID>
-        <ID>NoEmptyFirstLineInMethodBlock:ProfileDetail.kt$</ID>
-        <ID>
-            NoUnusedImports:LighDarkButton.kt$com.monoid.hackernews.view.settings.LighDarkButton.kt
-        </ID>
-        <ID>TooGenericExceptionCaught:MainActivity.kt$MainActivity$throwable: Throwable</ID>
-        <ID>TooGenericExceptionCaught:StoriesViewModel.kt$StoriesViewModel$throwable: Throwable</ID>
-        <ID>UnusedParameter:Item.kt$onClickUser: (Username?) -&gt; Unit</ID>
-        <ID>UnusedParameter:ItemComment.kt$onClickReply: (ItemId) -&gt; Unit</ID>
-        <ID>UnusedParameter:ItemComment.kt$onClickUser: (Username) -&gt; Unit</ID>
-        <ID>UnusedParameter:ItemComment.kt$onNavigateLogin: (LoginAction) -&gt; Unit</ID>
-        <ID>UnusedParameter:ProfileDetail.kt$modifier: Modifier = Modifier</ID>
-        <ID>UnusedParameter:Theme.kt$colors: Colors</ID>
-        <ID>UnusedPrivateMember:Item.kt$@Preview( showBackground = true, wallpaper =
-            Wallpapers.YELLOW_DOMINATED_EXAMPLE, ) @Composable private fun ItemPreview()
-        </ID>
-        <ID>UnusedPrivateProperty:HNApplication.kt$HNApplication.Companion$private const val TAG =
-            "HNApplication"
-        </ID>
-        <ID>Wrapping:AboutUs.kt$(</ID>
-        <ID>Wrapping:MainActivity.kt$MainActivity$-&gt;</ID>
-    </CurrentIssues>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ArgumentListWrapping:PreferencesViewModel.kt$PreferencesViewModel$( viewModelScope, SharingStarted.WhileSubscribed(5_000), repository.preferences.value.toUiState(), )</ID>
+    <ID>CommentSpacing:HNFont.kt$//)</ID>
+    <ID>CommentSpacing:HNFont.kt$//@SerialName("HNFont")</ID>
+    <ID>CommentSpacing:HNFont.kt$//@Serializable</ID>
+    <ID>CommentSpacing:HNFont.kt$//@Stable</ID>
+    <ID>CommentSpacing:HNFont.kt$//import androidx.compose.runtime.Composable</ID>
+    <ID>CommentSpacing:HNFont.kt$//import androidx.compose.runtime.Stable</ID>
+    <ID>CommentSpacing:HNFont.kt$//import androidx.compose.runtime.remember</ID>
+    <ID>CommentSpacing:HNFont.kt$//import androidx.compose.ui.res.stringResource</ID>
+    <ID>CommentSpacing:HNFont.kt$//import androidx.compose.ui.text.font.FontFamily</ID>
+    <ID>CommentSpacing:HNFont.kt$//import androidx.compose.ui.text.googlefonts.Font</ID>
+    <ID>CommentSpacing:HNFont.kt$//import androidx.compose.ui.text.googlefonts.GoogleFont</ID>
+    <ID>CommentSpacing:HNFont.kt$//import com.monoid.hackernews.common.view.R</ID>
+    <ID>CommentSpacing:HNFont.kt$//import kotlinx.serialization.SerialName</ID>
+    <ID>CommentSpacing:HNFont.kt$//import kotlinx.serialization.Serializable</ID>
+    <ID>CommentSpacing:HNFont.kt$//package com.monoid.hackernews.view.theme</ID>
+    <ID>CommentSpacing:HNFont.kt$//sealed class HNFont {</ID>
+    <ID>CommentSpacing:HNFont.kt$//val provider = GoogleFont.Provider(</ID>
+    <ID>CommentSpacing:HNFont.kt$//}</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//) {</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//): Job {</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//@Composable</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//fun ReplyContent(</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//fun replyJob(</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.foundation.layout.Column</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.foundation.layout.WindowInsets</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.foundation.layout.WindowInsetsSides</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.foundation.layout.asPaddingValues</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.foundation.layout.fillMaxWidth</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.foundation.layout.only</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.foundation.layout.padding</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.foundation.layout.safeContent</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.foundation.layout.width</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.foundation.text.selection.SelectionContainer</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.material3.Button</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.material3.MaterialTheme</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.material3.Surface</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.material3.Text</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.material3.windowsizeclass.WindowSizeClass</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.runtime.Composable</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.runtime.getValue</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.runtime.mutableStateOf</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.runtime.remember</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.runtime.rememberCoroutineScope</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.runtime.saveable.rememberSaveable</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.ui.Alignment</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.ui.Modifier</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.ui.res.stringResource</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.ui.text.AnnotatedString</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.ui.text.fromHtml</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.compose.ui.unit.dp</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.datastore.core.DataStore</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import androidx.lifecycle.compose.collectAsStateWithLifecycle</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import com.monoid.hackernews.common.api.ItemId</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import com.monoid.hackernews.common.api.commentRequest</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import com.monoid.hackernews.common.data.ItemUi</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import com.monoid.hackernews.common.data.Preferences</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import com.monoid.hackernews.common.view.R</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import com.monoid.hackernews.view.text.ReplyTextField</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import io.ktor.client.HttpClient</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import kotlinx.coroutines.CoroutineScope</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import kotlinx.coroutines.Job</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import kotlinx.coroutines.currentCoroutineContext</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import kotlinx.coroutines.ensureActive</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import kotlinx.coroutines.flow.first</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//import kotlinx.coroutines.launch</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//package com.monoid.hackernews.view.reply</ID>
+    <ID>CommentSpacing:ReplyContent.kt$//}</ID>
+    <ID>CommentWrapping:HNApplication.kt$HNApplication$/* filter = */</ID>
+    <ID>CommentWrapping:HNApplication.kt$HNApplication$/* receiver = */</ID>
+    <ID>CommentWrapping:MainActivity.kt$MainActivity$/* msg = */</ID>
+    <ID>CommentWrapping:MainActivity.kt$MainActivity$/* tag = */</ID>
+    <ID>CyclomaticComplexMethod:Item.kt$@Composable fun Item( item: Item?, onClickDetail: () -&gt; Unit, onClickReply: () -&gt; Unit, onClickUser: (Username?) -&gt; Unit, onClickBrowser: () -&gt; Unit, onClickUpvote: () -&gt; Unit, onClickFavorite: () -&gt; Unit, onClickFollow: () -&gt; Unit, onClickFlag: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>CyclomaticComplexMethod:ItemComment.kt$@Composable fun ItemComment( threadItem: ItemDetailViewModel.ThreadItemUiState, onClickUser: (Username) -&gt; Unit, onClickReply: (ItemId) -&gt; Unit, onNavigateLogin: (LoginAction) -&gt; Unit, onVisible: (ItemId) -&gt; Unit, onClick: (ItemId) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>CyclomaticComplexMethod:ItemDetail.kt$@Composable fun ItemDetail( item: Item?, onOpenBrowser: (Item) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>DestructuringDeclarationWithTooManyEntries:PreferencesDetail.kt$val (selectedLightDarkMode, selectedFont, fontSize, lineSpacing, paragraphIndent, selectedShape, colors) = uiState</ID>
+    <ID>EmptyFunctionBlock:ProfileDetail.kt${ }</ID>
+    <ID>ForbiddenComment:MainActivity.kt$MainActivity$// TODO: prod build</ID>
+    <ID>ForbiddenComment:PreferencesDetail.kt$// TODO: colors</ID>
+    <ID>FunctionNaming:AboutUs.kt$@Composable fun AboutUs( windowSizeClass: WindowSizeClass, modifier: Modifier = Modifier, )</ID>
+    <ID>FunctionNaming:AboutUsBottomSheet.kt$@OptIn(ExperimentalMaterial3Api::class) @Composable fun AboutUsBottomSheet( windowSizeClass: WindowSizeClass, onHide: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>FunctionNaming:FontButton.kt$@Composable fun FontButton( font: HNFont, selected: Boolean, onClickFont: (HNFont) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>FunctionNaming:HomeContent.kt$@Composable fun HomeContent( currentDestination: BottomNav, onClickBrowser: (Item) -&gt; Unit, onClickLogin: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>FunctionNaming:HomeScaffold.kt$@Composable fun HomeScaffold( onClickBrowser: (Item) -&gt; Unit, onClickLogin: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>FunctionNaming:Item.kt$@Composable fun Item( item: Item?, onClickDetail: () -&gt; Unit, onClickReply: () -&gt; Unit, onClickUser: (Username?) -&gt; Unit, onClickBrowser: () -&gt; Unit, onClickUpvote: () -&gt; Unit, onClickFavorite: () -&gt; Unit, onClickFollow: () -&gt; Unit, onClickFlag: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>FunctionNaming:Item.kt$@Preview( showBackground = true, wallpaper = Wallpapers.YELLOW_DOMINATED_EXAMPLE, ) @Composable private fun ItemPreview()</ID>
+    <ID>FunctionNaming:ItemComment.kt$@Composable fun ItemComment( threadItem: ItemDetailViewModel.ThreadItemUiState, onClickUser: (Username) -&gt; Unit, onClickReply: (ItemId) -&gt; Unit, onNavigateLogin: (LoginAction) -&gt; Unit, onVisible: (ItemId) -&gt; Unit, onClick: (ItemId) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>FunctionNaming:ItemComment.kt$@Composable fun ThreadDepth(depth: Int, modifier: Modifier = Modifier)</ID>
+    <ID>FunctionNaming:ItemDetail.kt$@Composable fun ItemDetail( item: Item?, onOpenBrowser: (Item) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>FunctionNaming:ItemDetailPane.kt$@Composable fun ItemDetailPane( itemId: ItemId, onOpenBrowser: (Item) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>FunctionNaming:ItemsColumn.kt$@Composable fun ItemsColumn( itemsList: List&lt;Item&gt;?, onItemVisible: (Item) -&gt; Unit, onItemClick: (Item) -&gt; Unit, onOpenBrowser: (Item) -&gt; Unit, listState: LazyListState, modifier: Modifier = Modifier, )</ID>
+    <ID>FunctionNaming:LighDarkButton.kt$@Composable fun LightDarkButton( lightDarkMode: LightDarkMode, selected: Boolean, onClickLightDarkMode: (LightDarkMode) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>FunctionNaming:LoginDialog.kt$@Composable fun LoginDialog( onDismissRequest: () -&gt; Unit, modifier: Modifier = Modifier, loginViewModel: LoginViewModel = koinViewModel(), )</ID>
+    <ID>FunctionNaming:LoginDialogContent.kt$@Composable fun LoginDialogContent( onClickSubmit: (Username, Password) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>FunctionNaming:MainNavHost.kt$@Composable fun MainNavHost(modifier: Modifier = Modifier)</ID>
+    <ID>FunctionNaming:PasswordTextField.kt$@Composable fun PasswordTextField( password: String, onChangePassword: (String) -&gt; Unit, modifier: Modifier = Modifier, @StringRes labelId: Int = R.string.password, @StringRes errorLabelId: Int? = null, onNext: (() -&gt; Unit)? = null, onPrev: (() -&gt; Unit)? = null, onDone: (() -&gt; Unit)? = null, )</ID>
+    <ID>FunctionNaming:PreferencesDetail.kt$@Composable fun PreferencesDetail( modifier: Modifier = Modifier, viewModel: PreferencesViewModel = koinViewModel(), )</ID>
+    <ID>FunctionNaming:ProfileDetail.kt$@Composable fun ProfileDetail(modifier: Modifier = Modifier)</ID>
+    <ID>FunctionNaming:ReplyTextField.kt$@Composable fun ReplyTextField( reply: String, onReplyChange: (String) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>FunctionNaming:Scrim.kt$@Composable fun Scrim(modifier: Modifier = Modifier, content: @Composable () -&gt; Unit)</ID>
+    <ID>FunctionNaming:SettingsDetailPane.kt$@Suppress("ComposeUnstableReceiver") @Composable fun ThreePaneScaffoldScope.SettingsDetailPane( settingsDetailUiState: SettingsDetailUiState?, modifier: Modifier = Modifier, )</ID>
+    <ID>FunctionNaming:SettingsListPane.kt$@Suppress("ComposeUnstableReceiver") @Composable fun ThreePaneScaffoldScope.SettingsListPane( username: Username?, onClickLogin: () -&gt; Unit, onClickLogout: () -&gt; Unit, onClickStyle: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>FunctionNaming:SettingsScaffold.kt$@Composable fun SettingsScaffold( navigator: ThreePaneScaffoldNavigator&lt;Any&gt;, onClickLogin: () -&gt; Unit, modifier: Modifier = Modifier, viewModel: SettingsViewModel = koinViewModel(), )</ID>
+    <ID>FunctionNaming:ShapeButton.kt$@Composable fun ShapeButton( shape: Shape, selected: Boolean, onClickShape: (Shape) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>FunctionNaming:StoriesDetailPane.kt$@Suppress("ComposeUnstableReceiver") @Composable fun ThreePaneScaffoldScope.StoriesDetailPane( itemId: ItemId?, onOpenBrowser: (Item) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>FunctionNaming:StoriesExtraPane.kt$@Suppress("ComposeUnstableReceiver") @Composable fun ThreePaneScaffoldScope.StoriesExtraPane(url: String?, modifier: Modifier = Modifier)</ID>
+    <ID>FunctionNaming:StoriesListPane.kt$@Suppress("ComposeUnstableReceiver") @Composable fun ThreePaneScaffoldScope.StoriesListPane( listState: LazyListState, itemsList: List&lt;Item&gt;?, onVisibleItem: (Item) -&gt; Unit, onClickItem: (Item) -&gt; Unit, onClickBrowser: (Item) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>FunctionNaming:StoriesScaffold.kt$@Composable fun StoriesScaffold( navigator: ThreePaneScaffoldNavigator&lt;Any&gt;, onClickBrowser: (Item) -&gt; Unit, modifier: Modifier = Modifier, key: String = "default", viewModel: StoriesViewModel = createStoriesViewModel(key), )</ID>
+    <ID>FunctionNaming:Theme.kt$@Composable fun AppTheme( viewModel: PreferencesViewModel = koinViewModel(), content: @Composable () -&gt; Unit, )</ID>
+    <ID>FunctionNaming:UsernameTextField.kt$@Composable fun UsernameTextField( username: String, onUsernameChange: (String) -&gt; Unit, onNext: () -&gt; Unit, onPrev: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>FunctionNaming:WebViewPane.kt$@Composable fun WebViewPane(url: String?, modifier: Modifier = Modifier)</ID>
+    <ID>ImportOrdering:ApplicationModule.kt$import android.content.Intent import androidx.lifecycle.LifecycleOwner import androidx.lifecycle.ProcessLifecycleOwner import com.monoid.hackernews.common.data.LoginRepository import com.monoid.hackernews.common.data.PreferencesRepository import com.monoid.hackernews.common.data.StoriesRepository import com.monoid.hackernews.common.data.UserStoryRepositoryFactory import com.monoid.hackernews.view.itemdetail.ItemDetailViewModel import com.monoid.hackernews.view.main.LoginViewModel import com.monoid.hackernews.view.settings.SettingsViewModel import com.monoid.hackernews.view.settings.PreferencesViewModel import com.monoid.hackernews.view.stories.StoriesViewModel import kotlinx.coroutines.channels.Channel import org.koin.androidx.viewmodel.dsl.viewModel import org.koin.core.qualifier.named import org.koin.dsl.module</ID>
+    <ID>Indentation:MainActivity.kt$MainActivity$ </ID>
+    <ID>LongMethod:Item.kt$@Composable fun Item( item: Item?, onClickDetail: () -&gt; Unit, onClickReply: () -&gt; Unit, onClickUser: (Username?) -&gt; Unit, onClickBrowser: () -&gt; Unit, onClickUpvote: () -&gt; Unit, onClickFavorite: () -&gt; Unit, onClickFollow: () -&gt; Unit, onClickFlag: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:ItemComment.kt$@Composable fun ItemComment( threadItem: ItemDetailViewModel.ThreadItemUiState, onClickUser: (Username) -&gt; Unit, onClickReply: (ItemId) -&gt; Unit, onNavigateLogin: (LoginAction) -&gt; Unit, onVisible: (ItemId) -&gt; Unit, onClick: (ItemId) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:ItemDetail.kt$@Composable fun ItemDetail( item: Item?, onOpenBrowser: (Item) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:LoginDialogContent.kt$@Composable fun LoginDialogContent( onClickSubmit: (Username, Password) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongMethod:MainNavHost.kt$@Composable fun MainNavHost(modifier: Modifier = Modifier)</ID>
+    <ID>LongMethod:PasswordTextField.kt$@Composable fun PasswordTextField( password: String, onChangePassword: (String) -&gt; Unit, modifier: Modifier = Modifier, @StringRes labelId: Int = R.string.password, @StringRes errorLabelId: Int? = null, onNext: (() -&gt; Unit)? = null, onPrev: (() -&gt; Unit)? = null, onDone: (() -&gt; Unit)? = null, )</ID>
+    <ID>LongMethod:PreferencesDetail.kt$@Composable fun PreferencesDetail( modifier: Modifier = Modifier, viewModel: PreferencesViewModel = koinViewModel(), )</ID>
+    <ID>LongMethod:Scrim.kt$@Composable fun Scrim(modifier: Modifier = Modifier, content: @Composable () -&gt; Unit)</ID>
+    <ID>LongMethod:Type.kt$@Composable fun rememberAppTypography( fontFamily: FontFamily, fontSizeDelta: FontSize, lineHeightDelta: LineHeight, paragraphIndent: ParagraphIndent, ): Typography</ID>
+    <ID>LongParameterList:Item.kt$( item: Item?, onClickDetail: () -&gt; Unit, onClickReply: () -&gt; Unit, onClickUser: (Username?) -&gt; Unit, onClickBrowser: () -&gt; Unit, onClickUpvote: () -&gt; Unit, onClickFavorite: () -&gt; Unit, onClickFollow: () -&gt; Unit, onClickFlag: () -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:ItemComment.kt$( threadItem: ItemDetailViewModel.ThreadItemUiState, onClickUser: (Username) -&gt; Unit, onClickReply: (ItemId) -&gt; Unit, onNavigateLogin: (LoginAction) -&gt; Unit, onVisible: (ItemId) -&gt; Unit, onClick: (ItemId) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:ItemsColumn.kt$( itemsList: List&lt;Item&gt;?, onItemVisible: (Item) -&gt; Unit, onItemClick: (Item) -&gt; Unit, onOpenBrowser: (Item) -&gt; Unit, listState: LazyListState, modifier: Modifier = Modifier, )</ID>
+    <ID>LongParameterList:PasswordTextField.kt$( password: String, onChangePassword: (String) -&gt; Unit, modifier: Modifier = Modifier, @StringRes labelId: Int = R.string.password, @StringRes errorLabelId: Int? = null, onNext: (() -&gt; Unit)? = null, onPrev: (() -&gt; Unit)? = null, onDone: (() -&gt; Unit)? = null, )</ID>
+    <ID>LongParameterList:StoriesListPane.kt$( listState: LazyListState, itemsList: List&lt;Item&gt;?, onVisibleItem: (Item) -&gt; Unit, onClickItem: (Item) -&gt; Unit, onClickBrowser: (Item) -&gt; Unit, modifier: Modifier = Modifier, )</ID>
+    <ID>MagicNumber:Color.kt$0xFF1C1B1F</ID>
+    <ID>MagicNumber:Color.kt$0xFF1D192B</ID>
+    <ID>MagicNumber:Color.kt$0xFF21005D</ID>
+    <ID>MagicNumber:Color.kt$0xFF31111D</ID>
+    <ID>MagicNumber:Color.kt$0xFF313033</ID>
+    <ID>MagicNumber:Color.kt$0xFF332D41</ID>
+    <ID>MagicNumber:Color.kt$0xFF381E72</ID>
+    <ID>MagicNumber:Color.kt$0xFF410E0B</ID>
+    <ID>MagicNumber:Color.kt$0xFF492532</ID>
+    <ID>MagicNumber:Color.kt$0xFF49454F</ID>
+    <ID>MagicNumber:Color.kt$0xFF4A4458</ID>
+    <ID>MagicNumber:Color.kt$0xFF4F378B</ID>
+    <ID>MagicNumber:Color.kt$0xFF601410</ID>
+    <ID>MagicNumber:Color.kt$0xFF625B71</ID>
+    <ID>MagicNumber:Color.kt$0xFF633B48</ID>
+    <ID>MagicNumber:Color.kt$0xFF6750A4</ID>
+    <ID>MagicNumber:Color.kt$0xFF79747E</ID>
+    <ID>MagicNumber:Color.kt$0xFF7D5260</ID>
+    <ID>MagicNumber:Color.kt$0xFF8C1D18</ID>
+    <ID>MagicNumber:Color.kt$0xFF938F99</ID>
+    <ID>MagicNumber:Color.kt$0xFFB3261E</ID>
+    <ID>MagicNumber:Color.kt$0xFFCAC4D0</ID>
+    <ID>MagicNumber:Color.kt$0xFFCCC2DC</ID>
+    <ID>MagicNumber:Color.kt$0xFFD0BCFF</ID>
+    <ID>MagicNumber:Color.kt$0xFFE6E1E5</ID>
+    <ID>MagicNumber:Color.kt$0xFFE7E0EC</ID>
+    <ID>MagicNumber:Color.kt$0xFFE8DEF8</ID>
+    <ID>MagicNumber:Color.kt$0xFFEADDFF</ID>
+    <ID>MagicNumber:Color.kt$0xFFEFB8C8</ID>
+    <ID>MagicNumber:Color.kt$0xFFF2B8B5</ID>
+    <ID>MagicNumber:Color.kt$0xFFF4EFF4</ID>
+    <ID>MagicNumber:Color.kt$0xFFF9DEDC</ID>
+    <ID>MagicNumber:Color.kt$0xFFFFD8E4</ID>
+    <ID>MagicNumber:Color.kt$0xFFFFFBFE</ID>
+    <ID>MagicNumber:Color.kt$0xFFFFFFFF</ID>
+    <ID>MagicNumber:ItemComment.kt$3</ID>
+    <ID>MagicNumber:MainActivity.kt$MainActivity$400L</ID>
+    <ID>MagicNumber:PreferencesViewModel.kt$PreferencesViewModel$5_000</ID>
+    <ID>MagicNumber:Type.kt$10</ID>
+    <ID>MatchingDeclarationName:ApplicationModule.kt$LifecycleOwnerQualifier</ID>
+    <ID>MaxLineLength:HomeScaffold.kt$imageVector = if (story == BottomNav.entries[currentDestination]) story.selectedIcon else story.icon</ID>
+    <ID>MaxLineLength:Theme.kt$if</ID>
+    <ID>MaximumLineLength:HomeScaffold.kt$ </ID>
+    <ID>MaximumLineLength:Theme.kt$ </ID>
+    <ID>MultiLineIfElse:ItemComment.kt$Icons.Filled.Flag</ID>
+    <ID>MultiLineIfElse:ItemComment.kt$Icons.Filled.Quickreply</ID>
+    <ID>MultiLineIfElse:ItemComment.kt$Icons.Filled.ThumbUp</ID>
+    <ID>MultiLineIfElse:ItemComment.kt$Icons.TwoTone.Flag</ID>
+    <ID>MultiLineIfElse:ItemComment.kt$Icons.TwoTone.Quickreply</ID>
+    <ID>MultiLineIfElse:ItemComment.kt$Icons.TwoTone.ThumbUp</ID>
+    <ID>MultiLineIfElse:ItemComment.kt$R.string.flag</ID>
+    <ID>MultiLineIfElse:ItemComment.kt$R.string.follow</ID>
+    <ID>MultiLineIfElse:ItemComment.kt$R.string.un_flag</ID>
+    <ID>MultiLineIfElse:ItemComment.kt$R.string.un_vote</ID>
+    <ID>MultiLineIfElse:ItemComment.kt$R.string.unfollow</ID>
+    <ID>MultiLineIfElse:ItemComment.kt$R.string.upvote</ID>
+    <ID>MultiLineIfElse:ItemComment.kt$item.text ?: ""</ID>
+    <ID>MultiLineIfElse:ItemComment.kt$stringResource(id = R.string.deleted)</ID>
+    <ID>MultiLineIfElse:Theme.kt$DarkThemeColors</ID>
+    <ID>MultiLineIfElse:Theme.kt$LightThemeColors</ID>
+    <ID>NoBlankLineBeforeRbrace:ProfileDetail.kt$ </ID>
+    <ID>NoEmptyFirstLineInMethodBlock:ProfileDetail.kt$ </ID>
+    <ID>NoEmptyFirstLineInMethodBlock:StoriesViewModel.kt$StoriesViewModel$ </ID>
+    <ID>NoUnusedImports:LighDarkButton.kt$com.monoid.hackernews.view.settings.LighDarkButton.kt</ID>
+    <ID>NoUnusedImports:StoriesViewModel.kt$com.monoid.hackernews.view.stories.StoriesViewModel.kt</ID>
+    <ID>UnusedParameter:Item.kt$onClickUser: (Username?) -&gt; Unit</ID>
+    <ID>UnusedParameter:ItemComment.kt$onClickReply: (ItemId) -&gt; Unit</ID>
+    <ID>UnusedParameter:ItemComment.kt$onClickUser: (Username) -&gt; Unit</ID>
+    <ID>UnusedParameter:ItemComment.kt$onNavigateLogin: (LoginAction) -&gt; Unit</ID>
+    <ID>UnusedParameter:ProfileDetail.kt$modifier: Modifier = Modifier</ID>
+    <ID>UnusedParameter:Theme.kt$colors: Colors</ID>
+    <ID>UnusedPrivateMember:Item.kt$@Preview( showBackground = true, wallpaper = Wallpapers.YELLOW_DOMINATED_EXAMPLE, ) @Composable private fun ItemPreview()</ID>
+    <ID>UnusedPrivateProperty:HNApplication.kt$HNApplication.Companion$private const val TAG = "HNApplication"</ID>
+    <ID>Wrapping:AboutUs.kt$(</ID>
+    <ID>Wrapping:MainActivity.kt$MainActivity$-&gt;</ID>
+  </CurrentIssues>
 </SmellBaseline>

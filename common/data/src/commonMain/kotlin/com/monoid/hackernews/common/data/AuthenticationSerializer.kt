@@ -4,6 +4,8 @@ package com.monoid.hackernews.common.data
 
 import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.Serializer
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
@@ -16,6 +18,7 @@ object AuthenticationSerializer : Serializer<Preferences> {
     override suspend fun readFrom(input: InputStream): Preferences = try {
         Json.decodeFromStream<Preferences>(input)
     } catch (throwable: Throwable) {
+        currentCoroutineContext().ensureActive()
         throw CorruptionException("Cannot read authentication.", throwable)
     }
 

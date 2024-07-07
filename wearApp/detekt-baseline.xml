@@ -1,9 +1,6 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues>
-
-
-  </ManuallySuppressedIssues>
+  <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>ArgumentListWrapping:HNWearApplication.kt$HNWearApplication$(com.monoid.hackernews.common.view.R.integer.favorites_state_hours)</ID>
     <ID>BlockCommentInitialStarAlignment:Type.kt$/* Other default text styles to override button = TextStyle( fontFamily = FontFamily.Default, fontWeight = FontWeight.W500, fontSize = 14.sp ), caption = TextStyle( fontFamily = FontFamily.Default, fontWeight = FontWeight.Normal, fontSize = 12.sp ) */</ID>
@@ -29,8 +26,9 @@
     <ID>MultiLineIfElse:TextBlock.kt$modifier.height(blockHeightDp)</ID>
     <ID>MultiLineIfElse:TextBlock.kt$modifier.heightIn(min = blockHeightDp, max = Dp.Infinity)</ID>
     <ID>NoBlankLineBeforeRbrace:MainActivity.kt$MainActivity$ </ID>
+    <ID>NoEmptyFirstLineInMethodBlock:HNWearApplication.kt$HNWearApplication$ </ID>
     <ID>NoEmptyFirstLineInMethodBlock:MainActivity.kt$MainActivity$ </ID>
-    <ID>TooGenericExceptionCaught:HNWearApplication.kt$HNWearApplication$throwable: Throwable</ID>
+    <ID>NoUnusedImports:HNWearApplication.kt$com.monoid.hackernews.wear.HNWearApplication.kt</ID>
     <ID>UnusedPrivateProperty:MainActivity.kt$MainActivity$val mainViewModel: MainViewModel = koinViewModel()</ID>
   </CurrentIssues>
 </SmellBaseline>

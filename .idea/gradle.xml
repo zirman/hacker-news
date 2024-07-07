@@ -10,7 +10,7 @@
               <build path="$PROJECT_DIR$/build-logic" name="build-logic">
                 <projects>
                   <project path="$PROJECT_DIR$/build-logic" />
-                  <project path="$PROJECT_DIR$/build-logic/convention" />
+                  <project path="$PROJECT_DIR$/build-logic/detekt-convention-plugin" />
                 </projects>
               </build>
             </builds>
@@ -24,13 +24,14 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/androidApp" />
             <option value="$PROJECT_DIR$/build-logic" />
-            <option value="$PROJECT_DIR$/build-logic/convention" />
+            <option value="$PROJECT_DIR$/build-logic/detekt-convention-plugin" />
             <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/common/data" />
             <option value="$PROJECT_DIR$/common/domain" />
             <option value="$PROJECT_DIR$/common/injection" />
             <option value="$PROJECT_DIR$/common/view" />
             <option value="$PROJECT_DIR$/desktopApp" />
+            <option value="$PROJECT_DIR$/detekt-rules" />
             <option value="$PROJECT_DIR$/wearApp" />
           </set>
         </option>

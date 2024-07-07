@@ -30,12 +30,10 @@ tasks {
     }
 }
 
-gradlePlugin { // Create this block if it doesn't exist
+gradlePlugin {
     plugins {
-        register("detekt") { // A unique string
-            // This is the name we'll be using in all our modules to apply this plugin.
+        register("detekt") {
             id = "hackernews.detekt"
-            // Class name of the plugin file which implements `Plugin` interface.
             implementationClass = "DetektConventionPlugin"
         }
     }
