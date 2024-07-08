@@ -737,7 +737,7 @@ style:
     active: true
   UnusedPrivateMember:
     active: true
-    allowedNames: '*Preview'
+    allowedNames: ''
   UnusedPrivateProperty:
     active: true
     allowedNames: '_|ignored|expected|serialVersionUID'
