@@ -20,6 +20,14 @@ import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 import org.jetbrains.kotlin.psi.KtTypeAlias
 
 class CatchingCoroutineCancellation(config: Config = Config.empty) : Rule(config) {
+
+    override val issue = Issue(
+        id = javaClass.simpleName,
+        severity = Severity.Defect,
+        description = "This rule reports not handling coroutine cancellation exceptions correctly.",
+        debt = Debt.FIVE_MINS,
+    )
+
     private val currentCoroutineContextNames: MutableList<Name> = mutableListOf(
         // fully qualified name of currentCoroutineContext
         Name.identifier("kotlinx.coroutines.currentCoroutineContext"),
@@ -39,13 +47,6 @@ class CatchingCoroutineCancellation(config: Config = Config.empty) : Rule(config
         Name.identifier("kotlinx.coroutines.CancellationException"),
         Name.identifier("java.lang.Exception"),
         Name.identifier("java.lang.Throwable"),
-    )
-
-    override val issue = Issue(
-        id = javaClass.simpleName,
-        severity = Severity.Defect,
-        description = "This rule reports not handling coroutine cancellation exceptions correctly.",
-        debt = Debt.FIVE_MINS,
     )
 
     override fun visitImportDirective(importDirective: KtImportDirective) {
