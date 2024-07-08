@@ -17,15 +17,28 @@ import org.jetbrains.kotlin.psi.KtImportDirective
 import org.jetbrains.kotlin.psi.KtNameReferenceExpression
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
+import org.jetbrains.kotlin.psi.KtTypeAlias
 
 class CatchingCoroutineCancellation(config: Config = Config.empty) : Rule(config) {
-    private val currentCoroutineContextNames: MutableList<Name?> = mutableListOf()
-    private val ensureActiveNames: MutableList<Name?> = mutableListOf()
+    private val currentCoroutineContextNames: MutableList<Name> = mutableListOf(
+        // fully qualified name of currentCoroutineContext
+        Name.identifier("kotlinx.coroutines.currentCoroutineContext"),
+    )
+
+    private val ensureActiveNames: MutableList<Name> = mutableListOf(
+        // fully qualified name of ensureActive
+        Name.identifier("kotlinx.coroutines.ensureActive"),
+    )
 
     private val jobCancellationExceptionNames: MutableList<Name> = mutableListOf(
-        // default imported names that could be a JobCancellationException
+        // default name and fully qualified names that may be a JobCancellationException
         Name.identifier("Throwable"),
         Name.identifier("Exception"),
+        Name.identifier("kotlin.Throwable"),
+        Name.identifier("kotlin.Exception"),
+        Name.identifier("kotlinx.coroutines.CancellationException"),
+        Name.identifier("java.lang.Exception"),
+        Name.identifier("java.lang.Throwable"),
     )
 
     override val issue = Issue(
@@ -37,26 +50,29 @@ class CatchingCoroutineCancellation(config: Config = Config.empty) : Rule(config
 
     override fun visitImportDirective(importDirective: KtImportDirective) {
         super.visitImportDirective(importDirective)
-        val importPath = importDirective.importPath
-        when (importPath?.fqName?.asString()) {
-            "kotlinx.coroutines.currentCoroutineContext" -> {
-                currentCoroutineContextNames += importPath.importedName
+        val importPath = importDirective.importPath ?: return
+        val fqName = importPath.fqName.asString()
+        if (currentCoroutineContextNames.any { it.identifier == fqName }) {
+            importPath.importedName?.let {
+                currentCoroutineContextNames += it
             }
-
-            "kotlinx.coroutines.ensureActive" -> {
-                ensureActiveNames += importPath.importedName
+        } else if (ensureActiveNames.any { it.identifier == fqName }) {
+            importPath.importedName?.let {
+                ensureActiveNames += it
             }
+        } else if (jobCancellationExceptionNames.any { it.identifier == fqName }) {
+            importPath.importedName?.let {
+                jobCancellationExceptionNames += it
+            }
+        }
+    }
 
-            // imported names
-            "kotlinx.coroutines.CancellationException",
-
-            // aliases
-            "kotlin.Throwable",
-            "kotlin.Exception",
-            "java.lang.Exception" -> {
-                importPath.importedName?.let {
-                    jobCancellationExceptionNames += it
-                }
+    override fun visitTypeAlias(typeAlias: KtTypeAlias) {
+        super.visitTypeAlias(typeAlias)
+        val typeText = typeAlias.getTypeReference()?.getTypeText()
+        if (jobCancellationExceptionNames.any { it.identifier == typeText }) {
+            typeAlias.name?.let {
+                jobCancellationExceptionNames += Name.identifier(it)
             }
         }
     }
@@ -82,12 +98,9 @@ class CatchingCoroutineCancellation(config: Config = Config.empty) : Rule(config
 
         override fun visitCatchSection(catchClause: KtCatchClause) {
             super.visitCatchSection(catchClause)
-
-            catchClause.catchParameter?.typeReference?.getTypeText()
-                ?.takeIf { catchParameterType ->
-                    jobCancellationExceptionNames.any { it.identifier == catchParameterType }
-                }
-                ?.let { catchClause.catchBody?.children?.firstOrNull() as? KtDotQualifiedExpression }
+            val typeText = catchClause.catchParameter?.typeReference?.getTypeText()
+            if (jobCancellationExceptionNames.none { it.identifier == typeText }) return
+            (catchClause.catchBody?.children?.firstOrNull() as? KtDotQualifiedExpression)
                 ?.let { element ->
                     ((element.receiverExpression as? KtCallExpression)?.calleeExpression as? KtNameReferenceExpression)
                         ?.getReferencedNameAsName()
@@ -96,8 +109,7 @@ class CatchingCoroutineCancellation(config: Config = Config.empty) : Rule(config
                             (
                                 (element.selectorExpression as? KtCallExpression)?.calleeExpression as?
                                     KtNameReferenceExpression
-                                )
-                                ?.getReferencedNameAsName()
+                                )?.getReferencedNameAsName()
                         }
                         ?.takeIf { ensureActiveNames.contains(it) }
                 }
