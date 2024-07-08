@@ -3,58 +3,23 @@ package com.monoid.hackernews.wear
 import android.app.Application
 import android.content.Intent
 import android.content.IntentFilter
-import androidx.datastore.core.DataStore
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ProcessLifecycleOwner
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import com.monoid.hackernews.common.api.getFavorites
-import com.monoid.hackernews.common.api.getUpvoted
-import com.monoid.hackernews.common.data.ItemTreeRepository
-import com.monoid.hackernews.common.data.Preferences
-import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.dataStoreModule
 import com.monoid.hackernews.common.databaseModule
-import com.monoid.hackernews.common.injection.LoggerAdapter
 import com.monoid.hackernews.common.injection.dispatcherModule
 import com.monoid.hackernews.common.injection.loggerModule
 import com.monoid.hackernews.common.networkModule
-import com.monoid.hackernews.common.room.FavoriteDao
 import com.monoid.hackernews.common.room.HNDatabase
-import com.monoid.hackernews.common.room.UpvoteDao
 import com.monoid.hackernews.common.view.updateAndPushDynamicShortcuts
 import io.ktor.client.HttpClient
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.async
-import kotlinx.coroutines.currentCoroutineContext
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.ensureActive
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidFileProperties
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
-import java.util.concurrent.TimeUnit
 
 class HNWearApplication : Application() {
-    private val logger: LoggerAdapter by inject()
-    private val preferences: DataStore<Preferences> by inject()
     private val db: HNDatabase by inject()
-    private val upvoteDao: UpvoteDao by inject()
-    private val favoriteDao: FavoriteDao by inject()
     private val httpClient: HttpClient by inject()
-    private val itemTreeRepository: ItemTreeRepository by inject()
-
-    private val context = CoroutineExceptionHandler { _, throwable ->
-        logger.recordException(
-            messageString = "upvoteItemJob",
-            throwable = throwable,
-            tag = TAG,
-        )
-    }
 
     override fun onCreate() {
         super.onCreate()
@@ -73,57 +38,6 @@ class HNWearApplication : Application() {
             )
         }
 
-        val lifecycleOwner = ProcessLifecycleOwner.get()
-
-        lifecycleOwner.lifecycleScope.launch(context) {
-            lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // Update upvote and favorite table on login and then periodically.
-                preferences.data.distinctUntilChanged().collectLatest { authentication ->
-                    if (authentication.password.string.isNotEmpty()) {
-                        while (true) {
-                            try {
-                                val upvoteDef = async {
-                                    upvoteDao.replaceUpvotesForUser(
-                                        username = authentication.username.string,
-                                        upvotes = getUpvoted(
-                                            authentication,
-                                            Username(authentication.username.string)
-                                        ).map { it.long },
-                                    )
-                                }
-
-                                val favoriteDef = async {
-                                    favoriteDao.replaceFavoritesForUser(
-                                        username = authentication.username.string,
-                                        favorites = getFavorites(Username(authentication.username.string))
-                                            .map { it.long },
-                                    )
-                                }
-
-                                delay(
-                                    TimeUnit.HOURS.toMillis(
-                                        resources
-                                            .getInteger(com.monoid.hackernews.common.view.R.integer.favorites_state_hours)
-                                            .toLong()
-                                    )
-                                )
-
-                                upvoteDef.await()
-                                favoriteDef.await()
-                            } catch (throwable: Throwable) {
-                                currentCoroutineContext().ensureActive()
-                                logger.recordException(
-                                    messageString = "OnCreate",
-                                    throwable = throwable,
-                                    tag = TAG,
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         updateAndPushDynamicShortcuts(MainActivity::class.java)
 
         // register locale changed broadcast receiver
@@ -133,18 +47,9 @@ class HNWearApplication : Application() {
         )
     }
 
-    override fun onTrimMemory(level: Int) {
-        super.onTrimMemory(level)
-        itemTreeRepository.cleanup()
-    }
-
     override fun onTerminate() {
         httpClient.close()
         db.close()
         super.onTerminate()
-    }
-
-    companion object {
-        private const val TAG = "HNWearApplication"
     }
 }

@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 
-suspend fun getNetworkConnectivityStateFlow(
+fun getNetworkConnectivityStateFlow(
     coroutineScope: CoroutineScope,
     connectivityManager: ConnectivityManager,
 ): StateFlow<Boolean> =

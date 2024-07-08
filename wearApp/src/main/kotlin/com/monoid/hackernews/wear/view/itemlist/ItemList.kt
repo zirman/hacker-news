@@ -5,12 +5,10 @@ import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
@@ -18,15 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.rotary.onRotaryScrollEvent
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.metrics.performance.PerformanceMetricsState
 import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import androidx.wear.compose.foundation.lazy.ScalingLazyListState
-import androidx.wear.compose.foundation.lazy.items
 import androidx.wear.compose.material.ListHeader
 import androidx.wear.compose.material.Text
 import com.monoid.hackernews.common.api.ItemId
-import com.monoid.hackernews.common.data.ItemListRow
 import com.monoid.hackernews.common.util.rememberMetricsStateHolder
 import kotlinx.coroutines.launch
 
@@ -34,7 +29,6 @@ import kotlinx.coroutines.launch
 fun ItemList(
     state: ScalingLazyListState,
     title: String,
-    itemRows: List<ItemListRow>,
     onClickDetail: (ItemId?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -84,14 +78,14 @@ fun ItemList(
             }
         }
 
-        items(itemRows, { it.itemId.long }) { itemRow ->
-            val itemUi by remember(itemRow.itemId) { itemRow.itemUiFlow(coroutineScope) }
-                .collectAsStateWithLifecycle()
-            Item(
-                itemUi = itemUi,
-                onClickDetail = { onClickDetail(it) },
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
+//        items(itemRows, { it.itemId.long }) { itemRow ->
+//            val itemUi by remember(itemRow.itemId) { itemRow.itemUiFlow(coroutineScope) }
+//                .collectAsStateWithLifecycle()
+//            Item(
+//                itemUi = itemUi,
+//                onClickDetail = { onClickDetail(it) },
+//                modifier = Modifier.fillMaxWidth(),
+//            )
+//        }
     }
 }

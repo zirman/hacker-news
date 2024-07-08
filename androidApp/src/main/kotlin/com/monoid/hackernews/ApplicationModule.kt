@@ -7,10 +7,11 @@ import com.monoid.hackernews.common.data.LoginRepository
 import com.monoid.hackernews.common.data.PreferencesRepository
 import com.monoid.hackernews.common.data.StoriesRepository
 import com.monoid.hackernews.common.data.UserStoryRepositoryFactory
+import com.monoid.hackernews.common.injection.DispatcherQualifier
 import com.monoid.hackernews.view.itemdetail.ItemDetailViewModel
 import com.monoid.hackernews.view.main.LoginViewModel
-import com.monoid.hackernews.view.settings.SettingsViewModel
 import com.monoid.hackernews.view.settings.PreferencesViewModel
+import com.monoid.hackernews.view.settings.SettingsViewModel
 import com.monoid.hackernews.view.stories.StoriesViewModel
 import kotlinx.coroutines.channels.Channel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -32,6 +33,7 @@ val applicationModule = module {
     viewModel {
         ItemDetailViewModel(
             savedStateHandle = get(),
+            defaultDispatcher = get(named(DispatcherQualifier.Default)),
             logger = get(),
             repository = get(),
         )

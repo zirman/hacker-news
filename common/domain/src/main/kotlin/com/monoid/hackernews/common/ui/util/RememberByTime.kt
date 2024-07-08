@@ -16,7 +16,7 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.periodUntil
 
-const val userTag = "USER"
+const val USER_TAG = "USER"
 
 @Composable
 fun rememberTimeBy(time: Long?, by: String?): AnnotatedString =
@@ -42,8 +42,8 @@ fun rememberTimeBy(time: Long?, by: String?): AnnotatedString =
             )
 
             withAnnotation(
-                tag = userTag,
-                annotation = by ?: "",
-            ) { withStyle(style = userSpanStyle) { append(by ?: "") } }
+                tag = USER_TAG,
+                annotation = by.orEmpty(),
+            ) { withStyle(style = userSpanStyle) { append(by.orEmpty()) } }
         }
     }

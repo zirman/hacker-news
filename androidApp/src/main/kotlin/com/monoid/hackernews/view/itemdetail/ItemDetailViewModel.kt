@@ -9,8 +9,8 @@ import com.monoid.hackernews.common.data.Item
 import com.monoid.hackernews.common.data.StoriesRepository
 import com.monoid.hackernews.common.data.makeItem
 import com.monoid.hackernews.common.injection.LoggerAdapter
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,6 +26,7 @@ import java.util.WeakHashMap
 
 class ItemDetailViewModel(
     savedStateHandle: SavedStateHandle,
+    defaultDispatcher: CoroutineDispatcher,
     private val logger: LoggerAdapter,
     private val repository: StoriesRepository,
 ) : ViewModel() {
@@ -55,7 +56,7 @@ class ItemDetailViewModel(
     val uiState: StateFlow<UiState> = combine(
         loading,
         repository.cache.map { cache ->
-            withContext(Dispatchers.Default) {
+            withContext(defaultDispatcher) {
                 cache.traverse(itemId)
             }
         },

@@ -20,8 +20,6 @@ val wearApplicationModule = module {
     viewModel {
         MainViewModel(
             newIntentChannel = get(),
-            topStoryRepository = get(),
-            itemTreeRepository = get(),
             logger = get(),
         )
     }

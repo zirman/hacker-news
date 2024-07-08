@@ -83,7 +83,7 @@ fun ItemDetail(
                 SelectionContainer(modifier = Modifier.weight(1f)) {
                     Text(
                         text = rememberAnnotatedHtmlString(
-                            (if (item?.type == ItemType.Comment) item.text else item?.title) ?: "",
+                            (if (item?.type == ItemType.Comment) item.text else item?.title).orEmpty(),
                         ),
                         modifier = Modifier.padding(horizontal = 8.dp),
                         style = MaterialTheme.typography.titleMedium,
@@ -298,7 +298,7 @@ fun ItemDetail(
                             }
 
                             Text(
-                                text = remember(score) { score?.toString() ?: "" },
+                                text = remember(score) { score?.toString().orEmpty() },
                                 modifier = Modifier.widthIn(min = 24.dp),
                                 style = MaterialTheme.typography.labelMedium
                             )
@@ -330,7 +330,7 @@ fun ItemDetail(
                     }
 
                     Text(
-                        text = remember(descendants) { descendants?.toString() ?: "" },
+                        text = remember(descendants) { descendants?.toString().orEmpty() },
                         maxLines = 1,
                         modifier = Modifier.widthIn(min = 24.dp),
                         overflow = TextOverflow.Ellipsis,

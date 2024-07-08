@@ -254,8 +254,11 @@ fun ItemComment(
                     }
                 }
 
-                val htmlString = if (item.deleted == true) stringResource(id = R.string.deleted)
-                else item.text ?: ""
+                val htmlString = if (item.deleted == true) {
+                    stringResource(id = R.string.deleted)
+                } else {
+                    item.text.orEmpty()
+                }
 
                 if (item.expanded) {
                     Text(

@@ -346,7 +346,7 @@ fun Item(
                     val score = item?.score
 
                     Text(
-                        text = remember(score) { score?.toString() ?: "" },
+                        text = remember(score) { score?.toString().orEmpty() },
                         maxLines = 1,
                         modifier = Modifier.widthIn(min = 24.dp),
                         overflow = TextOverflow.Ellipsis,
@@ -374,7 +374,7 @@ fun Item(
                     }
 
                     Text(
-                        text = remember(descendants) { descendants?.toString() ?: "" },
+                        text = remember(descendants) { descendants?.toString().orEmpty() },
                         maxLines = 1,
                         modifier = Modifier.widthIn(min = 24.dp),
                         overflow = TextOverflow.Ellipsis,
@@ -385,7 +385,7 @@ fun Item(
                 key("url") {
                     if (item?.url != null) {
                         val host: String = remember(item.url) {
-                            item.url?.let { Uri.parse(it) }?.host ?: ""
+                            item.url?.let { Uri.parse(it) }?.host.orEmpty()
                         }
 
                         Text(
