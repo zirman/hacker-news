@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtCatchClause
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtImportDirective
+import org.jetbrains.kotlin.psi.KtLambdaExpression
 import org.jetbrains.kotlin.psi.KtNameReferenceExpression
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
@@ -88,7 +89,9 @@ class CatchingCoroutineCancellation(config: Config = Config.empty) : Rule(config
         private var enteredNamedFunction = false
         override fun visitElement(element: PsiElement) {
             // prevent entering nested named functions
-            if (element !is KtNamedFunction) {
+            if (element !is KtNamedFunction &&
+                element !is KtLambdaExpression
+            ) {
                 super.visitElement(element)
             } else if (enteredNamedFunction.not()) {
                 enteredNamedFunction = true
