@@ -6,8 +6,8 @@ plugins {
 
 dependencies {
     detektPlugins(libs.detektRulesRuleauthors)
-    implementation(libs.detektApi)
-    implementation(libs.detektTooling)
+    compileOnly(libs.detektApi)
+    compileOnly(libs.detektTooling)
 }
 
 java {
