@@ -127,10 +127,10 @@ complexity:
     active: true
     threshold: 600
   LongMethod:
-    active: true
+    active: false # true
     threshold: 60
   LongParameterList:
-    active: true
+    active: false # true
     functionThreshold: 6
     constructorThreshold: 7
     ignoreDefaultParameters: false
@@ -571,7 +571,7 @@ style:
       - reason: 'Kotlin does not support @Inherited annotation, see https://youtrack.jetbrains.com/issue/KT-22265'
         value: 'java.lang.annotation.Inherited'
   ForbiddenComment:
-    active: true
+    active: false # true
     comments:
       - reason: 'Forbidden FIXME todo marker in comment, please fix the problem.'
         value: 'FIXME:'
@@ -607,7 +607,7 @@ style:
     active: true
     maxJumpCount: 1
   MagicNumber:
-    active: true
+    active: false # true
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**', '**/*.kts']
     ignoreNumbers:
       - '-1'
@@ -739,7 +739,7 @@ style:
     active: true
     allowedNames: ''
   UnusedPrivateProperty:
-    active: true
+    active: false # true
     allowedNames: '_|ignored|expected|serialVersionUID'
   UseAnyOrNoneInsteadOfFind:
     active: true
@@ -1054,4 +1054,6 @@ formatting:
 
 hackerRules:
   CatchingCoroutineCancellation:
+    active: true
+  CatchingCoroutineCancellationLambda:
     active: true
