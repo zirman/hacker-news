@@ -79,7 +79,10 @@ fun ItemComment(
         }
     }
     Row(
-        modifier = modifier.height(IntrinsicSize.Min).clickable { onClick(item.id) }.animateContentSize(),
+        modifier = modifier
+            .height(IntrinsicSize.Min)
+            .clickable { onClick(item.id) }
+            .animateContentSize(),
     ) {
         ThreadDepth(threadItem.depth)
         Surface(tonalElevation = (threadItem.decendents * 4).dp) {
@@ -174,8 +177,11 @@ fun ItemComment(
                             DropdownMenuItem(text = {
                                 Text(
                                     text = stringResource(
-                                        id = if (item.upvoted == true) R.string.un_vote
-                                        else R.string.upvote,
+                                        id = if (item.upvoted == true) {
+                                            R.string.un_vote
+                                        } else {
+                                            R.string.upvote
+                                        },
                                     ),
                                 )
                             }, onClick = {
@@ -186,11 +192,17 @@ fun ItemComment(
                                 setContextExpanded(false)
                             }, leadingIcon = {
                                 Icon(
-                                    imageVector = if (item.upvoted == true) Icons.Filled.ThumbUp
-                                    else Icons.TwoTone.ThumbUp,
+                                    imageVector = if (item.upvoted == true) {
+                                        Icons.Filled.ThumbUp
+                                    } else {
+                                        Icons.TwoTone.ThumbUp
+                                    },
                                     contentDescription = stringResource(
-                                        id = if (item.upvoted == true) R.string.un_vote
-                                        else R.string.upvote,
+                                        id = if (item.upvoted == true) {
+                                            R.string.un_vote
+                                        } else {
+                                            R.string.upvote
+                                        },
                                     ),
                                 )
                             })
@@ -199,8 +211,11 @@ fun ItemComment(
                                 text = {
                                     Text(
                                         text = stringResource(
-                                            id = if (item.followed) R.string.unfollow
-                                            else R.string.follow,
+                                            id = if (item.followed) {
+                                                R.string.unfollow
+                                            } else {
+                                                R.string.follow
+                                            },
                                         )
                                     )
                                 },
@@ -213,11 +228,17 @@ fun ItemComment(
                                 },
                                 leadingIcon = {
                                     Icon(
-                                        imageVector = if (item.followed) Icons.Filled.Quickreply
-                                        else Icons.TwoTone.Quickreply,
+                                        imageVector = if (item.followed) {
+                                            Icons.Filled.Quickreply
+                                        } else {
+                                            Icons.TwoTone.Quickreply
+                                        },
                                         contentDescription = stringResource(
-                                            id = if (item.followed == true) R.string.unfollow
-                                            else R.string.follow,
+                                            id = if (item.followed) {
+                                                R.string.unfollow
+                                            } else {
+                                                R.string.follow
+                                            },
                                         ),
                                     )
                                 },
@@ -227,8 +248,11 @@ fun ItemComment(
                                 text = {
                                     Text(
                                         text = stringResource(
-                                            id = if (item.flagged == true) R.string.un_flag
-                                            else R.string.flag,
+                                            id = if (item.flagged == true) {
+                                                R.string.un_flag
+                                            } else {
+                                                R.string.flag
+                                            },
                                         ),
                                     )
                                 },
@@ -241,11 +265,17 @@ fun ItemComment(
                                 },
                                 leadingIcon = {
                                     Icon(
-                                        imageVector = if (item.flagged == true) Icons.Filled.Flag
-                                        else Icons.TwoTone.Flag,
+                                        imageVector = if (item.flagged == true) {
+                                            Icons.Filled.Flag
+                                        } else {
+                                            Icons.TwoTone.Flag
+                                        },
                                         contentDescription = stringResource(
-                                            id = if (item.flagged == true) R.string.un_flag
-                                            else R.string.flag,
+                                            id = if (item.flagged == true) {
+                                                R.string.un_flag
+                                            } else {
+                                                R.string.flag
+                                            },
                                         ),
                                     )
                                 },

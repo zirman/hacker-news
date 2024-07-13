@@ -7,7 +7,7 @@ import io.ktor.client.HttpClient
 class YCombException(message: String? = null) : Exception(message)
 class WebViewException : Exception()
 
-internal const val yCombinatorBaseUrl = "https://news.ycombinator.com"
+internal const val Y_COMBINATOR_BASE_URL = "https://news.ycombinator.com"
 
 suspend fun HttpClient.registerRequest(preferences: Preferences) {
     yCombRequest(
@@ -85,7 +85,7 @@ suspend fun getFavorites(username: Username): List<ItemId> {
     return getHtmlItems(path = "favorites?id=${username.string}")
 }
 
-suspend fun getSubmissions( username: Username): List<ItemId> {
+suspend fun getSubmissions(username: Username): List<ItemId> {
     return getHtmlItems(path = "submitted?id=${username.string}")
 }
 

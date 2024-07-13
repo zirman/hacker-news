@@ -36,8 +36,9 @@ class PreferencesViewModel(
     val uiState = repository.preferences
         .map { it.toUiState() }
         .stateIn(
-            viewModelScope, SharingStarted.WhileSubscribed(5_000),
-            repository.preferences.value.toUiState(),
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = repository.preferences.value.toUiState(),
         )
 
     private val context = CoroutineExceptionHandler { _, throwable ->

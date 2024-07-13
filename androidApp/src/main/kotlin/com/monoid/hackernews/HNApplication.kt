@@ -49,8 +49,10 @@ class HNApplication : Application() {
 
         // register locale changed broadcast receiver
         registerReceiver(
-            /* receiver = */ LocaleChangedBroadcastReceiver(),
-            /* filter = */ IntentFilter(Intent.ACTION_LOCALE_CHANGED),
+            /* receiver = */
+            LocaleChangedBroadcastReceiver(),
+            /* filter = */
+            IntentFilter(Intent.ACTION_LOCALE_CHANGED),
         )
     }
 
@@ -58,9 +60,5 @@ class HNApplication : Application() {
         remoteDataSource.close()
         database.close()
         super.onTerminate()
-    }
-
-    companion object {
-        private const val TAG = "HNApplication"
     }
 }

@@ -37,16 +37,18 @@ fun AboutUs(
             modifier = Modifier.fillMaxWidth()
                 .padding(
                     WindowInsets.safeContent
-                        .only(run {
-                            var windowInsets = WindowInsetsSides.Bottom
-                            if (windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact) {
-                                windowInsets += WindowInsetsSides.Top
-                            }
-                            if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
-                                windowInsets += WindowInsetsSides.Horizontal
-                            }
-                            windowInsets
-                        })
+                        .only(
+                            run {
+                                var windowInsets = WindowInsetsSides.Bottom
+                                if (windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact) {
+                                    windowInsets += WindowInsetsSides.Top
+                                }
+                                if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
+                                    windowInsets += WindowInsetsSides.Horizontal
+                                }
+                                windowInsets
+                            },
+                        )
                         .asPaddingValues(),
                 ),
             horizontalAlignment = Alignment.CenterHorizontally

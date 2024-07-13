@@ -173,8 +173,13 @@ fun rememberColorScheme(
     configuration: Configuration = LocalConfiguration.current,
 ): ColorScheme = when (lightDarkMode) {
     LightDarkMode.System -> {
-        if (configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) DarkThemeColors
-        else LightThemeColors
+        if (configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK) ==
+            Configuration.UI_MODE_NIGHT_YES
+        ) {
+            DarkThemeColors
+        } else {
+            LightThemeColors
+        }
     }
 
     LightDarkMode.Light -> LightThemeColors

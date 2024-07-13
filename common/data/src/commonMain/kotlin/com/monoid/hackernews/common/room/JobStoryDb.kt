@@ -6,8 +6,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "jobstory")
 data class JobStoryDb(
-    @ColumnInfo(name="itemId")
+    @ColumnInfo(name = "itemId")
     val itemId: Long,
-    @ColumnInfo(name="order")
+    @ColumnInfo(name = "order")
     @PrimaryKey val order: Int,
 )

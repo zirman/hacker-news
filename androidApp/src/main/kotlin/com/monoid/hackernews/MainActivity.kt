@@ -70,7 +70,8 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
 
     private fun setSystemBarsAppearance(lightDarkMode: LightDarkMode) {
         val darkMode: Boolean = when (lightDarkMode) {
-            LightDarkMode.System -> resources.configuration.uiMode and
+            LightDarkMode.System ->
+                resources.configuration.uiMode and
                     Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
 
             LightDarkMode.Light -> false
@@ -83,11 +84,11 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                 0
             } else {
                 WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
-                        WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
             },
             /* mask = */
             WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
-                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
+                WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
         )
     }
 
@@ -145,10 +146,12 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                         val states = frameData.states.joinToString { "${it.key}:${it.value}" }
 
                         Log.w(
-                            /* tag = */ "Jank",
-                            /* msg = */ "Jank states[$states] ${
+                            /* tag = */
+                            "Jank",
+                            /* msg = */
+                            "Jank states[$states] ${
                                 TimeUnit.NANOSECONDS.toMillis(frameData.frameDurationUiNanos)
-                            }ms"
+                            }ms",
                         )
                     }
                 }

@@ -35,7 +35,12 @@ fun PreferencesDetail(
     viewModel: PreferencesViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val (selectedLightDarkMode, selectedFont, fontSize, lineSpacing, paragraphIndent, selectedShape, colors) = uiState
+    val selectedLightDarkMode = uiState.lightDarkMode
+    val selectedFont = uiState.font
+    val fontSize = uiState.fontSize
+    val lineSpacing = uiState.lineHeight
+    val paragraphIndent = uiState.paragraphIndent
+    val selectedShape = uiState.shape
     Column(
         modifier = modifier
             .padding(16.dp)

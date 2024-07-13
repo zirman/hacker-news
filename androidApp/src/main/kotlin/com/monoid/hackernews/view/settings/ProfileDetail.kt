@@ -5,5 +5,5 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun ProfileDetail(modifier: Modifier = Modifier) {
-
+    // no-op
 }

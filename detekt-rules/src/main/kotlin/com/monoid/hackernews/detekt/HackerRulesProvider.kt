@@ -1,6 +1,6 @@
-package com.monoid.hackernews.detekt.extensions
+package com.monoid.hackernews.detekt
 
-import com.monoid.hackernews.detekt.extensions.rules.CatchingCoroutineCancellation
+import com.monoid.hackernews.detekt.rules.CatchingCoroutineCancellation
 import io.gitlab.arturbosch.detekt.api.Config
 import io.gitlab.arturbosch.detekt.api.RuleSet
 import io.gitlab.arturbosch.detekt.api.RuleSetProvider

@@ -4,7 +4,6 @@ import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.api.getUser
 import com.monoid.hackernews.common.api.toUserApiUpdate
 import com.monoid.hackernews.common.room.ItemDao
-import com.monoid.hackernews.common.room.ItemDb
 import com.monoid.hackernews.common.room.UserDao
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineScope

@@ -23,7 +23,7 @@ actual suspend fun HttpClient.yCombRequest(
     parametersBuilder: ParametersBuilder.() -> Unit,
 ): HttpResponse {
     val httpResponse: HttpResponse = submitForm(
-        url = "$yCombinatorBaseUrl/$path",
+        url = "$Y_COMBINATOR_BASE_URL/$path",
         formParameters = Parameters.build {
             if (preferences != null) {
                 append("acct", preferences.username.string)

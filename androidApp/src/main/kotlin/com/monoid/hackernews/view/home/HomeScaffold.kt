@@ -43,7 +43,11 @@ fun HomeScaffold(
                     onClick = { currentDestination = story.ordinal },
                     icon = {
                         Icon(
-                            imageVector = if (story == BottomNav.entries[currentDestination]) story.selectedIcon else story.icon,
+                            imageVector = if (story == BottomNav.entries[currentDestination]) {
+                                story.selectedIcon
+                            } else {
+                                story.icon
+                            },
                             contentDescription = stringResource(story.contentDescription),
                         )
                     },

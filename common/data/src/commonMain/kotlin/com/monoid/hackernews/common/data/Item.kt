@@ -19,7 +19,9 @@ interface Item {
     val upvoted: Boolean?
     val favourited: Boolean?
     val flagged: Boolean?
+
     // local only data
+
     val expanded: Boolean
     val followed: Boolean
 }

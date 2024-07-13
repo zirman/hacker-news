@@ -1,4 +1,4 @@
-package com.monoid.hackernews.detekt.extensions.rules
+package com.monoid.hackernews.detekt.rules
 
 import io.gitlab.arturbosch.detekt.api.CodeSmell
 import io.gitlab.arturbosch.detekt.api.Config
@@ -71,7 +71,7 @@ class CatchingCoroutineCancellation(config: Config = Config.empty) : Rule(config
 
     override fun visitTypeAlias(typeAlias: KtTypeAlias) {
         super.visitTypeAlias(typeAlias)
-        val typeText = typeAlias.getTypeReference()?.getTypeText()
+        val typeText = typeAlias.getTypeReference()?.getTypeText() ?: return
         if (jobCancellationExceptionNames.any { it.identifier == typeText }) {
             typeAlias.name?.let {
                 jobCancellationExceptionNames += Name.identifier(it)
@@ -88,7 +88,7 @@ class CatchingCoroutineCancellation(config: Config = Config.empty) : Rule(config
     private val catchSectionVisitor = object : KtTreeVisitorVoid() {
         private var enteredNamedFunction = false
         override fun visitElement(element: PsiElement) {
-            // prevent entering nested named functions
+            // prevent entering nested named functions and lambda expressions
             if (element !is KtNamedFunction &&
                 element !is KtLambdaExpression
             ) {
@@ -102,7 +102,7 @@ class CatchingCoroutineCancellation(config: Config = Config.empty) : Rule(config
 
         override fun visitCatchSection(catchClause: KtCatchClause) {
             super.visitCatchSection(catchClause)
-            val typeText = catchClause.catchParameter?.typeReference?.getTypeText()
+            val typeText = catchClause.catchParameter?.typeReference?.getTypeText() ?: return
             if (jobCancellationExceptionNames.none { it.identifier == typeText }) return
             (catchClause.catchBody?.children?.firstOrNull() as? KtDotQualifiedExpression)
                 ?.let { element ->
