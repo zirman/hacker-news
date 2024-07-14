@@ -22,7 +22,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/androidApp" />
+            <option value="$PROJECT_DIR$/android-app" />
             <option value="$PROJECT_DIR$/build-logic" />
             <option value="$PROJECT_DIR$/build-logic/detekt-convention-plugin" />
             <option value="$PROJECT_DIR$/common" />
@@ -30,9 +30,9 @@
             <option value="$PROJECT_DIR$/common/domain" />
             <option value="$PROJECT_DIR$/common/injection" />
             <option value="$PROJECT_DIR$/common/view" />
-            <option value="$PROJECT_DIR$/desktopApp" />
+            <option value="$PROJECT_DIR$/desktop-app" />
             <option value="$PROJECT_DIR$/detekt-rules" />
-            <option value="$PROJECT_DIR$/wearApp" />
+            <option value="$PROJECT_DIR$/wear-app" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

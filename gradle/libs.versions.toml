@@ -10,7 +10,7 @@ buildToolsVersion = "34.0.0"
 android = "8.5.1"
 #lint = "31.4.0"
 desugarJdkLibs = "2.0.4"
-kotlin = "2.0.0"
+kotlin = "2.0.10-RC"
 kotlinWrappersBom = "1.0.0-pre.757"
 jetbrainsCompose = "1.6.11"
 ksp = "2.0.0-1.0.21"
@@ -59,6 +59,7 @@ espressoCore = "3.6.1"
 #junit = "4.13.2"
 mockk = "1.13.9"
 detekt = "1.23.6"
+junitJupiter = "5.10.3"
 
 [plugins]
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -320,5 +321,8 @@ mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 
 detektApi = { group = "io.gitlab.arturbosch.detekt", name = "detekt-api", version.ref = "detekt" }
 detektTooling = { group = "io.gitlab.arturbosch.detekt", name = "detekt-tooling", version.ref = "detekt" }
+detektTest = { group = "io.gitlab.arturbosch.detekt", name = "detekt-test", version.ref = "detekt" }
 detektFormatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
 detektRulesRuleauthors = { group = "io.gitlab.arturbosch.detekt", name = "detekt-rules-ruleauthors", version.ref = "detekt" }
+
+junitJupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junitJupiter" }

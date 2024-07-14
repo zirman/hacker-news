@@ -20,9 +20,9 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Hacker News"
-include(":androidApp")
-include(":wearApp")
-include(":desktopApp")
+include(":android-app")
+include(":wear-app")
+include(":desktop-app")
 include(":common:injection")
 include(":common:view")
 include(":common:domain")
