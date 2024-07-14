@@ -60,4 +60,4 @@
 # Fixes Ktor submitForm()
 -keepclassmembers class io.ktor.http.** { *; }
 
--keep class * extends com.google.protobuf.GeneratedMessageLite { *; }
+#-keep class * extends com.google.protobuf.GeneratedMessageLite { *; }
