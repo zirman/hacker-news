@@ -5,9 +5,10 @@ plugins {
 }
 
 dependencies {
-    detektPlugins(libs.detektRulesRuleauthors)
     compileOnly(libs.detektApi)
     compileOnly(libs.detektTooling)
+    detektPlugins(libs.detektRulesRuleauthors)
+    testImplementation(libs.assertjCore)
     testImplementation(libs.detektTest)
     testImplementation(libs.junitJupiter)
 }

@@ -60,6 +60,7 @@ espressoCore = "3.6.1"
 mockk = "1.13.9"
 detekt = "1.23.6"
 junitJupiter = "5.10.3"
+assertjCore = "3.26.0"
 
 [plugins]
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -326,3 +327,4 @@ detektFormatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-forma
 detektRulesRuleauthors = { group = "io.gitlab.arturbosch.detekt", name = "detekt-rules-ruleauthors", version.ref = "detekt" }
 
 junitJupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junitJupiter" }
+assertjCore = { module = "org.assertj:assertj-core", version.ref = "assertjCore" }

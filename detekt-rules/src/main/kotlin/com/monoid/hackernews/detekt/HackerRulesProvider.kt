@@ -1,7 +1,7 @@
 package com.monoid.hackernews.detekt
 
 import com.monoid.hackernews.detekt.rules.CatchingCoroutineCancellation
-import com.monoid.hackernews.detekt.rules.CatchingCoroutineCancellationLambda
+import com.monoid.hackernews.detekt.rules.RunCatchingCoroutineCancellation
 import io.gitlab.arturbosch.detekt.api.Config
 import io.gitlab.arturbosch.detekt.api.RuleSet
 import io.gitlab.arturbosch.detekt.api.RuleSetProvider
@@ -12,7 +12,7 @@ internal class HackerRulesProvider : RuleSetProvider {
         id = ruleSetId,
         rules = listOf(
             CatchingCoroutineCancellation(config),
-            CatchingCoroutineCancellationLambda(config),
+            RunCatchingCoroutineCancellation(config),
         ),
     )
 }

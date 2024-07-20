@@ -191,7 +191,7 @@ coroutines:
   SleepInsteadOfDelay:
     active: true
   SuspendFunSwallowedCancellation:
-    active: true
+    active: false # true
   SuspendFunWithCoroutineScopeReceiver:
     active: false
   SuspendFunWithFlowReturnType:
@@ -1055,5 +1055,5 @@ formatting:
 hackerRules:
   CatchingCoroutineCancellation:
     active: true
-  CatchingCoroutineCancellationLambda:
+  RunCatchingCoroutineCancellation:
     active: true
