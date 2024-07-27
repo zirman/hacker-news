@@ -25,26 +25,36 @@ tasks.register("clean", Delete::class) {
 subprojects {
     tasks.withType<KotlinJvmCompile>().configureEach {
         compilerOptions {
+            // keeps coroutine variables
+            // freeCompilerArgs.add("-Xdebug")
+            // recovers coroutine stack traces
+            // vm options ("-ea")
+            // https://github.com/Anamorphosee/stacktrace-decoroutinator
+
             allWarningsAsErrors = false
 
             jvmTarget.set(JvmTarget.JVM_17)
 
-            freeCompilerArgs = listOf(
-                "-opt-in=kotlinx.coroutines.FlowPreview",
-                "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-                "-P",
-                "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=" +
+            freeCompilerArgs.addAll(
+                listOf(
+                    "-opt-in=kotlinx.coroutines.FlowPreview",
+                    "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                    "-P",
+                    "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=" +
                         rootDir.absolutePath + "/compose_compiler_config.conf",
+                ),
             )
 
             if (project.findProperty("hackernews.enableComposeCompilerReports") == "true") {
                 // force tasks to rerun so that metrics are generated
                 outputs.upToDateWhen { false }
-                freeCompilerArgs = listOf(
-                    "-P=plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" +
+                freeCompilerArgs.addAll(
+                    listOf(
+                        "-P=plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" +
                             projectDir.absolutePath + "/build/compose_metrics/",
-                    "-P=plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" +
+                        "-P=plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" +
                             projectDir.absolutePath + "/build/compose_metrics/",
+                    ),
                 )
             }
         }
