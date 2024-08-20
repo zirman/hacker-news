@@ -290,7 +290,8 @@ material3AdaptiveLayout = { group = "androidx.compose.material3.adaptive", name 
 material3AdaptiveNavigation = { group = "androidx.compose.material3.adaptive", name = "adaptive-navigation", version.ref = "material3Adaptive" }
 
 composeBom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
-ui = { group = "androidx.compose.ui", name = "ui", version = "1.7.0-beta06" }
+foundation = { group = "androidx.compose.foundation", name = "foundation" }
+ui = { group = "androidx.compose.ui", name = "ui" }
 uiViewBinding = { group = "androidx.compose.ui", name = "ui-viewbinding" }
 uiTooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 uiToolingData = { group = "androidx.compose.ui", name = "ui-tooling-data" }
@@ -299,7 +300,6 @@ uiUtil = { group = "androidx.compose.ui", name = "ui-util" }
 composeMaterial = { group = "androidx.compose.material", name = "material" }
 materialIconsCore = { group = "androidx.compose.material", name = "material-icons-core" }
 materialIconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
-foundation = { group = "androidx.compose.foundation", name = "foundation", version = "1.7.0-beta06" }
 uiTextGoogleFonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts" }
 uiTestJunit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "uiTestJunit4" }
 uiTestManifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
