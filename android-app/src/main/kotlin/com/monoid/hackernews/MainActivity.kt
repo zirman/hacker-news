@@ -18,7 +18,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.metrics.performance.JankStats
 import com.monoid.hackernews.common.data.LightDarkMode
-import com.monoid.hackernews.common.data.PreferencesRepository
+import com.monoid.hackernews.common.data.SettingsRepository
 import com.monoid.hackernews.common.injection.LoggerAdapter
 import com.monoid.hackernews.view.main.MainNavHost
 import com.monoid.hackernews.view.theme.AppTheme
@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit
 class MainActivity : ComponentActivity(), AndroidScopeComponent {
     override val scope: Scope by activityRetainedScope()
     private val logger: LoggerAdapter by inject()
-    private val repository: PreferencesRepository by inject()
+    private val repository: SettingsRepository by inject()
 
     private val context = CoroutineExceptionHandler { _, throwable ->
         logger.recordException(

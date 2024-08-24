@@ -19,7 +19,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Hacker News"
+rootProject.name = "HackerNews"
 include(":android-app")
 include(":wear-app")
 include(":desktop-app")

@@ -14,6 +14,8 @@ java {
 }
 
 kotlin {
+    jvmToolchain(libs.versions.jvmToolchain.get().toInt())
+
     compilerOptions {
         jvmTarget = JvmTarget.JVM_17
     }

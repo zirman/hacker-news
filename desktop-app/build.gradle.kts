@@ -10,10 +10,11 @@ plugins {
 kotlin {
     jvmToolchain(libs.versions.jvmToolchain.get().toInt())
 
-    jvm {
-    }
+    jvm("desktop")
 
     sourceSets {
+        val desktopMain by getting
+
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -33,8 +34,9 @@ kotlin {
             implementation(project(":common:data"))
         }
 
-        jvmMain.dependencies {
+        desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
+            implementation(libs.kotlinxCoroutinesSwing)
         }
     }
 }

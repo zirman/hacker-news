@@ -1,26 +1,21 @@
 package com.monoid.hackernews.common
 
-import android.content.Context
 import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
-import com.monoid.hackernews.common.data.AuthenticationSerializer
-import com.monoid.hackernews.common.data.Preferences
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import okio.Path.Companion.toPath
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
 actual val dataStoreModule: Module = module {
-    single {
-        androidContext().dataStore
-//        DataStore<Authentication>.create {
-//            androidContext()
-//                .filesDir.resolve(dataStoreFileName)
-//                .absolutePath.toPath()
-//        }
+    single<DataStore<Preferences>> {
+        PreferenceDataStoreFactory.createWithPath(
+            produceFile = {
+                androidContext()
+                    .filesDir.resolve("settings.preferences_pb")
+                    .absolutePath.toPath()
+            },
+        )
     }
 }
-
-private val Context.dataStore: DataStore<Preferences> by dataStore(
-    fileName = "settings.pb",
-    serializer = AuthenticationSerializer,
-)

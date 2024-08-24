@@ -27,7 +27,7 @@ import com.monoid.hackernews.common.data.LightDarkMode
 import com.monoid.hackernews.common.data.Shape
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.view.theme.HNFont
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun PreferencesDetail(

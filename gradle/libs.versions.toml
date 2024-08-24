@@ -25,13 +25,13 @@ sqlite = "2.5.0-alpha07"
 datastore = "1.1.1"
 activityKtx = "1.9.1"
 fragmentKtx = "1.8.2"
-#lifecycle = "2.8.0-rc01"
+lifecycle = "2.8.0"
 navigation = "2.8.0-rc01"
 googlePlayServices = "4.4.2"
 playServicesWearable = "18.2.0"
 crashlytics = "3.0.2"
 firebasePerf = "1.4.2"
-firebaseBom = "33.1.2"
+firebaseBom = "33.2.0"
 window = "1.3.0"
 appcompat = "1.7.0"
 coreKtx = "1.13.1"
@@ -91,10 +91,6 @@ koin = [
     "koinCore",
     "koinKtor",
     "koinLoggerSlf4j",
-    "koinAndroid",
-    "koinAndroidxCompose",
-    "koinAndroidxNavigation",
-    "koinAndroidxWorkmanager",
 ]
 ktor = [
     "ktorClientCore",
@@ -121,12 +117,9 @@ androidx = [
     "roomRuntime",
     "roomKtx",
     "roomPaging",
-    "lifecycleProcess",
-    "lifecycleRuntimeKtx",
-    "lifecycleRuntimeCompose",
-    "lifecycleViewModelKtx",
-    "lifecycleViewModelCompose",
-    "lifecycleViewModelSavedState",
+    "jetbrainsLifecycleRuntimeCompose",
+    "jetbrainsLifecycleViewmodel",
+    "jetbrainsLifecycleViewmodelCompose",
 ]
 androidxApp = [
     "navigationUiKtx",
@@ -201,6 +194,7 @@ detektGradlePlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gra
 kotilnxCoroutinesBom = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-bom", version.ref = "kotlinxCoroutines" }
 #kotlinStdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 kotlinxCoroutinesAndroid = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android" }
+kotlinxCoroutinesSwing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing" }
 kotlinxCoroutinesTest = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test" }
 kotlinxSerializationJson = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 kotlinxCollectionsImmutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
@@ -257,26 +251,23 @@ preferenceKtx = { group = "androidx.preference", name = "preference-ktx", versio
 metricsPerformance = { group = "androidx.metrics", name = "metrics-performance", version.ref = "metricsPerformance" }
 
 lifecycleProcess = { group = "androidx.lifecycle", name = "lifecycle-process" }
-lifecycleRuntimeKtx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx" }
-lifecycleViewModelKtx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx" }
-lifecycleRuntimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose" }
-lifecycleViewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose" }
-lifecycleViewModelSavedState = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-savedstate" }
-#jetbrains-lifecycle-runtime-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
-#jetbrains-lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "lifecycle" }
-#jetbrains-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+#lifecycleViewModelSavedState = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-savedstate" }
 
-koinBom = { group = "io.insert-koin", name = "koin-bom", version = "3.6.0-wasm-alpha2" }
+jetbrainsLifecycleRuntimeCompose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
+jetbrainsLifecycleViewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "lifecycle" }
+jetbrainsLifecycleViewmodelCompose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+
+koinBom = { group = "io.insert-koin", name = "koin-bom", version = "4.0.0-RC1" }
 koinCore = { group = "io.insert-koin", name = "koin-core" }
 koinKtor = { group = "io.insert-koin", name = "koin-ktor" }
+#koinCompose = { group = "io.insert-koin", name = "koin-compose" }
+koinComposeViewmodel = { group = "io.insert-koin", name = "koin-compose-viewmodel" }
 koinLoggerSlf4j = { group = "io.insert-koin", name = "koin-logger-slf4j" }
 koinAndroid = { group = "io.insert-koin", name = "koin-android" }
-koinAndroidxCompose = { group = "io.insert-koin", name = "koin-androidx-compose" }
-koinAndroidxNavigation = { group = "io.insert-koin", name = "koin-androidx-navigation" }
-koinAndroidxWorkmanager = { group = "io.insert-koin", name = "koin-androidx-workmanager" }
+#koinAndroidxWorkmanager = { group = "io.insert-koin", name = "koin-androidx-workmanager" }
 
 navigationUiKtx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
-navigationCompose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version = "2.7.0-alpha07" }
+navigationCompose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version = "2.8.0-alpha09" }
 
 composeLintChecks = { group = "com.slack.lint.compose", name = "compose-lint-checks", version.ref = "composeLintChecks" }
 

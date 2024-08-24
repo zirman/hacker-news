@@ -3,7 +3,7 @@ package com.monoid.hackernews.common.api
 import android.text.Html
 import android.text.Spanned
 import androidx.core.text.getSpans
-import com.monoid.hackernews.common.data.Preferences
+import com.monoid.hackernews.common.data.Settings
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.expectSuccess
 import io.ktor.client.request.forms.submitForm
@@ -18,16 +18,16 @@ import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
 
 actual suspend fun HttpClient.yCombRequest(
-    preferences: Preferences?,
+    settings: Settings?,
     path: String,
     parametersBuilder: ParametersBuilder.() -> Unit,
 ): HttpResponse {
     val httpResponse: HttpResponse = submitForm(
         url = "$Y_COMBINATOR_BASE_URL/$path",
         formParameters = Parameters.build {
-            if (preferences != null) {
-                append("acct", preferences.username.string)
-                append("pw", preferences.password.string)
+            if (settings != null) {
+                append("acct", settings.username.string)
+                append("pw", settings.password.string)
             }
 
             parametersBuilder()

@@ -25,7 +25,6 @@ kotlin {
             compileOnly(libs.koinCore)
             implementation(libs.bundles.kotlinx)
             implementation(libs.bundles.koin)
-            implementation(libs.lifecycleViewModelKtx)
             implementation(libs.datastore)
             implementation(libs.datastorePreferences)
             implementation(libs.bundles.ktor)
@@ -47,6 +46,7 @@ kotlin {
 
         androidMain.dependencies {
             project.dependencies.coreLibraryDesugaring(libs.desugarJdkLibsNio)
+            implementation(libs.koinAndroid)
         }
 
         jvmMain.dependencies {

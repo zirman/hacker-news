@@ -22,7 +22,7 @@ import com.monoid.hackernews.common.data.LightDarkMode
 import com.monoid.hackernews.common.data.Shape
 import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.view.settings.PreferencesViewModel
-import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 private val LightThemeColors = lightColorScheme(
     primary = md_theme_light_primary,

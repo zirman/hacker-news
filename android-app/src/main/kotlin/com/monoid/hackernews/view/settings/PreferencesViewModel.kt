@@ -7,8 +7,8 @@ import com.monoid.hackernews.common.data.FontSize
 import com.monoid.hackernews.common.data.LightDarkMode
 import com.monoid.hackernews.common.data.LineHeight
 import com.monoid.hackernews.common.data.ParagraphIndent
-import com.monoid.hackernews.common.data.Preferences
-import com.monoid.hackernews.common.data.PreferencesRepository
+import com.monoid.hackernews.common.data.Settings
+import com.monoid.hackernews.common.data.SettingsRepository
 import com.monoid.hackernews.common.data.Shape
 import com.monoid.hackernews.common.injection.LoggerAdapter
 import com.monoid.hackernews.view.theme.HNFont
@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class PreferencesViewModel(
-    private val repository: PreferencesRepository,
+    private val repository: SettingsRepository,
     logger: LoggerAdapter,
 ) : ViewModel() {
     data class UiState(
@@ -88,7 +88,7 @@ class PreferencesViewModel(
     companion object {
         private const val TAG = "PreferencesViewModel"
 
-        private fun Preferences.toUiState(): UiState = UiState(
+        private fun Settings.toUiState(): UiState = UiState(
             lightDarkMode = lightDarkMode,
             font = font,
             fontSize = fontSize,

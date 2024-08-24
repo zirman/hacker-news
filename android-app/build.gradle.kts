@@ -99,6 +99,9 @@ dependencies {
 
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.koin)
+    implementation(libs.koinAndroid)
+    implementation(libs.koinComposeViewmodel)
+    implementation(libs.lifecycleProcess)
     implementation(libs.bundles.androidx)
     implementation(libs.bundles.androidxCompose)
     lintChecks(libs.composeLintChecks)

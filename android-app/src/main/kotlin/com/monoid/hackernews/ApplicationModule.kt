@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.monoid.hackernews.common.data.LoginRepository
-import com.monoid.hackernews.common.data.PreferencesRepository
+import com.monoid.hackernews.common.data.SettingsRepository
 import com.monoid.hackernews.common.data.StoriesRepository
 import com.monoid.hackernews.common.data.UserStoryRepositoryFactory
 import com.monoid.hackernews.common.injection.DispatcherQualifier
@@ -14,7 +14,7 @@ import com.monoid.hackernews.view.settings.PreferencesViewModel
 import com.monoid.hackernews.view.settings.SettingsViewModel
 import com.monoid.hackernews.view.stories.StoriesViewModel
 import kotlinx.coroutines.channels.Channel
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -82,7 +82,7 @@ val applicationModule = module {
     }
 
     single {
-        PreferencesRepository(
+        SettingsRepository(
             logger = get(),
             localDataSource = get(),
         )
