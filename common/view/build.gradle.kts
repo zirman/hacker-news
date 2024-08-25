@@ -9,41 +9,32 @@ plugins {
 
 kotlin {
     jvmToolchain(libs.versions.jvmToolchain.get().toInt())
-
-    jvm {
-    }
-
-    androidTarget {
-    }
-
+    androidTarget { }
+    jvm { }
     sourceSets {
+        androidMain.dependencies {
+            project.dependencies.coreLibraryDesugaring(libs.desugarJdkLibsNio)
+            implementation(compose.material3)
+        }
+        jvmMain.dependencies { }
         commonMain.dependencies {
             api(project(":common:domain"))
             compileOnly(libs.koinCore)
             implementation(compose.components.resources)
-            implementation(compose.material)
+            implementation(compose.material3)
             implementation(libs.annotation)
+            implementation(libs.bundles.datastore)
             implementation(libs.bundles.kotlinx)
             implementation(libs.bundles.koin)
             implementation(libs.bundles.ktor)
             implementation(libs.collectionKtx)
-            implementation(libs.datastore)
-            implementation(libs.datastorePreferences)
             implementation(libs.navigationCompose)
             implementation(project.dependencies.platform(libs.koinBom))
             implementation(project.dependencies.platform(libs.kotlinWrappersBom))
             implementation(project.dependencies.platform(libs.kotilnxCoroutinesBom))
         }
-
         commonTest.dependencies {
-            implementation(libs.kotlinTest)
-        }
-
-        androidMain.dependencies {
-            project.dependencies.coreLibraryDesugaring(libs.desugarJdkLibsNio)
-        }
-
-        jvmMain.dependencies {
+            implementation(libs.bundles.test)
         }
     }
 }
@@ -82,8 +73,4 @@ android {
 
     composeOptions {
     }
-}
-
-dependencies {
-    implementation(libs.material)
 }

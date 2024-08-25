@@ -43,12 +43,9 @@ workRuntimeKtx = "2.9.1"
 preferenceKtx = "1.2.1"
 metricsPerformance = "1.0.0-beta01"
 composeLintChecks = "1.3.1"
-material = "1.12.0"
-material3 = "1.2.1"
 #material3AdaptiveAndroid = "1.0.0-alpha06"
 material3AdaptiveNavigationSuiteAndroid = "1.0.0-alpha07"
 material3Adaptive = "1.0.0-rc01"
-#composeBom = "2024.08.00"
 wearCompose = "1.3.1"
 accompanist = "0.32.0"
 uiTestJunit4 = "1.6.8"
@@ -132,26 +129,19 @@ androidxWear = [
     "composeNavigationWear",
 ]
 androidxCompose = [
-    "ui",
-    "uiViewBinding",
-    "uiTooling",
-    "uiToolingData",
-    "uiToolingPreview",
     "metricsPerformance",
-    "uiUtil",
-#    "material",
-#    "material3",
     "material3WindowSize",
-    # "material3AdaptiveAndroid",
     "material3AdaptiveNavigationSuiteAndroid",
-    "material3Adaptive",
-    "material3AdaptiveLayout",
+#    "material3Adaptive",
+#    "material3AdaptiveLayout",
     "material3AdaptiveNavigation",
-    "materialIconsCore",
-    "materialIconsExtended",
-    "foundation",
-    "uiTextGoogleFonts",
-    "coilCompose",
+]
+datastore = [
+    "datastore",
+    "datastorePreferencesCore",
+    "datastorePreferences",
+    "datastoreCoreOkio",
+    "datastoreCoreOkioJvm",
 ]
 googleApp = [
     "accompanistAdaptive", # handle foldable devices
@@ -232,9 +222,10 @@ roomPaging = { group = "androidx.room", name = "room-paging", version.ref = "roo
 sqliteBundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "sqlite" }
 
 datastore = { group = "androidx.datastore", name = "datastore", version.ref = "datastore" }
-#datastoreCoreOkio = { group = "androidx.datastore", name = "datastore-core-okio", version.ref = "datastore" }
+datastorePreferencesCore = { group = "androidx.datastore", name = "datastore-preferences-core", version.ref = "datastore" }
 datastorePreferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
-#datastorePreferencesCore = { group = "androidx.datastore", name = "datastore-preferences-core", version.ref = "datastore" }
+datastoreCoreOkio = { group = "androidx.datastore", name = "datastore-core-okio", version.ref = "datastore" }
+datastoreCoreOkioJvm = { group = "androidx.datastore", name = "datastore-core-okio-jvm", version.ref = "datastore" }
 
 window = { group = "androidx.window", name = "window", version.ref = "window" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
@@ -272,29 +263,14 @@ navigationCompose = { group = "org.jetbrains.androidx.navigation", name = "navig
 
 composeLintChecks = { group = "com.slack.lint.compose", name = "compose-lint-checks", version.ref = "composeLintChecks" }
 
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 material3WindowSize = { group = "androidx.compose.material3", name = "material3-window-size-class" }
 #material3AdaptiveAndroid = { group = "androidx.compose.material3", name = "material3-adaptive-android", version.ref = "material3AdaptiveAndroid" }
 material3AdaptiveNavigationSuiteAndroid = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite-android", version.ref = "material3AdaptiveNavigationSuiteAndroid" }
-material3Adaptive = { group = "androidx.compose.material3.adaptive", name = "adaptive", version.ref = "material3Adaptive" }
-material3AdaptiveLayout = { group = "androidx.compose.material3.adaptive", name = "adaptive-layout", version.ref = "material3Adaptive" }
+#material3Adaptive = { group = "androidx.compose.material3.adaptive", name = "adaptive", version.ref = "material3Adaptive" }
+#material3AdaptiveLayout = { group = "androidx.compose.material3.adaptive", name = "adaptive-layout", version.ref = "material3Adaptive" }
 material3AdaptiveNavigation = { group = "androidx.compose.material3.adaptive", name = "adaptive-navigation", version.ref = "material3Adaptive" }
 
-#composeBom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
-foundation = { group = "androidx.compose.foundation", name = "foundation" }
-ui = { group = "androidx.compose.ui", name = "ui" }
-uiViewBinding = { group = "androidx.compose.ui", name = "ui-viewbinding" }
-uiTooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-uiToolingData = { group = "androidx.compose.ui", name = "ui-tooling-data" }
-uiToolingPreview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-uiUtil = { group = "androidx.compose.ui", name = "ui-util" }
-#composeMaterial = { group = "androidx.compose.material", name = "material" }
-materialIconsCore = { group = "androidx.compose.material", name = "material-icons-core" }
-materialIconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
-uiTextGoogleFonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts" }
 uiTestJunit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "uiTestJunit4" }
-uiTestManifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 
 composeMaterialWear = { group = "androidx.wear.compose", name = "compose-material", version.ref = "wearCompose" }
 composeNavigationWear = { group = "androidx.wear.compose", name = "compose-navigation", version.ref = "wearCompose" }
@@ -304,8 +280,6 @@ accompanistAdaptive = { group = "com.google.accompanist", name = "accompanist-ad
 playServicesWearable = { group = "com.google.android.gms", name = "play-services-wearable", version.ref = "playServicesWearable" }
 
 slf4jSimple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4jSimple" }
-
-coilCompose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 
 espressoCore = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 junitExt = { group = "androidx.test.ext", name = "junit", version.ref = "junitExt" }

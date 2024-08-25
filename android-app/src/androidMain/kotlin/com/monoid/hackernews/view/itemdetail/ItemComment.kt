@@ -52,7 +52,6 @@ import com.monoid.hackernews.common.data.LoginAction
 import com.monoid.hackernews.common.data.Username
 import com.monoid.hackernews.common.ui.text.ClickableTextBlock
 import com.monoid.hackernews.common.ui.util.rememberTimeBy
-import com.monoid.hackernews.common.view.R
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.deleted
 import com.monoid.hackernews.common.view.flag

@@ -18,22 +18,19 @@ kotlin {
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(compose.material)
+            implementation(compose.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-
             implementation(project.dependencies.platform(libs.kotilnxCoroutinesBom))
             implementation(project.dependencies.platform(libs.kotlinWrappersBom))
             implementation(project.dependencies.platform(libs.koinBom))
             compileOnly(libs.koinCore)
             implementation(libs.bundles.kotlinx)
             implementation(libs.bundles.koin)
-
             implementation(project(":common:injection"))
             implementation(project(":common:data"))
         }
-
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinxCoroutinesSwing)

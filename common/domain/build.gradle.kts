@@ -4,21 +4,19 @@ plugins {
     alias(libs.plugins.composeCompiler)
     id("hackernews.detekt")
 }
-
 kotlin {
     jvmToolchain(libs.versions.jvmToolchain.get().toInt())
-    jvm {
-    }
+    jvm { }
     sourceSets {
+        jvmMain.dependencies {}
         commonMain.dependencies {
             implementation(project.dependencies.platform(libs.kotilnxCoroutinesBom))
             implementation(project.dependencies.platform(libs.kotlinWrappersBom))
             implementation(project.dependencies.platform(libs.koinBom))
             compileOnly(libs.koinCore)
+            implementation(libs.bundles.datastore)
             implementation(libs.bundles.kotlinx)
             implementation(libs.bundles.koin)
-            implementation(libs.datastore)
-            implementation(libs.datastorePreferences)
             implementation(libs.bundles.ktor)
             implementation(libs.navigationCompose)
             implementation(libs.annotation)
@@ -27,7 +25,7 @@ kotlin {
             api(project(":common:data"))
         }
         commonTest.dependencies {
-            implementation(libs.kotlinTest)
+            implementation(libs.bundles.test)
         }
     }
 }
