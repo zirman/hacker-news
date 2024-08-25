@@ -1,7 +1,5 @@
 plugins {
-    alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kotlinxParcelize)
-    alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.composeCompiler)
     id("hackernews.detekt")
@@ -9,49 +7,27 @@ plugins {
 
 kotlin {
     jvmToolchain(libs.versions.jvmToolchain.get().toInt())
-}
-
-android {
-    namespace = "com.monoid.hackernews.common.domain"
-    compileSdk = libs.versions.compileSdk.get().toInt()
-    compileSdkPreview = libs.versions.compileSdkPreview.get()
-
-    defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
+    jvm {
     }
-
-    buildTypes {
-        debug { }
-        release { }
+    sourceSets {
+        commonMain.dependencies {
+            implementation(project.dependencies.platform(libs.kotilnxCoroutinesBom))
+            implementation(project.dependencies.platform(libs.kotlinWrappersBom))
+            implementation(project.dependencies.platform(libs.koinBom))
+            compileOnly(libs.koinCore)
+            implementation(libs.bundles.kotlinx)
+            implementation(libs.bundles.koin)
+            implementation(libs.datastore)
+            implementation(libs.datastorePreferences)
+            implementation(libs.bundles.ktor)
+            implementation(libs.navigationCompose)
+            implementation(libs.annotation)
+            implementation(libs.collectionKtx)
+            api(project(":common:injection"))
+            api(project(":common:data"))
+        }
+        commonTest.dependencies {
+            implementation(libs.kotlinTest)
+        }
     }
-
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-    }
-
-    buildFeatures {
-    }
-
-    composeOptions {
-    }
-}
-
-dependencies {
-    coreLibraryDesugaring(libs.desugarJdkLibsNio)
-
-    api(project(":common:injection"))
-    api(project(":common:data"))
-
-    implementation(platform(libs.composeBom))
-    implementation(platform(libs.koinBom))
-
-    implementation(libs.bundles.kotlinx)
-    implementation(libs.bundles.koin)
-    implementation(libs.bundles.androidx)
-    implementation(libs.bundles.androidxCompose)
-    lintChecks(libs.composeLintChecks)
-    implementation(libs.bundles.androidxApp)
-    implementation(libs.bundles.google)
-
-    testImplementation(libs.bundles.test)
 }

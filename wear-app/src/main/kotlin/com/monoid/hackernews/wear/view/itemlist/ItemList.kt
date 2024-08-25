@@ -33,22 +33,22 @@ fun ItemList(
     modifier: Modifier = Modifier,
 ) {
     if (true) { // TODO: debug config
-        val metricsStateHolder: PerformanceMetricsState.Holder =
-            rememberMetricsStateHolder()
+//        val metricsStateHolder: PerformanceMetricsState.Holder =
+//            rememberMetricsStateHolder()
 
         // Reporting scrolling state from compose should be done from side effect to prevent
         // recomposition.
-        LaunchedEffect(metricsStateHolder) {
-            snapshotFlow { state.isScrollInProgress }.collect { isScrolling ->
-                metricsStateHolder.state!!.run {
-                    if (isScrolling) {
-                        putState("ItemList", "Scrolling")
-                    } else {
-                        removeState("ItemList")
-                    }
-                }
-            }
-        }
+//        LaunchedEffect(metricsStateHolder) {
+//            snapshotFlow { state.isScrollInProgress }.collect { isScrolling ->
+//                metricsStateHolder.state!!.run {
+//                    if (isScrolling) {
+//                        putState("ItemList", "Scrolling")
+//                    } else {
+//                        removeState("ItemList")
+//                    }
+//                }
+//            }
+//        }
     }
 
     val focusRequester = remember { FocusRequester() }

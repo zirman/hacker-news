@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.googlePlayServices)
     alias(libs.plugins.crashlytics)
+    alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.composeCompiler)
     id("hackernews.detekt")
 }
@@ -71,6 +72,7 @@ android {
     }
 
     buildFeatures {
+        compose = true
     }
 
     composeOptions {
@@ -90,7 +92,7 @@ dependencies {
     implementation(project(":common:injection"))
     implementation(project(":common:view"))
 
-    implementation(platform(libs.composeBom))
+//    implementation(platform(libs.composeBom))
     implementation(platform(libs.koinBom))
 
     implementation(libs.bundles.kotlinx)
