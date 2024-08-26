@@ -46,10 +46,7 @@ android {
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
     }
-    buildTypes {
-        debug { }
-        release { }
-    }
+    buildTypes { }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
     }

@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Hacker News</string>
     <string name="top_stories">Cuentos Destacadas</string>
     <string name="more_options">Mas Opciones</string>
     <string name="no_story_selected">Ninguna historia seleccionada</string>

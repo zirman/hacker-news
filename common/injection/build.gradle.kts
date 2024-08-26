@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.composeCompiler)
     id("hackernews.detekt")
 }
 kotlin {
@@ -34,6 +36,7 @@ android {
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
     }
+    buildTypes { }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
     }
