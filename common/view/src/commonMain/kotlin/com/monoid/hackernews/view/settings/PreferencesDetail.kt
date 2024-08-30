@@ -18,10 +18,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.data.LightDarkMode
 import com.monoid.hackernews.common.data.Shape
 import com.monoid.hackernews.common.view.Res
@@ -40,7 +40,7 @@ fun PreferencesDetail(
     modifier: Modifier = Modifier,
     viewModel: PreferencesViewModel = koinViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val selectedLightDarkMode = uiState.lightDarkMode
     val selectedFont = uiState.font
     val fontSize = uiState.fontSize

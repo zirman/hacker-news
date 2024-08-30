@@ -3,9 +3,9 @@ package com.monoid.hackernews.view.home
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.data.Item
 import com.monoid.hackernews.common.navigation.BottomNav
 import com.monoid.hackernews.view.itemlist.ItemsColumn
@@ -21,7 +21,7 @@ actual fun HomeContent(
 ) {
     val key: String = "default"
     val viewModel: StoriesViewModel = createStoriesViewModel(key)
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     ItemsColumn(
         listState = viewModel.listState,
         itemsList = uiState.itemsList,
@@ -70,7 +70,7 @@ actual fun HomeContent(
 //            }
 //        }
 //        Box(modifier = modifier) {
-//            val uiState by viewModel.uiState.collectAsState()
+//            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 //            val (loading, itemsList) = uiState
 //
 ////            NavigableListDetailPaneScaffold(

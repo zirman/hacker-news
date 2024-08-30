@@ -4,8 +4,8 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.data.Colors
 import com.monoid.hackernews.common.data.LightDarkMode
 import com.monoid.hackernews.view.settings.PreferencesViewModel
@@ -22,7 +22,7 @@ fun AppTheme(
     viewModel: PreferencesViewModel = koinViewModel(),
     content: @Composable () -> Unit,
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     CompositionLocalProvider(LocalCommentIndentation provides uiState.paragraphIndent.em) {
         MaterialTheme(
             colorScheme = rememberColorScheme(uiState.lightDarkMode, uiState.colors),
