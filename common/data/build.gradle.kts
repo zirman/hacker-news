@@ -14,8 +14,11 @@ kotlin {
     sourceSets {
         androidMain.dependencies {
             implementation(libs.koinAndroid)
+            implementation(libs.roomKtx)
         }
-        jvmMain.dependencies { }
+        jvmMain.dependencies {
+            implementation(libs.kotlinxCoroutinesSwing)
+        }
         commonMain.dependencies {
             compileOnly(libs.koinCore)
             project.dependencies.coreLibraryDesugaring(libs.desugarJdkLibsNio)
@@ -27,7 +30,6 @@ kotlin {
             implementation(libs.collectionKtx)
             implementation(libs.ktorClientJava)
             implementation(libs.roomRuntime)
-            implementation(libs.roomKtx)
             implementation(libs.sqliteBundled)
             implementation(project.dependencies.platform(libs.koinBom))
             implementation(project.dependencies.platform(libs.kotlinWrappersBom))

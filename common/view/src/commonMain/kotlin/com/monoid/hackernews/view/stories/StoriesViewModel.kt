@@ -50,7 +50,7 @@ class StoriesViewModel(
     val listState = LazyListState()
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(context) {
             repository.topStories.collect {
                 _uiState.update { uiState ->
                     uiState.copy(itemsList = it)

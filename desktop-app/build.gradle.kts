@@ -6,42 +6,39 @@ plugins {
     alias(libs.plugins.composeCompiler)
     id("hackernews.detekt")
 }
-
 kotlin {
     jvmToolchain(libs.versions.jvmToolchain.get().toInt())
-
-    jvm("desktop")
-
+    jvm("desktop") { }
     sourceSets {
         val desktopMain by getting
-
-        commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
-            implementation(project.dependencies.platform(libs.kotilnxCoroutinesBom))
-            implementation(project.dependencies.platform(libs.kotlinWrappersBom))
-            implementation(project.dependencies.platform(libs.koinBom))
-            compileOnly(libs.koinCore)
-            implementation(libs.bundles.kotlinx)
-            implementation(libs.bundles.koin)
-            implementation(project(":common:injection"))
-            implementation(project(":common:data"))
-        }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinxCoroutinesSwing)
+            implementation(libs.ktorClientJava)
+        }
+        commonMain.dependencies {
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.material)
+            implementation(compose.ui)
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
+            implementation(libs.jetbrainsLifecycleViewmodel)
+            implementation(libs.jetbrainsLifecycleViewmodelCompose)
+            implementation(libs.jetbrainsLifecycleRuntimeCompose)
+            implementation(libs.bundles.datastore)
+            implementation(libs.bundles.koin)
+            implementation(project.dependencies.platform(libs.koinBom))
+            implementation(project.dependencies.platform(libs.kotlinWrappersBom))
+            implementation(project.dependencies.platform(libs.kotilnxCoroutinesBom))
+            implementation(project(":common:injection"))
+            implementation(project(":common:view"))
         }
     }
 }
-
 compose.desktop {
     application {
         mainClass = "MainKt"
-
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "com.monoid.hackernews"

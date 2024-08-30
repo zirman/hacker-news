@@ -8,15 +8,15 @@ compileSdk = "35"
 targetSdk = "35"
 minSdk = "33"
 buildToolsVersion = "34.0.0"
-android = "8.5.2"
+android = "8.6.0"
 #lint = "31.4.0"
-desugarJdkLibs = "2.0.4"
+desugarJdkLibs = "2.1.1"
 kotlin = "2.0.20"
-kotlinWrappersBom = "1.0.0-pre.795"
+kotlinWrappersBom = "1.0.0-pre.799"
 jetbrainsCompose = "1.7.0-alpha03"
 ksp = "2.0.20-1.0.24"
 kotlinxCoroutines = "1.8.1"
-kotlinxSerialization = "1.7.1"
+kotlinxSerialization = "1.7.2"
 kotlinxCollectionsImmutable = "0.3.7"
 kotlinxDatetime = "0.6.0"
 ktor = "3.0.0-beta-2"
@@ -81,7 +81,7 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
 [bundles]
 kotlinx = [
-    "kotlinxCoroutinesAndroid",
+    #    "kotlinxCoroutinesAndroid",
     "kotlinxSerializationJson",
     "kotlinxCollectionsImmutable",
     "kotlinxDatetime",
@@ -110,13 +110,13 @@ androidx = [
     "appcompat",
     "window",
     "activityKtx",
-#    "activityCompose",
+    #    "activityCompose",
     "fragmentKtx",
     "paletteKtx",
     "workRuntimeKtx",
     "preferenceKtx",
     "roomRuntime",
-    "roomKtx",
+    #    "roomKtx",
     "roomPaging",
     "jetbrainsLifecycleRuntimeCompose",
     "jetbrainsLifecycleViewmodel",
@@ -132,18 +132,18 @@ androidxWear = [
 ]
 androidxCompose = [
     "metricsPerformance",
-#    "material3WindowSize",
+    #    "material3WindowSize",
     "material3AdaptiveNavigationSuiteAndroid",
-#    "material3Adaptive",
-#    "material3AdaptiveLayout",
+    #    "material3Adaptive",
+    #    "material3AdaptiveLayout",
     "material3AdaptiveNavigation",
 ]
 datastore = [
     "datastore",
     "datastorePreferencesCore",
     "datastorePreferences",
-    "datastoreCoreOkio",
-    "datastoreCoreOkioJvm",
+    #    "datastoreCoreOkio",
+    #    "datastoreCoreOkioJvm",
 ]
 googleApp = [
     "accompanistAdaptive", # handle foldable devices
@@ -188,6 +188,7 @@ kotilnxCoroutinesBom = { group = "org.jetbrains.kotlinx", name = "kotlinx-corout
 #kotlinStdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 kotlinxCoroutinesAndroid = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android" }
 kotlinxCoroutinesSwing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing" }
+kotlinxCoroutinesJavaFx = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-javafx" }
 kotlinxCoroutinesTest = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test" }
 kotlinxSerializationJson = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 kotlinxCollectionsImmutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }

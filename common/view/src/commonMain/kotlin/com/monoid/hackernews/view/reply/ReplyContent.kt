@@ -30,7 +30,7 @@
 //import androidx.compose.ui.text.fromHtml
 //import androidx.compose.ui.unit.dp
 //import androidx.datastore.core.DataStore
-//import androidx.lifecycle.compose.collectAsStateWithLifecycle
+//import androidx.compose.runtime.collectAsState
 //import com.monoid.hackernews.common.api.ItemId
 //import com.monoid.hackernews.common.api.commentRequest
 //import com.monoid.hackernews.common.data.ItemUi

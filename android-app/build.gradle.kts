@@ -18,7 +18,7 @@ kotlin {
     jvmToolchain(libs.versions.jvmToolchain.get().toInt())
     androidTarget { }
     sourceSets {
-        commonMain.dependencies {
+        androidMain.dependencies {
             project.dependencies.coreLibraryDesugaring(libs.desugarJdkLibsNio)
             compileOnly(libs.koinCore)
             implementation(compose.components.resources)
@@ -48,14 +48,16 @@ kotlin {
             implementation(libs.lifecycleProcess)
             implementation(libs.slf4jSimple)
             implementation(libs.bundles.ktor)
+            // lintChecks(libs.composeLintChecks)
+            // debugImplementation(libs.uiTestManifest)
+        }
+        commonMain.dependencies {
             implementation(project.dependencies.platform(libs.koinBom))
             implementation(project.dependencies.platform(libs.kotlinWrappersBom))
             implementation(project.dependencies.platform(libs.kotilnxCoroutinesBom))
             implementation(project.dependencies.platform(libs.koinBom))
             implementation(project(":common:injection"))
             implementation(project(":common:view"))
-            // lintChecks(libs.composeLintChecks)
-            // debugImplementation(libs.uiTestManifest)
         }
         commonTest.dependencies {
             implementation(libs.bundles.test)

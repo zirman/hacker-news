@@ -10,11 +10,11 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.monoid.hackernews.common.api.ItemId
 import com.monoid.hackernews.common.data.Item
@@ -28,7 +28,7 @@ fun ItemDetailPane(
     modifier: Modifier = Modifier,
 ) {
     val viewModel = createItemDetailViewModel(itemId)
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsState()
     val lifecycleOwner = LocalLifecycleOwner.current
     LaunchedEffect(itemId) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {

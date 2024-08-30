@@ -9,10 +9,10 @@ import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneScaffold
 import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.data.Item
 import com.monoid.hackernews.view.itemdetail.ListItemDetailContentUiState
 
@@ -25,7 +25,7 @@ fun StoriesScaffold(
     viewModel: StoriesViewModel = createStoriesViewModel(key),
 ) {
     Box(modifier = modifier) {
-        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+        val uiState by viewModel.uiState.collectAsState()
         val (loading, itemsList) = uiState
 
         NavigableListDetailPaneScaffold(

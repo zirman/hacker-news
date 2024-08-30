@@ -17,7 +17,9 @@ kotlin {
             implementation(libs.bundles.androidxCompose)
             project.dependencies.coreLibraryDesugaring(libs.desugarJdkLibsNio)
         }
-        jvmMain.dependencies { }
+        jvmMain.dependencies {
+            implementation(libs.kotlinxCoroutinesSwing)
+        }
         commonMain.dependencies {
             api(project(":common:domain"))
             compileOnly(libs.koinCore)
@@ -38,6 +40,9 @@ kotlin {
             implementation(libs.bundles.koin)
             implementation(libs.bundles.ktor)
             implementation(libs.collectionKtx)
+            implementation(libs.jetbrainsLifecycleRuntimeCompose)
+            implementation(libs.jetbrainsLifecycleViewmodel)
+            implementation(libs.jetbrainsLifecycleViewmodelCompose)
             implementation(libs.navigationCompose)
             implementation(libs.material3WindowSizeClassMultiplatform)
             implementation(project.dependencies.platform(libs.koinBom))
