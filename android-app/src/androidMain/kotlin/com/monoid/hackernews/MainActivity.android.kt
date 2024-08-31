@@ -48,7 +48,6 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         windowSetup()
-
         setContent {
             AppTheme {
                 Scrim {
@@ -56,9 +55,7 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                 }
             }
         }
-
         jankStats()
-
         lifecycleScope.launch(context) {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 repository.preferences
@@ -72,60 +69,52 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
         val darkMode: Boolean = when (lightDarkMode) {
             LightDarkMode.System ->
                 resources.configuration.uiMode and
-                    Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+                        Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
 
             LightDarkMode.Light -> false
             LightDarkMode.Dark -> true
         }
-
         window.insetsController?.setSystemBarsAppearance(
             /* appearance = */
             if (darkMode) {
                 0
             } else {
                 WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
-                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+                        WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
             },
             /* mask = */
             WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
-                WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
+                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
         )
     }
 
     private fun windowSetup() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
-
         @Suppress("DEPRECATION")
         window.statusBarColor = getColor(android.R.color.transparent)
         @Suppress("DEPRECATION")
         window.navigationBarColor = getColor(android.R.color.transparent)
-
         installSplashScreen().apply {
             setKeepOnScreenCondition {
                 false
             }
-
             setOnExitAnimationListener { splashScreenView ->
                 try {
                     @Suppress("DEPRECATION")
                     window.statusBarColor = getColor(android.R.color.transparent)
                     @Suppress("DEPRECATION")
                     window.navigationBarColor = getColor(android.R.color.transparent)
-
                     val animateIn = ObjectAnimator.ofPropertyValuesHolder(
                         splashScreenView.iconView,
                         PropertyValuesHolder.ofFloat(View.SCALE_X, 1f, 0f),
                         PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f, 0f),
                     )
-
                     animateIn.interpolator = AnticipateInterpolator()
                     animateIn.duration = 400L
-
                     animateIn.doOnEnd {
                         splashScreenView.remove()
                         setSystemBarsAppearance(repository.preferences.value.lightDarkMode)
                     }
-
                     animateIn.start()
                 } catch (throwable: Throwable) {
                     logger.recordException(
@@ -155,7 +144,6 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                         )
                     }
                 }
-
             lifecycleScope.launch {
                 lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                     try {

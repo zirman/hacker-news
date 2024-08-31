@@ -1,6 +1,13 @@
+@file:OptIn(ExperimentalSplitPaneApi::class)
+
 package com.monoid.hackernews
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -13,12 +20,16 @@ import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import com.monoid.hackernews.common.dataStoreModule
@@ -29,6 +40,9 @@ import com.monoid.hackernews.common.networkModule
 import com.monoid.hackernews.view.main.LoginDialog
 import com.monoid.hackernews.view.main.MainNavHost
 import com.monoid.hackernews.view.theme.AppTheme
+import org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi
+import org.jetbrains.compose.splitpane.HorizontalSplitPane
+import org.jetbrains.compose.splitpane.rememberSplitPaneState
 import org.koin.core.context.startKoin
 
 fun main() {
@@ -90,10 +104,44 @@ fun main() {
                         )
                     },
                 ) { innerPadding ->
-                    MainNavHost(
-                        onClickLogin = { showLoginDialog = true },
+                    val splitterState = rememberSplitPaneState()
+                    HorizontalSplitPane(
+                        splitPaneState = splitterState,
                         modifier = Modifier.padding(innerPadding),
-                    )
+                    ) {
+                        first(340.dp) {
+                            MainNavHost(
+                                onClickLogin = { showLoginDialog = true },
+                                modifier = Modifier.fillMaxSize(),
+                            )
+                        }
+                        second(50.dp) {
+                            MainNavHost(
+                                onClickLogin = { showLoginDialog = true },
+                                modifier = Modifier.fillMaxSize(),
+                            )
+                        }
+                        splitter {
+                            visiblePart {
+                                Box(
+                                    Modifier
+                                        .width(1.dp)
+                                        .fillMaxHeight()
+                                        .background(MaterialTheme.colorScheme.background),
+                                )
+                            }
+                            handle {
+                                Box(
+                                    Modifier
+                                        .markAsHandle()
+                                        //.cursorForHorizontalResize()
+                                        .background(SolidColor(Color.Gray), alpha = 0.50f)
+                                        .width(9.dp)
+                                        .fillMaxHeight(),
+                                )
+                            }
+                        }
+                    }
                 }
                 if (showLoginDialog) {
                     LoginDialog(onDismissRequest = { showLoginDialog = false })
