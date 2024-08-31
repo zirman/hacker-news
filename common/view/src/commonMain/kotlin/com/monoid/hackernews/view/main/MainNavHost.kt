@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.monoid.hackernews.common.navigation.Route
 import com.monoid.hackernews.view.home.HomeScaffold
+import java.net.URL
 
 @Composable
 fun MainNavHost(onClickLogin: () -> Unit, modifier: Modifier = Modifier) {
@@ -22,12 +23,12 @@ fun MainNavHost(onClickLogin: () -> Unit, modifier: Modifier = Modifier) {
         composable<Route.Home> {
             HomeScaffold(
                 onClickBrowser = { item ->
-                    item.url?.run {
-                        navController.navigate(Route.Browser(this))
-                    }
+                    openWebpage(URL(item.url))
                 },
                 onClickLogin = onClickLogin,
             )
         }
     }
 }
+
+expect fun openWebpage(url: URL): Boolean

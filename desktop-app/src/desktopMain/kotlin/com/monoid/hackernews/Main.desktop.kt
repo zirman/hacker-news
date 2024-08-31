@@ -22,6 +22,7 @@ import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -29,6 +30,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.input.pointer.PointerIcon
+import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
@@ -44,6 +47,7 @@ import org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi
 import org.jetbrains.compose.splitpane.HorizontalSplitPane
 import org.jetbrains.compose.splitpane.rememberSplitPaneState
 import org.koin.core.context.startKoin
+import java.awt.Cursor
 
 fun main() {
     startKoin {
@@ -96,7 +100,7 @@ fun main() {
                                 FloatingActionButton(
                                     onClick = { /* do something */ },
                                     containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
-                                    elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+                                    elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
                                 ) {
                                     Icon(Icons.Filled.Add, "Localized description")
                                 }
@@ -104,48 +108,56 @@ fun main() {
                         )
                     },
                 ) { innerPadding ->
-                    val splitterState = rememberSplitPaneState()
-                    HorizontalSplitPane(
-                        splitPaneState = splitterState,
+                    HNPanes(
+                        onOpenLogin = { showLoginDialog = true },
                         modifier = Modifier.padding(innerPadding),
-                    ) {
-                        first(340.dp) {
-                            MainNavHost(
-                                onClickLogin = { showLoginDialog = true },
-                                modifier = Modifier.fillMaxSize(),
-                            )
-                        }
-                        second(50.dp) {
-                            MainNavHost(
-                                onClickLogin = { showLoginDialog = true },
-                                modifier = Modifier.fillMaxSize(),
-                            )
-                        }
-                        splitter {
-                            visiblePart {
-                                Box(
-                                    Modifier
-                                        .width(1.dp)
-                                        .fillMaxHeight()
-                                        .background(MaterialTheme.colorScheme.background),
-                                )
-                            }
-                            handle {
-                                Box(
-                                    Modifier
-                                        .markAsHandle()
-                                        //.cursorForHorizontalResize()
-                                        .background(SolidColor(Color.Gray), alpha = 0.50f)
-                                        .width(9.dp)
-                                        .fillMaxHeight(),
-                                )
-                            }
-                        }
-                    }
+                    )
                 }
                 if (showLoginDialog) {
                     LoginDialog(onDismissRequest = { showLoginDialog = false })
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun HNPanes(onOpenLogin: () -> Unit, modifier: Modifier = Modifier) {
+    val splitterState = rememberSplitPaneState()
+    HorizontalSplitPane(
+        splitPaneState = splitterState,
+        modifier = modifier,
+    ) {
+        first(320.dp) {
+            MainNavHost(
+                onClickLogin = onOpenLogin,
+                modifier = Modifier.fillMaxSize(),
+            )
+        }
+        second(320.dp) {
+            MainNavHost(
+                onClickLogin = onOpenLogin,
+                modifier = Modifier.fillMaxSize(),
+            )
+        }
+        splitter {
+            visiblePart {
+                Box(
+                    Modifier
+                        .width(1.dp)
+                        .fillMaxHeight()
+                        .background(MaterialTheme.colorScheme.background),
+                )
+            }
+            handle {
+                Box(
+                    Modifier
+                        .markAsHandle()
+                        .pointerHoverIcon(PointerIcon(Cursor(Cursor.E_RESIZE_CURSOR)))
+                        .background(SolidColor(Color.Gray), alpha = 0.50f)
+                        .width(9.dp)
+                        .fillMaxHeight(),
+                )
             }
         }
     }
