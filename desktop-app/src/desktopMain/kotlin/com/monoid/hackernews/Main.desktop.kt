@@ -40,9 +40,9 @@ import com.monoid.hackernews.common.data.databaseModule
 import com.monoid.hackernews.common.data.networkModule
 import com.monoid.hackernews.common.injection.dispatcherModule
 import com.monoid.hackernews.common.injection.loggerModule
-import com.monoid.hackernews.view.main.LoginDialog
-import com.monoid.hackernews.view.main.MainNavHost
-import com.monoid.hackernews.view.theme.AppTheme
+import com.monoid.hackernews.common.view.main.LoginDialog
+import com.monoid.hackernews.common.view.main.MainNavHost
+import com.monoid.hackernews.common.view.theme.AppTheme
 import org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi
 import org.jetbrains.compose.splitpane.HorizontalSplitPane
 import org.jetbrains.compose.splitpane.rememberSplitPaneState

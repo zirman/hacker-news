@@ -8,11 +8,11 @@ import com.monoid.hackernews.common.data.model.SettingsRepository
 import com.monoid.hackernews.common.data.model.StoriesRepository
 import com.monoid.hackernews.common.data.model.UserStoryRepositoryFactory
 import com.monoid.hackernews.common.injection.DispatcherQualifier
-import com.monoid.hackernews.view.itemdetail.ItemDetailViewModel
-import com.monoid.hackernews.view.main.LoginViewModel
-import com.monoid.hackernews.view.settings.PreferencesViewModel
-import com.monoid.hackernews.view.settings.SettingsViewModel
-import com.monoid.hackernews.view.stories.StoriesViewModel
+import com.monoid.hackernews.common.view.itemdetail.ItemDetailViewModel
+import com.monoid.hackernews.common.view.main.LoginViewModel
+import com.monoid.hackernews.common.view.settings.PreferencesViewModel
+import com.monoid.hackernews.common.view.settings.SettingsViewModel
+import com.monoid.hackernews.common.view.stories.StoriesViewModel
 import kotlinx.coroutines.channels.Channel
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named

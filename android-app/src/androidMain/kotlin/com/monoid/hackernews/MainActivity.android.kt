@@ -20,8 +20,8 @@ import androidx.metrics.performance.JankStats
 import com.monoid.hackernews.common.data.model.LightDarkMode
 import com.monoid.hackernews.common.data.model.SettingsRepository
 import com.monoid.hackernews.common.injection.LoggerAdapter
-import com.monoid.hackernews.view.main.MainNavHost
-import com.monoid.hackernews.view.theme.AppTheme
+import com.monoid.hackernews.common.view.main.MainNavHost
+import com.monoid.hackernews.common.view.theme.AppTheme
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.flow.distinctUntilChangedBy
