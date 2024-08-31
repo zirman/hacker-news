@@ -1,5 +1,8 @@
+@file:OptIn(ExperimentalTransitionApi::class)
+
 package com.monoid.hackernews.common.view.placeholder
 
+import androidx.compose.animation.core.ExperimentalTransitionApi
 import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.InfiniteRepeatableSpec
 import androidx.compose.animation.core.MutableTransitionState

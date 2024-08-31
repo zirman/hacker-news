@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
         setContent {
             AppTheme {
                 Scrim {
-                    MainNavHost()
+                    MainNavHost(onClickLogin = {})
                 }
             }
         }

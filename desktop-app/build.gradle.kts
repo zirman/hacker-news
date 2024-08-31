@@ -1,3 +1,6 @@
+@file:OptIn(ExperimentalComposeLibrary::class)
+
+import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
@@ -17,12 +20,21 @@ kotlin {
             implementation(libs.ktorClientJava)
         }
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material)
-            implementation(compose.ui)
+            implementation(compose.animation)
+            implementation(compose.animationGraphics)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            implementation(compose.desktop.common)
+            implementation(compose.desktop.components.animatedImage)
+            implementation(compose.desktop.components.splitPane)
+            implementation(compose.foundation)
+            implementation(compose.material3)
+            implementation(compose.materialIconsExtended)
+            implementation(compose.preview)
+            implementation(compose.runtime)
+            implementation(compose.ui)
+            implementation(compose.uiTooling)
+            implementation(compose.uiUtil)
             implementation(libs.jetbrainsLifecycleViewmodel)
             implementation(libs.jetbrainsLifecycleViewmodelCompose)
             implementation(libs.jetbrainsLifecycleRuntimeCompose)
@@ -38,7 +50,7 @@ kotlin {
 }
 compose.desktop {
     application {
-        mainClass = "MainKt"
+        mainClass = "com.monoid.hackernews.Main_desktopKt"
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "com.monoid.hackernews"

@@ -1,3 +1,7 @@
+@file:OptIn(ExperimentalComposeLibrary::class)
+
+import org.jetbrains.compose.ExperimentalComposeLibrary
+
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinMultiplatform)
@@ -27,10 +31,14 @@ kotlin {
             implementation(compose.animationGraphics)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            implementation(compose.desktop.common)
+            implementation(compose.desktop.components.animatedImage)
+            implementation(compose.desktop.components.splitPane)
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(compose.materialIconsExtended)
             implementation(compose.preview)
+            implementation(compose.runtime)
             implementation(compose.ui)
             implementation(compose.uiTooling)
             implementation(compose.uiUtil)
