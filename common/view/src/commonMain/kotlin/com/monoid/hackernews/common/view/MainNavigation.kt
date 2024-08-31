@@ -2,7 +2,7 @@ package com.monoid.hackernews.common.view
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import com.monoid.hackernews.common.navigation.Story
+import com.monoid.hackernews.common.domain.navigation.Story
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 

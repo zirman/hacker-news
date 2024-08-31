@@ -50,7 +50,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.LoginAction
 import com.monoid.hackernews.common.data.model.Username
-import com.monoid.hackernews.common.ui.util.rememberTimeBy
+import com.monoid.hackernews.common.domain.util.rememberTimeBy
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.deleted
 import com.monoid.hackernews.common.view.flag

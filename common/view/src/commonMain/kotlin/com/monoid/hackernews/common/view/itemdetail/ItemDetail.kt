@@ -48,7 +48,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.ItemType
-import com.monoid.hackernews.common.ui.util.rememberTimeBy
+import com.monoid.hackernews.common.domain.util.rememberTimeBy
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.TooltipPopupPositionProvider
 import com.monoid.hackernews.common.view.comment

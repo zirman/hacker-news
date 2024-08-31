@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import com.monoid.hackernews.common.data.model.Item
-import com.monoid.hackernews.common.navigation.BottomNav
+import com.monoid.hackernews.common.domain.navigation.BottomNav
 
 @Composable
 actual fun HomeScaffold(

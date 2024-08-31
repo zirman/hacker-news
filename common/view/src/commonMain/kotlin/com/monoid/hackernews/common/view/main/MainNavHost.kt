@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.monoid.hackernews.common.data.URL
-import com.monoid.hackernews.common.navigation.Route
+import com.monoid.hackernews.common.domain.navigation.Route
 import com.monoid.hackernews.common.view.home.HomeScaffold
 
 @Composable

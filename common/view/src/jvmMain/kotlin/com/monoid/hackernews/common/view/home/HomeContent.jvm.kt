@@ -7,7 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.data.model.Item
-import com.monoid.hackernews.common.navigation.BottomNav
+import com.monoid.hackernews.common.domain.navigation.BottomNav
 import com.monoid.hackernews.common.view.itemlist.ItemsColumn
 import com.monoid.hackernews.common.view.stories.StoriesViewModel
 import com.monoid.hackernews.common.view.stories.createStoriesViewModel

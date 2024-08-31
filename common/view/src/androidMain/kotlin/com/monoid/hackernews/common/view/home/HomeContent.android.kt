@@ -8,7 +8,7 @@ import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaf
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.monoid.hackernews.common.data.model.Item
-import com.monoid.hackernews.common.navigation.BottomNav
+import com.monoid.hackernews.common.domain.navigation.BottomNav
 import com.monoid.hackernews.common.view.settings.SettingsScaffold
 import com.monoid.hackernews.common.view.stories.StoriesScaffold
 

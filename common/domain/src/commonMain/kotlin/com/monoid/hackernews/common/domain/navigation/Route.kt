@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.navigation
+package com.monoid.hackernews.common.domain.navigation
 
 import androidx.core.bundle.Bundle
 import androidx.navigation.NavType

@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalTextApi::class)
 
-package com.monoid.hackernews.common.ui.util
+package com.monoid.hackernews.common.domain.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember

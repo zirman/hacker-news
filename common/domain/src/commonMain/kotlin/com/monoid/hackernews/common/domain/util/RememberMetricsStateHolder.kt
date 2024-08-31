@@ -1,7 +1,5 @@
-package com.monoid.hackernews.common.util
+package com.monoid.hackernews.common.domain.util
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 //import androidx.compose.ui.platform.LocalView
 //import androidx.metrics.performance.PerformanceMetricsState
 //
