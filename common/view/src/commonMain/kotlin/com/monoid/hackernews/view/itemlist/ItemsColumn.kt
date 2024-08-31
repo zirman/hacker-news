@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
-import com.monoid.hackernews.common.data.Item
+import com.monoid.hackernews.common.data.model.Item
 
 @Composable
 fun ItemsColumn(

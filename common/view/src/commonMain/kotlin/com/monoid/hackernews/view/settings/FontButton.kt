@@ -5,7 +5,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.monoid.hackernews.view.theme.HNFont
+import com.monoid.hackernews.common.data.model.HNFont
 import com.monoid.hackernews.view.theme.toFontFamily
 import com.monoid.hackernews.view.theme.toNameId
 import org.jetbrains.compose.resources.stringResource

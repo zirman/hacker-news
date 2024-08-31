@@ -9,7 +9,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.MutableCreationExtras
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.savedstate.SavedStateRegistryOwner
-import com.monoid.hackernews.common.api.ItemId
+import com.monoid.hackernews.common.data.api.ItemId
 
 @Composable
 internal fun ItemId.toExtras(): CreationExtras = MutableCreationExtras().apply {

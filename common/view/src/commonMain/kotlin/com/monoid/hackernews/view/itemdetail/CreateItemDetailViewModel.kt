@@ -1,7 +1,7 @@
 package com.monoid.hackernews.view.itemdetail
 
 import androidx.compose.runtime.Composable
-import com.monoid.hackernews.common.api.ItemId
+import com.monoid.hackernews.common.data.api.ItemId
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable

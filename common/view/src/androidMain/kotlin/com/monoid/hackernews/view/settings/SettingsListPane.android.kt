@@ -15,7 +15,7 @@ import androidx.compose.material3.adaptive.layout.ThreePaneScaffoldScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.monoid.hackernews.common.data.Username
+import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.login
 import com.monoid.hackernews.common.view.logout

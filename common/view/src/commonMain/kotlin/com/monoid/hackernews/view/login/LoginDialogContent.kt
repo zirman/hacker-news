@@ -22,8 +22,8 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
-import com.monoid.hackernews.common.data.Password
-import com.monoid.hackernews.common.data.Username
+import com.monoid.hackernews.common.data.model.Password
+import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.hacker_news_login
 import com.monoid.hackernews.common.view.i_agree_html

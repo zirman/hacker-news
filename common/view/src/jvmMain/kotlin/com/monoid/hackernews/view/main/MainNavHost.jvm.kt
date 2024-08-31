@@ -1,7 +1,7 @@
 package com.monoid.hackernews.view.main
 
-import com.monoid.hackernews.common.URI
-import com.monoid.hackernews.common.URL
+import com.monoid.hackernews.common.data.URI
+import com.monoid.hackernews.common.data.URL
 import java.awt.Desktop
 import java.net.URISyntaxException
 

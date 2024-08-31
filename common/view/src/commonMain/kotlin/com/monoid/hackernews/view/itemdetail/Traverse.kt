@@ -1,8 +1,8 @@
 package com.monoid.hackernews.view.itemdetail
 
-import com.monoid.hackernews.common.api.ItemId
-import com.monoid.hackernews.common.data.Item
-import com.monoid.hackernews.common.data.makeItem
+import com.monoid.hackernews.common.data.api.ItemId
+import com.monoid.hackernews.common.data.model.Item
+import com.monoid.hackernews.common.data.model.makeItem
 
 /**
  * Traverses an Item and it's descendants and builds a list with depth and descendant count.

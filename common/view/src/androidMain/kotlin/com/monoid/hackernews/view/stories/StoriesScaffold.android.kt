@@ -13,7 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.monoid.hackernews.common.data.Item
+import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.view.itemdetail.ListItemDetailContentUiState
 
 @Composable

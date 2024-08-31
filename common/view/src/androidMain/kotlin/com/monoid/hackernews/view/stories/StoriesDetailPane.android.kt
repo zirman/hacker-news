@@ -14,8 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.monoid.hackernews.common.api.ItemId
-import com.monoid.hackernews.common.data.Item
+import com.monoid.hackernews.common.data.api.ItemId
+import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.no_story_selected
 import com.monoid.hackernews.view.itemdetail.ItemDetailPane

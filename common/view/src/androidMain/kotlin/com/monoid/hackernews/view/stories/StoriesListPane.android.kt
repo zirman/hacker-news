@@ -10,7 +10,7 @@ import androidx.compose.material3.adaptive.layout.ThreePaneScaffoldScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.monoid.hackernews.common.data.Item
+import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.view.itemlist.ItemsColumn
 
 @Suppress("ComposeUnstableReceiver")

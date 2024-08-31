@@ -4,10 +4,10 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.monoid.hackernews.common.api.ItemId
-import com.monoid.hackernews.common.data.Item
-import com.monoid.hackernews.common.data.StoriesRepository
-import com.monoid.hackernews.common.data.makeItem
+import com.monoid.hackernews.common.data.api.ItemId
+import com.monoid.hackernews.common.data.model.Item
+import com.monoid.hackernews.common.data.model.StoriesRepository
+import com.monoid.hackernews.common.data.model.makeItem
 import com.monoid.hackernews.common.injection.LoggerAdapter
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler

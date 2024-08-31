@@ -16,9 +16,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
-import com.monoid.hackernews.common.api.ItemId
-import com.monoid.hackernews.common.data.Item
-import com.monoid.hackernews.common.data.ItemType
+import com.monoid.hackernews.common.data.api.ItemId
+import com.monoid.hackernews.common.data.model.Item
+import com.monoid.hackernews.common.data.model.ItemType
 import kotlinx.coroutines.delay
 
 @Composable

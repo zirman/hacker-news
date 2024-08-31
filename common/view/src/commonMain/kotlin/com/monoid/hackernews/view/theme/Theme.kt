@@ -9,8 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.structuralEqualityPolicy
 import androidx.compose.ui.text.font.FontFamily
-import com.monoid.hackernews.common.data.LightDarkMode
-import com.monoid.hackernews.common.data.Shape
+import com.monoid.hackernews.common.data.model.HNFont
+import com.monoid.hackernews.common.data.model.LightDarkMode
+import com.monoid.hackernews.common.data.model.Shape
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.cursive
 import com.monoid.hackernews.common.view.cut

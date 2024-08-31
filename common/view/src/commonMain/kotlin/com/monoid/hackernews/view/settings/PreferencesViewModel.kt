@@ -2,16 +2,16 @@ package com.monoid.hackernews.view.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.monoid.hackernews.common.data.Colors
-import com.monoid.hackernews.common.data.FontSize
-import com.monoid.hackernews.common.data.LightDarkMode
-import com.monoid.hackernews.common.data.LineHeight
-import com.monoid.hackernews.common.data.ParagraphIndent
-import com.monoid.hackernews.common.data.Settings
-import com.monoid.hackernews.common.data.SettingsRepository
-import com.monoid.hackernews.common.data.Shape
+import com.monoid.hackernews.common.data.model.Colors
+import com.monoid.hackernews.common.data.model.FontSize
+import com.monoid.hackernews.common.data.model.HNFont
+import com.monoid.hackernews.common.data.model.LightDarkMode
+import com.monoid.hackernews.common.data.model.LineHeight
+import com.monoid.hackernews.common.data.model.ParagraphIndent
+import com.monoid.hackernews.common.data.model.Settings
+import com.monoid.hackernews.common.data.model.SettingsRepository
+import com.monoid.hackernews.common.data.model.Shape
 import com.monoid.hackernews.common.injection.LoggerAdapter
-import com.monoid.hackernews.view.theme.HNFont
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted

@@ -10,7 +10,7 @@ import androidx.compose.material.icons.twotone.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.monoid.hackernews.common.data.Item
+import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.navigation.BottomNav
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.favorites

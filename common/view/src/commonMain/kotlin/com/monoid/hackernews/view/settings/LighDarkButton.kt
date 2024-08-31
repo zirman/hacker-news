@@ -6,7 +6,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.monoid.hackernews.common.data.LightDarkMode
+import com.monoid.hackernews.common.data.model.LightDarkMode
 import com.monoid.hackernews.view.theme.toNameId
 import org.jetbrains.compose.resources.stringResource
 

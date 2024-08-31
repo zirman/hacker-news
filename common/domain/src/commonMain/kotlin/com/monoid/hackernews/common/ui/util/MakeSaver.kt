@@ -2,7 +2,7 @@ package com.monoid.hackernews.common.ui.util
 
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.SaverScope
-import com.monoid.hackernews.common.api.ItemId
+import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.navigation.jsonDecoder
 import kotlinx.serialization.encodeToString
 

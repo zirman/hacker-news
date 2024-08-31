@@ -2,8 +2,8 @@ package com.monoid.hackernews.view.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.monoid.hackernews.common.data.LoginRepository
-import com.monoid.hackernews.common.data.Username
+import com.monoid.hackernews.common.data.model.LoginRepository
+import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.injection.LoggerAdapter
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job

@@ -2,9 +2,9 @@ package com.monoid.hackernews.common.navigation
 
 import androidx.core.bundle.Bundle
 import androidx.navigation.NavType
-import com.monoid.hackernews.common.api.ItemId
-import com.monoid.hackernews.common.data.LoginAction
-import com.monoid.hackernews.common.data.Username
+import com.monoid.hackernews.common.data.api.ItemId
+import com.monoid.hackernews.common.data.model.LoginAction
+import com.monoid.hackernews.common.data.model.Username
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString

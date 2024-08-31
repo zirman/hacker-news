@@ -8,9 +8,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
-import com.monoid.hackernews.common.data.FontSize
-import com.monoid.hackernews.common.data.LineHeight
-import com.monoid.hackernews.common.data.ParagraphIndent
+import com.monoid.hackernews.common.data.model.FontSize
+import com.monoid.hackernews.common.data.model.LineHeight
+import com.monoid.hackernews.common.data.model.ParagraphIndent
 
 @Composable
 fun rememberAppTypography(

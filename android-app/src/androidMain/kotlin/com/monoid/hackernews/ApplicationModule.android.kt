@@ -3,10 +3,10 @@ package com.monoid.hackernews
 import android.content.Intent
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.monoid.hackernews.common.data.LoginRepository
-import com.monoid.hackernews.common.data.SettingsRepository
-import com.monoid.hackernews.common.data.StoriesRepository
-import com.monoid.hackernews.common.data.UserStoryRepositoryFactory
+import com.monoid.hackernews.common.data.model.LoginRepository
+import com.monoid.hackernews.common.data.model.SettingsRepository
+import com.monoid.hackernews.common.data.model.StoriesRepository
+import com.monoid.hackernews.common.data.model.UserStoryRepositoryFactory
 import com.monoid.hackernews.common.injection.DispatcherQualifier
 import com.monoid.hackernews.view.itemdetail.ItemDetailViewModel
 import com.monoid.hackernews.view.main.LoginViewModel

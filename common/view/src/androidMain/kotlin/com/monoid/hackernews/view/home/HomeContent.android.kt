@@ -7,7 +7,7 @@ import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.monoid.hackernews.common.data.Item
+import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.navigation.BottomNav
 import com.monoid.hackernews.view.settings.SettingsScaffold
 import com.monoid.hackernews.view.stories.StoriesScaffold

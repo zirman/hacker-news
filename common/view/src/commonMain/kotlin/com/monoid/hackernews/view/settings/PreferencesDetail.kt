@@ -22,8 +22,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.monoid.hackernews.common.data.LightDarkMode
-import com.monoid.hackernews.common.data.Shape
+import com.monoid.hackernews.common.data.model.HNFont
+import com.monoid.hackernews.common.data.model.LightDarkMode
+import com.monoid.hackernews.common.data.model.Shape
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.font_size_format
 import com.monoid.hackernews.common.view.fonts
@@ -31,7 +32,6 @@ import com.monoid.hackernews.common.view.light_dark_mode
 import com.monoid.hackernews.common.view.line_spacing_format
 import com.monoid.hackernews.common.view.paragraph_indent_format
 import com.monoid.hackernews.common.view.shapes
-import com.monoid.hackernews.view.theme.HNFont
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 

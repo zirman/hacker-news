@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.monoid.hackernews.common.navigation.Route
 import com.monoid.hackernews.view.home.HomeScaffold
-import com.monoid.hackernews.common.URL
+import com.monoid.hackernews.common.data.URL
 
 @Composable
 fun MainNavHost(onClickLogin: () -> Unit, modifier: Modifier = Modifier) {

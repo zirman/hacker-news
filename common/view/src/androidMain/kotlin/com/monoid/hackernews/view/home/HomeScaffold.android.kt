@@ -12,7 +12,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import com.monoid.hackernews.common.data.Item
+import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.navigation.BottomNav
 import org.jetbrains.compose.resources.stringResource
 

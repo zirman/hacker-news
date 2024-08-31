@@ -6,8 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.monoid.hackernews.common.data.Colors
-import com.monoid.hackernews.common.data.LightDarkMode
+import com.monoid.hackernews.common.data.model.Colors
+import com.monoid.hackernews.common.data.model.LightDarkMode
 import com.monoid.hackernews.view.settings.PreferencesViewModel
 import org.koin.compose.viewmodel.koinViewModel
 

@@ -48,11 +48,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.monoid.hackernews.common.api.ItemId
-import com.monoid.hackernews.common.data.Item
-import com.monoid.hackernews.common.data.ItemType
-import com.monoid.hackernews.common.data.Username
-import com.monoid.hackernews.common.data.makeItem
+import com.monoid.hackernews.common.data.api.ItemId
+import com.monoid.hackernews.common.data.model.Item
+import com.monoid.hackernews.common.data.model.ItemType
+import com.monoid.hackernews.common.data.model.Username
+import com.monoid.hackernews.common.data.model.makeItem
 import com.monoid.hackernews.common.ui.text.ClickableTextBlock
 import com.monoid.hackernews.common.ui.util.rememberTimeBy
 import com.monoid.hackernews.common.view.Res

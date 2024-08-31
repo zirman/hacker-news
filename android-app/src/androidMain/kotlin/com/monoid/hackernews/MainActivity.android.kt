@@ -17,8 +17,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.metrics.performance.JankStats
-import com.monoid.hackernews.common.data.LightDarkMode
-import com.monoid.hackernews.common.data.SettingsRepository
+import com.monoid.hackernews.common.data.model.LightDarkMode
+import com.monoid.hackernews.common.data.model.SettingsRepository
 import com.monoid.hackernews.common.injection.LoggerAdapter
 import com.monoid.hackernews.view.main.MainNavHost
 import com.monoid.hackernews.view.theme.AppTheme

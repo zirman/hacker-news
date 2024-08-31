@@ -47,9 +47,9 @@ import androidx.compose.ui.unit.em
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
-import com.monoid.hackernews.common.api.ItemId
-import com.monoid.hackernews.common.data.LoginAction
-import com.monoid.hackernews.common.data.Username
+import com.monoid.hackernews.common.data.api.ItemId
+import com.monoid.hackernews.common.data.model.LoginAction
+import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.ui.text.ClickableTextBlock
 import com.monoid.hackernews.common.ui.util.rememberTimeBy
 import com.monoid.hackernews.common.view.Res
