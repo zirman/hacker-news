@@ -1,6 +1,6 @@
 package com.monoid.hackernews.view.main
 
-import java.net.URL
+import com.monoid.hackernews.common.URL
 
 actual fun openWebpage(url: URL): Boolean {
 //    item.url?.run {

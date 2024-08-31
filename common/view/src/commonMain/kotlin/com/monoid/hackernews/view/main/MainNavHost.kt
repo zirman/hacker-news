@@ -1,8 +1,5 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.monoid.hackernews.view.main
 
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -10,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.monoid.hackernews.common.navigation.Route
 import com.monoid.hackernews.view.home.HomeScaffold
-import java.net.URL
+import com.monoid.hackernews.common.URL
 
 @Composable
 fun MainNavHost(onClickLogin: () -> Unit, modifier: Modifier = Modifier) {
@@ -23,7 +20,9 @@ fun MainNavHost(onClickLogin: () -> Unit, modifier: Modifier = Modifier) {
         composable<Route.Home> {
             HomeScaffold(
                 onClickBrowser = { item ->
-                    openWebpage(URL(item.url))
+                    item.url
+                        ?.let { URL(it) }
+                        ?.run { openWebpage(this) }
                 },
                 onClickLogin = onClickLogin,
             )

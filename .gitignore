@@ -1,6 +1,7 @@
 /.gradle
 /.kotlin/metadata
 /.kotlin/sessions
+/.kotlin/errors
 /build-logic/.gradle
 /local.properties
 /build
