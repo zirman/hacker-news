@@ -46,6 +46,7 @@ import com.monoid.hackernews.common.view.theme.AppTheme
 import org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi
 import org.jetbrains.compose.splitpane.HorizontalSplitPane
 import org.jetbrains.compose.splitpane.rememberSplitPaneState
+import org.koin.compose.KoinContext
 import org.koin.core.context.startKoin
 import java.awt.Cursor
 
@@ -64,57 +65,59 @@ fun main() {
     application {
         Window(onCloseRequest = ::exitApplication) {
             AppTheme {
-                var showLoginDialog by rememberSaveable {
-                    mutableStateOf(false)
-                }
-                Scaffold(
-                    bottomBar = {
-                        BottomAppBar(
-                            actions = {
-                                IconButton(onClick = { /* do something */ }) {
-                                    Icon(
-                                        Icons.Filled.Check,
-                                        contentDescription = "Localized description"
-                                    )
+                KoinContext {
+                    var showLoginDialog by rememberSaveable {
+                        mutableStateOf(false)
+                    }
+                    Scaffold(
+                        bottomBar = {
+                            BottomAppBar(
+                                actions = {
+                                    IconButton(onClick = { /* do something */ }) {
+                                        Icon(
+                                            Icons.Filled.Check,
+                                            contentDescription = "Localized description"
+                                        )
+                                    }
+                                    IconButton(onClick = { /* do something */ }) {
+                                        Icon(
+                                            Icons.Filled.Edit,
+                                            contentDescription = "Localized description",
+                                        )
+                                    }
+                                    IconButton(onClick = { /* do something */ }) {
+                                        Icon(
+                                            Icons.Filled.Mic,
+                                            contentDescription = "Localized description",
+                                        )
+                                    }
+                                    IconButton(onClick = { /* do something */ }) {
+                                        Icon(
+                                            Icons.Filled.Image,
+                                            contentDescription = "Localized description",
+                                        )
+                                    }
+                                },
+                                floatingActionButton = {
+                                    FloatingActionButton(
+                                        onClick = { /* do something */ },
+                                        containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
+                                        elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
+                                    ) {
+                                        Icon(Icons.Filled.Add, "Localized description")
+                                    }
                                 }
-                                IconButton(onClick = { /* do something */ }) {
-                                    Icon(
-                                        Icons.Filled.Edit,
-                                        contentDescription = "Localized description",
-                                    )
-                                }
-                                IconButton(onClick = { /* do something */ }) {
-                                    Icon(
-                                        Icons.Filled.Mic,
-                                        contentDescription = "Localized description",
-                                    )
-                                }
-                                IconButton(onClick = { /* do something */ }) {
-                                    Icon(
-                                        Icons.Filled.Image,
-                                        contentDescription = "Localized description",
-                                    )
-                                }
-                            },
-                            floatingActionButton = {
-                                FloatingActionButton(
-                                    onClick = { /* do something */ },
-                                    containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
-                                    elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
-                                ) {
-                                    Icon(Icons.Filled.Add, "Localized description")
-                                }
-                            }
+                            )
+                        },
+                    ) { innerPadding ->
+                        HNPanes(
+                            onOpenLogin = { showLoginDialog = true },
+                            modifier = Modifier.padding(innerPadding),
                         )
-                    },
-                ) { innerPadding ->
-                    HNPanes(
-                        onOpenLogin = { showLoginDialog = true },
-                        modifier = Modifier.padding(innerPadding),
-                    )
-                }
-                if (showLoginDialog) {
-                    LoginDialog(onDismissRequest = { showLoginDialog = false })
+                    }
+                    if (showLoginDialog) {
+                        LoginDialog(onDismissRequest = { showLoginDialog = false })
+                    }
                 }
             }
         }

@@ -29,6 +29,7 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.android.scope.AndroidScopeComponent
 import org.koin.androidx.scope.activityRetainedScope
+import org.koin.compose.KoinContext
 import org.koin.core.scope.Scope
 import java.util.concurrent.TimeUnit
 
@@ -50,8 +51,10 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
         windowSetup()
         setContent {
             AppTheme {
-                Scrim {
-                    MainNavHost(onClickLogin = {})
+                KoinContext {
+                    Scrim {
+                        MainNavHost(onClickLogin = {})
+                    }
                 }
             }
         }
