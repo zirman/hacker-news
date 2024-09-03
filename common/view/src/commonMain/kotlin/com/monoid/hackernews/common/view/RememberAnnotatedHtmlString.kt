@@ -29,13 +29,12 @@ fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
     val fontSize = LocalTextStyle.current.fontSize
     return remember(htmlString, linkStyle, fontSize) {
         // TODO
-        // Setting font properties: <font face=”font_family“ color=”hex_color”>. Examples of possible font
-        // families include monospace, serif, and sans_serif.
         // CSS style: <span style=”color|background_color|text-decoration”>
         // Paragraphs: <p dir="rtl | ltr" style="">
         buildAnnotatedString {
             var ulDepth = 0
             var prependSpace = false
+            var onNewLine = true
 
             @Suppress("ReturnCount")
             fun recur(index: Int): Int {
@@ -111,7 +110,10 @@ fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
                         }
 
                         "li" -> {
-                            appendLine()
+                            // TODO: only do if previous didn't end with newline
+                            if (!onNewLine) {
+                                appendLine()
+                            }
                             repeat(ulDepth) {
                                 append("  ")
                             }
@@ -119,8 +121,10 @@ fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
                         }
 
                         "div" -> {
-                            appendLine()
-                            appendLine()
+                            // TODO: only do if previous didn't end with newline
+                            if (!onNewLine) {
+                                appendLine()
+                            }
                         }
 
                         "a" -> {
@@ -129,6 +133,37 @@ fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
                                 pushLink(LinkAnnotation.Url(href))
                                 if (linkStyle != null) {
                                     pushStyle(linkStyle)
+                                }
+                            }
+                        }
+
+                        "p" -> {
+                            // TODO: only do if previous didn't end with newline
+                            if (!onNewLine) {
+                                appendLine()
+                            }
+                        }
+
+                        "font" -> {
+                            // Setting font properties: <font face=”font_family“ color=”hex_color”>.
+                            // Examples of possible font families include monospace, serif, and sans_serif.
+                            val fontFamily = attributes?.get("face")
+                            val color = attributes?.get("color")
+                            when (fontFamily?.lowercase()) {
+                                "monospace" -> {
+                                    pushStyle(SpanStyle(fontFamily = FontFamily.Monospace))
+                                }
+
+                                "serif" -> {
+                                    pushStyle(SpanStyle(fontFamily = FontFamily.Serif))
+                                }
+
+                                "sans_serif" -> {
+                                    pushStyle(SpanStyle(fontFamily = FontFamily.SansSerif))
+                                }
+
+                                else -> {
+                                    pushStyle(SpanStyle())
                                 }
                             }
                         }
@@ -148,29 +183,40 @@ fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
                     } else {
                         when (tag) {
                             "b", "i", "cite", "dfn", "em", "big", "small", "tt", "s", "strike",
-                            "del", "u", "sup", "sub" -> {
+                            "del", "u", "sup", "sub", "font" -> {
                                 pop()
                             }
 
-                            "br" -> {}
+                            "br" -> {
+                            }
 
                             "ul" -> {
                                 ulDepth--
+                                appendLine()
+                                onNewLine = true
                             }
 
                             "li" -> {
                                 appendLine()
-                                appendLine()
+                                onNewLine = true
                             }
 
                             "div" -> {
                                 appendLine()
+                                onNewLine = true
+                            }
+
+                            "p" -> {
+                                appendLine()
+                                onNewLine = true
                             }
 
                             "a" -> {
-                                pop()
-                                if (linkStyle != null) {
+                                if (attributes?.get("href") != null) {
                                     pop()
+                                    if (linkStyle != null) {
+                                        pop()
+                                    }
                                 }
                             }
                         }
@@ -180,9 +226,10 @@ fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
                     val textMatch = textRegex.matchAt(htmlString, index)
                     if (textMatch != null) {
                         var wordMatch = wordRegex.find(textMatch.value)
-                        if (prependSpace.not() && (wordMatch?.range?.first ?: 1) > 0) {
+                        if (onNewLine.not() && prependSpace.not() && (wordMatch?.range?.first ?: 1) > 0) {
                             append(' ')
                         }
+                        onNewLine = false
                         while (wordMatch != null) {
                             append(wordMatch.value)
                             prependSpace = textMatch.value.length != wordMatch.range.last + 1
