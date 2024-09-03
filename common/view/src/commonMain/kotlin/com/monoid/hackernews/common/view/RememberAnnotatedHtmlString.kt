@@ -18,12 +18,9 @@ private val startTagRegex = """<([a-z][a-z0-9_]*)""".toRegex(RegexOption.IGNORE_
 private val attributeRegex =
     """\s*(?<![a-z0-9_])([a-z][a-z0-9_]*)(\s*=\s*("([^"]*)"|([a-z][a-z0-9_]*)))?"""
         .toRegex(RegexOption.IGNORE_CASE)
-private val fooRegex = """\s*>""".toRegex(RegexOption.IGNORE_CASE)
-private val endTagRegex =
-    """</([a-z][a-z0-9_]*)\s*>"""
-        .toRegex(RegexOption.IGNORE_CASE)
-//private val wordRegex =
-//    """\s*(\w+)""".toRegex()
+private val capRegex = """\s*>""".toRegex(RegexOption.IGNORE_CASE)
+private val endTagRegex = """</([a-z][a-z0-9_]*)\s*>""".toRegex(RegexOption.IGNORE_CASE)
+private val wordRegex = """\s*(\w+)""".toRegex(RegexOption.IGNORE_CASE)
 
 @Suppress("CyclomaticComplexMethod")
 @Composable
@@ -38,11 +35,11 @@ fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
         // Paragraphs: <p dir="rtl | ltr" style="">
         buildAnnotatedString {
             var ulDepth = 0
+            var newLine = true
 
             @Suppress("ReturnCount")
             fun recur(index: Int): Int {
                 val startTagMatch = startTagRegex.matchAt(htmlString, index)
-//                println("matchAt ${htmlString.substring(index)} ${startTagMatch}")
                 // found a tag now recurse and then find matching close tag
                 if (startTagMatch != null) {
                     var i = startTagMatch.range.last + 1
@@ -62,10 +59,8 @@ fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
                                 }
                             }
                         }
-//                        ?.also { println("attributes:$it") }
-                    i = fooRegex.matchAt(htmlString, i)!!.range.last + 1
+                    i = capRegex.matchAt(htmlString, i)!!.range.last + 1
                     val tag = startTagMatch.groupValues[1].lowercase()
-//                    println("tag:$tag")
                     when (tag) {
                         "b" -> {
                             pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
@@ -105,6 +100,7 @@ fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
 
                         "br" -> {
                             appendLine()
+                            newLine = true
                         }
 
                         "ul" -> {
@@ -113,6 +109,7 @@ fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
 
                         "li" -> {
                             appendLine()
+                            newLine = true
                             repeat(ulDepth) {
                                 append("  ")
                             }
@@ -122,6 +119,7 @@ fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
                         "div" -> {
                             appendLine()
                             appendLine()
+                            newLine = true
                         }
 
                         "a" -> {
@@ -162,10 +160,12 @@ fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
                             "li" -> {
                                 appendLine()
                                 appendLine()
+                                newLine = true
                             }
 
                             "div" -> {
                                 appendLine()
+                                newLine = true
                             }
 
                             "a" -> {
@@ -180,10 +180,20 @@ fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
                 } else { // no tag so we consume characters up to the next tag
                     val textMatch = textRegex.matchAt(htmlString, index)
                     if (textMatch != null) {
-//                        val x = wordRegex.matchAt(nextTagMatch.value, 0)
-//                        if (x != null) {
-//                            append(x.groupValues[1])
-//                            var y =
+                        println("textMatch:${textMatch.value}")
+                        var wordMatch = wordRegex.matchAt(textMatch.value, 0)
+                        while (wordMatch != null) {
+                            println("wordMatch:${wordMatch.value}")
+                            if (!newLine) {
+                                append(' ')
+                            }
+                            newLine = false
+                            append(wordMatch.groupValues[1])
+                            wordMatch = wordMatch.next()
+                        }
+//                        if (wordMatch != null) {
+//                            append(wordMatch.groupValues[1])
+//                            var y = wordMatch.next()
 //                            while (y != null) {
 //                                append(' ')
 //                                append(y.value)
@@ -193,7 +203,7 @@ fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
 //                            nextTagMatch.value
 //                        }
 //                        println("text ${textMatch.value}")
-                        append(textMatch.value)
+//                        append(textMatch.value)
                         return textMatch.range.last + 1
                     } else {
                         return index
