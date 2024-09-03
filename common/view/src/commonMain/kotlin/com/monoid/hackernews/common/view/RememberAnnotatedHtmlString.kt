@@ -20,7 +20,7 @@ private val attributeRegex =
         .toRegex(RegexOption.IGNORE_CASE)
 private val capRegex = """\s*>""".toRegex(RegexOption.IGNORE_CASE)
 private val endTagRegex = """</([a-z][a-z0-9_]*)\s*>""".toRegex(RegexOption.IGNORE_CASE)
-private val wordRegex = """\s*(\w+)""".toRegex(RegexOption.IGNORE_CASE)
+private val wordRegex = """\w+""".toRegex(RegexOption.IGNORE_CASE)
 
 @Suppress("CyclomaticComplexMethod")
 @Composable
@@ -35,10 +35,14 @@ fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
         // Paragraphs: <p dir="rtl | ltr" style="">
         buildAnnotatedString {
             var ulDepth = 0
-            var newLine = true
+            var prependSpace = false
 
             @Suppress("ReturnCount")
             fun recur(index: Int): Int {
+                if (prependSpace) {
+                    append(' ')
+                    prependSpace = false
+                }
                 val startTagMatch = startTagRegex.matchAt(htmlString, index)
                 // found a tag now recurse and then find matching close tag
                 if (startTagMatch != null) {
@@ -100,7 +104,6 @@ fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
 
                         "br" -> {
                             appendLine()
-                            newLine = true
                         }
 
                         "ul" -> {
@@ -109,7 +112,6 @@ fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
 
                         "li" -> {
                             appendLine()
-                            newLine = true
                             repeat(ulDepth) {
                                 append("  ")
                             }
@@ -119,7 +121,6 @@ fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
                         "div" -> {
                             appendLine()
                             appendLine()
-                            newLine = true
                         }
 
                         "a" -> {
@@ -160,12 +161,10 @@ fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
                             "li" -> {
                                 appendLine()
                                 appendLine()
-                                newLine = true
                             }
 
                             "div" -> {
                                 appendLine()
-                                newLine = true
                             }
 
                             "a" -> {
@@ -180,30 +179,18 @@ fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
                 } else { // no tag so we consume characters up to the next tag
                     val textMatch = textRegex.matchAt(htmlString, index)
                     if (textMatch != null) {
-                        println("textMatch:${textMatch.value}")
-                        var wordMatch = wordRegex.matchAt(textMatch.value, 0)
+                        var wordMatch = wordRegex.find(textMatch.value)
+                        if (prependSpace.not() && (wordMatch?.range?.first ?: 1) > 0) {
+                            append(' ')
+                        }
                         while (wordMatch != null) {
-                            println("wordMatch:${wordMatch.value}")
-                            if (!newLine) {
+                            append(wordMatch.value)
+                            prependSpace = textMatch.value.length != wordMatch.range.last + 1
+                            wordMatch = wordMatch.next()
+                            if (wordMatch != null) {
                                 append(' ')
                             }
-                            newLine = false
-                            append(wordMatch.groupValues[1])
-                            wordMatch = wordMatch.next()
                         }
-//                        if (wordMatch != null) {
-//                            append(wordMatch.groupValues[1])
-//                            var y = wordMatch.next()
-//                            while (y != null) {
-//                                append(' ')
-//                                append(y.value)
-//                                y =
-//                            }
-//                            // remove extra white space
-//                            nextTagMatch.value
-//                        }
-//                        println("text ${textMatch.value}")
-//                        append(textMatch.value)
                         return textMatch.range.last + 1
                     } else {
                         return index
@@ -213,10 +200,6 @@ fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
             // loop through consuming top level tags and text
             var i = 0
             while (i < htmlString.length) {
-//                val x = recur(i)
-//                println("asdf $i $x")
-//                if (x == i) break
-//                i = x
                 i = recur(i)
             }
         }
