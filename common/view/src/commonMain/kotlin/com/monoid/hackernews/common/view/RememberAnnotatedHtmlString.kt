@@ -20,6 +20,7 @@ private val attributeRegex =
     """\s*(?<![a-z0-9_])([a-z][a-z0-9_]*)(\s*=\s*("([^"]*)"|([a-z][a-z0-9_]*)))?"""
         .toRegex(RegexOption.IGNORE_CASE)
 private val capRegex = """\s*>""".toRegex(RegexOption.IGNORE_CASE)
+private val capSpaceRegex = """\s+""".toRegex(RegexOption.IGNORE_CASE)
 private val endTagRegex = """</([a-z][a-z0-9_]*)\s*>""".toRegex(RegexOption.IGNORE_CASE)
 private val wordRegex = """\S+""".toRegex(RegexOption.IGNORE_CASE)
 private val ampersandRegex = """&amp;""".toRegex()
@@ -49,15 +50,11 @@ fun annotateHtmlString(
     fontSize: TextUnit,
 ): AnnotatedString = buildAnnotatedString {
     var ulDepth = 0
-    var prependSpace = false
+    var consumedSpace = false
     var onNewLine = true
 
     @Suppress("ReturnCount")
     fun recur(index: Int): Int {
-        if (prependSpace) {
-            append(' ')
-            prependSpace = false
-        }
         val startTagMatch = startTagRegex.matchAt(htmlString, index)
         // found a tag now recurse and then find matching close tag
         if (startTagMatch != null) {
@@ -80,6 +77,15 @@ fun annotateHtmlString(
                 }
             i = capRegex.matchAt(htmlString, i)!!.range.last + 1
             val tag = startTagMatch.groupValues[1].lowercase()
+            if (consumedSpace) {
+                val capSpaceMatch = capSpaceRegex.matchAt(htmlString, i)
+                if (capSpaceMatch == null) {
+                    append(' ')
+                    consumedSpace = false
+                } else {
+                    i = capSpaceMatch.range.last + 1
+                }
+            }
             when (tag) {
                 "b" -> {
                     pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
@@ -134,6 +140,7 @@ fun annotateHtmlString(
                         append("  ")
                     }
                     append("• ")
+                    onNewLine = false
                 }
 
                 "div" -> {
@@ -197,6 +204,19 @@ fun annotateHtmlString(
                 }
                 return i
             } else {
+                i = if (consumedSpace) {
+                    val capSpaceMatch =
+                        capSpaceRegex.matchAt(htmlString, endTagMatch.range.last + 1)
+                    append(' ')
+                    consumedSpace = false
+                    if (capSpaceMatch == null) {
+                        endTagMatch.range.last + 1
+                    } else {
+                        capSpaceMatch.range.last + 1
+                    }
+                } else {
+                    endTagMatch.range.last + 1
+                }
                 when (tag) {
                     "b", "i", "cite", "dfn", "em", "big", "small", "tt", "s", "strike",
                     "del", "u", "sup", "sub", "font" -> {
@@ -236,27 +256,32 @@ fun annotateHtmlString(
                         }
                     }
                 }
-                return endTagMatch.range.last + 1
+                return i // endTagMatch.range.last + 1
             }
         } else { // no tag so we consume characters up to the next tag
             val textMatch = textRegex.matchAt(htmlString, index)
-            if (textMatch != null) {
+            if (textMatch == null) {
+                return index
+            } else {
                 var wordMatch = wordRegex.find(textMatch.value)
-                if (onNewLine.not() && prependSpace.not() && (wordMatch?.range?.first ?: 0) > 0) {
-                    append(' ')
-                }
-                onNewLine = false
-                while (wordMatch != null) {
-                    append(wordMatch.value.unescapeCharacters())
-                    prependSpace = textMatch.value.length != wordMatch.range.last + 1
-                    wordMatch = wordMatch.next()
-                    if (wordMatch != null) {
+                if (wordMatch != null) {
+                    if (!onNewLine && (consumedSpace || wordMatch.range.first > 0)) {
                         append(' ')
+                        onNewLine = false
+                    }
+                    append(wordMatch.value.unescapeCharacters())
+                    onNewLine = false
+                    consumedSpace = wordMatch.range.last + 1 < textMatch.value.length
+                    wordMatch = wordMatch.next()
+                    while (wordMatch != null) {
+                        append(' ')
+                        append(wordMatch.value.unescapeCharacters())
+                        onNewLine = false
+                        consumedSpace = wordMatch.range.last + 1 < textMatch.value.length
+                        wordMatch = wordMatch.next()
                     }
                 }
-                return textMatch.range.last + 1
-            } else {
-                return index
+                return recur(textMatch.range.last + 1)
             }
         }
     }
