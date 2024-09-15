@@ -4,7 +4,6 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
@@ -13,22 +12,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.TextUnit
-
-private val textRegex = """[^<]+""".toRegex(RegexOption.IGNORE_CASE)
-private val startTagRegex = """<([a-z][a-z0-9_]*)""".toRegex(RegexOption.IGNORE_CASE)
-private val attributeRegex =
-    """\s*(?<![a-z0-9_])([a-z][a-z0-9_]*)(\s*=\s*("([^"]*)"|([a-z][a-z0-9_]*)))?"""
-        .toRegex(RegexOption.IGNORE_CASE)
-private val capRegex = """\s*>""".toRegex(RegexOption.IGNORE_CASE)
-private val capSpaceRegex = """\s+""".toRegex(RegexOption.IGNORE_CASE)
-private val endTagRegex = """</([a-z][a-z0-9_]*)\s*>""".toRegex(RegexOption.IGNORE_CASE)
-private val wordRegex = """\S+""".toRegex(RegexOption.IGNORE_CASE)
-private val ampersandRegex = """&amp;""".toRegex()
-private val lessThanRegex = """&lt;""".toRegex()
-private val greaterThanRegex = """&gt;""".toRegex()
-private val quoteRegex = """&quot;""".toRegex()
-private val nbspRegex = """&nbsp;""".toRegex()
-private val escapeRegex = """&#(\d+);""".toRegex()
 
 @Suppress("CyclomaticComplexMethod")
 @Composable
@@ -40,6 +23,287 @@ fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
     }
 }
 
+class HtmlParser(
+    htmlString: String,
+    private val linkStyle: SpanStyle?,
+    private val textUnit: TextUnit,
+    private val tokens: List<HtmlToken> = tokenizeHtml(htmlString),
+    // newLine and consumedSpace are exclusively true or both are false
+    private var newLine: Boolean = true,
+    private var consumedSpace: Boolean = false,
+    private var ulDepth: Int = 0,
+    private val tagStack: ArrayDeque<HtmlToken.Tag> = ArrayDeque(),
+    private val tagQueue: ArrayDeque<HtmlToken.Tag> = ArrayDeque(),
+) {
+    fun parse(): AnnotatedString = buildAnnotatedString {
+        var i = 0
+        while (true) {
+            if (i >= tokens.size) {
+                break
+            }
+            when (val token = tokens[i]) {
+                HtmlToken.Whitespace -> {
+                    // ignore whitespace when on a new line
+                    if (!newLine) {
+                        consumedSpace = true
+                    }
+                }
+
+                is HtmlToken.Word -> {
+                    if (consumedSpace) {
+                        append(' ')
+                        flushTagQueue()
+                    }
+                    append(token.word)
+                    newLine = false
+                    consumedSpace = false
+                }
+
+                is HtmlToken.Tag -> {
+                    // immediately apply style tokens or format tokens
+                    if (newLine || !consumedSpace) {
+                        if (token.start.startsWith("</")) {
+                            handleCloseTagImmediate(token)
+                        } else {
+                            handleOpenTagImmediate(token)
+                        }
+                    } else if (token.start.startsWith("</")) {
+                        handleCloseTagQueued(token)
+                    } else {
+                        handleOpenTagQueued(token)
+                    }
+                }
+            }
+            i++
+        }
+        flushTagQueue()
+    }
+
+    @Suppress("CyclomaticComplexMethod")
+    private fun AnnotatedString.Builder.handleCloseTagImmediate(token: HtmlToken.Tag) {
+        if (token.start == "</br") {
+            appendNewLine()
+            return
+        }
+        val t = tagStack.lastOrNull()
+        if (token.start.substring(2) != t?.start?.substring(1)) {
+            println("mismatch")
+            return
+        }
+        tagStack.removeLast()
+        when (token.start) {
+            "</b", "</i", "</cite", "</dfn", "</em", "</big", "</small", "</tt", "</s", "</strike", "</del", "</u",
+            "</sup", "</sub", "</font", "</a" -> {
+                pop()
+            }
+
+            "</ul" -> {
+                ulDepth--
+                appendLineBreak()
+            }
+
+            "</li" -> {
+                appendLineBreak()
+            }
+
+            "</p" -> {
+                appendLineBreak()
+            }
+
+            "</div" -> {
+            }
+
+            else -> {
+            }
+        }
+    }
+
+    @Suppress("CyclomaticComplexMethod")
+    private fun AnnotatedString.Builder.handleOpenTagImmediate(token: HtmlToken.Tag) {
+        // unpaired tag
+        if (token.start == "<br") {
+            appendNewLine()
+            return
+        }
+        tagStack.addLast(token)
+        when (token.start) {
+            "<b" -> {
+                pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
+            }
+
+            "<i", "<cite", "<dfn", "<em" -> {
+                pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
+            }
+
+            "<big" -> {
+                pushStyle(SpanStyle(fontSize = textUnit * 1.25))
+            }
+
+            "<small" -> {
+                pushStyle(SpanStyle(fontSize = textUnit * .8))
+            }
+
+            "<tt" -> {
+                pushStyle(SpanStyle(fontFamily = FontFamily.Monospace))
+            }
+
+            "<s", "<strike", "<del" -> {
+                pushStyle(SpanStyle(textDecoration = TextDecoration.LineThrough))
+            }
+
+            "<u" -> {
+                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+            }
+
+            "<sup" -> {
+                pushStyle(SpanStyle(baselineShift = BaselineShift.Superscript))
+            }
+
+            "<sub" -> {
+                pushStyle(SpanStyle(baselineShift = BaselineShift.Subscript))
+            }
+
+            "<font" -> {
+                // todo: apply font
+                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+            }
+
+            "<a" -> {
+                // todo: apply link
+                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+            }
+
+            "<ul" -> {
+                ulDepth++
+            }
+
+            "<li" -> {
+                appendLineBreak()
+                repeat(ulDepth) {
+                    append("  ")
+                }
+                append("* ")
+            }
+
+            "<p" -> {
+                appendLineBreak()
+            }
+
+            "<div" -> {
+            }
+
+            else -> {
+            }
+        }
+    }
+
+    private fun AnnotatedString.Builder.handleCloseTagQueued(htmlTag: HtmlToken.Tag) {
+        // unpaired tag
+        if (htmlTag.start == "</br") {
+            appendNewLine()
+            return
+        }
+        // find open tag in stack
+        val t = tagStack.lastOrNull()
+        if (t == null || htmlTag.start.substring(2) != t.start.substring(1)) {
+            println("mismatch")
+        }
+        //tagStack.removeLast()
+        when (htmlTag.start) {
+            // style tokens are queued until after whitespace is produced
+            "</b", "</i", "</cite", "</dfn", "</em", "</big", "</small", "</tt", "</s", "</strike", "</del", "</u",
+            "</sup", "</sub", "</font", "</a" -> {
+                tagQueue.add(htmlTag)
+            }
+
+            "</ul" -> {
+                ulDepth--
+            }
+
+            "</li" -> {
+                appendLineBreak()
+            }
+
+            "</p" -> {
+                appendLineBreak()
+            }
+
+            "</div" -> {
+            }
+
+            // unknown tag
+            else -> {
+            }
+        }
+    }
+
+    private fun AnnotatedString.Builder.handleOpenTagQueued(htmlTag: HtmlToken.Tag) {
+        // unpaired tag
+        if (htmlTag.start == "<br") {
+            appendNewLine()
+            return
+        }
+        //tagStack.add(htmlTag)
+        when (htmlTag.start) {
+            // style tokens are queued until after whitespace is produced
+            "<b", "<i", "<cite", "<dfn", "<em", "<big", "<small", "<tt", "<s", "<strike", "<del", "<u", "<sup", "<sub",
+            "<font", "<a" -> {
+                tagQueue.add(htmlTag)
+            }
+
+            "<ul" -> {
+                ulDepth++
+            }
+
+            "<li" -> {
+                appendLineBreak()
+                repeat(ulDepth) {
+                    append("  ")
+                }
+                append("* ")
+                tagStack.addLast(htmlTag)
+            }
+
+            "<p" -> {
+                appendLineBreak()
+                tagStack.addLast(htmlTag)
+            }
+
+            "<div" -> {
+                tagStack.addLast(htmlTag)
+            }
+
+            // unknown tag
+            else -> {
+            }
+        }
+    }
+
+    private fun AnnotatedString.Builder.appendLineBreak() {
+        if (!newLine) {
+            appendNewLine()
+        }
+    }
+
+    private fun AnnotatedString.Builder.appendNewLine() {
+        flushTagQueue()
+        appendLine()
+        newLine = true
+        consumedSpace = false
+    }
+
+    private fun AnnotatedString.Builder.flushTagQueue() {
+        while (true) {
+            val tag = tagQueue.removeFirstOrNull() ?: break
+            if (tag.start.startsWith("</")) {
+                handleCloseTagImmediate(tag)
+            } else {
+                handleOpenTagImmediate(tag)
+            }
+        }
+    }
+}
+
 // TODO
 // CSS style: <span style=”color|background_color|text-decoration”>
 // Paragraphs: <p dir="rtl | ltr" style="">
@@ -48,255 +312,7 @@ fun annotateHtmlString(
     htmlString: String,
     linkStyle: SpanStyle?,
     fontSize: TextUnit,
-): AnnotatedString = buildAnnotatedString {
-    var ulDepth = 0
-    var consumedSpace = false
-    var onNewLine = true
-
-    @Suppress("ReturnCount")
-    fun recur(index: Int): Int {
-        val startTagMatch = startTagRegex.matchAt(htmlString, index)
-        // found a tag now recurse and then find matching close tag
-        if (startTagMatch != null) {
-            var i = startTagMatch.range.last + 1
-            val attributes = attributeRegex
-                .matchAt(htmlString, i)
-                ?.let { firstMatch ->
-                    buildMap {
-                        var match: MatchResult? = firstMatch
-                        while (match != null) {
-                            i = match.range.last + 1
-                            val groupValues = match.groupValues
-                            put(
-                                groupValues[1].lowercase(),
-                                groupValues[4].ifEmpty { groupValues[5].unescapeCharacters() },
-                            )
-                            match = attributeRegex.matchAt(htmlString, i)
-                        }
-                    }
-                }
-            i = capRegex.matchAt(htmlString, i)!!.range.last + 1
-            val tag = startTagMatch.groupValues[1].lowercase()
-            if (consumedSpace) {
-                val capSpaceMatch = capSpaceRegex.matchAt(htmlString, i)
-                if (capSpaceMatch == null) {
-                    append(' ')
-                    consumedSpace = false
-                } else {
-                    i = capSpaceMatch.range.last + 1
-                }
-            }
-            when (tag) {
-                "b" -> {
-                    pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
-                }
-
-                "i", "cite", "dfn", "em" -> {
-                    pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
-                }
-
-                "big" -> {
-                    pushStyle(SpanStyle(fontSize = fontSize * 1.25))
-                }
-
-                "small" -> {
-                    pushStyle(SpanStyle(fontSize = fontSize * 0.8))
-                }
-
-                "tt" -> {
-                    pushStyle(SpanStyle(fontFamily = FontFamily.Monospace))
-                }
-
-                "s", "strike", "del" -> {
-                    pushStyle(SpanStyle(textDecoration = TextDecoration.LineThrough))
-                }
-
-                "u" -> {
-                    pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
-                }
-
-                "sup" -> {
-                    pushStyle(SpanStyle(baselineShift = BaselineShift.Superscript))
-                }
-
-                "sub" -> {
-                    pushStyle(SpanStyle(baselineShift = BaselineShift.Subscript))
-                }
-
-                "br" -> {
-                    appendLine()
-                }
-
-                "ul" -> {
-                    ulDepth++
-                }
-
-                "li" -> {
-                    // TODO: only do if previous didn't end with newline
-                    if (!onNewLine) {
-                        appendLine()
-                    }
-                    repeat(ulDepth) {
-                        append("  ")
-                    }
-                    append("• ")
-                    onNewLine = false
-                }
-
-                "div" -> {
-                    // TODO: only do if previous didn't end with newline
-                    if (!onNewLine) {
-                        appendLine()
-                    }
-                }
-
-                "a" -> {
-                    val href = attributes?.get("href")
-                    if (href != null) {
-                        pushLink(LinkAnnotation.Url(href))
-                        if (linkStyle != null) {
-                            pushStyle(linkStyle)
-                        }
-                    }
-                }
-
-                "p" -> {
-                    // TODO: only do if previous didn't end with newline
-                    if (!onNewLine) {
-                        appendLine()
-                    }
-                }
-
-                "font" -> {
-                    // Setting font properties: <font face=”font_family“ color=”hex_color”>.
-                    // Examples of possible font families include monospace, serif, and sans_serif.
-                    val fontFamily = attributes?.get("face")
-                    val color = attributes?.get("color")
-                    when (fontFamily?.lowercase()) {
-                        "monospace" -> {
-                            pushStyle(SpanStyle(fontFamily = FontFamily.Monospace))
-                        }
-
-                        "serif" -> {
-                            pushStyle(SpanStyle(fontFamily = FontFamily.Serif))
-                        }
-
-                        "sans_serif" -> {
-                            pushStyle(SpanStyle(fontFamily = FontFamily.SansSerif))
-                        }
-
-                        else -> {
-                            pushStyle(SpanStyle())
-                        }
-                    }
-                }
-            }
-            i = recur(i)
-            val endTagMatch = endTagRegex.matchAt(htmlString, i)
-            if (endTagMatch == null) {
-                if (tag != "br") {
-                    println("tag mismatch error")
-                }
-                return i
-            } else if (endTagMatch.groupValues[1] != tag) {
-                if (tag != "br") {
-                    println("tag mismatch error")
-                }
-                return i
-            } else {
-                i = if (consumedSpace) {
-                    val capSpaceMatch =
-                        capSpaceRegex.matchAt(htmlString, endTagMatch.range.last + 1)
-                    append(' ')
-                    consumedSpace = false
-                    if (capSpaceMatch == null) {
-                        endTagMatch.range.last + 1
-                    } else {
-                        capSpaceMatch.range.last + 1
-                    }
-                } else {
-                    endTagMatch.range.last + 1
-                }
-                when (tag) {
-                    "b", "i", "cite", "dfn", "em", "big", "small", "tt", "s", "strike",
-                    "del", "u", "sup", "sub", "font" -> {
-                        pop()
-                    }
-
-                    "br" -> {
-                    }
-
-                    "ul" -> {
-                        ulDepth--
-                        appendLine()
-                        onNewLine = true
-                    }
-
-                    "li" -> {
-                        appendLine()
-                        onNewLine = true
-                    }
-
-                    "div" -> {
-                        appendLine()
-                        onNewLine = true
-                    }
-
-                    "p" -> {
-                        appendLine()
-                        onNewLine = true
-                    }
-
-                    "a" -> {
-                        if (attributes?.get("href") != null) {
-                            pop()
-                            if (linkStyle != null) {
-                                pop()
-                            }
-                        }
-                    }
-                }
-                return i // endTagMatch.range.last + 1
-            }
-        } else { // no tag so we consume characters up to the next tag
-            val textMatch = textRegex.matchAt(htmlString, index)
-            if (textMatch == null) {
-                return index
-            } else {
-                var wordMatch = wordRegex.find(textMatch.value)
-                if (wordMatch != null) {
-                    if (!onNewLine && (consumedSpace || wordMatch.range.first > 0)) {
-                        append(' ')
-                        onNewLine = false
-                    }
-                    append(wordMatch.value.unescapeCharacters())
-                    onNewLine = false
-                    consumedSpace = wordMatch.range.last + 1 < textMatch.value.length
-                    wordMatch = wordMatch.next()
-                    while (wordMatch != null) {
-                        append(' ')
-                        append(wordMatch.value.unescapeCharacters())
-                        onNewLine = false
-                        consumedSpace = wordMatch.range.last + 1 < textMatch.value.length
-                        wordMatch = wordMatch.next()
-                    }
-                }
-                return recur(textMatch.range.last + 1)
-            }
-        }
-    }
-    // loop through consuming top level tags and text
-    var i = 0
-    while (i < htmlString.length) {
-        i = recur(i)
-    }
-}
-
-fun String.unescapeCharacters(): String = replace(ampersandRegex, "&")
-    .replace(lessThanRegex, "<")
-    .replace(greaterThanRegex, ">")
-    .replace(quoteRegex, "\"")
-    .replace(escapeRegex) { it.groupValues[1].toInt().toChar().toString() }
+): AnnotatedString = HtmlParser(htmlString, linkStyle, fontSize).parse()
 
 // Hacker News Formatting
 // Blank lines separate paragraphs.
@@ -304,3 +320,84 @@ fun String.unescapeCharacters(): String = replace(ampersandRegex, "&")
 // Text after a blank line that is indented by two or more spaces is reproduced verbatim. (This is intended for code.)
 // Urls become links, except in the text field of a submission.
 // If your url gets linked incorrectly, put it in <angle brackets> and it should work.
+
+val whitespaceRegex = """\s+""".toRegex(RegexOption.IGNORE_CASE)
+val tagStartRegex = """</?[^\s>]+""".toRegex(RegexOption.IGNORE_CASE)
+val tagWordRegex = """[^="\s>]+""".toRegex(RegexOption.IGNORE_CASE)
+val tagQuoteRegex = """"([^"]*)"""".toRegex(RegexOption.IGNORE_CASE)
+val tagEqualRegex = """=""".toRegex(RegexOption.IGNORE_CASE)
+val tagEndRegex = """/?>""".toRegex(RegexOption.IGNORE_CASE)
+val wordRegex = """[^<\s]+""".toRegex(RegexOption.IGNORE_CASE)
+
+sealed interface HtmlToken {
+    data class Word(val word: String) : HtmlToken
+    data object Whitespace : HtmlToken
+    data class Tag(val start: String, val tokens: List<TagToken>, val end: String) : HtmlToken
+}
+
+sealed interface TagToken {
+    data object Equal : TagToken
+    data class Word(val word: String) : TagToken
+    data class Quote(val tag: String) : TagToken
+}
+
+@Suppress("CyclomaticComplexMethod")
+fun tokenizeHtml(htmlString: String): List<HtmlToken> = buildList {
+    var i = 0
+    @Suppress("LoopWithTooManyJumpStatements")
+    outer@ while (i < htmlString.length) {
+        var match = whitespaceRegex.matchAt(htmlString, i)
+        if (match != null) {
+            i = match.range.last + 1
+            add(HtmlToken.Whitespace)
+            continue
+        }
+        match = tagStartRegex.matchAt(htmlString, i)
+        if (match != null) {
+            var k = match.range.last + 1
+            val start = match.value
+            val tagTokens = mutableListOf<TagToken>()
+            while (k < htmlString.length) {
+                var tagMatch = whitespaceRegex.matchAt(htmlString, k)
+                if (tagMatch != null) {
+                    k = tagMatch.range.last + 1
+                    continue
+                }
+                tagMatch = tagEndRegex.matchAt(htmlString, k)
+                if (tagMatch != null) {
+                    k = tagMatch.range.last + 1
+                    add(HtmlToken.Tag(start.lowercase(), tagTokens, tagMatch.value.lowercase()))
+                    i = k
+                    continue@outer
+                }
+                tagMatch = tagEqualRegex.matchAt(htmlString, k)
+                if (tagMatch != null) {
+                    k = tagMatch.range.last + 1
+                    tagTokens.add(TagToken.Equal)
+                    continue
+                }
+                tagMatch = tagQuoteRegex.matchAt(htmlString, k)
+                if (tagMatch != null) {
+                    k = tagMatch.range.last + 1
+                    tagTokens.add(TagToken.Quote(tagMatch.groups[1]!!.value))
+                    continue
+                }
+                tagMatch = tagWordRegex.matchAt(htmlString, k)
+                if (tagMatch != null) {
+                    k = tagMatch.range.last + 1
+                    tagTokens.add(TagToken.Word(tagMatch.value))
+                    continue
+                }
+            }
+            // end of input found before end of tag so fall through
+        }
+        match = wordRegex.matchAt(htmlString, i)
+        if (match != null) {
+            i = match.range.last + 1
+            add(HtmlToken.Word(match.value))
+            continue
+        }
+        @Suppress("UseCheckOrError", "ThrowingExceptionsWithoutMessageOrCause")
+        throw IllegalStateException("no matching regexes")
+    }
+}

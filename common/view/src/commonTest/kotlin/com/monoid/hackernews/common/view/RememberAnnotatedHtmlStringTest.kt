@@ -10,10 +10,146 @@ import kotlin.test.assertEquals
 class RememberAnnotatedHtmlStringTest {
 
     @Test
+    fun `tokenize 1`() {
+        assertEquals(
+            expected = listOf(
+                HtmlToken.Whitespace,
+                HtmlToken.Word("Hello"),
+                HtmlToken.Whitespace,
+                HtmlToken.Word("World!"),
+                HtmlToken.Whitespace,
+            ),
+            actual = tokenizeHtml("  Hello  \n  World!  ").toList(),
+        )
+    }
+
+    @Test
+    fun `tokenize 2`() {
+        assertEquals(
+            expected = listOf(
+                HtmlToken.Whitespace,
+                HtmlToken.Tag("<u", emptyList(), ">"),
+                HtmlToken.Word("Hello"),
+                HtmlToken.Tag("</u", emptyList(), ">"),
+            ),
+            actual = tokenizeHtml("  <u>Hello</u>").toList(),
+        )
+    }
+
+    @Test
+    fun `tokenize 3`() {
+        assertEquals(
+            expected = listOf(
+                HtmlToken.Tag("<u", emptyList(), ">"),
+                HtmlToken.Word("Hello"),
+                HtmlToken.Tag("</u", emptyList(), ">"),
+                HtmlToken.Whitespace,
+            ),
+            actual = tokenizeHtml("<u>Hello</u>  ").toList(),
+        )
+    }
+
+    @Test
+    fun `tokenize 4`() {
+        assertEquals(
+            expected = listOf(
+                HtmlToken.Tag("<u", emptyList(), ">"),
+                HtmlToken.Whitespace,
+                HtmlToken.Word("Hello"),
+                HtmlToken.Tag("</u", emptyList(), ">"),
+            ),
+            actual = tokenizeHtml("<u>  Hello</u>").toList(),
+        )
+    }
+
+    @Test
+    fun `tokenize 5`() {
+        assertEquals(
+            expected = listOf(
+                HtmlToken.Tag("<u", listOf(TagToken.Word("a")), ">"),
+                HtmlToken.Word("Hello"),
+                HtmlToken.Tag("</u", emptyList(), ">"),
+            ),
+            actual = tokenizeHtml("<u a>Hello</u>").toList(),
+        )
+    }
+
+    @Test
+    fun `tokenize 6`() {
+        assertEquals(
+            expected = listOf(
+                HtmlToken.Tag("<u", listOf(TagToken.Word("a"), TagToken.Equal), ">"),
+                HtmlToken.Word("Hello"),
+                HtmlToken.Tag("</u", emptyList(), ">"),
+            ),
+            actual = tokenizeHtml("<u a=>Hello</u>").toList(),
+        )
+    }
+
+    @Test
+    fun `tokenize 7`() {
+        assertEquals(
+            expected = listOf(
+                HtmlToken.Tag("<u", listOf(TagToken.Word("a"), TagToken.Equal, TagToken.Word("b")), ">"),
+                HtmlToken.Word("Hello"),
+                HtmlToken.Tag("</u", emptyList(), ">"),
+            ),
+            actual = tokenizeHtml("<u a=b>Hello</u>").toList(),
+        )
+    }
+
+    @Test
+    fun `tokenize 8`() {
+        assertEquals(
+            expected = listOf(
+                HtmlToken.Tag("<u", listOf(TagToken.Word("a"), TagToken.Equal, TagToken.Quote("b")), ">"),
+                HtmlToken.Word("Hello"),
+                HtmlToken.Tag("</u", emptyList(), ">"),
+            ),
+            actual = tokenizeHtml("""<u a="b">Hello</u>""").toList(),
+        )
+    }
+
+    @Test
+    fun `tokenize 9`() {
+        assertEquals(
+            expected = listOf(
+                HtmlToken.Tag("<u", listOf(TagToken.Word("a"), TagToken.Equal, TagToken.Quote("=b")), ">"),
+                HtmlToken.Word("Hello"),
+                HtmlToken.Tag("</u", emptyList(), ">"),
+            ),
+            actual = tokenizeHtml("""<u a="=b">Hello</u>""").toList(),
+        )
+    }
+
+    @Test
+    fun `tokenize 10`() {
+        assertEquals(
+            expected = listOf(
+                HtmlToken.Tag("<br", emptyList(), "/>"),
+            ),
+            actual = tokenizeHtml("""<br />""").toList(),
+        )
+    }
+
+    @Test
+    fun `tokenize 11`() {
+        assertEquals(
+            expected = listOf(
+                HtmlToken.Whitespace,
+                HtmlToken.Tag("<u", emptyList(), ">"),
+                HtmlToken.Word("Hello"),
+                HtmlToken.Tag("</u", emptyList(), ">"),
+            ),
+            actual = tokenizeHtml("""  <u>Hello</u>""").toList(),
+        )
+    }
+
+    @Test
     fun `consolidate white space between words outside of tag`() {
         assertEquals(
             expected = buildAnnotatedString { append("Hello World!") },
-            actual = annotateHtmlString("  Hello \n World!  ", null, 12.sp),
+            actual = annotateHtmlString("  Hello  \n  World!  ", null, 12.sp),
         )
     }
 
@@ -49,7 +185,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello")
                 pop()
             },
-            actual = annotateHtmlString("<u> Hello</u>", null, 12.sp),
+            actual = annotateHtmlString("<u>  Hello</u>", null, 12.sp),
         )
     }
 
@@ -62,7 +198,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("World!")
                 pop()
             },
-            actual = annotateHtmlString("Hello <u>World!</u>", null, 12.sp),
+            actual = annotateHtmlString("Hello  <u>World!</u>", null, 12.sp),
         )
     }
 
@@ -75,7 +211,7 @@ class RememberAnnotatedHtmlStringTest {
                 append(" World!")
                 pop()
             },
-            actual = annotateHtmlString("Hello<u> World!</u>", null, 12.sp),
+            actual = annotateHtmlString("Hello<u>  World!</u>", null, 12.sp),
         )
     }
 
@@ -83,12 +219,12 @@ class RememberAnnotatedHtmlStringTest {
     fun `consolidate white space before words inside a tag 4`() {
         assertEquals(
             expected = buildAnnotatedString {
-                append("Hello")
+                append("Hello ")
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
-                append(" World!")
+                append("World!")
                 pop()
             },
-            actual = annotateHtmlString("Hello <u> World!</u>", null, 12.sp),
+            actual = annotateHtmlString("Hello  <u>  World!</u>", null, 12.sp),
         )
     }
 
@@ -101,7 +237,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append(" World!")
             },
-            actual = annotateHtmlString("<u>Hello</u> World!", null, 12.sp),
+            actual = annotateHtmlString("<u>Hello</u>  World!", null, 12.sp),
         )
     }
 
@@ -114,7 +250,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("World!")
             },
-            actual = annotateHtmlString("<u>Hello </u>World!", null, 12.sp),
+            actual = annotateHtmlString("<u>Hello  </u>World!", null, 12.sp),
         )
     }
 
@@ -127,7 +263,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("World!")
             },
-            actual = annotateHtmlString("<u>Hello </u> World!", null, 12.sp),
+            actual = annotateHtmlString("<u>Hello  </u>  World!", null, 12.sp),
         )
     }
 
@@ -151,7 +287,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("<u> Hello World!</u>", null, 12.sp),
+            actual = annotateHtmlString("<u>  Hello  World!</u>", null, 12.sp),
         )
     }
 
@@ -163,7 +299,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString(" <u> Hello World!</u>  ", null, 12.sp),
+            actual = annotateHtmlString("  <u>  Hello World!</u>  ", null, 12.sp),
         )
     }
 
@@ -175,7 +311,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("<u>Hello World!</u>  ", null, 12.sp),
+            actual = annotateHtmlString("<u>Hello  World!</u>  ", null, 12.sp),
         )
     }
 
@@ -187,7 +323,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("""<u>Hello World!</u>""", null, 12.sp),
+            actual = annotateHtmlString("""<u>Hello  World!</u>""", null, 12.sp),
         )
     }
 
@@ -201,7 +337,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("d!")
             },
-            actual = annotateHtmlString("""H<u>ello Worl</u>d!""", null, 12.sp),
+            actual = annotateHtmlString("""H<u>ello  Worl</u>d!""", null, 12.sp),
         )
     }
 
@@ -215,7 +351,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("d!")
             },
-            actual = annotateHtmlString("""H  <u>ello Worl</u>d!""", null, 12.sp),
+            actual = annotateHtmlString("""H  <u>ello  Worl</u>d!""", null, 12.sp),
         )
     }
 
@@ -229,7 +365,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append(" d!")
             },
-            actual = annotateHtmlString("""H<u>ello Worl</u>  d!""", null, 12.sp),
+            actual = annotateHtmlString("""H<u>ello  Worl</u>  d!""", null, 12.sp),
         )
     }
 
@@ -243,7 +379,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append(" d!")
             },
-            actual = annotateHtmlString("""H<u>ello Worl</u>  d!  """, null, 12.sp),
+            actual = annotateHtmlString("""H<u>ello  Worl</u>  d!  """, null, 12.sp),
         )
     }
 
@@ -257,7 +393,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("d!")
             },
-            actual = annotateHtmlString("""H<u>ello Worl </u> d!""", null, 12.sp),
+            actual = annotateHtmlString("""H<u>ello  Worl  </u>  d!""", null, 12.sp),
         )
     }
 
@@ -266,14 +402,53 @@ class RememberAnnotatedHtmlStringTest {
         assertEquals(
             expected = buildAnnotatedString {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
-                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
-                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
-                append("Hello")
+                pushStyle(SpanStyle(textDecoration = TextDecoration.LineThrough))
+                append("Hello ")
                 pop()
+                append("World")
+                pop()
+            }, // consumes spaces between tags
+            actual = annotateHtmlString("""  <u>  <s>  Hello  </s>World</u>  """, null, 12.sp),
+        )
+    }
+
+    @Test
+    fun `annotated bold string 8`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                append("Hello ")
+                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                append("World ")
+                pushStyle(SpanStyle(textDecoration = TextDecoration.LineThrough))
+                append("Kotlin")
                 pop()
                 pop()
             }, // should consume spaces between tags
-            actual = annotateHtmlString(""" <u> <u> <u> Hello </u> </u> </u>""", null, 12.sp),
+            actual = annotateHtmlString(
+                """  Hello  <u>  World  <s>  Kotlin  </s>  </u>  """,
+                null,
+                12.sp,
+            ),
+        )
+    }
+
+    @Test
+    fun `annotated bold string 9`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                pushStyle(SpanStyle(textDecoration = TextDecoration.LineThrough))
+                append("Hello ")
+                pop()
+                append("World ")
+                pop()
+                append("Kotlin")
+            }, // should consume spaces between tags
+            actual = annotateHtmlString(
+                """  <u>  <s>  Hello  </s>  World  </u>  Kotlin  """,
+                null,
+                12.sp,
+            ),
         )
     }
     //H<u>ello Worl </u> d!
