@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.TextUnit
 @Suppress("CyclomaticComplexMethod")
 @Composable
 fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
-    val linkStyle = LocalLinkStyle.current.style
+    val linkStyle = LocalLinkStyle.current.style ?: SpanStyle()
     val fontSize = LocalTextStyle.current.fontSize
     return remember(htmlString, linkStyle, fontSize) {
         annotateHtmlString(htmlString, linkStyle, fontSize)
@@ -25,7 +25,7 @@ fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
 
 class HtmlParser(
     htmlString: String,
-    private val linkStyle: SpanStyle?,
+    private val linkStyle: SpanStyle,
     private val textUnit: TextUnit,
     private val tokens: List<HtmlToken> = tokenizeHtml(htmlString),
     // newLine and consumedSpace are exclusively true or both are false
@@ -169,8 +169,8 @@ class HtmlParser(
             }
 
             "<a" -> {
+                pushStyle(linkStyle)
                 // todo: apply link
-                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
             }
 
             "<ul" -> {
@@ -306,7 +306,7 @@ class HtmlParser(
 // CSS style: <span style=”color|background_color|text-decoration”>
 fun annotateHtmlString(
     htmlString: String,
-    linkStyle: SpanStyle?,
+    linkStyle: SpanStyle,
     fontSize: TextUnit,
 ): AnnotatedString = HtmlParser(htmlString, linkStyle, fontSize).parse()
 

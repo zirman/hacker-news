@@ -90,7 +90,11 @@ class RememberAnnotatedHtmlStringTest {
     fun `tokenize 7`() {
         assertEquals(
             expected = listOf(
-                HtmlToken.Tag("<u", listOf(TagToken.Word("a"), TagToken.Equal, TagToken.Word("b")), ">"),
+                HtmlToken.Tag(
+                    "<u",
+                    listOf(TagToken.Word("a"), TagToken.Equal, TagToken.Word("b")),
+                    ">"
+                ),
                 HtmlToken.Word("Hello"),
                 HtmlToken.Tag("</u", emptyList(), ">"),
             ),
@@ -102,7 +106,11 @@ class RememberAnnotatedHtmlStringTest {
     fun `tokenize 8`() {
         assertEquals(
             expected = listOf(
-                HtmlToken.Tag("<u", listOf(TagToken.Word("a"), TagToken.Equal, TagToken.Quote("b")), ">"),
+                HtmlToken.Tag(
+                    "<u",
+                    listOf(TagToken.Word("a"), TagToken.Equal, TagToken.Quote("b")),
+                    ">"
+                ),
                 HtmlToken.Word("Hello"),
                 HtmlToken.Tag("</u", emptyList(), ">"),
             ),
@@ -114,7 +122,11 @@ class RememberAnnotatedHtmlStringTest {
     fun `tokenize 9`() {
         assertEquals(
             expected = listOf(
-                HtmlToken.Tag("<u", listOf(TagToken.Word("a"), TagToken.Equal, TagToken.Quote("=b")), ">"),
+                HtmlToken.Tag(
+                    "<u",
+                    listOf(TagToken.Word("a"), TagToken.Equal, TagToken.Quote("=b")),
+                    ">"
+                ),
                 HtmlToken.Word("Hello"),
                 HtmlToken.Tag("</u", emptyList(), ">"),
             ),
@@ -149,7 +161,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `consolidate white space between words outside of tag`() {
         assertEquals(
             expected = buildAnnotatedString { append("Hello World!") },
-            actual = annotateHtmlString("  Hello  \n  World!  ", null, 12.sp),
+            actual = annotateHtmlString("  Hello  \n  World!  ", SpanStyle(), 12.sp),
         )
     }
 
@@ -161,7 +173,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello")
                 pop()
             },
-            actual = annotateHtmlString("  <u>Hello</u>", null, 12.sp),
+            actual = annotateHtmlString("  <u>Hello</u>", SpanStyle(), 12.sp),
         )
     }
 
@@ -173,7 +185,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello")
                 pop()
             },
-            actual = annotateHtmlString("<u>Hello</u>  ", null, 12.sp),
+            actual = annotateHtmlString("<u>Hello</u>  ", SpanStyle(), 12.sp),
         )
     }
 
@@ -185,7 +197,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello")
                 pop()
             },
-            actual = annotateHtmlString("<u>  Hello</u>", null, 12.sp),
+            actual = annotateHtmlString("<u>  Hello</u>", SpanStyle(), 12.sp),
         )
     }
 
@@ -198,7 +210,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("World!")
                 pop()
             },
-            actual = annotateHtmlString("Hello  <u>World!</u>", null, 12.sp),
+            actual = annotateHtmlString("Hello  <u>World!</u>", SpanStyle(), 12.sp),
         )
     }
 
@@ -211,7 +223,7 @@ class RememberAnnotatedHtmlStringTest {
                 append(" World!")
                 pop()
             },
-            actual = annotateHtmlString("Hello<u>  World!</u>", null, 12.sp),
+            actual = annotateHtmlString("Hello<u>  World!</u>", SpanStyle(), 12.sp),
         )
     }
 
@@ -224,7 +236,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("World!")
                 pop()
             },
-            actual = annotateHtmlString("Hello  <u>  World!</u>", null, 12.sp),
+            actual = annotateHtmlString("Hello  <u>  World!</u>", SpanStyle(), 12.sp),
         )
     }
 
@@ -237,7 +249,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append(" World!")
             },
-            actual = annotateHtmlString("<u>Hello</u>  World!", null, 12.sp),
+            actual = annotateHtmlString("<u>Hello</u>  World!", SpanStyle(), 12.sp),
         )
     }
 
@@ -250,7 +262,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("World!")
             },
-            actual = annotateHtmlString("<u>Hello  </u>World!", null, 12.sp),
+            actual = annotateHtmlString("<u>Hello  </u>World!", SpanStyle(), 12.sp),
         )
     }
 
@@ -263,7 +275,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("World!")
             },
-            actual = annotateHtmlString("<u>Hello  </u>  World!", null, 12.sp),
+            actual = annotateHtmlString("<u>Hello  </u>  World!", SpanStyle(), 12.sp),
         )
     }
 
@@ -275,7 +287,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("<u>Hello  World!</u>  ", null, 12.sp),
+            actual = annotateHtmlString("<u>Hello  World!</u>  ", SpanStyle(), 12.sp),
         )
     }
 
@@ -287,7 +299,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("<u>  Hello  World!</u>", null, 12.sp),
+            actual = annotateHtmlString("<u>  Hello  World!</u>", SpanStyle(), 12.sp),
         )
     }
 
@@ -299,7 +311,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("  <u>  Hello World!</u>  ", null, 12.sp),
+            actual = annotateHtmlString("  <u>  Hello World!</u>  ", SpanStyle(), 12.sp),
         )
     }
 
@@ -311,7 +323,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("<u>Hello  World!</u>  ", null, 12.sp),
+            actual = annotateHtmlString("<u>Hello  World!</u>  ", SpanStyle(), 12.sp),
         )
     }
 
@@ -323,7 +335,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("""<u>Hello  World!</u>""", null, 12.sp),
+            actual = annotateHtmlString("""<u>Hello  World!</u>""", SpanStyle(), 12.sp),
         )
     }
 
@@ -337,7 +349,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("d!")
             },
-            actual = annotateHtmlString("""H<u>ello  Worl</u>d!""", null, 12.sp),
+            actual = annotateHtmlString("""H<u>ello  Worl</u>d!""", SpanStyle(), 12.sp),
         )
     }
 
@@ -351,7 +363,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("d!")
             },
-            actual = annotateHtmlString("""H  <u>ello  Worl</u>d!""", null, 12.sp),
+            actual = annotateHtmlString("""H  <u>ello  Worl</u>d!""", SpanStyle(), 12.sp),
         )
     }
 
@@ -365,7 +377,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append(" d!")
             },
-            actual = annotateHtmlString("""H<u>ello  Worl</u>  d!""", null, 12.sp),
+            actual = annotateHtmlString("""H<u>ello  Worl</u>  d!""", SpanStyle(), 12.sp),
         )
     }
 
@@ -379,7 +391,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append(" d!")
             },
-            actual = annotateHtmlString("""H<u>ello  Worl</u>  d!  """, null, 12.sp),
+            actual = annotateHtmlString("""H<u>ello  Worl</u>  d!  """, SpanStyle(), 12.sp),
         )
     }
 
@@ -393,7 +405,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("d!")
             },
-            actual = annotateHtmlString("""H<u>ello  Worl  </u>  d!""", null, 12.sp),
+            actual = annotateHtmlString("""H<u>ello  Worl  </u>  d!""", SpanStyle(), 12.sp),
         )
     }
 
@@ -408,7 +420,11 @@ class RememberAnnotatedHtmlStringTest {
                 append("World")
                 pop()
             }, // consumes spaces between tags
-            actual = annotateHtmlString("""  <u>  <s>  Hello  </s>World</u>  """, null, 12.sp),
+            actual = annotateHtmlString(
+                """  <u>  <s>  Hello  </s>World</u>  """,
+                SpanStyle(),
+                12.sp
+            ),
         )
     }
 
@@ -426,7 +442,7 @@ class RememberAnnotatedHtmlStringTest {
             }, // should consume spaces between tags
             actual = annotateHtmlString(
                 """  Hello  <u>  World  <s>  Kotlin  </s>  </u>  """,
-                null,
+                SpanStyle(),
                 12.sp,
             ),
         )
@@ -446,7 +462,7 @@ class RememberAnnotatedHtmlStringTest {
             }, // should consume spaces between tags
             actual = annotateHtmlString(
                 """  <u>  <s>  Hello  </s>  World  </u>  Kotlin  """,
-                null,
+                SpanStyle(),
                 12.sp,
             ),
         )
@@ -456,7 +472,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape ampersand`() {
         assertEquals(
             expected = buildAnnotatedString { append("&") },
-            actual = annotateHtmlString("""&amp;""", null, 12.sp),
+            actual = annotateHtmlString("""&amp;""", SpanStyle(), 12.sp),
         )
     }
 
@@ -464,7 +480,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape ampersand 2`() {
         assertEquals(
             expected = buildAnnotatedString { append("A&B") },
-            actual = annotateHtmlString("""A&amp;B""", null, 12.sp),
+            actual = annotateHtmlString("""A&amp;B""", SpanStyle(), 12.sp),
         )
     }
 
@@ -472,7 +488,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape less than`() {
         assertEquals(
             expected = buildAnnotatedString { append("<") },
-            actual = annotateHtmlString("""&lt;""", null, 12.sp),
+            actual = annotateHtmlString("""&lt;""", SpanStyle(), 12.sp),
         )
     }
 
@@ -480,7 +496,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape greater than`() {
         assertEquals(
             expected = buildAnnotatedString { append(">") },
-            actual = annotateHtmlString("""&gt;""", null, 12.sp),
+            actual = annotateHtmlString("""&gt;""", SpanStyle(), 12.sp),
         )
     }
 
@@ -488,7 +504,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape quote`() {
         assertEquals(
             expected = buildAnnotatedString { append("\"") },
-            actual = annotateHtmlString("""&quot;""", null, 12.sp),
+            actual = annotateHtmlString("""&quot;""", SpanStyle(), 12.sp),
         )
     }
 
@@ -496,7 +512,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape apostrophe`() {
         assertEquals(
             expected = buildAnnotatedString { append("'") },
-            actual = annotateHtmlString("""&#39;""", null, 12.sp),
+            actual = annotateHtmlString("""&#39;""", SpanStyle(), 12.sp),
         )
     }
 
@@ -504,7 +520,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape two characters in a row`() {
         assertEquals(
             expected = buildAnnotatedString { append("A<B>C") },
-            actual = annotateHtmlString("""A&lt;B&gt;C""", null, 12.sp),
+            actual = annotateHtmlString("""A&lt;B&gt;C""", SpanStyle(), 12.sp),
         )
     }
 }
