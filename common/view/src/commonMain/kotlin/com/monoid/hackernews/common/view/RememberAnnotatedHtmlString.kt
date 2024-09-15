@@ -208,7 +208,6 @@ class HtmlParser(
         if (t == null || htmlTag.start.substring(2) != t.start.substring(1)) {
             println("mismatch")
         }
-        //tagStack.removeLast()
         when (htmlTag.start) {
             // style tokens are queued until after whitespace is produced
             "</b", "</i", "</cite", "</dfn", "</em", "</big", "</small", "</tt", "</s", "</strike", "</del", "</u",
@@ -243,7 +242,6 @@ class HtmlParser(
             appendNewLine()
             return
         }
-        //tagStack.add(htmlTag)
         when (htmlTag.start) {
             // style tokens are queued until after whitespace is produced
             "<b", "<i", "<cite", "<dfn", "<em", "<big", "<small", "<tt", "<s", "<strike", "<del", "<u", "<sup", "<sub",
@@ -306,8 +304,6 @@ class HtmlParser(
 
 // TODO
 // CSS style: <span style=”color|background_color|text-decoration”>
-// Paragraphs: <p dir="rtl | ltr" style="">
-@Suppress("CyclomaticComplexMethod")
 fun annotateHtmlString(
     htmlString: String,
     linkStyle: SpanStyle?,
@@ -321,13 +317,13 @@ fun annotateHtmlString(
 // Urls become links, except in the text field of a submission.
 // If your url gets linked incorrectly, put it in <angle brackets> and it should work.
 
-val whitespaceRegex = """\s+""".toRegex(RegexOption.IGNORE_CASE)
-val tagStartRegex = """</?[^\s>]+""".toRegex(RegexOption.IGNORE_CASE)
-val tagWordRegex = """[^="\s>]+""".toRegex(RegexOption.IGNORE_CASE)
-val tagQuoteRegex = """"([^"]*)"""".toRegex(RegexOption.IGNORE_CASE)
-val tagEqualRegex = """=""".toRegex(RegexOption.IGNORE_CASE)
-val tagEndRegex = """/?>""".toRegex(RegexOption.IGNORE_CASE)
-val wordRegex = """[^<\s]+""".toRegex(RegexOption.IGNORE_CASE)
+private val whitespaceRegex = """\s+""".toRegex(RegexOption.IGNORE_CASE)
+private val tagStartRegex = """</?[^\s>]+""".toRegex(RegexOption.IGNORE_CASE)
+private val tagWordRegex = """[^="\s>]+""".toRegex(RegexOption.IGNORE_CASE)
+private val tagQuoteRegex = """"([^"]*)"""".toRegex(RegexOption.IGNORE_CASE)
+private val tagEqualRegex = """=""".toRegex(RegexOption.IGNORE_CASE)
+private val tagEndRegex = """/?>""".toRegex(RegexOption.IGNORE_CASE)
+private val wordRegex = """[^<\s]+""".toRegex(RegexOption.IGNORE_CASE)
 
 sealed interface HtmlToken {
     data class Word(val word: String) : HtmlToken
@@ -366,6 +362,7 @@ fun tokenizeHtml(htmlString: String): List<HtmlToken> = buildList {
                 tagMatch = tagEndRegex.matchAt(htmlString, k)
                 if (tagMatch != null) {
                     k = tagMatch.range.last + 1
+                    tagMatch.value.replace("&amp;", "&")
                     add(HtmlToken.Tag(start.lowercase(), tagTokens, tagMatch.value.lowercase()))
                     i = k
                     continue@outer
@@ -379,7 +376,7 @@ fun tokenizeHtml(htmlString: String): List<HtmlToken> = buildList {
                 tagMatch = tagQuoteRegex.matchAt(htmlString, k)
                 if (tagMatch != null) {
                     k = tagMatch.range.last + 1
-                    tagTokens.add(TagToken.Quote(tagMatch.groups[1]!!.value))
+                    tagTokens.add(TagToken.Quote(tagMatch.groups[1]!!.value.escapeCharacters()))
                     continue
                 }
                 tagMatch = tagWordRegex.matchAt(htmlString, k)
@@ -394,10 +391,56 @@ fun tokenizeHtml(htmlString: String): List<HtmlToken> = buildList {
         match = wordRegex.matchAt(htmlString, i)
         if (match != null) {
             i = match.range.last + 1
-            add(HtmlToken.Word(match.value))
+            add(HtmlToken.Word(match.value.escapeCharacters()))
             continue
         }
         @Suppress("UseCheckOrError", "ThrowingExceptionsWithoutMessageOrCause")
         throw IllegalStateException("no matching regexes")
+    }
+}
+
+private val escapedRegex = """&([^;]+);""".toRegex(RegexOption.IGNORE_CASE)
+
+private fun String.escapeCharacters(): String = buildString {
+    var match = escapedRegex.find(this@escapeCharacters, 0)
+    var i = 0
+    while (match != null) {
+        append(this@escapeCharacters.subSequence(i, match.range.first))
+        val m = match.groups[1]!!.value
+        when {
+            m.equals("amp", ignoreCase = true) -> {
+                append('&')
+            }
+
+            m.equals("lt", ignoreCase = true) -> {
+                append('<')
+            }
+
+            m.equals("gt", ignoreCase = true) -> {
+                append('>')
+            }
+
+            m.equals("quot", ignoreCase = true) -> {
+                append('"')
+            }
+
+            m.startsWith("#") -> {
+                val c = m.substring(1).toIntOrNull()?.toChar()
+                if (c != null) {
+                    append(c)
+                } else {
+                    append(match.value)
+                }
+            }
+
+            else -> {
+                append(match.value)
+            }
+        }
+        i = match.range.last + 1
+        match = match.next()
+    }
+    if (i < this@escapeCharacters.length) {
+        append(this@escapeCharacters.subSequence(i, this@escapeCharacters.length))
     }
 }

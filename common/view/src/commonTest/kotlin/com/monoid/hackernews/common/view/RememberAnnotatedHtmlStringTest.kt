@@ -451,10 +451,9 @@ class RememberAnnotatedHtmlStringTest {
             ),
         )
     }
-    //H<u>ello Worl </u> d!
 
     @Test
-    fun `unescape ampersand`() {
+    fun `escape ampersand`() {
         assertEquals(
             expected = buildAnnotatedString { append("&") },
             actual = annotateHtmlString("""&amp;""", null, 12.sp),
@@ -462,7 +461,15 @@ class RememberAnnotatedHtmlStringTest {
     }
 
     @Test
-    fun `unescape less than`() {
+    fun `escape ampersand 2`() {
+        assertEquals(
+            expected = buildAnnotatedString { append("A&B") },
+            actual = annotateHtmlString("""A&amp;B""", null, 12.sp),
+        )
+    }
+
+    @Test
+    fun `escape less than`() {
         assertEquals(
             expected = buildAnnotatedString { append("<") },
             actual = annotateHtmlString("""&lt;""", null, 12.sp),
@@ -470,7 +477,7 @@ class RememberAnnotatedHtmlStringTest {
     }
 
     @Test
-    fun `unescape greater than`() {
+    fun `escape greater than`() {
         assertEquals(
             expected = buildAnnotatedString { append(">") },
             actual = annotateHtmlString("""&gt;""", null, 12.sp),
@@ -478,7 +485,7 @@ class RememberAnnotatedHtmlStringTest {
     }
 
     @Test
-    fun `unescape quote`() {
+    fun `escape quote`() {
         assertEquals(
             expected = buildAnnotatedString { append("\"") },
             actual = annotateHtmlString("""&quot;""", null, 12.sp),
@@ -486,7 +493,7 @@ class RememberAnnotatedHtmlStringTest {
     }
 
     @Test
-    fun `unescape apostrophe`() {
+    fun `escape apostrophe`() {
         assertEquals(
             expected = buildAnnotatedString { append("'") },
             actual = annotateHtmlString("""&#39;""", null, 12.sp),
@@ -494,10 +501,10 @@ class RememberAnnotatedHtmlStringTest {
     }
 
     @Test
-    fun `unescape two characters in a row`() {
+    fun `escape two characters in a row`() {
         assertEquals(
-            expected = buildAnnotatedString { append("<>") },
-            actual = annotateHtmlString("""&lt;&gt;""", null, 12.sp),
+            expected = buildAnnotatedString { append("A<B>C") },
+            actual = annotateHtmlString("""A&lt;B&gt;C""", null, 12.sp),
         )
     }
 }
