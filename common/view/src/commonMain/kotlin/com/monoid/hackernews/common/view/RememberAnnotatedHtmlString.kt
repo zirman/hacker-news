@@ -90,7 +90,7 @@ class HtmlParser(
         tagStack.removeLast()
         when (tag.start) {
             "</b", "</i", "</cite", "</dfn", "</em", "</big", "</small", "</tt", "</s", "</strike", "</del", "</u",
-            "</sup", "</sub", "</font", "</a" -> {
+            "</sup", "</sub", "</font", "</span", "</a" -> {
                 pop()
             }
 
@@ -105,9 +105,6 @@ class HtmlParser(
 
             "</p" -> {
                 appendLineBreak()
-            }
-
-            "</div" -> {
             }
 
             else -> {
@@ -162,11 +159,34 @@ class HtmlParser(
 
             "<font" -> {
                 // todo: apply font
+                // monospace, serif, and sans_serif
+                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+            }
+
+            "<span" -> {
+                // CSS style: <span style=”color|background_color|text-decoration”>
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
             }
 
             "<a" -> {
                 pushStyle(linkStyle)
+                var k = 0
+                while (k < tag.tokens.size) {
+                    when (tag.tokens[k]) {
+                        TagToken.Equal -> {
+
+                        }
+
+                        is TagToken.Quote -> {
+
+                        }
+
+                        is TagToken.Word -> {
+
+                        }
+                    }
+                    k++
+                }
                 // todo: apply link
             }
 
@@ -184,9 +204,6 @@ class HtmlParser(
 
             "<p" -> {
                 appendLineBreak()
-            }
-
-            "<div" -> {
             }
 
             else -> {
@@ -208,7 +225,7 @@ class HtmlParser(
         when (tag.start) {
             // style tokens are queued until after whitespace is produced
             "</b", "</i", "</cite", "</dfn", "</em", "</big", "</small", "</tt", "</s", "</strike", "</del", "</u",
-            "</sup", "</sub", "</font", "</a" -> {
+            "</sup", "</sub", "</font", "</span", "</a" -> {
                 tagQueue.add(tag)
             }
 
@@ -222,9 +239,6 @@ class HtmlParser(
 
             "</p" -> {
                 appendLineBreak()
-            }
-
-            "</div" -> {
             }
 
             // unknown tag
@@ -242,7 +256,7 @@ class HtmlParser(
         when (tag.start) {
             // style tokens are queued until after whitespace is produced
             "<b", "<i", "<cite", "<dfn", "<em", "<big", "<small", "<tt", "<s", "<strike", "<del", "<u", "<sup", "<sub",
-            "<font", "<a" -> {
+            "<font", "<span", "<a" -> {
                 tagQueue.add(tag)
             }
 
@@ -261,10 +275,6 @@ class HtmlParser(
 
             "<p" -> {
                 appendLineBreak()
-                tagStack.addLast(tag)
-            }
-
-            "<div" -> {
                 tagStack.addLast(tag)
             }
 

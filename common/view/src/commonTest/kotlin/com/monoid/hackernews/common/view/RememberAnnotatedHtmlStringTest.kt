@@ -2,6 +2,10 @@ package com.monoid.hackernews.common.view
 
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.sp
 import kotlin.test.Test
@@ -462,6 +466,246 @@ class RememberAnnotatedHtmlStringTest {
             }, // should consume spaces between tags
             actual = annotateHtmlString(
                 """  <u>  <s>  Hello  </s>  World  </u>  Kotlin  """,
+                SpanStyle(),
+                12.sp,
+            ),
+        )
+    }
+
+    @Test
+    fun `b tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
+                append("Hello")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<b>Hello</b>""",
+                SpanStyle(),
+                12.sp,
+            ),
+        )
+    }
+
+    @Test
+    fun `i tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
+                append("Hello")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<i>Hello</i>""",
+                SpanStyle(),
+                12.sp,
+            ),
+        )
+    }
+
+    @Test
+    fun `cite tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
+                append("Hello")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<cite>Hello</cite>""",
+                SpanStyle(),
+                12.sp,
+            ),
+        )
+    }
+
+    @Test
+    fun `dfn tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
+                append("Hello")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<dfn>Hello</dfn>""",
+                SpanStyle(),
+                12.sp,
+            ),
+        )
+    }
+
+    @Test
+    fun `em tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
+                append("Hello")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<em>Hello</em>""",
+                SpanStyle(),
+                12.sp,
+            ),
+        )
+    }
+
+    @Test
+    fun `big tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(SpanStyle(fontSize = 12.sp * 1.25))
+                append("Hello")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<big>Hello</big>""",
+                SpanStyle(),
+                12.sp,
+            ),
+        )
+    }
+
+    @Test
+    fun `small tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(SpanStyle(fontSize = 12.sp * .8))
+                append("Hello")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<small>Hello</small>""",
+                SpanStyle(),
+                12.sp,
+            ),
+        )
+    }
+
+    @Test
+    fun `tt tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(SpanStyle(fontFamily = FontFamily.Monospace))
+                append("Hello")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<tt>Hello</tt>""",
+                SpanStyle(),
+                12.sp,
+            ),
+        )
+    }
+
+    @Test
+    fun `s tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(SpanStyle(textDecoration = TextDecoration.LineThrough))
+                append("Hello")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<s>Hello</s>""",
+                SpanStyle(),
+                12.sp,
+            ),
+        )
+    }
+
+    @Test
+    fun `strike tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(SpanStyle(textDecoration = TextDecoration.LineThrough))
+                append("Hello")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<strike>Hello</strike>""",
+                SpanStyle(),
+                12.sp,
+            ),
+        )
+    }
+
+    @Test
+    fun `del tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(SpanStyle(textDecoration = TextDecoration.LineThrough))
+                append("Hello")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<del>Hello</del>""",
+                SpanStyle(),
+                12.sp,
+            ),
+        )
+    }
+
+    @Test
+    fun `u tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                append("Hello")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<u>Hello</u>""",
+                SpanStyle(),
+                12.sp,
+            ),
+        )
+    }
+
+    @Test
+    fun `sup tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(SpanStyle(baselineShift = BaselineShift.Superscript))
+                append("Hello")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<sup>Hello</sup>""",
+                SpanStyle(),
+                12.sp,
+            ),
+        )
+    }
+
+    @Test
+    fun `sub tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(SpanStyle(baselineShift = BaselineShift.Subscript))
+                append("Hello")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<sub>Hello</sub>""",
+                SpanStyle(),
+                12.sp,
+            ),
+        )
+    }
+
+    // "</font", "</span", "</a"
+
+    @Test
+    fun `p tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                append("Hello\n")
+            }, // should consume spaces between tags
+            actual = annotateHtmlString(
+                """<p>Hello</p>""",
                 SpanStyle(),
                 12.sp,
             ),
