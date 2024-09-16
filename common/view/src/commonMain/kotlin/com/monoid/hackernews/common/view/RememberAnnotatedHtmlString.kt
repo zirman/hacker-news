@@ -37,10 +37,7 @@ class HtmlParser(
 ) {
     fun parse(): AnnotatedString = buildAnnotatedString {
         var i = 0
-        while (true) {
-            if (i >= tokens.size) {
-                break
-            }
+        while (i < tokens.size) {
             when (val token = tokens[i]) {
                 HtmlToken.Whitespace -> {
                     // ignore whitespace when on a new line
@@ -80,18 +77,18 @@ class HtmlParser(
     }
 
     @Suppress("CyclomaticComplexMethod")
-    private fun AnnotatedString.Builder.handleCloseTagImmediate(token: HtmlToken.Tag) {
-        if (token.start == "</br") {
+    private fun AnnotatedString.Builder.handleCloseTagImmediate(tag: HtmlToken.Tag) {
+        if (tag.start == "</br") {
             appendNewLine()
             return
         }
         val t = tagStack.lastOrNull()
-        if (token.start.substring(2) != t?.start?.substring(1)) {
+        if (tag.start.substring(2) != t?.start?.substring(1)) {
             println("mismatch")
             return
         }
         tagStack.removeLast()
-        when (token.start) {
+        when (tag.start) {
             "</b", "</i", "</cite", "</dfn", "</em", "</big", "</small", "</tt", "</s", "</strike", "</del", "</u",
             "</sup", "</sub", "</font", "</a" -> {
                 pop()
@@ -119,14 +116,14 @@ class HtmlParser(
     }
 
     @Suppress("CyclomaticComplexMethod")
-    private fun AnnotatedString.Builder.handleOpenTagImmediate(token: HtmlToken.Tag) {
+    private fun AnnotatedString.Builder.handleOpenTagImmediate(tag: HtmlToken.Tag) {
         // unpaired tag
-        if (token.start == "<br") {
+        if (tag.start == "<br") {
             appendNewLine()
             return
         }
-        tagStack.addLast(token)
-        when (token.start) {
+        tagStack.addLast(tag)
+        when (tag.start) {
             "<b" -> {
                 pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
             }
@@ -197,22 +194,22 @@ class HtmlParser(
         }
     }
 
-    private fun AnnotatedString.Builder.handleCloseTagQueued(htmlTag: HtmlToken.Tag) {
+    private fun AnnotatedString.Builder.handleCloseTagQueued(tag: HtmlToken.Tag) {
         // unpaired tag
-        if (htmlTag.start == "</br") {
+        if (tag.start == "</br") {
             appendNewLine()
             return
         }
         // find open tag in stack
         val t = tagStack.lastOrNull()
-        if (t == null || htmlTag.start.substring(2) != t.start.substring(1)) {
+        if (t == null || tag.start.substring(2) != t.start.substring(1)) {
             println("mismatch")
         }
-        when (htmlTag.start) {
+        when (tag.start) {
             // style tokens are queued until after whitespace is produced
             "</b", "</i", "</cite", "</dfn", "</em", "</big", "</small", "</tt", "</s", "</strike", "</del", "</u",
             "</sup", "</sub", "</font", "</a" -> {
-                tagQueue.add(htmlTag)
+                tagQueue.add(tag)
             }
 
             "</ul" -> {
@@ -236,17 +233,17 @@ class HtmlParser(
         }
     }
 
-    private fun AnnotatedString.Builder.handleOpenTagQueued(htmlTag: HtmlToken.Tag) {
+    private fun AnnotatedString.Builder.handleOpenTagQueued(tag: HtmlToken.Tag) {
         // unpaired tag
-        if (htmlTag.start == "<br") {
+        if (tag.start == "<br") {
             appendNewLine()
             return
         }
-        when (htmlTag.start) {
+        when (tag.start) {
             // style tokens are queued until after whitespace is produced
             "<b", "<i", "<cite", "<dfn", "<em", "<big", "<small", "<tt", "<s", "<strike", "<del", "<u", "<sup", "<sub",
             "<font", "<a" -> {
-                tagQueue.add(htmlTag)
+                tagQueue.add(tag)
             }
 
             "<ul" -> {
@@ -259,16 +256,16 @@ class HtmlParser(
                     append("  ")
                 }
                 append("* ")
-                tagStack.addLast(htmlTag)
+                tagStack.addLast(tag)
             }
 
             "<p" -> {
                 appendLineBreak()
-                tagStack.addLast(htmlTag)
+                tagStack.addLast(tag)
             }
 
             "<div" -> {
-                tagStack.addLast(htmlTag)
+                tagStack.addLast(tag)
             }
 
             // unknown tag
@@ -402,8 +399,8 @@ fun tokenizeHtml(htmlString: String): List<HtmlToken> = buildList {
 private val escapedRegex = """&([^;]+);""".toRegex(RegexOption.IGNORE_CASE)
 
 private fun String.escapeCharacters(): String = buildString {
-    var match = escapedRegex.find(this@escapeCharacters, 0)
     var i = 0
+    var match = escapedRegex.find(this@escapeCharacters, i)
     while (match != null) {
         append(this@escapeCharacters.subSequence(i, match.range.first))
         val m = match.groups[1]!!.value
