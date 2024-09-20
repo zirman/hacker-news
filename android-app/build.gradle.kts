@@ -48,6 +48,10 @@ kotlin {
             implementation(libs.lifecycleProcess)
             implementation(libs.slf4jSimple)
             implementation(libs.bundles.ktor)
+
+            implementation(libs.material3Adaptive)
+            implementation(libs.material3AdaptiveLayout)
+
             // lintChecks(libs.composeLintChecks)
             // debugImplementation(libs.uiTestManifest)
         }

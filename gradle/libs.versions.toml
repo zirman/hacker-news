@@ -8,7 +8,7 @@ compileSdk = "35"
 targetSdk = "35"
 minSdk = "33"
 buildToolsVersion = "34.0.0"
-android = "8.6.0"
+android = "8.6.1"
 #lint = "31.4.0"
 desugarJdkLibs = "2.1.2"
 kotlin = "2.0.20"
@@ -21,13 +21,13 @@ kotlinxCollectionsImmutable = "0.3.7"
 kotlinxDatetime = "0.6.0"
 ktor = "3.0.0-rc-1"
 kermit = "2.0.3"
-room = "2.7.0-alpha07"
-sqlite = "2.5.0-alpha07"
+room = "2.7.0-alpha08"
+sqlite = "2.5.0-alpha08"
 datastore = "1.1.1"
 activityKtx = "1.9.2"
 fragmentKtx = "1.8.3"
 lifecycle = "2.8.0"
-navigation = "2.8.0"
+navigation = "2.8.1"
 googlePlayServices = "4.4.2"
 playServicesWearable = "18.2.0"
 crashlytics = "3.0.2"
@@ -37,7 +37,7 @@ window = "1.3.0"
 appcompat = "1.7.0"
 coreKtx = "1.13.1"
 coreSplashscreen = "1.0.1"
-collectionKtx = "1.4.3"
+collectionKtx = "1.4.4"
 annotation = "1.8.2"
 paletteKtx = "1.0.0"
 workRuntimeKtx = "2.9.1"
@@ -49,7 +49,7 @@ material3AdaptiveNavigationSuiteAndroid = "1.3.0"
 material3Adaptive = "1.0.0"
 wearCompose = "1.4.0"
 accompanist = "0.32.0"
-uiTestJunit4 = "1.7.1"
+uiTestJunit4 = "1.7.2"
 slf4jSimple = "2.0.13"
 junitExt = "1.2.1"
 coil = "2.6.0"
@@ -271,8 +271,8 @@ material3WindowSizeClassMultiplatform = { module = "dev.chrisbanes.material3:mat
 #material3WindowSize = { group = "androidx.compose.material3", name = "material3-window-size-class" }
 #material3AdaptiveAndroid = { group = "androidx.compose.material3", name = "material3-adaptive-android", version.ref = "material3AdaptiveAndroid" }
 material3AdaptiveNavigationSuiteAndroid = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite-android", version.ref = "material3AdaptiveNavigationSuiteAndroid" }
-#material3Adaptive = { group = "androidx.compose.material3.adaptive", name = "adaptive", version.ref = "material3Adaptive" }
-#material3AdaptiveLayout = { group = "androidx.compose.material3.adaptive", name = "adaptive-layout", version.ref = "material3Adaptive" }
+material3Adaptive = { group = "androidx.compose.material3.adaptive", name = "adaptive", version.ref = "material3Adaptive" }
+material3AdaptiveLayout = { group = "androidx.compose.material3.adaptive", name = "adaptive-layout", version.ref = "material3Adaptive" }
 material3AdaptiveNavigation = { group = "androidx.compose.material3.adaptive", name = "adaptive-navigation", version.ref = "material3Adaptive" }
 
 uiTestJunit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "uiTestJunit4" }
