@@ -1,5 +1,6 @@
 package com.monoid.hackernews.common.view
 
+import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
@@ -702,10 +703,31 @@ class RememberAnnotatedHtmlStringTest {
     fun `p tag`() {
         assertEquals(
             expected = buildAnnotatedString {
-                append("Hello\n")
+                pushStyle(ParagraphStyle())
+                append("Hello")
+                pop()
             }, // should consume spaces between tags
             actual = annotateHtmlString(
                 """<p>Hello</p>""",
+                SpanStyle(),
+                12.sp,
+            ),
+        )
+    }
+
+    @Test
+    fun `p tag implied closure`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(ParagraphStyle())
+                append("Hello")
+                pop()
+                pushStyle(ParagraphStyle())
+                append("World!")
+                pop()
+            }, // should consume spaces between tags
+            actual = annotateHtmlString(
+                """<p><p>Hello</p></p>""",
                 SpanStyle(),
                 12.sp,
             ),

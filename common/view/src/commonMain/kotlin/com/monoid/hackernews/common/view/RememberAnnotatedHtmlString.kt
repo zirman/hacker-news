@@ -27,14 +27,20 @@ class HtmlParser(
     htmlString: String,
     private val linkStyle: SpanStyle,
     private val textUnit: TextUnit,
-    private val tokens: List<HtmlToken> = tokenizeHtml(htmlString),
-    // newLine and consumedSpace are exclusively true or both are false
-    private var newLine: Boolean = true,
-    private var consumedSpace: Boolean = false,
-    private var ulDepth: Int = 0,
-    private val tagStack: ArrayDeque<HtmlToken.Tag> = ArrayDeque(),
-    private val tagQueue: ArrayDeque<HtmlToken.Tag> = ArrayDeque(),
 ) {
+    private val tokens: List<HtmlToken> = tokenizeHtml(htmlString)
+
+    // newLine and consumedSpace are exclusively true or both are false
+    private var newLine: Boolean = true
+    private var consumedSpace: Boolean = false
+
+    // tracks depth of indentation
+    private var ulDepth: Int = 0
+    private val tagStack: ArrayDeque<HtmlToken.Tag> = ArrayDeque()
+
+    // style tags are queued until there is a word token to determine if if it is applied to whitespace
+    private val styleTagQueue: ArrayDeque<HtmlToken.Tag> = ArrayDeque()
+
     fun parse(): AnnotatedString = buildAnnotatedString {
         var i = 0
         while (i < tokens.size) {
@@ -170,6 +176,7 @@ class HtmlParser(
 
             "<a" -> {
                 pushStyle(linkStyle)
+                // todo: apply link
                 var k = 0
                 while (k < tag.tokens.size) {
                     when (tag.tokens[k]) {
@@ -226,7 +233,7 @@ class HtmlParser(
             // style tokens are queued until after whitespace is produced
             "</b", "</i", "</cite", "</dfn", "</em", "</big", "</small", "</tt", "</s", "</strike", "</del", "</u",
             "</sup", "</sub", "</font", "</span", "</a" -> {
-                tagQueue.add(tag)
+                styleTagQueue.add(tag)
             }
 
             "</ul" -> {
@@ -257,7 +264,7 @@ class HtmlParser(
             // style tokens are queued until after whitespace is produced
             "<b", "<i", "<cite", "<dfn", "<em", "<big", "<small", "<tt", "<s", "<strike", "<del", "<u", "<sup", "<sub",
             "<font", "<span", "<a" -> {
-                tagQueue.add(tag)
+                styleTagQueue.add(tag)
             }
 
             "<ul" -> {
@@ -299,7 +306,7 @@ class HtmlParser(
 
     private fun AnnotatedString.Builder.flushTagQueue() {
         while (true) {
-            val tag = tagQueue.removeFirstOrNull() ?: break
+            val tag = styleTagQueue.removeFirstOrNull() ?: break
             if (tag.start.startsWith("</")) {
                 handleCloseTagImmediate(tag)
             } else {
