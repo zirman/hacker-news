@@ -706,9 +706,28 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(ParagraphStyle())
                 append("Hello")
                 pop()
-            }, // should consume spaces between tags
+            },
             actual = annotateHtmlString(
                 """<p>Hello</p>""",
+                SpanStyle(),
+                12.sp,
+            ),
+        )
+    }
+
+    @Test
+    fun `p tag 2`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(ParagraphStyle())
+                append("Hello")
+                pop()
+                pushStyle(ParagraphStyle())
+                append("World!")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<p>Hello</p><p>World!</p>""",
                 SpanStyle(),
                 12.sp,
             ),
@@ -725,7 +744,23 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(ParagraphStyle())
                 append("World!")
                 pop()
-            }, // should consume spaces between tags
+            },
+            actual = annotateHtmlString(
+                """<p>Hello<p>World!""",
+                SpanStyle(),
+                12.sp,
+            ),
+        )
+    }
+
+    @Test
+    fun `p tag doesn't start until first word is output`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(ParagraphStyle())
+                append("Hello")
+                pop()
+            },
             actual = annotateHtmlString(
                 """<p><p>Hello</p></p>""",
                 SpanStyle(),
