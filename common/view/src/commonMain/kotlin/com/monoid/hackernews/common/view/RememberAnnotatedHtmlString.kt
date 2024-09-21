@@ -4,6 +4,7 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
@@ -39,7 +40,9 @@ class HtmlParser(
     private val tagStack: ArrayDeque<HtmlToken.Tag> = ArrayDeque()
 
     // style tags are queued until there is a word token to determine if if it is applied to whitespace
-    private val styleTagQueue: ArrayDeque<HtmlToken.Tag> = ArrayDeque()
+    private val lineStyleQueue: ArrayDeque<HtmlToken.Tag> = ArrayDeque()
+
+    private var paragraph = false
 
     fun parse(): AnnotatedString = buildAnnotatedString {
         var i = 0
@@ -55,7 +58,7 @@ class HtmlParser(
                 is HtmlToken.Word -> {
                     if (consumedSpace) {
                         append(' ')
-                        flushTagQueue()
+                        flushLineStyleQueue()
                     }
                     append(token.word)
                     newLine = false
@@ -79,7 +82,7 @@ class HtmlParser(
             }
             i++
         }
-        flushTagQueue()
+        flushLineStyleQueue()
     }
 
     @Suppress("CyclomaticComplexMethod")
@@ -100,16 +103,20 @@ class HtmlParser(
                 pop()
             }
 
+            "</p" -> {
+                if (paragraph) {
+                    flushLineStyleQueue()
+                    pop()
+                    paragraph = false
+                }
+            }
+
             "</ul" -> {
                 ulDepth--
                 appendLineBreak()
             }
 
             "</li" -> {
-                appendLineBreak()
-            }
-
-            "</p" -> {
                 appendLineBreak()
             }
 
@@ -125,7 +132,6 @@ class HtmlParser(
             appendNewLine()
             return
         }
-        tagStack.addLast(tag)
         when (tag.start) {
             "<b" -> {
                 pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
@@ -177,24 +183,22 @@ class HtmlParser(
             "<a" -> {
                 pushStyle(linkStyle)
                 // todo: apply link
-                var k = 0
-                while (k < tag.tokens.size) {
-                    when (tag.tokens[k]) {
-                        TagToken.Equal -> {
+            }
 
-                        }
-
-                        is TagToken.Quote -> {
-
-                        }
-
-                        is TagToken.Word -> {
-
-                        }
+            "<p" -> {
+                flushLineStyleQueue()
+                if (paragraph) {
+                    val i = tagStack.indexOfLast { it.start == "<p" }
+                    for (k in i..<tagStack.size) {
+                        pop()
                     }
-                    k++
+                    tagStack.removeAt(tagStack.indexOfLast { it.start == "<p" })
+                    for (k in i..<tagStack.size) {
+                        handleOpenTagImmediate(tagStack[k])
+                    }
                 }
-                // todo: apply link
+                pushStyle(ParagraphStyle())
+                paragraph = true
             }
 
             "<ul" -> {
@@ -209,13 +213,10 @@ class HtmlParser(
                 append("* ")
             }
 
-            "<p" -> {
-                appendLineBreak()
-            }
-
             else -> {
             }
         }
+        tagStack.addLast(tag)
     }
 
     private fun AnnotatedString.Builder.handleCloseTagQueued(tag: HtmlToken.Tag) {
@@ -233,7 +234,15 @@ class HtmlParser(
             // style tokens are queued until after whitespace is produced
             "</b", "</i", "</cite", "</dfn", "</em", "</big", "</small", "</tt", "</s", "</strike", "</del", "</u",
             "</sup", "</sub", "</font", "</span", "</a" -> {
-                styleTagQueue.add(tag)
+                lineStyleQueue.add(tag)
+            }
+
+            "</p" -> {
+                if (paragraph) {
+                    flushLineStyleQueue()
+                    pop()
+                    paragraph = false
+                }
             }
 
             "</ul" -> {
@@ -244,16 +253,13 @@ class HtmlParser(
                 appendLineBreak()
             }
 
-            "</p" -> {
-                appendLineBreak()
-            }
-
             // unknown tag
             else -> {
             }
         }
     }
 
+    @Suppress("NestedBlockDepth")
     private fun AnnotatedString.Builder.handleOpenTagQueued(tag: HtmlToken.Tag) {
         // unpaired tag
         if (tag.start == "<br") {
@@ -264,7 +270,8 @@ class HtmlParser(
             // style tokens are queued until after whitespace is produced
             "<b", "<i", "<cite", "<dfn", "<em", "<big", "<small", "<tt", "<s", "<strike", "<del", "<u", "<sup", "<sub",
             "<font", "<span", "<a" -> {
-                styleTagQueue.add(tag)
+                lineStyleQueue.add(tag)
+                return
             }
 
             "<ul" -> {
@@ -277,18 +284,29 @@ class HtmlParser(
                     append("  ")
                 }
                 append("* ")
-                tagStack.addLast(tag)
             }
 
             "<p" -> {
-                appendLineBreak()
-                tagStack.addLast(tag)
+                flushLineStyleQueue()
+                if (paragraph) {
+                    val i = tagStack.indexOfLast { it.start == "<p" }
+                    for (k in i..<tagStack.size) {
+                        pop()
+                    }
+                    tagStack.removeAt(tagStack.indexOfLast { it.start == "<p" })
+                    for (k in i..<tagStack.size) {
+                        handleOpenTagImmediate(tagStack[k])
+                    }
+                }
+                pushStyle(ParagraphStyle())
+                paragraph = true
             }
 
             // unknown tag
             else -> {
             }
         }
+        tagStack.addLast(tag)
     }
 
     private fun AnnotatedString.Builder.appendLineBreak() {
@@ -298,15 +316,15 @@ class HtmlParser(
     }
 
     private fun AnnotatedString.Builder.appendNewLine() {
-        flushTagQueue()
+        flushLineStyleQueue()
         appendLine()
         newLine = true
         consumedSpace = false
     }
 
-    private fun AnnotatedString.Builder.flushTagQueue() {
+    private fun AnnotatedString.Builder.flushLineStyleQueue() {
         while (true) {
-            val tag = styleTagQueue.removeFirstOrNull() ?: break
+            val tag = lineStyleQueue.removeFirstOrNull() ?: break
             if (tag.start.startsWith("</")) {
                 handleCloseTagImmediate(tag)
             } else {
