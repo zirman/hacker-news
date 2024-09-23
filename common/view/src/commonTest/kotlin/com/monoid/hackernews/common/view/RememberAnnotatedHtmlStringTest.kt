@@ -10,7 +10,6 @@ import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.em
-import androidx.compose.ui.unit.sp
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

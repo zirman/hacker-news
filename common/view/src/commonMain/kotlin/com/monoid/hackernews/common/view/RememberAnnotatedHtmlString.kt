@@ -219,13 +219,22 @@ class HtmlParser(
     }
 
     private fun queueCloseTag(tag: HtmlToken.Tag) {
-        val tagName = tag.start.substring(2)
-        // removed tags that were closed before being applied to a word
-        val index = queue.indexOfLast { tagName == it.start.substring(1) }
-        if (index != -1) {
-            queue.removeAt(index)
-        } else {
+        if (tag.start == "</p") {
+            val tagName = tag.start
+            val index = queue.indexOfLast { tagName == it.start }
+            if (index != -1) {
+                queue.removeAt(index)
+            }
             queue.add(tag)
+        } else {
+            val tagName = tag.start.substring(2)
+            // removed tags that were closed before being applied to a word
+            val index = queue.indexOfLast { tagName == it.start.substring(1) }
+            if (index != -1) {
+                queue.removeAt(index)
+            } else {
+                queue.add(tag)
+            }
         }
     }
 
