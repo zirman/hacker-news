@@ -35,13 +35,12 @@ class HtmlParser(
     private var consumedSpace: Int = -1
 
     // tracks depth of indentation
-    private var ulDepth: Int = 0
     private val tagStack: ArrayDeque<HtmlToken.Tag> = ArrayDeque()
 
     // style tags are queued until there is a word token to determine if if it is applied to whitespace
     private val queue: ArrayDeque<HtmlToken.Tag> = ArrayDeque()
 
-    private var paragraphDepth = false
+    private var paragraph = false
 
     fun parse(): AnnotatedString = buildAnnotatedString {
         var i = 0
@@ -79,22 +78,29 @@ class HtmlParser(
 
     @Suppress("CyclomaticComplexMethod")
     private fun AnnotatedString.Builder.handleCloseTagImmediate(tag: HtmlToken.Tag) {
-        val t = tagStack.lastOrNull()
-        if (tag.start.substring(2) != t?.start?.substring(1)) {
-            //println("mismatch")
+        val tagName = tag.start.substring(2)
+        val index = tagStack.indexOfLast { tagName == it.start.substring(1) }
+        if (index == -1) {
+            // unmatched close p tags are treated as line breaks
+            if (tagName == "p") {
+                appendLine()
+            } else {
+                println("mismatch")
+            }
             return
         }
-        tagStack.removeLast()
+        val shuffle = tagStack.slice(index + 1..<tagStack.size)
+        for (i in index..<tagStack.size) {
+            pop()
+            tagStack.removeLast()
+        }
+        for (t in shuffle) {
+            handleOpenTagImmediate(t)
+        }
         when (tag.start) {
-            "</b", "</i", "</cite", "</dfn", "</em", "</big", "</small", "</tt", "</s", "</strike", "</del", "</u",
-            "</sup", "</sub", "</font", "</span", "</a" -> {
-                pop()
-            }
-
             "</p" -> {
-                if (paragraphDepth) {
-                    pop()
-                    paragraphDepth = false
+                if (paragraph) {
+                    paragraph = false
                 }
             }
 
@@ -169,7 +175,7 @@ class HtmlParser(
             }
 
             "<p" -> {
-                if (paragraphDepth) {
+                if (paragraph) {
                     val i = tagStack.indexOfLast { it.start == "<p" }
                     for (k in i..<tagStack.size) {
                         pop()
@@ -179,12 +185,8 @@ class HtmlParser(
                         handleOpenTagImmediate(tagStack[k])
                     }
                 }
-                pushStyle(
-                    ParagraphStyle(
-                        lineBreak = LineBreak.Paragraph,
-                    ),
-                )
-                paragraphDepth = true
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
+                paragraph = true
             }
 
 //            "<ul" -> {

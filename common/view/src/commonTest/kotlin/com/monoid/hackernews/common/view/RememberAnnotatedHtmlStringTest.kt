@@ -697,20 +697,29 @@ class RememberAnnotatedHtmlStringTest {
     fun `p tag doesn't start until first word is output 2`() {
         assertEquals(
             expected = buildAnnotatedString {
-                pushStyle(SpanStyle(fontSize = 12.sp))
-                pushStyle(
-                    ParagraphStyle(
-                        lineBreak = LineBreak.Paragraph,
-                    ),
-                )
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
                 append("Hello")
                 pop()
                 append("World!")
                 appendLine()
                 append("World!")
-                pop()
             },
             actual = annotateHtmlString("""<p>Hello</p>World!</p>World!""", SpanStyle()),
+        )
+    }
+
+    @Test
+    fun `shuffling tags in paragraph`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
+                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                append("Hello")
+                pop()
+                append( " World!")
+                pop()
+            },
+            actual = annotateHtmlString("""<i><p>Hello</i> World</p>""", SpanStyle()),
         )
     }
 
