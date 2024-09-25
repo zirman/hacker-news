@@ -253,7 +253,7 @@ jetbrainsLifecycleRuntimeCompose = { group = "org.jetbrains.androidx.lifecycle",
 jetbrainsLifecycleViewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "lifecycle" }
 jetbrainsLifecycleViewmodelCompose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 
-koinBom = { group = "io.insert-koin", name = "koin-bom", version = "4.0.0-RC1" }
+koinBom = { group = "io.insert-koin", name = "koin-bom", version = "4.0.0" }
 koinCore = { group = "io.insert-koin", name = "koin-core" }
 koinKtor = { group = "io.insert-koin", name = "koin-ktor" }
 #koinCompose = { group = "io.insert-koin", name = "koin-compose" }
