@@ -12,7 +12,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.em
 
 @Suppress("CyclomaticComplexMethod")
@@ -35,7 +34,7 @@ class HtmlParser(
     private var consumedSpace: Int = -1
 
     // tracks depth of indentation
-    private val tagStack: ArrayDeque<HtmlToken.Tag> = ArrayDeque()
+    private val stack: ArrayDeque<HtmlToken.Tag> = ArrayDeque()
 
     // style tags are queued until there is a word token to determine if if it is applied to whitespace
     private val queue: ArrayDeque<HtmlToken.Tag> = ArrayDeque()
@@ -46,7 +45,7 @@ class HtmlParser(
         var i = 0
         while (i < tokens.size) {
             when (val token = tokens[i]) {
-                HtmlToken.Whitespace -> {
+                is HtmlToken.Whitespace -> {
                     // ignore whitespace when on a new line
                     if (!newLine && consumedSpace == -1) {
                         consumedSpace = queue.size
@@ -72,14 +71,16 @@ class HtmlParser(
             i++
         }
         // ignore spaces at the end
-        consumedSpace = -1
-        flushQueue()
+        for (k in stack.indices) {
+            pop()
+        }
+        stack.clear()
     }
 
     @Suppress("CyclomaticComplexMethod")
     private fun AnnotatedString.Builder.handleCloseTagImmediate(tag: HtmlToken.Tag) {
         val tagName = tag.start.substring(2)
-        val index = tagStack.indexOfLast { tagName == it.start.substring(1) }
+        val index = stack.indexOfLast { tagName == it.start.substring(1) }
         if (index == -1) {
             // unmatched close p tags are treated as line breaks
             if (tagName == "p") {
@@ -89,13 +90,13 @@ class HtmlParser(
             }
             return
         }
-        val shuffle = tagStack.slice(index + 1..<tagStack.size)
-        for (i in index..<tagStack.size) {
+        val shuffle = stack.slice(index + 1..<stack.size)
+        for (i in index..<stack.size) {
             pop()
-            tagStack.removeLast()
+            stack.removeLast()
         }
         for (t in shuffle) {
-            handleOpenTagImmediate(t)
+            pushStyleFor(t)
         }
         when (tag.start) {
             "</p" -> {
@@ -104,22 +105,43 @@ class HtmlParser(
                 }
             }
 
-//            "</ul" -> {
-//                ulDepth--
-//                appendLineBreak()
-//            }
-//
-//            "</li" -> {
-//                appendLineBreak()
-//            }
-
             else -> {
             }
         }
     }
 
-    @Suppress("CyclomaticComplexMethod")
     private fun AnnotatedString.Builder.handleOpenTagImmediate(tag: HtmlToken.Tag) {
+        when (tag.start) {
+            "<p" -> {
+                if (paragraph) {
+                    val i = stack.indexOfLast { it.start == "<p" }
+                    for (k in i..<stack.size) {
+                        pop()
+                    }
+                    stack.removeAt(stack.indexOfLast { it.start == "<p" })
+                    for (k in i..<stack.size) {
+                        handleOpenTagImmediate(stack[k])
+                    }
+                }
+                paragraph = true
+            }
+
+            "<b", "<i", "<cite", "<dfn", "<em", "<big", "<small", "<tt", "<code", "<s", "<strike", "<del", "<u", "<sup",
+            "<sub", "<font", "<span", "<a" -> {
+                // no-op
+            }
+
+            else -> {
+                // unknown tags are ignored
+                return
+            }
+        }
+        stack.addLast(tag)
+        pushStyleFor(tag)
+    }
+
+    @Suppress("CyclomaticComplexMethod")
+    private fun AnnotatedString.Builder.pushStyleFor(tag: HtmlToken.Tag) {
         when (tag.start) {
             "<b" -> {
                 pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
@@ -130,7 +152,6 @@ class HtmlParser(
             }
 
             "<big" -> {
-                TextUnit.Unspecified
                 pushStyle(SpanStyle(fontSize = 1.25f.em))
             }
 
@@ -138,7 +159,7 @@ class HtmlParser(
                 pushStyle(SpanStyle(fontSize = .8f.em))
             }
 
-            "<tt" -> {
+            "<tt", "<code" -> {
                 pushStyle(SpanStyle(fontFamily = FontFamily.Monospace))
             }
 
@@ -175,67 +196,54 @@ class HtmlParser(
             }
 
             "<p" -> {
-                if (paragraph) {
-                    val i = tagStack.indexOfLast { it.start == "<p" }
-                    for (k in i..<tagStack.size) {
-                        pop()
-                    }
-                    tagStack.removeAt(tagStack.indexOfLast { it.start == "<p" })
-                    for (k in i..<tagStack.size) {
-                        handleOpenTagImmediate(tagStack[k])
-                    }
-                }
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
-                paragraph = true
             }
-
-//            "<ul" -> {
-//                ulDepth++
-//            }
-//
-//            "<li" -> {
-//                appendLineBreak()
-//                repeat(ulDepth) {
-//                    append("  ")
-//                }
-//                append("* ")
-//            }
 
             else -> {
+                @Suppress("UseCheckOrError")
+                throw IllegalStateException("Unrecognized tag")
             }
         }
-        tagStack.addLast(tag)
     }
 
     private fun queueOpenTag(tag: HtmlToken.Tag) {
-        // handle implied closure of tags
-        if (tag.start == "<p") {
-            val index = queue.indexOfLast { it.start == "<p" }
-            if (index != -1) {
-                queue.removeAt(index)
-            }
-        }
+//        if (tag.start == "<p") {
+//            if (!paragraph) {
+//
+//            }
+//        } else {
+//
+//        }
         queue.add(tag)
     }
 
     private fun queueCloseTag(tag: HtmlToken.Tag) {
-        if (tag.start == "</p") {
-            val tagName = tag.start
-            val index = queue.indexOfLast { tagName == it.start }
-            if (index != -1) {
-                queue.removeAt(index)
-            }
-            queue.add(tag)
-        } else {
-            val tagName = tag.start.substring(2)
-            // removed tags that were closed before being applied to a word
-            val index = queue.indexOfLast { tagName == it.start.substring(1) }
-            if (index != -1) {
-                queue.removeAt(index)
-            } else {
-                queue.add(tag)
-            }
-        }
+        queue.add(tag)
+//        if (tag.start == "</p") {
+//            if (queue.firstOrNull()?.start == "<p") {
+//                queue.removeFirst()
+//            } else if (queue.lastOrNull()?.start != "</p") {
+//                queue.addLast(tag)
+//            }
+////            val tagName = tag.start
+////            val index = queue.indexOfLast { tagName == it.start }
+////            if (index != -1) {
+////                queue.removeAt(index)
+////            }
+////            queue.add(tag)
+//        } else {
+//            val tagName = tag.start.substring(2)
+//            // removed tags that were closed before being applied to a word
+//            val index = queue.indexOfLast { tagName == it.start.substring(1) }
+//            if (index != -1) {
+//                queue.removeAt(index)
+//            } else if (queue.lastOrNull()?.start == "</p") {
+//                // keep "</p" and the top of stack
+//                queue.add(queue.size - 1, tag)
+//            } else {
+//                queue.addLast(tag)
+//            }
+//        }
     }
 
     private fun AnnotatedString.Builder.appendNewLine() {
@@ -287,7 +295,7 @@ private val wordRegex = """[^<\s]+""".toRegex(RegexOption.IGNORE_CASE)
 
 sealed interface HtmlToken {
     data class Word(val word: String) : HtmlToken
-    data object Whitespace : HtmlToken
+    data class Whitespace(val whitespace: String) : HtmlToken
     data class Tag(val start: String, val tokens: List<TagToken>, val end: String) : HtmlToken
 }
 
@@ -305,7 +313,7 @@ fun tokenizeHtml(htmlString: String): List<HtmlToken> = buildList {
         var match = whitespaceRegex.matchAt(htmlString, i)
         if (match != null) {
             i = match.range.last + 1
-            add(HtmlToken.Whitespace)
+            add(HtmlToken.Whitespace(match.value))
             continue
         }
         match = tagStartRegex.matchAt(htmlString, i)

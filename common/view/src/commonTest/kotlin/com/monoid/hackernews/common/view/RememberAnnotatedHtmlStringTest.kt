@@ -13,17 +13,18 @@ import androidx.compose.ui.unit.em
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+@Suppress("LargeClass")
 class RememberAnnotatedHtmlStringTest {
 
     @Test
     fun `tokenize 1`() {
         assertEquals(
             expected = listOf(
-                HtmlToken.Whitespace,
+                HtmlToken.Whitespace("  "),
                 HtmlToken.Word("Hello"),
-                HtmlToken.Whitespace,
+                HtmlToken.Whitespace("  \n  "),
                 HtmlToken.Word("World!"),
-                HtmlToken.Whitespace,
+                HtmlToken.Whitespace("  "),
             ),
             actual = tokenizeHtml("  Hello  \n  World!  ").toList(),
         )
@@ -33,7 +34,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `tokenize 2`() {
         assertEquals(
             expected = listOf(
-                HtmlToken.Whitespace,
+                HtmlToken.Whitespace("  "),
                 HtmlToken.Tag("<u", emptyList(), ">"),
                 HtmlToken.Word("Hello"),
                 HtmlToken.Tag("</u", emptyList(), ">"),
@@ -49,7 +50,7 @@ class RememberAnnotatedHtmlStringTest {
                 HtmlToken.Tag("<u", emptyList(), ">"),
                 HtmlToken.Word("Hello"),
                 HtmlToken.Tag("</u", emptyList(), ">"),
-                HtmlToken.Whitespace,
+                HtmlToken.Whitespace("  "),
             ),
             actual = tokenizeHtml("<u>Hello</u>  ").toList(),
         )
@@ -60,7 +61,7 @@ class RememberAnnotatedHtmlStringTest {
         assertEquals(
             expected = listOf(
                 HtmlToken.Tag("<u", emptyList(), ">"),
-                HtmlToken.Whitespace,
+                HtmlToken.Whitespace("  "),
                 HtmlToken.Word("Hello"),
                 HtmlToken.Tag("</u", emptyList(), ">"),
             ),
@@ -154,7 +155,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `tokenize 11`() {
         assertEquals(
             expected = listOf(
-                HtmlToken.Whitespace,
+                HtmlToken.Whitespace("  "),
                 HtmlToken.Tag("<u", emptyList(), ">"),
                 HtmlToken.Word("Hello"),
                 HtmlToken.Tag("</u", emptyList(), ">"),
@@ -565,6 +566,38 @@ class RememberAnnotatedHtmlStringTest {
     }
 
     @Test
+    fun `code tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(SpanStyle(fontFamily = FontFamily.Monospace))
+                append("Hello")
+                pop()
+            },
+            actual = annotateHtmlString("""<code>Hello</code>""", SpanStyle()),
+        )
+    }
+
+    @Test
+    fun `pre tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(SpanStyle(fontFamily = FontFamily.Monospace))
+                append("\n  Hello\n  World!\n")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """
+                |<pre>
+                |  Hello
+                |  World!
+                |</pre>
+                |""".trimMargin(),
+                SpanStyle(),
+            ),
+        )
+    }
+
+    @Test
     fun `s tag`() {
         assertEquals(
             expected = buildAnnotatedString {
@@ -715,10 +748,10 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 append("Hello")
                 pop()
-                append( " World!")
+                append(" World!")
                 pop()
             },
-            actual = annotateHtmlString("""<i><p>Hello</i> World</p>""", SpanStyle()),
+            actual = annotateHtmlString("""<u><p>Hello</u> World!</p>""", SpanStyle()),
         )
     }
 
