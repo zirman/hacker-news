@@ -474,10 +474,10 @@ class RememberAnnotatedHtmlStringTest {
         assertEquals(
             expected = buildAnnotatedString {
                 pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
-                append("Hello")
+                append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("""<b>Hello</b>""", SpanStyle()),
+            actual = annotateHtmlString("""<b>Hello World!</b>""", SpanStyle()),
         )
     }
 
@@ -486,10 +486,10 @@ class RememberAnnotatedHtmlStringTest {
         assertEquals(
             expected = buildAnnotatedString {
                 pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
-                append("Hello")
+                append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("""<i>Hello</i>""", SpanStyle()),
+            actual = annotateHtmlString("""<i>Hello World!</i>""", SpanStyle()),
         )
     }
 
@@ -498,10 +498,10 @@ class RememberAnnotatedHtmlStringTest {
         assertEquals(
             expected = buildAnnotatedString {
                 pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
-                append("Hello")
+                append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("""<cite>Hello</cite>""", SpanStyle()),
+            actual = annotateHtmlString("""<cite>Hello World!</cite>""", SpanStyle()),
         )
     }
 
@@ -510,10 +510,10 @@ class RememberAnnotatedHtmlStringTest {
         assertEquals(
             expected = buildAnnotatedString {
                 pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
-                append("Hello")
+                append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("""<dfn>Hello</dfn>""", SpanStyle()),
+            actual = annotateHtmlString("""<dfn>Hello World!</dfn>""", SpanStyle()),
         )
     }
 
@@ -522,10 +522,10 @@ class RememberAnnotatedHtmlStringTest {
         assertEquals(
             expected = buildAnnotatedString {
                 pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
-                append("Hello")
+                append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("""<em>Hello</em>""", SpanStyle()),
+            actual = annotateHtmlString("""<em>Hello World!</em>""", SpanStyle()),
         )
     }
 
@@ -534,10 +534,10 @@ class RememberAnnotatedHtmlStringTest {
         assertEquals(
             expected = buildAnnotatedString {
                 pushStyle(SpanStyle(fontSize = 1.25f.em))
-                append("Hello")
+                append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("""<big>Hello</big>""", SpanStyle()),
+            actual = annotateHtmlString("""<big>Hello World!</big>""", SpanStyle()),
         )
     }
 
@@ -546,10 +546,10 @@ class RememberAnnotatedHtmlStringTest {
         assertEquals(
             expected = buildAnnotatedString {
                 pushStyle(SpanStyle(fontSize = .8.em))
-                append("Hello")
+                append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("""<small>Hello</small>""", SpanStyle()),
+            actual = annotateHtmlString("""<small>Hello World!</small>""", SpanStyle()),
         )
     }
 
@@ -558,10 +558,10 @@ class RememberAnnotatedHtmlStringTest {
         assertEquals(
             expected = buildAnnotatedString {
                 pushStyle(SpanStyle(fontFamily = FontFamily.Monospace))
-                append("Hello")
+                append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("""<tt>Hello</tt>""", SpanStyle()),
+            actual = annotateHtmlString("""<tt>Hello World!</tt>""", SpanStyle()),
         )
     }
 
@@ -570,12 +570,27 @@ class RememberAnnotatedHtmlStringTest {
         assertEquals(
             expected = buildAnnotatedString {
                 pushStyle(SpanStyle(fontFamily = FontFamily.Monospace))
-                append("Hello")
+                append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("""<code>Hello</code>""", SpanStyle()),
+            actual = annotateHtmlString("""<code>Hello World!</code>""", SpanStyle()),
         )
     }
+//
+//    @Test
+//    fun `a tag`() {
+//        assertEquals(
+//            expected = buildAnnotatedString {
+//                pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
+//                append("Hello World!")
+//                pop()
+//            },
+//            actual = annotateHtmlString(
+//                """<a href="https://www.google.com/">Hello World!</a>""",
+//                SpanStyle()
+//            ),
+//        )
+//    }
 
     @Test
     fun `pre tag`() {
@@ -942,6 +957,21 @@ class RememberAnnotatedHtmlStringTest {
     }
 
     @Test
+    fun `escape tab`() {
+        assertEquals(
+            expected = buildAnnotatedString { append("\t") },
+            actual = annotateHtmlString("""&Tab;""", SpanStyle()),
+        )
+    }
+    @Test
+    fun `escape newline`() {
+        assertEquals(
+            expected = buildAnnotatedString { append("\n") },
+            actual = annotateHtmlString("""&NewLine;""", SpanStyle()),
+        )
+    }
+
+    @Test
     fun `escape ampersand`() {
         assertEquals(
             expected = buildAnnotatedString { append("&") },
@@ -978,6 +1008,22 @@ class RememberAnnotatedHtmlStringTest {
         assertEquals(
             expected = buildAnnotatedString { append("\"") },
             actual = annotateHtmlString("""&quot;""", SpanStyle()),
+        )
+    }
+
+    @Test
+    fun `escape quote 2`() {
+        assertEquals(
+            expected = buildAnnotatedString { append("\"") },
+            actual = annotateHtmlString("""&Quot;""", SpanStyle()),
+        )
+    }
+
+    @Test
+    fun `escape non breaking whitespace`() {
+        assertEquals(
+            expected = buildAnnotatedString { append('\u00a0') },
+            actual = annotateHtmlString("""&nbsp;""", SpanStyle()),
         )
     }
 

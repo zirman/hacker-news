@@ -111,11 +111,9 @@ class HtmlParser(
         pushStyle(
             ParagraphStyle(
                 lineBreak = when (tag.start) {
-                    "</p" -> LineBreak.Paragraph
-                    "</pre" -> LineBreak.Unspecified // TODO: disable soft wrap when possible
-                    else -> throw IllegalStateException(
-                        "Token doesn't have configured linebreak",
-                    )
+                    "<p", "</p" -> LineBreak.Paragraph
+                    "<pre", "</pre" -> LineBreak.Unspecified // TODO: disable soft wrap when possible
+                    else -> throw IllegalStateException("Token doesn't have configured linebreak")
                 },
             ),
         )
@@ -327,7 +325,7 @@ sealed interface TagToken {
     data class Quote(val tag: String) : TagToken
 }
 
-@Suppress("CyclomaticComplexMethod")
+@Suppress("CyclomaticComplexMethod", "NestedBlockDepth")
 fun tokenizeHtml(htmlString: String): ArrayDeque<HtmlToken> {
     val tokens = ArrayDeque<HtmlToken>()
     var i = 0
@@ -405,35 +403,15 @@ private fun String.escapeCharacters(): String = buildString {
     while (match != null) {
         append(this@escapeCharacters.subSequence(i, match.range.first))
         val m = match.groups[1]!!.value
-        when {
-            m.equals("amp", ignoreCase = true) -> {
-                append('&')
-            }
-
-            m.equals("lt", ignoreCase = true) -> {
-                append('<')
-            }
-
-            m.equals("gt", ignoreCase = true) -> {
-                append('>')
-            }
-
-            m.equals("quot", ignoreCase = true) -> {
-                append('"')
-            }
-
-            m.startsWith("#") -> {
-                val c = m.substring(1).toIntOrNull()?.toChar()
-                if (c != null) {
-                    append(c)
-                } else {
-                    append(match.value)
-                }
-            }
-
-            else -> {
-                append(match.value)
-            }
+        val c = if (m.startsWith("#")) {
+            m.substring(1).toIntOrNull()?.toChar()
+        } else {
+            escapeMap[m.lowercase()]
+        }
+        if (c != null) {
+            append(c)
+        } else {
+            append(match.value)
         }
         i = match.range.last + 1
         match = match.next()
@@ -453,3 +431,13 @@ private fun HtmlToken.Tag.isOpen(): Boolean = !start.startsWith("</")
 private fun HtmlToken.Tag.isPre(): Boolean = start == "<pre"
 
 private fun HtmlToken.Tag.isP(): Boolean = start == "<p"
+
+private val escapeMap = mapOf(
+    "amp" to '&',
+    "lt" to '<',
+    "gt" to '>',
+    "quot" to '"',
+    "nbsp" to '\u00a0',
+    "tab" to '\t',
+    "newline" to '\n',
+)
