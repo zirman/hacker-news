@@ -840,14 +840,21 @@ class RememberAnnotatedHtmlStringTest {
     }
 
     @Test
-    fun `p tag doesn't start until first word is output`() {
+    fun `p tag doesn't start until first word is output 1`() {
         assertEquals(
             expected = buildAnnotatedString {
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
+                pop()
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
                 append("Hello")
                 pop()
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
+                pop()
             },
-            actual = annotateHtmlString("""<p><p>Hello</p></p>""", SpanStyle()),
+            actual = annotateHtmlString(
+                """<p><p>Hello</p></p>""",
+                SpanStyle(),
+            ),
         )
     }
 
@@ -859,10 +866,61 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello")
                 pop()
                 append("World!")
-                appendLine()
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
+                pop()
                 append("World!")
             },
             actual = annotateHtmlString("""<p>Hello</p>World!</p>World!""", SpanStyle()),
+        )
+    }
+
+    @Test
+    fun `p tag doesn't start until first word is output 3`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
+                pop()
+                append("Hello")
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
+                pop()
+                append("World!")
+            },
+            actual = annotateHtmlString("""</p>Hello</p>World!""", SpanStyle()),
+        )
+    }
+
+    @Test
+    fun `p tag doesn't start until first word is output 4`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
+                pop()
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Unspecified))
+                append("Hello World!")
+                pop()
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
+                pop()
+            },
+            actual = annotateHtmlString("""<p><pre>Hello World!</pre></p>""", SpanStyle()),
+        )
+    }
+
+    @Test
+    fun `p tag doesn't start until first word is output 5`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
+                pop()
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Unspecified))
+                append("Hello")
+                pop()
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
+                pop()
+                append("World!")
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Unspecified))
+                pop()
+            },
+            actual = annotateHtmlString("""<p><pre>Hello</p>World!</pre>""", SpanStyle()),
         )
     }
 

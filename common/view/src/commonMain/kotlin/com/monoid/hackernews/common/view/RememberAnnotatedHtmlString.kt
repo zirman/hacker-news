@@ -50,36 +50,26 @@ class HtmlParser(
                             if (stack.firstOrNull()?.isBlock() == true) {
                                 stack.removeFirst()
                             }
-                            pushStyle(
-                                ParagraphStyle(
-                                    lineBreak = when (token.start) {
-                                        "<p" -> LineBreak.Paragraph
-                                        "<pre" -> LineBreak.Unspecified // TODO: disable soft wrap when possible
-                                        else -> throw IllegalStateException(
-                                            "token is doesn't have configured linebreak",
-                                        )
-                                    },
-                                ),
-                            )
+                            pushParagraphStyle(token)
                             // push spans
                             stack.forEach { pushStyleForSpanTag(it) }
                             // save block
                             stack.addFirst(token)
                         } else if (stack.firstOrNull()?.isBlock() == true) {
-                            // handle matched close tag
-                            if (token.start.substring(2) == stack.first().start.substring(1)) {
-                                // pop all styles
-                                repeat(stack.size) { pop() }
-                                stack.removeFirst()
-                                stack.forEach { pushStyleForSpanTag(it) }
-                                repeat(index) { tokens.removeFirst() }
-                            } else {
-                                // handle mismatched block
-                                println("mismatch")
+                            // handle close tag
+                            repeat(stack.size) { pop() }
+                            if (token.start.substring(2) != stack.first().start.substring(1)) {
+                                // mismatched block
+                                pushParagraphStyle(token)
+                                pop()
                             }
+                            stack.removeFirst()
+                            stack.forEach { pushStyleForSpanTag(it) }
+                            repeat(index) { tokens.removeFirst() }
                         } else {
-                            // handle unmatched close block
-                            println("unmatched")
+                            // unmatched close block
+                            pushParagraphStyle(token)
+                            pop()
                         }
                         index = 0
                         hasAppendedWord = false
@@ -115,6 +105,20 @@ class HtmlParser(
         // ignore spaces at the end
         repeat(stack.size) { pop() }
         stack.clear()
+    }
+
+    private fun AnnotatedString.Builder.pushParagraphStyle(tag: HtmlToken.Tag) {
+        pushStyle(
+            ParagraphStyle(
+                lineBreak = when (tag.start) {
+                    "</p" -> LineBreak.Paragraph
+                    "</pre" -> LineBreak.Unspecified // TODO: disable soft wrap when possible
+                    else -> throw IllegalStateException(
+                        "Token doesn't have configured linebreak",
+                    )
+                },
+            ),
+        )
     }
 
     private fun AnnotatedString.Builder.pushStyleForSpanTag(tag: HtmlToken.Tag) {
@@ -447,3 +451,5 @@ private fun HtmlToken.Tag.isBlock(): Boolean = when (start) {
 private fun HtmlToken.Tag.isOpen(): Boolean = !start.startsWith("</")
 
 private fun HtmlToken.Tag.isPre(): Boolean = start == "<pre"
+
+private fun HtmlToken.Tag.isP(): Boolean = start == "<p"
