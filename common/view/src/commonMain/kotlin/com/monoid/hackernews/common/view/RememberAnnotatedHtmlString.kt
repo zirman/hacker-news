@@ -738,10 +738,10 @@ private val escapeMap = mapOf(
     "ensp" to '\u2002', // En space
     "emsp" to '\u2003', // Em space
     "thinsp" to '\u2009', // Thin space
-    "zwnj" to '\u200C', // Zero width non-joiner
-    "zwj" to '\u200D', // Zero width joiner
-    "lrm" to '\u200E', // Left-to-right mark
-    "rlm" to '\u200F', // Right-to-left mark
+    "zwnj" to '\u200c', // Zero width non-joiner
+    "zwj" to '\u200d', // Zero width joiner
+    "lrm" to '\u200e', // Left-to-right mark
+    "rlm" to '\u200f', // Right-to-left mark
     "ndash" to '–',
     "mdash" to '—',
     "lsquo" to '‘',
