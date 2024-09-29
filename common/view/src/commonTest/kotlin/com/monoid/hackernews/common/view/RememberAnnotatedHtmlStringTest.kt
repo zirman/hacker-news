@@ -581,16 +581,69 @@ class RememberAnnotatedHtmlStringTest {
     fun `pre tag`() {
         assertEquals(
             expected = buildAnnotatedString {
-                pushStyle(SpanStyle(fontFamily = FontFamily.Monospace))
-                append("\n  Hello\n  World!\n")
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
+                append("  Hello\n  World!")
                 pop()
             },
             actual = annotateHtmlString(
                 """
                 |<pre>
                 |  Hello
-                |  World!
+                |  World!  
                 |</pre>
+                |""".trimMargin(),
+                SpanStyle(),
+            ),
+        )
+    }
+
+    @Test
+    fun `pre tag 1`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                pop()
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
+                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                append("  Hello\n  World!")
+                pop()
+                pop()
+                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                pop()
+            },
+            actual = annotateHtmlString(
+                """
+                |<u> <pre>
+                |  Hello
+                |  World!
+                |</pre> </u>
+                |""".trimMargin(),
+                SpanStyle(),
+            ),
+        )
+    }
+
+    @Test
+    fun `pre tag 2`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                append("a")
+                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                pop()
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
+                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                append("  Hello\n  World!")
+                pop()
+                pop()
+                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                pop()
+            },
+            actual = annotateHtmlString(
+                """
+                |a <u> <pre>
+                |  Hello
+                |  World!
+                |</pre> </u>
                 |""".trimMargin(),
                 SpanStyle(),
             ),

@@ -27,121 +27,87 @@ class HtmlParser(
     htmlString: String,
     private val linkStyle: SpanStyle,
 ) {
-    private val tokens: List<HtmlToken> = tokenizeHtml(htmlString)
-
-    // newLine and consumedSpace are exclusively true or both are false
-    private var newLine: Boolean = true
-    private var consumedSpace: Int = -1
+    private val tokens: ArrayDeque<HtmlToken> = tokenizeHtml(htmlString)
 
     // tracks depth of indentation
     private val stack: ArrayDeque<HtmlToken.Tag> = ArrayDeque()
 
-    // style tags are queued until there is a word token to determine if if it is applied to whitespace
-    private val queue: ArrayDeque<HtmlToken.Tag> = ArrayDeque()
-
-    private var paragraph = false
-
+    @Suppress("LoopWithTooManyJumpStatements", "CyclomaticComplexMethod")
     fun parse(): AnnotatedString = buildAnnotatedString {
-        var i = 0
-        while (i < tokens.size) {
-            when (val token = tokens[i]) {
-                is HtmlToken.Whitespace -> {
-                    // ignore whitespace when on a new line
-                    if (!newLine && consumedSpace == -1) {
-                        consumedSpace = queue.size
+        var index = 0
+        var appendedWord = false
+        while (true) {
+            if (index >= tokens.size) break
+            when (val token = tokens[index]) {
+                is HtmlToken.Tag -> {
+                    if (token.isBlock()) {
+                        if (token.isStart()) {
+                            // push span styles up to index
+                            pushBlock(index)
+                            // pop all spans and block
+                            repeat(stack.size) { pop() }
+                            // drop block from stack
+                            if (stack.firstOrNull()?.isBlock() == true) {
+                                stack.removeFirst()
+                            }
+                            pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
+                            // push spans
+                            stack.forEach { pushStyleForSpanTag(it) }
+                            // save block
+                            stack.addFirst(token)
+                        } else if (stack.firstOrNull()?.isBlock() == true) {
+                            // handle matched close tag
+                            if (token.start.substring(2) == stack.first().start.substring(1)) {
+                                // pop all styles
+                                repeat(stack.size) { pop() }
+                                stack.removeFirst()
+                                stack.forEach { pushStyleForSpanTag(it) }
+                                repeat(index) { tokens.removeFirst() }
+                            } else {
+                                // handle mismatched block
+                                println("mismatch")
+                            }
+                        } else {
+                            // handle unmatched close block
+                            println("unmatched")
+                        }
+                        index = 0
+                        appendedWord = false
+                        tokens.removeFirst()
+                        continue
                     }
+                    index++
                 }
 
                 is HtmlToken.Word -> {
-                    flushQueue()
+                    if (stack.firstOrNull()?.start == "<pre") {
+                        if (appendedWord) {
+                            appendWordPreformatted(index)
+                        } else {
+                            appendWordPreformattedStart(index)
+                        }
+                    } else if (appendedWord) {
+                        appendWordWithSpace(index)
+                    } else {
+                        appendWord(index)
+                    }
                     append(token.word)
-                    newLine = false
+                    appendedWord = true
+                    tokens.removeFirst()
+                    index = 0
                 }
 
-                is HtmlToken.Tag -> {
-                    if (token.start == "<br" || token.start == "</br") {
-                        appendNewLine()
-                    } else if (token.start.startsWith("</")) {
-                        queueCloseTag(token)
-                    } else {
-                        queueOpenTag(token)
-                    }
+                is HtmlToken.Whitespace -> {
+                    index++
                 }
             }
-            i++
         }
         // ignore spaces at the end
-        for (k in stack.indices) {
-            pop()
-        }
+        repeat(stack.size) { pop() }
         stack.clear()
     }
 
-    @Suppress("CyclomaticComplexMethod")
-    private fun AnnotatedString.Builder.handleCloseTagImmediate(tag: HtmlToken.Tag) {
-        val tagName = tag.start.substring(2)
-        val index = stack.indexOfLast { tagName == it.start.substring(1) }
-        if (index == -1) {
-            // unmatched close p tags are treated as line breaks
-            if (tagName == "p") {
-                appendLine()
-            } else {
-                println("mismatch")
-            }
-            return
-        }
-        val shuffle = stack.slice(index + 1..<stack.size)
-        for (i in index..<stack.size) {
-            pop()
-            stack.removeLast()
-        }
-        for (t in shuffle) {
-            pushStyleFor(t)
-        }
-        when (tag.start) {
-            "</p" -> {
-                if (paragraph) {
-                    paragraph = false
-                }
-            }
-
-            else -> {
-            }
-        }
-    }
-
-    private fun AnnotatedString.Builder.handleOpenTagImmediate(tag: HtmlToken.Tag) {
-        when (tag.start) {
-            "<p" -> {
-                if (paragraph) {
-                    val i = stack.indexOfLast { it.start == "<p" }
-                    for (k in i..<stack.size) {
-                        pop()
-                    }
-                    stack.removeAt(stack.indexOfLast { it.start == "<p" })
-                    for (k in i..<stack.size) {
-                        handleOpenTagImmediate(stack[k])
-                    }
-                }
-                paragraph = true
-            }
-
-            "<b", "<i", "<cite", "<dfn", "<em", "<big", "<small", "<tt", "<code", "<s", "<strike", "<del", "<u", "<sup",
-            "<sub", "<font", "<span", "<a" -> {
-                // no-op
-            }
-
-            else -> {
-                // unknown tags are ignored
-                return
-            }
-        }
-        stack.addLast(tag)
-        pushStyleFor(tag)
-    }
-
-    @Suppress("CyclomaticComplexMethod")
-    private fun AnnotatedString.Builder.pushStyleFor(tag: HtmlToken.Tag) {
+    private fun AnnotatedString.Builder.pushStyleForSpanTag(tag: HtmlToken.Tag) {
         when (tag.start) {
             "<b" -> {
                 pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
@@ -195,79 +161,139 @@ class HtmlParser(
                 // todo: apply link
             }
 
-            "<p" -> {
-                pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
-            }
-
             else -> {
-                @Suppress("UseCheckOrError")
-                throw IllegalStateException("Unrecognized tag")
+                check(false)
             }
         }
     }
 
-    private fun queueOpenTag(tag: HtmlToken.Tag) {
-//        if (tag.start == "<p") {
-//            if (!paragraph) {
+    private fun AnnotatedString.Builder.appendWord(index: Int) {
+        repeat(index) {
+            when (val token = tokens.removeFirst()) {
+                is HtmlToken.Tag -> {
+                    spanTag(token)
+                }
+
+                is HtmlToken.Whitespace -> {
+                }
+
+                is HtmlToken.Word -> {
+                    check(false)
+                }
+            }
+        }
+    }
+
+    private fun AnnotatedString.Builder.appendWordWithSpace(index: Int) {
+        var appendedSpace = false
+        repeat(index) {
+            when (val token = tokens.removeFirst()) {
+                is HtmlToken.Tag -> {
+                    spanTag(token)
+                }
+
+                is HtmlToken.Whitespace -> {
+                    if (!appendedSpace) {
+                        append(' ')
+                        appendedSpace = true
+                    }
+                }
+
+                is HtmlToken.Word -> {
+                    check(false)
+                }
+            }
+        }
+    }
+
+    private fun AnnotatedString.Builder.appendWordPreformattedStart(index: Int) {
+        var x = true
+        repeat(index) {
+            when (val token = tokens.removeFirst()) {
+                is HtmlToken.Tag -> {
+                    spanTag(token)
+                }
+
+                is HtmlToken.Whitespace -> {
+                    if (x) {
+                        append(token.whitespace.removePrefix("\n"))
+                        x = false
+                    } else {
+                        append(token.whitespace)
+                    }
+                }
+
+                is HtmlToken.Word -> {
+                    check(false)
+                }
+            }
+        }
+    }
+
+    private fun AnnotatedString.Builder.appendWordPreformatted(index: Int) {
+        repeat(index) {
+            when (val token = tokens.removeFirst()) {
+                is HtmlToken.Tag -> {
+                    spanTag(token)
+                }
+
+                is HtmlToken.Whitespace -> {
+                    append(token.whitespace)
+                }
+
+                is HtmlToken.Word -> {
+                    check(false)
+                }
+            }
+        }
+    }
+
+    private fun AnnotatedString.Builder.pushBlock(index: Int) {
+        repeat(index) {
+            when (val token = tokens.removeFirst()) {
+                is HtmlToken.Tag -> {
+                    spanTag(token)
+                }
+
+                is HtmlToken.Whitespace -> {
+                    // ignored
+                }
+
+                is HtmlToken.Word -> {
+                    check(false)
+                }
+            }
+        }
+    }
+
+//    private fun AnnotatedString.Builder.appendW(index: Int) {
+//        for (i in 0..<index) {
+//            when (val token = tokens.removeFirst()) {
+//                is HtmlToken.Tag -> {
+//                    flushSpanTag(token)
+//                }
 //
-//            }
-//        } else {
+//                is HtmlToken.Whitespace -> {
+//                    append(token.whitespace)
+//                }
 //
-//        }
-        queue.add(tag)
-    }
-
-    private fun queueCloseTag(tag: HtmlToken.Tag) {
-        queue.add(tag)
-//        if (tag.start == "</p") {
-//            if (queue.firstOrNull()?.start == "<p") {
-//                queue.removeFirst()
-//            } else if (queue.lastOrNull()?.start != "</p") {
-//                queue.addLast(tag)
-//            }
-////            val tagName = tag.start
-////            val index = queue.indexOfLast { tagName == it.start }
-////            if (index != -1) {
-////                queue.removeAt(index)
-////            }
-////            queue.add(tag)
-//        } else {
-//            val tagName = tag.start.substring(2)
-//            // removed tags that were closed before being applied to a word
-//            val index = queue.indexOfLast { tagName == it.start.substring(1) }
-//            if (index != -1) {
-//                queue.removeAt(index)
-//            } else if (queue.lastOrNull()?.start == "</p") {
-//                // keep "</p" and the top of stack
-//                queue.add(queue.size - 1, tag)
-//            } else {
-//                queue.addLast(tag)
+//                else -> {
+//                    /* no-op */
+//                }
 //            }
 //        }
-    }
+//    }
 
-    private fun AnnotatedString.Builder.appendNewLine() {
-        flushQueue()
-        appendLine()
-        newLine = true
-    }
-
-    private fun AnnotatedString.Builder.flushQueue() {
-        queue.forEachIndexed { index, tag ->
-            if (index == consumedSpace) {
-                append(' ')
-            }
-            if (tag.start.startsWith("</")) {
-                handleCloseTagImmediate(tag)
-            } else {
-                handleOpenTagImmediate(tag)
-            }
+    private fun AnnotatedString.Builder.spanTag(token: HtmlToken.Tag) {
+        if (token.isStart()) {
+            pushStyleForSpanTag(token)
+            stack.addLast(token)
+        } else if (token.start.substring(2) == stack.lastOrNull()?.start?.substring(1)) {
+            pop()
+            stack.removeLast()
+        } else {
+            println("tag mismatch")
         }
-        if (consumedSpace == queue.size) {
-            append(' ')
-        }
-        queue.clear()
-        consumedSpace = -1
     }
 }
 
@@ -306,14 +332,15 @@ sealed interface TagToken {
 }
 
 @Suppress("CyclomaticComplexMethod")
-fun tokenizeHtml(htmlString: String): List<HtmlToken> = buildList {
+fun tokenizeHtml(htmlString: String): ArrayDeque<HtmlToken> {
+    val tokens = ArrayDeque<HtmlToken>()
     var i = 0
     @Suppress("LoopWithTooManyJumpStatements")
     outer@ while (i < htmlString.length) {
         var match = whitespaceRegex.matchAt(htmlString, i)
         if (match != null) {
             i = match.range.last + 1
-            add(HtmlToken.Whitespace(match.value))
+            tokens.add(HtmlToken.Whitespace(match.value))
             continue
         }
         match = tagStartRegex.matchAt(htmlString, i)
@@ -331,7 +358,13 @@ fun tokenizeHtml(htmlString: String): List<HtmlToken> = buildList {
                 if (tagMatch != null) {
                     k = tagMatch.range.last + 1
                     tagMatch.value.replace("&amp;", "&")
-                    add(HtmlToken.Tag(start.lowercase(), tagTokens, tagMatch.value.lowercase()))
+                    tokens.add(
+                        HtmlToken.Tag(
+                            start.lowercase(),
+                            tagTokens,
+                            tagMatch.value.lowercase()
+                        )
+                    )
                     i = k
                     continue@outer
                 }
@@ -359,12 +392,13 @@ fun tokenizeHtml(htmlString: String): List<HtmlToken> = buildList {
         match = wordRegex.matchAt(htmlString, i)
         if (match != null) {
             i = match.range.last + 1
-            add(HtmlToken.Word(match.value.escapeCharacters()))
+            tokens.add(HtmlToken.Word(match.value.escapeCharacters()))
             continue
         }
         @Suppress("UseCheckOrError", "ThrowingExceptionsWithoutMessageOrCause")
         throw IllegalStateException("no matching regexes")
     }
+    return tokens
 }
 
 private val escapedRegex = """&([^;]+);""".toRegex(RegexOption.IGNORE_CASE)
@@ -412,3 +446,10 @@ private fun String.escapeCharacters(): String = buildString {
         append(this@escapeCharacters.subSequence(i, this@escapeCharacters.length))
     }
 }
+
+private fun HtmlToken.Tag.isBlock(): Boolean = when (start) {
+    "<p", "</p", "<pre", "</pre" -> true
+    else -> false
+}
+
+private fun HtmlToken.Tag.isStart(): Boolean = !start.startsWith("</")
