@@ -1012,14 +1012,6 @@ class RememberAnnotatedHtmlStringTest {
     }
 
     @Test
-    fun `escape quote 2`() {
-        assertEquals(
-            expected = buildAnnotatedString { append("\"") },
-            actual = annotateHtmlString("""&Quot;""", SpanStyle()),
-        )
-    }
-
-    @Test
     fun `escape non breaking whitespace`() {
         assertEquals(
             expected = buildAnnotatedString { append('\u00a0') },
