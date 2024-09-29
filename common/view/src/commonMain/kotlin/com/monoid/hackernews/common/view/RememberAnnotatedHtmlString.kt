@@ -35,13 +35,13 @@ class HtmlParser(
     @Suppress("LoopWithTooManyJumpStatements", "CyclomaticComplexMethod")
     fun parse(): AnnotatedString = buildAnnotatedString {
         var index = 0
-        var appendedWord = false
+        var hasAppendedWord = false
         while (true) {
             if (index >= tokens.size) break
             when (val token = tokens[index]) {
                 is HtmlToken.Tag -> {
                     if (token.isBlock()) {
-                        if (token.isStart()) {
+                        if (token.isOpen()) {
                             // push span styles up to index
                             pushBlock(index)
                             // pop all spans and block
@@ -54,7 +54,7 @@ class HtmlParser(
                                 ParagraphStyle(
                                     lineBreak = when (token.start) {
                                         "<p" -> LineBreak.Paragraph
-                                        "<pre" -> LineBreak.Unspecified // TODO: when `<pre>` tag, disable soft wrap
+                                        "<pre" -> LineBreak.Unspecified // TODO: disable soft wrap when possible
                                         else -> throw IllegalStateException(
                                             "token is doesn't have configured linebreak",
                                         )
@@ -82,7 +82,7 @@ class HtmlParser(
                             println("unmatched")
                         }
                         index = 0
-                        appendedWord = false
+                        hasAppendedWord = false
                         tokens.removeFirst()
                         continue
                     }
@@ -90,19 +90,19 @@ class HtmlParser(
                 }
 
                 is HtmlToken.Word -> {
-                    if (stack.firstOrNull()?.start == "<pre") {
-                        if (appendedWord) {
+                    if (stack.firstOrNull()?.isPre() == true) {
+                        if (hasAppendedWord) {
                             appendWordPreformatted(index)
                         } else {
-                            appendWordPreformattedStart(index)
+                            appendWordPreformattedOpen(index)
                         }
-                    } else if (appendedWord) {
+                    } else if (hasAppendedWord) {
                         appendWordWithSpace(index)
                     } else {
                         appendWord(index)
                     }
                     append(token.word)
-                    appendedWord = true
+                    hasAppendedWord = true
                     tokens.removeFirst()
                     index = 0
                 }
@@ -172,7 +172,7 @@ class HtmlParser(
             }
 
             else -> {
-                check(false)
+                throw IllegalStateException("Invalid tag")
             }
         }
     }
@@ -188,14 +188,14 @@ class HtmlParser(
                 }
 
                 is HtmlToken.Word -> {
-                    check(false)
+                    throw IllegalStateException("Invalid tag")
                 }
             }
         }
     }
 
     private fun AnnotatedString.Builder.appendWordWithSpace(index: Int) {
-        var appendedSpace = false
+        var hasAppendedSpace = false
         repeat(index) {
             when (val token = tokens.removeFirst()) {
                 is HtmlToken.Tag -> {
@@ -203,21 +203,21 @@ class HtmlParser(
                 }
 
                 is HtmlToken.Whitespace -> {
-                    if (!appendedSpace) {
+                    if (!hasAppendedSpace) {
                         append(' ')
-                        appendedSpace = true
+                        hasAppendedSpace = true
                     }
                 }
 
                 is HtmlToken.Word -> {
-                    check(false)
+                    throw IllegalStateException("Invalid tag")
                 }
             }
         }
     }
 
-    private fun AnnotatedString.Builder.appendWordPreformattedStart(index: Int) {
-        var x = true
+    private fun AnnotatedString.Builder.appendWordPreformattedOpen(index: Int) {
+        var hasAppendedWhitespace = false
         repeat(index) {
             when (val token = tokens.removeFirst()) {
                 is HtmlToken.Tag -> {
@@ -225,16 +225,16 @@ class HtmlParser(
                 }
 
                 is HtmlToken.Whitespace -> {
-                    if (x) {
-                        append(token.whitespace.removePrefix("\n"))
-                        x = false
-                    } else {
+                    if (hasAppendedWhitespace) {
                         append(token.whitespace)
+                    } else {
+                        append(token.whitespace.removePrefix("\n"))
+                        hasAppendedWhitespace = true
                     }
                 }
 
                 is HtmlToken.Word -> {
-                    check(false)
+                    throw IllegalStateException("Invalid tag")
                 }
             }
         }
@@ -252,7 +252,7 @@ class HtmlParser(
                 }
 
                 is HtmlToken.Word -> {
-                    check(false)
+                    throw IllegalStateException("Invalid tag")
                 }
             }
         }
@@ -270,32 +270,14 @@ class HtmlParser(
                 }
 
                 is HtmlToken.Word -> {
-                    check(false)
+                    throw IllegalStateException("Invalid tag")
                 }
             }
         }
     }
 
-//    private fun AnnotatedString.Builder.appendW(index: Int) {
-//        for (i in 0..<index) {
-//            when (val token = tokens.removeFirst()) {
-//                is HtmlToken.Tag -> {
-//                    flushSpanTag(token)
-//                }
-//
-//                is HtmlToken.Whitespace -> {
-//                    append(token.whitespace)
-//                }
-//
-//                else -> {
-//                    /* no-op */
-//                }
-//            }
-//        }
-//    }
-
     private fun AnnotatedString.Builder.spanTag(token: HtmlToken.Tag) {
-        if (token.isStart()) {
+        if (token.isOpen()) {
             pushStyleForSpanTag(token)
             stack.addLast(token)
         } else if (token.start.substring(2) == stack.lastOrNull()?.start?.substring(1)) {
@@ -462,4 +444,6 @@ private fun HtmlToken.Tag.isBlock(): Boolean = when (start) {
     else -> false
 }
 
-private fun HtmlToken.Tag.isStart(): Boolean = !start.startsWith("</")
+private fun HtmlToken.Tag.isOpen(): Boolean = !start.startsWith("</")
+
+private fun HtmlToken.Tag.isPre(): Boolean = start == "<pre"
