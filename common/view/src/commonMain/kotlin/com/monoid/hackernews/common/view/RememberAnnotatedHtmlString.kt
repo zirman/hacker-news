@@ -3,8 +3,10 @@ package com.monoid.hackernews.common.view
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -19,13 +21,21 @@ import androidx.compose.ui.unit.em
 fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
     val linkStyle = LocalLinkStyle.current.style ?: SpanStyle()
     return remember(htmlString, linkStyle) {
-        annotateHtmlString(htmlString, linkStyle)
+        annotateHtmlString(
+            htmlString = htmlString,
+            linkStyle = TextLinkStyles(
+                style = linkStyle,
+                focusedStyle = linkStyle,
+                hoveredStyle = linkStyle,
+                pressedStyle = linkStyle,
+            ),
+        )
     }
 }
 
 class HtmlParser(
     htmlString: String,
-    private val linkStyle: SpanStyle,
+    private val textLinkStyles: TextLinkStyles,
 ) {
     private val tokens: ArrayDeque<HtmlToken> = tokenizeHtml(htmlString)
 
@@ -111,7 +121,7 @@ class HtmlParser(
         pushStyle(
             ParagraphStyle(
                 lineBreak = when (tag.start) {
-                    "<p", "</p" -> LineBreak.Paragraph
+                    "<p", "</p" -> LineBreak.Paragraph // TODO: apply alignment from attributes
                     "<pre", "</pre" -> LineBreak.Unspecified // TODO: disable soft wrap when possible
                     else -> throw IllegalStateException("Token doesn't have configured linebreak")
                 },
@@ -119,13 +129,24 @@ class HtmlParser(
         )
     }
 
+    // TODO:
+    // <mark // highlight
+    // <q // inline quotation
+    // <wbr // possible line break
+    // <time
+    // <blockquote
+    // <ul
+    // <ol
+    // <dl
+    // <h1-6
+
     private fun AnnotatedString.Builder.pushStyleForSpanTag(tag: HtmlToken.Tag) {
         when (tag.start) {
-            "<b" -> {
+            "<b", "<strong" -> {
                 pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
             }
 
-            "<i", "<cite", "<dfn", "<em" -> {
+            "<i", "<cite", "<dfn", "<em", "<address" -> {
                 pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
             }
 
@@ -169,8 +190,13 @@ class HtmlParser(
             }
 
             "<a" -> {
-                pushStyle(linkStyle)
-                // todo: apply link
+                // TODO: apply url from attributes
+                pushLink(
+                    LinkAnnotation.Url(
+                        url = "https://www.google.com/",
+                        styles = textLinkStyles,
+                    ),
+                )
             }
 
             else -> {
@@ -295,7 +321,7 @@ class HtmlParser(
 // CSS style: <span style=”color|background_color|text-decoration”>
 fun annotateHtmlString(
     htmlString: String,
-    linkStyle: SpanStyle,
+    linkStyle: TextLinkStyles,
 ): AnnotatedString = HtmlParser(htmlString, linkStyle).parse()
 
 // Hacker News Formatting
@@ -429,8 +455,6 @@ private fun HtmlToken.Tag.isBlock(): Boolean = when (start) {
 private fun HtmlToken.Tag.isOpen(): Boolean = !start.startsWith("</")
 
 private fun HtmlToken.Tag.isPre(): Boolean = start == "<pre"
-
-private fun HtmlToken.Tag.isP(): Boolean = start == "<p"
 
 private val escapeMap = mapOf(
     "amp" to '&',

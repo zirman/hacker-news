@@ -1,7 +1,9 @@
 package com.monoid.hackernews.common.view
 
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -15,6 +17,12 @@ import kotlin.test.assertEquals
 
 @Suppress("LargeClass")
 class RememberAnnotatedHtmlStringTest {
+    private val textLinkStyles = TextLinkStyles(
+        style = SpanStyle(textDecoration = TextDecoration.Underline),
+        focusedStyle = SpanStyle(textDecoration = TextDecoration.Underline),
+        hoveredStyle = SpanStyle(textDecoration = TextDecoration.Underline),
+        pressedStyle = SpanStyle(textDecoration = TextDecoration.Underline),
+    )
 
     @Test
     fun `tokenize 1`() {
@@ -168,7 +176,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `consolidate white space between words outside of tag`() {
         assertEquals(
             expected = buildAnnotatedString { append("Hello World!") },
-            actual = annotateHtmlString("  Hello  \n  World!  ", SpanStyle()),
+            actual = annotateHtmlString("  Hello  \n  World!  ", textLinkStyles),
         )
     }
 
@@ -180,7 +188,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello")
                 pop()
             },
-            actual = annotateHtmlString("  <u>Hello</u>", SpanStyle()),
+            actual = annotateHtmlString("  <u>Hello</u>", textLinkStyles),
         )
     }
 
@@ -192,7 +200,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello")
                 pop()
             },
-            actual = annotateHtmlString("<u>Hello</u>  ", SpanStyle()),
+            actual = annotateHtmlString("<u>Hello</u>  ", textLinkStyles),
         )
     }
 
@@ -204,7 +212,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello")
                 pop()
             },
-            actual = annotateHtmlString("<u>  Hello</u>", SpanStyle()),
+            actual = annotateHtmlString("<u>  Hello</u>", textLinkStyles),
         )
     }
 
@@ -217,7 +225,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("World!")
                 pop()
             },
-            actual = annotateHtmlString("Hello  <u>World!</u>", SpanStyle()),
+            actual = annotateHtmlString("Hello  <u>World!</u>", textLinkStyles),
         )
     }
 
@@ -230,7 +238,7 @@ class RememberAnnotatedHtmlStringTest {
                 append(" World!")
                 pop()
             },
-            actual = annotateHtmlString("Hello<u>  World!</u>", SpanStyle()),
+            actual = annotateHtmlString("Hello<u>  World!</u>", textLinkStyles),
         )
     }
 
@@ -243,7 +251,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("World!")
                 pop()
             },
-            actual = annotateHtmlString("Hello  <u>  World!</u>", SpanStyle()),
+            actual = annotateHtmlString("Hello  <u>  World!</u>", textLinkStyles),
         )
     }
 
@@ -256,7 +264,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append(" World!")
             },
-            actual = annotateHtmlString("<u>Hello</u>  World!", SpanStyle()),
+            actual = annotateHtmlString("<u>Hello</u>  World!", textLinkStyles),
         )
     }
 
@@ -269,7 +277,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("World!")
             },
-            actual = annotateHtmlString("<u>Hello  </u>World!", SpanStyle()),
+            actual = annotateHtmlString("<u>Hello  </u>World!", textLinkStyles),
         )
     }
 
@@ -282,7 +290,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("World!")
             },
-            actual = annotateHtmlString("<u>Hello  </u>  World!", SpanStyle()),
+            actual = annotateHtmlString("<u>Hello  </u>  World!", textLinkStyles),
         )
     }
 
@@ -294,7 +302,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("<u>Hello  World!</u>  ", SpanStyle()),
+            actual = annotateHtmlString("<u>Hello  World!</u>  ", textLinkStyles),
         )
     }
 
@@ -306,7 +314,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("<u>  Hello  World!</u>", SpanStyle()),
+            actual = annotateHtmlString("<u>  Hello  World!</u>", textLinkStyles),
         )
     }
 
@@ -318,7 +326,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("  <u>  Hello World!</u>  ", SpanStyle()),
+            actual = annotateHtmlString("  <u>  Hello World!</u>  ", textLinkStyles),
         )
     }
 
@@ -330,7 +338,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("<u>Hello  World!</u>  ", SpanStyle()),
+            actual = annotateHtmlString("<u>Hello  World!</u>  ", textLinkStyles),
         )
     }
 
@@ -342,7 +350,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("""<u>Hello  World!</u>""", SpanStyle()),
+            actual = annotateHtmlString("""<u>Hello  World!</u>""", textLinkStyles),
         )
     }
 
@@ -356,7 +364,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("d!")
             },
-            actual = annotateHtmlString("""H<u>ello  Worl</u>d!""", SpanStyle()),
+            actual = annotateHtmlString("""H<u>ello  Worl</u>d!""", textLinkStyles),
         )
     }
 
@@ -370,7 +378,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("d!")
             },
-            actual = annotateHtmlString("""H  <u>ello  Worl</u>d!""", SpanStyle()),
+            actual = annotateHtmlString("""H  <u>ello  Worl</u>d!""", textLinkStyles),
         )
     }
 
@@ -384,7 +392,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append(" d!")
             },
-            actual = annotateHtmlString("""H<u>ello  Worl</u>  d!""", SpanStyle()),
+            actual = annotateHtmlString("""H<u>ello  Worl</u>  d!""", textLinkStyles),
         )
     }
 
@@ -398,7 +406,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append(" d!")
             },
-            actual = annotateHtmlString("""H<u>ello  Worl</u>  d!  """, SpanStyle()),
+            actual = annotateHtmlString("""H<u>ello  Worl</u>  d!  """, textLinkStyles),
         )
     }
 
@@ -412,7 +420,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("d!")
             },
-            actual = annotateHtmlString("""H<u>ello  Worl  </u>  d!""", SpanStyle()),
+            actual = annotateHtmlString("""H<u>ello  Worl  </u>  d!""", textLinkStyles),
         )
     }
 
@@ -427,7 +435,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("World")
                 pop()
             }, // consumes spaces between tags
-            actual = annotateHtmlString("""  <u>  <s>  Hello  </s>World</u>  """, SpanStyle()),
+            actual = annotateHtmlString("""  <u>  <s>  Hello  </s>World</u>  """, textLinkStyles),
         )
     }
 
@@ -445,7 +453,7 @@ class RememberAnnotatedHtmlStringTest {
             }, // should consume spaces between tags
             actual = annotateHtmlString(
                 htmlString = """  Hello  <u>  World  <s>  Kotlin  </s>  </u>  """,
-                linkStyle = SpanStyle(),
+                linkStyle = textLinkStyles,
             ),
         )
     }
@@ -464,7 +472,7 @@ class RememberAnnotatedHtmlStringTest {
             }, // should consume spaces between tags
             actual = annotateHtmlString(
                 htmlString = """  <u>  <s>  Hello  </s>  World  </u>  Kotlin  """,
-                linkStyle = SpanStyle(),
+                linkStyle = textLinkStyles,
             ),
         )
     }
@@ -477,7 +485,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("""<b>Hello World!</b>""", SpanStyle()),
+            actual = annotateHtmlString("""<b>Hello World!</b>""", textLinkStyles),
         )
     }
 
@@ -489,7 +497,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("""<i>Hello World!</i>""", SpanStyle()),
+            actual = annotateHtmlString("""<i>Hello World!</i>""", textLinkStyles),
         )
     }
 
@@ -501,7 +509,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("""<cite>Hello World!</cite>""", SpanStyle()),
+            actual = annotateHtmlString("""<cite>Hello World!</cite>""", textLinkStyles),
         )
     }
 
@@ -513,7 +521,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("""<dfn>Hello World!</dfn>""", SpanStyle()),
+            actual = annotateHtmlString("""<dfn>Hello World!</dfn>""", textLinkStyles),
         )
     }
 
@@ -525,7 +533,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("""<em>Hello World!</em>""", SpanStyle()),
+            actual = annotateHtmlString("""<em>Hello World!</em>""", textLinkStyles),
         )
     }
 
@@ -537,7 +545,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("""<big>Hello World!</big>""", SpanStyle()),
+            actual = annotateHtmlString("""<big>Hello World!</big>""", textLinkStyles),
         )
     }
 
@@ -549,7 +557,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("""<small>Hello World!</small>""", SpanStyle()),
+            actual = annotateHtmlString("""<small>Hello World!</small>""", textLinkStyles),
         )
     }
 
@@ -561,7 +569,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("""<tt>Hello World!</tt>""", SpanStyle()),
+            actual = annotateHtmlString("""<tt>Hello World!</tt>""", textLinkStyles),
         )
     }
 
@@ -573,24 +581,34 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello World!")
                 pop()
             },
-            actual = annotateHtmlString("""<code>Hello World!</code>""", SpanStyle()),
+            actual = annotateHtmlString("""<code>Hello World!</code>""", textLinkStyles),
         )
     }
-//
-//    @Test
-//    fun `a tag`() {
-//        assertEquals(
-//            expected = buildAnnotatedString {
-//                pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
-//                append("Hello World!")
-//                pop()
-//            },
-//            actual = annotateHtmlString(
-//                """<a href="https://www.google.com/">Hello World!</a>""",
-//                SpanStyle()
-//            ),
-//        )
-//    }
+
+    @Test
+    fun `a tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushLink(
+                    LinkAnnotation.Url(
+                        url = "https://www.google.com/",
+                        styles = TextLinkStyles(
+                            style = SpanStyle(textDecoration = TextDecoration.Underline),
+                            focusedStyle = SpanStyle(textDecoration = TextDecoration.Underline),
+                            hoveredStyle = SpanStyle(textDecoration = TextDecoration.Underline),
+                            pressedStyle = SpanStyle(textDecoration = TextDecoration.Underline),
+                        ),
+                    ),
+                )
+                append("Hello World!")
+                pop()
+            },
+            actual = annotateHtmlString(
+                htmlString = """<a href="https://www.google.com/">Hello World!</a>""",
+                linkStyle = textLinkStyles,
+            ),
+        )
+    }
 
     @Test
     fun `pre tag`() {
@@ -607,7 +625,7 @@ class RememberAnnotatedHtmlStringTest {
                 |  World!  
                 |</pre>
                 |""".trimMargin(),
-                SpanStyle(),
+                textLinkStyles,
             ),
         )
     }
@@ -627,13 +645,13 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
             },
             actual = annotateHtmlString(
-                """
+                htmlString = """
                 |<u> <pre>
                 |  Hello
                 |  World!
                 |</pre> </u>
                 |""".trimMargin(),
-                SpanStyle(),
+                linkStyle = textLinkStyles,
             ),
         )
     }
@@ -660,7 +678,7 @@ class RememberAnnotatedHtmlStringTest {
                 |  World!
                 |</pre> </u>
                 |""".trimMargin(),
-                SpanStyle(),
+                textLinkStyles,
             ),
         )
     }
@@ -679,7 +697,7 @@ class RememberAnnotatedHtmlStringTest {
                 |  World!
                 |</pre>
                 |""".trimMargin(),
-                SpanStyle(),
+                textLinkStyles,
             ),
         )
     }
@@ -702,7 +720,7 @@ class RememberAnnotatedHtmlStringTest {
                 |  </u>World!
                 |</pre>
                 |""".trimMargin(),
-                SpanStyle(),
+                textLinkStyles,
             ),
         )
     }
@@ -715,7 +733,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello")
                 pop()
             },
-            actual = annotateHtmlString("""<s>Hello</s>""", SpanStyle()),
+            actual = annotateHtmlString("""<s>Hello</s>""", textLinkStyles),
         )
     }
 
@@ -727,7 +745,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello")
                 pop()
             },
-            actual = annotateHtmlString("""<strike>Hello</strike>""", SpanStyle()),
+            actual = annotateHtmlString("""<strike>Hello</strike>""", textLinkStyles),
         )
     }
 
@@ -739,7 +757,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello")
                 pop()
             },
-            actual = annotateHtmlString("""<del>Hello</del>""", SpanStyle()),
+            actual = annotateHtmlString("""<del>Hello</del>""", textLinkStyles),
         )
     }
 
@@ -751,7 +769,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello")
                 pop()
             },
-            actual = annotateHtmlString("""<u>Hello</u>""", SpanStyle()),
+            actual = annotateHtmlString("""<u>Hello</u>""", textLinkStyles),
         )
     }
 
@@ -763,7 +781,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello")
                 pop()
             },
-            actual = annotateHtmlString("""<sup>Hello</sup>""", SpanStyle()),
+            actual = annotateHtmlString("""<sup>Hello</sup>""", textLinkStyles),
         )
     }
 
@@ -775,7 +793,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello")
                 pop()
             },
-            actual = annotateHtmlString("""<sub>Hello</sub>""", SpanStyle()),
+            actual = annotateHtmlString("""<sub>Hello</sub>""", textLinkStyles),
         )
     }
 
@@ -787,7 +805,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("Hello")
                 pop()
             },
-            actual = annotateHtmlString("""<p>Hello</p>""", SpanStyle()),
+            actual = annotateHtmlString("""<p>Hello</p>""", textLinkStyles),
         )
     }
 
@@ -802,7 +820,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("World!")
                 pop()
             },
-            actual = annotateHtmlString("""<p>Hello</p><p>World!</p>""", SpanStyle()),
+            actual = annotateHtmlString("""<p>Hello</p><p>World!</p>""", textLinkStyles),
         )
     }
 
@@ -817,7 +835,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("World!")
                 pop()
             },
-            actual = annotateHtmlString("""<p>Hello<p>World!""", SpanStyle()),
+            actual = annotateHtmlString("""<p>Hello<p>World!""", textLinkStyles),
         )
     }
 
@@ -849,7 +867,7 @@ class RememberAnnotatedHtmlStringTest {
                 |  <p>World!</p>
                 |</u>
                 |""".trimMargin(),
-                SpanStyle(),
+                textLinkStyles,
             ),
         )
     }
@@ -868,7 +886,7 @@ class RememberAnnotatedHtmlStringTest {
             },
             actual = annotateHtmlString(
                 """<p><p>Hello</p></p>""",
-                SpanStyle(),
+                textLinkStyles,
             ),
         )
     }
@@ -885,7 +903,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("World!")
             },
-            actual = annotateHtmlString("""<p>Hello</p>World!</p>World!""", SpanStyle()),
+            actual = annotateHtmlString("""<p>Hello</p>World!</p>World!""", textLinkStyles),
         )
     }
 
@@ -900,7 +918,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("World!")
             },
-            actual = annotateHtmlString("""</p>Hello</p>World!""", SpanStyle()),
+            actual = annotateHtmlString("""</p>Hello</p>World!""", textLinkStyles),
         )
     }
 
@@ -916,7 +934,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
                 pop()
             },
-            actual = annotateHtmlString("""<p><pre>Hello World!</pre></p>""", SpanStyle()),
+            actual = annotateHtmlString("""<p><pre>Hello World!</pre></p>""", textLinkStyles),
         )
     }
 
@@ -935,7 +953,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Unspecified))
                 pop()
             },
-            actual = annotateHtmlString("""<p><pre>Hello</p>World!</pre>""", SpanStyle()),
+            actual = annotateHtmlString("""<p><pre>Hello</p>World!</pre>""", textLinkStyles),
         )
     }
 
@@ -952,7 +970,7 @@ class RememberAnnotatedHtmlStringTest {
                 append(" World!")
                 pop()
             },
-            actual = annotateHtmlString("""<u><p>Hello</u> World!</p>""", SpanStyle()),
+            actual = annotateHtmlString("""<u><p>Hello</u> World!</p>""", textLinkStyles),
         )
     }
 
@@ -960,14 +978,15 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape tab`() {
         assertEquals(
             expected = buildAnnotatedString { append("\t") },
-            actual = annotateHtmlString("""&Tab;""", SpanStyle()),
+            actual = annotateHtmlString("""&Tab;""", textLinkStyles),
         )
     }
+
     @Test
     fun `escape newline`() {
         assertEquals(
             expected = buildAnnotatedString { append("\n") },
-            actual = annotateHtmlString("""&NewLine;""", SpanStyle()),
+            actual = annotateHtmlString("""&NewLine;""", textLinkStyles),
         )
     }
 
@@ -975,7 +994,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape ampersand`() {
         assertEquals(
             expected = buildAnnotatedString { append("&") },
-            actual = annotateHtmlString("""&amp;""", SpanStyle()),
+            actual = annotateHtmlString("""&amp;""", textLinkStyles),
         )
     }
 
@@ -983,7 +1002,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape ampersand 2`() {
         assertEquals(
             expected = buildAnnotatedString { append("A&B") },
-            actual = annotateHtmlString("""A&amp;B""", SpanStyle()),
+            actual = annotateHtmlString("""A&amp;B""", textLinkStyles),
         )
     }
 
@@ -991,7 +1010,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape less than`() {
         assertEquals(
             expected = buildAnnotatedString { append("<") },
-            actual = annotateHtmlString("""&lt;""", SpanStyle()),
+            actual = annotateHtmlString("""&lt;""", textLinkStyles),
         )
     }
 
@@ -999,7 +1018,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape greater than`() {
         assertEquals(
             expected = buildAnnotatedString { append(">") },
-            actual = annotateHtmlString("""&gt;""", SpanStyle()),
+            actual = annotateHtmlString("""&gt;""", textLinkStyles),
         )
     }
 
@@ -1007,7 +1026,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape quote`() {
         assertEquals(
             expected = buildAnnotatedString { append("\"") },
-            actual = annotateHtmlString("""&quot;""", SpanStyle()),
+            actual = annotateHtmlString("""&quot;""", textLinkStyles),
         )
     }
 
@@ -1015,7 +1034,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape non breaking whitespace`() {
         assertEquals(
             expected = buildAnnotatedString { append('\u00a0') },
-            actual = annotateHtmlString("""&nbsp;""", SpanStyle()),
+            actual = annotateHtmlString("""&nbsp;""", textLinkStyles),
         )
     }
 
@@ -1023,7 +1042,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape apostrophe`() {
         assertEquals(
             expected = buildAnnotatedString { append("'") },
-            actual = annotateHtmlString("""&#39;""", SpanStyle()),
+            actual = annotateHtmlString("""&#39;""", textLinkStyles),
         )
     }
 
@@ -1031,7 +1050,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape two characters in a row`() {
         assertEquals(
             expected = buildAnnotatedString { append("A<B>C") },
-            actual = annotateHtmlString("""A&lt;B&gt;C""", SpanStyle()),
+            actual = annotateHtmlString("""A&lt;B&gt;C""", textLinkStyles),
         )
     }
 }
