@@ -50,7 +50,17 @@ class HtmlParser(
                             if (stack.firstOrNull()?.isBlock() == true) {
                                 stack.removeFirst()
                             }
-                            pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
+                            pushStyle(
+                                ParagraphStyle(
+                                    lineBreak = when (token.start) {
+                                        "<p" -> LineBreak.Paragraph
+                                        "<pre" -> LineBreak.Unspecified // TODO: when `<pre>` tag, disable soft wrap
+                                        else -> throw IllegalStateException(
+                                            "token is doesn't have configured linebreak",
+                                        )
+                                    },
+                                ),
+                            )
                             // push spans
                             stack.forEach { pushStyleForSpanTag(it) }
                             // save block

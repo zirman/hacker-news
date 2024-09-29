@@ -581,7 +581,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `pre tag`() {
         assertEquals(
             expected = buildAnnotatedString {
-                pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Unspecified))
                 append("  Hello\n  World!")
                 pop()
             },
@@ -603,7 +603,7 @@ class RememberAnnotatedHtmlStringTest {
             expected = buildAnnotatedString {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 pop()
-                pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Unspecified))
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 append("  Hello\n  World!")
                 pop()
@@ -630,7 +630,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("a")
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 pop()
-                pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Unspecified))
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 append("  Hello\n  World!")
                 pop()
@@ -644,6 +644,48 @@ class RememberAnnotatedHtmlStringTest {
                 |  Hello
                 |  World!
                 |</pre> </u>
+                |""".trimMargin(),
+                SpanStyle(),
+            ),
+        )
+    }
+
+    @Test
+    fun `pre tag 3`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Unspecified))
+                append("  Hello\n  World!")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """
+                |<pre>  Hello
+                |  World!
+                |</pre>
+                |""".trimMargin(),
+                SpanStyle(),
+            ),
+        )
+    }
+
+    @Test
+    fun `pre tag 4`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Unspecified))
+                append("  ")
+                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                append("Hello\n  ")
+                pop()
+                append("World!")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """
+                |<pre>  <u>Hello
+                |  </u>World!
+                |</pre>
                 |""".trimMargin(),
                 SpanStyle(),
             ),
@@ -722,8 +764,6 @@ class RememberAnnotatedHtmlStringTest {
         )
     }
 
-    // "</font", "</span", "</a"
-
     @Test
     fun `p tag`() {
         assertEquals(
@@ -767,6 +807,39 @@ class RememberAnnotatedHtmlStringTest {
     }
 
     @Test
+    fun `p tags enclosed in span tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                pop()
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
+                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                append("Hello")
+                pop()
+                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                pop()
+                pop()
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
+                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                append("World!")
+                pop()
+                pop()
+                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                pop()
+            },
+            actual = annotateHtmlString(
+                """
+                |<u>
+                |  <p>Hello</p>
+                |  <p>World!</p>
+                |</u>
+                |""".trimMargin(),
+                SpanStyle(),
+            ),
+        )
+    }
+
+    @Test
     fun `p tag doesn't start until first word is output`() {
         assertEquals(
             expected = buildAnnotatedString {
@@ -797,6 +870,8 @@ class RememberAnnotatedHtmlStringTest {
     fun `shuffling tags in paragraph`() {
         assertEquals(
             expected = buildAnnotatedString {
+                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                pop()
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 append("Hello")
