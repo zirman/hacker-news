@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.kotlinxSerialization)
     id("hackernews.detekt")
 }
 kotlin {
@@ -18,6 +19,7 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinxCoroutinesSwing)
             implementation(libs.ktorClientJava)
+            implementation(libs.ktorSerializationKotlinxJson)
         }
         commonMain.dependencies {
             implementation(compose.animation)
@@ -40,6 +42,9 @@ kotlin {
             implementation(libs.jetbrainsLifecycleRuntimeCompose)
             implementation(libs.bundles.datastore)
             implementation(libs.bundles.koin)
+            implementation(libs.bundles.kotlinx)
+            implementation(libs.bundles.ktor)
+
             implementation(project.dependencies.platform(libs.koinBom))
             implementation(project.dependencies.platform(libs.kotlinWrappersBom))
             implementation(project.dependencies.platform(libs.kotilnxCoroutinesBom))
@@ -55,6 +60,12 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "com.monoid.hackernews"
             packageVersion = "1.0.0"
+            buildTypes.release.proguard {
+                isEnabled = true
+                optimize = true
+                obfuscate = true
+                configurationFiles.from("rules.pro")
+            }
         }
     }
 }
