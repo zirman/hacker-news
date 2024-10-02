@@ -59,7 +59,13 @@ class HtmlParser(
             if (index >= tokens.size) break
             when (val token = tokens[index]) {
                 is HtmlToken.Tag -> {
-                    if (token.isBlock()) {
+                    if (token.isBreak()) {
+                        appendLine()
+                        index = 0
+                        hasAppendedWord = false
+                        tokens.removeFirst()
+                        continue
+                    } else if (token.isBlock()) {
                         if (token.isOpen()) {
                             // push span styles up to index
                             pushBlock(index)
@@ -369,7 +375,7 @@ fun annotateHtmlString(
 // If your url gets linked incorrectly, put it in <angle brackets> and it should work.
 
 private val whitespaceRegex = """\s+""".toRegex(RegexOption.IGNORE_CASE)
-private val tagStartRegex = """</?[^\s>]+""".toRegex(RegexOption.IGNORE_CASE)
+private val tagStartRegex = """</?[^\s/>]+""".toRegex(RegexOption.IGNORE_CASE)
 private val tagWordRegex = """[^="\s>]+""".toRegex(RegexOption.IGNORE_CASE)
 private val tagQuoteRegex = """"([^"]*)"""".toRegex(RegexOption.IGNORE_CASE)
 private val tagEqualRegex = """=""".toRegex(RegexOption.IGNORE_CASE)
@@ -482,6 +488,11 @@ private fun String.escapeCharacters(): String = buildString {
     if (i < this@escapeCharacters.length) {
         append(this@escapeCharacters.subSequence(i, this@escapeCharacters.length))
     }
+}
+
+private fun HtmlToken.Tag.isBreak(): Boolean = when (start) {
+    "<br", "</br" -> true
+    else -> false
 }
 
 private fun HtmlToken.Tag.isBlock(): Boolean = when (start) {
