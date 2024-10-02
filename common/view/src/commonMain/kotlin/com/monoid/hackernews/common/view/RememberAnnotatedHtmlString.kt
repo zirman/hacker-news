@@ -1,5 +1,7 @@
 package com.monoid.hackernews.common.view
 
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.text.AnnotatedString
@@ -20,23 +22,30 @@ import androidx.compose.ui.unit.em
 @Composable
 fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
     val linkStyle = LocalLinkStyle.current.style ?: SpanStyle()
-    return remember(htmlString, linkStyle) {
+    val typography = MaterialTheme.typography
+    return remember(htmlString, linkStyle, typography) {
         annotateHtmlString(
             htmlString = htmlString,
-            linkStyle = TextLinkStyles(
-                style = linkStyle,
-                focusedStyle = linkStyle,
-                hoveredStyle = linkStyle,
-                pressedStyle = linkStyle,
-            ),
+            typography = typography,
+            linkStyle = linkStyle,
         )
     }
 }
 
 class HtmlParser(
     htmlString: String,
-    private val textLinkStyles: TextLinkStyles,
+    typography: Typography,
+    linkStyle: SpanStyle,
 ) {
+    private val hStyle = listOf(
+        typography.headlineLarge.toSpanStyle(),
+        typography.headlineMedium.toSpanStyle(),
+        typography.headlineSmall.toSpanStyle(),
+        typography.titleLarge.toSpanStyle(),
+        typography.titleMedium.toSpanStyle(),
+        typography.titleSmall.toSpanStyle()
+    )
+    private val textLinkStyles: TextLinkStyles = linkStyle.toTextLinkStyles()
     private val tokens: ArrayDeque<HtmlToken> = tokenizeHtml(htmlString)
 
     // tracks depth of indentation
@@ -56,9 +65,13 @@ class HtmlParser(
                             pushBlock(index)
                             // pop all spans and block
                             repeat(stack.size) { pop() }
+                            val firstTag = stack.firstOrNull()
                             // drop block from stack
-                            if (stack.firstOrNull()?.isBlock() == true) {
+                            if (firstTag?.isBlock() == true) {
                                 stack.removeFirst()
+                                if (firstTag.isHeader()) {
+                                    pop()
+                                }
                             }
                             pushParagraphStyle(token)
                             // push spans
@@ -68,6 +81,9 @@ class HtmlParser(
                         } else if (stack.firstOrNull()?.isBlock() == true) {
                             // handle close tag
                             repeat(stack.size) { pop() }
+                            if (stack.first().isHeader()) {
+                                pop()
+                            }
                             if (token.start.substring(2) != stack.first().start.substring(1)) {
                                 // mismatched block
                                 pushParagraphStyle(token)
@@ -90,7 +106,7 @@ class HtmlParser(
                 }
 
                 is HtmlToken.Word -> {
-                    if (stack.firstOrNull()?.isPre() == true) {
+                    if (stack.firstOrNull()?.isPreformatted() == true) {
                         if (hasAppendedWord) {
                             appendWordPreformatted(index)
                         } else {
@@ -123,10 +139,15 @@ class HtmlParser(
                 lineBreak = when (tag.start) {
                     "<p", "</p" -> LineBreak.Paragraph // TODO: apply alignment from attributes
                     "<pre", "</pre" -> LineBreak.Unspecified // TODO: disable soft wrap when possible
+                    "<h1", "</h1", "<h2", "</h2", "<h3", "</h3", "<h4", "</h4", "<h5", "</h5",
+                    "<h6", "</h6" -> LineBreak.Heading // TODO: apply alignment from attributes
                     else -> throw IllegalStateException("Token doesn't have configured linebreak")
                 },
             ),
         )
+        if (tag.isHeader()) {
+            pushStyle(hStyle[tag.toNum()])
+        }
     }
 
     // TODO:
@@ -139,47 +160,49 @@ class HtmlParser(
     // <ol
     // <dl
     // <h1-6
+    // <span style=”color|background_color|text-decoration”>
+    // text-shadow: 1px 1px 2px black;
 
     private fun AnnotatedString.Builder.pushStyleForSpanTag(tag: HtmlToken.Tag) {
         when (tag.start) {
             "<b", "<strong" -> {
-                pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
+                pushStyle(boldStyle)
             }
 
             "<i", "<cite", "<dfn", "<em", "<address" -> {
-                pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
+                pushStyle(italicStyle)
             }
 
             "<big" -> {
-                pushStyle(SpanStyle(fontSize = 1.25f.em))
+                pushStyle(bigStyle)
             }
 
             "<small" -> {
-                pushStyle(SpanStyle(fontSize = .8f.em))
+                pushStyle(smallStyle)
             }
 
             "<tt", "<code" -> {
-                pushStyle(SpanStyle(fontFamily = FontFamily.Monospace))
+                pushStyle(monospaceStyle)
             }
 
             "<s", "<strike", "<del" -> {
-                pushStyle(SpanStyle(textDecoration = TextDecoration.LineThrough))
+                pushStyle(strikeStyle)
             }
 
             "<u" -> {
-                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                pushStyle(underlineStyle)
             }
 
             "<sup" -> {
-                pushStyle(SpanStyle(baselineShift = BaselineShift.Superscript))
+                pushStyle(superscriptStyle)
             }
 
             "<sub" -> {
-                pushStyle(SpanStyle(baselineShift = BaselineShift.Subscript))
+                pushStyle(subscriptStyle)
             }
 
             "<font" -> {
-                // todo: apply font
+                // TODO: apply font from attributes
                 // monospace, serif, and sans_serif
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
             }
@@ -191,6 +214,9 @@ class HtmlParser(
 
             "<a" -> {
                 // TODO: apply url from attributes
+//                tag.tokens
+//                while (true) {
+//                }
                 pushLink(
                     LinkAnnotation.Url(
                         url = "https://www.google.com/",
@@ -315,14 +341,25 @@ class HtmlParser(
             println("tag mismatch")
         }
     }
+
+    companion object {
+        private val boldStyle = SpanStyle(fontWeight = FontWeight.Bold)
+        private val italicStyle = SpanStyle(fontStyle = FontStyle.Italic)
+        private val bigStyle = SpanStyle(fontSize = 1.25f.em)
+        private val smallStyle = SpanStyle(fontSize = .8f.em)
+        private val monospaceStyle = SpanStyle(fontFamily = FontFamily.Monospace)
+        private val strikeStyle = SpanStyle(textDecoration = TextDecoration.LineThrough)
+        private val underlineStyle = SpanStyle(textDecoration = TextDecoration.Underline)
+        private val superscriptStyle = SpanStyle(baselineShift = BaselineShift.Superscript)
+        private val subscriptStyle = SpanStyle(baselineShift = BaselineShift.Subscript)
+    }
 }
 
-// TODO
-// CSS style: <span style=”color|background_color|text-decoration”>
 fun annotateHtmlString(
     htmlString: String,
-    linkStyle: TextLinkStyles,
-): AnnotatedString = HtmlParser(htmlString, linkStyle).parse()
+    typography: Typography,
+    linkStyle: SpanStyle,
+): AnnotatedString = HtmlParser(htmlString, typography, linkStyle).parse()
 
 // Hacker News Formatting
 // Blank lines separate paragraphs.
@@ -448,13 +485,21 @@ private fun String.escapeCharacters(): String = buildString {
 }
 
 private fun HtmlToken.Tag.isBlock(): Boolean = when (start) {
-    "<p", "</p", "<pre", "</pre" -> true
+    "<p", "</p", "<pre", "</pre", "<h1", "</h1", "<h2", "</h2", "<h3", "</h3", "<h4", "</h4", "<h5", "</h5",
+    "<h6", "</h6" -> true
+
     else -> false
 }
 
 private fun HtmlToken.Tag.isOpen(): Boolean = !start.startsWith("</")
 
-private fun HtmlToken.Tag.isPre(): Boolean = start == "<pre"
+private fun HtmlToken.Tag.isPreformatted(): Boolean = start == "<pre" || start == "/pre"
+private fun HtmlToken.Tag.isHeader(): Boolean = start.startsWith("<h") || start.startsWith("</h")
+private fun HtmlToken.Tag.toNum(): Int = if (start.startsWith("</")) {
+    start[3]
+} else {
+    start[2]
+} - '1'
 
 private val escapeMap = mapOf(
     "amp" to '&',
@@ -815,4 +860,19 @@ private val escapeMap = mapOf(
     "clubs" to '♣',
     "hearts" to '♥',
     "diams" to '♦',
+)
+
+fun SpanStyle.toTextLinkStyles(): TextLinkStyles = TextLinkStyles(
+    style = this,
+    focusedStyle = copy(
+        fontWeight = FontWeight.Bold,
+    ),
+    hoveredStyle = copy(
+        fontWeight = FontWeight.Bold,
+        textDecoration = TextDecoration.Underline,
+    ),
+    pressedStyle = copy(
+        fontWeight = FontWeight.ExtraBold,
+        textDecoration = TextDecoration.Underline,
+    ),
 )
