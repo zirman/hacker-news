@@ -170,6 +170,16 @@ class RememberAnnotatedHtmlStringTest {
     }
 
     @Test
+    fun `tokenize 12`() {
+        assertEquals(
+            expected = listOf(
+                HtmlToken.Tag("<br", emptyList(), "/>"),
+            ),
+            actual = tokenizeHtml("""<br/>""").toList(),
+        )
+    }
+
+    @Test
     fun `consolidate white space between words outside of tag`() {
         assertEquals(
             expected = buildAnnotatedString { append("Hello World!") },
@@ -489,6 +499,58 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
             },
             actual = annotateHtmlString("""<b>Hello World!</b>""", typography, linkStyle),
+        )
+    }
+
+    @Test
+    fun `br tag 1`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                appendLine()
+            },
+            actual = annotateHtmlString("""<br>""", typography, linkStyle),
+        )
+    }
+
+    @Test
+    fun `br tag 2`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                appendLine()
+            },
+            actual = annotateHtmlString("""<br/>""", typography, linkStyle),
+        )
+    }
+
+    @Test
+    fun `br tag 3`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                appendLine()
+            },
+            actual = annotateHtmlString("""</br>""", typography, linkStyle),
+        )
+    }
+
+    @Test
+    fun `br tag 4`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                appendLine()
+            },
+            actual = annotateHtmlString("""<br />""", typography, linkStyle),
+        )
+    }
+
+    @Test
+    fun `br tag 5`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                append("Hello")
+                appendLine()
+                append("World!")
+            },
+            actual = annotateHtmlString("""Hello<br>World!""", typography, linkStyle),
         )
     }
 
