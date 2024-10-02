@@ -569,6 +569,76 @@ class RememberAnnotatedHtmlStringTest {
     }
 
     @Test
+    fun `h2 tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Heading))
+                pushStyle(typography.headlineMedium.toSpanStyle())
+                append("Hello World!")
+                pop()
+                pop()
+            },
+            actual = annotateHtmlString("""<h2>Hello World!</h2>""", typography, linkStyle),
+        )
+    }
+
+    @Test
+    fun `h3 tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Heading))
+                pushStyle(typography.headlineSmall.toSpanStyle())
+                append("Hello World!")
+                pop()
+                pop()
+            },
+            actual = annotateHtmlString("""<h3>Hello World!</h3>""", typography, linkStyle),
+        )
+    }
+
+    @Test
+    fun `h4 tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Heading))
+                pushStyle(typography.titleLarge.toSpanStyle())
+                append("Hello World!")
+                pop()
+                pop()
+            },
+            actual = annotateHtmlString("""<h4>Hello World!</h4>""", typography, linkStyle),
+        )
+    }
+
+    @Test
+    fun `h5 tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Heading))
+                pushStyle(typography.titleMedium.toSpanStyle())
+                append("Hello World!")
+                pop()
+                pop()
+            },
+            actual = annotateHtmlString("""<h5>Hello World!</h5>""", typography, linkStyle),
+        )
+    }
+
+    @Test
+    fun `h6 tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(ParagraphStyle(lineBreak = LineBreak.Heading))
+                pushStyle(typography.titleSmall.toSpanStyle())
+                append("Hello World!")
+                pop()
+                pop()
+            },
+            actual = annotateHtmlString("""<h6>Hello World!</h6>""", typography, linkStyle),
+        )
+    }
+
+    @Test
     fun `header interleaving`() {
         assertEquals(
             expected = buildAnnotatedString {

@@ -165,7 +165,6 @@ class HtmlParser(
     // <ul
     // <ol
     // <dl
-    // <h1-6
     // <span style=”color|background_color|text-decoration”>
     // text-shadow: 1px 1px 2px black;
 
