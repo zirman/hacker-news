@@ -763,7 +763,7 @@ class RememberAnnotatedHtmlStringTest {
             expected = buildAnnotatedString {
                 pushLink(
                     LinkAnnotation.Url(
-                        url = "https://www.google.com/",
+                        url = "https://www.wikipedia.com/",
                         styles = linkStyle.toTextLinkStyles(),
                     ),
                 )
@@ -771,7 +771,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
             },
             actual = annotateHtmlString(
-                htmlString = """<a href="https://www.google.com/">Hello World!</a>""",
+                htmlString = """<a href=https://www.wikipedia.com/>Hello World!</a>""",
                 typography = typography,
                 linkStyle = linkStyle,
             ),

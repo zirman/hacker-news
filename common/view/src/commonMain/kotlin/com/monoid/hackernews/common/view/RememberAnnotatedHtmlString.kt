@@ -168,6 +168,7 @@ class HtmlParser(
     // <span style=”color|background_color|text-decoration”>
     // text-shadow: 1px 1px 2px black;
 
+    @Suppress("CyclomaticComplexMethod")
     private fun AnnotatedString.Builder.pushStyleForSpanTag(tag: HtmlToken.Tag) {
         when (tag.start) {
             "<b", "<strong" -> {
@@ -218,13 +219,9 @@ class HtmlParser(
             }
 
             "<a" -> {
-                // TODO: apply url from attributes
-//                tag.tokens
-//                while (true) {
-//                }
                 pushLink(
                     LinkAnnotation.Url(
-                        url = "https://www.google.com/",
+                        url = tag.tokens.toMap()["href"] ?: "",
                         styles = textLinkStyles,
                     ),
                 )
@@ -886,3 +883,40 @@ fun SpanStyle.toTextLinkStyles(): TextLinkStyles = TextLinkStyles(
         textDecoration = TextDecoration.Underline,
     ),
 )
+
+fun List<TagToken>.toMap(): Map<String, String> = buildMap {
+    var i = 0
+    @Suppress("LoopWithTooManyJumpStatements")
+    while (i < this@toMap.size - 2) {
+        if (this@toMap[i + 1] != TagToken.Equal) {
+            i++
+            continue
+        }
+        val key = when (val k = this@toMap[0]) {
+            TagToken.Equal -> {
+                i++
+                continue
+            }
+            is TagToken.Quote -> {
+                k.tag
+            }
+            is TagToken.Word -> {
+                k.word
+            }
+        }
+        val value = when (val k = this@toMap[2]) {
+            TagToken.Equal -> {
+                i++
+                continue
+            }
+            is TagToken.Quote -> {
+                k.tag
+            }
+            is TagToken.Word -> {
+                k.word
+            }
+        }
+        set(key, value)
+        i += 3
+    }
+}
