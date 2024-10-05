@@ -44,11 +44,13 @@
     <string name="cursive">Cursiva</string>
     <string name="about_us">Sobre Nosotras</string>
     <string name="about_us_detail_html"><![CDATA[
-    <p>Estimado lector:<br /><b>Hacker News</b> es Android&#8482; aplicación nativa que interactúa con el popular sitio web de noticias <a href="https://news.ycombinator.com">news.ycombinator.com</a>. El código fuente está disponible bajo la licencia Apache 2.0 <a href="https://github.com/zirman/hacker_news">aquí</a>.</p>
-    <p>Para obtener ayuda, puede ponerse en contacto conmigo aquí <a href="mailto:monoidscorp@gmail.com">monoidscorp@gmail.com</a>.</p>
-    <p>Espero que disfrute usando la aplicación tanto como yo escribiéndola.</p>
-    <p>Saludos cordiales,</p>
-    <p style="text-align:end"><cite>Robert Chrzanowski</cite></p>]]></string>
+Estimado lector:
+<p><b>Hacker News</b> es una aplicación multiplataforma de código abierto en Kotlin que interactúa con el sitio web de noticias <a href="https://news.ycombinator.com">news.ycombinator.com</a>. El código fuente está disponible bajo la licencia Apache 2.0 <a href="https://github.com/zirman/hacker_news">aquí</a>.</p>
+<p>Para obtener ayuda, puede ponerse en contacto conmigo aquí <a href="mailto:monoidscorp@gmail.com">monoidscorp@gmail.com</a>.</p>
+<p>Espero que disfrute usando la aplicación tanto como yo escribiéndola.</p>
+Saludos cordiales,
+<p style="text-align:end"><font face="cursive">Robert Chrzanowski</font></p>
+]]></string>
     <string name="top_stories_shortcut_long_label">Destacadas Cuentos</string>
     <string name="top_stories_shortcut_short_label">Destacadas HN</string>
     <string name="new_stories_shortcut_long_label">Nueva Cuentos</string>

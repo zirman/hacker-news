@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.LineBreak
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.em
 
@@ -148,11 +149,11 @@ class HtmlParser(
                     "<h1", "</h1", "<h2", "</h2", "<h3", "</h3", "<h4", "</h4", "<h5", "</h5",
                     "<h6", "</h6" -> LineBreak.Heading // TODO: apply alignment from attributes
                     else -> throw IllegalStateException("Token doesn't have configured linebreak")
-                },
-            ),
+                }
+            ).applyStyle(tag.tokens.toMap()?.get("style") ?: ""),
         )
         if (tag.isHeader()) {
-            pushStyle(hStyle[tag.toNum()])
+            pushStyle(hStyle[tag.toLevel()])
         }
     }
 
@@ -208,23 +209,26 @@ class HtmlParser(
             }
 
             "<font" -> {
-                val attributes = tag.tokens.toMap()
                 pushStyle(
-                    when (attributes["face"]) {
-                        "monospace" -> SpanStyle(fontFamily = FontFamily.Monospace)
-                        "serif" -> SpanStyle(fontFamily = FontFamily.Serif)
-                        "sans_serif" -> SpanStyle(fontFamily = FontFamily.SansSerif)
-                        "cursive" -> SpanStyle(fontFamily = FontFamily.Cursive)
-                        else -> SpanStyle()
-                    }.let { style ->
-                        val color = attributes["color"]
-                        if (color != null) {
-                            // TODO: parse color
-                            style
-                        } else {
-                            style
+                    tag.tokens.toMap()
+                        ?.let { attributes ->
+                            when (attributes["face"]) {
+                                "monospace" -> SpanStyle(fontFamily = FontFamily.Monospace)
+                                "serif" -> SpanStyle(fontFamily = FontFamily.Serif)
+                                "sans_serif" -> SpanStyle(fontFamily = FontFamily.SansSerif)
+                                "cursive" -> SpanStyle(fontFamily = FontFamily.Cursive)
+                                else -> SpanStyle()
+                            }.let { style ->
+                                val color = attributes["color"]
+                                if (color != null) {
+                                    // TODO: parse color
+                                    style
+                                } else {
+                                    style
+                                }
+                            }
                         }
-                    }
+                        ?: SpanStyle(),
                 )
             }
 
@@ -236,7 +240,7 @@ class HtmlParser(
             "<a" -> {
                 pushLink(
                     LinkAnnotation.Url(
-                        url = tag.tokens.toMap()["href"] ?: "",
+                        url = tag.tokens.toMap()?.get("href") ?: "",
                         styles = textLinkStyles,
                     ),
                 )
@@ -385,14 +389,6 @@ fun annotateHtmlString(
 // Urls become links, except in the text field of a submission.
 // If your url gets linked incorrectly, put it in <angle brackets> and it should work.
 
-private val whitespaceRegex = """\s+""".toRegex(RegexOption.IGNORE_CASE)
-private val tagStartRegex = """</?[^\s/>]+""".toRegex(RegexOption.IGNORE_CASE)
-private val tagWordRegex = """[^="\s>]+""".toRegex(RegexOption.IGNORE_CASE)
-private val tagQuoteRegex = """"([^"]*)"""".toRegex(RegexOption.IGNORE_CASE)
-private val tagEqualRegex = """=""".toRegex(RegexOption.IGNORE_CASE)
-private val tagEndRegex = """/?>""".toRegex(RegexOption.IGNORE_CASE)
-private val wordRegex = """[^<\s]+""".toRegex(RegexOption.IGNORE_CASE)
-
 sealed interface HtmlToken {
     data class Word(val word: String) : HtmlToken
     data class Whitespace(val whitespace: String) : HtmlToken
@@ -405,30 +401,38 @@ sealed interface TagToken {
     data class Quote(val tag: String) : TagToken
 }
 
+internal val WHITESPACE_REGEX = """\s+""".toRegex(RegexOption.IGNORE_CASE)
+internal val TAG_START_REGEX = """</?[^\s/>]+""".toRegex(RegexOption.IGNORE_CASE)
+internal val TAG_WORD_REGEX = """[^="\s>]+""".toRegex(RegexOption.IGNORE_CASE)
+internal val TAG_QUOTE_REGEX = """"([^"]*)"""".toRegex(RegexOption.IGNORE_CASE)
+internal val TAG_EQUAL_REGEX = """=""".toRegex(RegexOption.IGNORE_CASE)
+internal val TAG_END_REGEX = """/?>""".toRegex(RegexOption.IGNORE_CASE)
+internal val WORD_REGEX = """[^<\s]+""".toRegex(RegexOption.IGNORE_CASE)
+
 @Suppress("CyclomaticComplexMethod", "NestedBlockDepth")
 fun tokenizeHtml(htmlString: String): ArrayDeque<HtmlToken> {
     val tokens = ArrayDeque<HtmlToken>()
     var i = 0
     @Suppress("LoopWithTooManyJumpStatements")
     outer@ while (i < htmlString.length) {
-        var match = whitespaceRegex.matchAt(htmlString, i)
+        var match = WHITESPACE_REGEX.matchAt(htmlString, i)
         if (match != null) {
             i = match.range.last + 1
             tokens.add(HtmlToken.Whitespace(match.value))
             continue
         }
-        match = tagStartRegex.matchAt(htmlString, i)
+        match = TAG_START_REGEX.matchAt(htmlString, i)
         if (match != null) {
             var k = match.range.last + 1
             val start = match.value
             val tagTokens = mutableListOf<TagToken>()
             while (k < htmlString.length) {
-                var tagMatch = whitespaceRegex.matchAt(htmlString, k)
+                var tagMatch = WHITESPACE_REGEX.matchAt(htmlString, k)
                 if (tagMatch != null) {
                     k = tagMatch.range.last + 1
                     continue
                 }
-                tagMatch = tagEndRegex.matchAt(htmlString, k)
+                tagMatch = TAG_END_REGEX.matchAt(htmlString, k)
                 if (tagMatch != null) {
                     k = tagMatch.range.last + 1
                     tagMatch.value.replace("&amp;", "&")
@@ -442,19 +446,19 @@ fun tokenizeHtml(htmlString: String): ArrayDeque<HtmlToken> {
                     i = k
                     continue@outer
                 }
-                tagMatch = tagEqualRegex.matchAt(htmlString, k)
+                tagMatch = TAG_EQUAL_REGEX.matchAt(htmlString, k)
                 if (tagMatch != null) {
                     k = tagMatch.range.last + 1
                     tagTokens.add(TagToken.Equal)
                     continue
                 }
-                tagMatch = tagQuoteRegex.matchAt(htmlString, k)
+                tagMatch = TAG_QUOTE_REGEX.matchAt(htmlString, k)
                 if (tagMatch != null) {
                     k = tagMatch.range.last + 1
                     tagTokens.add(TagToken.Quote(tagMatch.groups[1]!!.value.escapeCharacters()))
                     continue
                 }
-                tagMatch = tagWordRegex.matchAt(htmlString, k)
+                tagMatch = TAG_WORD_REGEX.matchAt(htmlString, k)
                 if (tagMatch != null) {
                     k = tagMatch.range.last + 1
                     tagTokens.add(TagToken.Word(tagMatch.value))
@@ -463,7 +467,7 @@ fun tokenizeHtml(htmlString: String): ArrayDeque<HtmlToken> {
             }
             // end of input found before end of tag so fall through
         }
-        match = wordRegex.matchAt(htmlString, i)
+        match = WORD_REGEX.matchAt(htmlString, i)
         if (match != null) {
             i = match.range.last + 1
             tokens.add(HtmlToken.Word(match.value.escapeCharacters()))
@@ -517,372 +521,11 @@ private fun HtmlToken.Tag.isOpen(): Boolean = !start.startsWith("</")
 
 private fun HtmlToken.Tag.isPreformatted(): Boolean = start == "<pre" || start == "/pre"
 private fun HtmlToken.Tag.isHeader(): Boolean = start.startsWith("<h") || start.startsWith("</h")
-private fun HtmlToken.Tag.toNum(): Int = if (start.startsWith("</")) {
+private fun HtmlToken.Tag.toLevel(): Int = if (start.startsWith("</")) {
     start[3]
 } else {
     start[2]
 } - '1'
-
-private val ESCAPE_MAP = mapOf(
-    "amp" to '&',
-    "lt" to '<',
-    "gt" to '>',
-    "quot" to '"',
-    "nbsp" to '\u00a0', // Non-breaking space
-    "Tab" to '\t',
-    "NewLine" to '\n',
-    "iexcl" to '¡',
-    "cent" to '¢',
-    "pound" to '£',
-    "curren" to '¤',
-    "yen" to '¥',
-    "brvbar" to '¦',
-    "sect" to '§',
-    "uml" to '¨',
-    "copy" to '©',
-    "ordf" to 'ª',
-    "laquo" to '«',
-    "not" to '¬',
-    "shy" to '\u00ad', // Soft hyphen
-    "reg" to '®',
-    "macr" to '¯',
-    "deg" to '°',
-    "plusmn" to '±',
-    "sup2" to '²',
-    "sup3" to '³',
-    "acute" to '´',
-    "micro" to 'µ',
-    "para" to '¶',
-    "dot" to '·',
-    "cedil" to '¸',
-    "sup1" to '¹',
-    "ordm" to 'º',
-    "raquo" to '»',
-    "frac14" to '¼',
-    "frac12" to '½',
-    "frac34" to '¾',
-    "iquest" to '¿',
-    "Agrave" to 'À',
-    "Aacute" to 'Á',
-    "Acirc" to 'Â',
-    "Atilde" to 'Ã',
-    "Auml" to 'Ä',
-    "Aring" to 'Å',
-    "AElig" to 'Æ',
-    "Ccedil" to 'Ç',
-    "Egrave" to 'È',
-    "Eacute" to 'É',
-    "Ecirc" to 'Ê',
-    "Euml" to 'Ë',
-    "Igrave" to 'Ì',
-    "Iacute" to 'Í',
-    "Icirc" to 'Î',
-    "Iuml" to 'Ï',
-    "ETH" to 'Ð',
-    "Ntilde" to 'Ñ',
-    "Ograve" to 'Ò',
-    "Oacute" to 'Ó',
-    "Ocirc" to 'Ô',
-    "Otilde" to 'Õ',
-    "Ouml" to 'Ö',
-    "times" to '×',
-    "Oslash" to 'Ø',
-    "Ugrave" to 'Ù',
-    "Uacute" to 'Ú',
-    "Ucirc" to 'Û',
-    "Uuml" to 'Ü',
-    "Yacute" to 'Ý',
-    "THORN" to 'Þ',
-    "szlig" to 'ß',
-    "agrave" to 'à',
-    "aacute" to 'á',
-    "acirc" to 'â',
-    "atilde" to 'ã',
-    "auml" to 'ä',
-    "aring" to 'å',
-    "aelig" to 'æ',
-    "ccedil" to 'ç',
-    "egrave" to 'è',
-    "eacute" to 'é',
-    "ecirc" to 'ê',
-    "euml" to 'ë',
-    "igrave" to 'ì',
-    "iacute" to 'í',
-    "icirc" to 'î',
-    "iuml" to 'ï',
-    "eth" to 'ð',
-    "ntilde" to 'ñ',
-    "ograve" to 'ò',
-    "oacute" to 'ó',
-    "ocirc" to 'ô',
-    "otilde" to 'õ',
-    "ouml" to 'ö',
-    "divide" to '÷',
-    "oslash" to 'ø',
-    "ugrave" to 'ù',
-    "uacute" to 'ú',
-    "ucirc" to 'û',
-    "uuml" to 'ü',
-    "yacute" to 'ý',
-    "thorn" to 'þ',
-    "yuml" to 'ÿ',
-    "Amacr" to 'Ā',
-    "amacr" to 'ā',
-    "Abreve" to 'Ă',
-    "abreve" to 'ă',
-    "Aogon" to 'Ą',
-    "aogon" to 'ą',
-    "Cacute" to 'Ć',
-    "cacute" to 'ć',
-    "Ccirc" to 'Ĉ',
-    "ccirc" to 'ĉ',
-    "Cdot" to 'Ċ',
-    "cdot" to 'ċ',
-    "Ccaron" to 'Č',
-    "ccaron" to 'č',
-    "Dcaron" to 'Ď',
-    "dcaron" to 'ď',
-    "Dstrok" to 'Đ',
-    "dstrok" to 'đ',
-    "Emacr" to 'Ē',
-    "emacr" to 'ē',
-    "Ebreve" to 'Ĕ',
-    "ebreve" to 'ĕ',
-    "Edot" to 'Ė',
-    "edot" to 'ė',
-    "Eogon" to 'Ę',
-    "eogon" to 'ę',
-    "Ecaron" to 'Ě',
-    "ecaron" to 'ě',
-    "Gcirc" to 'Ĝ',
-    "gcirc" to 'ĝ',
-    "Gbreve" to 'Ğ',
-    "gbreve" to 'ğ',
-    "Gdot" to 'Ġ',
-    "gdot" to 'ġ',
-    "Gcedil" to 'Ģ',
-    "gcedil" to 'ģ',
-    "Hcirc" to 'Ĥ',
-    "hcirc" to 'ĥ',
-    "Hstrok" to 'Ħ',
-    "hstrok" to 'ħ',
-    "Itilde" to 'Ĩ',
-    "itilde" to 'ĩ',
-    "Imacr" to 'Ī',
-    "imacr" to 'ī',
-    "Ibreve" to 'Ĭ',
-    "ibreve" to 'ĭ',
-    "Iogon" to 'Į',
-    "iogon" to 'į',
-    "Idot" to 'İ',
-    "imath" to 'ı',
-    "IJlig" to 'Ĳ',
-    "ijlig" to 'ĳ',
-    "Jcirc" to 'Ĵ',
-    "jcirc" to 'ĵ',
-    "Kcedil" to 'Ķ',
-    "kcedil" to 'ķ',
-    "kgreen" to 'ĸ',
-    "Lacute" to 'Ĺ',
-    "lacute" to 'ĺ',
-    "Lcedil" to 'Ļ',
-    "lcedil" to 'ļ',
-    "Lcaron" to 'Ľ',
-    "lcaron" to 'ľ',
-    "Lmidot" to 'Ŀ',
-    "lmidot" to 'ŀ',
-    "Lstrok" to 'Ł',
-    "lstrok" to 'ł',
-    "Nacute" to 'Ń',
-    "nacute" to 'ń',
-    "Ncedil" to 'Ņ',
-    "ncedil" to 'ņ',
-    "Ncaron" to 'Ň',
-    "ncaron" to 'ň',
-    "napos" to 'ŉ',
-    "ENG" to 'Ŋ',
-    "eng" to 'ŋ',
-    "Omacr" to 'Ō',
-    "omacr" to 'ō',
-    "Obreve" to 'Ŏ',
-    "obreve" to 'ŏ',
-    "Odblac" to 'Ő',
-    "odblac" to 'ő',
-    "OElig" to 'Œ',
-    "oelig" to 'œ',
-    "Racute" to 'Ŕ',
-    "racute" to 'ŕ',
-    "Rcedil" to 'Ŗ',
-    "rcedil" to 'ŗ',
-    "Rcaron" to 'Ř',
-    "rcaron" to 'ř',
-    "Sacute" to 'Ś',
-    "sacute" to 'ś',
-    "Scirc" to 'Ŝ',
-    "scirc" to 'ŝ',
-    "Scedil" to 'Ş',
-    "scedil" to 'ş',
-    "Scaron" to 'Š',
-    "scaron" to 'š',
-    "Tcedil" to 'Ţ',
-    "tcedil" to 'ţ',
-    "Tcaron" to 'Ť',
-    "tcaron" to 'ť',
-    "Tstrok" to 'Ŧ',
-    "tstrok" to 'ŧ',
-    "Utilde" to 'Ũ',
-    "utilde" to 'ũ',
-    "Umacr" to 'Ū',
-    "umacr" to 'ū',
-    "Ubreve" to 'Ŭ',
-    "ubreve" to 'ŭ',
-    "Uring" to 'Ů',
-    "uring" to 'ů',
-    "Udblac" to 'Ű',
-    "udblac" to 'ű',
-    "Uogon" to 'Ų',
-    "uogon" to 'ų',
-    "Wcirc" to 'Ŵ',
-    "wcirc" to 'ŵ',
-    "Ycirc" to 'Ŷ',
-    "ycirc" to 'ŷ',
-    "Yuml" to 'Ÿ',
-    "fnof" to 'ƒ',
-    "circ" to 'ˆ',
-    "tilde" to '˜',
-    "Alpha" to 'Α',
-    "Beta" to 'Β',
-    "Gamma" to 'Γ',
-    "Delta" to 'Δ',
-    "Epsilon" to 'Ε',
-    "Zeta" to 'Ζ',
-    "Eta" to 'Η',
-    "Theta" to 'Θ',
-    "Iota" to 'Ι',
-    "Kappa" to 'Κ',
-    "Lambda" to 'Λ',
-    "Mu" to 'Μ',
-    "Nu" to 'Ν',
-    "Xi" to 'Ξ',
-    "Omicron" to 'Ο',
-    "Pi" to 'Π',
-    "Rho" to 'Ρ',
-    "Sigma" to 'Σ',
-    "Tau" to 'Τ',
-    "Upsilon" to 'Υ',
-    "Phi" to 'Φ',
-    "Chi" to 'Χ',
-    "Psi" to 'Ψ',
-    "Omega" to 'Ω',
-    "alpha" to 'α',
-    "beta" to 'β',
-    "gamma" to 'γ',
-    "delta" to 'δ',
-    "epsilon" to 'ε',
-    "zeta" to 'ζ',
-    "eta" to 'η',
-    "theta" to 'θ',
-    "iota" to 'ι',
-    "kappa" to 'κ',
-    "lambda" to 'λ',
-    "mu" to 'μ',
-    "nu" to 'ν',
-    "xi" to 'ξ',
-    "omicron" to 'ο',
-    "pi" to 'π',
-    "rho" to 'ρ',
-    "sigmaf" to 'ς',
-    "sigma" to 'σ',
-    "tau" to 'τ',
-    "upsilon" to 'υ',
-    "phi" to 'φ',
-    "chi" to 'χ',
-    "psi" to 'ψ',
-    "omega" to 'ω',
-    "thetasym" to 'ϑ',
-    "upsih" to 'ϒ',
-    "piv" to 'ϖ',
-    "ensp" to '\u2002', // En space
-    "emsp" to '\u2003', // Em space
-    "thinsp" to '\u2009', // Thin space
-    "zwnj" to '\u200c', // Zero width non-joiner
-    "zwj" to '\u200d', // Zero width joiner
-    "lrm" to '\u200e', // Left-to-right mark
-    "rlm" to '\u200f', // Right-to-left mark
-    "ndash" to '–',
-    "mdash" to '—',
-    "lsquo" to '‘',
-    "rsquo" to '’',
-    "sbquo" to '‚',
-    "ldquo" to '“',
-    "rdquo" to '”',
-    "bdquo" to '„',
-    "dagger" to '†',
-    "Dagger" to '‡',
-    "bull" to '•',
-    "hellip" to '…',
-    "permil" to '‰',
-    "prime" to '′',
-    "Prime" to '″',
-    "lsaquo" to '‹',
-    "rsaquo" to '›',
-    "oline" to '‾',
-    "euro" to '€',
-    "trade" to '™',
-    "larr" to '←',
-    "uarr" to '↑',
-    "rarr" to '→',
-    "darr" to '↓',
-    "harr" to '↔',
-    "crarr" to '↵',
-    "forall" to '∀',
-    "part" to '∂',
-    "exist" to '∃',
-    "empty" to '∅',
-    "nabla" to '∇',
-    "isin" to '∈',
-    "notin" to '∉',
-    "ni" to '∋',
-    "prod" to '∏',
-    "sum" to '∑',
-    "minus" to '−',
-    "lowast" to '∗',
-    "radic" to '√',
-    "prop" to '∝',
-    "infin" to '∞',
-    "ang" to '∠',
-    "and" to '∧',
-    "or" to '∨',
-    "cap" to '∩',
-    "cup" to '∪',
-    "int" to '∫',
-    "there4" to '∴',
-    "sim" to '∼',
-    "cong" to '≅',
-    "asymp" to '≈',
-    "ne" to '≠',
-    "equiv" to '≡',
-    "le" to '≤',
-    "ge" to '≥',
-    "sub" to '⊂',
-    "sup" to '⊃',
-    "nsub" to '⊄',
-    "sube" to '⊆',
-    "supe" to '⊇',
-    "oplus" to '⊕',
-    "otimes" to '⊗',
-    "perp" to '⊥',
-    "sdot" to '⋅',
-    "lceil" to '⌈',
-    "rceil" to '⌉',
-    "lfloor" to '⌊',
-    "rfloor" to '⌋',
-    "loz" to '◊',
-    "spades" to '♠',
-    "clubs" to '♣',
-    "hearts" to '♥',
-    "diams" to '♦',
-)
 
 fun SpanStyle.toTextLinkStyles(): TextLinkStyles = TextLinkStyles(
     style = this,
@@ -899,7 +542,8 @@ fun SpanStyle.toTextLinkStyles(): TextLinkStyles = TextLinkStyles(
     ),
 )
 
-fun List<TagToken>.toMap(): Map<String, String> = buildMap {
+fun List<TagToken>.toMap(): Map<String, String>? {
+    var map: MutableMap<String, String>? = null
     var i = 0
     @Suppress("LoopWithTooManyJumpStatements")
     while (i < this@toMap.size - 2) {
@@ -935,22 +579,35 @@ fun List<TagToken>.toMap(): Map<String, String> = buildMap {
                 k.word
             }
         }
-        set(key, value)
+        if (map == null) {
+            map = mutableMapOf()
+        }
+        map[key] = value
         i += 3
     }
+    return map
 }
 
-private val KEYWORD_COLOR_REGEX = """^[a-z]*\$""".toRegex()
-private val HEX_COLOR_REGEX = """^#[0-9a-f]{3}([0-9a-f]{3})?\$""".toRegex()
-
-@Suppress("MaxLineLength")
-private val RGB_COLOR_REGEX =
-    """^rgb(\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*)\$""".toRegex()
-
-@Suppress("MaxLineLength")
-private val RGBA_COLOR_REGEX =
-    """^rgba\(\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*,\s*((0.[1-9])|[01])\s*\)\$""".toRegex()
-
-@Suppress("MaxLineLength")
-private val HSL_COLOR_REGEX =
-    """^hsl\(\s*(0|[1-9]\d?|[12]\d\d|3[0-5]\d)\s*,\s*((0|[1-9]\d?|100)%)\s*,\s*((0|[1-9]\d?|100)%)\s*\)\$}""".toRegex()
+private fun ParagraphStyle.applyStyle(style: String): ParagraphStyle {
+    var s = this
+    for (i in style.split(';')) {
+        val keyValue = i.split(':')
+        if (keyValue.size != 2) {
+            continue
+        }
+        when (keyValue[0].trim()) {
+            "text-align" -> {
+                s = when (keyValue[1].trim()) {
+                    "end" -> s.copy(textAlign = TextAlign.End)
+                    "left" -> s.copy(textAlign = TextAlign.Left)
+                    "right" -> s.copy(textAlign = TextAlign.Right)
+                    "start" -> s.copy(textAlign = TextAlign.Start)
+                    "center" -> s.copy(textAlign = TextAlign.Center)
+                    "justify" -> s.copy(textAlign = TextAlign.Justify)
+                    else -> s.copy(textAlign = TextAlign.Unspecified)
+                }
+            }
+        }
+    }
+    return s
+}

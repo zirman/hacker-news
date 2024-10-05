@@ -1256,6 +1256,111 @@ class RememberAnnotatedHtmlStringTest {
     }
 
     @Test
+    fun `p with start alignment`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(
+                    ParagraphStyle(
+                        lineBreak = LineBreak.Paragraph,
+                        textAlign = TextAlign.Start,
+                    ),
+                )
+                append("Hello World!")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<p style="text-align: start;">Hello World!</p>""",
+                typography,
+                linkStyle
+            ),
+        )
+    }
+
+    @Test
+    fun `p with center alignment`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(
+                    ParagraphStyle(
+                        lineBreak = LineBreak.Paragraph,
+                        textAlign = TextAlign.Center,
+                    ),
+                )
+                append("Hello World!")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<p style="text-align: center;">Hello World!</p>""",
+                typography,
+                linkStyle
+            ),
+        )
+    }
+
+    @Test
+    fun `p with justify alignment`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(
+                    ParagraphStyle(
+                        lineBreak = LineBreak.Paragraph,
+                        textAlign = TextAlign.Justify,
+                    ),
+                )
+                append("Hello World!")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<p style="text-align: justify;">Hello World!</p>""",
+                typography,
+                linkStyle
+            ),
+        )
+    }
+
+    @Test
+    fun `p with left alignment`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(
+                    ParagraphStyle(
+                        lineBreak = LineBreak.Paragraph,
+                        textAlign = TextAlign.Left,
+                    ),
+                )
+                append("Hello World!")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<p style="text-align: left;">Hello World!</p>""",
+                typography,
+                linkStyle
+            ),
+        )
+    }
+
+    @Test
+    fun `p with right alignment`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(
+                    ParagraphStyle(
+                        lineBreak = LineBreak.Paragraph,
+                        textAlign = TextAlign.Right,
+                    ),
+                )
+                append("Hello World!")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<p style="text-align: right;">Hello World!</p>""",
+                typography,
+                linkStyle
+            ),
+        )
+    }
+
+    @Test
     fun `escape tab`() {
         assertEquals(
             expected = buildAnnotatedString { append("\t") },

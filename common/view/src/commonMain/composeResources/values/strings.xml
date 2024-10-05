@@ -52,11 +52,13 @@
     <string name="cursive">Cursive</string>
     <string name="about_us">About Us</string>
     <string name="about_us_detail_html"><![CDATA[
-    <p>Dear Reader,<br><b>Hacker News</b> is and open source Android native application that interfaces with the popular news website <a href="https://news.ycombinator.com">news.ycombinator.com</a>. The source code is available under the Apache 2.0 license <a href="https://github.com/zirman/hacker_news">here</a>.</p>
-    <p>For support you may contact me here <a href="mailto:monoidscorp@gmail.com">monoidscorp@gmail.com</a>.</p>
-    <p>I hope you enjoy using the application as much as I did writing it.</p>
-    <p>Best regards,</p>
-    <p style="text-align:end"><cite>Robert Chrzanowski</cite></p>]]></string>
+Dear Reader,
+<p><b>Hacker News</b> is an open source Kotlin Multiplatform application that interacts with the news website <a href="https://news.ycombinator.com">news.ycombinator.com</a>. The source code is available under the Apache 2.0 license <a href="https://github.com/zirman/hacker_news">here</a>.</p>
+<p>For support you may contact me here <a href="mailto:monoidscorp@gmail.com">monoidscorp@gmail.com</a>.</p>
+<p>I hope you enjoy using the application as much as I do writing it.</p>
+Best regards,
+<p style="text-align:end"><font face="cursive">Robert Chrzanowski</font></p>
+]]></string>
     <string name="top_stories_shortcut_long_label">Top Stories</string>
     <string name="top_stories_shortcut_short_label">Top HN</string>
     <string name="new_stories_shortcut_long_label">New Stories</string>
@@ -75,8 +77,9 @@
     <string name="profile_shortcut_long_label">Profile</string>
     <string name="open_in_browser">Open in Browser</string>
     <string name="i_agree_html"><![CDATA[
-    I agree to the <i>Hacker News</i> <a href="https://www.ycombinator.com/legal/">terms of service</a> and
-    agree to follow the <a href="https://news.ycombinator.com/newsguidelines.html">user guidelines</a>]]></string>
+I agree to the <i>Hacker News</i> <a href="https://www.ycombinator.com/legal/">terms of service</a> and
+agree to follow the <a href="https://news.ycombinator.com/newsguidelines.html">user guidelines</a>
+]]></string>
     <string name="comment">Comment</string>
     <string name="login_description">Login with your HN account.</string>
     <string name="top_stories_description">Most popular stories currently.</string>
