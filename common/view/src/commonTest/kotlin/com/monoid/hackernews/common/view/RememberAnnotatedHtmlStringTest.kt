@@ -11,6 +11,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.LineBreak
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.em
 import kotlin.test.Test
@@ -787,12 +788,12 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
             },
             actual = annotateHtmlString(
-                """
-                |<pre>
-                |  Hello
-                |  World!  
-                |</pre>
-                |""".trimMargin(),
+                htmlString = """
+                    |<pre>
+                    |  Hello
+                    |  World!  
+                    |</pre>
+                    |""".trimMargin(),
                 typography = typography,
                 linkStyle = linkStyle,
             ),
@@ -815,11 +816,11 @@ class RememberAnnotatedHtmlStringTest {
             },
             actual = annotateHtmlString(
                 htmlString = """
-                |<u> <pre>
-                |  Hello
-                |  World!
-                |</pre> </u>
-                |""".trimMargin(),
+                    |<u> <pre>
+                    |  Hello
+                    |  World!
+                    |</pre> </u>
+                    |""".trimMargin(),
                 typography = typography,
                 linkStyle = linkStyle,
             ),
@@ -842,12 +843,12 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
             },
             actual = annotateHtmlString(
-                """
-                |a <u> <pre>
-                |  Hello
-                |  World!
-                |</pre> </u>
-                |""".trimMargin(),
+                htmlString = """
+                    |a <u> <pre>
+                    |  Hello
+                    |  World!
+                    |</pre> </u>
+                    |""".trimMargin(),
                 typography = typography,
                 linkStyle = linkStyle,
             ),
@@ -863,11 +864,11 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
             },
             actual = annotateHtmlString(
-                """
-                |<pre>  Hello
-                |  World!
-                |</pre>
-                |""".trimMargin(),
+                htmlString = """
+                    |<pre>  Hello
+                    |  World!
+                    |</pre>
+                    |""".trimMargin(),
                 typography = typography,
                 linkStyle = linkStyle,
             ),
@@ -887,11 +888,11 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
             },
             actual = annotateHtmlString(
-                """
-                |<pre>  <u>Hello
-                |  </u>World!
-                |</pre>
-                |""".trimMargin(),
+                htmlString = """
+                    |<pre>  <u>Hello
+                    |  </u>World!
+                    |</pre>
+                    |""".trimMargin(),
                 typography = typography,
                 linkStyle = linkStyle,
             ),
@@ -971,6 +972,86 @@ class RememberAnnotatedHtmlStringTest {
     }
 
     @Test
+    fun `font tag monospace`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(SpanStyle(fontFamily = FontFamily.Monospace))
+                append("Hello World!")
+                pop()
+            },
+            actual = annotateHtmlString(
+                htmlString = """<font face="monospace">Hello World!</font>""",
+                typography = typography,
+                linkStyle = linkStyle,
+            ),
+        )
+    }
+
+    @Test
+    fun `font tag serif`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(SpanStyle(fontFamily = FontFamily.Serif))
+                append("Hello World!")
+                pop()
+            },
+            actual = annotateHtmlString(
+                htmlString = """<font face="serif">Hello World!</font>""",
+                typography = typography,
+                linkStyle = linkStyle,
+            ),
+        )
+    }
+
+    @Test
+    fun `font tag sans_serif`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(SpanStyle(fontFamily = FontFamily.SansSerif))
+                append("Hello World!")
+                pop()
+            },
+            actual = annotateHtmlString(
+                htmlString = """<font face="sans_serif">Hello World!</font>""",
+                typography = typography,
+                linkStyle = linkStyle,
+            ),
+        )
+    }
+
+    @Test
+    fun `font tag cursive`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(SpanStyle(fontFamily = FontFamily.Cursive))
+                append("Hello World!")
+                pop()
+            },
+            actual = annotateHtmlString(
+                htmlString = """<font face="cursive">Hello World!</font>""",
+                typography = typography,
+                linkStyle = linkStyle,
+            ),
+        )
+    }
+
+    @Test
+    fun `font tag color`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(SpanStyle(color = Color(0xff0000)))
+                append("Hello World!")
+                pop()
+            },
+            actual = annotateHtmlString(
+                htmlString = """<font color="#ff0000">Hello World!</font>""",
+                typography = typography,
+                linkStyle = linkStyle,
+            ),
+        )
+    }
+
+    @Test
     fun `p tag`() {
         assertEquals(
             expected = buildAnnotatedString {
@@ -1035,11 +1116,11 @@ class RememberAnnotatedHtmlStringTest {
             },
             actual = annotateHtmlString(
                 """
-                |<u>
-                |  <p>Hello</p>
-                |  <p>World!</p>
-                |</u>
-                |""".trimMargin(),
+                    |<u>
+                    |  <p>Hello</p>
+                    |  <p>World!</p>
+                    |</u>
+                    |""".trimMargin(),
                 typography = typography,
                 linkStyle = linkStyle,
             ),
@@ -1150,6 +1231,27 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
             },
             actual = annotateHtmlString("""<u><p>Hello</u> World!</p>""", typography, linkStyle),
+        )
+    }
+
+    @Test
+    fun `p with end alignment`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(
+                    ParagraphStyle(
+                        lineBreak = LineBreak.Paragraph,
+                        textAlign = TextAlign.End,
+                    ),
+                )
+                append("Hello World!")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<p style="text-align: end;">Hello World!</p>""",
+                typography,
+                linkStyle
+            ),
         )
     }
 

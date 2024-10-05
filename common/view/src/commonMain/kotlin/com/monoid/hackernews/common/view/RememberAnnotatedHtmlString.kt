@@ -208,9 +208,24 @@ class HtmlParser(
             }
 
             "<font" -> {
-                // TODO: apply font from attributes
-                // monospace, serif, and sans_serif
-                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                val attributes = tag.tokens.toMap()
+                pushStyle(
+                    when (attributes["face"]) {
+                        "monospace" -> SpanStyle(fontFamily = FontFamily.Monospace)
+                        "serif" -> SpanStyle(fontFamily = FontFamily.Serif)
+                        "sans_serif" -> SpanStyle(fontFamily = FontFamily.SansSerif)
+                        "cursive" -> SpanStyle(fontFamily = FontFamily.Cursive)
+                        else -> SpanStyle()
+                    }.let { style ->
+                        val color = attributes["color"]
+                        if (color != null) {
+                            // TODO: parse color
+                            style
+                        } else {
+                            style
+                        }
+                    }
+                )
             }
 
             "<span" -> {
@@ -471,7 +486,7 @@ private fun String.escapeCharacters(): String = buildString {
         val c = if (m.startsWith("#")) {
             m.substring(1).toIntOrNull()?.toChar()
         } else {
-            escapeMap[m]
+            ESCAPE_MAP[m]
         }
         if (c != null) {
             append(c)
@@ -508,7 +523,7 @@ private fun HtmlToken.Tag.toNum(): Int = if (start.startsWith("</")) {
     start[2]
 } - '1'
 
-private val escapeMap = mapOf(
+private val ESCAPE_MAP = mapOf(
     "amp" to '&',
     "lt" to '<',
     "gt" to '>',
@@ -897,9 +912,11 @@ fun List<TagToken>.toMap(): Map<String, String> = buildMap {
                 i++
                 continue
             }
+
             is TagToken.Quote -> {
                 k.tag
             }
+
             is TagToken.Word -> {
                 k.word
             }
@@ -909,9 +926,11 @@ fun List<TagToken>.toMap(): Map<String, String> = buildMap {
                 i++
                 continue
             }
+
             is TagToken.Quote -> {
                 k.tag
             }
+
             is TagToken.Word -> {
                 k.word
             }
@@ -920,3 +939,18 @@ fun List<TagToken>.toMap(): Map<String, String> = buildMap {
         i += 3
     }
 }
+
+private val KEYWORD_COLOR_REGEX = """^[a-z]*\$""".toRegex()
+private val HEX_COLOR_REGEX = """^#[0-9a-f]{3}([0-9a-f]{3})?\$""".toRegex()
+
+@Suppress("MaxLineLength")
+private val RGB_COLOR_REGEX =
+    """^rgb(\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*)\$""".toRegex()
+
+@Suppress("MaxLineLength")
+private val RGBA_COLOR_REGEX =
+    """^rgba\(\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*,\s*((0.[1-9])|[01])\s*\)\$""".toRegex()
+
+@Suppress("MaxLineLength")
+private val HSL_COLOR_REGEX =
+    """^hsl\(\s*(0|[1-9]\d?|[12]\d\d|3[0-5]\d)\s*,\s*((0|[1-9]\d?|100)%)\s*,\s*((0|[1-9]\d?|100)%)\s*\)\$}""".toRegex()
