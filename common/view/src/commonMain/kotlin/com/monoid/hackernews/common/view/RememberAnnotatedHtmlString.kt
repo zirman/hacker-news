@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.em
 
 @Suppress("CyclomaticComplexMethod")
@@ -144,13 +145,14 @@ class HtmlParser(
         pushStyle(
             ParagraphStyle(
                 lineBreak = when (tag.start) {
-                    "<p", "</p" -> LineBreak.Paragraph // TODO: apply alignment from attributes
+                    "<p", "</p" -> LineBreak.Paragraph
                     "<pre", "</pre" -> LineBreak.Unspecified // TODO: disable soft wrap when possible
                     "<h1", "</h1", "<h2", "</h2", "<h3", "</h3", "<h4", "</h4", "<h5", "</h5",
-                    "<h6", "</h6" -> LineBreak.Heading // TODO: apply alignment from attributes
+                    "<h6", "</h6" -> LineBreak.Heading
+
                     else -> throw IllegalStateException("Token doesn't have configured linebreak")
                 }
-            ).applyStyle(tag.tokens.toMap()?.get("style") ?: ""),
+            ).applyStyle(tag.tokens.toMap()),
         )
         if (tag.isHeader()) {
             pushStyle(hStyle[tag.toLevel()])
@@ -588,7 +590,9 @@ fun List<TagToken>.toMap(): Map<String, String>? {
     return map
 }
 
-private fun ParagraphStyle.applyStyle(style: String): ParagraphStyle {
+@Suppress("CyclomaticComplexMethod")
+private fun ParagraphStyle.applyStyle(map: Map<String, String>?): ParagraphStyle {
+    val style = map?.get("style") ?: ""
     var s = this
     for (i in style.split(';')) {
         val keyValue = i.split(':')
@@ -607,6 +611,13 @@ private fun ParagraphStyle.applyStyle(style: String): ParagraphStyle {
                     else -> s.copy(textAlign = TextAlign.Unspecified)
                 }
             }
+        }
+    }
+    map?.get("dir")?.let {
+        s = when (it) {
+            "rtl" -> s.copy(textDirection = TextDirection.Rtl)
+            "ltr" -> s.copy(textDirection = TextDirection.Ltr)
+            else -> s
         }
     }
     return s

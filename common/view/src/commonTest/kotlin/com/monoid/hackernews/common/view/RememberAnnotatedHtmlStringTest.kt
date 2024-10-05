@@ -13,6 +13,7 @@ import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.em
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -1354,6 +1355,48 @@ class RememberAnnotatedHtmlStringTest {
             },
             actual = annotateHtmlString(
                 """<p style="text-align: right;">Hello World!</p>""",
+                typography,
+                linkStyle
+            ),
+        )
+    }
+
+    @Test
+    fun `p with rtl alignment`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(
+                    ParagraphStyle(
+                        lineBreak = LineBreak.Paragraph,
+                        textDirection = TextDirection.Rtl,
+                    ),
+                )
+                append("Hello World!")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<p dir=rtl>Hello World!</p>""",
+                typography,
+                linkStyle
+            ),
+        )
+    }
+
+    @Test
+    fun `p with ltr alignment`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(
+                    ParagraphStyle(
+                        lineBreak = LineBreak.Paragraph,
+                        textDirection = TextDirection.Ltr,
+                    ),
+                )
+                append("Hello World!")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<p dir=ltr>Hello World!</p>""",
                 typography,
                 linkStyle
             ),
