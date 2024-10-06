@@ -15,6 +15,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -1355,6 +1356,111 @@ class RememberAnnotatedHtmlStringTest {
             },
             actual = annotateHtmlString(
                 """<p style="text-align: right;">Hello World!</p>""",
+                typography,
+                linkStyle
+            ),
+        )
+    }
+
+    @Test
+    fun `p with line-height em`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(
+                    ParagraphStyle(
+                        lineBreak = LineBreak.Paragraph,
+                        lineHeight = 2.em,
+                    ),
+                )
+                append("Hello World!")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<p style="line-height: 2em;">Hello World!</p>""",
+                typography,
+                linkStyle
+            ),
+        )
+    }
+
+    @Test
+    fun `p with line-height em 2`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(
+                    ParagraphStyle(
+                        lineBreak = LineBreak.Paragraph,
+                        lineHeight = 2.5.em,
+                    ),
+                )
+                append("Hello World!")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<p style="line-height: 2.5em;">Hello World!</p>""",
+                typography,
+                linkStyle
+            ),
+        )
+    }
+
+    @Test
+    fun `p with line-height %`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(
+                    ParagraphStyle(
+                        lineBreak = LineBreak.Paragraph,
+                        lineHeight = 2.5.em,
+                    ),
+                )
+                append("Hello World!")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<p style="line-height: 2.5%;">Hello World!</p>""",
+                typography,
+                linkStyle
+            ),
+        )
+    }
+
+    @Test
+    fun `p with line-height`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(
+                    ParagraphStyle(
+                        lineBreak = LineBreak.Paragraph,
+                        lineHeight = 2.5.em,
+                    ),
+                )
+                append("Hello World!")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<p style="line-height: 2.5;">Hello World!</p>""",
+                typography,
+                linkStyle
+            ),
+        )
+    }
+
+    @Test
+    fun `p with line-height px`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(
+                    ParagraphStyle(
+                        lineBreak = LineBreak.Paragraph,
+                        lineHeight = 16.sp,
+                    ),
+                )
+                append("Hello World!")
+                pop()
+            },
+            actual = annotateHtmlString(
+                """<p style="line-height: 16px;">Hello World!</p>""",
                 typography,
                 linkStyle
             ),

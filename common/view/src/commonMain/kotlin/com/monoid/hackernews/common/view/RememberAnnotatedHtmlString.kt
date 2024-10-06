@@ -18,7 +18,9 @@ import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextDirection
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
 
 @Suppress("CyclomaticComplexMethod")
 @Composable
@@ -136,7 +138,7 @@ class HtmlParser(
                 }
             }
         }
-        // ignore spaces at the end
+        // ignore whitespace at the end
         repeat(stack.size) { pop() }
         stack.clear()
     }
@@ -152,7 +154,7 @@ class HtmlParser(
 
                     else -> throw IllegalStateException("Token doesn't have configured linebreak")
                 }
-            ).applyStyle(tag.tokens.toMap()),
+            ).applyAttributes(tag.tokens.toAttributes()),
         )
         if (tag.isHeader()) {
             pushStyle(hStyle[tag.toLevel()])
@@ -212,16 +214,16 @@ class HtmlParser(
 
             "<font" -> {
                 pushStyle(
-                    tag.tokens.toMap()
+                    tag.tokens.toAttributes()
                         ?.let { attributes ->
-                            when (attributes["face"]) {
+                            when (attributes.lookup("face")) {
                                 "monospace" -> SpanStyle(fontFamily = FontFamily.Monospace)
                                 "serif" -> SpanStyle(fontFamily = FontFamily.Serif)
                                 "sans_serif" -> SpanStyle(fontFamily = FontFamily.SansSerif)
                                 "cursive" -> SpanStyle(fontFamily = FontFamily.Cursive)
                                 else -> SpanStyle()
                             }.let { style ->
-                                val color = attributes["color"]
+                                val color = attributes.lookup("color")
                                 if (color != null) {
                                     // TODO: parse color
                                     style
@@ -242,7 +244,7 @@ class HtmlParser(
             "<a" -> {
                 pushLink(
                     LinkAnnotation.Url(
-                        url = tag.tokens.toMap()?.get("href") ?: "",
+                        url = tag.tokens.toAttributes()?.lookup("href") ?: "",
                         styles = textLinkStyles,
                     ),
                 )
@@ -544,16 +546,16 @@ fun SpanStyle.toTextLinkStyles(): TextLinkStyles = TextLinkStyles(
     ),
 )
 
-fun List<TagToken>.toMap(): Map<String, String>? {
-    var map: MutableMap<String, String>? = null
+fun List<TagToken>.toAttributes(): List<String>? {
+    var map: MutableList<String>? = null
     var i = 0
     @Suppress("LoopWithTooManyJumpStatements")
-    while (i < this@toMap.size - 2) {
-        if (this@toMap[i + 1] != TagToken.Equal) {
+    while (i < this@toAttributes.size - 2) {
+        if (this@toAttributes[i + 1] != TagToken.Equal) {
             i++
             continue
         }
-        val key = when (val k = this@toMap[0]) {
+        val key = when (val k = this@toAttributes[0]) {
             TagToken.Equal -> {
                 i++
                 continue
@@ -567,7 +569,7 @@ fun List<TagToken>.toMap(): Map<String, String>? {
                 k.word
             }
         }
-        val value = when (val k = this@toMap[2]) {
+        val value = when (val k = this@toAttributes[2]) {
             TagToken.Equal -> {
                 i++
                 continue
@@ -582,26 +584,54 @@ fun List<TagToken>.toMap(): Map<String, String>? {
             }
         }
         if (map == null) {
-            map = mutableMapOf()
+            map = mutableListOf()
         }
-        map[key] = value
+        map.add(key)
+        map.add(value)
         i += 3
     }
     return map
 }
 
 @Suppress("CyclomaticComplexMethod")
-private fun ParagraphStyle.applyStyle(map: Map<String, String>?): ParagraphStyle {
-    val style = map?.get("style") ?: ""
+private fun ParagraphStyle.applyAttributes(attributes: List<String>?): ParagraphStyle {
+    if (attributes == null) return this
+    return applyDir(attributes)
+        .applyStyle(attributes)
+}
+
+@Suppress("CyclomaticComplexMethod")
+private fun ParagraphStyle.applyDir(attributes: List<String>): ParagraphStyle {
+    val dir = attributes.lookup("dir") ?: return this
+    return when (dir.lowercase()) {
+        "rtl" -> copy(textDirection = TextDirection.Rtl)
+        "ltr" -> copy(textDirection = TextDirection.Ltr)
+        else -> copy(textDirection = TextDirection.Unspecified)
+    }
+}
+
+@Suppress("CyclomaticComplexMethod")
+private fun ParagraphStyle.applyStyle(map: List<String>): ParagraphStyle {
+    val style = map.lookup("style") ?: return this
     var s = this
     for (i in style.split(';')) {
         val keyValue = i.split(':')
         if (keyValue.size != 2) {
             continue
         }
-        when (keyValue[0].trim()) {
+        // font-size: 1.4rem;
+        // color: red;
+        // font-family: Helvetica, Arial, sans-serif;
+        // font-size: 3rem;
+        // text-transform: capitalize;
+        // text-shadow: -1px -1px 1px #aaa,
+        //              0px 2px 1px rgba(0,0,0,0.5),
+        //              2px 2px 2px rgba(0,0,0,0.7),
+        //              0px 0px 3px rgba(0,0,0,0.4);
+
+        when (keyValue[0].trim().lowercase()) {
             "text-align" -> {
-                s = when (keyValue[1].trim()) {
+                s = when (keyValue[1].trim().lowercase()) {
                     "end" -> s.copy(textAlign = TextAlign.End)
                     "left" -> s.copy(textAlign = TextAlign.Left)
                     "right" -> s.copy(textAlign = TextAlign.Right)
@@ -611,14 +641,42 @@ private fun ParagraphStyle.applyStyle(map: Map<String, String>?): ParagraphStyle
                     else -> s.copy(textAlign = TextAlign.Unspecified)
                 }
             }
-        }
-    }
-    map?.get("dir")?.let {
-        s = when (it) {
-            "rtl" -> s.copy(textDirection = TextDirection.Rtl)
-            "ltr" -> s.copy(textDirection = TextDirection.Ltr)
-            else -> s
+
+            "line-height" -> {
+                val match = SIZE_REGEX.matchEntire(keyValue[1])
+                s = if (match != null) {
+                    val (scalar, units) = match.destructured
+                    s.copy(
+                        lineHeight = if (
+                            units.equals("em", ignoreCase = true) ||
+                            units.equals("%", ignoreCase = true) ||
+                            units.equals("", ignoreCase = true)
+                        ) {
+                            scalar.toFloat().em
+                        } else if (units.equals("px", ignoreCase = true)) {
+                            scalar.toFloat().sp // or dp?
+                        } else {
+                            TextUnit.Unspecified
+                        },
+                    )
+                } else {
+                    s.copy(lineHeight = TextUnit.Unspecified)
+                }
+            }
         }
     }
     return s
+}
+
+val SIZE_REGEX = """^\s*(\d+(?:.\d+)?)([^\d\s]+)?\s*${'$'}""".toRegex(RegexOption.IGNORE_CASE)
+
+private fun List<String>.lookup(key: String): String? {
+    var i = 0
+    while (i < size) {
+        if (key.equals(this[i], ignoreCase = true)) {
+            return this[i + 1]
+        }
+        i += 2
+    }
+    return null
 }
