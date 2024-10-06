@@ -22,7 +22,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.about_us_detail_html
-import com.monoid.hackernews.common.view.rememberAnnotatedHtmlString
+import com.monoid.hackernews.common.view.html.rememberAnnotatedHtmlString
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
