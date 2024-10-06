@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view
+package com.monoid.hackernews.common.view.html
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.graphics.Color
@@ -1578,6 +1578,14 @@ class RememberAnnotatedHtmlStringTest {
         assertEquals(
             expected = buildAnnotatedString { append("'") },
             actual = annotateHtmlString("""&#39;""", typography, linkStyle),
+        )
+    }
+
+    @Test
+    fun `escape apostrophe in hex`() {
+        assertEquals(
+            expected = buildAnnotatedString { append("'") },
+            actual = annotateHtmlString("""&#x27;""", typography, linkStyle),
         )
     }
 
