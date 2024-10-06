@@ -26,8 +26,8 @@ import com.monoid.hackernews.common.data.model.Password
 import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.hacker_news_login
+import com.monoid.hackernews.common.view.html.rememberAnnotatedHtmlString
 import com.monoid.hackernews.common.view.i_agree_html
-import com.monoid.hackernews.common.view.rememberAnnotatedHtmlString
 import com.monoid.hackernews.common.view.submit
 import com.monoid.hackernews.common.view.text.PasswordTextField
 import com.monoid.hackernews.common.view.text.UsernameTextField

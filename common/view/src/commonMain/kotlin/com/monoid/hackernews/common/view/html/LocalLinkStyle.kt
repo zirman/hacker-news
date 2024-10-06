@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view
+package com.monoid.hackernews.common.view.html
 
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.structuralEqualityPolicy

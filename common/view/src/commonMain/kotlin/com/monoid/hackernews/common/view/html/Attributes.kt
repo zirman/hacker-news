@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view
+package com.monoid.hackernews.common.view.html
 
 fun List<TagToken>.toAttributes(): List<String>? {
     var map: MutableList<String>? = null

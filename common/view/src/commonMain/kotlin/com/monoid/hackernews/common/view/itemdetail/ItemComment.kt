@@ -55,8 +55,8 @@ import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.deleted
 import com.monoid.hackernews.common.view.flag
 import com.monoid.hackernews.common.view.follow
+import com.monoid.hackernews.common.view.html.rememberAnnotatedHtmlString
 import com.monoid.hackernews.common.view.more_options
-import com.monoid.hackernews.common.view.rememberAnnotatedHtmlString
 import com.monoid.hackernews.common.view.reply
 import com.monoid.hackernews.common.view.text.ClickableTextBlock
 import com.monoid.hackernews.common.view.theme.LocalCommentIndentation

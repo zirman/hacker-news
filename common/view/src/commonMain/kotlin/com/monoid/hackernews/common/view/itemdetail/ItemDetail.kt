@@ -55,12 +55,12 @@ import com.monoid.hackernews.common.view.comment
 import com.monoid.hackernews.common.view.favorite
 import com.monoid.hackernews.common.view.flag
 import com.monoid.hackernews.common.view.follow
+import com.monoid.hackernews.common.view.html.rememberAnnotatedHtmlString
 import com.monoid.hackernews.common.view.more_options
 import com.monoid.hackernews.common.view.open_in_browser
 import com.monoid.hackernews.common.view.placeholder.PlaceholderHighlight
 import com.monoid.hackernews.common.view.placeholder.placeholder
 import com.monoid.hackernews.common.view.placeholder.shimmer
-import com.monoid.hackernews.common.view.rememberAnnotatedHtmlString
 import com.monoid.hackernews.common.view.un_favorite
 import com.monoid.hackernews.common.view.un_flag
 import com.monoid.hackernews.common.view.un_vote

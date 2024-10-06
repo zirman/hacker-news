@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view
+package com.monoid.hackernews.common.view.html
 
 internal val KEYWORD_COLOR_REGEX = """^[a-z]*\$""".toRegex(RegexOption.IGNORE_CASE)
 internal val HEX_COLOR_REGEX = """^#[0-9a-f]{3}([0-9a-f]{3})?\$""".toRegex(RegexOption.IGNORE_CASE)

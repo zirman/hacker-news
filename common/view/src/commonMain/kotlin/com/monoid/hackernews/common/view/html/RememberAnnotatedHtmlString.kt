@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view
+package com.monoid.hackernews.common.view.html
 
 import androidx.compose.material3.Typography
 import androidx.compose.material3.MaterialTheme
