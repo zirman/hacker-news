@@ -1193,9 +1193,9 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
             },
             actual = annotateHtmlString(
-                """<p><pre>Hello World!</pre></p>""",
+                htmlString = """<p><pre>Hello World!</pre></p>""",
                 typography = typography,
-                linkStyle = linkStyle
+                linkStyle = linkStyle,
             ),
         )
     }
@@ -1250,9 +1250,9 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
             },
             actual = annotateHtmlString(
-                """<p style="text-align: end;">Hello World!</p>""",
-                typography,
-                linkStyle
+                htmlString = """<p style="text-align: end;">Hello World!</p>""",
+                typography = typography,
+                linkStyle = linkStyle,
             ),
         )
     }
@@ -1271,9 +1271,9 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
             },
             actual = annotateHtmlString(
-                """<p style="text-align: start;">Hello World!</p>""",
-                typography,
-                linkStyle
+                htmlString = """<p style="text-align: start;">Hello World!</p>""",
+                typography = typography,
+                linkStyle = linkStyle,
             ),
         )
     }
@@ -1292,9 +1292,9 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
             },
             actual = annotateHtmlString(
-                """<p style="text-align: center;">Hello World!</p>""",
-                typography,
-                linkStyle
+                htmlString = """<p style="text-align: center;">Hello World!</p>""",
+                typography = typography,
+                linkStyle = linkStyle,
             ),
         )
     }
@@ -1313,9 +1313,9 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
             },
             actual = annotateHtmlString(
-                """<p style="text-align: justify;">Hello World!</p>""",
-                typography,
-                linkStyle
+                htmlString = """<p style="text-align: justify;">Hello World!</p>""",
+                typography = typography,
+                linkStyle = linkStyle,
             ),
         )
     }
@@ -1334,9 +1334,9 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
             },
             actual = annotateHtmlString(
-                """<p style="text-align: left;">Hello World!</p>""",
-                typography,
-                linkStyle
+                htmlString = """<p style="text-align: left;">Hello World!</p>""",
+                typography = typography,
+                linkStyle = linkStyle,
             ),
         )
     }
@@ -1355,9 +1355,9 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
             },
             actual = annotateHtmlString(
-                """<p style="text-align: right;">Hello World!</p>""",
-                typography,
-                linkStyle
+                htmlString = """<p style="text-align: right;">Hello World!</p>""",
+                typography = typography,
+                linkStyle = linkStyle,
             ),
         )
     }
@@ -1376,9 +1376,9 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
             },
             actual = annotateHtmlString(
-                """<p style="line-height: 2em;">Hello World!</p>""",
-                typography,
-                linkStyle
+                htmlString = """<p style="line-height: 2em;">Hello World!</p>""",
+                typography = typography,
+                linkStyle = linkStyle,
             ),
         )
     }
@@ -1397,15 +1397,15 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
             },
             actual = annotateHtmlString(
-                """<p style="line-height: 2.5em;">Hello World!</p>""",
-                typography,
-                linkStyle
+                htmlString = """<p style="line-height: 2.5em;">Hello World!</p>""",
+                typography = typography,
+                linkStyle = linkStyle,
             ),
         )
     }
 
     @Test
-    fun `p with line-height %`() {
+    fun `p with line-height percent`() {
         assertEquals(
             expected = buildAnnotatedString {
                 pushStyle(
@@ -1418,9 +1418,9 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
             },
             actual = annotateHtmlString(
-                """<p style="line-height: 2.5%;">Hello World!</p>""",
-                typography,
-                linkStyle
+                htmlString = """<p style="line-height: 2.5%;">Hello World!</p>""",
+                typography = typography,
+                linkStyle = linkStyle,
             ),
         )
     }
@@ -1439,9 +1439,9 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
             },
             actual = annotateHtmlString(
-                """<p style="line-height: 2.5;">Hello World!</p>""",
-                typography,
-                linkStyle
+                htmlString = """<p style="line-height: 2.5;">Hello World!</p>""",
+                typography = typography,
+                linkStyle = linkStyle,
             ),
         )
     }
@@ -1460,9 +1460,9 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
             },
             actual = annotateHtmlString(
-                """<p style="line-height: 16px;">Hello World!</p>""",
-                typography,
-                linkStyle
+                htmlString = """<p style="line-height: 16px;">Hello World!</p>""",
+                typography = typography,
+                linkStyle = linkStyle,
             ),
         )
     }
@@ -1481,9 +1481,9 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
             },
             actual = annotateHtmlString(
-                """<p dir=rtl>Hello World!</p>""",
-                typography,
-                linkStyle
+                htmlString = """<p dir=rtl>Hello World!</p>""",
+                typography = typography,
+                linkStyle = linkStyle,
             ),
         )
     }
@@ -1502,9 +1502,9 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
             },
             actual = annotateHtmlString(
-                """<p dir=ltr>Hello World!</p>""",
-                typography,
-                linkStyle
+                htmlString = """<p dir=ltr>Hello World!</p>""",
+                typography = typography,
+                linkStyle = linkStyle,
             ),
         )
     }
