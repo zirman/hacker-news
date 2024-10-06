@@ -16,7 +16,7 @@ actual val databaseModule: Module = module {
             .databaseBuilder<HNDatabase>(
                 name = File(
                     System.getProperty("java.io.tmpdir"),
-                    "hndatabase.db",
+                    "hn_database.db",
                 ).absolutePath,
             )
             .setDriver(BundledSQLiteDriver())
