@@ -69,6 +69,9 @@ fun main() {
                     var showLoginDialog by rememberSaveable {
                         mutableStateOf(false)
                     }
+                    if (showLoginDialog) {
+                        LoginDialog(onDismissRequest = { showLoginDialog = false })
+                    }
                     Scaffold(
                         bottomBar = {
                             BottomAppBar(
@@ -114,9 +117,6 @@ fun main() {
                             onOpenLogin = { showLoginDialog = true },
                             modifier = Modifier.padding(innerPadding),
                         )
-                    }
-                    if (showLoginDialog) {
-                        LoginDialog(onDismissRequest = { showLoginDialog = false })
                     }
                 }
             }

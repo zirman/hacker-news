@@ -1,7 +1,9 @@
 package com.monoid.hackernews.common.data.room
 
+import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.RoomDatabaseConstructor
 import androidx.room.TypeConverters
 import com.monoid.hackernews.common.data.model.ItemType
 
@@ -24,6 +26,7 @@ import com.monoid.hackernews.common.data.model.ItemType
 //    ],
 )
 @TypeConverters(ItemType.Converter::class)
+@ConstructedBy(HNDatabaseConstructor::class)
 abstract class HNDatabase : RoomDatabase() {
     abstract fun topStoryDao(): TopStoryDao
     abstract fun newStoryDao(): NewStoryDao
@@ -34,3 +37,6 @@ abstract class HNDatabase : RoomDatabase() {
     abstract fun itemDao(): ItemDao
     abstract fun userDao(): UserDao
 }
+
+@Suppress("NO_ACTUAL_FOR_EXPECT")
+expect object HNDatabaseConstructor : RoomDatabaseConstructor<HNDatabase>

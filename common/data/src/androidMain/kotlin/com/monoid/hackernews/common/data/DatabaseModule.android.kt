@@ -13,7 +13,7 @@ import org.koin.dsl.module
 actual val databaseModule: Module = module {
     single {
         val context = androidContext()
-        val dbFile = context.getDatabasePath("hacker-news-database")
+        val dbFile = context.getDatabasePath("hacker-news-database.db")
         Room.databaseBuilder<HNDatabase>(
             context = context,
             name = dbFile.absolutePath,
