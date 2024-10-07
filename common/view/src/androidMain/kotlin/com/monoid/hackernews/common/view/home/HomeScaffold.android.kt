@@ -7,7 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -22,7 +22,7 @@ actual fun HomeScaffold(
     onClickLogin: () -> Unit,
     modifier: Modifier,
 ) {
-    var currentDestination by rememberSaveable { mutableIntStateOf(0) }
+    var currentDestination by rememberSaveable { mutableStateOf(0) }
     BackHandler(currentDestination != 0) {
         currentDestination = 0
     }
