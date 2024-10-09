@@ -207,14 +207,13 @@ class HtmlParser(
             }
 
             "<a" -> {
-                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 // randomly causes IndexOutOfBoundsException in MultiParagraph
-//                pushLink(
-//                    LinkAnnotation.Url(
-//                        url = tag.tokens.toAttributes()?.lookup("href") ?: "",
-//                        styles = textLinkStyles,
-//                    ),
-//                )
+                pushLink(
+                    LinkAnnotation.Url(
+                        url = tag.tokens.toAttributes()?.lookup("href") ?: "",
+                        styles = textLinkStyles,
+                    ),
+                )
             }
 
             else -> {
