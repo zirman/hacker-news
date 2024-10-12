@@ -1,12 +1,10 @@
 package com.monoid.hackernews.common.view.html
 
-import androidx.compose.material3.Typography
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -16,108 +14,50 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.em
 
 class HtmlParser(
-    htmlString: String,
-    typography: Typography,
-    linkStyle: SpanStyle,
-) {
-    private val hStyle = listOf(
-        typography.headlineLarge.toSpanStyle(),
-        typography.headlineMedium.toSpanStyle(),
-        typography.headlineSmall.toSpanStyle(),
-        typography.titleLarge.toSpanStyle(),
-        typography.titleMedium.toSpanStyle(),
-        typography.titleSmall.toSpanStyle()
+    val hStyles: List<SpanStyle> = listOf(
+        SpanStyle(
+            fontSize = 2.em,
+            fontWeight = FontWeight.Bold,
+        ),
+        SpanStyle(
+            fontSize = 1.5.em,
+            fontWeight = FontWeight.Bold,
+        ),
+        SpanStyle(
+            fontSize = 1.17.em,
+            fontWeight = FontWeight.Bold,
+        ),
+        SpanStyle(
+            fontWeight = FontWeight.Bold,
+        ),
+        SpanStyle(
+            fontSize = 0.83.em,
+            fontWeight = FontWeight.Bold,
+        ),
+        SpanStyle(
+            fontSize = 0.67.em,
+            fontWeight = FontWeight.Bold,
+        ),
+    ),
+    val textLinkStyles: TextLinkStyles = TextLinkStyles(
+        style = SpanStyle(),
+        focusedStyle = SpanStyle(
+            fontWeight = FontWeight.Bold,
+        ),
+        hoveredStyle = SpanStyle(
+            fontWeight = FontWeight.Bold,
+            textDecoration = TextDecoration.Underline,
+        ),
+        pressedStyle = SpanStyle(
+            fontWeight = FontWeight.ExtraBold,
+            textDecoration = TextDecoration.Underline,
+        ),
     )
-    private val textLinkStyles: TextLinkStyles = linkStyle.toTextLinkStyles()
-    private val tokens: ArrayDeque<HtmlToken> = tokenizeHtml(htmlString)
-
-    // tracks depth of indentation
-    private val stack: ArrayDeque<HtmlToken.Tag> = ArrayDeque()
+) {
 
     @Suppress("LoopWithTooManyJumpStatements", "CyclomaticComplexMethod")
-    fun parse(): AnnotatedString = buildAnnotatedString {
-        var index = 0
-        var hasAppendedWord = false
-        while (true) {
-            if (index >= tokens.size) break
-            when (val token = tokens[index]) {
-                is HtmlToken.Tag -> {
-                    if (token.isBreak()) {
-                        appendLine()
-                        index = 0
-                        hasAppendedWord = false
-                        tokens.removeFirst()
-                        continue
-                    } else if (token.isBlock()) {
-                        if (token.isOpen()) {
-                            // push span styles up to index
-                            pushBlock(index)
-                            // pop all spans and block
-                            repeat(stack.size) { pop() }
-                            val firstTag = stack.firstOrNull()
-                            // drop block from stack
-                            if (firstTag?.isBlock() == true) {
-                                stack.removeFirst()
-                                if (firstTag.isHeader()) {
-                                    pop()
-                                }
-                            }
-                            pushParagraphStyle(token)
-                            // push spans
-                            stack.forEach { pushStyleForSpanTag(it) }
-                            // save block
-                            stack.addFirst(token)
-                        } else if (stack.firstOrNull()?.isBlock() == true) {
-                            // handle close tag
-                            repeat(stack.size) { pop() }
-                            if (stack.first().isHeader()) {
-                                pop()
-                            }
-                            if (token.start.substring(2) != stack.first().start.substring(1)) {
-                                // mismatched block
-                                pushParagraphStyle(token)
-                                pop()
-                            }
-                            stack.removeFirst()
-                            stack.forEach { pushStyleForSpanTag(it) }
-                            repeat(index) { tokens.removeFirst() }
-                        } else {
-                            // unmatched close block
-                            pushParagraphStyle(token)
-                            pop()
-                        }
-                        index = 0
-                        hasAppendedWord = false
-                        tokens.removeFirst()
-                        continue
-                    }
-                    index++
-                }
-
-                is HtmlToken.Word -> {
-                    if (stack.firstOrNull()?.isPreformatted() == true) {
-                        if (hasAppendedWord) {
-                            appendWordPreformatted(index)
-                        } else {
-                            appendWordPreformattedOpen(index)
-                        }
-                    } else if (hasAppendedWord) {
-                        appendWordWithSpace(index)
-                    } else {
-                        appendWord(index)
-                    }
-                    append(token.word)
-                    hasAppendedWord = true
-                    tokens.removeFirst()
-                    index = 0
-                }
-
-                is HtmlToken.Whitespace -> {
-                    index++
-                }
-            }
-        }
-        stack.clear()
+    fun parse(htmlString: String): AnnotatedString {
+        return ParseState().parse(htmlString)
     }
 
     private fun AnnotatedString.Builder.pushParagraphStyle(tag: HtmlToken.Tag) {
@@ -134,7 +74,7 @@ class HtmlParser(
             ).applyAttributes(tag.tokens.toAttributes()),
         )
         if (tag.isHeader()) {
-            pushStyle(hStyle[tag.toLevel()])
+            pushStyle(hStyles[tag.toLevel().coerceIn(hStyles.indices)])
         }
     }
 
@@ -207,14 +147,13 @@ class HtmlParser(
             }
 
             "<a" -> {
-                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 // randomly causes IndexOutOfBoundsException in MultiParagraph
-//                pushLink(
-//                    LinkAnnotation.Url(
-//                        url = tag.tokens.toAttributes()?.lookup("href") ?: "",
-//                        styles = textLinkStyles,
-//                    ),
-//                )
+                pushLink(
+                    LinkAnnotation.Url(
+                        url = tag.tokens.toAttributes()?.lookup("href") ?: "",
+                        styles = textLinkStyles,
+                    ),
+                )
             }
 
             else -> {
@@ -223,114 +162,209 @@ class HtmlParser(
         }
     }
 
-    private fun AnnotatedString.Builder.appendWord(index: Int) {
-        repeat(index) {
-            when (val token = tokens.removeFirst()) {
-                is HtmlToken.Tag -> {
-                    spanTag(token)
-                }
+    private inner class ParseState {
+        private val stack: ArrayDeque<HtmlToken.Tag> = ArrayDeque()
+        private var index: Int = 0
+        private lateinit var tokens: ArrayDeque<HtmlToken>
+        private lateinit var builder: AnnotatedString.Builder
 
-                is HtmlToken.Whitespace -> {
-                }
+        @Suppress("CyclomaticComplexMethod", "NestedBlockDepth", "LoopWithTooManyJumpStatements")
+        fun parse(htmlString: String): AnnotatedString {
+            builder = AnnotatedString.Builder()
+            tokens = tokenizeHtml(htmlString)
+            var hasAppendedWord = false
+            while (true) {
+                if (index >= tokens.size) break
+                when (val token = tokens[index]) {
+                    is HtmlToken.Tag -> {
+                        if (token.isBreak()) {
+                            builder.appendLine()
+                            index = 0
+                            hasAppendedWord = false
+                            tokens.removeFirst()
+                            continue
+                        } else if (token.isBlock()) {
+                            if (token.isOpen()) {
+                                // push span styles up to index
+                                pushBlock()
+                                // pop all spans and block
+                                repeat(stack.size) { builder.pop() }
+                                val firstTag = stack.firstOrNull()
+                                // drop block from stack
+                                if (firstTag?.isBlock() == true) {
+                                    stack.removeFirst()
+                                    if (firstTag.isHeader()) {
+                                        builder.pop()
+                                    }
+                                }
+                                builder.pushParagraphStyle(token)
+                                // push spans
+                                stack.forEach { builder.pushStyleForSpanTag(it) }
+                                // save block
+                                stack.addFirst(token)
+                            } else if (stack.firstOrNull()?.isBlock() == true) {
+                                // handle close tag
+                                repeat(stack.size) { builder.pop() }
+                                if (stack.first().isHeader()) {
+                                    builder.pop()
+                                }
+                                if (token.start.substring(2) != stack.first().start.substring(1)) {
+                                    // mismatched block
+                                    builder.pushParagraphStyle(token)
+                                    builder.pop()
+                                }
+                                stack.removeFirst()
+                                stack.forEach { builder.pushStyleForSpanTag(it) }
+                                repeat(index) { tokens.removeFirst() }
+                            } else {
+                                // unmatched close block
+                                builder.pushParagraphStyle(token)
+                                builder.pop()
+                            }
+                            index = 0
+                            hasAppendedWord = false
+                            tokens.removeFirst()
+                            continue
+                        }
+                        index++
+                    }
 
-                is HtmlToken.Word -> {
-                    throw IllegalStateException("Invalid tag")
-                }
-            }
-        }
-    }
+                    is HtmlToken.Word -> {
+                        if (stack.firstOrNull()?.isPreformatted() == true) {
+                            if (hasAppendedWord) {
+                                appendWordPreformatted()
+                            } else {
+                                appendWordPreformattedOpen()
+                            }
+                        } else if (hasAppendedWord) {
+                            appendWordWithSpace()
+                        } else {
+                            appendWord()
+                        }
+                        builder.append(token.word)
+                        hasAppendedWord = true
+                        tokens.removeFirst()
+                        index = 0
+                    }
 
-    private fun AnnotatedString.Builder.appendWordWithSpace(index: Int) {
-        var hasAppendedSpace = false
-        repeat(index) {
-            when (val token = tokens.removeFirst()) {
-                is HtmlToken.Tag -> {
-                    spanTag(token)
-                }
-
-                is HtmlToken.Whitespace -> {
-                    if (!hasAppendedSpace) {
-                        append(' ')
-                        hasAppendedSpace = true
+                    is HtmlToken.Whitespace -> {
+                        index++
                     }
                 }
-
-                is HtmlToken.Word -> {
-                    throw IllegalStateException("Invalid tag")
-                }
             }
+            stack.clear()
+            return builder.toAnnotatedString()
         }
-    }
 
-    private fun AnnotatedString.Builder.appendWordPreformattedOpen(index: Int) {
-        var hasAppendedWhitespace = false
-        repeat(index) {
-            when (val token = tokens.removeFirst()) {
-                is HtmlToken.Tag -> {
-                    spanTag(token)
-                }
+        private fun appendWord() {
+            repeat(index) {
+                when (val token = tokens.removeFirst()) {
+                    is HtmlToken.Tag -> {
+                        spanTag(token)
+                    }
 
-                is HtmlToken.Whitespace -> {
-                    if (hasAppendedWhitespace) {
-                        append(token.whitespace)
-                    } else {
-                        append(token.whitespace.removePrefix("\n"))
-                        hasAppendedWhitespace = true
+                    is HtmlToken.Whitespace -> {
+                    }
+
+                    is HtmlToken.Word -> {
+                        throw IllegalStateException("Invalid tag")
                     }
                 }
+            }
+        }
 
-                is HtmlToken.Word -> {
-                    throw IllegalStateException("Invalid tag")
+        private fun appendWordWithSpace() {
+            var hasAppendedSpace = false
+            repeat(index) {
+                when (val token = tokens.removeFirst()) {
+                    is HtmlToken.Tag -> {
+                        spanTag(token)
+                    }
+
+                    is HtmlToken.Whitespace -> {
+                        if (!hasAppendedSpace) {
+                            builder.append(' ')
+                            hasAppendedSpace = true
+                        }
+                    }
+
+                    is HtmlToken.Word -> {
+                        throw IllegalStateException("Invalid tag")
+                    }
                 }
             }
         }
-    }
 
-    private fun AnnotatedString.Builder.appendWordPreformatted(index: Int) {
-        repeat(index) {
-            when (val token = tokens.removeFirst()) {
-                is HtmlToken.Tag -> {
-                    spanTag(token)
-                }
+        private fun appendWordPreformattedOpen() {
+            var hasAppendedWhitespace = false
+            repeat(index) {
+                when (val token = tokens.removeFirst()) {
+                    is HtmlToken.Tag -> {
+                        spanTag(token)
+                    }
 
-                is HtmlToken.Whitespace -> {
-                    append(token.whitespace)
-                }
+                    is HtmlToken.Whitespace -> {
+                        if (hasAppendedWhitespace) {
+                            builder.append(token.whitespace)
+                        } else {
+                            builder.append(token.whitespace.removePrefix("\n"))
+                            hasAppendedWhitespace = true
+                        }
+                    }
 
-                is HtmlToken.Word -> {
-                    throw IllegalStateException("Invalid tag")
-                }
-            }
-        }
-    }
-
-    private fun AnnotatedString.Builder.pushBlock(index: Int) {
-        repeat(index) {
-            when (val token = tokens.removeFirst()) {
-                is HtmlToken.Tag -> {
-                    spanTag(token)
-                }
-
-                is HtmlToken.Whitespace -> {
-                    // ignored
-                }
-
-                is HtmlToken.Word -> {
-                    throw IllegalStateException("Invalid tag")
+                    is HtmlToken.Word -> {
+                        throw IllegalStateException("Invalid tag")
+                    }
                 }
             }
         }
-    }
 
-    private fun AnnotatedString.Builder.spanTag(token: HtmlToken.Tag) {
-        if (token.isOpen()) {
-            pushStyleForSpanTag(token)
-            stack.addLast(token)
-        } else if (token.start.substring(2) == stack.lastOrNull()?.start?.substring(1)) {
-            pop()
-            stack.removeLast()
-        } else {
-            println("tag mismatch")
+        private fun appendWordPreformatted() {
+            repeat(index) {
+                when (val token = tokens.removeFirst()) {
+                    is HtmlToken.Tag -> {
+                        spanTag(token)
+                    }
+
+                    is HtmlToken.Whitespace -> {
+                        builder.append(token.whitespace)
+                    }
+
+                    is HtmlToken.Word -> {
+                        throw IllegalStateException("Invalid tag")
+                    }
+                }
+            }
+        }
+
+        private fun pushBlock() {
+            repeat(index) {
+                when (val token = tokens.removeFirst()) {
+                    is HtmlToken.Tag -> {
+                        spanTag(token)
+                    }
+
+                    is HtmlToken.Whitespace -> {
+                        // ignored
+                    }
+
+                    is HtmlToken.Word -> {
+                        throw IllegalStateException("Invalid tag")
+                    }
+                }
+            }
+        }
+
+        private fun spanTag(token: HtmlToken.Tag) {
+            if (token.isOpen()) {
+                builder.pushStyleForSpanTag(token)
+                stack.addLast(token)
+            } else if (token.start.substring(2) == stack.lastOrNull()?.start?.substring(1)) {
+                builder.pop()
+                stack.removeLast()
+            } else {
+                println("tag mismatch")
+            }
         }
     }
 
@@ -346,3 +380,5 @@ class HtmlParser(
         private val subscriptStyle = SpanStyle(baselineShift = BaselineShift.Subscript)
     }
 }
+//        val stack: ArrayDeque<HtmlToken.Tag> = ArrayDeque()
+//        val tokens: ArrayDeque<HtmlToken> = tokenizeHtml(htmlString)

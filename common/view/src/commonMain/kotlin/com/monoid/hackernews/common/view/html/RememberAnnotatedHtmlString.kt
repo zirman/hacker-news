@@ -1,16 +1,10 @@
 package com.monoid.hackernews.common.view.html
 
-import androidx.compose.material3.Typography
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.ParagraphStyle
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextLinkStyles
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.em
@@ -38,39 +32,12 @@ import androidx.compose.ui.unit.sp
 // <time
 // <blockquote
 
+private val htmlParser = HtmlParser()
+
 @Composable
 fun rememberAnnotatedHtmlString(htmlString: String): AnnotatedString {
-    val linkStyle = LocalLinkStyle.current.style ?: SpanStyle()
-    val typography = MaterialTheme.typography
-    return remember(htmlString, linkStyle, typography) {
-        annotateHtmlString(
-            htmlString = htmlString,
-            typography = typography,
-            linkStyle = linkStyle,
-        )
-    }
+    return remember(htmlString) { htmlParser.parse(htmlString) }
 }
-
-fun annotateHtmlString(
-    htmlString: String,
-    typography: Typography,
-    linkStyle: SpanStyle,
-): AnnotatedString = HtmlParser(htmlString, typography, linkStyle).parse()
-
-fun SpanStyle.toTextLinkStyles(): TextLinkStyles = TextLinkStyles(
-    style = this,
-    focusedStyle = copy(
-        fontWeight = FontWeight.Bold,
-    ),
-    hoveredStyle = copy(
-        fontWeight = FontWeight.Bold,
-        textDecoration = TextDecoration.Underline,
-    ),
-    pressedStyle = copy(
-        fontWeight = FontWeight.ExtraBold,
-        textDecoration = TextDecoration.Underline,
-    ),
-)
 
 internal fun ParagraphStyle.applyAttributes(attributes: List<String>?): ParagraphStyle {
     if (attributes == null) return this
@@ -135,4 +102,4 @@ private fun ParagraphStyle.applyStyle(map: List<String>): ParagraphStyle {
     return s
 }
 
-val SIZE_REGEX = """^\s*(\d+(?:.\d+)?)([^\d\s]+)?\s*${'$'}""".toRegex(RegexOption.IGNORE_CASE)
+private val SIZE_REGEX = """^\s*(\d+(?:.\d+)?)([^\d\s]+)?\s*${'$'}""".toRegex(RegexOption.IGNORE_CASE)

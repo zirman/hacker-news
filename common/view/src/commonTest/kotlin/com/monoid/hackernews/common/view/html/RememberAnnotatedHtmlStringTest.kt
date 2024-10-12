@@ -1,6 +1,5 @@
 package com.monoid.hackernews.common.view.html
 
-import androidx.compose.material3.Typography
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.ParagraphStyle
@@ -21,8 +20,7 @@ import kotlin.test.assertEquals
 
 @Suppress("LargeClass")
 class RememberAnnotatedHtmlStringTest {
-    private val typography = Typography()
-    private val linkStyle = SpanStyle(color = Color.Blue)
+    private val htmlParser = HtmlParser()
 
     @Test
     fun `tokenize 1`() {
@@ -186,7 +184,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `consolidate white space between words outside of tag`() {
         assertEquals(
             expected = buildAnnotatedString { append("Hello World!") },
-            actual = annotateHtmlString("  Hello  \n  World!  ", typography, linkStyle),
+            actual = htmlParser.parse("  Hello  \n  World!  "),
         )
     }
 
@@ -197,7 +195,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 append("Hello")
             },
-            actual = annotateHtmlString("  <u>Hello</u>", typography, linkStyle),
+            actual = htmlParser.parse("  <u>Hello</u>"),
         )
     }
 
@@ -208,7 +206,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 append("Hello")
             },
-            actual = annotateHtmlString("<u>Hello</u>  ", typography, linkStyle),
+            actual = htmlParser.parse("<u>Hello</u>  "),
         )
     }
 
@@ -219,7 +217,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 append("Hello")
             },
-            actual = annotateHtmlString("<u>  Hello</u>", typography, linkStyle),
+            actual = htmlParser.parse("<u>  Hello</u>"),
         )
     }
 
@@ -231,7 +229,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 append("World!")
             },
-            actual = annotateHtmlString("Hello  <u>World!</u>", typography, linkStyle),
+            actual = htmlParser.parse("Hello  <u>World!</u>"),
         )
     }
 
@@ -243,7 +241,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 append(" World!")
             },
-            actual = annotateHtmlString("Hello<u>  World!</u>", typography, linkStyle),
+            actual = htmlParser.parse("Hello<u>  World!</u>"),
         )
     }
 
@@ -255,7 +253,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 append("World!")
             },
-            actual = annotateHtmlString("Hello  <u>  World!</u>", typography, linkStyle),
+            actual = htmlParser.parse("Hello  <u>  World!</u>"),
         )
     }
 
@@ -268,7 +266,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append(" World!")
             },
-            actual = annotateHtmlString("<u>Hello</u>  World!", typography, linkStyle),
+            actual = htmlParser.parse("<u>Hello</u>  World!"),
         )
     }
 
@@ -281,7 +279,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("World!")
             },
-            actual = annotateHtmlString("<u>Hello  </u>World!", typography, linkStyle),
+            actual = htmlParser.parse("<u>Hello  </u>World!"),
         )
     }
 
@@ -294,7 +292,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("World!")
             },
-            actual = annotateHtmlString("<u>Hello  </u>  World!", typography, linkStyle),
+            actual = htmlParser.parse("<u>Hello  </u>  World!"),
         )
     }
 
@@ -305,7 +303,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 append("Hello World!")
             },
-            actual = annotateHtmlString("<u>Hello  World!</u>  ", typography, linkStyle),
+            actual = htmlParser.parse("<u>Hello  World!</u>  "),
         )
     }
 
@@ -316,7 +314,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 append("Hello World!")
             },
-            actual = annotateHtmlString("<u>  Hello  World!</u>", typography, linkStyle),
+            actual = htmlParser.parse("<u>  Hello  World!</u>"),
         )
     }
 
@@ -327,7 +325,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 append("Hello World!")
             },
-            actual = annotateHtmlString("  <u>  Hello World!</u>  ", typography, linkStyle),
+            actual = htmlParser.parse("  <u>  Hello World!</u>  "),
         )
     }
 
@@ -338,7 +336,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 append("Hello World!")
             },
-            actual = annotateHtmlString("<u>Hello  World!</u>  ", typography, linkStyle),
+            actual = htmlParser.parse("<u>Hello  World!</u>  "),
         )
     }
 
@@ -349,7 +347,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 append("Hello World!")
             },
-            actual = annotateHtmlString("""<u>Hello  World!</u>""", typography, linkStyle),
+            actual = htmlParser.parse("""<u>Hello  World!</u>"""),
         )
     }
 
@@ -363,7 +361,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("d!")
             },
-            actual = annotateHtmlString("""H<u>ello  Worl</u>d!""", typography, linkStyle),
+            actual = htmlParser.parse("""H<u>ello  Worl</u>d!"""),
         )
     }
 
@@ -377,7 +375,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("d!")
             },
-            actual = annotateHtmlString("""H  <u>ello  Worl</u>d!""", typography, linkStyle),
+            actual = htmlParser.parse("""H  <u>ello  Worl</u>d!"""),
         )
     }
 
@@ -391,7 +389,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append(" d!")
             },
-            actual = annotateHtmlString("""H<u>ello  Worl</u>  d!""", typography, linkStyle),
+            actual = htmlParser.parse("""H<u>ello  Worl</u>  d!"""),
         )
     }
 
@@ -405,7 +403,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append(" d!")
             },
-            actual = annotateHtmlString("""H<u>ello  Worl</u>  d!  """, typography, linkStyle),
+            actual = htmlParser.parse("""H<u>ello  Worl</u>  d!  """),
         )
     }
 
@@ -419,7 +417,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("d!")
             },
-            actual = annotateHtmlString("""H<u>ello  Worl  </u>  d!""", typography, linkStyle),
+            actual = htmlParser.parse("""H<u>ello  Worl  </u>  d!"""),
         )
     }
 
@@ -433,11 +431,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("World")
             }, // consumes spaces between tags
-            actual = annotateHtmlString(
-                """  <u>  <s>  Hello  </s>World</u>  """,
-                typography,
-                linkStyle
-            ),
+            actual = htmlParser.parse("""  <u>  <s>  Hello  </s>World</u>  """),
         )
     }
 
@@ -451,11 +445,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.LineThrough))
                 append("Kotlin")
             }, // should consume spaces between tags
-            actual = annotateHtmlString(
-                htmlString = """  Hello  <u>  World  <s>  Kotlin  </s>  </u>  """,
-                typography = typography,
-                linkStyle = linkStyle,
-            ),
+            actual = htmlParser.parse("""  Hello  <u>  World  <s>  Kotlin  </s>  </u>  """),
         )
     }
 
@@ -471,11 +461,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("Kotlin")
             }, // should consume spaces between tags
-            actual = annotateHtmlString(
-                htmlString = """  <u>  <s>  Hello  </s>  World  </u>  Kotlin  """,
-                typography = typography,
-                linkStyle = linkStyle,
-            ),
+            actual = htmlParser.parse("""  <u>  <s>  Hello  </s>  World  </u>  Kotlin  """),
         )
     }
 
@@ -486,7 +472,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
                 append("Hello World!")
             },
-            actual = annotateHtmlString("""<b>Hello World!</b>""", typography, linkStyle),
+            actual = htmlParser.parse("""<b>Hello World!</b>"""),
         )
     }
 
@@ -496,7 +482,7 @@ class RememberAnnotatedHtmlStringTest {
             expected = buildAnnotatedString {
                 appendLine()
             },
-            actual = annotateHtmlString("""<br>""", typography, linkStyle),
+            actual = htmlParser.parse("""<br>"""),
         )
     }
 
@@ -506,7 +492,7 @@ class RememberAnnotatedHtmlStringTest {
             expected = buildAnnotatedString {
                 appendLine()
             },
-            actual = annotateHtmlString("""<br/>""", typography, linkStyle),
+            actual = htmlParser.parse("""<br/>"""),
         )
     }
 
@@ -516,7 +502,7 @@ class RememberAnnotatedHtmlStringTest {
             expected = buildAnnotatedString {
                 appendLine()
             },
-            actual = annotateHtmlString("""</br>""", typography, linkStyle),
+            actual = htmlParser.parse("""</br>"""),
         )
     }
 
@@ -526,7 +512,7 @@ class RememberAnnotatedHtmlStringTest {
             expected = buildAnnotatedString {
                 appendLine()
             },
-            actual = annotateHtmlString("""<br />""", typography, linkStyle),
+            actual = htmlParser.parse("""<br />"""),
         )
     }
 
@@ -538,7 +524,7 @@ class RememberAnnotatedHtmlStringTest {
                 appendLine()
                 append("World!")
             },
-            actual = annotateHtmlString("""Hello<br>World!""", typography, linkStyle),
+            actual = htmlParser.parse("""Hello<br>World!"""),
         )
     }
 
@@ -547,10 +533,10 @@ class RememberAnnotatedHtmlStringTest {
         assertEquals(
             expected = buildAnnotatedString {
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Heading))
-                pushStyle(typography.headlineLarge.toSpanStyle())
+                pushStyle(htmlParser.hStyles[0])
                 append("Hello World!")
             },
-            actual = annotateHtmlString("""<h1>Hello World!</h1>""", typography, linkStyle),
+            actual = htmlParser.parse("""<h1>Hello World!</h1>"""),
         )
     }
 
@@ -559,10 +545,10 @@ class RememberAnnotatedHtmlStringTest {
         assertEquals(
             expected = buildAnnotatedString {
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Heading))
-                pushStyle(typography.headlineMedium.toSpanStyle())
+                pushStyle(htmlParser.hStyles[1])
                 append("Hello World!")
             },
-            actual = annotateHtmlString("""<h2>Hello World!</h2>""", typography, linkStyle),
+            actual = htmlParser.parse("""<h2>Hello World!</h2>"""),
         )
     }
 
@@ -571,10 +557,10 @@ class RememberAnnotatedHtmlStringTest {
         assertEquals(
             expected = buildAnnotatedString {
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Heading))
-                pushStyle(typography.headlineSmall.toSpanStyle())
+                pushStyle(htmlParser.hStyles[2])
                 append("Hello World!")
             },
-            actual = annotateHtmlString("""<h3>Hello World!</h3>""", typography, linkStyle),
+            actual = htmlParser.parse("""<h3>Hello World!</h3>"""),
         )
     }
 
@@ -583,10 +569,10 @@ class RememberAnnotatedHtmlStringTest {
         assertEquals(
             expected = buildAnnotatedString {
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Heading))
-                pushStyle(typography.titleLarge.toSpanStyle())
+                pushStyle(htmlParser.hStyles[3])
                 append("Hello World!")
             },
-            actual = annotateHtmlString("""<h4>Hello World!</h4>""", typography, linkStyle),
+            actual = htmlParser.parse("""<h4>Hello World!</h4>"""),
         )
     }
 
@@ -595,10 +581,10 @@ class RememberAnnotatedHtmlStringTest {
         assertEquals(
             expected = buildAnnotatedString {
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Heading))
-                pushStyle(typography.titleMedium.toSpanStyle())
+                pushStyle(htmlParser.hStyles[4])
                 append("Hello World!")
             },
-            actual = annotateHtmlString("""<h5>Hello World!</h5>""", typography, linkStyle),
+            actual = htmlParser.parse("""<h5>Hello World!</h5>"""),
         )
     }
 
@@ -607,10 +593,10 @@ class RememberAnnotatedHtmlStringTest {
         assertEquals(
             expected = buildAnnotatedString {
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Heading))
-                pushStyle(typography.titleSmall.toSpanStyle())
+                pushStyle(htmlParser.hStyles[5])
                 append("Hello World!")
             },
-            actual = annotateHtmlString("""<h6>Hello World!</h6>""", typography, linkStyle),
+            actual = htmlParser.parse("""<h6>Hello World!</h6>"""),
         )
     }
 
@@ -619,21 +605,19 @@ class RememberAnnotatedHtmlStringTest {
         assertEquals(
             expected = buildAnnotatedString {
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Heading))
-                pushStyle(typography.headlineLarge.toSpanStyle())
+                pushStyle(htmlParser.hStyles[0])
                 append("Hello")
                 pop()
                 pop()
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Heading))
-                pushStyle(typography.headlineMedium.toSpanStyle())
+                pushStyle(htmlParser.hStyles[1])
                 append("World!")
                 pop()
                 pop()
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Heading))
-                pushStyle(typography.headlineLarge.toSpanStyle())
-                pop()
-                pop()
+                pushStyle(htmlParser.hStyles[0])
             },
-            actual = annotateHtmlString("""<h1>Hello<h2>World!</h1>""", typography, linkStyle),
+            actual = htmlParser.parse("""<h1>Hello<h2>World!</h1>"""),
         )
     }
 
@@ -644,7 +628,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
                 append("Hello World!")
             },
-            actual = annotateHtmlString("""<i>Hello World!</i>""", typography, linkStyle),
+            actual = htmlParser.parse("""<i>Hello World!</i>"""),
         )
     }
 
@@ -655,7 +639,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
                 append("Hello World!")
             },
-            actual = annotateHtmlString("""<cite>Hello World!</cite>""", typography, linkStyle),
+            actual = htmlParser.parse("""<cite>Hello World!</cite>"""),
         )
     }
 
@@ -666,7 +650,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
                 append("Hello World!")
             },
-            actual = annotateHtmlString("""<dfn>Hello World!</dfn>""", typography, linkStyle),
+            actual = htmlParser.parse("""<dfn>Hello World!</dfn>"""),
         )
     }
 
@@ -677,7 +661,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
                 append("Hello World!")
             },
-            actual = annotateHtmlString("""<em>Hello World!</em>""", typography, linkStyle),
+            actual = htmlParser.parse("""<em>Hello World!</em>"""),
         )
     }
 
@@ -688,7 +672,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(fontSize = 1.25f.em))
                 append("Hello World!")
             },
-            actual = annotateHtmlString("""<big>Hello World!</big>""", typography, linkStyle),
+            actual = htmlParser.parse("""<big>Hello World!</big>"""),
         )
     }
 
@@ -699,7 +683,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(fontSize = .8.em))
                 append("Hello World!")
             },
-            actual = annotateHtmlString("""<small>Hello World!</small>""", typography, linkStyle),
+            actual = htmlParser.parse("""<small>Hello World!</small>"""),
         )
     }
 
@@ -710,7 +694,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(fontFamily = FontFamily.Monospace))
                 append("Hello World!")
             },
-            actual = annotateHtmlString("""<tt>Hello World!</tt>""", typography, linkStyle),
+            actual = htmlParser.parse("""<tt>Hello World!</tt>"""),
         )
     }
 
@@ -721,7 +705,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(fontFamily = FontFamily.Monospace))
                 append("Hello World!")
             },
-            actual = annotateHtmlString("""<code>Hello World!</code>""", typography, linkStyle),
+            actual = htmlParser.parse("""<code>Hello World!</code>"""),
         )
     }
 
@@ -732,16 +716,12 @@ class RememberAnnotatedHtmlStringTest {
                 pushLink(
                     LinkAnnotation.Url(
                         url = "https://www.wikipedia.com/",
-                        styles = linkStyle.toTextLinkStyles(),
+                        styles = htmlParser.textLinkStyles,
                     ),
                 )
                 append("Hello World!")
             },
-            actual = annotateHtmlString(
-                htmlString = """<a href=https://www.wikipedia.com/>Hello World!</a>""",
-                typography = typography,
-                linkStyle = linkStyle,
-            ),
+            actual = htmlParser.parse("""<a href=https://www.wikipedia.com/>Hello World!</a>"""),
         )
     }
 
@@ -752,15 +732,13 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Unspecified))
                 append("  Hello\n  World!")
             },
-            actual = annotateHtmlString(
+            actual = htmlParser.parse(
                 htmlString = """
                     |<pre>
                     |  Hello
                     |  World!  
                     |</pre>
                     |""".trimMargin(),
-                typography = typography,
-                linkStyle = linkStyle,
             ),
         )
     }
@@ -778,15 +756,13 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
             },
-            actual = annotateHtmlString(
+            actual = htmlParser.parse(
                 htmlString = """
                     |<u> <pre>
                     |  Hello
                     |  World!
                     |</pre> </u>
                     |""".trimMargin(),
-                typography = typography,
-                linkStyle = linkStyle,
             ),
         )
     }
@@ -805,15 +781,13 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
             },
-            actual = annotateHtmlString(
+            actual = htmlParser.parse(
                 htmlString = """
                     |a <u> <pre>
                     |  Hello
                     |  World!
                     |</pre> </u>
                     |""".trimMargin(),
-                typography = typography,
-                linkStyle = linkStyle,
             ),
         )
     }
@@ -825,14 +799,12 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Unspecified))
                 append("  Hello\n  World!")
             },
-            actual = annotateHtmlString(
+            actual = htmlParser.parse(
                 htmlString = """
                     |<pre>  Hello
                     |  World!
                     |</pre>
                     |""".trimMargin(),
-                typography = typography,
-                linkStyle = linkStyle,
             ),
         )
     }
@@ -848,14 +820,12 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("World!")
             },
-            actual = annotateHtmlString(
+            actual = htmlParser.parse(
                 htmlString = """
                     |<pre>  <u>Hello
                     |  </u>World!
                     |</pre>
                     |""".trimMargin(),
-                typography = typography,
-                linkStyle = linkStyle,
             ),
         )
     }
@@ -867,7 +837,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.LineThrough))
                 append("Hello")
             },
-            actual = annotateHtmlString("""<s>Hello</s>""", typography, linkStyle),
+            actual = htmlParser.parse("""<s>Hello</s>"""),
         )
     }
 
@@ -878,7 +848,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.LineThrough))
                 append("Hello")
             },
-            actual = annotateHtmlString("""<strike>Hello</strike>""", typography, linkStyle),
+            actual = htmlParser.parse("""<strike>Hello</strike>"""),
         )
     }
 
@@ -889,7 +859,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.LineThrough))
                 append("Hello")
             },
-            actual = annotateHtmlString("""<del>Hello</del>""", typography, linkStyle),
+            actual = htmlParser.parse("""<del>Hello</del>"""),
         )
     }
 
@@ -900,7 +870,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 append("Hello")
             },
-            actual = annotateHtmlString("""<u>Hello</u>""", typography, linkStyle),
+            actual = htmlParser.parse("""<u>Hello</u>"""),
         )
     }
 
@@ -911,7 +881,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(baselineShift = BaselineShift.Superscript))
                 append("Hello")
             },
-            actual = annotateHtmlString("""<sup>Hello</sup>""", typography, linkStyle),
+            actual = htmlParser.parse("""<sup>Hello</sup>"""),
         )
     }
 
@@ -922,7 +892,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(baselineShift = BaselineShift.Subscript))
                 append("Hello")
             },
-            actual = annotateHtmlString("""<sub>Hello</sub>""", typography, linkStyle),
+            actual = htmlParser.parse("""<sub>Hello</sub>"""),
         )
     }
 
@@ -933,11 +903,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(fontFamily = FontFamily.Monospace))
                 append("Hello World!")
             },
-            actual = annotateHtmlString(
-                htmlString = """<font face="monospace">Hello World!</font>""",
-                typography = typography,
-                linkStyle = linkStyle,
-            ),
+            actual = htmlParser.parse("""<font face="monospace">Hello World!</font>"""),
         )
     }
 
@@ -948,11 +914,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(fontFamily = FontFamily.Serif))
                 append("Hello World!")
             },
-            actual = annotateHtmlString(
-                htmlString = """<font face="serif">Hello World!</font>""",
-                typography = typography,
-                linkStyle = linkStyle,
-            ),
+            actual = htmlParser.parse("""<font face="serif">Hello World!</font>"""),
         )
     }
 
@@ -963,11 +925,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(fontFamily = FontFamily.SansSerif))
                 append("Hello World!")
             },
-            actual = annotateHtmlString(
-                htmlString = """<font face="sans_serif">Hello World!</font>""",
-                typography = typography,
-                linkStyle = linkStyle,
-            ),
+            actual = htmlParser.parse("""<font face="sans_serif">Hello World!</font>"""),
         )
     }
 
@@ -978,11 +936,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(fontFamily = FontFamily.Cursive))
                 append("Hello World!")
             },
-            actual = annotateHtmlString(
-                htmlString = """<font face="cursive">Hello World!</font>""",
-                typography = typography,
-                linkStyle = linkStyle,
-            ),
+            actual = htmlParser.parse("""<font face="cursive">Hello World!</font>"""),
         )
     }
 
@@ -993,11 +947,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(color = Color(0xff0000)))
                 append("Hello World!")
             },
-            actual = annotateHtmlString(
-                htmlString = """<font color="#ff0000">Hello World!</font>""",
-                typography = typography,
-                linkStyle = linkStyle,
-            ),
+            actual = htmlParser.parse("""<font color="#ff0000">Hello World!</font>"""),
         )
     }
 
@@ -1008,7 +958,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
                 append("Hello")
             },
-            actual = annotateHtmlString("""<p>Hello</p>""", typography, linkStyle),
+            actual = htmlParser.parse("""<p>Hello</p>"""),
         )
     }
 
@@ -1022,7 +972,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
                 append("World!")
             },
-            actual = annotateHtmlString("""<p>Hello</p><p>World!</p>""", typography, linkStyle),
+            actual = htmlParser.parse("""<p>Hello</p><p>World!</p>"""),
         )
     }
 
@@ -1036,7 +986,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
                 append("World!")
             },
-            actual = annotateHtmlString("""<p>Hello<p>World!""", typography, linkStyle),
+            actual = htmlParser.parse("""<p>Hello<p>World!"""),
         )
     }
 
@@ -1060,15 +1010,13 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
             },
-            actual = annotateHtmlString(
-                """
-                    |<u>
-                    |  <p>Hello</p>
-                    |  <p>World!</p>
-                    |</u>
-                    |""".trimMargin(),
-                typography = typography,
-                linkStyle = linkStyle,
+            actual = htmlParser.parse(
+                htmlString = """
+                     |<u>
+                     |  <p>Hello</p>
+                     |  <p>World!</p>
+                     |</u>
+                     |""".trimMargin(),
             ),
         )
     }
@@ -1084,11 +1032,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
             },
-            actual = annotateHtmlString(
-                """<p><p>Hello</p></p>""",
-                typography = typography,
-                linkStyle = linkStyle,
-            ),
+            actual = htmlParser.parse("""<p><p>Hello</p></p>"""),
         )
     }
 
@@ -1104,7 +1048,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("World!")
             },
-            actual = annotateHtmlString("""<p>Hello</p>World!</p>World!""", typography, linkStyle),
+            actual = htmlParser.parse("""<p>Hello</p>World!</p>World!"""),
         )
     }
 
@@ -1119,7 +1063,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("World!")
             },
-            actual = annotateHtmlString("""</p>Hello</p>World!""", typography, linkStyle),
+            actual = htmlParser.parse("""</p>Hello</p>World!"""),
         )
     }
 
@@ -1134,11 +1078,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
             },
-            actual = annotateHtmlString(
-                htmlString = """<p><pre>Hello World!</pre></p>""",
-                typography = typography,
-                linkStyle = linkStyle,
-            ),
+            actual = htmlParser.parse("""<p><pre>Hello World!</pre></p>"""),
         )
     }
 
@@ -1156,7 +1096,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("World!")
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Unspecified))
             },
-            actual = annotateHtmlString("""<p><pre>Hello</p>World!</pre>""", typography, linkStyle),
+            actual = htmlParser.parse("""<p><pre>Hello</p>World!</pre>"""),
         )
     }
 
@@ -1172,7 +1112,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append(" World!")
             },
-            actual = annotateHtmlString("""<u><p>Hello</u> World!</p>""", typography, linkStyle),
+            actual = htmlParser.parse("""<u><p>Hello</u> World!</p>"""),
         )
     }
 
@@ -1188,11 +1128,7 @@ class RememberAnnotatedHtmlStringTest {
                 )
                 append("Hello World!")
             },
-            actual = annotateHtmlString(
-                htmlString = """<p style="text-align: end;">Hello World!</p>""",
-                typography = typography,
-                linkStyle = linkStyle,
-            ),
+            actual = htmlParser.parse("""<p style="text-align: end;">Hello World!</p>"""),
         )
     }
 
@@ -1208,11 +1144,7 @@ class RememberAnnotatedHtmlStringTest {
                 )
                 append("Hello World!")
             },
-            actual = annotateHtmlString(
-                htmlString = """<p style="text-align: start;">Hello World!</p>""",
-                typography = typography,
-                linkStyle = linkStyle,
-            ),
+            actual = htmlParser.parse("""<p style="text-align: start;">Hello World!</p>"""),
         )
     }
 
@@ -1228,11 +1160,7 @@ class RememberAnnotatedHtmlStringTest {
                 )
                 append("Hello World!")
             },
-            actual = annotateHtmlString(
-                htmlString = """<p style="text-align: center;">Hello World!</p>""",
-                typography = typography,
-                linkStyle = linkStyle,
-            ),
+            actual = htmlParser.parse("""<p style="text-align: center;">Hello World!</p>"""),
         )
     }
 
@@ -1248,11 +1176,7 @@ class RememberAnnotatedHtmlStringTest {
                 )
                 append("Hello World!")
             },
-            actual = annotateHtmlString(
-                htmlString = """<p style="text-align: justify;">Hello World!</p>""",
-                typography = typography,
-                linkStyle = linkStyle,
-            ),
+            actual = htmlParser.parse("""<p style="text-align: justify;">Hello World!</p>"""),
         )
     }
 
@@ -1268,11 +1192,7 @@ class RememberAnnotatedHtmlStringTest {
                 )
                 append("Hello World!")
             },
-            actual = annotateHtmlString(
-                htmlString = """<p style="text-align: left;">Hello World!</p>""",
-                typography = typography,
-                linkStyle = linkStyle,
-            ),
+            actual = htmlParser.parse("""<p style="text-align: left;">Hello World!</p>"""),
         )
     }
 
@@ -1288,11 +1208,7 @@ class RememberAnnotatedHtmlStringTest {
                 )
                 append("Hello World!")
             },
-            actual = annotateHtmlString(
-                htmlString = """<p style="text-align: right;">Hello World!</p>""",
-                typography = typography,
-                linkStyle = linkStyle,
-            ),
+            actual = htmlParser.parse("""<p style="text-align: right;">Hello World!</p>"""),
         )
     }
 
@@ -1308,11 +1224,7 @@ class RememberAnnotatedHtmlStringTest {
                 )
                 append("Hello World!")
             },
-            actual = annotateHtmlString(
-                htmlString = """<p style="line-height: 2em;">Hello World!</p>""",
-                typography = typography,
-                linkStyle = linkStyle,
-            ),
+            actual = htmlParser.parse("""<p style="line-height: 2em;">Hello World!</p>"""),
         )
     }
 
@@ -1328,11 +1240,7 @@ class RememberAnnotatedHtmlStringTest {
                 )
                 append("Hello World!")
             },
-            actual = annotateHtmlString(
-                htmlString = """<p style="line-height: 2.5em;">Hello World!</p>""",
-                typography = typography,
-                linkStyle = linkStyle,
-            ),
+            actual = htmlParser.parse("""<p style="line-height: 2.5em;">Hello World!</p>"""),
         )
     }
 
@@ -1348,11 +1256,7 @@ class RememberAnnotatedHtmlStringTest {
                 )
                 append("Hello World!")
             },
-            actual = annotateHtmlString(
-                htmlString = """<p style="line-height: 2.5%;">Hello World!</p>""",
-                typography = typography,
-                linkStyle = linkStyle,
-            ),
+            actual = htmlParser.parse("""<p style="line-height: 2.5%;">Hello World!</p>"""),
         )
     }
 
@@ -1368,11 +1272,7 @@ class RememberAnnotatedHtmlStringTest {
                 )
                 append("Hello World!")
             },
-            actual = annotateHtmlString(
-                htmlString = """<p style="line-height: 2.5;">Hello World!</p>""",
-                typography = typography,
-                linkStyle = linkStyle,
-            ),
+            actual = htmlParser.parse("""<p style="line-height: 2.5;">Hello World!</p>"""),
         )
     }
 
@@ -1388,11 +1288,7 @@ class RememberAnnotatedHtmlStringTest {
                 )
                 append("Hello World!")
             },
-            actual = annotateHtmlString(
-                htmlString = """<p style="line-height: 16px;">Hello World!</p>""",
-                typography = typography,
-                linkStyle = linkStyle,
-            ),
+            actual = htmlParser.parse("""<p style="line-height: 16px;">Hello World!</p>"""),
         )
     }
 
@@ -1408,11 +1304,7 @@ class RememberAnnotatedHtmlStringTest {
                 )
                 append("Hello World!")
             },
-            actual = annotateHtmlString(
-                htmlString = """<p dir=rtl>Hello World!</p>""",
-                typography = typography,
-                linkStyle = linkStyle,
-            ),
+            actual = htmlParser.parse("""<p dir=rtl>Hello World!</p>"""),
         )
     }
 
@@ -1428,11 +1320,7 @@ class RememberAnnotatedHtmlStringTest {
                 )
                 append("Hello World!")
             },
-            actual = annotateHtmlString(
-                htmlString = """<p dir=ltr>Hello World!</p>""",
-                typography = typography,
-                linkStyle = linkStyle,
-            ),
+            actual = htmlParser.parse("""<p dir=ltr>Hello World!</p>"""),
         )
     }
 
@@ -1440,7 +1328,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape tab`() {
         assertEquals(
             expected = buildAnnotatedString { append("\t") },
-            actual = annotateHtmlString("""&Tab;""", typography, linkStyle),
+            actual = htmlParser.parse("""&Tab;"""),
         )
     }
 
@@ -1448,7 +1336,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape newline`() {
         assertEquals(
             expected = buildAnnotatedString { append("\n") },
-            actual = annotateHtmlString("""&NewLine;""", typography, linkStyle),
+            actual = htmlParser.parse("""&NewLine;"""),
         )
     }
 
@@ -1456,7 +1344,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape ampersand`() {
         assertEquals(
             expected = buildAnnotatedString { append("&") },
-            actual = annotateHtmlString("""&amp;""", typography, linkStyle),
+            actual = htmlParser.parse("""&amp;"""),
         )
     }
 
@@ -1464,7 +1352,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape ampersand 2`() {
         assertEquals(
             expected = buildAnnotatedString { append("A&B") },
-            actual = annotateHtmlString("""A&amp;B""", typography, linkStyle),
+            actual = htmlParser.parse("""A&amp;B"""),
         )
     }
 
@@ -1472,7 +1360,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape less than`() {
         assertEquals(
             expected = buildAnnotatedString { append("<") },
-            actual = annotateHtmlString("""&lt;""", typography, linkStyle),
+            actual = htmlParser.parse("""&lt;"""),
         )
     }
 
@@ -1480,7 +1368,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape greater than`() {
         assertEquals(
             expected = buildAnnotatedString { append(">") },
-            actual = annotateHtmlString("""&gt;""", typography, linkStyle),
+            actual = htmlParser.parse("""&gt;"""),
         )
     }
 
@@ -1488,7 +1376,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape quote`() {
         assertEquals(
             expected = buildAnnotatedString { append("\"") },
-            actual = annotateHtmlString("""&quot;""", typography, linkStyle),
+            actual = htmlParser.parse("""&quot;"""),
         )
     }
 
@@ -1496,7 +1384,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape non breaking whitespace`() {
         assertEquals(
             expected = buildAnnotatedString { append('\u00a0') },
-            actual = annotateHtmlString("""&nbsp;""", typography, linkStyle),
+            actual = htmlParser.parse("""&nbsp;"""),
         )
     }
 
@@ -1504,7 +1392,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape apostrophe`() {
         assertEquals(
             expected = buildAnnotatedString { append("'") },
-            actual = annotateHtmlString("""&#39;""", typography, linkStyle),
+            actual = htmlParser.parse("""&#39;"""),
         )
     }
 
@@ -1512,7 +1400,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape apostrophe in hex`() {
         assertEquals(
             expected = buildAnnotatedString { append("'") },
-            actual = annotateHtmlString("""&#x27;""", typography, linkStyle),
+            actual = htmlParser.parse("""&#x27;"""),
         )
     }
 
@@ -1520,7 +1408,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape two characters in a row`() {
         assertEquals(
             expected = buildAnnotatedString { append("A<B>C") },
-            actual = annotateHtmlString("""A&lt;B&gt;C""", typography, linkStyle),
+            actual = htmlParser.parse("""A&lt;B&gt;C"""),
         )
     }
 }
