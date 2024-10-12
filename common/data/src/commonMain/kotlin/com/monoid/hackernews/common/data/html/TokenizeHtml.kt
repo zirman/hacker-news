@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view.html
+package com.monoid.hackernews.common.data.html
 
 internal val WHITESPACE_REGEX = """\s+""".toRegex(RegexOption.IGNORE_CASE)
 internal val TAG_START_REGEX = """</?[^\s/>]+""".toRegex(RegexOption.IGNORE_CASE)

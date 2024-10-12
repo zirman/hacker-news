@@ -1,5 +1,6 @@
 package com.monoid.hackernews.common.data.model
 
+import androidx.compose.ui.text.AnnotatedString
 import com.monoid.hackernews.common.data.api.ItemId
 
 interface Item {
@@ -11,8 +12,8 @@ interface Item {
     val by: String?
     val descendants: Int?
     val score: Int?
-    val title: String?
-    val text: String?
+    val title: AnnotatedString?
+    val text: AnnotatedString?
     val url: String?
     val parent: ItemId?
     val kids: List<ItemId>?
@@ -35,8 +36,8 @@ expect fun makeItem(
     by: String? = null,
     descendants: Int? = null,
     score: Int? = null,
-    title: String? = null,
-    text: String? = null,
+    title: AnnotatedString? = null,
+    text: AnnotatedString? = null,
     url: String? = null,
     parent: ItemId? = null,
     kids: List<ItemId>? = null,

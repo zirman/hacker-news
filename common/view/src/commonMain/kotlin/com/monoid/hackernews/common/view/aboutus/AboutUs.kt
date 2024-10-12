@@ -20,9 +20,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.monoid.hackernews.common.view.html.rememberAnnotatedHtmlString
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.about_us_detail_html
-import com.monoid.hackernews.common.view.html.rememberAnnotatedHtmlString
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

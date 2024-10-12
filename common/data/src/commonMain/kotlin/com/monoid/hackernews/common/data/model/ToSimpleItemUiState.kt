@@ -2,10 +2,11 @@ package com.monoid.hackernews.common.data.model
 
 import com.monoid.hackernews.common.data.api.ItemApi
 import com.monoid.hackernews.common.data.api.ItemId
+import com.monoid.hackernews.common.data.html.toHtmlAnnotatedString
 import com.monoid.hackernews.common.data.room.ItemDb
 import kotlinx.datetime.Instant
 
-fun ItemDb.toSimpleItemUiState(kids: List<ItemId>): Item = makeItem(
+suspend fun ItemDb.toSimpleItemUiState(kids: List<ItemId>): Item = makeItem(
     id = ItemId(id),
     lastUpdate = lastUpdate,
     kids = kids,
@@ -15,8 +16,8 @@ fun ItemDb.toSimpleItemUiState(kids: List<ItemId>): Item = makeItem(
     by = by,
     descendants = descendants,
     score = score,
-    title = title,
-    text = text,
+    title = title?.toHtmlAnnotatedString(),
+    text = text?.toHtmlAnnotatedString(),
     url = url,
     parent = parent?.let { ItemId(it) },
     upvoted = upvoted,
@@ -26,7 +27,7 @@ fun ItemDb.toSimpleItemUiState(kids: List<ItemId>): Item = makeItem(
     followed = followed,
 )
 
-fun ItemApi.toSimpleItemUiState(instant: Instant): Item {
+suspend fun ItemApi.toSimpleItemUiState(instant: Instant): Item {
     val lastUpdate = instant.epochSeconds
     return when (this) {
         is ItemApi.Comment -> makeItem(
@@ -37,7 +38,7 @@ fun ItemApi.toSimpleItemUiState(instant: Instant): Item {
             time = time,
             deleted = deleted,
             by = by,
-            text = text,
+            text = text?.toHtmlAnnotatedString(),
             parent = parent,
             expanded = true,
             followed = false,
@@ -51,8 +52,8 @@ fun ItemApi.toSimpleItemUiState(instant: Instant): Item {
             time = time,
             deleted = deleted,
             by = by,
-            title = title,
-            text = title,
+            title = title?.toHtmlAnnotatedString(),
+            text = title?.toHtmlAnnotatedString(),
             url = url,
             expanded = true,
             followed = false,
@@ -68,8 +69,8 @@ fun ItemApi.toSimpleItemUiState(instant: Instant): Item {
             by = by,
             descendants = descendants,
             score = score,
-            title = title,
-            text = title,
+            title = title?.toHtmlAnnotatedString(),
+            text = title?.toHtmlAnnotatedString(),
             expanded = true,
             followed = false,
         )
@@ -83,8 +84,8 @@ fun ItemApi.toSimpleItemUiState(instant: Instant): Item {
             deleted = deleted,
             by = by,
             score = score,
-            title = title,
-            text = title,
+            title = title?.toHtmlAnnotatedString(),
+            text = title?.toHtmlAnnotatedString(),
             expanded = true,
             followed = false,
         )
@@ -99,8 +100,8 @@ fun ItemApi.toSimpleItemUiState(instant: Instant): Item {
             by = by,
             descendants = descendants,
             score = score,
-            title = title,
-            text = title,
+            title = title?.toHtmlAnnotatedString(),
+            text = title?.toHtmlAnnotatedString(),
             url = url,
             expanded = true,
             followed = false,

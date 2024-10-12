@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view.html
+package com.monoid.hackernews.common.data.html
 
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkAnnotation
@@ -12,6 +12,19 @@ import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.em
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.util.Collections
+
+private val boldStyle = SpanStyle(fontWeight = FontWeight.Bold)
+private val italicStyle = SpanStyle(fontStyle = FontStyle.Italic)
+private val bigStyle = SpanStyle(fontSize = 1.25f.em)
+private val smallStyle = SpanStyle(fontSize = .8f.em)
+private val monospaceStyle = SpanStyle(fontFamily = FontFamily.Monospace)
+private val strikeStyle = SpanStyle(textDecoration = TextDecoration.LineThrough)
+private val underlineStyle = SpanStyle(textDecoration = TextDecoration.Underline)
+private val superscriptStyle = SpanStyle(baselineShift = BaselineShift.Superscript)
+private val subscriptStyle = SpanStyle(baselineShift = BaselineShift.Subscript)
 
 class HtmlParser(
     val hStyles: List<SpanStyle> = listOf(
@@ -54,112 +67,17 @@ class HtmlParser(
         ),
     )
 ) {
+    private val pool = Collections.synchronizedList(mutableListOf<ParseState>())
 
-    @Suppress("LoopWithTooManyJumpStatements", "CyclomaticComplexMethod")
     fun parse(htmlString: String): AnnotatedString {
-        return ParseState().parse(htmlString)
+        val parseState = pool.removeLastOrNull() ?: ParseState()
+        val annotatedString = parseState.parse(htmlString)
+        pool.add(parseState)
+        return annotatedString
     }
 
-    private fun AnnotatedString.Builder.pushParagraphStyle(tag: HtmlToken.Tag) {
-        pushStyle(
-            ParagraphStyle(
-                lineBreak = when (tag.start) {
-                    "<p", "</p" -> LineBreak.Paragraph
-                    "<pre", "</pre" -> LineBreak.Unspecified // TODO: disable soft wrap when possible
-                    "<h1", "</h1", "<h2", "</h2", "<h3", "</h3", "<h4", "</h4", "<h5", "</h5",
-                    "<h6", "</h6" -> LineBreak.Heading
-
-                    else -> throw IllegalStateException("Token doesn't have configured linebreak")
-                }
-            ).applyAttributes(tag.tokens.toAttributes()),
-        )
-        if (tag.isHeader()) {
-            pushStyle(hStyles[tag.toLevel().coerceIn(hStyles.indices)])
-        }
-    }
-
-    @Suppress("CyclomaticComplexMethod")
-    private fun AnnotatedString.Builder.pushStyleForSpanTag(tag: HtmlToken.Tag) {
-        when (tag.start) {
-            "<b", "<strong" -> {
-                pushStyle(boldStyle)
-            }
-
-            "<i", "<cite", "<dfn", "<em", "<address" -> {
-                pushStyle(italicStyle)
-            }
-
-            "<big" -> {
-                pushStyle(bigStyle)
-            }
-
-            "<small" -> {
-                pushStyle(smallStyle)
-            }
-
-            "<tt", "<code" -> {
-                pushStyle(monospaceStyle)
-            }
-
-            "<s", "<strike", "<del" -> {
-                pushStyle(strikeStyle)
-            }
-
-            "<u" -> {
-                pushStyle(underlineStyle)
-            }
-
-            "<sup" -> {
-                pushStyle(superscriptStyle)
-            }
-
-            "<sub" -> {
-                pushStyle(subscriptStyle)
-            }
-
-            "<font" -> {
-                pushStyle(
-                    tag.tokens.toAttributes()
-                        ?.let { attributes ->
-                            when (attributes.lookup("face")) {
-                                "monospace" -> SpanStyle(fontFamily = FontFamily.Monospace)
-                                "serif" -> SpanStyle(fontFamily = FontFamily.Serif)
-                                "sans_serif" -> SpanStyle(fontFamily = FontFamily.SansSerif)
-                                "cursive" -> SpanStyle(fontFamily = FontFamily.Cursive)
-                                else -> SpanStyle()
-                            }.let { style ->
-                                val color = attributes.lookup("color")
-                                if (color != null) {
-                                    // TODO: parse color
-                                    style
-                                } else {
-                                    style
-                                }
-                            }
-                        }
-                        ?: SpanStyle(),
-                )
-            }
-
-            "<span" -> {
-                // CSS style: <span style=”color|background_color|text-decoration”>
-                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
-            }
-
-            "<a" -> {
-                // randomly causes IndexOutOfBoundsException in MultiParagraph
-                pushLink(
-                    LinkAnnotation.Url(
-                        url = tag.tokens.toAttributes()?.lookup("href") ?: "",
-                        styles = textLinkStyles,
-                    ),
-                )
-            }
-
-            else -> {
-                throw IllegalStateException("Invalid tag")
-            }
-        }
+    suspend fun parseParallel(htmlString: String): AnnotatedString = withContext(Dispatchers.Default) {
+        parse(htmlString)
     }
 
     private inner class ParseState {
@@ -197,9 +115,9 @@ class HtmlParser(
                                         builder.pop()
                                     }
                                 }
-                                builder.pushParagraphStyle(token)
+                                pushParagraphStyle(token)
                                 // push spans
-                                stack.forEach { builder.pushStyleForSpanTag(it) }
+                                stack.forEach { pushStyleForSpanTag(it) }
                                 // save block
                                 stack.addFirst(token)
                             } else if (stack.firstOrNull()?.isBlock() == true) {
@@ -210,15 +128,15 @@ class HtmlParser(
                                 }
                                 if (token.start.substring(2) != stack.first().start.substring(1)) {
                                     // mismatched block
-                                    builder.pushParagraphStyle(token)
+                                    pushParagraphStyle(token)
                                     builder.pop()
                                 }
                                 stack.removeFirst()
-                                stack.forEach { builder.pushStyleForSpanTag(it) }
+                                stack.forEach { pushStyleForSpanTag(it) }
                                 repeat(index) { tokens.removeFirst() }
                             } else {
                                 // unmatched close block
-                                builder.pushParagraphStyle(token)
+                                pushParagraphStyle(token)
                                 builder.pop()
                             }
                             index = 0
@@ -357,7 +275,7 @@ class HtmlParser(
 
         private fun spanTag(token: HtmlToken.Tag) {
             if (token.isOpen()) {
-                builder.pushStyleForSpanTag(token)
+                pushStyleForSpanTag(token)
                 stack.addLast(token)
             } else if (token.start.substring(2) == stack.lastOrNull()?.start?.substring(1)) {
                 builder.pop()
@@ -366,19 +284,107 @@ class HtmlParser(
                 println("tag mismatch")
             }
         }
-    }
 
-    companion object {
-        private val boldStyle = SpanStyle(fontWeight = FontWeight.Bold)
-        private val italicStyle = SpanStyle(fontStyle = FontStyle.Italic)
-        private val bigStyle = SpanStyle(fontSize = 1.25f.em)
-        private val smallStyle = SpanStyle(fontSize = .8f.em)
-        private val monospaceStyle = SpanStyle(fontFamily = FontFamily.Monospace)
-        private val strikeStyle = SpanStyle(textDecoration = TextDecoration.LineThrough)
-        private val underlineStyle = SpanStyle(textDecoration = TextDecoration.Underline)
-        private val superscriptStyle = SpanStyle(baselineShift = BaselineShift.Superscript)
-        private val subscriptStyle = SpanStyle(baselineShift = BaselineShift.Subscript)
+        private fun pushParagraphStyle(tag: HtmlToken.Tag) {
+            builder.pushStyle(
+                ParagraphStyle(
+                    lineBreak = when (tag.start) {
+                        "<p", "</p" -> LineBreak.Paragraph
+                        "<pre", "</pre" -> LineBreak.Unspecified // TODO: disable soft wrap when possible
+                        "<h1", "</h1", "<h2", "</h2", "<h3", "</h3", "<h4", "</h4", "<h5", "</h5",
+                        "<h6", "</h6" -> LineBreak.Heading
+
+                        else -> throw IllegalStateException("Token doesn't have configured linebreak")
+                    }
+                ).applyAttributes(tag.tokens.toAttributes()),
+            )
+            if (tag.isHeader()) {
+                builder.pushStyle(hStyles[tag.toLevel().coerceIn(hStyles.indices)])
+            }
+        }
+
+        @Suppress("CyclomaticComplexMethod")
+        private fun pushStyleForSpanTag(tag: HtmlToken.Tag) {
+            when (tag.start) {
+                "<b", "<strong" -> {
+                    builder.pushStyle(boldStyle)
+                }
+
+                "<i", "<cite", "<dfn", "<em", "<address" -> {
+                    builder.pushStyle(italicStyle)
+                }
+
+                "<big" -> {
+                    builder.pushStyle(bigStyle)
+                }
+
+                "<small" -> {
+                    builder.pushStyle(smallStyle)
+                }
+
+                "<tt", "<code" -> {
+                    builder.pushStyle(monospaceStyle)
+                }
+
+                "<s", "<strike", "<del" -> {
+                    builder.pushStyle(strikeStyle)
+                }
+
+                "<u" -> {
+                    builder.pushStyle(underlineStyle)
+                }
+
+                "<sup" -> {
+                    builder.pushStyle(superscriptStyle)
+                }
+
+                "<sub" -> {
+                    builder.pushStyle(subscriptStyle)
+                }
+
+                "<font" -> {
+                    builder.pushStyle(
+                        tag.tokens.toAttributes()
+                            ?.let { attributes ->
+                                when (attributes.lookup("face")) {
+                                    "monospace" -> SpanStyle(fontFamily = FontFamily.Monospace)
+                                    "serif" -> SpanStyle(fontFamily = FontFamily.Serif)
+                                    "sans_serif" -> SpanStyle(fontFamily = FontFamily.SansSerif)
+                                    "cursive" -> SpanStyle(fontFamily = FontFamily.Cursive)
+                                    else -> SpanStyle()
+                                }.let { style ->
+                                    val color = attributes.lookup("color")
+                                    if (color != null) {
+                                        // TODO: parse color
+                                        style
+                                    } else {
+                                        style
+                                    }
+                                }
+                            }
+                            ?: SpanStyle(),
+                    )
+                }
+
+                "<span" -> {
+                    // CSS style: <span style=”color|background_color|text-decoration”>
+                    builder.pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                }
+
+                "<a" -> {
+                    // randomly causes IndexOutOfBoundsException in MultiParagraph
+                    builder.pushLink(
+                        LinkAnnotation.Url(
+                            url = tag.tokens.toAttributes()?.lookup("href") ?: "",
+                            styles = textLinkStyles,
+                        ),
+                    )
+                }
+
+                else -> {
+                    throw IllegalStateException("Invalid tag")
+                }
+            }
+        }
     }
 }
-//        val stack: ArrayDeque<HtmlToken.Tag> = ArrayDeque()
-//        val tokens: ArrayDeque<HtmlToken> = tokenizeHtml(htmlString)

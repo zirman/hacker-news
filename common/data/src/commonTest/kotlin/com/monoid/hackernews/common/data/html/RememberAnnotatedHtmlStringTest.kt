@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view.html
+package com.monoid.hackernews.common.data.html
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.LinkAnnotation

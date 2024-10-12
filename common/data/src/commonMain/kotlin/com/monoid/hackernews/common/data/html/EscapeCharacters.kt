@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view.html
+package com.monoid.hackernews.common.data.html
 
 private val escapedRegex = """&([^;]+);""".toRegex(RegexOption.IGNORE_CASE)
 

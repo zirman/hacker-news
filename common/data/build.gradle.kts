@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotlinxParcelize)
     alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.composeCompiler)
     alias(libs.plugins.room)
     alias(libs.plugins.ksp)
     id("hackernews.detekt")
@@ -22,6 +24,8 @@ kotlin {
         commonMain.dependencies {
             compileOnly(libs.koinCore)
             project.dependencies.coreLibraryDesugaring(libs.desugarJdkLibsNio)
+            implementation(compose.ui)
+            implementation(compose.uiUtil)
             implementation(libs.annotation)
             implementation(libs.bundles.datastore)
             implementation(libs.bundles.koin)

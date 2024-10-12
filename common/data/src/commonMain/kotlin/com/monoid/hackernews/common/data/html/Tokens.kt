@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view.html
+package com.monoid.hackernews.common.data.html
 
 sealed interface HtmlToken {
     data class Word(val word: String) : HtmlToken

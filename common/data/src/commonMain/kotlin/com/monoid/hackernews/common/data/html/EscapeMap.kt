@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view.html
+package com.monoid.hackernews.common.data.html
 
 internal val ESCAPE_MAP = mapOf(
     "amp" to '&',

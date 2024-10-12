@@ -55,7 +55,6 @@ import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.deleted
 import com.monoid.hackernews.common.view.flag
 import com.monoid.hackernews.common.view.follow
-import com.monoid.hackernews.common.view.html.rememberAnnotatedHtmlString
 import com.monoid.hackernews.common.view.more_options
 import com.monoid.hackernews.common.view.reply
 import com.monoid.hackernews.common.view.text.ClickableTextBlock
@@ -292,16 +291,14 @@ fun ItemComment(
                         }
                     }
                 }
-
                 val htmlString = if (item.deleted == true) {
-                    stringResource(Res.string.deleted)
+                    AnnotatedString(stringResource(Res.string.deleted))
                 } else {
-                    item.text.orEmpty()
+                    item.text ?: AnnotatedString("")
                 }
-
                 if (item.expanded) {
                     Text(
-                        text = rememberAnnotatedHtmlString(htmlString),
+                        text = htmlString,
                         modifier = Modifier.padding(horizontal = 16.dp),
                         overflow = TextOverflow.Ellipsis,
                         style = LocalTextStyle.current.merge(

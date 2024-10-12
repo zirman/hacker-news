@@ -1,5 +1,6 @@
 package com.monoid.hackernews.common.data.model
 
+import androidx.compose.ui.text.AnnotatedString
 import com.monoid.hackernews.common.data.api.ItemId
 
 data class SimpleItemUiStateImpl(
@@ -11,8 +12,8 @@ data class SimpleItemUiStateImpl(
     override val by: String?,
     override val descendants: Int?,
     override val score: Int?,
-    override val title: String?,
-    override val text: String?,
+    override val title: AnnotatedString?,
+    override val text: AnnotatedString?,
     override val url: String?,
     override val parent: ItemId?,
     override val kids: List<ItemId>?,
@@ -32,8 +33,8 @@ actual fun makeItem(
     by: String?,
     descendants: Int?,
     score: Int?,
-    title: String?,
-    text: String?,
+    title: AnnotatedString?,
+    text: AnnotatedString?,
     url: String?,
     parent: ItemId?,
     kids: List<ItemId>?,

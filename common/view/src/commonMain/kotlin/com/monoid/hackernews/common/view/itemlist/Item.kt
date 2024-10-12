@@ -60,7 +60,6 @@ import com.monoid.hackernews.common.view.comment
 import com.monoid.hackernews.common.view.favorite
 import com.monoid.hackernews.common.view.flag
 import com.monoid.hackernews.common.view.follow
-import com.monoid.hackernews.common.view.html.rememberAnnotatedHtmlString
 import com.monoid.hackernews.common.view.more_options
 import com.monoid.hackernews.common.view.open_in_browser
 import com.monoid.hackernews.common.view.placeholder.PlaceholderHighlight
@@ -83,8 +82,8 @@ private fun ItemPreview() {
         item = makeItem(
             id = ItemId(0),
             type = ItemType.Story,
-            title = "Hello World",
-            text = "Lorum Ipsum",
+            title = AnnotatedString("Hello World"),
+            text = AnnotatedString("Lorum Ipsum"),
             url = "https://www.google.com/",
             kids = emptyList(),
             upvoted = false,
@@ -146,9 +145,7 @@ fun Item(
         Column(modifier = Modifier.padding(4.dp)) {
             Row(verticalAlignment = Alignment.Top) {
                 Text(
-                    text = item?.title?.let { AnnotatedString(text = it) }
-                        ?: item?.text?.let { rememberAnnotatedHtmlString(it) }
-                        ?: AnnotatedString(text = ""),
+                    text = item?.title ?: item?.text ?: AnnotatedString(""),
                     minLines = 2,
                     maxLines = 2,
                     modifier = Modifier

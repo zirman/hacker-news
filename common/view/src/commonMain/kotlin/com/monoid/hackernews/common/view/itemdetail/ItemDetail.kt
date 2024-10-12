@@ -55,7 +55,6 @@ import com.monoid.hackernews.common.view.comment
 import com.monoid.hackernews.common.view.favorite
 import com.monoid.hackernews.common.view.flag
 import com.monoid.hackernews.common.view.follow
-import com.monoid.hackernews.common.view.html.rememberAnnotatedHtmlString
 import com.monoid.hackernews.common.view.more_options
 import com.monoid.hackernews.common.view.open_in_browser
 import com.monoid.hackernews.common.view.placeholder.PlaceholderHighlight
@@ -94,9 +93,8 @@ fun ItemDetail(
             ) {
                 SelectionContainer(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = rememberAnnotatedHtmlString(
-                            (if (item?.type == ItemType.Comment) item.text else item?.title).orEmpty(),
-                        ),
+                        text = (if (item?.type == ItemType.Comment) item.text else item?.title)
+                            ?: AnnotatedString(""),
                         modifier = Modifier.padding(horizontal = 8.dp),
                         style = MaterialTheme.typography.titleMedium,
                     )
@@ -399,7 +397,7 @@ fun ItemDetail(
 
             if (item?.type != ItemType.Comment && itemText != null) {
                 Text(
-                    text = rememberAnnotatedHtmlString(itemText),
+                    text = itemText,
                     modifier = Modifier
                         .padding(8.dp)
                         .placeholder(
