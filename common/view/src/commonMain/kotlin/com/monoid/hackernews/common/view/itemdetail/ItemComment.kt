@@ -98,7 +98,6 @@ fun ItemComment(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     val timeByUserAnnotatedString: AnnotatedString =
                         rememberTimeBy(time = item.time, by = item.by)
-
                     ClickableTextBlock(
                         text = timeByUserAnnotatedString,
                         lines = 1,
@@ -152,18 +151,14 @@ fun ItemComment(
 
                     Box {
                         val (expanded: Boolean, setContextExpanded) = remember {
-                            mutableStateOf(
-                                false
-                            )
+                            mutableStateOf(false)
                         }
-
                         IconButton(onClick = { setContextExpanded(true) }) {
                             Icon(
                                 imageVector = Icons.TwoTone.MoreVert,
                                 contentDescription = stringResource(Res.string.more_options),
                             )
                         }
-
                         DropdownMenu(
                             expanded = expanded,
                             onDismissRequest = { setContextExpanded(false) },
@@ -181,7 +176,6 @@ fun ItemComment(
                                     )
                                 },
                             )
-
                             DropdownMenuItem(text = {
                                 Text(
                                     text = stringResource(
@@ -291,14 +285,13 @@ fun ItemComment(
                         }
                     }
                 }
-                val htmlString = if (item.deleted == true) {
-                    AnnotatedString(stringResource(Res.string.deleted))
-                } else {
-                    item.text ?: AnnotatedString("")
-                }
                 if (item.expanded) {
                     Text(
-                        text = htmlString,
+                        text = if (item.deleted == true) {
+                            AnnotatedString(stringResource(Res.string.deleted))
+                        } else {
+                            item.text ?: AnnotatedString("")
+                        },
                         modifier = Modifier.padding(horizontal = 16.dp),
                         overflow = TextOverflow.Ellipsis,
                         style = LocalTextStyle.current.merge(
