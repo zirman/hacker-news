@@ -9,15 +9,14 @@ internal val TAG_END_REGEX = """/?>""".toRegex(RegexOption.IGNORE_CASE)
 internal val WORD_REGEX = """[^<\s]+""".toRegex(RegexOption.IGNORE_CASE)
 
 @Suppress("CyclomaticComplexMethod", "NestedBlockDepth")
-fun tokenizeHtml(htmlString: String): ArrayDeque<HtmlToken> {
-    val tokens = ArrayDeque<HtmlToken>()
+fun ArrayDeque<HtmlToken>.tokenizeHtml(htmlString: String): ArrayDeque<HtmlToken> {
     var i = 0
     @Suppress("LoopWithTooManyJumpStatements")
     outer@ while (i < htmlString.length) {
         var match = WHITESPACE_REGEX.matchAt(htmlString, i)
         if (match != null) {
             i = match.range.last + 1
-            tokens.add(HtmlToken.Whitespace(match.value))
+            add(HtmlToken.Whitespace(match.value))
             continue
         }
         match = TAG_START_REGEX.matchAt(htmlString, i)
@@ -35,7 +34,7 @@ fun tokenizeHtml(htmlString: String): ArrayDeque<HtmlToken> {
                 if (tagMatch != null) {
                     k = tagMatch.range.last + 1
                     tagMatch.value.replace("&amp;", "&")
-                    tokens.add(
+                    add(
                         HtmlToken.Tag(
                             start.lowercase(),
                             tagTokens,
@@ -69,11 +68,11 @@ fun tokenizeHtml(htmlString: String): ArrayDeque<HtmlToken> {
         match = WORD_REGEX.matchAt(htmlString, i)
         if (match != null) {
             i = match.range.last + 1
-            tokens.add(HtmlToken.Word(match.value.escapeCharacters()))
+            add(HtmlToken.Word(match.value.escapeCharacters()))
             continue
         }
         @Suppress("UseCheckOrError", "ThrowingExceptionsWithoutMessageOrCause")
         throw IllegalStateException("no matching regexes")
     }
-    return tokens
+    return this
 }

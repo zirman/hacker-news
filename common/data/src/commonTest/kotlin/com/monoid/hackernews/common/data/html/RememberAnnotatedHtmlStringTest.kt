@@ -32,7 +32,7 @@ class RememberAnnotatedHtmlStringTest {
                 HtmlToken.Word("World!"),
                 HtmlToken.Whitespace("  "),
             ),
-            actual = tokenizeHtml("  Hello  \n  World!  ").toList(),
+            actual = ArrayDeque<HtmlToken>().tokenizeHtml("  Hello  \n  World!  ").toList(),
         )
     }
 
@@ -45,7 +45,7 @@ class RememberAnnotatedHtmlStringTest {
                 HtmlToken.Word("Hello"),
                 HtmlToken.Tag("</u", emptyList(), ">"),
             ),
-            actual = tokenizeHtml("  <u>Hello</u>").toList(),
+            actual = ArrayDeque<HtmlToken>().tokenizeHtml("  <u>Hello</u>").toList(),
         )
     }
 
@@ -58,7 +58,7 @@ class RememberAnnotatedHtmlStringTest {
                 HtmlToken.Tag("</u", emptyList(), ">"),
                 HtmlToken.Whitespace("  "),
             ),
-            actual = tokenizeHtml("<u>Hello</u>  ").toList(),
+            actual = ArrayDeque<HtmlToken>().tokenizeHtml("<u>Hello</u>  ").toList(),
         )
     }
 
@@ -71,7 +71,7 @@ class RememberAnnotatedHtmlStringTest {
                 HtmlToken.Word("Hello"),
                 HtmlToken.Tag("</u", emptyList(), ">"),
             ),
-            actual = tokenizeHtml("<u>  Hello</u>").toList(),
+            actual = ArrayDeque<HtmlToken>().tokenizeHtml("<u>  Hello</u>").toList(),
         )
     }
 
@@ -83,7 +83,7 @@ class RememberAnnotatedHtmlStringTest {
                 HtmlToken.Word("Hello"),
                 HtmlToken.Tag("</u", emptyList(), ">"),
             ),
-            actual = tokenizeHtml("<u a>Hello</u>").toList(),
+            actual = ArrayDeque<HtmlToken>().tokenizeHtml("<u a>Hello</u>").toList(),
         )
     }
 
@@ -95,7 +95,7 @@ class RememberAnnotatedHtmlStringTest {
                 HtmlToken.Word("Hello"),
                 HtmlToken.Tag("</u", emptyList(), ">"),
             ),
-            actual = tokenizeHtml("<u a=>Hello</u>").toList(),
+            actual = ArrayDeque<HtmlToken>().tokenizeHtml("<u a=>Hello</u>").toList(),
         )
     }
 
@@ -111,7 +111,7 @@ class RememberAnnotatedHtmlStringTest {
                 HtmlToken.Word("Hello"),
                 HtmlToken.Tag("</u", emptyList(), ">"),
             ),
-            actual = tokenizeHtml("<u a=b>Hello</u>").toList(),
+            actual = ArrayDeque<HtmlToken>().tokenizeHtml("<u a=b>Hello</u>").toList(),
         )
     }
 
@@ -127,7 +127,7 @@ class RememberAnnotatedHtmlStringTest {
                 HtmlToken.Word("Hello"),
                 HtmlToken.Tag("</u", emptyList(), ">"),
             ),
-            actual = tokenizeHtml("""<u a="b">Hello</u>""").toList(),
+            actual = ArrayDeque<HtmlToken>().tokenizeHtml("""<u a="b">Hello</u>""").toList(),
         )
     }
 
@@ -143,7 +143,7 @@ class RememberAnnotatedHtmlStringTest {
                 HtmlToken.Word("Hello"),
                 HtmlToken.Tag("</u", emptyList(), ">"),
             ),
-            actual = tokenizeHtml("""<u a="=b">Hello</u>""").toList(),
+            actual = ArrayDeque<HtmlToken>().tokenizeHtml("""<u a="=b">Hello</u>""").toList(),
         )
     }
 
@@ -153,7 +153,7 @@ class RememberAnnotatedHtmlStringTest {
             expected = listOf(
                 HtmlToken.Tag("<br", emptyList(), "/>"),
             ),
-            actual = tokenizeHtml("""<br />""").toList(),
+            actual = ArrayDeque<HtmlToken>().tokenizeHtml("""<br />""").toList(),
         )
     }
 
@@ -166,7 +166,7 @@ class RememberAnnotatedHtmlStringTest {
                 HtmlToken.Word("Hello"),
                 HtmlToken.Tag("</u", emptyList(), ">"),
             ),
-            actual = tokenizeHtml("""  <u>Hello</u>""").toList(),
+            actual = ArrayDeque<HtmlToken>().tokenizeHtml("""  <u>Hello</u>""").toList(),
         )
     }
 
@@ -176,7 +176,7 @@ class RememberAnnotatedHtmlStringTest {
             expected = listOf(
                 HtmlToken.Tag("<br", emptyList(), "/>"),
             ),
-            actual = tokenizeHtml("""<br/>""").toList(),
+            actual = ArrayDeque<HtmlToken>().tokenizeHtml("""<br/>""").toList(),
         )
     }
 
@@ -1409,6 +1409,14 @@ class RememberAnnotatedHtmlStringTest {
         assertEquals(
             expected = buildAnnotatedString { append("A<B>C") },
             actual = htmlParser.parse("""A&lt;B&gt;C"""),
+        )
+    }
+
+    @Test
+    fun `foo bar`() {
+        assertEquals(
+            expected = buildAnnotatedString { append("SRBs were in fact reusable.") },
+            actual = htmlParser.parse("SRBs were in fact reusable."),
         )
     }
 }

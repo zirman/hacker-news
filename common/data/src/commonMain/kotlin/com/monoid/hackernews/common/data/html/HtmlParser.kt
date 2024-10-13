@@ -5,6 +5,7 @@ import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -76,27 +77,27 @@ class HtmlParser(
         return annotatedString
     }
 
-    suspend fun parseParallel(htmlString: String): AnnotatedString = withContext(Dispatchers.Default) {
+    suspend fun parseParallel(
+        htmlString: String,
+    ): AnnotatedString = withContext(Dispatchers.Default) {
         parse(htmlString)
     }
 
     private inner class ParseState {
+        private val tokens: ArrayDeque<HtmlToken> = ArrayDeque()
         private val stack: ArrayDeque<HtmlToken.Tag> = ArrayDeque()
         private var index: Int = 0
-        private lateinit var tokens: ArrayDeque<HtmlToken>
-        private lateinit var builder: AnnotatedString.Builder
 
         @Suppress("CyclomaticComplexMethod", "NestedBlockDepth", "LoopWithTooManyJumpStatements")
-        fun parse(htmlString: String): AnnotatedString {
-            builder = AnnotatedString.Builder()
-            tokens = tokenizeHtml(htmlString)
+        fun parse(htmlString: String): AnnotatedString = buildAnnotatedString {
+            tokens.tokenizeHtml(htmlString)
             var hasAppendedWord = false
             while (true) {
                 if (index >= tokens.size) break
                 when (val token = tokens[index]) {
                     is HtmlToken.Tag -> {
                         if (token.isBreak()) {
-                            builder.appendLine()
+                            appendLine()
                             index = 0
                             hasAppendedWord = false
                             tokens.removeFirst()
@@ -106,13 +107,13 @@ class HtmlParser(
                                 // push span styles up to index
                                 pushBlock()
                                 // pop all spans and block
-                                repeat(stack.size) { builder.pop() }
+                                repeat(stack.size) { pop() }
                                 val firstTag = stack.firstOrNull()
                                 // drop block from stack
                                 if (firstTag?.isBlock() == true) {
                                     stack.removeFirst()
                                     if (firstTag.isHeader()) {
-                                        builder.pop()
+                                        pop()
                                     }
                                 }
                                 pushParagraphStyle(token)
@@ -122,14 +123,14 @@ class HtmlParser(
                                 stack.addFirst(token)
                             } else if (stack.firstOrNull()?.isBlock() == true) {
                                 // handle close tag
-                                repeat(stack.size) { builder.pop() }
+                                repeat(stack.size) { pop() }
                                 if (stack.first().isHeader()) {
-                                    builder.pop()
+                                    pop()
                                 }
                                 if (token.start.substring(2) != stack.first().start.substring(1)) {
                                     // mismatched block
                                     pushParagraphStyle(token)
-                                    builder.pop()
+                                    pop()
                                 }
                                 stack.removeFirst()
                                 stack.forEach { pushStyleForSpanTag(it) }
@@ -137,7 +138,7 @@ class HtmlParser(
                             } else {
                                 // unmatched close block
                                 pushParagraphStyle(token)
-                                builder.pop()
+                                pop()
                             }
                             index = 0
                             hasAppendedWord = false
@@ -159,7 +160,7 @@ class HtmlParser(
                         } else {
                             appendWord()
                         }
-                        builder.append(token.word)
+                        append(token.word)
                         hasAppendedWord = true
                         tokens.removeFirst()
                         index = 0
@@ -170,11 +171,12 @@ class HtmlParser(
                     }
                 }
             }
+            tokens.clear()
             stack.clear()
-            return builder.toAnnotatedString()
+            index = 0
         }
 
-        private fun appendWord() {
+        private fun AnnotatedString.Builder.appendWord() {
             repeat(index) {
                 when (val token = tokens.removeFirst()) {
                     is HtmlToken.Tag -> {
@@ -191,7 +193,7 @@ class HtmlParser(
             }
         }
 
-        private fun appendWordWithSpace() {
+        private fun AnnotatedString.Builder.appendWordWithSpace() {
             var hasAppendedSpace = false
             repeat(index) {
                 when (val token = tokens.removeFirst()) {
@@ -201,7 +203,7 @@ class HtmlParser(
 
                     is HtmlToken.Whitespace -> {
                         if (!hasAppendedSpace) {
-                            builder.append(' ')
+                            append(' ')
                             hasAppendedSpace = true
                         }
                     }
@@ -213,7 +215,7 @@ class HtmlParser(
             }
         }
 
-        private fun appendWordPreformattedOpen() {
+        private fun AnnotatedString.Builder.appendWordPreformattedOpen() {
             var hasAppendedWhitespace = false
             repeat(index) {
                 when (val token = tokens.removeFirst()) {
@@ -223,9 +225,9 @@ class HtmlParser(
 
                     is HtmlToken.Whitespace -> {
                         if (hasAppendedWhitespace) {
-                            builder.append(token.whitespace)
+                            append(token.whitespace)
                         } else {
-                            builder.append(token.whitespace.removePrefix("\n"))
+                            append(token.whitespace.removePrefix("\n"))
                             hasAppendedWhitespace = true
                         }
                     }
@@ -237,7 +239,7 @@ class HtmlParser(
             }
         }
 
-        private fun appendWordPreformatted() {
+        private fun AnnotatedString.Builder.appendWordPreformatted() {
             repeat(index) {
                 when (val token = tokens.removeFirst()) {
                     is HtmlToken.Tag -> {
@@ -245,7 +247,7 @@ class HtmlParser(
                     }
 
                     is HtmlToken.Whitespace -> {
-                        builder.append(token.whitespace)
+                        append(token.whitespace)
                     }
 
                     is HtmlToken.Word -> {
@@ -255,7 +257,7 @@ class HtmlParser(
             }
         }
 
-        private fun pushBlock() {
+        private fun AnnotatedString.Builder.pushBlock() {
             repeat(index) {
                 when (val token = tokens.removeFirst()) {
                     is HtmlToken.Tag -> {
@@ -273,20 +275,20 @@ class HtmlParser(
             }
         }
 
-        private fun spanTag(token: HtmlToken.Tag) {
+        private fun AnnotatedString.Builder.spanTag(token: HtmlToken.Tag) {
             if (token.isOpen()) {
                 pushStyleForSpanTag(token)
                 stack.addLast(token)
             } else if (token.start.substring(2) == stack.lastOrNull()?.start?.substring(1)) {
-                builder.pop()
+                pop()
                 stack.removeLast()
             } else {
                 println("tag mismatch")
             }
         }
 
-        private fun pushParagraphStyle(tag: HtmlToken.Tag) {
-            builder.pushStyle(
+        private fun AnnotatedString.Builder.pushParagraphStyle(tag: HtmlToken.Tag) {
+            pushStyle(
                 ParagraphStyle(
                     lineBreak = when (tag.start) {
                         "<p", "</p" -> LineBreak.Paragraph
@@ -299,51 +301,51 @@ class HtmlParser(
                 ).applyAttributes(tag.tokens.toAttributes()),
             )
             if (tag.isHeader()) {
-                builder.pushStyle(hStyles[tag.toLevel().coerceIn(hStyles.indices)])
+                pushStyle(hStyles[tag.toLevel().coerceIn(hStyles.indices)])
             }
         }
 
         @Suppress("CyclomaticComplexMethod")
-        private fun pushStyleForSpanTag(tag: HtmlToken.Tag) {
+        private fun AnnotatedString.Builder.pushStyleForSpanTag(tag: HtmlToken.Tag) {
             when (tag.start) {
                 "<b", "<strong" -> {
-                    builder.pushStyle(boldStyle)
+                    pushStyle(boldStyle)
                 }
 
                 "<i", "<cite", "<dfn", "<em", "<address" -> {
-                    builder.pushStyle(italicStyle)
+                    pushStyle(italicStyle)
                 }
 
                 "<big" -> {
-                    builder.pushStyle(bigStyle)
+                    pushStyle(bigStyle)
                 }
 
                 "<small" -> {
-                    builder.pushStyle(smallStyle)
+                    pushStyle(smallStyle)
                 }
 
                 "<tt", "<code" -> {
-                    builder.pushStyle(monospaceStyle)
+                    pushStyle(monospaceStyle)
                 }
 
                 "<s", "<strike", "<del" -> {
-                    builder.pushStyle(strikeStyle)
+                    pushStyle(strikeStyle)
                 }
 
                 "<u" -> {
-                    builder.pushStyle(underlineStyle)
+                    pushStyle(underlineStyle)
                 }
 
                 "<sup" -> {
-                    builder.pushStyle(superscriptStyle)
+                    pushStyle(superscriptStyle)
                 }
 
                 "<sub" -> {
-                    builder.pushStyle(subscriptStyle)
+                    pushStyle(subscriptStyle)
                 }
 
                 "<font" -> {
-                    builder.pushStyle(
+                    pushStyle(
                         tag.tokens.toAttributes()
                             ?.let { attributes ->
                                 when (attributes.lookup("face")) {
@@ -368,12 +370,12 @@ class HtmlParser(
 
                 "<span" -> {
                     // CSS style: <span style=”color|background_color|text-decoration”>
-                    builder.pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                    pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 }
 
                 "<a" -> {
                     // randomly causes IndexOutOfBoundsException in MultiParagraph
-                    builder.pushLink(
+                    pushLink(
                         LinkAnnotation.Url(
                             url = tag.tokens.toAttributes()?.lookup("href") ?: "",
                             styles = textLinkStyles,
