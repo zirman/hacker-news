@@ -50,8 +50,8 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
         super.onCreate(savedInstanceState)
         windowSetup()
         setContent {
-            AppTheme {
-                KoinContext {
+            KoinContext {
+                AppTheme {
                     Scrim {
                         MainNavHost(onClickLogin = {})
                     }

@@ -64,8 +64,8 @@ fun main() {
 
     application {
         Window(onCloseRequest = ::exitApplication) {
-            AppTheme {
-                KoinContext {
+            KoinContext {
+                AppTheme {
                     var showLoginDialog by rememberSaveable {
                         mutableStateOf(false)
                     }
