@@ -134,7 +134,6 @@ fun ItemComment(
                             color = LocalContentColor.current,
                         ),
                     )
-
                     if (item.expanded.not()) {
                         Badge(
                             containerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -146,9 +145,7 @@ fun ItemComment(
                             )
                         }
                     }
-
                     Spacer(modifier = Modifier.weight(1f))
-
                     Box {
                         val (expanded: Boolean, setContextExpanded) = remember {
                             mutableStateOf(false)
@@ -208,7 +205,6 @@ fun ItemComment(
                                     ),
                                 )
                             })
-
                             DropdownMenuItem(
                                 text = {
                                     Text(
