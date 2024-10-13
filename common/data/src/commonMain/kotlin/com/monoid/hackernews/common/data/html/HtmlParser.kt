@@ -14,8 +14,8 @@ import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.em
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
-import java.util.Collections
 
 private val boldStyle = SpanStyle(fontWeight = FontWeight.Bold)
 private val italicStyle = SpanStyle(fontStyle = FontStyle.Italic)
@@ -68,12 +68,12 @@ class HtmlParser(
         ),
     )
 ) {
-    private val pool = Collections.synchronizedList(mutableListOf<ParseState>())
+    private val pool = mutableListOf<ParseState>()
 
     fun parse(htmlString: String): AnnotatedString {
-        val parseState = pool.removeLastOrNull() ?: ParseState()
+        val parseState = synchronized(pool) { pool.removeLastOrNull() } ?: ParseState()
         val annotatedString = parseState.parse(htmlString)
-        pool.add(parseState)
+        synchronized(pool) { pool.add(parseState) }
         return annotatedString
     }
 
