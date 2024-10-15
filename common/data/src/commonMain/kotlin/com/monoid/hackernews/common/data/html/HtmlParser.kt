@@ -12,9 +12,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextIndent
 import androidx.compose.ui.unit.em
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
 
 private val boldStyle = SpanStyle(fontWeight = FontWeight.Bold)
@@ -290,14 +290,20 @@ class HtmlParser(
         private fun AnnotatedString.Builder.pushParagraphStyle(tag: HtmlToken.Tag) {
             pushStyle(
                 ParagraphStyle(
+                    textIndent = when (tag.start) {
+                        "<pre", "</pre", "<h1", "</h1", "<h2", "</h2", "<h3", "</h3", "<h4", "</h4", "<h5", "</h5",
+                        "<h6", "</h6" -> TextIndent.None
+
+                        else -> null
+                    },
                     lineBreak = when (tag.start) {
                         "<p", "</p" -> LineBreak.Paragraph
                         "<pre", "</pre" -> LineBreak.Unspecified // TODO: disable soft wrap when possible
-                        "<h1", "</h1", "<h2", "</h2", "<h3", "</h3", "<h4", "</h4", "<h5", "</h5",
-                        "<h6", "</h6" -> LineBreak.Heading
+                        "<h1", "</h1", "<h2", "</h2", "<h3", "</h3", "<h4", "</h4", "<h5", "</h5", "<h6", "</h6"
+                            -> LineBreak.Heading
 
                         else -> throw IllegalStateException("Token doesn't have configured linebreak")
-                    }
+                    },
                 ).applyAttributes(tag.tokens.toAttributes()),
             )
             if (tag.isHeader()) {
