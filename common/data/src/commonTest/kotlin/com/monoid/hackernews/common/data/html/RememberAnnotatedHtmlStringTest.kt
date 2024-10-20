@@ -13,6 +13,7 @@ import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextDirection
+import androidx.compose.ui.text.style.TextIndent
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import kotlin.test.Test
@@ -532,7 +533,12 @@ class RememberAnnotatedHtmlStringTest {
     fun `h1 tag`() {
         assertEquals(
             expected = buildAnnotatedString {
-                pushStyle(ParagraphStyle(lineBreak = LineBreak.Heading))
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Heading,
+                    )
+                )
                 pushStyle(htmlParser.hStyles[0])
                 append("Hello World!")
             },
@@ -544,7 +550,12 @@ class RememberAnnotatedHtmlStringTest {
     fun `h2 tag`() {
         assertEquals(
             expected = buildAnnotatedString {
-                pushStyle(ParagraphStyle(lineBreak = LineBreak.Heading))
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Heading,
+                    )
+                )
                 pushStyle(htmlParser.hStyles[1])
                 append("Hello World!")
             },
@@ -556,7 +567,12 @@ class RememberAnnotatedHtmlStringTest {
     fun `h3 tag`() {
         assertEquals(
             expected = buildAnnotatedString {
-                pushStyle(ParagraphStyle(lineBreak = LineBreak.Heading))
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Heading,
+                    )
+                )
                 pushStyle(htmlParser.hStyles[2])
                 append("Hello World!")
             },
@@ -568,7 +584,12 @@ class RememberAnnotatedHtmlStringTest {
     fun `h4 tag`() {
         assertEquals(
             expected = buildAnnotatedString {
-                pushStyle(ParagraphStyle(lineBreak = LineBreak.Heading))
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Heading,
+                    )
+                )
                 pushStyle(htmlParser.hStyles[3])
                 append("Hello World!")
             },
@@ -580,7 +601,12 @@ class RememberAnnotatedHtmlStringTest {
     fun `h5 tag`() {
         assertEquals(
             expected = buildAnnotatedString {
-                pushStyle(ParagraphStyle(lineBreak = LineBreak.Heading))
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Heading,
+                    )
+                )
                 pushStyle(htmlParser.hStyles[4])
                 append("Hello World!")
             },
@@ -592,7 +618,12 @@ class RememberAnnotatedHtmlStringTest {
     fun `h6 tag`() {
         assertEquals(
             expected = buildAnnotatedString {
-                pushStyle(ParagraphStyle(lineBreak = LineBreak.Heading))
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Heading,
+                    )
+                )
                 pushStyle(htmlParser.hStyles[5])
                 append("Hello World!")
             },
@@ -604,17 +635,32 @@ class RememberAnnotatedHtmlStringTest {
     fun `header interleaving`() {
         assertEquals(
             expected = buildAnnotatedString {
-                pushStyle(ParagraphStyle(lineBreak = LineBreak.Heading))
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Heading,
+                    )
+                )
                 pushStyle(htmlParser.hStyles[0])
                 append("Hello")
                 pop()
                 pop()
-                pushStyle(ParagraphStyle(lineBreak = LineBreak.Heading))
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Heading,
+                    )
+                )
                 pushStyle(htmlParser.hStyles[1])
                 append("World!")
                 pop()
                 pop()
-                pushStyle(ParagraphStyle(lineBreak = LineBreak.Heading))
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Heading,
+                    )
+                )
                 pushStyle(htmlParser.hStyles[0])
             },
             actual = htmlParser.parse("""<h1>Hello<h2>World!</h1>"""),
@@ -729,7 +775,12 @@ class RememberAnnotatedHtmlStringTest {
     fun `pre tag`() {
         assertEquals(
             expected = buildAnnotatedString {
-                pushStyle(ParagraphStyle(lineBreak = LineBreak.Unspecified))
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Unspecified,
+                    )
+                )
                 append("  Hello\n  World!")
             },
             actual = htmlParser.parse(
@@ -749,7 +800,12 @@ class RememberAnnotatedHtmlStringTest {
             expected = buildAnnotatedString {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 pop()
-                pushStyle(ParagraphStyle(lineBreak = LineBreak.Unspecified))
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Unspecified,
+                    )
+                )
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 append("  Hello\n  World!")
                 pop()
@@ -774,7 +830,12 @@ class RememberAnnotatedHtmlStringTest {
                 append("a")
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 pop()
-                pushStyle(ParagraphStyle(lineBreak = LineBreak.Unspecified))
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Unspecified,
+                    )
+                )
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 append("  Hello\n  World!")
                 pop()
@@ -796,7 +857,12 @@ class RememberAnnotatedHtmlStringTest {
     fun `pre tag 3`() {
         assertEquals(
             expected = buildAnnotatedString {
-                pushStyle(ParagraphStyle(lineBreak = LineBreak.Unspecified))
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Unspecified,
+                    )
+                )
                 append("  Hello\n  World!")
             },
             actual = htmlParser.parse(
@@ -813,7 +879,12 @@ class RememberAnnotatedHtmlStringTest {
     fun `pre tag 4`() {
         assertEquals(
             expected = buildAnnotatedString {
-                pushStyle(ParagraphStyle(lineBreak = LineBreak.Unspecified))
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Unspecified,
+                    )
+                )
                 append("  ")
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 append("Hello\n  ")
@@ -1073,7 +1144,12 @@ class RememberAnnotatedHtmlStringTest {
             expected = buildAnnotatedString {
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
                 pop()
-                pushStyle(ParagraphStyle(lineBreak = LineBreak.Unspecified))
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Unspecified,
+                    )
+                )
                 append("Hello World!")
                 pop()
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
@@ -1088,13 +1164,23 @@ class RememberAnnotatedHtmlStringTest {
             expected = buildAnnotatedString {
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
                 pop()
-                pushStyle(ParagraphStyle(lineBreak = LineBreak.Unspecified))
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Unspecified,
+                    )
+                )
                 append("Hello")
                 pop()
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
                 pop()
                 append("World!")
-                pushStyle(ParagraphStyle(lineBreak = LineBreak.Unspecified))
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Unspecified,
+                    )
+                )
             },
             actual = htmlParser.parse("""<p><pre>Hello</p>World!</pre>"""),
         )
