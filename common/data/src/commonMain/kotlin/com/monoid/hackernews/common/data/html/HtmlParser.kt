@@ -93,7 +93,12 @@ class HtmlParser(
             tokens.tokenizeHtml(htmlString)
             var hasAppendedWord = false
             while (true) {
-                if (index >= tokens.size) break
+                if (index >= tokens.size) {
+                    tokens.clear()
+                    stack.clear()
+                    index = 0
+                    return@buildAnnotatedString
+                }
                 when (val token = tokens[index]) {
                     is HtmlToken.Tag -> {
                         if (token.isBreak()) {
@@ -171,9 +176,6 @@ class HtmlParser(
                     }
                 }
             }
-            tokens.clear()
-            stack.clear()
-            index = 0
         }
 
         private fun AnnotatedString.Builder.appendWord() {
