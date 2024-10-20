@@ -33,7 +33,7 @@ class RememberAnnotatedHtmlStringTest {
                 HtmlToken.Word("World!"),
                 HtmlToken.Whitespace("  "),
             ),
-            actual = ArrayDeque<HtmlToken>().tokenizeHtml("  Hello  \n  World!  ").toList(),
+            actual = "  Hello  \n  World!  ".tokenizeHtml().toList(),
         )
     }
 
@@ -46,7 +46,7 @@ class RememberAnnotatedHtmlStringTest {
                 HtmlToken.Word("Hello"),
                 HtmlToken.Tag("</u", emptyList(), ">"),
             ),
-            actual = ArrayDeque<HtmlToken>().tokenizeHtml("  <u>Hello</u>").toList(),
+            actual = "  <u>Hello</u>".tokenizeHtml().toList(),
         )
     }
 
@@ -59,7 +59,7 @@ class RememberAnnotatedHtmlStringTest {
                 HtmlToken.Tag("</u", emptyList(), ">"),
                 HtmlToken.Whitespace("  "),
             ),
-            actual = ArrayDeque<HtmlToken>().tokenizeHtml("<u>Hello</u>  ").toList(),
+            actual = "<u>Hello</u>  ".tokenizeHtml().toList(),
         )
     }
 
@@ -72,7 +72,7 @@ class RememberAnnotatedHtmlStringTest {
                 HtmlToken.Word("Hello"),
                 HtmlToken.Tag("</u", emptyList(), ">"),
             ),
-            actual = ArrayDeque<HtmlToken>().tokenizeHtml("<u>  Hello</u>").toList(),
+            actual = "<u>  Hello</u>".tokenizeHtml().toList(),
         )
     }
 
@@ -84,7 +84,7 @@ class RememberAnnotatedHtmlStringTest {
                 HtmlToken.Word("Hello"),
                 HtmlToken.Tag("</u", emptyList(), ">"),
             ),
-            actual = ArrayDeque<HtmlToken>().tokenizeHtml("<u a>Hello</u>").toList(),
+            actual = "<u a>Hello</u>".tokenizeHtml().toList(),
         )
     }
 
@@ -96,7 +96,7 @@ class RememberAnnotatedHtmlStringTest {
                 HtmlToken.Word("Hello"),
                 HtmlToken.Tag("</u", emptyList(), ">"),
             ),
-            actual = ArrayDeque<HtmlToken>().tokenizeHtml("<u a=>Hello</u>").toList(),
+            actual = "<u a=>Hello</u>".tokenizeHtml().toList(),
         )
     }
 
@@ -112,7 +112,7 @@ class RememberAnnotatedHtmlStringTest {
                 HtmlToken.Word("Hello"),
                 HtmlToken.Tag("</u", emptyList(), ">"),
             ),
-            actual = ArrayDeque<HtmlToken>().tokenizeHtml("<u a=b>Hello</u>").toList(),
+            actual = "<u a=b>Hello</u>".tokenizeHtml().toList(),
         )
     }
 
@@ -128,7 +128,7 @@ class RememberAnnotatedHtmlStringTest {
                 HtmlToken.Word("Hello"),
                 HtmlToken.Tag("</u", emptyList(), ">"),
             ),
-            actual = ArrayDeque<HtmlToken>().tokenizeHtml("""<u a="b">Hello</u>""").toList(),
+            actual = """<u a="b">Hello</u>""".tokenizeHtml().toList(),
         )
     }
 
@@ -144,7 +144,7 @@ class RememberAnnotatedHtmlStringTest {
                 HtmlToken.Word("Hello"),
                 HtmlToken.Tag("</u", emptyList(), ">"),
             ),
-            actual = ArrayDeque<HtmlToken>().tokenizeHtml("""<u a="=b">Hello</u>""").toList(),
+            actual = """<u a="=b">Hello</u>""".tokenizeHtml().toList(),
         )
     }
 
@@ -154,7 +154,7 @@ class RememberAnnotatedHtmlStringTest {
             expected = listOf(
                 HtmlToken.Tag("<br", emptyList(), "/>"),
             ),
-            actual = ArrayDeque<HtmlToken>().tokenizeHtml("""<br />""").toList(),
+            actual = """<br />""".tokenizeHtml().toList(),
         )
     }
 
@@ -167,7 +167,7 @@ class RememberAnnotatedHtmlStringTest {
                 HtmlToken.Word("Hello"),
                 HtmlToken.Tag("</u", emptyList(), ">"),
             ),
-            actual = ArrayDeque<HtmlToken>().tokenizeHtml("""  <u>Hello</u>""").toList(),
+            actual = """  <u>Hello</u>""".tokenizeHtml().toList(),
         )
     }
 
@@ -177,7 +177,7 @@ class RememberAnnotatedHtmlStringTest {
             expected = listOf(
                 HtmlToken.Tag("<br", emptyList(), "/>"),
             ),
-            actual = ArrayDeque<HtmlToken>().tokenizeHtml("""<br/>""").toList(),
+            actual = """<br/>""".tokenizeHtml().toList(),
         )
     }
 

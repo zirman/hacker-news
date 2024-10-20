@@ -90,15 +90,16 @@ class HtmlParser(
 
         @Suppress("CyclomaticComplexMethod", "NestedBlockDepth", "LoopWithTooManyJumpStatements")
         fun parse(htmlString: String): AnnotatedString = buildAnnotatedString {
-            tokens.tokenizeHtml(htmlString)
+            val tokenIterator = htmlString.tokenizeHtml().iterator()
             var hasAppendedWord = false
             while (true) {
-                if (index >= tokens.size) {
+                if (tokenIterator.hasNext().not()) {
                     tokens.clear()
                     stack.clear()
                     index = 0
                     return@buildAnnotatedString
                 }
+                tokens.addLast(tokenIterator.next())
                 when (val token = tokens[index]) {
                     is HtmlToken.Tag -> {
                         if (token.isBreak()) {
