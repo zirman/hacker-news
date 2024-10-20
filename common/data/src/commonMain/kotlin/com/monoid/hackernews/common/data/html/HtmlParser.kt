@@ -68,14 +68,7 @@ class HtmlParser(
         ),
     )
 ) {
-    private val pool = mutableListOf<ParseState>()
-
-    fun parse(htmlString: String): AnnotatedString {
-        val parseState = synchronized(pool) { pool.removeLastOrNull() } ?: ParseState()
-        val annotatedString = parseState.parse(htmlString)
-        synchronized(pool) { pool.add(parseState) }
-        return annotatedString
-    }
+    fun parse(htmlString: String): AnnotatedString = ParseState().parse(htmlString)
 
     suspend fun parseParallel(
         htmlString: String,
@@ -91,7 +84,7 @@ class HtmlParser(
         @Suppress("CyclomaticComplexMethod", "NestedBlockDepth", "LoopWithTooManyJumpStatements")
         fun parse(htmlString: String): AnnotatedString = buildAnnotatedString {
             val tokenIterator = htmlString.tokenizeHtml().iterator()
-            var hasAppendedWord = false
+            var haveAppendedWord = false
             while (true) {
                 if (tokenIterator.hasNext().not()) {
                     tokens.clear()
@@ -105,7 +98,7 @@ class HtmlParser(
                         if (token.isBreak()) {
                             appendLine()
                             index = 0
-                            hasAppendedWord = false
+                            haveAppendedWord = false
                             tokens.removeFirst()
                             continue
                         } else if (token.isBlock()) {
@@ -147,7 +140,7 @@ class HtmlParser(
                                 pop()
                             }
                             index = 0
-                            hasAppendedWord = false
+                            haveAppendedWord = false
                             tokens.removeFirst()
                             continue
                         }
@@ -156,18 +149,18 @@ class HtmlParser(
 
                     is HtmlToken.Word -> {
                         if (stack.firstOrNull()?.isPreformatted() == true) {
-                            if (hasAppendedWord) {
+                            if (haveAppendedWord) {
                                 appendWordPreformatted()
                             } else {
                                 appendWordPreformattedOpen()
                             }
-                        } else if (hasAppendedWord) {
+                        } else if (haveAppendedWord) {
                             appendWordWithSpace()
                         } else {
                             appendWord()
                         }
                         append(token.word)
-                        hasAppendedWord = true
+                        haveAppendedWord = true
                         tokens.removeFirst()
                         index = 0
                     }
