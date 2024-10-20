@@ -6,6 +6,9 @@ plugins {
     id("hackernews.detekt")
 }
 kotlin {
+    compilerOptions {
+        extraWarnings.set(true)
+    }
     jvmToolchain(libs.versions.jvmToolchain.get().toInt())
     androidTarget { }
     jvm { }
