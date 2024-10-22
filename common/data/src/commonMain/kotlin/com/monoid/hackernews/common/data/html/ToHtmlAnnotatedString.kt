@@ -9,10 +9,10 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 
 // TODO:
-// <span style=”...”>
+// <span style="...">
 // font-size: 1.4rem;
 // color: red;
-// background_color: yellow;
+// background-color: yellow;
 // font-family: Helvetica, Arial, sans-serif;
 // font-size: 3rem;
 // text-transform: capitalize;
@@ -73,7 +73,8 @@ private fun ParagraphStyle.applyStyle(map: List<String>): ParagraphStyle {
             "line-height" -> {
                 val match = SIZE_REGEX.matchEntire(keyValue[1])
                 s = if (match != null) {
-                    val (scalar, units) = match.destructured
+                    val scalar = match.groups[1]!!.value
+                    val units = match.groups[2]!!.value
                     s.copy(
                         lineHeight = if (
                             units.equals("em", ignoreCase = true) ||
