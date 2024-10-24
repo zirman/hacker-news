@@ -129,7 +129,6 @@ fun ItemComment(
                         modifier = Modifier
                             .padding(start = 16.dp, top = 16.dp)
                             .align(Alignment.Top),
-                        overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.labelMedium.copy(
                             color = LocalContentColor.current,
                         ),
@@ -289,7 +288,6 @@ fun ItemComment(
                             item.text ?: AnnotatedString("")
                         },
                         modifier = Modifier.padding(horizontal = 16.dp),
-                        overflow = TextOverflow.Ellipsis,
                         style = LocalTextStyle.current.merge(
                             TextStyle(
                                 textIndent = TextIndent(

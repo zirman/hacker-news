@@ -58,7 +58,6 @@ fun AboutUs(
             Text(
                 text = rememberAnnotatedHtmlString(htmlString),
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
-                overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.bodyMedium.copy(
                     color = LocalContentColor.current,
                 ),
