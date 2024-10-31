@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotlinxSerialization)
@@ -9,7 +11,11 @@ kotlin {
         extraWarnings.set(true)
     }
     jvmToolchain(libs.versions.jvmToolchain.get().toInt())
-    jvm { }
+    jvm {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_17
+        }
+    }
     sourceSets {
         jvmMain.dependencies {}
         commonMain.dependencies {

@@ -1,6 +1,7 @@
 @file:OptIn(ExperimentalComposeLibrary::class)
 
 import org.jetbrains.compose.ExperimentalComposeLibrary
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.androidLibrary)
@@ -18,7 +19,11 @@ kotlin {
     }
     jvmToolchain(libs.versions.jvmToolchain.get().toInt())
     androidTarget { }
-    jvm { }
+    jvm {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_17
+        }
+    }
     sourceSets {
         androidMain.dependencies {
             implementation(libs.bundles.androidxCompose)
