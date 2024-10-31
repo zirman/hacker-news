@@ -86,7 +86,15 @@ class HtmlParser(
             val tokenIterator = htmlString.tokenizeHtml().iterator()
             var haveAppendedWord = false
             while (true) {
-                if (tokenIterator.hasNext().not()) {
+                if (
+                    try {
+                        tokenIterator.hasNext()
+                    } catch (throwable: Throwable) {
+                        // TODO: Log
+                        throwable.printStackTrace()
+                        false
+                    }.not()
+                ) {
                     tokens.clear()
                     stack.clear()
                     index = 0

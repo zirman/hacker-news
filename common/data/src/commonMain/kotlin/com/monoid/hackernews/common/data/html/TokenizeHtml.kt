@@ -6,7 +6,7 @@ internal val TAG_WORD_REGEX = """[^="\s>]+""".toRegex(RegexOption.IGNORE_CASE)
 internal val TAG_QUOTE_REGEX = """"([^"]*)"""".toRegex(RegexOption.IGNORE_CASE)
 internal val TAG_EQUAL_REGEX = """=""".toRegex(RegexOption.IGNORE_CASE)
 internal val TAG_END_REGEX = """/?>""".toRegex(RegexOption.IGNORE_CASE)
-internal val WORD_REGEX = """[^<\s]+""".toRegex(RegexOption.IGNORE_CASE)
+internal val WORD_REGEX = """[^<\s]+|<\S*""".toRegex(RegexOption.IGNORE_CASE)
 
 @Suppress("CyclomaticComplexMethod", "NestedBlockDepth")
 fun String.tokenizeHtml(): Sequence<HtmlToken> = sequence {
@@ -72,6 +72,12 @@ fun String.tokenizeHtml(): Sequence<HtmlToken> = sequence {
             continue
         }
         @Suppress("UseCheckOrError", "ThrowingExceptionsWithoutMessageOrCause")
-        throw IllegalStateException("no matching regexes")
+        throw IllegalStateException(
+            "no matching regexes here: \"${
+                this@tokenizeHtml.substring(i)
+            }\" out of: \"${
+                this@tokenizeHtml
+            }\"",
+        )
     }
 }

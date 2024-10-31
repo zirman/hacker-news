@@ -182,6 +182,27 @@ class RememberAnnotatedHtmlStringTest {
     }
 
     @Test
+    fun `tokenize 13`() {
+        assertEquals(
+            expected = listOf(
+                HtmlToken.Word("<"),
+            ),
+            actual = """<""".tokenizeHtml().toList(),
+        )
+    }
+
+    @Test
+    fun `tokenize 14`() {
+        assertEquals(
+            expected = listOf(
+                HtmlToken.Word("World!"),
+                HtmlToken.Tag("</p", emptyList(), ">"),
+            ),
+            actual = """World!</p>""".tokenizeHtml().toList(),
+        )
+    }
+
+    @Test
     fun `consolidate white space between words outside of tag`() {
         assertEquals(
             expected = buildAnnotatedString { append("Hello World!") },

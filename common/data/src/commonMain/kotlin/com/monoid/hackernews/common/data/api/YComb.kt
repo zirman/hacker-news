@@ -5,7 +5,6 @@ import com.monoid.hackernews.common.data.model.Username
 import io.ktor.client.HttpClient
 
 class YCombException(message: String? = null) : Exception(message)
-class WebViewException : Exception()
 
 internal const val Y_COMBINATOR_BASE_URL = "https://news.ycombinator.com"
 

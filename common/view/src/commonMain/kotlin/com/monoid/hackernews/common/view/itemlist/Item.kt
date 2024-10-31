@@ -126,7 +126,6 @@ fun Item(
 ) {
     val isLoading = item == null
     val isStoryOrComment = item?.type == ItemType.Story || item?.type == ItemType.Comment
-
     Surface(
         modifier = modifier
             .placeholder(
