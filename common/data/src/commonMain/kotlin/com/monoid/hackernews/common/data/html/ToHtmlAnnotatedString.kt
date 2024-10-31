@@ -7,6 +7,7 @@ import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import java.util.WeakHashMap
 
 // TODO:
 // <span style="...">
@@ -30,8 +31,11 @@ import androidx.compose.ui.unit.sp
 // <time
 // <blockquote
 
+private val htmlParserHash: WeakHashMap<String, AnnotatedString> = WeakHashMap()
 private val htmlParser = HtmlParser()
-suspend fun String.toHtmlAnnotatedString(): AnnotatedString = htmlParser.parseParallel(this)
+suspend fun String.toHtmlAnnotatedString(): AnnotatedString = htmlParserHash.getOrPut(this) {
+    htmlParser.parseParallel(this)
+}
 
 internal fun ParagraphStyle.applyAttributes(attributes: List<String>?): ParagraphStyle {
     if (attributes == null) return this
