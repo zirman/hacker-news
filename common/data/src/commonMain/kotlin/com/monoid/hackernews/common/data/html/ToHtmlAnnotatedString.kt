@@ -78,12 +78,12 @@ private fun ParagraphStyle.applyStyle(map: List<String>): ParagraphStyle {
                 val match = SIZE_REGEX.matchEntire(keyValue[1])
                 s = if (match != null) {
                     val scalar = match.groups[1]!!.value
-                    val units = match.groups[2]!!.value
+                    val units = match.groups[2]?.value
                     s.copy(
                         lineHeight = if (
+                            units == null ||
                             units.equals("em", ignoreCase = true) ||
-                            units.equals("%", ignoreCase = true) ||
-                            units.equals("", ignoreCase = true)
+                            units.equals("%", ignoreCase = true)
                         ) {
                             scalar.toFloat().em
                         } else if (units.equals("px", ignoreCase = true)) {
