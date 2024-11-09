@@ -66,7 +66,7 @@ compose.desktop {
             buildTypes.release.proguard {
                 isEnabled = true
                 optimize = true
-                obfuscate = true
+                obfuscate = false // Currently obfuscated builds crash
                 configurationFiles.from("rules.pro")
             }
         }

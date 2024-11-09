@@ -1,47 +1,69 @@
-#-ignorewarnings
+# Add project specific ProGuard rules here.
+# You can control the set of applied configuration files using the
+# proguardFiles setting in build.gradle.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
+
+# Uncomment this to preserve the line number information for
+# debugging stack traces.
+#-keepattributes SourceFile,LineNumberTable
+
+# If you keep the line number information, uncomment this to
+# hide the original source file name.
+#-renamesourcefileattribute SourceFile
+#-dontobfuscate
 
 # Keep `Companion` object fields of serializable classes.
 # This avoids serializer lookup through `getDeclaredClasses` as done for named companion objects.
 -if @kotlinx.serialization.Serializable class **
 -keepclassmembers class <1> {
-   static <1>$Companion Companion;
+    static <1>$Companion Companion;
 }
 
 # Keep `serializer()` on companion objects (both default and named) of serializable classes.
 -if @kotlinx.serialization.Serializable class ** {
-   static **$* *;
+    static **$* *;
 }
 -keepclassmembers class <2>$<3> {
-   kotlinx.serialization.KSerializer serializer(...);
+    kotlinx.serialization.KSerializer serializer(...);
 }
 
 # Keep `INSTANCE.serializer()` of serializable objects.
 -if @kotlinx.serialization.Serializable class ** {
-   public static ** INSTANCE;
+    public static ** INSTANCE;
 }
 -keepclassmembers class <1> {
-   public static <1> INSTANCE;
-   kotlinx.serialization.KSerializer serializer(...);
+    public static <1> INSTANCE;
+    kotlinx.serialization.KSerializer serializer(...);
 }
 
 # @Serializable and @Polymorphic are used at runtime for polymorphic serialization.
 -keepattributes RuntimeVisibleAnnotations,AnnotationDefault
 
--keep @kotlinx.serialization.Serializable class **
+# Don't print notes about potential mistakes or omissions in the configuration for kotlinx-serialization classes
+# See also https://github.com/Kotlin/kotlinx.serialization/issues/1900
+-dontnote kotlinx.serialization.**
 
+# Serialization core uses `java.lang.ClassValue` for caching inside these specified classes.
+# If there is no `java.lang.ClassValue` (for example, in Android), then R8/ProGuard will print a warning.
+# However, since in this case they will not be used, we can disable these warnings
+-dontwarn kotlinx.serialization.internal.ClassValueReferences
 
-# Ktor
--keep class io.ktor.** { *; }
--keep class kotlinx.coroutines.** { *; }
--dontwarn kotlinx.atomicfu.**
--dontwarn io.netty.**
--dontwarn com.typesafe.**
--dontwarn org.slf4j.**
+# Fixes Ktor submitForm()
+-keepclassmembers class io.ktor.http.** { *; }
 
--keep class * extends androidx.room.RoomDatabase
--keep @androidx.room.Entity class *
--dontwarn androidx.room.paging.**
+-dontwarn **
 
--dontwarn io.ktor.util.KtorDsl
--dontwarn io.ktor.util.InternalAPI
--ignorewarnings
+-keep class kotlinx.coroutines.swing.SwingDispatcherFactory { *; }
+-keep class io.ktor.serialization.kotlinx.json.KotlinxSerializationJsonExtensionProvider { *; }
+-keep class com.monoid.hackernews.common.data.model.StoriesRepository { *; }
+-keep class com.monoid.hackernews.common.data.** { *; }
+-keep class androidx.sqlite.driver.** { *; }
