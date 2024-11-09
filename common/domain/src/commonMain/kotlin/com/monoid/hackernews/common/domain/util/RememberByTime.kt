@@ -35,11 +35,11 @@ fun rememberTimeBy(time: Long?, by: String?): AnnotatedString =
             append(
                 when {
                     dateTimePeriod == null -> ""
-                    dateTimePeriod.years > 0 -> " ${dateTimePeriod.years} years ago"
-                    dateTimePeriod.months > 0 -> " ${dateTimePeriod.months} months ago"
-                    dateTimePeriod.days > 0 -> " ${dateTimePeriod.days} days ago"
-                    dateTimePeriod.hours > 0 -> " ${dateTimePeriod.hours} hours ago"
-                    else -> " ${dateTimePeriod.minutes} minutes ago"
+                    dateTimePeriod.years > 0 -> " ${dateTimePeriod.years} - years ago"
+                    dateTimePeriod.months > 0 -> " ${dateTimePeriod.months} - months ago"
+                    dateTimePeriod.days > 0 -> " ${dateTimePeriod.days} - days ago"
+                    dateTimePeriod.hours > 0 -> " ${dateTimePeriod.hours} - hours ago"
+                    else -> " ${dateTimePeriod.minutes} - minutes ago"
                 },
             )
         }
