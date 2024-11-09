@@ -61,3 +61,20 @@
 -keepclassmembers class io.ktor.http.** { *; }
 
 #-keep class * extends com.google.protobuf.GeneratedMessageLite { *; }
+
+-dontwarn java.net.http.HttpClient$Builder
+-dontwarn java.net.http.HttpClient$Redirect
+-dontwarn java.net.http.HttpClient$Version
+-dontwarn java.net.http.HttpClient
+-dontwarn java.net.http.HttpConnectTimeoutException
+-dontwarn java.net.http.HttpRequest$BodyPublisher
+-dontwarn java.net.http.HttpRequest$BodyPublishers
+-dontwarn java.net.http.HttpRequest$Builder
+-dontwarn java.net.http.HttpRequest
+-dontwarn java.net.http.HttpResponse$BodyHandler
+-dontwarn java.net.http.HttpResponse
+-dontwarn java.net.http.HttpTimeoutException
+-dontwarn java.net.http.WebSocket$Builder
+-dontwarn java.net.http.WebSocket$Listener
+-dontwarn java.net.http.WebSocket
+-dontwarn java.net.http.WebSocketHandshakeException
