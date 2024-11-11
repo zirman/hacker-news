@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.ksp)
     id("hackernews.detekt")
 }
 kotlin {
@@ -30,11 +31,29 @@ kotlin {
             implementation(libs.navigationCompose)
             implementation(libs.annotation)
             implementation(libs.collectionKtx)
+            api(libs.koinAnnotations)
             api(project(":common:injection"))
             api(project(":common:data"))
         }
         commonTest.dependencies {
             implementation(libs.bundles.test)
         }
+        sourceSets.named("commonMain") {
+            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
+        }
     }
+}
+dependencies {
+    add("kspCommonMainMetadata", libs.koinKspCompiler)
+    add("kspJvm", libs.koinKspCompiler)
+}
+// Trigger Common Metadata Generation from Native tasks
+//project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
+//    if(name != "kspCommonMainKotlinMetadata") {
+//        dependsOn("kspCommonMainKotlinMetadata")
+//    }
+//}
+ksp {
+    arg("KOIN_CONFIG_CHECK", "true")
+    arg("KOIN_USE_COMPOSE_VIEWMODEL", "true")
 }

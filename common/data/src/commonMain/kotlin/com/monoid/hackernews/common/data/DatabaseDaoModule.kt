@@ -1,39 +1,41 @@
 package com.monoid.hackernews.common.data
 
+import com.monoid.hackernews.common.data.room.AskStoryDao
+import com.monoid.hackernews.common.data.room.BestStoryDao
 import com.monoid.hackernews.common.data.room.HNDatabase
-import org.koin.core.module.Module
-import org.koin.dsl.module
+import com.monoid.hackernews.common.data.room.ItemDao
+import com.monoid.hackernews.common.data.room.JobStoryDao
+import com.monoid.hackernews.common.data.room.NewStoryDao
+import com.monoid.hackernews.common.data.room.ShowStoryDao
+import com.monoid.hackernews.common.data.room.TopStoryDao
+import com.monoid.hackernews.common.data.room.UserDao
+import org.koin.core.annotation.Module
+import org.koin.core.annotation.Single
 
-val databaseDaoModule: Module = module {
-    single {
-        get<HNDatabase>().topStoryDao()
-    }
+@Module
+class DatabaseDaoModule {
 
-    single {
-        get<HNDatabase>().newStoryDao()
-    }
+    @Single
+    fun topStoryDao(hnDatabase: HNDatabase): TopStoryDao = hnDatabase.topStoryDao()
 
-    single {
-        get<HNDatabase>().bestStoryDao()
-    }
+    @Single
+    fun newStoryDao(hnDatabase: HNDatabase): NewStoryDao = hnDatabase.newStoryDao()
 
-    single {
-        get<HNDatabase>().showStoryDao()
-    }
+    @Single
+    fun bestStoryDao(hnDatabase: HNDatabase): BestStoryDao = hnDatabase.bestStoryDao()
 
-    single {
-        get<HNDatabase>().askStoryDao()
-    }
+    @Single
+    fun showStoryDao(hnDatabase: HNDatabase): ShowStoryDao = hnDatabase.showStoryDao()
 
-    single {
-        get<HNDatabase>().jobStoryDao()
-    }
+    @Single
+    fun askStoryDao(hnDatabase: HNDatabase): AskStoryDao = hnDatabase.askStoryDao()
 
-    single {
-        get<HNDatabase>().itemDao()
-    }
+    @Single
+    fun jobStoryDao(hnDatabase: HNDatabase): JobStoryDao = hnDatabase.jobStoryDao()
 
-    single {
-        get<HNDatabase>().userDao()
-    }
+    @Single
+    fun itemDao(hnDatabase: HNDatabase): ItemDao = hnDatabase.itemDao()
+
+    @Single
+    fun userDao(hnDatabase: HNDatabase): UserDao = hnDatabase.userDao()
 }

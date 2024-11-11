@@ -1,5 +1,6 @@
 package com.monoid.hackernews.common.data
 
-import org.koin.core.module.Module
+import org.koin.core.annotation.Module
 
-expect val dataStoreModule: Module
+@Module
+expect class DataStoreModule

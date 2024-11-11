@@ -1,28 +1,32 @@
 package com.monoid.hackernews.common.data
 
+import android.content.Context
 import androidx.room.Room
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.monoid.hackernews.common.data.room.HNDatabase
 import com.monoid.hackernews.common.injection.DispatcherQualifier
 import kotlinx.coroutines.CoroutineDispatcher
-import org.koin.android.ext.koin.androidContext
-import org.koin.core.module.Module
-import org.koin.core.qualifier.named
-import org.koin.dsl.module
+import org.koin.core.annotation.Module
+import org.koin.core.annotation.Named
+import org.koin.core.annotation.Single
 
-actual val databaseModule: Module = module {
-    single {
-        val context = androidContext()
+@Module(includes = [DatabaseDaoModule::class])
+actual class DatabaseModule {
+
+    @Single
+    fun hnDatabase(
+        context: Context,
+        @Named(type = DispatcherQualifier.Io::class)
+        coroutineDispatcher: CoroutineDispatcher,
+    ): HNDatabase {
         val dbFile = context.getDatabasePath("hn_database.db")
-        Room.databaseBuilder<HNDatabase>(
+        return Room.databaseBuilder<HNDatabase>(
             context = context,
             name = dbFile.absolutePath,
             //factory = { HNDatabase::class.instantiateImpl() },
         )
             .setDriver(BundledSQLiteDriver())
-            .setQueryCoroutineContext(get<CoroutineDispatcher>(named(DispatcherQualifier.Io)))
+            .setQueryCoroutineContext(coroutineDispatcher)
             .build()
     }
-
-    includes(databaseDaoModule)
 }

@@ -35,11 +35,6 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import com.monoid.hackernews.common.data.dataStoreModule
-import com.monoid.hackernews.common.data.databaseModule
-import com.monoid.hackernews.common.data.networkModule
-import com.monoid.hackernews.common.injection.dispatcherModule
-import com.monoid.hackernews.common.injection.loggerModule
 import com.monoid.hackernews.common.view.main.LoginDialog
 import com.monoid.hackernews.common.view.main.MainNavHost
 import com.monoid.hackernews.common.view.theme.AppTheme
@@ -48,18 +43,12 @@ import org.jetbrains.compose.splitpane.HorizontalSplitPane
 import org.jetbrains.compose.splitpane.rememberSplitPaneState
 import org.koin.compose.KoinContext
 import org.koin.core.context.startKoin
+import org.koin.ksp.generated.module
 import java.awt.Cursor
 
 fun main() {
     startKoin {
-        modules(
-            applicationModule,
-            dispatcherModule,
-            networkModule,
-            databaseModule,
-            dataStoreModule,
-            loggerModule,
-        )
+        modules(ApplicationModule().module)
     }
 
     application {

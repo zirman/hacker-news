@@ -9,18 +9,24 @@ import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import org.koin.core.module.Module
-import org.koin.dsl.module
+import org.koin.core.annotation.Module
+import org.koin.core.annotation.Single
 
-actual val networkModule: Module = module {
-    single<HttpClient> {
-        HttpClient(Android) {
-            install(Logging) {
-                logger = Logger.ANDROID
-                level = LogLevel.NONE // TODO debug builds
-            }
+@Module
+actual class NetworkModule {
 
-            install(ContentNegotiation) { json(Json { ignoreUnknownKeys = true }) }
+    @Single
+    fun json(): Json = Json {
+        ignoreUnknownKeys = true
+    }
+
+    @Single
+    fun httpClient(json: Json): HttpClient = HttpClient(Android) {
+        install(Logging) {
+            logger = Logger.ANDROID
+            level = LogLevel.NONE // TODO debug builds
         }
+
+        install(ContentNegotiation) { json(json) }
     }
 }

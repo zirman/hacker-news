@@ -8,6 +8,7 @@ import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.StoriesRepository
 import com.monoid.hackernews.common.data.model.makeItem
+import com.monoid.hackernews.common.injection.DispatcherQualifier
 import com.monoid.hackernews.common.injection.LoggerAdapter
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -22,10 +23,14 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.android.annotation.KoinViewModel
+import org.koin.core.annotation.Named
 import java.util.WeakHashMap
 
+@KoinViewModel
 class ItemDetailViewModel(
     savedStateHandle: SavedStateHandle,
+    @Named(type = DispatcherQualifier.Default::class)
     defaultDispatcher: CoroutineDispatcher,
     private val logger: LoggerAdapter,
     private val repository: StoriesRepository,

@@ -4,13 +4,16 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import okio.Path.Companion.toPath
-import org.koin.core.module.Module
-import org.koin.dsl.module
+import org.koin.core.annotation.Module
+import org.koin.core.annotation.Single
 import java.io.File
 
-actual val dataStoreModule: Module = module {
-    single<DataStore<Preferences>> {
-        PreferenceDataStoreFactory.createWithPath(
+@Module
+actual class DataStoreModule {
+
+    @Single
+    fun dataStorePreferences(): DataStore<Preferences> {
+        return PreferenceDataStoreFactory.createWithPath(
             produceFile = {
                 File("settings.preferences_pb")
                     .absolutePath.toPath()

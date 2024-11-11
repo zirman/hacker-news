@@ -1,9 +1,6 @@
 package com.monoid.hackernews.common.injection
 
-import org.koin.dsl.module
+import org.koin.core.annotation.Module
 
-val loggerModule = module {
-    single {
-        loggerFactory()
-    }
-}
+@Module
+expect class LoggerModule

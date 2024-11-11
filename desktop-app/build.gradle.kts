@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.ksp)
     id("hackernews.detekt")
 }
 kotlin {
@@ -20,6 +21,7 @@ kotlin {
         val desktopMain by getting
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
+            implementation(libs.koinAnnotations)
             implementation(libs.kotlinxCoroutinesSwing)
             implementation(libs.ktorClientJava)
             implementation(libs.ktorSerializationKotlinxJson)
@@ -55,7 +57,20 @@ kotlin {
             implementation(project(":common:view"))
         }
     }
+    sourceSets.named("commonMain") {
+        kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
+    }
 }
+dependencies {
+    add("kspCommonMainMetadata", libs.koinKspCompiler)
+    add("kspDesktop", libs.koinKspCompiler)
+}
+// Trigger Common Metadata Generation from Native tasks
+//project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
+//    if(name != "kspCommonMainKotlinMetadata") {
+//        dependsOn("kspCommonMainKotlinMetadata")
+//    }
+//}
 compose.desktop {
     application {
         mainClass = "com.monoid.hackernews.Main_desktopKt"
@@ -71,4 +86,8 @@ compose.desktop {
             }
         }
     }
+}
+ksp {
+    arg("KOIN_CONFIG_CHECK","true")
+    arg("KOIN_USE_COMPOSE_VIEWMODEL","true")
 }

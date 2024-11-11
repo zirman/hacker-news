@@ -2,11 +2,11 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinxSerialization)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.googlePlayServices)
     alias(libs.plugins.crashlytics)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.ksp)
     id("hackernews.detekt")
 }
 kotlin {
@@ -76,6 +76,7 @@ android {
 }
 dependencies {
     coreLibraryDesugaring(libs.desugarJdkLibsNio)
+    compileOnly(libs.koinCore)
     implementation(libs.bundles.kotlinx)
     implementation(libs.bundles.koin)
     implementation(libs.bundles.androidx)
@@ -84,9 +85,26 @@ dependencies {
     implementation(libs.bundles.google)
     implementation(libs.bundles.googleWear)
     implementation(libs.bundles.ktor)
+    implementation(libs.koinAndroid)
+    implementation(libs.koinAnnotations)
+    implementation(libs.lifecycleProcess)
     implementation(libs.slf4jSimple)
     implementation(platform(libs.koinBom))
     implementation(project(":common:injection"))
     implementation(project(":common:view"))
     lintChecks(libs.composeLintChecks)
+}
+//dependencies {
+//    add("kspCommonMainMetadata", libs.koinKspCompiler)
+//    add("kspAndroid", libs.koinKspCompiler)
+//}
+// Trigger Common Metadata Generation from Native tasks
+//project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
+//    if(name != "kspCommonMainKotlinMetadata") {
+//        dependsOn("kspCommonMainKotlinMetadata")
+//    }
+//}
+ksp {
+    arg("KOIN_CONFIG_CHECK","true")
+    arg("KOIN_USE_COMPOSE_VIEWMODEL","true")
 }

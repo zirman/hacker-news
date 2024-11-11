@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
     alias(libs.plugins.androidLibrary)
@@ -48,10 +49,25 @@ kotlin {
             implementation(project.dependencies.platform(libs.kotlinWrappersBom))
             implementation(project.dependencies.platform(libs.kotilnxCoroutinesBom))
             implementation(project(":common:injection"))
+            api(libs.koinAnnotations)
         }
         commonTest.dependencies {
             implementation(libs.bundles.test)
         }
+    }
+    sourceSets.named("commonMain") {
+        kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
+    }
+}
+dependencies {
+    add("kspCommonMainMetadata", libs.koinKspCompiler)
+    add("kspAndroid", libs.koinKspCompiler)
+    add("kspJvm", libs.koinKspCompiler)
+}
+// Trigger Common Metadata Generation from Native tasks
+project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
+    if(name != "kspCommonMainKotlinMetadata") {
+        dependsOn("kspCommonMainKotlinMetadata")
     }
 }
 android {
@@ -73,4 +89,8 @@ dependencies {
 }
 room {
     schemaDirectory("$projectDir/schemas")
+}
+ksp {
+    arg("KOIN_CONFIG_CHECK", "true")
+    arg("KOIN_USE_COMPOSE_VIEWMODEL", "true")
 }

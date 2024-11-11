@@ -11,10 +11,12 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import org.koin.android.annotation.KoinViewModel
 
+@KoinViewModel
 class SettingsViewModel(
     val logger: LoggerAdapter,
-    val loginRepository: LoginRepository,
+    private val loginRepository: LoginRepository,
 ) : ViewModel() {
     data class UiState(
         val loading: Boolean = true,

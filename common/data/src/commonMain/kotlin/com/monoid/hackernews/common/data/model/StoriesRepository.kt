@@ -22,7 +22,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import org.koin.core.annotation.Single
 
+@Single
 class StoriesRepository(
     private val logger: LoggerAdapter,
     private val remoteDataSource: HttpClient,

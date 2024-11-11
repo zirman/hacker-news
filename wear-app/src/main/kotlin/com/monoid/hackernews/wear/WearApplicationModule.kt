@@ -3,28 +3,34 @@ package com.monoid.hackernews.wear
 import android.content.Intent
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.monoid.hackernews.common.data.DataStoreModule
+import com.monoid.hackernews.common.data.DatabaseModule
+import com.monoid.hackernews.common.data.NetworkModule
+import com.monoid.hackernews.common.injection.DispatcherModule
+import com.monoid.hackernews.common.injection.LoggerModule
 import kotlinx.coroutines.channels.Channel
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.qualifier.named
-import org.koin.dsl.module
+import org.koin.core.annotation.ComponentScan
+import org.koin.core.annotation.Factory
+import org.koin.core.annotation.Module
+import org.koin.core.annotation.Named
+import org.koin.core.annotation.Single
 
-enum class LifecycleOwnerQualifier {
-    ApplicationLifecycleOwner
-}
+@Module(
+    includes = [
+        DispatcherModule::class,
+        NetworkModule::class,
+        DatabaseModule::class,
+        DataStoreModule::class,
+        LoggerModule::class,
+    ],
+)
+@ComponentScan("com.monoid.hackernews.wear")
+class WearApplicationModule {
 
-val wearApplicationModule = module {
-    single<LifecycleOwner>(named(LifecycleOwnerQualifier.ApplicationLifecycleOwner)) {
-        ProcessLifecycleOwner.get()
-    }
+    @Single
+    @Named(type = ProcessLifecycleOwner::class)
+    fun processLifecycleOwner(): LifecycleOwner = ProcessLifecycleOwner.get()
 
-    viewModel {
-        MainViewModel(
-            newIntentChannel = get(),
-            logger = get(),
-        )
-    }
-
-    factory {
-        Channel<Intent>()
-    }
+    @Factory
+    fun channel(): Channel<Intent> = Channel()
 }

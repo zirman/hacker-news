@@ -18,8 +18,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.koin.android.annotation.KoinViewModel
 import java.util.WeakHashMap
 
+@KoinViewModel
 class StoriesViewModel(
     private val logger: LoggerAdapter,
     private val repository: StoriesRepository,

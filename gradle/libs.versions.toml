@@ -12,21 +12,23 @@ android = "8.7.2"
 #lint = "31.4.0"
 desugarJdkLibs = "2.1.3"
 kotlin = "2.1.0-RC"
+ksp = "2.1.0-RC-1.0.27" # https://github.com/google/ksp/releases
 kotlinWrappersBom = "1.0.0-pre.826" # https://github.com/JetBrains/kotlin-wrappers/releases
 jetbrainsCompose = "1.7.0" # https://github.com/JetBrains/compose-multiplatform/releases
-ksp = "2.1.0-Beta2-1.0.25" # https://github.com/google/ksp/releases
 kotlinxCoroutines = "1.9.0"
 kotlinxSerialization = "1.7.3"
 kotlinxCollectionsImmutable = "0.3.7"
 kotlinxDatetime = "0.6.0"
 ktor = "3.0.1" # https://github.com/ktorio/ktor/releases
+koin = "4.0.0"
+koinAnnotations = "2.0.0-Beta1"
 kermit = "2.0.3"
 room = "2.7.0-alpha11"
 sqlite = "2.5.0-alpha11"
 datastore = "1.1.1"
 activityKtx = "1.9.3"
 fragmentKtx = "1.8.5"
-lifecycle = "2.8.3" # https://stackoverflow.com/questions/78490378/java-lang-illegalstateexception-compositionlocal-locallifecycleowner-not-presen
+lifecycle = "2.8.3" # https://mvnrepository.com/artifact/org.jetbrains.androidx.lifecycle/lifecycle-viewmodel
 navigation = "2.8.3"
 googlePlayServices = "4.4.2"
 playServicesWearable = "18.2.0"
@@ -89,6 +91,7 @@ kotlinx = [
 koin = [
     "koinCore",
     "koinKtor",
+    "koinCompose",
     "koinLoggerSlf4j",
     "koinComposeViewmodel",
 ]
@@ -253,13 +256,15 @@ jetbrainsLifecycleRuntimeCompose = { group = "org.jetbrains.androidx.lifecycle",
 jetbrainsLifecycleViewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "lifecycle" }
 jetbrainsLifecycleViewmodelCompose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 
-koinBom = { group = "io.insert-koin", name = "koin-bom", version = "4.0.0" }
+koinBom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
 koinCore = { group = "io.insert-koin", name = "koin-core" }
 koinKtor = { group = "io.insert-koin", name = "koin-ktor" }
-#koinCompose = { group = "io.insert-koin", name = "koin-compose" }
+koinCompose = { group = "io.insert-koin", name = "koin-compose" }
 koinComposeViewmodel = { group = "io.insert-koin", name = "koin-compose-viewmodel" }
 koinLoggerSlf4j = { group = "io.insert-koin", name = "koin-logger-slf4j" }
 koinAndroid = { group = "io.insert-koin", name = "koin-android" }
+koinAnnotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koinAnnotations" }
+koinKspCompiler = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref = "koinAnnotations" }
 #koinAndroidxWorkmanager = { group = "io.insert-koin", name = "koin-androidx-workmanager" }
 
 navigationUiKtx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
