@@ -155,7 +155,7 @@ ksp {
 }
 // Trigger Common Metadata Generation from Native tasks
 //project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
-//    if(name != "kspCommonMainKotlinMetadata") {
+//    if (name != "kspCommonMainKotlinMetadata") {
 //        dependsOn("kspCommonMainKotlinMetadata")
 //    }
 //}
