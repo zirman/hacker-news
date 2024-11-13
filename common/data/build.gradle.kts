@@ -59,17 +59,6 @@ kotlin {
         kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
     }
 }
-dependencies {
-    add("kspCommonMainMetadata", libs.koinKspCompiler)
-    add("kspAndroid", libs.koinKspCompiler)
-    add("kspJvm", libs.koinKspCompiler)
-}
-// Trigger Common Metadata Generation from Native tasks
-project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
-    if(name != "kspCommonMainKotlinMetadata") {
-        dependsOn("kspCommonMainKotlinMetadata")
-    }
-}
 android {
     namespace = "com.monoid.hackernews.common.data"
     compileSdk = libs.versions.compileSdk.get().toInt()
@@ -83,14 +72,24 @@ android {
     }
 }
 dependencies {
-//    ksp(libs.roomCompiler)
+    // room
     add("kspAndroid", libs.roomCompiler)
     add("kspJvm", libs.roomCompiler)
-}
-room {
-    schemaDirectory("$projectDir/schemas")
+    // koin
+    add("kspCommonMainMetadata", libs.koinKspCompiler)
+    add("kspAndroid", libs.koinKspCompiler)
+    add("kspJvm", libs.koinKspCompiler)
 }
 ksp {
     arg("KOIN_CONFIG_CHECK", "true")
     arg("KOIN_USE_COMPOSE_VIEWMODEL", "true")
+}
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+// Trigger Common Metadata Generation from Native tasks
+project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
+    if (name != "kspCommonMainKotlinMetadata") {
+        dependsOn("kspCommonMainKotlinMetadata")
+    }
 }
