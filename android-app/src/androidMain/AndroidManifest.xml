@@ -21,7 +21,6 @@
     <application
         android:name=".HNApplication"
         android:allowBackup="true"
-        android:allowCrossUidActivitySwitchFromBelow="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher"
