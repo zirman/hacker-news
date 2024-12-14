@@ -64,7 +64,6 @@ kotlin {
             implementation(project.dependencies.platform(libs.koinBom))
             implementation(project.dependencies.platform(libs.kotlinWrappersBom))
             implementation(project.dependencies.platform(libs.kotilnxCoroutinesBom))
-            implementation(project.dependencies.platform(libs.koinBom))
             implementation(project(":common:injection"))
             implementation(project(":common:view"))
         }
