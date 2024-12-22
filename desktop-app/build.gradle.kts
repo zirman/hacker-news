@@ -49,6 +49,7 @@ kotlin {
             implementation(libs.bundles.koin)
             implementation(libs.bundles.kotlinx)
             implementation(libs.bundles.ktor)
+            implementation(libs.slf4jSimple)
 
             implementation(project.dependencies.platform(libs.koinBom))
             implementation(project.dependencies.platform(libs.kotlinWrappersBom))
