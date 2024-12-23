@@ -1,7 +1,7 @@
 [versions]
 jvmToolchain = "17"
 jvmTarget = "17"
-compileSdkPreview = "UpsideDownCakePrivacySandbox"
+compileSdkPreview = "Baklava"
 material3WindowSizeClassMultiplatform = "0.5.0"
 targetSdkPreview = "Baklava"
 compileSdk = "35"
