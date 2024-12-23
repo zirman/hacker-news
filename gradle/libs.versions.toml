@@ -59,8 +59,8 @@ espressoCore = "3.6.1"
 #junit = "4.13.2"
 mockk = "1.13.9"
 detekt = "1.23.7"
-junitJupiter = "5.10.3"
-assertjCore = "3.26.0"
+junitJupiter = "5.11.3"
+assertjCore = "3.26.3"
 
 [plugins]
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
