@@ -1,12 +1,9 @@
 package com.monoid.hackernews.common.view
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import com.monoid.hackernews.common.domain.navigation.Story
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 
-@StringRes
 fun Story.toShortcutShortLabelStringId(): StringResource = when (this) {
     Story.Top -> Res.string.top_stories_shortcut_short_label
     Story.New -> Res.string.new_stories_shortcut_short_label
@@ -17,7 +14,6 @@ fun Story.toShortcutShortLabelStringId(): StringResource = when (this) {
     Story.Favorite -> Res.string.favorites_shortcut_short_label
 }
 
-@StringRes
 fun Story.toShortcutLongLabelStringId(): StringResource = when (this) {
     Story.Top -> Res.string.top_stories_shortcut_long_label
     Story.New -> Res.string.new_stories_shortcut_long_label
@@ -28,7 +24,6 @@ fun Story.toShortcutLongLabelStringId(): StringResource = when (this) {
     Story.Favorite -> Res.string.favorites_shortcut_long_label
 }
 
-@DrawableRes
 fun Story.toShortcutIconDrawableId(): DrawableResource = when (this) {
     Story.Top -> Res.drawable.trending_up_48px
     Story.New -> Res.drawable.new_releases_48px

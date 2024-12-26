@@ -1,16 +1,8 @@
-@file:OptIn(ExperimentalSerializationApi::class)
-
 package com.monoid.hackernews.common.data.model
 
-import androidx.datastore.core.CorruptionException
 import androidx.datastore.preferences.core.byteArrayPreferencesKey
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.decodeFromStream
-import kotlinx.serialization.json.encodeToStream
-import java.io.ByteArrayOutputStream
 
 @Serializable
 @SerialName("Settings")
@@ -35,32 +27,9 @@ data class Settings(
     val colors: Colors = Colors.default,
 )
 
-private val SETTINGS_KEY = byteArrayPreferencesKey("settings")
-var androidx.datastore.preferences.core.MutablePreferences.settings: Settings?
-    get() = try {
-        get(SETTINGS_KEY)
-            ?.inputStream()
-            ?.use { Json.decodeFromStream<Settings>(it) }
-    } catch (throwable: Throwable) {
-        throw CorruptionException("Cannot read preferences", throwable)
-    }
-    set(value) = try {
-        ByteArrayOutputStream().use {
-            Json.encodeToStream(value, it)
-            set(SETTINGS_KEY, it.toByteArray())
-        }
-    } catch (throwable: Throwable) {
-        throw CorruptionException("Cannot write preferences", throwable)
-    }
-
-val androidx.datastore.preferences.core.Preferences.settings: Settings?
-    get() = try {
-        get(SETTINGS_KEY)
-            ?.inputStream()
-            ?.use { Json.decodeFromStream<Settings>(it) }
-    } catch (throwable: Throwable) {
-        throw CorruptionException("Cannot read preferences", throwable)
-    }
+val SETTINGS_KEY = byteArrayPreferencesKey("settings")
+expect var androidx.datastore.preferences.core.MutablePreferences.settings: Settings?
+expect val androidx.datastore.preferences.core.Preferences.settings: Settings?
 
 @Serializable
 @SerialName("DayNight")

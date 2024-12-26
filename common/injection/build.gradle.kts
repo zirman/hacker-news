@@ -11,33 +11,50 @@ plugins {
 }
 kotlin {
     compilerOptions {
-        extraWarnings.set(true)
+        freeCompilerArgs.add("-Xexpect-actual-classes")
     }
     jvmToolchain(libs.versions.jvmToolchain.get().toInt())
-    androidTarget { }
+    androidTarget {
+    }
     jvm {
         compilerOptions {
             jvmTarget = JvmTarget.JVM_17
         }
     }
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64(),
+    ).forEach { iosTarget ->
+    }
     sourceSets {
-        androidMain.dependencies { }
-        jvmMain.dependencies { }
+        androidMain.dependencies {
+            implementation(libs.koinLoggerSlf4j)
+            implementation(libs.koinKtor)
+            implementation(libs.ktorClientAndroid)
+            implementation(project.dependencies.platform(libs.kotilnxCoroutinesBom))
+            implementation(libs.bundles.firebase)
+            implementation(libs.kotlinxCoroutinesAndroid)
+        }
+        jvmMain.dependencies {
+            implementation(libs.ktorClientJava)
+        }
+        iosMain.dependencies {
+            implementation(libs.ktorClientDarwin)
+        }
         commonMain.dependencies {
             compileOnly(libs.koinCore)
-            implementation(libs.bundles.firebase)
+
             implementation(libs.bundles.kotlinx)
             implementation(libs.bundles.koin)
             api(libs.koinAnnotations)
-            implementation(project.dependencies.platform(libs.kotilnxCoroutinesBom))
             implementation(project.dependencies.platform(libs.kotlinWrappersBom))
             implementation(project.dependencies.platform(libs.koinBom))
             implementation(project.dependencies.platform(libs.firebaseBom))
             implementation(libs.kermit)
-            project.dependencies.coreLibraryDesugaring(libs.desugarJdkLibsNio)
         }
         commonTest.dependencies {
-            implementation(libs.bundles.test)
+            //implementation(libs.bundles.test)
         }
         sourceSets.named("commonMain") {
             kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
@@ -64,12 +81,16 @@ android {
     }
 }
 dependencies {
+    coreLibraryDesugaring(libs.desugarJdkLibsNio)
     add("kspCommonMainMetadata", libs.koinKspCompiler)
     add("kspAndroid", libs.koinKspCompiler)
     add("kspJvm", libs.koinKspCompiler)
+    add("kspIosX64", libs.koinKspCompiler)
+    add("kspIosArm64", libs.koinKspCompiler)
+    add("kspIosSimulatorArm64", libs.koinKspCompiler)
 }
 ksp {
-    arg("KOIN_CONFIG_CHECK", "true")
+    arg("KOIN_CONFIG_CHECK", "false")
     arg("KOIN_USE_COMPOSE_VIEWMODEL", "true")
 }
 // Trigger Common Metadata Generation from Native tasks

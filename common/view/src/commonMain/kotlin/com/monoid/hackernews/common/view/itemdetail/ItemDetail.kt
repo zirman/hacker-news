@@ -55,6 +55,7 @@ import com.monoid.hackernews.common.view.comment
 import com.monoid.hackernews.common.view.favorite
 import com.monoid.hackernews.common.view.flag
 import com.monoid.hackernews.common.view.follow
+import com.monoid.hackernews.common.view.itemlist.URL
 import com.monoid.hackernews.common.view.more_options
 import com.monoid.hackernews.common.view.open_in_browser
 import com.monoid.hackernews.common.view.placeholder.PlaceholderHighlight
@@ -66,7 +67,6 @@ import com.monoid.hackernews.common.view.un_vote
 import com.monoid.hackernews.common.view.unfollow
 import com.monoid.hackernews.common.view.upvote
 import org.jetbrains.compose.resources.stringResource
-import java.net.URL
 
 @Suppress("CyclomaticComplexMethod")
 @Composable

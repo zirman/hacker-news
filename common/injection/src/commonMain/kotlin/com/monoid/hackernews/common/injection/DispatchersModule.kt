@@ -2,6 +2,7 @@ package com.monoid.hackernews.common.injection
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.MainCoroutineDispatcher
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Named

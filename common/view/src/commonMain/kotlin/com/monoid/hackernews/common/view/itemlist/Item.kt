@@ -48,11 +48,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.ItemType
 import com.monoid.hackernews.common.data.model.Username
-import com.monoid.hackernews.common.data.model.makeItem
 import com.monoid.hackernews.common.domain.util.rememberTimeBy
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.TooltipPopupPositionProvider
@@ -72,43 +70,45 @@ import com.monoid.hackernews.common.view.un_vote
 import com.monoid.hackernews.common.view.unfollow
 import com.monoid.hackernews.common.view.upvote
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
-import java.net.URL
 
-@Preview
-@Composable
-private fun ItemPreview() {
-    Item(
-        item = makeItem(
-            id = ItemId(0),
-            type = ItemType.Story,
-            title = AnnotatedString("Hello World"),
-            text = AnnotatedString("Lorum Ipsum"),
-            url = "https://www.google.com/",
-            kids = emptyList(),
-            upvoted = false,
-            favourited = false,
-            flagged = false,
-            expanded = false,
-            followed = false,
-            by = null,
-            deleted = null,
-            descendants = null,
-            parent = null,
-            lastUpdate = null,
-            score = null,
-            time = null,
-        ),
-        onClickDetail = {},
-        onClickReply = {},
-        onClickUser = {},
-        onClickBrowser = {},
-        onClickUpvote = {},
-        onClickFavorite = {},
-        onClickFollow = {},
-        onClickFlag = {},
-    )
+expect class URL(string: String) {
+    val host: String
 }
+
+//@Preview
+//@Composable
+//private fun ItemPreview() {
+//    Item(
+//        item = makeItem(
+//            id = ItemId(0),
+//            type = ItemType.Story,
+//            title = AnnotatedString("Hello World"),
+//            text = AnnotatedString("Lorum Ipsum"),
+//            url = "https://www.google.com/",
+//            kids = emptyList(),
+//            upvoted = false,
+//            favourited = false,
+//            flagged = false,
+//            expanded = false,
+//            followed = false,
+//            by = null,
+//            deleted = null,
+//            descendants = null,
+//            parent = null,
+//            lastUpdate = null,
+//            score = null,
+//            time = null,
+//        ),
+//        onClickDetail = {},
+//        onClickReply = {},
+//        onClickUser = {},
+//        onClickBrowser = {},
+//        onClickUpvote = {},
+//        onClickFavorite = {},
+//        onClickFollow = {},
+//        onClickFlag = {},
+//    )
+//}
 
 @Suppress("CyclomaticComplexMethod")
 @Composable

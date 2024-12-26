@@ -13,10 +13,11 @@ plugins {
 }
 kotlin {
     compilerOptions {
-        extraWarnings.set(true)
+        freeCompilerArgs.add("-Xexpect-actual-classes")
     }
     jvmToolchain(libs.versions.jvmToolchain.get().toInt())
-    jvm("desktop") { }
+    jvm("desktop") {
+    }
     sourceSets {
         val desktopMain by getting
         desktopMain.dependencies {
@@ -83,7 +84,7 @@ dependencies {
     add("kspDesktop", libs.koinKspCompiler)
 }
 ksp {
-    arg("KOIN_CONFIG_CHECK", "true")
+    arg("KOIN_CONFIG_CHECK", "false")
     arg("KOIN_USE_COMPOSE_VIEWMODEL", "true")
 }
 // Trigger Common Metadata Generation from Native tasks

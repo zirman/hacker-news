@@ -16,22 +16,41 @@ plugins {
 
 kotlin {
     compilerOptions {
-        extraWarnings.set(true)
+        freeCompilerArgs.add("-Xexpect-actual-classes")
     }
     jvmToolchain(libs.versions.jvmToolchain.get().toInt())
-    androidTarget { }
+    androidTarget {
+    }
     jvm {
         compilerOptions {
             jvmTarget = JvmTarget.JVM_17
         }
     }
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+    }
     sourceSets {
         androidMain.dependencies {
             implementation(libs.bundles.androidxCompose)
-            project.dependencies.coreLibraryDesugaring(libs.desugarJdkLibsNio)
+            implementation(libs.ktorClientAndroid)
+            implementation(libs.collectionKtx)
+            implementation(project.dependencies.platform(libs.kotilnxCoroutinesBom))
+            implementation(compose.preview)
+            implementation(compose.components.uiToolingPreview)
+            implementation(compose.uiTooling)
         }
         jvmMain.dependencies {
             implementation(libs.kotlinxCoroutinesSwing)
+            implementation(libs.ktorClientJava)
+            implementation(compose.desktop.common)
+            implementation(compose.desktop.components.animatedImage)
+            implementation(compose.desktop.components.splitPane)
+        }
+        iosMain.dependencies {
+            implementation(libs.ktorClientDarwin)
         }
         commonMain.dependencies {
             api(project(":common:domain"))
@@ -39,17 +58,13 @@ kotlin {
             implementation(compose.animation)
             implementation(compose.animationGraphics)
             implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
-            implementation(compose.desktop.common)
-            implementation(compose.desktop.components.animatedImage)
-            implementation(compose.desktop.components.splitPane)
+
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(compose.materialIconsExtended)
-            implementation(compose.preview)
+
             implementation(compose.runtime)
             implementation(compose.ui)
-            implementation(compose.uiTooling)
             implementation(compose.uiUtil)
             implementation(libs.annotation)
             implementation(libs.bundles.datastore)
@@ -57,7 +72,6 @@ kotlin {
             implementation(libs.bundles.koin)
             api(libs.koinAnnotations)
             implementation(libs.bundles.ktor)
-            implementation(libs.collectionKtx)
             implementation(libs.jetbrainsLifecycleRuntimeCompose)
             implementation(libs.jetbrainsLifecycleViewmodel)
             implementation(libs.jetbrainsLifecycleViewmodelCompose)
@@ -65,10 +79,9 @@ kotlin {
             implementation(libs.material3WindowSizeClassMultiplatform)
             implementation(project.dependencies.platform(libs.koinBom))
             implementation(project.dependencies.platform(libs.kotlinWrappersBom))
-            implementation(project.dependencies.platform(libs.kotilnxCoroutinesBom))
         }
         commonTest.dependencies {
-            implementation(libs.bundles.test)
+            //implementation(libs.bundles.test)
         }
         sourceSets.named("commonMain") {
             kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
@@ -100,12 +113,16 @@ android {
     composeOptions { }
 }
 dependencies {
+    coreLibraryDesugaring(libs.desugarJdkLibsNio)
     add("kspCommonMainMetadata", libs.koinKspCompiler)
     add("kspAndroid", libs.koinKspCompiler)
     add("kspJvm", libs.koinKspCompiler)
+    add("kspIosX64", libs.koinKspCompiler)
+    add("kspIosArm64", libs.koinKspCompiler)
+    add("kspIosSimulatorArm64", libs.koinKspCompiler)
 }
 ksp {
-    arg("KOIN_CONFIG_CHECK", "true")
+    arg("KOIN_CONFIG_CHECK", "false")
     arg("KOIN_USE_COMPOSE_VIEWMODEL", "true")
 }
 // Trigger Common Metadata Generation from Native tasks

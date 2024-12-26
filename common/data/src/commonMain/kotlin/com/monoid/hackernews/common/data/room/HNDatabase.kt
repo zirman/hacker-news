@@ -39,4 +39,6 @@ abstract class HNDatabase : RoomDatabase() {
 }
 
 @Suppress("NO_ACTUAL_FOR_EXPECT")
-expect object HNDatabaseConstructor : RoomDatabaseConstructor<HNDatabase>
+expect object HNDatabaseConstructor : RoomDatabaseConstructor<HNDatabase> {
+    override fun initialize(): HNDatabase
+}

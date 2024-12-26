@@ -1,6 +1,7 @@
 @file:OptIn(ExperimentalComposeLibrary::class)
 
 import org.jetbrains.compose.ExperimentalComposeLibrary
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.androidApplication)
@@ -17,23 +18,58 @@ plugins {
 }
 kotlin {
     compilerOptions {
-        extraWarnings.set(true)
+        freeCompilerArgs.add("-Xexpect-actual-classes")
     }
     jvmToolchain(libs.versions.jvmToolchain.get().toInt())
-    androidTarget { }
+    androidTarget {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_11)
+        }
+    }
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "ComposeApp"
+            isStatic = true
+        }
+    }
     sourceSets {
         androidMain.dependencies {
-            project.dependencies.coreLibraryDesugaring(libs.desugarJdkLibsNio)
-            compileOnly(libs.koinCore)
-            implementation(compose.components.resources)
+            implementation(libs.bundles.androidx)
+            implementation(libs.bundles.androidxCompose)
+            implementation(libs.bundles.androidxApp)
+            implementation(libs.koinAndroid)
+            implementation(compose.preview)
+            implementation(compose.components.uiToolingPreview)
+            implementation(compose.uiTooling)
+            implementation(libs.ktorClientAndroid)
+            implementation(libs.material3Adaptive)
+            implementation(libs.material3AdaptiveLayout)
+            implementation(libs.collectionKtx)
+            implementation(project.dependencies.platform(libs.kotilnxCoroutinesBom))
+            implementation(libs.bundles.googleApp)
+            implementation(libs.bundles.google)
+        }
+        iosMain.dependencies {
+            implementation(libs.ktorClientDarwin)
+        }
+        commonMain.dependencies {
+            implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(compose.materialIconsExtended)
-            implementation(compose.preview)
             implementation(compose.ui)
+            implementation(compose.components.resources)
             implementation(compose.uiTest)
-            implementation(compose.uiTooling)
             implementation(compose.uiUtil)
+            implementation(project.dependencies.platform(libs.koinBom))
+            implementation(project.dependencies.platform(libs.kotlinWrappersBom))
+            implementation(project(":common:injection"))
+            implementation(project(":common:view"))
+            compileOnly(libs.koinCore)
 //            implementation(libs.activityCompose)
             implementation(libs.annotation)
             implementation(libs.bundles.datastore)
@@ -41,34 +77,13 @@ kotlin {
             implementation(libs.bundles.koin)
             implementation(libs.bundles.ktor)
             implementation(libs.bundles.kotlinx)
-            implementation(libs.bundles.androidx)
-            implementation(libs.bundles.androidxCompose)
-            implementation(libs.bundles.androidxApp)
-            implementation(libs.bundles.google)
-            implementation(libs.bundles.googleApp)
-            implementation(libs.collectionKtx)
             implementation(libs.navigationCompose)
-            implementation(libs.koinAndroid)
             implementation(libs.koinAnnotations)
             implementation(libs.lifecycleProcess)
             implementation(libs.slf4jSimple)
-            implementation(libs.bundles.ktor)
-
-            implementation(libs.material3Adaptive)
-            implementation(libs.material3AdaptiveLayout)
-
-            // lintChecks(libs.composeLintChecks)
-            // debugImplementation(libs.uiTestManifest)
-        }
-        commonMain.dependencies {
-            implementation(project.dependencies.platform(libs.koinBom))
-            implementation(project.dependencies.platform(libs.kotlinWrappersBom))
-            implementation(project.dependencies.platform(libs.kotilnxCoroutinesBom))
-            implementation(project(":common:injection"))
-            implementation(project(":common:view"))
         }
         commonTest.dependencies {
-            implementation(libs.bundles.test)
+            //implementation(libs.bundles.test)
         }
     }
     sourceSets.named("commonMain") {
@@ -145,11 +160,15 @@ android {
     }
 }
 dependencies {
+    coreLibraryDesugaring(libs.desugarJdkLibsNio)
     add("kspCommonMainMetadata", libs.koinKspCompiler)
     add("kspAndroid", libs.koinKspCompiler)
+    add("kspIosX64", libs.koinKspCompiler)
+    add("kspIosArm64", libs.koinKspCompiler)
+    add("kspIosSimulatorArm64", libs.koinKspCompiler)
 }
 ksp {
-    arg("KOIN_CONFIG_CHECK", "true")
+    arg("KOIN_CONFIG_CHECK", "false")
     arg("KOIN_USE_COMPOSE_VIEWMODEL", "true")
 }
 // Trigger Common Metadata Generation from Native tasks

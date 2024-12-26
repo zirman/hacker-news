@@ -7,7 +7,7 @@ import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import java.util.WeakHashMap
+import com.monoid.hackernews.common.data.WeakHashMap
 
 // TODO:
 // <span style="...">

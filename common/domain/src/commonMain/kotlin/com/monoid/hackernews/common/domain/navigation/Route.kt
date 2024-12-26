@@ -9,8 +9,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import java.net.URLDecoder
-import java.net.URLEncoder
+
+expect fun encodeUrl(str: String): String
+expect fun decodeUrl(str: String): String
 
 enum class BottomNav {
     Stories,
@@ -61,10 +62,10 @@ data object ActualActionNavType : NavType<LoginAction>(isNullableAllowed = true)
         bundle.getString(key)?.let { Json.decodeFromString(it) }
 
     override fun serializeAsValue(value: LoginAction): String =
-        URLEncoder.encode(jsonDecoder.encodeToString(value), "utf-8")
+        encodeUrl(jsonDecoder.encodeToString(value))
 
     override fun parseValue(value: String): LoginAction =
-        jsonDecoder.decodeFromString(URLDecoder.decode(value, "utf-8"))
+        jsonDecoder.decodeFromString(decodeUrl(value))
 }
 
 inline val NavType.Companion.ActionNavType: NavType<LoginAction> get() = ActualActionNavType
@@ -87,8 +88,8 @@ data object ActualUsernameNavType : NavType<Username>(isNullableAllowed = false)
     }
 
     override fun get(bundle: Bundle, key: String): Username = Username(bundle.getString(key)!!)
-    override fun serializeAsValue(value: Username): String = URLEncoder.encode(value.string, "utf-8")
-    override fun parseValue(value: String): Username = Username(URLDecoder.decode(value, "utf-8"))
+    override fun serializeAsValue(value: Username): String = encodeUrl(value.string)
+    override fun parseValue(value: String): Username = Username(decodeUrl(value))
 }
 
 inline val NavType.Companion.UsernameNavType: NavType<Username> get() = ActualUsernameNavType

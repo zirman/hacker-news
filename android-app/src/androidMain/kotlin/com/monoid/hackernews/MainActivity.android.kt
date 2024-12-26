@@ -20,8 +20,6 @@ import androidx.metrics.performance.JankStats
 import com.monoid.hackernews.common.data.model.LightDarkMode
 import com.monoid.hackernews.common.data.model.SettingsRepository
 import com.monoid.hackernews.common.injection.LoggerAdapter
-import com.monoid.hackernews.common.view.main.MainNavHost
-import com.monoid.hackernews.common.view.theme.AppTheme
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.flow.distinctUntilChangedBy
@@ -29,7 +27,6 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.android.scope.AndroidScopeComponent
 import org.koin.androidx.scope.activityRetainedScope
-import org.koin.compose.KoinContext
 import org.koin.core.scope.Scope
 import java.util.concurrent.TimeUnit
 
@@ -50,13 +47,7 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
         super.onCreate(savedInstanceState)
         windowSetup()
         setContent {
-            KoinContext {
-                AppTheme {
-                    Scrim {
-                        MainNavHost(onClickLogin = {})
-                    }
-                }
-            }
+            App()
         }
         jankStats()
         lifecycleScope.launch(context) {

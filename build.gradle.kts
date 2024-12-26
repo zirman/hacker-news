@@ -1,5 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform) apply false
@@ -24,7 +24,7 @@ tasks.register("clean", Delete::class) {
 }
 
 subprojects {
-    tasks.withType<KotlinJvmCompile>().configureEach {
+    tasks.withType<KotlinCompile>().configureEach {
         compilerOptions {
             // keeps coroutine variables
             // freeCompilerArgs.add("-Xdebug")
@@ -32,6 +32,7 @@ subprojects {
             // vm options ("-ea")
             // https://github.com/Anamorphosee/stacktrace-decoroutinator
 
+            extraWarnings.set(true)
             allWarningsAsErrors = false
 
             jvmTarget.set(JvmTarget.JVM_17)
@@ -42,7 +43,8 @@ subprojects {
                     "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
                     "-P",
                     "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=" +
-                        rootDir.absolutePath + "/compose_compiler_config.conf",
+                            rootDir.absolutePath + "/compose_compiler_config.conf",
+                    "-Xexpect-actual-classes",
                 ),
             )
 
@@ -52,9 +54,9 @@ subprojects {
                 freeCompilerArgs.addAll(
                     listOf(
                         "-P=plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" +
-                            projectDir.absolutePath + "/build/compose_metrics/",
+                                projectDir.absolutePath + "/build/compose_metrics/",
                         "-P=plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" +
-                            projectDir.absolutePath + "/build/compose_metrics/",
+                                projectDir.absolutePath + "/build/compose_metrics/",
                     ),
                 )
             }
