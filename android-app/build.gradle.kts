@@ -1,7 +1,6 @@
 @file:OptIn(ExperimentalComposeLibrary::class)
 
 import org.jetbrains.compose.ExperimentalComposeLibrary
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.androidApplication)
@@ -150,6 +149,7 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/versions/9/previous-compilation-data.bin"
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
     lint {

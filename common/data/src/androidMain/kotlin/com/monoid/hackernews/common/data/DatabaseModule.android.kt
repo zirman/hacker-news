@@ -19,12 +19,12 @@ actual class DatabaseModule {
         @Named(type = DispatcherQualifier.Io::class)
         coroutineDispatcher: CoroutineDispatcher,
     ): HNDatabase {
-        val dbFile = context.getDatabasePath("hn_database.db")
-        return Room.databaseBuilder<HNDatabase>(
-            context = context,
-            name = dbFile.absolutePath,
-            //factory = { HNDatabase::class.instantiateImpl() },
-        )
+        return Room
+            .databaseBuilder<HNDatabase>(
+                context = context,
+                name = context.getDatabasePath(databaseFileName).absolutePath,
+                //factory = { HNDatabase::class.instantiateImpl() },
+            )
             .setDriver(BundledSQLiteDriver())
             .setQueryCoroutineContext(coroutineDispatcher)
             .build()

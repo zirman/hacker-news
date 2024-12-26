@@ -16,12 +16,12 @@ import org.koin.core.annotation.Single
 actual class NetworkModule {
 
     @Single
-    fun json(): Json = Json {
+    actual fun json(): Json = Json {
         ignoreUnknownKeys = true
     }
 
     @Single
-    fun httpClient(json: Json): HttpClient = HttpClient(Android) {
+    actual fun httpClient(json: Json): HttpClient = HttpClient(Android) {
         install(Logging) {
             logger = Logger.ANDROID
             level = LogLevel.NONE // TODO debug builds

@@ -16,7 +16,7 @@ actual class DataStoreModule {
         return PreferenceDataStoreFactory.createWithPath(
             produceFile = {
                 context
-                    .filesDir.resolve("settings.preferences_pb")
+                    .filesDir.resolve(dataStoreFileName)
                     .absolutePath.toPath()
             },
         )

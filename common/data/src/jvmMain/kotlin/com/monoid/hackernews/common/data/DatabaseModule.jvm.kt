@@ -22,7 +22,7 @@ actual class DatabaseModule {
             .databaseBuilder<HNDatabase>(
                 name = File(
                     System.getProperty("java.io.tmpdir"),
-                    "hn_database.db",
+                    databaseFileName,
                 ).absolutePath,
             )
             .setDriver(BundledSQLiteDriver())

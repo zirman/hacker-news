@@ -2,53 +2,54 @@ package com.monoid.hackernews.common.data
 
 // TODO
 actual class WeakHashMap<K, V> : MutableMap<K, V> {
+    private val map: MutableMap<K, V> = mutableMapOf()
     actual override fun put(key: K, value: V): V? {
-        TODO()
+        return map.put(key, value)
     }
 
     actual override fun remove(key: K): V? {
-        TODO()
+        return map.remove(key)
     }
 
     actual override fun putAll(from: Map<out K, V>) {
-        TODO()
+        return map.putAll(from)
     }
 
     actual override fun clear() {
-        TODO()
+        map.clear()
     }
 
     actual override val keys: MutableSet<K>
         get() {
-            TODO()
+            return map.keys
         }
     actual override val values: MutableCollection<V>
         get() {
-            TODO()
+            return map.values
         }
     actual override val entries: MutableSet<MutableMap.MutableEntry<K, V>>
         get() {
-            TODO()
+            return map.entries
         }
 
     actual override fun isEmpty(): Boolean {
-        TODO()
+        return map.isEmpty()
     }
 
     actual override fun containsKey(key: K): Boolean {
-        TODO()
+        return map.containsKey(key)
     }
 
     actual override fun containsValue(value: V): Boolean {
-        TODO()
+        return map.containsValue(value)
     }
 
     actual override fun get(key: K): V? {
-        TODO()
+        return map[key]
     }
 
     actual override val size: Int
         get() {
-            TODO()
+            return map.size
         }
 }
