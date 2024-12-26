@@ -1,6 +1,7 @@
 @file:OptIn(ExperimentalComposeLibrary::class)
 
 import org.jetbrains.compose.ExperimentalComposeLibrary
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
     alias(libs.plugins.androidApplication)
@@ -67,7 +68,7 @@ kotlin {
             implementation(project(":common:view"))
             compileOnly(libs.koinCore)
 //            implementation(libs.activityCompose)
-            implementation(libs.annotation)
+            api(libs.annotation)
             implementation(libs.bundles.datastore)
             implementation(libs.bundles.kotlinx)
             implementation(libs.bundles.koin)
@@ -169,8 +170,8 @@ ksp {
     arg("KOIN_USE_COMPOSE_VIEWMODEL", "true")
 }
 // Trigger Common Metadata Generation from Native tasks
-//project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
-//    if (name != "kspCommonMainKotlinMetadata") {
-//        dependsOn("kspCommonMainKotlinMetadata")
-//    }
-//}
+project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
+    if (name != "kspCommonMainKotlinMetadata") {
+        dependsOn("kspCommonMainKotlinMetadata")
+    }
+}

@@ -25,7 +25,7 @@ import org.koin.core.annotation.Single
     ],
 )
 @ComponentScan("com.monoid.hackernews")
-class ApplicationModule {
+actual class ApplicationModule {
 
     @Single
     @Named(type = ProcessLifecycleOwner::class)

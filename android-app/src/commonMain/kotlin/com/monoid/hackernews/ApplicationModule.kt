@@ -5,7 +5,6 @@ import com.monoid.hackernews.common.data.DatabaseModule
 import com.monoid.hackernews.common.data.NetworkModule
 import com.monoid.hackernews.common.injection.DispatcherModule
 import com.monoid.hackernews.common.injection.LoggerModule
-import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Module
 
 @Module(
@@ -17,5 +16,4 @@ import org.koin.core.annotation.Module
         LoggerModule::class,
     ],
 )
-@ComponentScan("com.monoid.hackernews")
-actual class ApplicationModule
+expect class ApplicationModule
