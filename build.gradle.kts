@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.KotlinCommonCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform) apply false
@@ -24,7 +25,12 @@ tasks.register("clean", Delete::class) {
 }
 
 subprojects {
-    tasks.withType<KotlinCompile>().configureEach {
+    tasks.withType<KotlinJvmCompile>().configureEach {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
+    tasks.withType<KotlinCommonCompile>().configureEach {
         compilerOptions {
             // keeps coroutine variables
             // freeCompilerArgs.add("-Xdebug")
@@ -34,8 +40,6 @@ subprojects {
 
             extraWarnings.set(true)
             allWarningsAsErrors = false
-
-            jvmTarget.set(JvmTarget.JVM_17)
 
             freeCompilerArgs.addAll(
                 listOf(

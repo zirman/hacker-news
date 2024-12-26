@@ -22,14 +22,11 @@ kotlin {
     androidTarget {
     }
     jvm {
-        compilerOptions {
-            jvmTarget = JvmTarget.JVM_17
-        }
     }
     listOf(
         iosX64(),
         iosArm64(),
-        iosSimulatorArm64()
+        iosSimulatorArm64(),
     ).forEach { iosTarget ->
     }
     sourceSets {
@@ -103,14 +100,16 @@ android {
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
     }
-    buildTypes { }
+    buildTypes {
+    }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
     }
     buildFeatures {
         compose = true
     }
-    composeOptions { }
+    composeOptions {
+    }
 }
 dependencies {
     coreLibraryDesugaring(libs.desugarJdkLibsNio)

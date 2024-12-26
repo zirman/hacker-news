@@ -20,14 +20,11 @@ kotlin {
     androidTarget {
     }
     jvm {
-        compilerOptions {
-            jvmTarget = JvmTarget.JVM_17
-        }
     }
     listOf(
         iosX64(),
         iosArm64(),
-        iosSimulatorArm64()
+        iosSimulatorArm64(),
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             //linkerOpts.add("-lsqlite3")
@@ -82,7 +79,8 @@ android {
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
     }
-    buildTypes { }
+    buildTypes {
+    }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
     }
