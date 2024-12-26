@@ -10,5 +10,5 @@ actual fun rememberColorScheme(
     lightDarkMode: LightDarkMode,
     colors: Colors
 ): ColorScheme {
-    TODO("Not yet implemented")
+    return LightThemeColors
 }
