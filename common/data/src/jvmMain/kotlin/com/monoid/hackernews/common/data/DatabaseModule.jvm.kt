@@ -18,15 +18,16 @@ actual class DatabaseModule {
         @Named(type = DispatcherQualifier.Io::class)
         coroutineDispatcher: CoroutineDispatcher
     ): HNDatabase {
-        return Room
+        Room
             .databaseBuilder<HNDatabase>(
                 name = File(
                     System.getProperty("java.io.tmpdir"),
-                    databaseFileName,
+                    DATABASE_FILE_NAME,
                 ).absolutePath,
             )
             .setDriver(BundledSQLiteDriver())
             .setQueryCoroutineContext(coroutineDispatcher)
             .build()
+            .run { return this }
     }
 }

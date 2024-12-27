@@ -22,7 +22,7 @@ actual class DatabaseModule {
         return Room
             .databaseBuilder<HNDatabase>(
                 context = context,
-                name = context.getDatabasePath(databaseFileName).absolutePath,
+                name = context.getDatabasePath(DATABASE_FILE_NAME).absolutePath,
                 //factory = { HNDatabase::class.instantiateImpl() },
             )
             .setDriver(BundledSQLiteDriver())

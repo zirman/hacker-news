@@ -48,7 +48,6 @@ subprojects {
                     "-P",
                     "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=" +
                             rootDir.absolutePath + "/compose_compiler_config.conf",
-                    "-Xexpect-actual-classes",
                 ),
             )
 

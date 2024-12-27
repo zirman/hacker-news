@@ -21,14 +21,14 @@ actual class DataStoreModule {
     fun dataStorePreferences(): DataStore<Preferences> {
         return PreferenceDataStoreFactory.createWithPath(
             produceFile = {
-                val documentDirectory: NSURL? = NSFileManager.defaultManager.URLForDirectory(
+                val documentDirectory: NSURL = NSFileManager.defaultManager.URLForDirectory(
                     directory = NSDocumentDirectory,
                     inDomain = NSUserDomainMask,
                     appropriateForURL = null,
                     create = false,
                     error = null,
-                )
-                (checkNotNull(documentDirectory).path + "/$dataStoreFileName").toPath()
+                ).let { checkNotNull(it) }
+                "${documentDirectory.path}/$DATA_STORE_FILE_NAME".toPath()
             },
         )
     }

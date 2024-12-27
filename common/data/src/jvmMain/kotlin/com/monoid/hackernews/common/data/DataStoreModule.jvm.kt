@@ -15,7 +15,7 @@ actual class DataStoreModule {
     fun dataStorePreferences(): DataStore<Preferences> {
         return PreferenceDataStoreFactory.createWithPath(
             produceFile = {
-                File(dataStoreFileName).absolutePath.toPath()
+                File(DATA_STORE_FILE_NAME).absolutePath.toPath()
             },
         )
     }

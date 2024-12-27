@@ -23,21 +23,21 @@ actual class DatabaseModule {
         @Named(type = DispatcherQualifier.Io::class)
         coroutineDispatcher: CoroutineDispatcher,
     ): HNDatabase {
-        val documentDirectory = checkNotNull(
-            NSFileManager.defaultManager
-                .URLForDirectory(
-                    directory = NSDocumentDirectory,
-                    inDomain = NSUserDomainMask,
-                    appropriateForURL = null,
-                    create = false,
-                    error = null,
-                )
-                ?.path
-        )
-        return Room
-            .databaseBuilder<HNDatabase>(name = "$documentDirectory/$databaseFileName")
+        val documentDirectory = NSFileManager.defaultManager
+            .URLForDirectory(
+                directory = NSDocumentDirectory,
+                inDomain = NSUserDomainMask,
+                appropriateForURL = null,
+                create = false,
+                error = null,
+            )
+            ?.path
+            .let { checkNotNull(it) }
+        Room
+            .databaseBuilder<HNDatabase>(name = "$documentDirectory/$DATABASE_FILE_NAME")
             .setDriver(BundledSQLiteDriver())
             .setQueryCoroutineContext(coroutineDispatcher)
             .build()
+            .run { return this }
     }
 }

@@ -16,7 +16,7 @@ actual class DataStoreModule {
         return PreferenceDataStoreFactory.createWithPath(
             produceFile = {
                 context
-                    .filesDir.resolve(dataStoreFileName)
+                    .filesDir.resolve(DATA_STORE_FILE_NAME)
                     .absolutePath.toPath()
             },
         )
