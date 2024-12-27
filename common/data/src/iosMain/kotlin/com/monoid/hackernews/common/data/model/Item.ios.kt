@@ -3,6 +3,27 @@ package com.monoid.hackernews.common.data.model
 import androidx.compose.ui.text.AnnotatedString
 import com.monoid.hackernews.common.data.api.ItemId
 
+data class SimpleItemUiStateImpl(
+    override val id: ItemId,
+    override val lastUpdate: Long?,
+    override val type: ItemType?,
+    override val time: Long?,
+    override val deleted: Boolean?,
+    override val by: String?,
+    override val descendants: Int?,
+    override val score: Int?,
+    override val title: AnnotatedString?,
+    override val text: AnnotatedString?,
+    override val url: String?,
+    override val parent: ItemId?,
+    override val kids: List<ItemId>?,
+    override val upvoted: Boolean?,
+    override val favourited: Boolean?,
+    override val flagged: Boolean?,
+    override val expanded: Boolean,
+    override val followed: Boolean,
+) : Item
+
 actual fun makeItem(
     id: ItemId,
     lastUpdate: Long?,
@@ -21,7 +42,24 @@ actual fun makeItem(
     favourited: Boolean?,
     flagged: Boolean?,
     expanded: Boolean,
-    followed: Boolean
-): Item {
-    TODO("Not yet implemented")
-}
+    followed: Boolean,
+): Item = SimpleItemUiStateImpl(
+    id = id,
+    lastUpdate = lastUpdate,
+    type = type,
+    time = time,
+    deleted = deleted,
+    by = by,
+    descendants = descendants,
+    score = score,
+    title = title,
+    text = text,
+    url = url,
+    parent = parent,
+    kids = kids,
+    upvoted = upvoted,
+    favourited = favourited,
+    flagged = flagged,
+    expanded = expanded,
+    followed = followed,
+)
