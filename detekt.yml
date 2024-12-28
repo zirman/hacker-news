@@ -348,7 +348,7 @@ naming:
   # collisions with other source sets.
   MatchingDeclarationName:
     active: true
-    excludes: ['**/androidMain/**', '**/iosMain/**', '**/jvmMain/**']
+    excludes: ['**/androidMain/**', '**/iosMain/**', '**/jvmMain/**', '**/desktopMain/**']
     mustBeFirst: true
   MemberNameEqualsClassName:
     active: true
