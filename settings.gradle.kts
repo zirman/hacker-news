@@ -20,7 +20,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "HackerNews"
-include(":android-app")
+include(":mobile-app")
 include(":wear-app")
 include(":desktop-app")
 include(":common:injection")
