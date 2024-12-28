@@ -63,6 +63,10 @@ kotlin {
         kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
     }
 }
+dependencies {
+    add("kspCommonMainMetadata", libs.koinKspCompiler)
+    add("kspDesktop", libs.koinKspCompiler)
+}
 compose.desktop {
     application {
         mainClass = "com.monoid.hackernews.Main_desktopKt"
@@ -79,11 +83,7 @@ compose.desktop {
         }
     }
 }
-dependencies {
-    add("kspCommonMainMetadata", libs.koinKspCompiler)
-    add("kspDesktop", libs.koinKspCompiler)
-}
 ksp {
-    arg("KOIN_CONFIG_CHECK", "false")
+    arg("KOIN_CONFIG_CHECK", "true")
     arg("KOIN_USE_COMPOSE_VIEWMODEL", "true")
 }

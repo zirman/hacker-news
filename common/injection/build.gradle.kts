@@ -88,7 +88,7 @@ dependencies {
     add("kspIosSimulatorArm64", libs.koinKspCompiler)
 }
 ksp {
-    arg("KOIN_CONFIG_CHECK", "false")
+    arg("KOIN_CONFIG_CHECK", "true")
     arg("KOIN_USE_COMPOSE_VIEWMODEL", "true")
 }
 // Trigger Common Metadata Generation from Native tasks

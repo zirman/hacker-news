@@ -54,6 +54,8 @@ kotlin {
             implementation(libs.ktorClientDarwin)
         }
         commonMain.dependencies {
+            api(libs.annotation)
+            compileOnly(libs.koinCore)
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
@@ -66,9 +68,7 @@ kotlin {
             implementation(project.dependencies.platform(libs.kotlinWrappersBom))
             implementation(project(":common:injection"))
             implementation(project(":common:view"))
-            compileOnly(libs.koinCore)
 //            implementation(libs.activityCompose)
-            api(libs.annotation)
             implementation(libs.bundles.datastore)
             implementation(libs.bundles.kotlinx)
             implementation(libs.bundles.koin)
@@ -86,6 +86,14 @@ kotlin {
     sourceSets.named("commonMain") {
         kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
     }
+}
+dependencies {
+    coreLibraryDesugaring(libs.desugarJdkLibsNio)
+    add("kspCommonMainMetadata", libs.koinKspCompiler)
+    add("kspAndroid", libs.koinKspCompiler)
+    add("kspIosX64", libs.koinKspCompiler)
+    add("kspIosArm64", libs.koinKspCompiler)
+    add("kspIosSimulatorArm64", libs.koinKspCompiler)
 }
 compose.resources {
     publicResClass = true
@@ -157,16 +165,8 @@ android {
         baseline = file("lint-baseline.xml")
     }
 }
-dependencies {
-    coreLibraryDesugaring(libs.desugarJdkLibsNio)
-    add("kspCommonMainMetadata", libs.koinKspCompiler)
-    add("kspAndroid", libs.koinKspCompiler)
-    add("kspIosX64", libs.koinKspCompiler)
-    add("kspIosArm64", libs.koinKspCompiler)
-    add("kspIosSimulatorArm64", libs.koinKspCompiler)
-}
 ksp {
-    arg("KOIN_CONFIG_CHECK", "false")
+    arg("KOIN_CONFIG_CHECK", "true")
     arg("KOIN_USE_COMPOSE_VIEWMODEL", "true")
 }
 // Trigger Common Metadata Generation from Native tasks

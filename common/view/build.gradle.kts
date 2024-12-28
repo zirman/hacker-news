@@ -84,6 +84,15 @@ kotlin {
         }
     }
 }
+dependencies {
+    coreLibraryDesugaring(libs.desugarJdkLibsNio)
+    add("kspCommonMainMetadata", libs.koinKspCompiler)
+    add("kspAndroid", libs.koinKspCompiler)
+    add("kspJvm", libs.koinKspCompiler)
+    add("kspIosX64", libs.koinKspCompiler)
+    add("kspIosArm64", libs.koinKspCompiler)
+    add("kspIosSimulatorArm64", libs.koinKspCompiler)
+}
 compose.resources {
     publicResClass = true
     packageOfResClass = "com.monoid.hackernews.common.view"
@@ -110,17 +119,8 @@ android {
     composeOptions {
     }
 }
-dependencies {
-    coreLibraryDesugaring(libs.desugarJdkLibsNio)
-    add("kspCommonMainMetadata", libs.koinKspCompiler)
-    add("kspAndroid", libs.koinKspCompiler)
-    add("kspJvm", libs.koinKspCompiler)
-    add("kspIosX64", libs.koinKspCompiler)
-    add("kspIosArm64", libs.koinKspCompiler)
-    add("kspIosSimulatorArm64", libs.koinKspCompiler)
-}
 ksp {
-    arg("KOIN_CONFIG_CHECK", "false")
+    arg("KOIN_CONFIG_CHECK", "true")
     arg("KOIN_USE_COMPOSE_VIEWMODEL", "true")
 }
 // Trigger Common Metadata Generation from Native tasks

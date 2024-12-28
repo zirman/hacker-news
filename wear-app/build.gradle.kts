@@ -15,6 +15,26 @@ kotlin {
     }
     jvmToolchain(libs.versions.jvmToolchain.get().toInt())
 }
+dependencies {
+    coreLibraryDesugaring(libs.desugarJdkLibsNio)
+    compileOnly(libs.koinCore)
+    implementation(libs.bundles.kotlinx)
+    implementation(libs.bundles.koin)
+    implementation(libs.bundles.androidx)
+    implementation(libs.bundles.androidxWear)
+    implementation(libs.bundles.datastore)
+    implementation(libs.bundles.google)
+    implementation(libs.bundles.googleWear)
+    implementation(libs.bundles.ktor)
+    implementation(libs.koinAndroid)
+    implementation(libs.koinAnnotations)
+    implementation(libs.lifecycleProcess)
+    implementation(libs.slf4jSimple)
+    implementation(platform(libs.koinBom))
+    implementation(project(":common:injection"))
+    implementation(project(":common:view"))
+    lintChecks(libs.composeLintChecks)
+}
 android {
     namespace = "com.monoid.hackernews.wear"
     compileSdk = libs.versions.compileSdk.get().toInt()
@@ -74,37 +94,7 @@ android {
         }
     }
 }
-dependencies {
-    coreLibraryDesugaring(libs.desugarJdkLibsNio)
-    compileOnly(libs.koinCore)
-    implementation(libs.bundles.kotlinx)
-    implementation(libs.bundles.koin)
-    implementation(libs.bundles.androidx)
-    implementation(libs.bundles.androidxWear)
-    implementation(libs.bundles.datastore)
-    implementation(libs.bundles.google)
-    implementation(libs.bundles.googleWear)
-    implementation(libs.bundles.ktor)
-    implementation(libs.koinAndroid)
-    implementation(libs.koinAnnotations)
-    implementation(libs.lifecycleProcess)
-    implementation(libs.slf4jSimple)
-    implementation(platform(libs.koinBom))
-    implementation(project(":common:injection"))
-    implementation(project(":common:view"))
-    lintChecks(libs.composeLintChecks)
-}
-//dependencies {
-//    add("kspCommonMainMetadata", libs.koinKspCompiler)
-//    add("kspAndroid", libs.koinKspCompiler)
-//}
 ksp {
-    arg("KOIN_CONFIG_CHECK", "false")
+    arg("KOIN_CONFIG_CHECK", "true")
     arg("KOIN_USE_COMPOSE_VIEWMODEL", "true")
 }
-// Trigger Common Metadata Generation from Native tasks
-//project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
-//    if (name != "kspCommonMainKotlinMetadata") {
-//        dependsOn("kspCommonMainKotlinMetadata")
-//    }
-//}

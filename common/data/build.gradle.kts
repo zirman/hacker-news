@@ -72,19 +72,6 @@ kotlin {
         kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
     }
 }
-android {
-    namespace = "com.monoid.hackernews.common.data"
-    compileSdk = libs.versions.compileSdk.get().toInt()
-    compileSdkPreview = libs.versions.compileSdkPreview.get()
-    defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
-    }
-    buildTypes {
-    }
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-    }
-}
 dependencies {
     coreLibraryDesugaring(libs.desugarJdkLibsNio)
     // room
@@ -100,6 +87,19 @@ dependencies {
     add("kspIosX64", libs.koinKspCompiler)
     add("kspIosArm64", libs.koinKspCompiler)
     add("kspIosSimulatorArm64", libs.koinKspCompiler)
+}
+android {
+    namespace = "com.monoid.hackernews.common.data"
+    compileSdk = libs.versions.compileSdk.get().toInt()
+    compileSdkPreview = libs.versions.compileSdkPreview.get()
+    defaultConfig {
+        minSdk = libs.versions.minSdk.get().toInt()
+    }
+    buildTypes {
+    }
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+    }
 }
 ksp {
     arg("KOIN_CONFIG_CHECK", "false")
