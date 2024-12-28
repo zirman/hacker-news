@@ -9,7 +9,7 @@ import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
 
 @Module
-class DispatcherModule {
+class DispatchersModule {
 
     @Single
     fun dispatchersMain(): MainCoroutineDispatcher = Dispatchers.Main
