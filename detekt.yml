@@ -344,8 +344,11 @@ naming:
   LambdaParameterNaming:
     active: false
     parameterPattern: '[a-z][A-Za-z0-9]*|_'
+  # Does not work well in multiplatform source sets where there is a postfix to avoid path
+  # collisions with other source sets.
   MatchingDeclarationName:
     active: true
+    excludes: ['**/androidMain/**', '**/iosMain/**', '**/jvmMain/**']
     mustBeFirst: true
   MemberNameEqualsClassName:
     active: true
