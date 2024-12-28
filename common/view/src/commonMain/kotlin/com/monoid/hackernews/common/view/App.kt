@@ -1,4 +1,4 @@
-package com.monoid.hackernews
+package com.monoid.hackernews.common.view
 
 import androidx.compose.runtime.Composable
 import com.monoid.hackernews.common.view.main.MainNavHost

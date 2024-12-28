@@ -3,6 +3,7 @@ package com.monoid.hackernews
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -20,6 +21,7 @@ import androidx.metrics.performance.JankStats
 import com.monoid.hackernews.common.data.model.LightDarkMode
 import com.monoid.hackernews.common.data.model.SettingsRepository
 import com.monoid.hackernews.common.injection.LoggerAdapter
+import com.monoid.hackernews.common.view.App
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.flow.distinctUntilChangedBy
@@ -68,18 +70,20 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
             LightDarkMode.Light -> false
             LightDarkMode.Dark -> true
         }
-        window.insetsController?.setSystemBarsAppearance(
-            /* appearance = */
-            if (darkMode) {
-                0
-            } else {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            window.insetsController?.setSystemBarsAppearance(
+                /* appearance = */
+                if (darkMode) {
+                    0
+                } else {
+                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
+                            WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+                },
+                /* mask = */
                 WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
-                        WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
-            },
-            /* mask = */
-            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
-                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
-        )
+                        WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
+            )
+        }
     }
 
     private fun windowSetup() {
@@ -88,34 +92,36 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
         window.statusBarColor = getColor(android.R.color.transparent)
         @Suppress("DEPRECATION")
         window.navigationBarColor = getColor(android.R.color.transparent)
-        installSplashScreen().apply {
-            setKeepOnScreenCondition {
-                false
-            }
-            setOnExitAnimationListener { splashScreenView ->
-                try {
-                    @Suppress("DEPRECATION")
-                    window.statusBarColor = getColor(android.R.color.transparent)
-                    @Suppress("DEPRECATION")
-                    window.navigationBarColor = getColor(android.R.color.transparent)
-                    val animateIn = ObjectAnimator.ofPropertyValuesHolder(
-                        splashScreenView.iconView,
-                        PropertyValuesHolder.ofFloat(View.SCALE_X, 1f, 0f),
-                        PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f, 0f),
-                    )
-                    animateIn.interpolator = AnticipateInterpolator()
-                    animateIn.duration = 400L
-                    animateIn.doOnEnd {
-                        splashScreenView.remove()
-                        setSystemBarsAppearance(repository.preferences.value.lightDarkMode)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            installSplashScreen().apply {
+                setKeepOnScreenCondition {
+                    false
+                }
+                setOnExitAnimationListener { splashScreenView ->
+                    try {
+                        @Suppress("DEPRECATION")
+                        window.statusBarColor = getColor(android.R.color.transparent)
+                        @Suppress("DEPRECATION")
+                        window.navigationBarColor = getColor(android.R.color.transparent)
+                        val animateIn = ObjectAnimator.ofPropertyValuesHolder(
+                            splashScreenView.iconView,
+                            PropertyValuesHolder.ofFloat(View.SCALE_X, 1f, 0f),
+                            PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f, 0f),
+                        )
+                        animateIn.interpolator = AnticipateInterpolator()
+                        animateIn.duration = 400L
+                        animateIn.doOnEnd {
+                            splashScreenView.remove()
+                            setSystemBarsAppearance(repository.preferences.value.lightDarkMode)
+                        }
+                        animateIn.start()
+                    } catch (throwable: Throwable) {
+                        logger.recordException(
+                            messageString = "CoroutineExceptionHandler",
+                            throwable = throwable,
+                            tag = TAG,
+                        )
                     }
-                    animateIn.start()
-                } catch (throwable: Throwable) {
-                    logger.recordException(
-                        messageString = "CoroutineExceptionHandler",
-                        throwable = throwable,
-                        tag = TAG,
-                    )
                 }
             }
         }
@@ -129,8 +135,7 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                         val states = frameData.states.joinToString { "${it.key}:${it.value}" }
 
                         Log.w(
-                            /* tag = */
-                            "Jank",
+                            /* tag = */ "Jank",
                             /* msg = */
                             "Jank states[$states] ${
                                 TimeUnit.NANOSECONDS.toMillis(frameData.frameDurationUiNanos)

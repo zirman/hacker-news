@@ -3,6 +3,7 @@ package com.monoid.hackernews
 import android.app.Application
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.os.StrictMode
 import com.monoid.hackernews.common.data.room.HNDatabase
 import io.ktor.client.HttpClient
@@ -22,7 +23,13 @@ class HNApplication : Application() {
 
         StrictMode.setVmPolicy(
             StrictMode.VmPolicy.Builder()
-                .detectUnsafeIntentLaunch()
+                .let {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        it.detectUnsafeIntentLaunch()
+                    } else {
+                        it
+                    }
+                }
                 .build()
         )
 
@@ -33,14 +40,13 @@ class HNApplication : Application() {
             modules(ApplicationModule().module)
         }
 
-//        updateAndPushDynamicShortcuts(MainActivity::class.java)
+        // TODO
+        // updateAndPushDynamicShortcuts(MainActivity::class.java)
 
         // register locale changed broadcast receiver
         registerReceiver(
-            /* receiver = */
-            LocaleChangedBroadcastReceiver(),
-            /* filter = */
-            IntentFilter(Intent.ACTION_LOCALE_CHANGED),
+            /* receiver = */ LocaleChangedBroadcastReceiver(),
+            /* filter = */ IntentFilter(Intent.ACTION_LOCALE_CHANGED),
         )
     }
 
