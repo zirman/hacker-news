@@ -13,7 +13,7 @@ import com.monoid.hackernews.common.data.api.ItemId
 
 @Composable
 internal fun ItemId.toExtras(): CreationExtras = MutableCreationExtras().apply {
-    val viewModelStoreOwner = LocalViewModelStoreOwner.current!!
+    val viewModelStoreOwner = checkNotNull(LocalViewModelStoreOwner.current)
     set(
         DEFAULT_ARGS_KEY,
         bundleOf(

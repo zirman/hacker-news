@@ -5,13 +5,14 @@ import com.monoid.hackernews.common.data.URL
 import java.awt.Desktop
 import java.net.URISyntaxException
 
-fun openWebpage(uri: URI?): Boolean {
+fun openWebpage(uri: URI): Boolean {
     val desktop = if (Desktop.isDesktopSupported()) Desktop.getDesktop() else null
     if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
         try {
-            desktop.browse(uri!!.uri)
+            desktop.browse(uri.uri)
             return true
         } catch (exception: Exception) {
+            // TODO: log to logger
             exception.printStackTrace()
         }
     }

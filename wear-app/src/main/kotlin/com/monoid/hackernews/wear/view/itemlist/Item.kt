@@ -12,7 +12,7 @@ fun Item(
     modifier: Modifier = Modifier,
 ) {
 //    TitleCard(
-//        onClick = { onClickDetail(ItemId(itemUi?.item?.id!!)) },
+//        onClick = { onClickDetail(ItemId(requireNotNull(itemUi?.item?.id))) },
 //        title = {
 //            val item = itemUi?.item
 //

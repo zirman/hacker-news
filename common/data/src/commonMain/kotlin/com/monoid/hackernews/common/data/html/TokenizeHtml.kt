@@ -53,7 +53,7 @@ fun String.tokenizeHtml(): Sequence<HtmlToken> = sequence {
                 tagMatch = TAG_QUOTE_REGEX.matchAt(this@tokenizeHtml, k)
                 if (tagMatch != null) {
                     k = tagMatch.range.last + 1
-                    tagTokens.add(TagToken.Quote(tagMatch.groups[1]!!.value.escapeCharacters()))
+                    tagTokens.add(TagToken.Quote(checkNotNull(tagMatch.groups[1]).value.escapeCharacters()))
                     continue
                 }
                 tagMatch = TAG_WORD_REGEX.matchAt(this@tokenizeHtml, k)

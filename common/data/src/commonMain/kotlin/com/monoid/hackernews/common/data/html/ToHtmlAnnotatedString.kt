@@ -77,7 +77,7 @@ private fun ParagraphStyle.applyStyle(map: List<String>): ParagraphStyle {
             "line-height" -> {
                 val match = SIZE_REGEX.matchEntire(keyValue[1])
                 s = if (match != null) {
-                    val scalar = match.groups[1]!!.value
+                    val scalar = checkNotNull(match.groups[1]).value
                     val units = match.groups[2]?.value
                     s.copy(
                         lineHeight = if (

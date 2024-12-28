@@ -7,7 +7,7 @@ internal fun String.escapeCharacters(): String = buildString {
     var match = escapedRegex.find(this@escapeCharacters, i)
     while (match != null) {
         append(this@escapeCharacters.subSequence(i, match.range.first))
-        val m = match.groups[1]!!.value
+        val m = checkNotNull(match.groups[1]).value
         val c = if (m.startsWith("#x", ignoreCase = true)) {
             m.substring(2).toIntOrNull(16)?.toChar()
         } else if (m.startsWith("#", ignoreCase = true)) {

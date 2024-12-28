@@ -46,7 +46,7 @@ class ItemDetailViewModel(
         data class Error(val message: String?) : Event
     }
 
-    private val itemId: ItemId by lazy { savedStateHandle[ITEM_ID]!! }
+    private val itemId: ItemId by lazy { checkNotNull(savedStateHandle[ITEM_ID]) }
 
     private val context = CoroutineExceptionHandler { _, throwable ->
         logger.recordException(

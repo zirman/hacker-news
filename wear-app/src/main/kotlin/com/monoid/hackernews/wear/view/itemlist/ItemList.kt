@@ -40,7 +40,7 @@ fun ItemList(
         // recomposition.
 //        LaunchedEffect(metricsStateHolder) {
 //            snapshotFlow { state.isScrollInProgress }.collect { isScrolling ->
-//                metricsStateHolder.state!!.run {
+//                checkNotNull(metricsStateHolder.state).run {
 //                    if (isScrolling) {
 //                        putState("ItemList", "Scrolling")
 //                    } else {
