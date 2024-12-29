@@ -30,9 +30,16 @@ class KmpApplicationPlugin : Plugin<Project> {
             jvmToolchain(getVersion("jvmToolchain"))
             androidTarget()
             jvm()
-            iosX64()
-            iosArm64()
-            iosSimulatorArm64()
+            listOf(
+                iosX64(),
+                iosArm64(),
+                iosSimulatorArm64(),
+            ).forEach { iosTarget ->
+                iosTarget.binaries.framework {
+                    baseName = "ComposeApp"
+                    isStatic = true
+                }
+            }
             sourceSets.named("commonMain") {
                 kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
             }
