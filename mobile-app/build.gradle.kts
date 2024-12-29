@@ -1,38 +1,17 @@
 @file:OptIn(ExperimentalComposeLibrary::class)
 
 import org.jetbrains.compose.ExperimentalComposeLibrary
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.kotlinMultiplatform)
+    id("kmpapplication")
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.kotlinxParcelize)
     alias(libs.plugins.googlePlayServices)
     alias(libs.plugins.crashlytics)
     alias(libs.plugins.firebasePerf)
-    alias(libs.plugins.jetbrainsCompose)
-    alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.ksp)
     id("hackernews.detekt")
 }
 kotlin {
-    compilerOptions {
-        freeCompilerArgs.add("-Xexpect-actual-classes")
-    }
-    jvmToolchain(libs.versions.jvmToolchain.get().toInt())
-    androidTarget {
-    }
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64(),
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "ComposeApp"
-            isStatic = true
-        }
-    }
     sourceSets {
         androidMain.dependencies {
             implementation(libs.bundles.androidx)
@@ -83,31 +62,15 @@ kotlin {
             //implementation(libs.bundles.test)
         }
     }
-    sourceSets.named("commonMain") {
-        kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
+}
+val packageNamespace = "com.monoid.hackernews"
+compose {
+    resources {
+        packageOfResClass = packageNamespace
     }
 }
-dependencies {
-    coreLibraryDesugaring(libs.desugarJdkLibsNio)
-    add("kspCommonMainMetadata", libs.koinKspCompiler)
-    add("kspAndroid", libs.koinKspCompiler)
-    add("kspIosX64", libs.koinKspCompiler)
-    add("kspIosArm64", libs.koinKspCompiler)
-    add("kspIosSimulatorArm64", libs.koinKspCompiler)
-}
-compose.resources {
-    publicResClass = true
-    packageOfResClass = "com.monoid.hackernews"
-    generateResClass = always
-}
 android {
-    namespace = "com.monoid.hackernews"
-    compileSdk = libs.versions.compileSdk.get().toInt()
-    compileSdkPreview = libs.versions.compileSdkPreview.get()
-    buildToolsVersion = libs.versions.buildToolsVersion.get()
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    sourceSets["main"].res.srcDirs("src/androidMain/res")
-    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
+    namespace = packageNamespace
     signingConfigs {
         create("release") {
             storeFile = file("release.jks")
@@ -118,9 +81,6 @@ android {
     }
     defaultConfig {
         applicationId = "com.monoid.hackernews"
-        minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
-        targetSdkPreview = libs.versions.targetSdk.get()
         versionCode = 44
         versionName = "1.1.5"
         // reduces apk sizes by not including unsupported languages
@@ -131,7 +91,6 @@ android {
     }
     buildTypes {
         debug {
-            applicationIdSuffix = ".debug"
             isMinifyEnabled = false
             isShrinkResources = false
             isDebuggable = true
@@ -143,35 +102,11 @@ android {
             isDebuggable = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
-        }
-    }
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/versions/9/previous-compilation-data.bin"
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
     lint {
         baseline = file("lint-baseline.xml")
-    }
-}
-ksp {
-    arg("KOIN_CONFIG_CHECK", "true")
-    arg("KOIN_USE_COMPOSE_VIEWMODEL", "true")
-}
-// Trigger Common Metadata Generation from Native tasks
-project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
-    if (name != "kspCommonMainKotlinMetadata") {
-        dependsOn("kspCommonMainKotlinMetadata")
     }
 }

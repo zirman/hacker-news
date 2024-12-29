@@ -1,29 +1,9 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
-
 plugins {
-    alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kotlinMultiplatform)
+    id("kmplibrary")
     alias(libs.plugins.kotlinxSerialization)
-    alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.ksp)
     id("hackernews.detekt")
 }
 kotlin {
-    compilerOptions {
-        freeCompilerArgs.add("-Xexpect-actual-classes")
-    }
-    jvmToolchain(libs.versions.jvmToolchain.get().toInt())
-    androidTarget {
-    }
-    jvm {
-    }
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64(),
-    ).forEach { iosTarget ->
-    }
     sourceSets {
         androidMain.dependencies {
             implementation(libs.ktorClientAndroid)
@@ -37,6 +17,7 @@ kotlin {
             implementation(libs.ktorClientDarwin)
         }
         commonMain.dependencies {
+            implementation(compose.components.resources)
             implementation(project.dependencies.platform(libs.kotlinWrappersBom))
             implementation(project.dependencies.platform(libs.koinBom))
             compileOnly(libs.koinCore)
@@ -52,40 +33,14 @@ kotlin {
         commonTest.dependencies {
             //implementation(libs.bundles.test)
         }
-        sourceSets.named("commonMain") {
-            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
-        }
     }
 }
-dependencies {
-    coreLibraryDesugaring(libs.desugarJdkLibsNio)
-    add("kspCommonMainMetadata", libs.koinKspCompiler)
-    add("kspAndroid", libs.koinKspCompiler)
-    add("kspJvm", libs.koinKspCompiler)
-    add("kspIosX64", libs.koinKspCompiler)
-    add("kspIosArm64", libs.koinKspCompiler)
-    add("kspIosSimulatorArm64", libs.koinKspCompiler)
+val packageNamespace = "com.monoid.hackernews.common.domain"
+compose {
+    resources {
+        packageOfResClass = packageNamespace
+    }
 }
 android {
-    namespace = "com.monoid.hackernews.common.domain"
-    compileSdk = libs.versions.compileSdk.get().toInt()
-    compileSdkPreview = libs.versions.compileSdkPreview.get()
-    defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
-    }
-    buildTypes {
-    }
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-    }
-}
-ksp {
-    arg("KOIN_CONFIG_CHECK", "true")
-    arg("KOIN_USE_COMPOSE_VIEWMODEL", "true")
-}
-// Trigger Common Metadata Generation from Native tasks
-project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
-    if (name != "kspCommonMainKotlinMetadata") {
-        dependsOn("kspCommonMainKotlinMetadata")
-    }
+    namespace = packageNamespace
 }

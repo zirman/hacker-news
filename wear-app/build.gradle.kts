@@ -1,3 +1,5 @@
+import com.android.build.gradle.tasks.asJavaVersion
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
@@ -81,6 +83,8 @@ android {
     }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
+        targetCompatibility =
+            JavaLanguageVersion.of(libs.versions.jvmTarget.get().toInt()).asJavaVersion()
     }
     buildFeatures {
         compose = true

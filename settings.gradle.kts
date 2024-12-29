@@ -21,8 +21,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "HackerNews"
 include(":mobile-app")
-include(":wear-app")
 include(":desktop-app")
+include(":wear-app")
 include(":common:injection")
 include(":common:view")
 include(":common:domain")

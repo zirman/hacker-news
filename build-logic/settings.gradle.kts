@@ -14,4 +14,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "build-logic"
+include(":kmp-application-plugin")
+include(":kmp-library-plugin")
 include(":detekt-convention-plugin")

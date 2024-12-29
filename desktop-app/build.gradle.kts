@@ -64,21 +64,26 @@ kotlin {
     }
 }
 dependencies {
-    add("kspCommonMainMetadata", libs.koinKspCompiler)
-    add("kspDesktop", libs.koinKspCompiler)
+    "kspCommonMainMetadata"(libs.koinKspCompiler)
+    "kspDesktop"(libs.koinKspCompiler)
 }
-compose.desktop {
-    application {
-        mainClass = "com.monoid.hackernews.Main_desktopKt"
-        nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "com.monoid.hackernews"
-            packageVersion = "1.0.0"
-            buildTypes.release.proguard {
-                isEnabled = true
-                optimize = true
-                obfuscate = false // Currently obfuscated builds crash
-                configurationFiles.from("rules.pro")
+compose {
+    resources {
+        packageOfResClass = "com.monoid.hackernews"
+    }
+    desktop {
+        application {
+            mainClass = "com.monoid.hackernews.Main_desktopKt"
+            nativeDistributions {
+                targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+                packageName = "com.monoid.hackernews"
+                packageVersion = "1.0.0"
+                buildTypes.release.proguard {
+                    isEnabled = true
+                    optimize = true
+                    obfuscate = false // Currently obfuscated builds crash
+                    configurationFiles.from("rules.pro")
+                }
             }
         }
     }

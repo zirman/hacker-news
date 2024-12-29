@@ -1,12 +1,10 @@
 [versions]
-jvmToolchain = "17"
-jvmTarget = "17"
-compileSdkPreview = "Baklava"
-material3WindowSizeClassMultiplatform = "0.5.0"
-targetSdkPreview = "Baklava"
-compileSdk = "35"
-targetSdk = "35"
+jvmToolchain = "21"
+jvmTarget = "21"
 minSdk = "26"
+targetSdk = "35"
+compileSdk = "35"
+compileSdkPreview = "Baklava"
 buildToolsVersion = "36.0.0-rc3"
 android = "8.7.3"
 #lint = "31.4.0"
@@ -18,6 +16,7 @@ jetbrainsCompose = "1.7.1" # https://github.com/JetBrains/compose-multiplatform/
 kotlinxCoroutines = "1.10.1"
 kotlinxSerialization = "1.7.3"
 kotlinxCollectionsImmutable = "0.3.8"
+material3WindowSizeClassMultiplatform = "0.5.0"
 kotlinxDatetime = "0.6.1"
 ktor = "3.0.3" # https://github.com/ktorio/ktor/releases
 koin = "4.1.0-Beta1"
@@ -176,10 +175,13 @@ test = [
 
 [libraries]
 # convention plugins
-kotlinAndroid = { group = "org.jetbrains.kotlin.android", name = "org.jetbrains.kotlin.android.gradle.plugin", version.ref = "kotlin" }
-composeGradlePlugin = { group = "org.jetbrains.kotlin.plugin.compose", name = "org.jetbrains.kotlin.plugin.compose.gradle.plugin", version.ref = "kotlin" }
-androidApplication = { group = "com.android.application", name = "com.android.application.gradle.plugin", version.ref = "android" }
-androidLibrary = { group = "com.android.library", name = "com.android.library.gradle.plugin", version.ref = "android" }
+kotlinMultiplatformPlugin = { group = "org.jetbrains.kotlin.multiplatform", name = "org.jetbrains.kotlin.multiplatform.gradle.plugin", version.ref = "kotlin" }
+# kotlinAndroidPlugin = { group = "org.jetbrains.kotlin.android", name = "org.jetbrains.kotlin.android.gradle.plugin", version.ref = "kotlin" }
+composePlugin = { group = "org.jetbrains.kotlin.plugin.compose", name = "org.jetbrains.kotlin.plugin.compose.gradle.plugin", version.ref = "kotlin" }
+composeCompilerPlugin = { group = "org.jetbrains.compose", name = "compose-gradle-plugin", version.ref = "jetbrainsCompose" }
+androidApplicationPlugin = { group = "com.android.application", name = "com.android.application.gradle.plugin", version.ref = "android" }
+androidLibraryPlugin = { group = "com.android.library", name = "com.android.library.gradle.plugin", version.ref = "android" }
+kspPlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 detektGradlePlugin = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
 
 # implementation dependencies

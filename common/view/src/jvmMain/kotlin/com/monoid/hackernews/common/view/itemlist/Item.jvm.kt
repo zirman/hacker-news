@@ -1,8 +1,9 @@
 package com.monoid.hackernews.common.view.itemlist
 
 actual class URL actual constructor(string: String) {
-    private val url = java.net.URL(string)
+    @Suppress("DEPRECATION")
+    private val netUrl = java.net.URL(string)
 
     actual val host: String
-        get() = url.host
+        get() = netUrl.host
 }

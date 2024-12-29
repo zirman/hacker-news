@@ -1,35 +1,13 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
+import org.gradle.kotlin.dsl.resources
 
 plugins {
-    alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kotlinMultiplatform)
+    id("kmplibrary")
     alias(libs.plugins.kotlinxParcelize)
     alias(libs.plugins.kotlinxSerialization)
-    alias(libs.plugins.jetbrainsCompose)
-    alias(libs.plugins.composeCompiler)
     alias(libs.plugins.room)
-    alias(libs.plugins.ksp)
     id("hackernews.detekt")
 }
 kotlin {
-    compilerOptions {
-        freeCompilerArgs.add("-Xexpect-actual-classes")
-    }
-    jvmToolchain(libs.versions.jvmToolchain.get().toInt())
-    androidTarget {
-    }
-    jvm {
-    }
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64(),
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            //linkerOpts.add("-lsqlite3")
-        }
-    }
     sourceSets {
         androidMain.dependencies {
             implementation(libs.koinAndroid)
@@ -49,6 +27,7 @@ kotlin {
         }
         commonMain.dependencies {
             compileOnly(libs.koinCore)
+            implementation(compose.components.resources)
             implementation(compose.ui)
             implementation(compose.uiUtil)
             implementation(libs.annotation)
@@ -68,49 +47,24 @@ kotlin {
             //implementation(libs.bundles.test)
         }
     }
-    sourceSets.named("commonMain") {
-        kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
-    }
 }
 dependencies {
-    coreLibraryDesugaring(libs.desugarJdkLibsNio)
     // room
-    add("kspAndroid", libs.roomCompiler)
-    add("kspJvm", libs.roomCompiler)
-    add("kspIosX64", libs.roomCompiler)
-    add("kspIosArm64", libs.roomCompiler)
-    add("kspIosSimulatorArm64", libs.roomCompiler)
-    // koin
-    add("kspCommonMainMetadata", libs.koinKspCompiler)
-    add("kspAndroid", libs.koinKspCompiler)
-    add("kspJvm", libs.koinKspCompiler)
-    add("kspIosX64", libs.koinKspCompiler)
-    add("kspIosArm64", libs.koinKspCompiler)
-    add("kspIosSimulatorArm64", libs.koinKspCompiler)
+    "kspAndroid"(libs.roomCompiler)
+    "kspJvm"(libs.roomCompiler)
+    "kspIosX64"(libs.roomCompiler)
+    "kspIosArm64"(libs.roomCompiler)
+    "kspIosSimulatorArm64"(libs.roomCompiler)
+}
+val packageNamespace = "com.monoid.hackernews.common.data"
+compose {
+    resources {
+        packageOfResClass = packageNamespace
+    }
 }
 android {
-    namespace = "com.monoid.hackernews.common.data"
-    compileSdk = libs.versions.compileSdk.get().toInt()
-    compileSdkPreview = libs.versions.compileSdkPreview.get()
-    defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
-    }
-    buildTypes {
-    }
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-    }
-}
-ksp {
-    arg("KOIN_CONFIG_CHECK", "false")
-    arg("KOIN_USE_COMPOSE_VIEWMODEL", "true")
+    namespace = packageNamespace
 }
 room {
     schemaDirectory("$projectDir/schemas")
-}
-// Trigger Common Metadata Generation from Native tasks
-project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
-    if (name != "kspCommonMainKotlinMetadata") {
-        dependsOn("kspCommonMainKotlinMetadata")
-    }
 }

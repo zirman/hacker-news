@@ -11,6 +11,8 @@
                 <projects>
                   <project path="$PROJECT_DIR$/build-logic" />
                   <project path="$PROJECT_DIR$/build-logic/detekt-convention-plugin" />
+                  <project path="$PROJECT_DIR$/build-logic/kmp-application-plugin" />
+                  <project path="$PROJECT_DIR$/build-logic/kmp-library-plugin" />
                 </projects>
               </build>
             </builds>
@@ -25,6 +27,8 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/build-logic" />
             <option value="$PROJECT_DIR$/build-logic/detekt-convention-plugin" />
+            <option value="$PROJECT_DIR$/build-logic/kmp-application-plugin" />
+            <option value="$PROJECT_DIR$/build-logic/kmp-library-plugin" />
             <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/common/data" />
             <option value="$PROJECT_DIR$/common/domain" />
