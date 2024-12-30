@@ -27,9 +27,6 @@ kotlin {
         }
         commonMain.dependencies {
             compileOnly(libs.koinCore)
-            implementation(compose.components.resources)
-            implementation(compose.ui)
-            implementation(compose.uiUtil)
             implementation(libs.annotation)
             implementation(libs.bundles.datastore)
             implementation(libs.bundles.koin)

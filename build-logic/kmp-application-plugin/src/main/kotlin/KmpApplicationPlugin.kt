@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalComposeLibrary::class)
+
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.android.build.gradle.tasks.asJavaVersion
 import com.google.devtools.ksp.gradle.KspExtension
@@ -12,6 +14,7 @@ import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.internal.sharedruntime.codegen.sourceNameOfBinaryName
 import org.gradle.plugin.use.PluginDependency
 import org.jetbrains.compose.ComposeExtension
+import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.resources.ResourcesExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
@@ -23,6 +26,7 @@ class KmpApplicationPlugin : Plugin<Project> {
         applyPlugin("jetbrainsCompose")
         applyPlugin("composeCompiler")
         applyPlugin("ksp")
+        val compose = extensions.getByType<ComposeExtension>().dependencies
         configureExtension<KotlinMultiplatformExtension> {
             compilerOptions {
                 freeCompilerArgs.add("-Xexpect-actual-classes")
@@ -41,6 +45,25 @@ class KmpApplicationPlugin : Plugin<Project> {
                 }
             }
             sourceSets.named("commonMain") {
+                dependencies {
+                    implementation(compose.animation)
+                    implementation(compose.animationGraphics)
+                    implementation(compose.components.resources)
+                    implementation(compose.components.uiToolingPreview)
+                    implementation(compose.desktop.common)
+                    implementation(compose.desktop.components.animatedImage)
+                    implementation(compose.desktop.components.splitPane)
+                    implementation(compose.desktop.currentOs)
+                    implementation(compose.foundation)
+                    implementation(compose.material3)
+                    implementation(compose.materialIconsExtended)
+                    implementation(compose.material3AdaptiveNavigationSuite)
+                    implementation(compose.preview)
+                    implementation(compose.runtime)
+                    implementation(compose.ui)
+                    implementation(compose.uiTooling)
+                    implementation(compose.uiUtil)
+                }
                 kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
             }
         }

@@ -20,7 +20,6 @@ kotlin {
         }
         commonMain.dependencies {
             compileOnly(libs.koinCore)
-            implementation(compose.components.resources)
             implementation(libs.bundles.kotlinx)
             implementation(libs.bundles.koin)
             api(libs.koinAnnotations)

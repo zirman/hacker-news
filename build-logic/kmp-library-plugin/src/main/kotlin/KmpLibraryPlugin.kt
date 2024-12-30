@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalComposeLibrary::class)
+
 import com.android.build.api.dsl.LibraryExtension
 import com.android.build.gradle.tasks.asJavaVersion
 import com.google.devtools.ksp.gradle.KspExtension
@@ -7,10 +9,10 @@ import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.plugin.use.PluginDependency
 import org.jetbrains.compose.ComposeExtension
+import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.resources.ResourcesExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
@@ -22,6 +24,7 @@ class KmpLibraryPlugin : Plugin<Project> {
         applyPlugin("jetbrainsCompose")
         applyPlugin("composeCompiler")
         applyPlugin("ksp")
+        val compose = extensions.getByType<ComposeExtension>().dependencies
         configureExtension<KotlinMultiplatformExtension> {
             compilerOptions {
                 freeCompilerArgs.add("-Xexpect-actual-classes")
@@ -33,6 +36,25 @@ class KmpLibraryPlugin : Plugin<Project> {
             iosArm64()
             iosSimulatorArm64()
             sourceSets.named("commonMain") {
+                dependencies {
+                    implementation(compose.animation)
+                    implementation(compose.animationGraphics)
+                    implementation(compose.components.resources)
+                    implementation(compose.components.uiToolingPreview)
+                    implementation(compose.desktop.common)
+                    implementation(compose.desktop.components.animatedImage)
+                    implementation(compose.desktop.components.splitPane)
+                    implementation(compose.desktop.currentOs)
+                    implementation(compose.foundation)
+                    implementation(compose.material3)
+                    implementation(compose.materialIconsExtended)
+                    implementation(compose.material3AdaptiveNavigationSuite)
+                    implementation(compose.preview)
+                    implementation(compose.runtime)
+                    implementation(compose.ui)
+                    implementation(compose.uiTooling)
+                    implementation(compose.uiUtil)
+                }
                 kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
             }
         }
@@ -92,7 +114,7 @@ class KmpLibraryPlugin : Plugin<Project> {
 }
 
 internal inline fun <reified T : Any> Project.configureExtension(block: T.() -> Unit) {
-    checkNotNull(extensions.findByType<T>()).run(block)
+    extensions.getByType<T>().run(block)
 }
 
 internal fun VersionCatalog.getVersion(alias: String): Int =

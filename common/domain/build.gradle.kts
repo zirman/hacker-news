@@ -17,7 +17,6 @@ kotlin {
             implementation(libs.ktorClientDarwin)
         }
         commonMain.dependencies {
-            implementation(compose.components.resources)
             implementation(project.dependencies.platform(libs.kotlinWrappersBom))
             implementation(project.dependencies.platform(libs.koinBom))
             compileOnly(libs.koinCore)

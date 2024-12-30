@@ -15,7 +15,7 @@ dependencies {
 tasks {
     validatePlugins {
         enableStricterValidation = true
-        failOnWarning = false
+        failOnWarning = true
     }
 }
 gradlePlugin {
