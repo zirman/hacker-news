@@ -23,7 +23,7 @@ kotlin {
             implementation(libs.bundles.datastore)
             implementation(libs.bundles.kotlinx)
             implementation(libs.bundles.koin)
-            implementation(libs.navigationCompose)
+            implementation(libs.jetbrainsNavigationCompose)
             implementation(libs.annotation)
             api(libs.koinAnnotations)
             api(project(":common:injection"))
