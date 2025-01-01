@@ -48,7 +48,7 @@ class KmpLibraryPlugin : Plugin<Project> {
                     implementation(compose.foundation)
                     implementation(compose.material3)
                     implementation(compose.materialIconsExtended)
-                    implementation(compose.material3AdaptiveNavigationSuite)
+                    //implementation(compose.material3AdaptiveNavigationSuite)
                     //implementation(compose.preview)
                     implementation(compose.runtime)
                     implementation(compose.ui)

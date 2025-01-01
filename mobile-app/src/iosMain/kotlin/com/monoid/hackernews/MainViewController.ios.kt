@@ -10,6 +10,6 @@ import com.monoid.hackernews.common.view.App
 @Suppress("unused")
 fun MainViewController() = ComposeUIViewController(
     configure = {
-        accessibilitySyncOptions = AccessibilitySyncOptions.Always(null)
+        accessibilitySyncOptions = AccessibilitySyncOptions.Always
     },
 ) { App() }
