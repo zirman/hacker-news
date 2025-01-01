@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
-import androidx.compose.material3.adaptive.layout.AnimatedPane
 import androidx.compose.material3.adaptive.layout.ThreePaneScaffoldScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -31,31 +30,29 @@ fun ThreePaneScaffoldScope.SettingsListPane(
     onClickStyle: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    AnimatedPane {
-        LazyColumn(
-            modifier = modifier
-                .preferredWidth(320.dp)
-                .fillMaxHeight(),
-            contentPadding = WindowInsets.safeDrawing.asPaddingValues(),
-        ) {
-            item {
-                if (username == null) {
-                    Button(onClick = onClickLogin) {
-                        Text(text = stringResource(Res.string.login))
-                    }
-                } else {
-                    Text(text = username.string)
+    LazyColumn(
+        modifier = modifier
+            .preferredWidth(320.dp)
+            .fillMaxHeight(),
+        contentPadding = WindowInsets.safeDrawing.asPaddingValues(),
+    ) {
+        item {
+            if (username == null) {
+                Button(onClick = onClickLogin) {
+                    Text(text = stringResource(Res.string.login))
+                }
+            } else {
+                Text(text = username.string)
 
-                    Button(onClick = onClickLogout) {
-                        Text(text = stringResource(Res.string.logout))
-                    }
+                Button(onClick = onClickLogout) {
+                    Text(text = stringResource(Res.string.logout))
                 }
             }
+        }
 
-            item {
-                Button(onClick = onClickStyle) {
-                    Text(text = stringResource(Res.string.style))
-                }
+        item {
+            Button(onClick = onClickStyle) {
+                Text(text = stringResource(Res.string.style))
             }
         }
     }

@@ -10,11 +10,13 @@ import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneSca
 import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.view.itemdetail.ListItemDetailContentUiState
+import kotlinx.coroutines.launch
 
 @Composable
 fun StoriesScaffold(
@@ -27,7 +29,7 @@ fun StoriesScaffold(
     Box(modifier = modifier) {
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         val (loading, itemsList) = uiState
-
+        val scope = rememberCoroutineScope()
         NavigableListDetailPaneScaffold(
             navigator = navigator,
             listPane = {
@@ -38,27 +40,31 @@ fun StoriesScaffold(
                         viewModel.updateItem(item.id)
                     },
                     onClickItem = { item ->
-                        navigator.navigateTo(
-                            pane = ListDetailPaneScaffoldRole.Detail,
-                            content = ListItemDetailContentUiState(item.id, null),
-                        )
+                        scope.launch {
+                            navigator.navigateTo(
+                                pane = ListDetailPaneScaffoldRole.Detail,
+                                contentKey = ListItemDetailContentUiState(item.id, null),
+                            )
+                        }
                     },
                     onClickBrowser = onClickBrowser,
                 )
             },
             detailPane = {
                 StoriesDetailPane(
-                    itemId = (navigator.currentDestination?.content as? ListItemDetailContentUiState)?.itemId,
+                    itemId = (navigator.currentDestination?.contentKey as? ListItemDetailContentUiState)?.itemId,
                     onOpenBrowser = { item ->
-                        navigator.navigateTo(
-                            pane = ListDetailPaneScaffoldRole.Extra,
-                            content = ListItemDetailContentUiState(item.id, item.url),
-                        )
+                        scope.launch {
+                            navigator.navigateTo(
+                                pane = ListDetailPaneScaffoldRole.Extra,
+                                contentKey = ListItemDetailContentUiState(item.id, item.url),
+                            )
+                        }
                     },
                 )
             },
             extraPane = {
-                StoriesExtraPane(url = (navigator.currentDestination?.content as? ListItemDetailContentUiState)?.url)
+                StoriesExtraPane(url = (navigator.currentDestination?.contentKey as? ListItemDetailContentUiState)?.url)
             },
         )
         if (loading) {

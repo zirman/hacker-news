@@ -15,16 +15,15 @@ kotlin {
     sourceSets {
         androidMain.dependencies {
             implementation(libs.bundles.androidx)
-            implementation(libs.bundles.androidxCompose)
-            implementation(libs.bundles.androidxApp)
+            implementation(libs.bundles.googleApp)
+            implementation(libs.bundles.google)
+            implementation(libs.collectionKtx)
             implementation(libs.koinAndroid)
             implementation(libs.ktorClientAndroid)
             implementation(libs.material3Adaptive)
             implementation(libs.material3AdaptiveLayout)
-            implementation(libs.collectionKtx)
+            implementation(libs.metricsPerformance)
             implementation(project.dependencies.platform(libs.kotilnxCoroutinesBom))
-            implementation(libs.bundles.googleApp)
-            implementation(libs.bundles.google)
         }
         iosMain.dependencies {
             implementation(libs.ktorClientDarwin)

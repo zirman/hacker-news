@@ -5,7 +5,6 @@ package com.monoid.hackernews.common.view.stories
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
-import androidx.compose.material3.adaptive.layout.AnimatedPane
 import androidx.compose.material3.adaptive.layout.ThreePaneScaffoldScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,16 +22,14 @@ fun ThreePaneScaffoldScope.StoriesListPane(
     onClickBrowser: (Item) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    AnimatedPane(modifier = modifier) {
-        ItemsColumn(
-            listState = listState,
-            itemsList = itemsList,
-            onItemVisible = onVisibleItem,
-            onItemClick = onClickItem,
-            onOpenBrowser = onClickBrowser,
-            modifier = Modifier
-                .preferredWidth(320.dp)
-                .fillMaxHeight(),
-        )
-    }
+    ItemsColumn(
+        listState = listState,
+        itemsList = itemsList,
+        onItemVisible = onVisibleItem,
+        onItemClick = onClickItem,
+        onOpenBrowser = onClickBrowser,
+        modifier = modifier
+            .preferredWidth(320.dp)
+            .fillMaxHeight(),
+    )
 }

@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
-import androidx.compose.material3.adaptive.layout.AnimatedPane
 import androidx.compose.material3.adaptive.layout.ThreePaneScaffoldScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,23 +20,21 @@ fun ThreePaneScaffoldScope.SettingsDetailPane(
     settingsDetailUiState: SettingsDetailUiState?,
     modifier: Modifier = Modifier,
 ) {
-    AnimatedPane(modifier = modifier) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            when (settingsDetailUiState) {
-                SettingsDetailUiState.Profile -> {
-                    ProfileDetail()
-                }
+    Box(modifier = modifier.fillMaxSize()) {
+        when (settingsDetailUiState) {
+            SettingsDetailUiState.Profile -> {
+                ProfileDetail()
+            }
 
-                SettingsDetailUiState.Styling -> {
-                    PreferencesDetail()
-                }
+            SettingsDetailUiState.Styling -> {
+                PreferencesDetail()
+            }
 
-                null -> {
-                    Text(
-                        text = stringResource(Res.string.no_setting_selected),
-                        modifier = Modifier.align(Alignment.Center),
-                    )
-                }
+            null -> {
+                Text(
+                    text = stringResource(Res.string.no_setting_selected),
+                    modifier = Modifier.align(Alignment.Center),
+                )
             }
         }
     }

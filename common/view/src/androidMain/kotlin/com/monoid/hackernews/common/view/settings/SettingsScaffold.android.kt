@@ -10,9 +10,11 @@ import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneSca
 import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -25,6 +27,7 @@ fun SettingsScaffold(
     Box(modifier = modifier) {
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         val (loading, username) = uiState
+        val scope = rememberCoroutineScope()
         NavigableListDetailPaneScaffold(
             navigator = navigator,
             listPane = {
@@ -35,16 +38,18 @@ fun SettingsScaffold(
                         viewModel.logout()
                     },
                     onClickStyle = {
-                        navigator.navigateTo(
-                            pane = ListDetailPaneScaffoldRole.Detail,
-                            content = SettingsDetailUiState.Styling,
-                        )
+                        scope.launch {
+                            navigator.navigateTo(
+                                pane = ListDetailPaneScaffoldRole.Detail,
+                                contentKey = SettingsDetailUiState.Styling,
+                            )
+                        }
                     },
                 )
             },
             detailPane = {
                 SettingsDetailPane(
-                    settingsDetailUiState = navigator.currentDestination?.content as? SettingsDetailUiState?,
+                    settingsDetailUiState = navigator.currentDestination?.contentKey as? SettingsDetailUiState?,
                 )
             },
         )

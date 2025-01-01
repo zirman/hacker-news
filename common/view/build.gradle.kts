@@ -30,10 +30,11 @@ kotlin {
             implementation(project.dependencies.platform(libs.kotlinWrappersBom))
         }
         androidMain.dependencies {
-            implementation(libs.material3AdaptiveNavigation)
-            implementation(libs.bundles.androidxCompose)
-            implementation(libs.ktorClientAndroid)
             implementation(libs.collectionKtx)
+            implementation(libs.ktorClientAndroid)
+            implementation(libs.material3AdaptiveNavigation)
+            implementation(libs.material3AdaptiveNavigationSuite)
+            implementation(libs.metricsPerformance)
             implementation(project.dependencies.platform(libs.kotilnxCoroutinesBom))
         }
         jvmMain.dependencies {

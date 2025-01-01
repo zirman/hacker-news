@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
-import androidx.compose.material3.adaptive.layout.AnimatedPane
 import androidx.compose.material3.adaptive.layout.ThreePaneScaffoldScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
@@ -28,24 +27,22 @@ fun ThreePaneScaffoldScope.StoriesDetailPane(
     onOpenBrowser: (Item) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    AnimatedPane(modifier = modifier) {
-        if (itemId == null) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                Text(
-                    text = stringResource(Res.string.no_story_selected),
-                    modifier = Modifier.align(Alignment.Center),
-                )
-            }
-        } else {
-            key(itemId) {
-                ItemDetailPane(
-                    itemId = itemId,
-                    onOpenBrowser = onOpenBrowser,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.primaryContainer),
-                )
-            }
+    if (itemId == null) {
+        Box(modifier = modifier.fillMaxSize()) {
+            Text(
+                text = stringResource(Res.string.no_story_selected),
+                modifier = Modifier.align(Alignment.Center),
+            )
+        }
+    } else {
+        key(itemId) {
+            ItemDetailPane(
+                itemId = itemId,
+                onOpenBrowser = onOpenBrowser,
+                modifier = modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.primaryContainer),
+            )
         }
     }
 }
