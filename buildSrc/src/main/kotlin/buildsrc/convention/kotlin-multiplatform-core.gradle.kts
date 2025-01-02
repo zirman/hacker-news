@@ -17,7 +17,12 @@ val libs = the<LibrariesForLibs>()
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            // compose
+            api(project.dependencies.platform(libs.koinBom))
+            compileOnly(libs.koinCore)
+            api(libs.koinAnnotations)
+            api(libs.koinCompose)
+            api(libs.koinComposeViewmodel)
+
             api(compose.animation)
             api(compose.animationGraphics)
             api(compose.components.resources)
@@ -35,28 +40,16 @@ kotlin {
             api(compose.ui)
             //api(compose.uiTooling)
             api(compose.uiUtil)
-            // koin
-            api(project.dependencies.platform(libs.koinBom))
-            compileOnly(libs.koinCore)
-            api(libs.koinAnnotations)
-            api(libs.koinCompose)
-            api(libs.koinComposeViewmodel)
-
-            api(libs.bundles.ktor)
 
             api(libs.annotation)
-
-            api(libs.bundles.datastore)
             api(libs.bundles.kotlin)
-            api(libs.ktorSerializationKotlinJson)
             api(libs.bundles.ktor)
-            api(libs.sqliteBundled)
-            api(project.dependencies.platform(libs.kotlinWrappersBom))
             api(libs.roomRuntime)
-
+            api(libs.bundles.datastore)
+            api(libs.sqliteBundled)
+            api(libs.ktorSerializationKotlinJson)
+            api(project.dependencies.platform(libs.kotlinWrappersBom))
             api(project.dependencies.platform(libs.firebaseBom))
-            api(libs.kermit)
-
             api(libs.jetbrainsLifecycleRuntimeCompose)
             api(libs.jetbrainsLifecycleViewmodel)
             api(libs.jetbrainsLifecycleViewmodelCompose)
@@ -66,6 +59,7 @@ kotlin {
             api(libs.jetbrainsSavedState)
             api(libs.material3WindowSizeClassMultiplatform)
             api(libs.slf4jSimple)
+            api(libs.kermit)
         }
         commonMain {
             kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
@@ -87,7 +81,6 @@ kotlin {
             api(libs.material3AdaptiveNavigationSuite)
             api(libs.lifecycleProcess)
             api(libs.metricsPerformance)
-
             api(libs.bundles.androidx)
             api(libs.bundles.googleApp)
             api(libs.bundles.google)
@@ -96,14 +89,14 @@ kotlin {
         }
         jvmMain.dependencies {
             api(project.dependencies.platform(libs.kotilnCoroutinesBom))
-            api(compose.desktop.currentOs)
-            api(libs.kotlinCoroutinesSwing)
-            api(libs.ktorClientJava)
             api(compose.desktop.common)
+            api(compose.desktop.currentOs)
             @OptIn(ExperimentalComposeLibrary::class)
             api(compose.desktop.components.animatedImage)
             @OptIn(ExperimentalComposeLibrary::class)
             api(compose.desktop.components.splitPane)
+            api(libs.kotlinCoroutinesSwing)
+            api(libs.ktorClientJava)
         }
         iosMain.dependencies {
             api(libs.koinCore)
