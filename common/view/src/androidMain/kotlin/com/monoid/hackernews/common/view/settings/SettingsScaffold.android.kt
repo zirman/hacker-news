@@ -41,7 +41,7 @@ fun SettingsScaffold(
                         scope.launch {
                             navigator.navigateTo(
                                 pane = ListDetailPaneScaffoldRole.Detail,
-                                contentKey = SettingsDetailUiState.Styling,
+                                contentKey = SettingsDetailUiState.Styling.ordinal,
                             )
                         }
                     },
@@ -49,7 +49,8 @@ fun SettingsScaffold(
             },
             detailPane = {
                 SettingsDetailPane(
-                    settingsDetailUiState = navigator.currentDestination?.contentKey as? SettingsDetailUiState?,
+                    settingsDetailUiState = (navigator.currentDestination?.contentKey as Int?)
+                        ?.let { SettingsDetailUiState.entries[it] },
                 )
             },
         )

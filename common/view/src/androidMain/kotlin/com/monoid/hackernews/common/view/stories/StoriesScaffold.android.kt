@@ -14,8 +14,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
-import com.monoid.hackernews.common.view.itemdetail.ListItemDetailContentUiState
 import kotlinx.coroutines.launch
 
 @Composable
@@ -43,7 +43,7 @@ fun StoriesScaffold(
                         scope.launch {
                             navigator.navigateTo(
                                 pane = ListDetailPaneScaffoldRole.Detail,
-                                contentKey = ListItemDetailContentUiState(item.id, null),
+                                contentKey = "${item.id.long}:",//ListItemDetailContentUiState(item.id, null).toString(),
                             )
                         }
                     },
@@ -51,20 +51,24 @@ fun StoriesScaffold(
                 )
             },
             detailPane = {
+                val (itemId, _) = (navigator.currentDestination?.contentKey as String? ?: ":")
+                    .split(':')
                 StoriesDetailPane(
-                    itemId = (navigator.currentDestination?.contentKey as? ListItemDetailContentUiState)?.itemId,
+                    itemId = itemId.toLongOrNull()?.let { ItemId(it) },
                     onOpenBrowser = { item ->
                         scope.launch {
                             navigator.navigateTo(
                                 pane = ListDetailPaneScaffoldRole.Extra,
-                                contentKey = ListItemDetailContentUiState(item.id, item.url),
+                                contentKey = "$itemId:${item.url}",
                             )
                         }
                     },
                 )
             },
             extraPane = {
-                StoriesExtraPane(url = (navigator.currentDestination?.contentKey as? ListItemDetailContentUiState)?.url)
+                val (_, url) = (navigator.currentDestination?.contentKey as String? ?: ":")
+                    .split(':')
+                StoriesExtraPane(url = url)
             },
         )
         if (loading) {

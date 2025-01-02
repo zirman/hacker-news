@@ -1,5 +1,3 @@
-//@file:OptIn(ExperimentalComposeLibrary::class)
-
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
