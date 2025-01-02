@@ -18,7 +18,7 @@ detekt {
     config.setFrom("${rootProject.projectDir}/detekt.yml")
 }
 dependencies {
-    detektPlugins(libs.detektFormatting)//"io.gitlab.arturbosch.detekt:detekt-formatting:1.23.7")
+    detektPlugins(libs.detektFormatting)
     detektPlugins(project(":detekt-rules"))
 }
 pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
