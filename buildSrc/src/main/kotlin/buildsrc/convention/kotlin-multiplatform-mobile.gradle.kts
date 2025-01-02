@@ -5,6 +5,7 @@ import org.gradle.accessors.dm.LibrariesForLibs
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
+    id("buildsrc.convention.detekt-rules")
     kotlin("multiplatform")
     id("com.android.application")
     id("org.jetbrains.kotlin.plugin.compose")
@@ -14,95 +15,15 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
-    id("buildsrc.convention.detekt-rules")
 }
 val libs = the<LibrariesForLibs>()
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            // compose
-            implementation(compose.animation)
-            implementation(compose.animationGraphics)
-            implementation(compose.components.resources)
-            //implementation(compose.components.uiToolingPreview)
-            //implementation(compose.desktop.common)
-            //implementation(compose.desktop.components.animatedImage)
-            //implementation(compose.desktop.components.splitPane)
-            //implementation(compose.desktop.currentOs)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.materialIconsExtended)
-            //implementation(compose.material3AdaptiveNavigationSuite)
-            //implementation(compose.preview)
-            implementation(compose.runtime)
-            implementation(compose.ui)
-            //implementation(compose.uiTooling)
-            implementation(compose.uiUtil)
-            // koin
-            implementation(project.dependencies.platform(libs.koinBom))
-            compileOnly(libs.koinCore)
-            api(libs.koinAnnotations)
-            implementation(libs.koinCompose)
-            implementation(libs.koinComposeViewmodel)
-
-            implementation(libs.bundles.ktor)
-
-            implementation(libs.annotation)
-
-            implementation(libs.bundles.datastore)
-            implementation(libs.bundles.kotlin)
-            implementation(libs.ktorSerializationKotlinJson)
-            implementation(libs.sqliteBundled)
-            implementation(project.dependencies.platform(libs.kotlinWrappersBom))
-
-            implementation(libs.roomRuntime)
-
-            implementation(project.dependencies.platform(libs.firebaseBom))
-            implementation(libs.kermit)
-
-            implementation(libs.jetbrainsLifecycleRuntimeCompose)
-            implementation(libs.jetbrainsLifecycleViewmodel)
-            implementation(libs.jetbrainsLifecycleViewmodelCompose)
-            implementation(libs.jetbrainsNavigationCompose)
-            implementation(libs.jetbrainsCore)
-            implementation(libs.jetbrainsWindowCore)
-            implementation(libs.jetbrainsSavedState)
-            implementation(libs.material3WindowSizeClassMultiplatform)
-
-            // implementation(libs.activityCompose)
-            implementation(libs.lifecycleProcess)
-            implementation(libs.slf4jSimple)
-            implementation(project(":common:injection"))
+            implementation(project(":common:core"))
         }
         commonMain {
             kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
-        }
-        commonTest.dependencies {
-            //implementation(libs.bundles.test)
-        }
-        androidMain.dependencies {
-            implementation(project.dependencies.platform(libs.kotilnCoroutinesBom))
-            implementation(libs.roomKtx)
-            implementation(libs.kotlinCoroutinesAndroid)
-            implementation(libs.collectionKtx)
-            implementation(libs.koinAndroid)
-            implementation(libs.koinKtor)
-            implementation(libs.koinLoggerSlf4j)
-            implementation(libs.ktorClientAndroid)
-            implementation(libs.bundles.firebase)
-            implementation(libs.material3AdaptiveNavigation)
-            implementation(libs.material3AdaptiveNavigationSuite)
-            implementation(libs.metricsPerformance)
-
-            implementation(libs.bundles.androidx)
-            implementation(libs.bundles.googleApp)
-            implementation(libs.bundles.google)
-            implementation(libs.material3Adaptive)
-            implementation(libs.material3AdaptiveLayout)
-        }
-        iosMain.dependencies {
-            implementation(libs.koinCore)
-            implementation(libs.ktorClientDarwin)
         }
     }
     androidTarget()

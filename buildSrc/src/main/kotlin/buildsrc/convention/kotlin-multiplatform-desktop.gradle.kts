@@ -1,7 +1,6 @@
 package buildsrc.convention
 
 import org.gradle.accessors.dm.LibrariesForLibs
-import org.jetbrains.compose.ExperimentalComposeLibrary
 
 plugins {
     id("buildsrc.convention.detekt-rules")
@@ -13,58 +12,15 @@ plugins {
 }
 val libs = the<LibrariesForLibs>()
 kotlin {
-    jvm("desktop")
     sourceSets {
         commonMain.dependencies {
-            implementation(project.dependencies.platform(libs.kotilnCoroutinesBom))
-            implementation(project.dependencies.platform(libs.kotlinWrappersBom))
-            implementation(compose.animation)
-            implementation(compose.animationGraphics)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
-            implementation(compose.desktop.common)
-            @OptIn(ExperimentalComposeLibrary::class)
-            implementation(compose.desktop.components.animatedImage)
-            @OptIn(ExperimentalComposeLibrary::class)
-            implementation(compose.desktop.components.splitPane)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.materialIconsExtended)
-            implementation(compose.preview)
-            implementation(compose.runtime)
-            implementation(compose.ui)
-            implementation(compose.uiTooling)
-            implementation(compose.uiUtil)
-            implementation(libs.jetbrainsLifecycleViewmodel)
-            implementation(libs.jetbrainsLifecycleViewmodelCompose)
-            implementation(libs.jetbrainsLifecycleRuntimeCompose)
-            implementation(libs.bundles.datastore)
-            implementation(libs.bundles.kotlin)
-
-            implementation(project.dependencies.platform(libs.koinBom))
-            compileOnly(libs.koinCore)
-            api(libs.koinAnnotations)
-            implementation(libs.koinCompose)
-            implementation(libs.koinComposeViewmodel)
-
-            implementation(project.dependencies.platform(libs.koinBom))
-            implementation(libs.bundles.ktor)
-            implementation(libs.slf4jSimple)
-            implementation(project(":common:injection"))
+            implementation(project(":common:core"))
         }
         commonMain {
             kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
         }
-        val desktopMain by getting
-        desktopMain.dependencies {
-            implementation(project.dependencies.platform(libs.kotilnCoroutinesBom))
-            implementation(compose.desktop.currentOs)
-            implementation(libs.koinAnnotations)
-            implementation(libs.kotlinCoroutinesSwing)
-            implementation(libs.ktorClientJava)
-            implementation(libs.ktorSerializationKotlinJson)
-        }
     }
+    jvm("desktop")
     compilerOptions {
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }
