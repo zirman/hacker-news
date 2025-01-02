@@ -18,6 +18,8 @@ import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import kotlinx.coroutines.launch
 
+private val contentKeyRegex = """^(\d*):(.*)$""".toRegex()
+
 @Composable
 fun StoriesScaffold(
     navigator: ThreePaneScaffoldNavigator<Any>,
@@ -43,7 +45,7 @@ fun StoriesScaffold(
                         scope.launch {
                             navigator.navigateTo(
                                 pane = ListDetailPaneScaffoldRole.Detail,
-                                contentKey = "${item.id.long}:",//ListItemDetailContentUiState(item.id, null).toString(),
+                                contentKey = "${item.id.long}:",
                             )
                         }
                     },
@@ -51,8 +53,11 @@ fun StoriesScaffold(
                 )
             },
             detailPane = {
-                val (itemId, _) = (navigator.currentDestination?.contentKey as String? ?: ":")
-                    .split(':')
+                val (itemId, _) = checkNotNull(
+                    contentKeyRegex.matchEntire(
+                        navigator.currentDestination?.contentKey as? String ?: ":",
+                    ),
+                ).destructured
                 StoriesDetailPane(
                     itemId = itemId.toLongOrNull()?.let { ItemId(it) },
                     onOpenBrowser = { item ->
@@ -66,8 +71,11 @@ fun StoriesScaffold(
                 )
             },
             extraPane = {
-                val (_, url) = (navigator.currentDestination?.contentKey as String? ?: ":")
-                    .split(':')
+                val (_, url) = checkNotNull(
+                    contentKeyRegex.matchEntire(
+                        navigator.currentDestination?.contentKey as? String ?: ":",
+                    ),
+                ).destructured
                 StoriesExtraPane(url = url)
             },
         )
