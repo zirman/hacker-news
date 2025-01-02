@@ -1,59 +1,10 @@
-@file:OptIn(ExperimentalComposeLibrary::class)
-
-import org.jetbrains.compose.ExperimentalComposeLibrary
-
 plugins {
-    id("kmpapplication")
-    alias(libs.plugins.kotlinxSerialization)
-    alias(libs.plugins.kotlinxParcelize)
-    alias(libs.plugins.googlePlayServices)
-    alias(libs.plugins.crashlytics)
-    alias(libs.plugins.firebasePerf)
-    id("hackernews.detekt")
+    id("buildsrc.convention.kotlin-multiplatform-application")
 }
 kotlin {
     sourceSets {
-        androidMain.dependencies {
-            implementation(libs.bundles.androidx)
-            implementation(libs.bundles.googleApp)
-            implementation(libs.bundles.google)
-            implementation(libs.collectionKtx)
-            implementation(libs.koinAndroid)
-            implementation(libs.ktorClientAndroid)
-            implementation(libs.material3Adaptive)
-            implementation(libs.material3AdaptiveLayout)
-            implementation(libs.metricsPerformance)
-            implementation(project.dependencies.platform(libs.kotilnxCoroutinesBom))
-        }
-        iosMain.dependencies {
-            implementation(libs.ktorClientDarwin)
-        }
         commonMain.dependencies {
-            api(libs.annotation)
-            compileOnly(libs.koinCore)
-            implementation(project.dependencies.platform(libs.koinBom))
-            implementation(project.dependencies.platform(libs.kotlinWrappersBom))
-            implementation(project(":common:injection"))
             implementation(project(":common:view"))
-//            implementation(libs.activityCompose)
-            implementation(libs.bundles.datastore)
-            implementation(libs.bundles.kotlinx)
-            implementation(libs.bundles.koin)
-            implementation(libs.bundles.ktor)
-            implementation(libs.bundles.kotlinx)
-            implementation(libs.jetbrainsLifecycleRuntimeCompose)
-            implementation(libs.jetbrainsLifecycleViewmodel)
-            implementation(libs.jetbrainsLifecycleViewmodelCompose)
-            implementation(libs.jetbrainsNavigationCompose)
-            implementation(libs.jetbrainsCore)
-            implementation(libs.jetbrainsWindowCore)
-            implementation(libs.jetbrainsSavedState)
-            implementation(libs.koinAnnotations)
-            implementation(libs.lifecycleProcess)
-            implementation(libs.slf4jSimple)
-        }
-        commonTest.dependencies {
-            //implementation(libs.bundles.test)
         }
     }
 }

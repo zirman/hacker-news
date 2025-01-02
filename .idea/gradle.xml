@@ -7,12 +7,9 @@
         <compositeConfiguration>
           <compositeBuild compositeDefinitionSource="SCRIPT">
             <builds>
-              <build path="$PROJECT_DIR$/build-logic" name="build-logic">
+              <build path="$PROJECT_DIR$/buildSrc" name="buildSrc">
                 <projects>
-                  <project path="$PROJECT_DIR$/build-logic" />
-                  <project path="$PROJECT_DIR$/build-logic/detekt-convention-plugin" />
-                  <project path="$PROJECT_DIR$/build-logic/kmp-application-plugin" />
-                  <project path="$PROJECT_DIR$/build-logic/kmp-library-plugin" />
+                  <project path="$PROJECT_DIR$/buildSrc" />
                 </projects>
               </build>
             </builds>
@@ -25,10 +22,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/build-logic" />
-            <option value="$PROJECT_DIR$/build-logic/detekt-convention-plugin" />
-            <option value="$PROJECT_DIR$/build-logic/kmp-application-plugin" />
-            <option value="$PROJECT_DIR$/build-logic/kmp-library-plugin" />
+            <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/common/data" />
             <option value="$PROJECT_DIR$/common/domain" />

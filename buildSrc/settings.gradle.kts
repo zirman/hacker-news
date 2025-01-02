@@ -5,6 +5,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven(url = "https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
     versionCatalogs {
         create("libs") {
@@ -13,7 +14,4 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "build-logic"
-include(":kmp-application-plugin")
-include(":kmp-library-plugin")
-include(":detekt-convention-plugin")
+rootProject.name = "buildSrc"

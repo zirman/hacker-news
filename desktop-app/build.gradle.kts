@@ -4,12 +4,12 @@ import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.jetbrainsCompose)
-    alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.kotlinxSerialization)
-    alias(libs.plugins.ksp)
-    id("hackernews.detekt")
+    id("buildsrc.convention.detekt-rules")
+    kotlin("multiplatform")
+    id("org.jetbrains.kotlin.plugin.compose")
+    id("org.jetbrains.compose")
+    id("org.jetbrains.kotlin.plugin.serialization")
+    id("com.google.devtools.ksp")
 }
 kotlin {
     compilerOptions {
@@ -23,9 +23,9 @@ kotlin {
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.koinAnnotations)
-            implementation(libs.kotlinxCoroutinesSwing)
+            implementation(libs.kotlinCoroutinesSwing)
             implementation(libs.ktorClientJava)
-            implementation(libs.ktorSerializationKotlinxJson)
+            implementation(libs.ktorSerializationKotlinJson)
         }
         commonMain.dependencies {
             implementation(compose.animation)
@@ -47,14 +47,18 @@ kotlin {
             implementation(libs.jetbrainsLifecycleViewmodelCompose)
             implementation(libs.jetbrainsLifecycleRuntimeCompose)
             implementation(libs.bundles.datastore)
-            implementation(libs.bundles.koin)
-            implementation(libs.bundles.kotlinx)
+            implementation(project.dependencies.platform(libs.koinBom))
+            compileOnly(libs.koinCore)
+            api(libs.koinAnnotations)
+            implementation(libs.koinCompose)
+            implementation(libs.koinComposeViewmodel)
+            implementation(libs.bundles.kotlin)
             implementation(libs.bundles.ktor)
             implementation(libs.slf4jSimple)
 
             implementation(project.dependencies.platform(libs.koinBom))
             implementation(project.dependencies.platform(libs.kotlinWrappersBom))
-            implementation(project.dependencies.platform(libs.kotilnxCoroutinesBom))
+            implementation(project.dependencies.platform(libs.kotilnCoroutinesBom))
             implementation(project(":common:injection"))
             implementation(project(":common:view"))
         }
@@ -64,12 +68,14 @@ kotlin {
     }
 }
 dependencies {
-    "kspCommonMainMetadata"(libs.koinKspCompiler)
+    kspCommonMainMetadata(libs.koinKspCompiler)
     "kspDesktop"(libs.koinKspCompiler)
 }
 compose {
     resources {
         packageOfResClass = "com.monoid.hackernews"
+        publicResClass = true
+        generateResClass = always
     }
     desktop {
         application {

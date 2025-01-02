@@ -1,6 +1,6 @@
 plugins {
-    id("kotlin")
-    id("hackernews.detekt")
+    kotlin("jvm")
+    id("buildsrc.convention.detekt-rules")
 }
 dependencies {
     compileOnly(libs.detektApi)

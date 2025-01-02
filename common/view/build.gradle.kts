@@ -1,51 +1,11 @@
-@file:OptIn(ExperimentalComposeLibrary::class)
-
-import org.jetbrains.compose.ExperimentalComposeLibrary
-
 plugins {
-    id("kmplibrary")
-    alias(libs.plugins.kotlinxParcelize)
-    id("hackernews.detekt")
+    id("buildsrc.convention.kotlin-multiplatform-library")
+    id("kotlin-parcelize")
 }
 kotlin {
     sourceSets {
         commonMain.dependencies {
             api(project(":common:domain"))
-            compileOnly(libs.koinCore)
-            implementation(libs.annotation)
-            implementation(libs.bundles.datastore)
-            implementation(libs.bundles.kotlinx)
-            implementation(libs.bundles.koin)
-            api(libs.koinAnnotations)
-            implementation(libs.bundles.ktor)
-            implementation(libs.jetbrainsLifecycleRuntimeCompose)
-            implementation(libs.jetbrainsLifecycleViewmodel)
-            implementation(libs.jetbrainsLifecycleViewmodelCompose)
-            implementation(libs.jetbrainsNavigationCompose)
-            implementation(libs.jetbrainsCore)
-            implementation(libs.jetbrainsWindowCore)
-            implementation(libs.jetbrainsSavedState)
-            implementation(libs.material3WindowSizeClassMultiplatform)
-            implementation(project.dependencies.platform(libs.koinBom))
-            implementation(project.dependencies.platform(libs.kotlinWrappersBom))
-        }
-        androidMain.dependencies {
-            implementation(libs.collectionKtx)
-            implementation(libs.ktorClientAndroid)
-            implementation(libs.material3AdaptiveNavigation)
-            implementation(libs.material3AdaptiveNavigationSuite)
-            implementation(libs.metricsPerformance)
-            implementation(project.dependencies.platform(libs.kotilnxCoroutinesBom))
-        }
-        jvmMain.dependencies {
-            implementation(libs.kotlinxCoroutinesSwing)
-            implementation(libs.ktorClientJava)
-        }
-        iosMain.dependencies {
-            implementation(libs.ktorClientDarwin)
-        }
-        commonTest.dependencies {
-            //implementation(libs.bundles.test)
         }
     }
 }
