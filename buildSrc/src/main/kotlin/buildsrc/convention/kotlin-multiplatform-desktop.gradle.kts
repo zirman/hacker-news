@@ -1,6 +1,7 @@
 package buildsrc.convention
 
 import org.gradle.accessors.dm.LibrariesForLibs
+import org.jetbrains.compose.ExperimentalComposeLibrary
 
 plugins {
     id("buildsrc.convention.detekt-rules")
@@ -22,8 +23,10 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(compose.desktop.common)
-//            implementation(compose.desktop.components.animatedImage)
-//            implementation(compose.desktop.components.splitPane)
+            @OptIn(ExperimentalComposeLibrary::class)
+            implementation(compose.desktop.components.animatedImage)
+            @OptIn(ExperimentalComposeLibrary::class)
+            implementation(compose.desktop.components.splitPane)
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(compose.materialIconsExtended)
