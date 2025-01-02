@@ -14,11 +14,6 @@ plugins {
 }
 val libs = the<LibrariesForLibs>()
 kotlin {
-    jvm()
-    androidTarget()
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
     sourceSets {
         commonMain.dependencies {
             // compose
@@ -72,6 +67,12 @@ kotlin {
             implementation(libs.lifecycleProcess)
             implementation(libs.slf4jSimple)
         }
+        commonMain {
+            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
+        }
+        commonTest.dependencies {
+            //implementation(libs.bundles.test)
+        }
         androidMain.dependencies {
             implementation(libs.roomKtx)
             implementation(project.dependencies.platform(libs.kotilnCoroutinesBom))
@@ -92,9 +93,6 @@ kotlin {
             implementation(libs.material3Adaptive)
             implementation(libs.material3AdaptiveLayout)
         }
-        commonTest.dependencies {
-            //implementation(libs.bundles.test)
-        }
         jvmMain.dependencies {
             implementation(project.dependencies.platform(libs.kotilnCoroutinesBom))
             implementation(libs.kotlinCoroutinesSwing)
@@ -104,14 +102,16 @@ kotlin {
             implementation(libs.koinCore)
             implementation(libs.ktorClientDarwin)
         }
-        compilerOptions {
-            freeCompilerArgs.add("-Xexpect-actual-classes")
-        }
-        jvmToolchain(libs.versions.jvmToolchain.get().toInt())
-        commonMain {
-            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
-        }
     }
+    jvm()
+    androidTarget()
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
+    jvmToolchain(libs.versions.jvmToolchain.get().toInt())
 }
 android {
     compileSdk = libs.versions.compileSdk.get().toInt()

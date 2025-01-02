@@ -18,18 +18,6 @@ plugins {
 }
 val libs = the<LibrariesForLibs>()
 kotlin {
-//    jvm()
-    androidTarget()
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64(),
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "ComposeApp"
-            isStatic = true
-        }
-    }
     sourceSets {
         commonMain.dependencies {
             // compose
@@ -86,6 +74,12 @@ kotlin {
             implementation(libs.slf4jSimple)
             implementation(project(":common:injection"))
         }
+        commonMain {
+            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
+        }
+        commonTest.dependencies {
+            //implementation(libs.bundles.test)
+        }
         androidMain.dependencies {
             implementation(project.dependencies.platform(libs.kotilnCoroutinesBom))
             implementation(libs.roomKtx)
@@ -106,21 +100,26 @@ kotlin {
             implementation(libs.material3Adaptive)
             implementation(libs.material3AdaptiveLayout)
         }
-        commonTest.dependencies {
-            //implementation(libs.bundles.test)
-        }
         iosMain.dependencies {
             implementation(libs.koinCore)
             implementation(libs.ktorClientDarwin)
         }
-        compilerOptions {
-            freeCompilerArgs.add("-Xexpect-actual-classes")
-        }
-        jvmToolchain(libs.versions.jvmToolchain.get().toInt())
-        commonMain {
-            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
+    }
+    androidTarget()
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64(),
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "ComposeApp"
+            isStatic = true
         }
     }
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
+    jvmToolchain(libs.versions.jvmToolchain.get().toInt())
 }
 android {
     compileSdk = libs.versions.compileSdk.get().toInt()

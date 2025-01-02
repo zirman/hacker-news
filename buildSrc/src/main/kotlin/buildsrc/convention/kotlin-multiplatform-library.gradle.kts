@@ -14,11 +14,6 @@ plugins {
 }
 val libs = the<LibrariesForLibs>()
 kotlin {
-    jvm()
-    androidTarget()
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
     sourceSets {
         commonMain.dependencies {
             // compose
@@ -74,6 +69,9 @@ kotlin {
 
             implementation(project(":common:injection"))
         }
+        commonMain {
+            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
+        }
         commonTest.dependencies {
             //implementation(libs.bundles.test)
         }
@@ -106,14 +104,16 @@ kotlin {
             implementation(libs.koinCore)
             implementation(libs.ktorClientDarwin)
         }
-        compilerOptions {
-            freeCompilerArgs.add("-Xexpect-actual-classes")
-        }
-        jvmToolchain(libs.versions.jvmToolchain.get().toInt())
-        commonMain {
-            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
-        }
     }
+    jvm()
+    androidTarget()
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
+    jvmToolchain(libs.versions.jvmToolchain.get().toInt())
 }
 android {
     compileSdk = libs.versions.compileSdk.get().toInt()

@@ -13,11 +13,11 @@ plugins {
 }
 val libs = the<LibrariesForLibs>()
 kotlin {
-    jvm("desktop") {
-    }
+    jvm("desktop")
     sourceSets {
-        val desktopMain by getting
         commonMain.dependencies {
+            implementation(project.dependencies.platform(libs.kotilnCoroutinesBom))
+            implementation(project.dependencies.platform(libs.kotlinWrappersBom))
             implementation(compose.animation)
             implementation(compose.animationGraphics)
             implementation(compose.components.resources)
@@ -39,21 +39,23 @@ kotlin {
             implementation(libs.jetbrainsLifecycleViewmodelCompose)
             implementation(libs.jetbrainsLifecycleRuntimeCompose)
             implementation(libs.bundles.datastore)
+            implementation(libs.bundles.kotlin)
+
             implementation(project.dependencies.platform(libs.koinBom))
             compileOnly(libs.koinCore)
             api(libs.koinAnnotations)
             implementation(libs.koinCompose)
             implementation(libs.koinComposeViewmodel)
-            implementation(libs.bundles.kotlin)
-            implementation(libs.bundles.ktor)
-            implementation(libs.slf4jSimple)
 
             implementation(project.dependencies.platform(libs.koinBom))
-            implementation(project.dependencies.platform(libs.kotlinWrappersBom))
-            implementation(project.dependencies.platform(libs.kotilnCoroutinesBom))
+            implementation(libs.bundles.ktor)
+            implementation(libs.slf4jSimple)
             implementation(project(":common:injection"))
-            implementation(project(":common:view"))
         }
+        commonMain {
+            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
+        }
+        val desktopMain by getting
         desktopMain.dependencies {
             implementation(project.dependencies.platform(libs.kotilnCoroutinesBom))
             implementation(compose.desktop.currentOs)
@@ -61,11 +63,6 @@ kotlin {
             implementation(libs.kotlinCoroutinesSwing)
             implementation(libs.ktorClientJava)
             implementation(libs.ktorSerializationKotlinJson)
-        }
-        sourceSets {
-            commonMain {
-                kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
-            }
         }
     }
     compilerOptions {
