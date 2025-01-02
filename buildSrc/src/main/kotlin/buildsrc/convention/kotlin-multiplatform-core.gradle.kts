@@ -112,49 +112,6 @@ kotlin {
             kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
         }
     }
-//    sourceSets {
-//        commonMain.dependencies {
-//            // compose
-//            implementation(compose.animation)
-//            implementation(compose.animationGraphics)
-//            implementation(compose.components.resources)
-//            //implementation(compose.components.uiToolingPreview)
-//            //implementation(compose.desktop.common)
-//            //implementation(compose.desktop.components.animatedImage)
-//            //implementation(compose.desktop.components.splitPane)
-//            //implementation(compose.desktop.currentOs)
-//            implementation(compose.foundation)
-//            implementation(compose.material3)
-//            implementation(compose.materialIconsExtended)
-//            //implementation(compose.material3AdaptiveNavigationSuite)
-//            //implementation(compose.preview)
-//            implementation(compose.runtime)
-//            implementation(compose.ui)
-//            //implementation(compose.uiTooling)
-//            implementation(compose.uiUtil)
-//            // koin
-//            implementation(project.dependencies.platform(libs.koinBom))
-//            compileOnly(libs.koinCore)
-//            api(libs.koinAnnotations)
-//            implementation(libs.koinCompose)
-//            implementation(libs.koinComposeViewmodel)
-//        }
-//        androidMain.dependencies {
-//            implementation(libs.koinAndroid)
-//            implementation(libs.koinLoggerSlf4j)
-//            implementation(libs.koinKtor)
-//        }
-//        iosMain.dependencies {
-//            implementation(libs.koinCore)
-//        }
-//        jvmToolchain(libs.versions.jvmToolchain.get().toInt())
-//        compilerOptions {
-//            freeCompilerArgs.add("-Xexpect-actual-classes")
-//        }
-//        commonMain {
-//            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
-//        }
-//    }
 }
 android {
     compileSdk = libs.versions.compileSdk.get().toInt()

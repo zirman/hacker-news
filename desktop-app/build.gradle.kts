@@ -1,88 +1,28 @@
-@file:OptIn(ExperimentalComposeLibrary::class)
+//@file:OptIn(ExperimentalComposeLibrary::class)
 
-import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
-    id("buildsrc.convention.detekt-rules")
-    kotlin("multiplatform")
-    id("org.jetbrains.kotlin.plugin.compose")
-    id("org.jetbrains.compose")
-    id("org.jetbrains.kotlin.plugin.serialization")
-    id("com.google.devtools.ksp")
+    id("buildsrc.convention.kotlin-multiplatform-desktop")
 }
 kotlin {
-    compilerOptions {
-        freeCompilerArgs.add("-Xexpect-actual-classes")
-    }
-    jvmToolchain(libs.versions.jvmToolchain.get().toInt())
-    jvm("desktop") {
-    }
     sourceSets {
-        val desktopMain by getting
-        desktopMain.dependencies {
-            implementation(compose.desktop.currentOs)
-            implementation(libs.koinAnnotations)
-            implementation(libs.kotlinCoroutinesSwing)
-            implementation(libs.ktorClientJava)
-            implementation(libs.ktorSerializationKotlinJson)
-        }
         commonMain.dependencies {
-            implementation(compose.animation)
-            implementation(compose.animationGraphics)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
-            implementation(compose.desktop.common)
-            implementation(compose.desktop.components.animatedImage)
-            implementation(compose.desktop.components.splitPane)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.materialIconsExtended)
-            implementation(compose.preview)
-            implementation(compose.runtime)
-            implementation(compose.ui)
-            implementation(compose.uiTooling)
-            implementation(compose.uiUtil)
-            implementation(libs.jetbrainsLifecycleViewmodel)
-            implementation(libs.jetbrainsLifecycleViewmodelCompose)
-            implementation(libs.jetbrainsLifecycleRuntimeCompose)
-            implementation(libs.bundles.datastore)
-            implementation(project.dependencies.platform(libs.koinBom))
-            compileOnly(libs.koinCore)
-            api(libs.koinAnnotations)
-            implementation(libs.koinCompose)
-            implementation(libs.koinComposeViewmodel)
-            implementation(libs.bundles.kotlin)
-            implementation(libs.bundles.ktor)
-            implementation(libs.slf4jSimple)
-
-            implementation(project.dependencies.platform(libs.koinBom))
-            implementation(project.dependencies.platform(libs.kotlinWrappersBom))
-            implementation(project.dependencies.platform(libs.kotilnCoroutinesBom))
-            implementation(project(":common:injection"))
             implementation(project(":common:view"))
         }
     }
-    sourceSets.named("commonMain") {
-        kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
-    }
 }
-dependencies {
-    kspCommonMainMetadata(libs.koinKspCompiler)
-    "kspDesktop"(libs.koinKspCompiler)
-}
+val name = "com.monoid.hackernews"
 compose {
     resources {
-        packageOfResClass = "com.monoid.hackernews"
-        publicResClass = true
-        generateResClass = always
+        packageOfResClass = name
     }
     desktop {
         application {
             mainClass = "com.monoid.hackernews.Main_desktopKt"
             nativeDistributions {
                 targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-                packageName = "com.monoid.hackernews"
+                packageName = name
                 packageVersion = "1.0.0"
                 buildTypes.release.proguard {
                     isEnabled = true
@@ -93,8 +33,4 @@ compose {
             }
         }
     }
-}
-ksp {
-    arg("KOIN_CONFIG_CHECK", "true")
-    arg("KOIN_USE_COMPOSE_VIEWMODEL", "true")
 }

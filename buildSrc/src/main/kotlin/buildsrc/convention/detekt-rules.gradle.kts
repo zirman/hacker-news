@@ -2,17 +2,12 @@ package buildsrc.convention
 
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
+import org.gradle.accessors.dm.LibrariesForLibs
 
 plugins {
     id("io.gitlab.arturbosch.detekt")
 }
-val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
-tasks.withType<Detekt>().configureEach {
-    jvmTarget = JavaVersion.VERSION_17.toString()
-}
-tasks.withType<DetektCreateBaselineTask>().configureEach {
-    jvmTarget = JavaVersion.VERSION_17.toString()
-}
+val libs = the<LibrariesForLibs>()
 detekt {
     buildUponDefaultConfig = true // preconfigure defaults.
     allRules = false // activate all available (even unstable) rules.
@@ -22,7 +17,19 @@ detekt {
     // point to your custom config defining rules to run, overwriting default behavior.
     config.setFrom("${rootProject.projectDir}/detekt.yml")
 }
+dependencies {
+    detektPlugins(libs.detektFormatting)//"io.gitlab.arturbosch.detekt:detekt-formatting:1.23.7")
+    detektPlugins(project(":detekt-rules"))
+}
+pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
+    tasks.withType<Detekt>().configureEach {
+        exclude {
+            it.file.relativeTo(projectDir).startsWith("build")
+        }
+    }
+}
 tasks.withType<Detekt>().configureEach {
+    jvmTarget = libs.versions.jvmTarget.get()
     reports {
         // observe findings in your browser with structure and code snippets
         html.required.set(true)
@@ -32,14 +39,6 @@ tasks.withType<Detekt>().configureEach {
         md.required.set(true)
     }
 }
-pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
-    tasks.withType<Detekt>().configureEach {
-        exclude {
-            it.file.relativeTo(projectDir).startsWith("build")
-        }
-    }
-}
-dependencies {
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting")
-    detektPlugins(project(":detekt-rules"))
+tasks.withType<DetektCreateBaselineTask>().configureEach {
+    jvmTarget = libs.versions.jvmTarget.get()
 }

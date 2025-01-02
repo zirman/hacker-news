@@ -18,7 +18,7 @@ plugins {
 }
 val libs = the<LibrariesForLibs>()
 kotlin {
-    jvm()
+//    jvm()
     androidTarget()
     listOf(
         iosX64(),
@@ -109,11 +109,6 @@ kotlin {
         commonTest.dependencies {
             //implementation(libs.bundles.test)
         }
-        jvmMain.dependencies {
-            implementation(project.dependencies.platform(libs.kotilnCoroutinesBom))
-            implementation(libs.kotlinCoroutinesSwing)
-            implementation(libs.ktorClientJava)
-        }
         iosMain.dependencies {
             implementation(libs.koinCore)
             implementation(libs.ktorClientDarwin)
@@ -163,7 +158,6 @@ dependencies {
     coreLibraryDesugaring(libs.desugarJdkLibsNio)
     kspCommonMainMetadata(libs.koinKspCompiler)
     "kspAndroid"(libs.koinKspCompiler)
-    "kspJvm"(libs.koinKspCompiler)
     "kspIosX64"(libs.koinKspCompiler)
     "kspIosArm64"(libs.koinKspCompiler)
     "kspIosSimulatorArm64"(libs.koinKspCompiler)
