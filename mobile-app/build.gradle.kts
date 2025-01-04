@@ -8,14 +8,15 @@ kotlin {
         }
     }
 }
-val packageNamespace = "com.monoid.hackernews"
+val appId = "com.monoid.hackernews"
+val appName = "Hacker News"
 compose {
     resources {
-        packageOfResClass = packageNamespace
+        packageOfResClass = appId
     }
 }
 android {
-    namespace = packageNamespace
+    namespace = appId
     signingConfigs {
         create("release") {
             storeFile = file("release.jks")
@@ -25,9 +26,9 @@ android {
         }
     }
     defaultConfig {
-        applicationId = "com.monoid.hackernews"
-        versionCode = 44
-        versionName = "1.1.5"
+        applicationId = appId
+        versionCode = 45
+        versionName = "2.0.0"
         // reduces apk sizes by not including unsupported languages
         resourceConfigurations += setOf("en", "es")
         vectorDrawables {
@@ -36,15 +37,11 @@ android {
     }
     buildTypes {
         debug {
-            isMinifyEnabled = false
-            isShrinkResources = false
-            isDebuggable = true
+            resValue("string", "app_name", "$appName Debug")
         }
         release {
+            resValue("string", "app_name", appName)
             signingConfig = signingConfigs.getByName("release")
-            isMinifyEnabled = true
-            isShrinkResources = true
-            isDebuggable = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",

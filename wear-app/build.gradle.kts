@@ -6,8 +6,14 @@ dependencies {
     implementation(libs.bundles.googleWear)
     implementation(project(":common:view"))
 }
+val appId = "com.monoid.hackernews.wear"
+compose {
+    resources {
+        packageOfResClass = appId
+    }
+}
 android {
-    namespace = "com.monoid.hackernews.wear"
+    namespace = appId
     signingConfigs {
         create("release") {
             storeFile = file("release.jks")
@@ -17,7 +23,7 @@ android {
         }
     }
     defaultConfig {
-        applicationId = "com.monoid.hackernews.wear"
+        applicationId = appId
         versionCode = 1
         versionName = "1.0"
         // reduces apk sizes by not including unsupported languages
@@ -27,17 +33,8 @@ android {
         }
     }
     buildTypes {
-        debug {
-            applicationIdSuffix = ".debug"
-            isMinifyEnabled = false
-            isShrinkResources = false
-            isDebuggable = true
-        }
         release {
             signingConfig = signingConfigs.getByName("release")
-            isMinifyEnabled = true
-            isShrinkResources = true
-            isDebuggable = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

@@ -1,6 +1,5 @@
 package buildsrc.convention
 
-import com.android.build.gradle.tasks.asJavaVersion
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
@@ -45,9 +44,9 @@ android {
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
         sourceCompatibility =
-            JavaLanguageVersion.of(libs.versions.jvmTarget.get()).asJavaVersion()
+            JavaVersion.toVersion(libs.versions.jvmTarget.get().toInt())
         targetCompatibility =
-            JavaLanguageVersion.of(libs.versions.jvmTarget.get()).asJavaVersion()
+            JavaVersion.toVersion(libs.versions.jvmTarget.get().toInt())
     }
     sourceSets.named("main").get().apply {
         manifest.srcFile("src/androidMain/AndroidManifest.xml")

@@ -30,7 +30,7 @@ class HNApplication : Application() {
                         it
                     }
                 }
-                .build()
+                .build(),
         )
 
         startKoin {

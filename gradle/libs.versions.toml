@@ -60,19 +60,19 @@ junitJupiter = "5.11.3"
 assertjCore = "3.26.3"
 
 [libraries]
-plugin_kotlinGradle = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-plugin_kotlinParcelize = { group = "org.jetbrains.kotlin.plugin.parcelize", name = "org.jetbrains.kotlin.plugin.parcelize.gradle.plugin", version.ref = "kotlin" }
-plugin_kotlinSerialization = { group = "org.jetbrains.kotlin.plugin.serialization", name = "org.jetbrains.kotlin.plugin.serialization.gradle.plugin", version.ref = "kotlin" }
-plugin_compose = { group = "org.jetbrains.kotlin.plugin.compose", name = "org.jetbrains.kotlin.plugin.compose.gradle.plugin", version.ref = "kotlin" }
-plugin_composeCompiler = { group = "org.jetbrains.compose", name = "compose-gradle-plugin", version.ref = "jetbrainsCompose" }
-plugin_androidApplication = { group = "com.android.application", name = "com.android.application.gradle.plugin", version.ref = "android" }
-plugin_androidLibrary = { group = "com.android.library", name = "com.android.library.gradle.plugin", version.ref = "android" }
-plugin_ksp = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
-plugin_room = { group = "androidx.room", name = "androidx.room.gradle.plugin", version.ref = "room" }
-plugin_googlePlayServices = { group = "com.google.gms.google-services", name = "com.google.gms.google-services.gradle.plugin", version.ref = "googlePlayServices" }
-plugin_crashlytics = { group = "com.google.firebase.crashlytics", name = "com.google.firebase.crashlytics.gradle.plugin", version.ref = "crashlytics" }
-plugin_firebasePerf = { group = "com.google.firebase.firebase-perf", name = "com.google.firebase.firebase-perf.gradle.plugin", version.ref = "firebasePerf" }
-plugin_detektGradle = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
+plugin-kotlinGradle = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+plugin-kotlinParcelize = { group = "org.jetbrains.kotlin.plugin.parcelize", name = "org.jetbrains.kotlin.plugin.parcelize.gradle.plugin", version.ref = "kotlin" }
+plugin-kotlinSerialization = { group = "org.jetbrains.kotlin.plugin.serialization", name = "org.jetbrains.kotlin.plugin.serialization.gradle.plugin", version.ref = "kotlin" }
+plugin-compose = { group = "org.jetbrains.kotlin.plugin.compose", name = "org.jetbrains.kotlin.plugin.compose.gradle.plugin", version.ref = "kotlin" }
+plugin-composeCompiler = { group = "org.jetbrains.compose", name = "compose-gradle-plugin", version.ref = "jetbrainsCompose" }
+plugin-androidApplication = { group = "com.android.application", name = "com.android.application.gradle.plugin", version.ref = "android" }
+plugin-androidLibrary = { group = "com.android.library", name = "com.android.library.gradle.plugin", version.ref = "android" }
+plugin-ksp = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+plugin-room = { group = "androidx.room", name = "androidx.room.gradle.plugin", version.ref = "room" }
+plugin-googlePlayServices = { group = "com.google.gms.google-services", name = "com.google.gms.google-services.gradle.plugin", version.ref = "googlePlayServices" }
+plugin-crashlytics = { group = "com.google.firebase.crashlytics", name = "com.google.firebase.crashlytics.gradle.plugin", version.ref = "crashlytics" }
+plugin-firebasePerf = { group = "com.google.firebase.firebase-perf", name = "com.google.firebase.firebase-perf.gradle.plugin", version.ref = "firebasePerf" }
+plugin-detektGradle = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
 
 # dependencies
 kotilnCoroutinesBom = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-bom", version.ref = "kotlinCoroutines" }
@@ -197,19 +197,19 @@ assertjCore = { module = "org.assertj:assertj-core", version.ref = "assertjCore"
 
 [bundles]
 plugins = [
-    "plugin_kotlinGradle",
-    "plugin_kotlinParcelize",
-    "plugin_kotlinSerialization",
-    "plugin_compose",
-    "plugin_composeCompiler",
-    "plugin_androidApplication",
-    "plugin_androidLibrary",
-    "plugin_ksp",
-    "plugin_room",
-    "plugin_googlePlayServices",
-    "plugin_crashlytics",
-    "plugin_firebasePerf",
-    "plugin_detektGradle",
+    "plugin-kotlinGradle",
+    "plugin-kotlinParcelize",
+    "plugin-kotlinSerialization",
+    "plugin-compose",
+    "plugin-composeCompiler",
+    "plugin-androidApplication",
+    "plugin-androidLibrary",
+    "plugin-ksp",
+    "plugin-room",
+    "plugin-googlePlayServices",
+    "plugin-crashlytics",
+    "plugin-firebasePerf",
+    "plugin-detektGradle",
 ]
 kotlin = [
     "kotlinSerializationJson",
