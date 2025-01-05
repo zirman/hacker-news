@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.monoid.hackernews.common.data.model.LoginRepository
 import com.monoid.hackernews.common.data.model.Username
-import com.monoid.hackernews.common.injection.LoggerAdapter
+import com.monoid.hackernews.common.core.LoggerAdapter
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted

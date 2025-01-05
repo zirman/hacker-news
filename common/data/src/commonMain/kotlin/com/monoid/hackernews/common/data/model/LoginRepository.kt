@@ -3,7 +3,7 @@ package com.monoid.hackernews.common.data.model
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.monoid.hackernews.common.data.api.loginRequest
-import com.monoid.hackernews.common.injection.LoggerAdapter
+import com.monoid.hackernews.common.core.LoggerAdapter
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope

@@ -11,7 +11,7 @@ import com.monoid.hackernews.common.data.model.ParagraphIndent
 import com.monoid.hackernews.common.data.model.Settings
 import com.monoid.hackernews.common.data.model.SettingsRepository
 import com.monoid.hackernews.common.data.model.Shape
-import com.monoid.hackernews.common.injection.LoggerAdapter
+import com.monoid.hackernews.common.core.LoggerAdapter
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted

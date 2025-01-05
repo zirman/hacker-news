@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.injection
+package com.monoid.hackernews.common.core
 
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Single

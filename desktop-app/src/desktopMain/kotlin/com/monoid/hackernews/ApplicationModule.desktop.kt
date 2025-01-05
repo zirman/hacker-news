@@ -3,8 +3,8 @@ package com.monoid.hackernews
 import com.monoid.hackernews.common.data.DataStoreModule
 import com.monoid.hackernews.common.data.DatabaseModule
 import com.monoid.hackernews.common.data.NetworkModule
-import com.monoid.hackernews.common.injection.DispatchersModule
-import com.monoid.hackernews.common.injection.LoggerModule
+import com.monoid.hackernews.common.core.DispatchersModule
+import com.monoid.hackernews.common.core.LoggerModule
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Module
 

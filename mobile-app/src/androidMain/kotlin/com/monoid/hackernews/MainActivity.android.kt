@@ -20,7 +20,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.metrics.performance.JankStats
 import com.monoid.hackernews.common.data.model.LightDarkMode
 import com.monoid.hackernews.common.data.model.SettingsRepository
-import com.monoid.hackernews.common.injection.LoggerAdapter
+import com.monoid.hackernews.common.core.LoggerAdapter
 import com.monoid.hackernews.common.view.App
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.awaitCancellation

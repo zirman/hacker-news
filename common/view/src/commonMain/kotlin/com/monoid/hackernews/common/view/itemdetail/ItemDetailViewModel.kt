@@ -9,8 +9,8 @@ import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.StoriesRepository
 import com.monoid.hackernews.common.data.model.makeItem
-import com.monoid.hackernews.common.injection.DispatcherQualifier
-import com.monoid.hackernews.common.injection.LoggerAdapter
+import com.monoid.hackernews.common.core.DispatcherQualifier
+import com.monoid.hackernews.common.core.LoggerAdapter
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job

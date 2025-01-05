@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.injection
+package com.monoid.hackernews.common.core
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
