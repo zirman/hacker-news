@@ -75,41 +75,6 @@ expect class URL(string: String) {
     val host: String
 }
 
-//@Preview
-//@Composable
-//private fun ItemPreview() {
-//    Item(
-//        item = makeItem(
-//            id = ItemId(0),
-//            type = ItemType.Story,
-//            title = AnnotatedString("Hello World"),
-//            text = AnnotatedString("Lorum Ipsum"),
-//            url = "https://www.google.com/",
-//            kids = emptyList(),
-//            upvoted = false,
-//            favourited = false,
-//            flagged = false,
-//            expanded = false,
-//            followed = false,
-//            by = null,
-//            deleted = null,
-//            descendants = null,
-//            parent = null,
-//            lastUpdate = null,
-//            score = null,
-//            time = null,
-//        ),
-//        onClickDetail = {},
-//        onClickReply = {},
-//        onClickUser = {},
-//        onClickBrowser = {},
-//        onClickUpvote = {},
-//        onClickFavorite = {},
-//        onClickFollow = {},
-//        onClickFlag = {},
-//    )
-//}
-
 @Suppress("CyclomaticComplexMethod")
 @Composable
 fun Item(

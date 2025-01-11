@@ -25,14 +25,11 @@ kotlin {
             api(compose.animation)
             api(compose.animationGraphics)
             api(compose.components.resources)
-            //api(compose.components.uiToolingPreview)
             api(compose.foundation)
             api(compose.material3)
             api(compose.materialIconsExtended)
-            //api(compose.preview)
             api(compose.runtime)
             api(compose.ui)
-            //api(compose.uiTooling)
             api(compose.uiUtil)
 
             api(libs.annotation)
@@ -62,6 +59,9 @@ kotlin {
             //implementation(libs.bundles.test)
         }
         androidMain.dependencies {
+            api(compose.uiTooling)
+            api(compose.preview)
+            api(compose.components.uiToolingPreview)
             api(libs.roomKtx)
             api(project.dependencies.platform(libs.kotilnCoroutinesBom))
             api(libs.kotlinCoroutinesAndroid)
