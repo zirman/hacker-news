@@ -53,7 +53,7 @@ slf4jSimple = "2.0.16"
 junitExt = "1.2.1"
 coil = "2.6.0"
 espressoCore = "3.6.1"
-#junit = "4.13.2"
+junit = "4.13.2"
 mockk = "1.13.9"
 detekt = "1.23.7"
 junitJupiter = "5.11.3"
@@ -183,7 +183,7 @@ slf4jSimple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4j
 
 espressoCore = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 junitExt = { group = "androidx.test.ext", name = "junit", version.ref = "junitExt" }
-#junit = { group = "junit", name = "junit", version.ref = "junit" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 
 detektApi = { group = "io.gitlab.arturbosch.detekt", name = "detekt-api", version.ref = "detekt" }
@@ -276,11 +276,3 @@ firebase = [
 #    "lintCli",
 #    "lintTests"
 #]
-test = [
-    "kotlinTest",
-    "kotlinCoroutinesTest",
-    "uiTestJunit4",
-    "junitExt",
-    "espressoCore",
-    "mockk",
-]

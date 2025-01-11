@@ -56,7 +56,10 @@ kotlin {
             kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
         }
         commonTest.dependencies {
-            //implementation(libs.bundles.test)
+            implementation(libs.kotlinTest)
+            implementation(libs.kotlinCoroutinesTest)
+            @OptIn(ExperimentalComposeLibrary::class)
+            implementation(compose.uiTest)
         }
         androidMain.dependencies {
             api(compose.uiTooling)
@@ -80,6 +83,13 @@ kotlin {
             api(libs.bundles.google)
             api(libs.material3Adaptive)
             api(libs.material3AdaptiveLayout)
+        }
+        androidUnitTest.dependencies {
+            implementation(libs.junit)
+            implementation(libs.junitExt)
+            implementation(libs.uiTestJunit4)
+            implementation(libs.espressoCore)
+            implementation(libs.mockk)
         }
         jvmMain.dependencies {
             api(project.dependencies.platform(libs.kotilnCoroutinesBom))
