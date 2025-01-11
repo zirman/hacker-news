@@ -2,17 +2,10 @@ package com.monoid.hackernews.common.view.itemlist
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.tooling.preview.Preview
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.ItemType
 import com.monoid.hackernews.common.data.model.makeItem
-import org.jetbrains.compose.ui.tooling.preview.Preview
-
-actual class URL actual constructor(string: String) {
-    private val url = java.net.URL(string)
-
-    actual val host: String
-        get() = url.host
-}
 
 @Preview
 @Composable

@@ -55,7 +55,7 @@ import com.monoid.hackernews.common.view.comment
 import com.monoid.hackernews.common.view.favorite
 import com.monoid.hackernews.common.view.flag
 import com.monoid.hackernews.common.view.follow
-import com.monoid.hackernews.common.view.itemlist.URL
+import com.monoid.hackernews.common.view.itemlist.Url
 import com.monoid.hackernews.common.view.more_options
 import com.monoid.hackernews.common.view.open_in_browser
 import com.monoid.hackernews.common.view.placeholder.PlaceholderHighlight
@@ -346,7 +346,7 @@ fun ItemDetail(
 
                 val host: String? = remember(item, item?.url) {
                     if (item?.lastUpdate != null) {
-                        item.url?.let { URL(it) }?.host
+                        item.url?.let { Url(it) }?.host
                     } else {
                         ""
                     }

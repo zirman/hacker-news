@@ -71,10 +71,6 @@ import com.monoid.hackernews.common.view.unfollow
 import com.monoid.hackernews.common.view.upvote
 import org.jetbrains.compose.resources.stringResource
 
-expect class URL(string: String) {
-    val host: String
-}
-
 @Suppress("CyclomaticComplexMethod")
 @Composable
 fun Item(
@@ -354,7 +350,7 @@ fun Item(
                 key("url") {
                     if (item?.url != null) {
                         val host: String = remember(item.url) {
-                            item.url?.let { URL(it) }?.host.orEmpty()
+                            item.url?.let { Url(it) }?.host.orEmpty()
                         }
 
                         Text(
