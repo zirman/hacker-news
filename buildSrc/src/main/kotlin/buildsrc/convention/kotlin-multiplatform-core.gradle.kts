@@ -56,17 +56,17 @@ kotlin {
             kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
         }
         commonTest.dependencies {
-            implementation(libs.kotlinTest)
-            implementation(libs.kotlinCoroutinesTest)
+            api(libs.kotlinTest)
+            api(libs.kotlinCoroutinesTest)
             @OptIn(ExperimentalComposeLibrary::class)
-            implementation(compose.uiTest)
+            api(compose.uiTest)
         }
         androidMain.dependencies {
             api(compose.uiTooling)
             api(compose.preview)
             api(compose.components.uiToolingPreview)
-            api(libs.roomKtx)
             api(project.dependencies.platform(libs.kotilnCoroutinesBom))
+            api(libs.roomKtx)
             api(libs.kotlinCoroutinesAndroid)
             api(libs.collectionKtx)
             api(libs.koinAndroid)

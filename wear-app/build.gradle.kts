@@ -27,7 +27,10 @@ android {
         versionCode = 1
         versionName = "1.0"
         // reduces apk sizes by not including unsupported languages
-        resourceConfigurations += setOf("en", "es")
+        androidResources {
+            @Suppress("UnstableApiUsage")
+            localeFilters += listOf("en", "es")
+        }
         vectorDrawables {
             useSupportLibrary = true
         }

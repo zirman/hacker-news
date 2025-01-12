@@ -2,8 +2,8 @@ package com.monoid.hackernews.wear.view.itemlist
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.monoid.hackernews.common.api.ItemId
-import com.monoid.hackernews.common.data.Item
+import com.monoid.hackernews.common.data.api.ItemId
+import com.monoid.hackernews.common.data.model.Item
 
 @Composable
 fun Item(

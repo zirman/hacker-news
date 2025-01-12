@@ -387,7 +387,7 @@ class HtmlParser(
                     // randomly causes IndexOutOfBoundsException in MultiParagraph
                     pushLink(
                         LinkAnnotation.Url(
-                            url = tag.tokens.toAttributes()?.lookup("href") ?: "",
+                            url = tag.tokens.toAttributes()?.lookup("href").orEmpty(),
                             styles = textLinkStyles,
                         ),
                     )
