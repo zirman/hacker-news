@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.monoid.hackernews.common.data.URL
+import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.domain.navigation.Route
 import com.monoid.hackernews.common.view.home.HomeScaffold
 
@@ -21,7 +21,7 @@ fun MainNavHost(onClickLogin: () -> Unit, modifier: Modifier = Modifier) {
             HomeScaffold(
                 onClickBrowser = { item ->
                     item.url
-                        ?.let { URL(it) }
+                        ?.let { Url(it) }
                         ?.run { openWebpage(this) }
                 },
                 onClickLogin = onClickLogin,
@@ -30,4 +30,4 @@ fun MainNavHost(onClickLogin: () -> Unit, modifier: Modifier = Modifier) {
     }
 }
 
-expect fun openWebpage(url: URL): Boolean
+expect fun openWebpage(url: Url): Boolean

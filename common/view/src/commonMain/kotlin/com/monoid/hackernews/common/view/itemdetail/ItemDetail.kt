@@ -46,6 +46,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.ItemType
 import com.monoid.hackernews.common.domain.util.rememberTimeBy
@@ -55,7 +56,6 @@ import com.monoid.hackernews.common.view.comment
 import com.monoid.hackernews.common.view.favorite
 import com.monoid.hackernews.common.view.flag
 import com.monoid.hackernews.common.view.follow
-import com.monoid.hackernews.common.view.itemlist.Url
 import com.monoid.hackernews.common.view.more_options
 import com.monoid.hackernews.common.view.open_in_browser
 import com.monoid.hackernews.common.view.placeholder.PlaceholderHighlight

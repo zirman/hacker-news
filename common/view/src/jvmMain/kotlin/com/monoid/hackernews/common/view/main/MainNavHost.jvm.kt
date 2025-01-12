@@ -1,10 +1,10 @@
 package com.monoid.hackernews.common.view.main
 
-import com.monoid.hackernews.common.data.URI
-import com.monoid.hackernews.common.data.URL
+import com.monoid.hackernews.common.data.Uri
+import com.monoid.hackernews.common.data.Url
 import java.awt.Desktop
 
-fun openWebpage(uri: URI): Boolean =
+fun openWebpage(uri: Uri): Boolean =
     (if (Desktop.isDesktopSupported()) Desktop.getDesktop() else null)
         ?.takeIf { it.isSupported(Desktop.Action.BROWSE) }
         ?.run {
@@ -13,5 +13,5 @@ fun openWebpage(uri: URI): Boolean =
         }
         ?: false
 
-actual fun openWebpage(url: URL): Boolean = runCatching { openWebpage(url.toUri()) }
+actual fun openWebpage(url: Url): Boolean = runCatching { openWebpage(url.toUri()) }
     .getOrDefault(false)

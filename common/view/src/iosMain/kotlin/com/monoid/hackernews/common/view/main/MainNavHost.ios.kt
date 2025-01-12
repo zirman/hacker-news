@@ -1,7 +1,7 @@
 package com.monoid.hackernews.common.view.main
 
-import com.monoid.hackernews.common.data.URL
+import com.monoid.hackernews.common.data.Url
 
-actual fun openWebpage(url: URL): Boolean {
+actual fun openWebpage(url: Url): Boolean {
     TODO("Not yet implemented")
 }
