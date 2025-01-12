@@ -21,8 +21,7 @@ dependencies {
     detektPlugins(libs.detektFormatting)
     detektPlugins(project(":detekt-rules"))
 }
-tasks.register<Detekt>("myDetekt") {
-    description = "Runs a custom detekt build."
+tasks.withType<Detekt> {
     config.setFrom(files("${rootProject.projectDir}/detekt.yml"))
     reports {
         // observe findings in your browser with structure and code snippets
@@ -42,21 +41,15 @@ tasks.register<Detekt>("myDetekt") {
         }
     }
     jvmTarget = libs.versions.jvmTarget.get()
-    debug = true
-    setSource(
-        files(
-            "src/commonMain/kotlin",
-            "src/commonTest/kotlin",
-            "src/androidMain/kotlin",
-            "src/androidTest/kotlin",
-            "src/jvmMain/kotlin",
-            "src/jvmTest/kotlin",
-            "src/iosMain/kotlin",
-            "src/iosTest/kotlin",
-        )
-    )
-    include("**/*.kt")
 }
 tasks.withType<DetektCreateBaselineTask>().configureEach {
+    config.setFrom(files("${rootProject.projectDir}/detekt.yml"))
     jvmTarget = libs.versions.jvmTarget.get()
+}
+pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
+    tasks.withType<Detekt>().configureEach {
+        exclude {
+            it.file.relativeTo(projectDir).startsWith("build")
+        }
+    }
 }
