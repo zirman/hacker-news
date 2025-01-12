@@ -32,8 +32,11 @@ fun ClickableTextBlock(
 
     Text(
         text = text,
-        modifier = if (minHeight) modifier.heightIn(min = blockHeightDp, max = Dp.Infinity)
-        else modifier.height(blockHeightDp),
+        modifier = if (minHeight) {
+            modifier.heightIn(min = blockHeightDp, max = Dp.Infinity)
+        } else {
+            modifier.height(blockHeightDp)
+        },
         style = style,
         softWrap = softWrap,
         overflow = overflow,

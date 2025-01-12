@@ -42,72 +42,73 @@ actual fun HomeContent(
 //    modifier: Modifier = Modifier,
 //
     Box(modifier = modifier) {
-//        val storiesNavigator = rememberListDetailPaneScaffoldNavigator<Any>()
-//        val favoritesNavigator = rememberListDetailPaneScaffoldNavigator<Any>()
-//        val profileNavigator = rememberListDetailPaneScaffoldNavigator<Any>()
-//        when (currentDestination) {
-//            BottomNav.Stories -> {
-//                StoriesScaffold(
-//                    navigator = storiesNavigator,
-//                    onClickBrowser = onClickBrowser,
-//                )
-//            }
+//         val storiesNavigator = rememberListDetailPaneScaffoldNavigator<Any>()
+//         val favoritesNavigator = rememberListDetailPaneScaffoldNavigator<Any>()
+//         val profileNavigator = rememberListDetailPaneScaffoldNavigator<Any>()
+//         when (currentDestination) {
+//             BottomNav.Stories -> {
+//                 StoriesScaffold(
+//                     navigator = storiesNavigator,
+//                     onClickBrowser = onClickBrowser,
+//                 )
+//             }
 //
-//            BottomNav.Favorites -> {
-//                StoriesScaffold(
-//                    navigator = favoritesNavigator,
-//                    onClickBrowser = onClickBrowser,
-//                    key = "favorites",
-//                )
-//            }
+//             BottomNav.Favorites -> {
+//                 StoriesScaffold(
+//                     navigator = favoritesNavigator,
+//                     onClickBrowser = onClickBrowser,
+//                     key = "favorites",
+//                 )
+//             }
 //
-//            BottomNav.Settings -> {
-//                SettingsScaffold(
-//                    navigator = profileNavigator,
-//                    onClickLogin = onClickLogin,
-//                )
-//            }
-//        }
-//        Box(modifier = modifier) {
-//            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-//            val (loading, itemsList) = uiState
+//             BottomNav.Settings -> {
+//                 SettingsScaffold(
+//                     navigator = profileNavigator,
+//                     onClickLogin = onClickLogin,
+//                 )
+//             }
+//         }
+//         Box(modifier = modifier) {
+//             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+//             val (loading, itemsList) = uiState
 //
-////            NavigableListDetailPaneScaffold(
-////                navigator = navigator,
-////                listPane = {
-////                    StoriesListPane(
-////                        listState = viewModel.listState,
-////                        itemsList = itemsList,
-////                        onVisibleItem = { item ->
-////                            viewModel.updateItem(item.id)
-////                        },
-////                        onClickItem = { item ->
-////                            navigator.navigateTo(
-////                                pane = ListDetailPaneScaffoldRole.Detail,
-////                                content = ListItemDetailContentUiState(item.id, null),
-////                            )
-////                        },
-////                        onClickBrowser = onClickBrowser,
-////                    )
-////                },
-////                detailPane = {
-////                    StoriesDetailPane(
-////                        itemId = (navigator.currentDestination?.content as? ListItemDetailContentUiState)?.itemId,
-////                        onOpenBrowser = { item ->
-////                            navigator.navigateTo(
-////                                pane = ListDetailPaneScaffoldRole.Extra,
-////                                content = ListItemDetailContentUiState(item.id, item.url),
-////                            )
-////                        },
-////                    )
-////                },
-////                extraPane = {
-////                    StoriesExtraPane(url = (navigator.currentDestination?.content as? ListItemDetailContentUiState)?.url)
-////                },
-////            )
-////            if (loading) {
-////                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-////            }
-//        }
+//             NavigableListDetailPaneScaffold(
+//                 navigator = navigator,
+//                 listPane = {
+//                     StoriesListPane(
+//                         listState = viewModel.listState,
+//                         itemsList = itemsList,
+//                         onVisibleItem = { item ->
+//                             viewModel.updateItem(item.id)
+//                         },
+//                         onClickItem = { item ->
+//                             navigator.navigateTo(
+//                                 pane = ListDetailPaneScaffoldRole.Detail,
+//                                 content = ListItemDetailContentUiState(item.id, null),
+//                             )
+//                         },
+//                         onClickBrowser = onClickBrowser,
+//                     )
+//                 },
+//                 detailPane = {
+//                     StoriesDetailPane(
+//                         itemId = (navigator.currentDestination?.content as? ListItemDetailContentUiState)?.itemId,
+//                         onOpenBrowser = { item ->
+//                             navigator.navigateTo(
+//                                 pane = ListDetailPaneScaffoldRole.Extra,
+//                                 content = ListItemDetailContentUiState(item.id, item.url),
+//                             )
+//                         },
+//                     )
+//                 },
+//                 extraPane = {
+//                     StoriesExtraPane(url = (navigator.currentDestination?.content
+//                     as? ListItemDetailContentUiState)?.url)
+//                 },
+//             )
+//             if (loading) {
+//                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+//             }
+//         }
     }
 }

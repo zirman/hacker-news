@@ -49,8 +49,11 @@ fun TextBlock(
 
     Text(
         text = text,
-        modifier = if (minHeight) modifier.heightIn(min = blockHeightDp, max = Dp.Infinity)
-        else modifier.height(blockHeightDp),
+        modifier = if (minHeight) {
+            modifier.heightIn(min = blockHeightDp, max = Dp.Infinity)
+        } else {
+            modifier.height(blockHeightDp)
+        },
         color = color,
         fontSize = fontSize,
         fontStyle = fontStyle,
@@ -98,8 +101,11 @@ fun TextBlock(
 
     Text(
         text = text,
-        modifier = if (minHeight) modifier.heightIn(min = blockHeightDp, max = Dp.Infinity)
-        else modifier.height(blockHeightDp),
+        modifier = if (minHeight) {
+            modifier.heightIn(min = blockHeightDp, max = Dp.Infinity)
+        } else {
+            modifier.height(blockHeightDp)
+        },
         color = color,
         fontSize = fontSize,
         fontStyle = fontStyle,

@@ -19,7 +19,7 @@ actual fun HomeContent(
     onClickLogin: () -> Unit,
     modifier: Modifier,
 ) {
-    val key: String = "default"
+    val key = "default"
     val viewModel: StoriesViewModel = createStoriesViewModel(key)
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     ItemsColumn(
@@ -73,42 +73,43 @@ actual fun HomeContent(
 //            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 //            val (loading, itemsList) = uiState
 //
-////            NavigableListDetailPaneScaffold(
-////                navigator = navigator,
-////                listPane = {
-////                    StoriesListPane(
-////                        listState = viewModel.listState,
-////                        itemsList = itemsList,
-////                        onVisibleItem = { item ->
-////                            viewModel.updateItem(item.id)
-////                        },
-////                        onClickItem = { item ->
-////                            navigator.navigateTo(
-////                                pane = ListDetailPaneScaffoldRole.Detail,
-////                                content = ListItemDetailContentUiState(item.id, null),
-////                            )
-////                        },
-////                        onClickBrowser = onClickBrowser,
-////                    )
-////                },
-////                detailPane = {
-////                    StoriesDetailPane(
-////                        itemId = (navigator.currentDestination?.content as? ListItemDetailContentUiState)?.itemId,
-////                        onOpenBrowser = { item ->
-////                            navigator.navigateTo(
-////                                pane = ListDetailPaneScaffoldRole.Extra,
-////                                content = ListItemDetailContentUiState(item.id, item.url),
-////                            )
-////                        },
-////                    )
-////                },
-////                extraPane = {
-////                    StoriesExtraPane(url = (navigator.currentDestination?.content as? ListItemDetailContentUiState)?.url)
-////                },
-////            )
-////            if (loading) {
-////                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-////            }
+//            NavigableListDetailPaneScaffold(
+//                navigator = navigator,
+//                listPane = {
+//                    StoriesListPane(
+//                        listState = viewModel.listState,
+//                        itemsList = itemsList,
+//                        onVisibleItem = { item ->
+//                            viewModel.updateItem(item.id)
+//                        },
+//                        onClickItem = { item ->
+//                            navigator.navigateTo(
+//                                pane = ListDetailPaneScaffoldRole.Detail,
+//                                content = ListItemDetailContentUiState(item.id, null),
+//                            )
+//                        },
+//                        onClickBrowser = onClickBrowser,
+//                    )
+//                },
+//                detailPane = {
+//                    StoriesDetailPane(
+//                        itemId = (navigator.currentDestination?.content as? ListItemDetailContentUiState)?.itemId,
+//                        onOpenBrowser = { item ->
+//                            navigator.navigateTo(
+//                                pane = ListDetailPaneScaffoldRole.Extra,
+//                                content = ListItemDetailContentUiState(item.id, item.url),
+//                            )
+//                        },
+//                    )
+//                },
+//                extraPane = {
+//                    StoriesExtraPane(url = (navigator.currentDestination?.content
+//                    as? ListItemDetailContentUiState)?.url)
+//                },
+//            )
+//            if (loading) {
+//                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+//            }
 //        }
     }
 }

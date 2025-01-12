@@ -77,8 +77,8 @@ class SettingsRepository(
     suspend fun decreaseLineHeight() {
         localDataSource.updateData { preferences ->
             preferences.toMutablePreferences().apply {
-                settings =
-                    (settings ?: Settings()).run { copy(lineHeight = lineHeight.decreaseSize()) }
+                settings = run { settings ?: Settings() }
+                    .run { copy(lineHeight = lineHeight.decreaseSize()) }
             }
         }
     }
@@ -86,8 +86,8 @@ class SettingsRepository(
     suspend fun increaseParagraphIndent() {
         localDataSource.updateData { preferences ->
             preferences.toMutablePreferences().apply {
-                settings = (settings
-                    ?: Settings()).run { copy(paragraphIndent = paragraphIndent.increaseSize()) }
+                settings = run { settings ?: Settings() }
+                    .run { copy(paragraphIndent = paragraphIndent.increaseSize()) }
             }
         }
     }
@@ -95,8 +95,8 @@ class SettingsRepository(
     suspend fun decreaseParagraphIndent() {
         localDataSource.updateData { preferences ->
             preferences.toMutablePreferences().apply {
-                settings = (settings
-                    ?: Settings()).run { copy(paragraphIndent = paragraphIndent.decreaseSize()) }
+                settings = run { settings ?: Settings() }
+                    .run { copy(paragraphIndent = paragraphIndent.decreaseSize()) }
             }
         }
     }
@@ -104,7 +104,8 @@ class SettingsRepository(
     suspend fun setShape(shape: Shape) {
         localDataSource.updateData { preferences ->
             preferences.toMutablePreferences().apply {
-                settings = (settings ?: Settings()).copy(shape = shape)
+                settings = run { settings ?: Settings() }
+                    .copy(shape = shape)
             }
         }
     }

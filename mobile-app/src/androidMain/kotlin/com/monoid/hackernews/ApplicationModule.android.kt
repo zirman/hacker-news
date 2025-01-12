@@ -3,11 +3,11 @@ package com.monoid.hackernews
 import android.content.Intent
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.monoid.hackernews.common.core.DispatchersModule
+import com.monoid.hackernews.common.core.LoggerModule
 import com.monoid.hackernews.common.data.DataStoreModule
 import com.monoid.hackernews.common.data.DatabaseModule
 import com.monoid.hackernews.common.data.NetworkModule
-import com.monoid.hackernews.common.core.DispatchersModule
-import com.monoid.hackernews.common.core.LoggerModule
 import kotlinx.coroutines.channels.Channel
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Factory

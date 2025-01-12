@@ -21,23 +21,41 @@ dependencies {
     detektPlugins(libs.detektFormatting)
     detektPlugins(project(":detekt-rules"))
 }
-pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
-    tasks.withType<Detekt>().configureEach {
-        exclude {
-            it.file.relativeTo(projectDir).startsWith("build")
-        }
-    }
-}
-tasks.withType<Detekt>().configureEach {
-    jvmTarget = libs.versions.jvmTarget.get()
+tasks.register<Detekt>("myDetekt") {
+    description = "Runs a custom detekt build."
+    config.setFrom(files("${rootProject.projectDir}/detekt.yml"))
     reports {
         // observe findings in your browser with structure and code snippets
-        html.required.set(true)
+        html {
+            required = true
+            outputLocation = file("build/reports/mydetekt.html")
+        }
         // similar to the console output, contains issue signature to manually edit baseline files
-        txt.required.set(true)
+        txt {
+            required = true
+            outputLocation = file("build/reports/mydetekt.txt")
+        }
         // simple Markdown format
-        md.required.set(true)
+        md {
+            required = true
+            outputLocation = file("build/reports/mydetekt.md")
+        }
     }
+    jvmTarget = libs.versions.jvmTarget.get()
+    debug = true
+    setSource(
+        files(
+            "src/commonMain/kotlin",
+            "src/commonTest/kotlin",
+            "src/androidMain/kotlin",
+            "src/androidTest/kotlin",
+            "src/jvmMain/kotlin",
+            "src/jvmTest/kotlin",
+            "src/iosMain/kotlin",
+            "src/iosTest/kotlin",
+        )
+    )
+    include("**/*.kt")
 }
 tasks.withType<DetektCreateBaselineTask>().configureEach {
     jvmTarget = libs.versions.jvmTarget.get()

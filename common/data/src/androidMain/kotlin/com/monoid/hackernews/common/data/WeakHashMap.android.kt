@@ -16,7 +16,7 @@ actual class WeakHashMap<K, V> : MutableMap<K, V> {
     }
 
     actual override fun clear() {
-         map.clear()
+        map.clear()
     }
 
     actual override val keys: MutableSet<K>

@@ -11,18 +11,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.rotary.onRotaryScrollEvent
-import androidx.metrics.performance.PerformanceMetricsState
 import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
 import androidx.wear.compose.foundation.lazy.ScalingLazyListState
 import androidx.wear.compose.material.ListHeader
 import androidx.wear.compose.material.Text
-import com.monoid.hackernews.common.api.ItemId
-import com.monoid.hackernews.common.util.rememberMetricsStateHolder
+import com.monoid.hackernews.common.data.api.ItemId
 import kotlinx.coroutines.launch
 
 @Composable

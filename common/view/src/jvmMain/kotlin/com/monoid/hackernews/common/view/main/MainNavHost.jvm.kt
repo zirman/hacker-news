@@ -3,27 +3,15 @@ package com.monoid.hackernews.common.view.main
 import com.monoid.hackernews.common.data.URI
 import com.monoid.hackernews.common.data.URL
 import java.awt.Desktop
-import java.net.URISyntaxException
 
-fun openWebpage(uri: URI): Boolean {
-    val desktop = if (Desktop.isDesktopSupported()) Desktop.getDesktop() else null
-    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
-        try {
-            desktop.browse(uri.uri)
-            return true
-        } catch (exception: Exception) {
-            // TODO: log to logger
-            exception.printStackTrace()
+fun openWebpage(uri: URI): Boolean =
+    (if (Desktop.isDesktopSupported()) Desktop.getDesktop() else null)
+        ?.takeIf { it.isSupported(Desktop.Action.BROWSE) }
+        ?.run {
+            browse(uri.uri)
+            true
         }
-    }
-    return false
-}
+        ?: false
 
-actual fun openWebpage(url: URL): Boolean {
-    try {
-        return openWebpage(url.toUri())
-    } catch (e: URISyntaxException) {
-        e.printStackTrace()
-    }
-    return false
-}
+actual fun openWebpage(url: URL): Boolean = runCatching { openWebpage(url.toUri()) }
+    .getOrDefault(false)

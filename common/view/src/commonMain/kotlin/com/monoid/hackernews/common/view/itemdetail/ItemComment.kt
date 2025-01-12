@@ -41,7 +41,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextIndent
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.lifecycle.Lifecycle
@@ -66,6 +65,7 @@ import com.monoid.hackernews.common.view.upvote
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.stringResource
 
+@Suppress("CyclomaticComplexMethod")
 @Composable
 fun ItemComment(
     threadItem: ItemDetailViewModel.ThreadItemUiState,

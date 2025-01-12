@@ -63,7 +63,7 @@ actual suspend fun HttpClient.yCombRequest(
                 )
             } catch (throwable: Throwable) {
                 currentCoroutineContext().ensureActive()
-                YCombException()
+                YCombException(cause = throwable)
             }
         } else {
             YCombException()

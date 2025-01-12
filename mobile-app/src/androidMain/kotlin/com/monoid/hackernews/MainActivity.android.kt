@@ -18,9 +18,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.metrics.performance.JankStats
+import com.monoid.hackernews.common.core.LoggerAdapter
 import com.monoid.hackernews.common.data.model.LightDarkMode
 import com.monoid.hackernews.common.data.model.SettingsRepository
-import com.monoid.hackernews.common.core.LoggerAdapter
 import com.monoid.hackernews.common.view.App
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.awaitCancellation
@@ -65,7 +65,7 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
         val darkMode: Boolean = when (lightDarkMode) {
             LightDarkMode.System ->
                 resources.configuration.uiMode and
-                        Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+                    Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
 
             LightDarkMode.Light -> false
             LightDarkMode.Dark -> true
@@ -77,11 +77,11 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                     0
                 } else {
                     WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
-                            WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+                        WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
                 },
                 /* mask = */
                 WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
-                        WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
+                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
             )
         }
     }
@@ -135,7 +135,8 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                         val states = frameData.states.joinToString { "${it.key}:${it.value}" }
 
                         Log.w(
-                            /* tag = */ "Jank",
+                            /* tag = */
+                            "Jank",
                             /* msg = */
                             "Jank states[$states] ${
                                 TimeUnit.NANOSECONDS.toMillis(frameData.frameDurationUiNanos)

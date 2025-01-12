@@ -31,13 +31,13 @@ fun Story.toShortcutIconDrawableId(): DrawableResource = when (this) {
     Story.Ask -> Res.drawable.forum_48px
     Story.Show -> Res.drawable.present_to_all_48px
     Story.Job -> Res.drawable.work_48px
-    Story.Favorite ->Res.drawable.bookmarks_48px
+    Story.Favorite -> Res.drawable.bookmarks_48px
 }
 
-//fun <T : Context> Story.toShortcutInfoCompat(
+// fun <T : Context> Story.toShortcutInfoCompat(
 //    context: Context,
 //    contextClass: Class<T>,
-//): ShortcutInfoCompat = ShortcutInfoCompat
+// ): ShortcutInfoCompat = ShortcutInfoCompat
 //    .Builder(context, name)
 //    .setShortLabel(context.resources.getString(toShortcutShortLabelStringId()))
 //    .setLongLabel(context.resources.getString(toShortcutLongLabelStringId()))

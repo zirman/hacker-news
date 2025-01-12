@@ -4,8 +4,6 @@ import com.monoid.hackernews.common.data.model.Settings
 import com.monoid.hackernews.common.data.model.Username
 import io.ktor.client.HttpClient
 
-class YCombException(message: String? = null) : Exception(message)
-
 internal const val Y_COMBINATOR_BASE_URL = "https://news.ycombinator.com"
 
 suspend fun HttpClient.registerRequest(settings: Settings) {

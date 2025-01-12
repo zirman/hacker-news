@@ -1,12 +1,12 @@
 package com.monoid.hackernews.common.data.model
 
+import com.monoid.hackernews.common.core.LoggerAdapter
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.api.getItem
 import com.monoid.hackernews.common.data.api.getTopStories
 import com.monoid.hackernews.common.data.room.ItemDao
 import com.monoid.hackernews.common.data.room.TopStoryDao
 import com.monoid.hackernews.common.data.room.TopStoryDb
-import com.monoid.hackernews.common.core.LoggerAdapter
 import io.ktor.client.HttpClient
 import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.coroutines.CoroutineExceptionHandler

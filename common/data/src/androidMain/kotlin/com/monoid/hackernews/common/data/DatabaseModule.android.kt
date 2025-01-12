@@ -3,8 +3,8 @@ package com.monoid.hackernews.common.data
 import android.content.Context
 import androidx.room.Room
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
-import com.monoid.hackernews.common.data.room.HNDatabase
 import com.monoid.hackernews.common.core.DispatcherQualifier
+import com.monoid.hackernews.common.data.room.HNDatabase
 import kotlinx.coroutines.CoroutineDispatcher
 import org.koin.core.annotation.Module
 import org.koin.core.annotation.Named
@@ -23,7 +23,7 @@ actual class DatabaseModule {
             .databaseBuilder<HNDatabase>(
                 context = context,
                 name = context.getDatabasePath(DATABASE_FILE_NAME).absolutePath,
-                //factory = { HNDatabase::class.instantiateImpl() },
+                // factory = { HNDatabase::class.instantiateImpl() },
             )
             .setDriver(BundledSQLiteDriver())
             .setQueryCoroutineContext(coroutineDispatcher)

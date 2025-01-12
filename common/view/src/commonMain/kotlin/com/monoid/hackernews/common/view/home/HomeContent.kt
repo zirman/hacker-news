@@ -12,7 +12,7 @@ expect fun HomeContent(
     onClickLogin: () -> Unit,
     modifier: Modifier = Modifier,
 )
-//{
+// {
 //    Box(modifier = modifier) {
 //        val storiesNavigator = rememberListDetailPaneScaffoldNavigator<Any>()
 //        val favoritesNavigator = rememberListDetailPaneScaffoldNavigator<Any>()
@@ -41,4 +41,4 @@ expect fun HomeContent(
 //            }
 //        }
 //    }
-//}
+// }
