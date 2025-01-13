@@ -38,6 +38,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun UsernameTextField(
     username: String,
+    enabled: Boolean,
     onUsernameChange: (String) -> Unit,
     onNext: () -> Unit,
     onPrev: () -> Unit,
@@ -84,6 +85,7 @@ fun UsernameTextField(
                 }
             }
             .fillMaxWidth(),
+        enabled = enabled,
         label = { Text(text = stringResource(Res.string.username)) },
         placeholder = { Text(text = stringResource(Res.string.username)) },
         trailingIcon = {

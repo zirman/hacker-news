@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.monoid.hackernews.common.data.model.Item
+import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.view.itemlist.ItemsColumn
 
 @Suppress("ComposeUnstableReceiver")
@@ -19,15 +20,27 @@ fun ThreePaneScaffoldScope.StoriesListPane(
     itemsList: List<Item>?,
     onVisibleItem: (Item) -> Unit,
     onClickItem: (Item) -> Unit,
-    onClickBrowser: (Item) -> Unit,
+    onClickReply: (Item) -> Unit,
+    onClickUser: (Username) -> Unit,
+    onOpenUrl: (Item) -> Unit,
+    onClickUpvote: (Item) -> Unit,
+    onClickFavorite: (Item) -> Unit,
+    onClickFollow: (Item) -> Unit,
+    onClickFlag: (Item) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     ItemsColumn(
         listState = listState,
         itemsList = itemsList,
-        onItemVisible = onVisibleItem,
-        onItemClick = onClickItem,
-        onOpenBrowser = onClickBrowser,
+        onVisibleItem = onVisibleItem,
+        onClickItem = onClickItem,
+        onClickReply = onClickReply,
+        onClickUser = onClickUser,
+        onOpenUrl = onOpenUrl,
+        onClickUpvote = onClickUpvote,
+        onClickFavorite = onClickFavorite,
+        onClickFollow = onClickFollow,
+        onClickFlag = onClickFlag,
         modifier = modifier
             .preferredWidth(320.dp)
             .fillMaxHeight(),

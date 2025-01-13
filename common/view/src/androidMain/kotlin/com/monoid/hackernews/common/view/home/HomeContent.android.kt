@@ -27,15 +27,17 @@ actual fun HomeContent(
             BottomNav.Stories -> {
                 StoriesScaffold(
                     navigator = storiesNavigator,
-                    onClickBrowser = onClickBrowser,
+                    onOpenUrl = onClickBrowser,
+                    onClickLogin = onClickLogin,
                 )
             }
 
             BottomNav.Favorites -> {
                 StoriesScaffold(
                     navigator = favoritesNavigator,
-                    onClickBrowser = onClickBrowser,
+                    onOpenUrl = onClickBrowser,
                     key = "favorites",
+                    onClickLogin = onClickLogin,
                 )
             }
 

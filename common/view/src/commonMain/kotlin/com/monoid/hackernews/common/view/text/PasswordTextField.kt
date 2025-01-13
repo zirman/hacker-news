@@ -49,6 +49,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun PasswordTextField(
     password: String,
+    enabled: Boolean,
     onChangePassword: (String) -> Unit,
     modifier: Modifier = Modifier,
     labelId: StringResource = Res.string.password,
@@ -108,6 +109,7 @@ fun PasswordTextField(
                     }
                 }
                 .fillMaxWidth(),
+            enabled = enabled,
             label = { Text(text = stringResource(labelId)) },
             placeholder = { Text(text = stringResource(Res.string.password)) },
             trailingIcon = {

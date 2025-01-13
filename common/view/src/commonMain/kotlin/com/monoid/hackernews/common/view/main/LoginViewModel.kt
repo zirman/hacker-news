@@ -9,18 +9,33 @@ import com.monoid.hackernews.common.data.model.Username
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
 class LoginViewModel(
-    logger: LoggerAdapter,
+    private val logger: LoggerAdapter,
     private val loginRepository: LoginRepository,
 ) : ViewModel() {
+    data class UiState(
+        val showDialog: Boolean = false,
+        val loading: Boolean = false,
+    )
+
+    private val _uiState = MutableStateFlow(UiState())
+    val uiState = _uiState.asStateFlow()
+    private var job: Job? = null
+
     sealed interface Event {
         data object DismissRequest : Event
+        data object Error : Event
     }
 
     private val _events: Channel<Event> = Channel()
@@ -37,36 +52,24 @@ class LoginViewModel(
     fun onSubmit(
         username: Username,
         password: Password,
-    ): Job = viewModelScope.launch(context) {
-        loginRepository.login(username, password)
-        _events.send(Event.DismissRequest)
-//                is LoginAction.Upvote -> {
-//                    scope.launch {
-//                        itemTreeRepository.upvoteItemJob(
-//                            authentication,
-//                            ItemId(showBottomSheet.itemId)
-//                        )
-//                    }
-//                }
-//                is LoginAction.Favorite -> {
-//                    scope.launch {
-//                        itemTreeRepository.favoriteItemJob(
-//                            authentication,
-//                            ItemId(showBottomSheet.itemId)
-//                        )
-//                    }
-//                }
-//                is LoginAction.Flag -> {
-//                    scope.launch {
-//                        itemTreeRepository.flagItemJob(
-//                            authentication,
-//                            ItemId(showBottomSheet.itemId)
-//                        )
-//                    }
-//                }
-//                is LoginAction.Reply -> {
-//                    onNavigateToReply(ItemId(showBottomSheet.itemId))
-//                }
+    ): Job? {
+        if (job?.isActive == true ||
+            loginRepository.preferences.value.username.string.isNotEmpty()
+        ) return job
+        job = viewModelScope.launch(context) {
+            _uiState.update { it.copy(loading = true) }
+            try {
+                loginRepository.login(username, password)
+                _events.send(Event.DismissRequest)
+            } catch (throwable: Throwable) {
+                currentCoroutineContext().ensureActive()
+                _events.send(Event.Error)
+                throw throwable
+            } finally {
+                _uiState.update { it.copy(loading = false) }
+            }
+        }
+        return job
     }
 
     companion object {

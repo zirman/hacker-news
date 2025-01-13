@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
@@ -42,7 +41,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -61,10 +60,6 @@ import com.monoid.hackernews.common.view.flag
 import com.monoid.hackernews.common.view.follow
 import com.monoid.hackernews.common.view.more_options
 import com.monoid.hackernews.common.view.open_in_browser
-import com.monoid.hackernews.common.view.placeholder.PlaceholderHighlight
-import com.monoid.hackernews.common.view.placeholder.placeholder
-import com.monoid.hackernews.common.view.placeholder.shimmer
-import com.monoid.hackernews.common.view.text.ClickableTextBlock
 import com.monoid.hackernews.common.view.un_favorite
 import com.monoid.hackernews.common.view.un_flag
 import com.monoid.hackernews.common.view.un_vote
@@ -75,38 +70,27 @@ import org.jetbrains.compose.resources.stringResource
 @Suppress("CyclomaticComplexMethod")
 @Composable
 fun Item(
-    item: Item?,
-    onClickDetail: () -> Unit,
-    onClickReply: () -> Unit,
-    onClickUser: (Username?) -> Unit,
-    onClickBrowser: () -> Unit,
-    onClickUpvote: () -> Unit,
-    onClickFavorite: () -> Unit,
-    onClickFollow: () -> Unit,
-    onClickFlag: () -> Unit,
+    item: Item,
+    onClickItem: (Item) -> Unit,
+    onClickReply: (Item) -> Unit,
+    onClickUser: (Username) -> Unit,
+    onOpenUrl: (Item) -> Unit,
+    onClickUpvote: (Item) -> Unit,
+    onClickFavorite: (Item) -> Unit,
+    onClickFollow: (Item) -> Unit,
+    onClickFlag: (Item) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isLoading = item == null
-    val isStoryOrComment = item?.type == ItemType.Story || item?.type == ItemType.Comment
+    val isStoryOrComment = item.type == ItemType.Story || item.type == ItemType.Comment
     Surface(
-        modifier = modifier
-            .placeholder(
-                visible = isLoading,
-                color = Color.Transparent,
-                highlight = PlaceholderHighlight.shimmer(
-                    highlightColor = LocalContentColor.current.copy(
-                        alpha = .5f
-                    )
-                )
-            )
-            .clickable(onClick = onClickDetail),
+        modifier = modifier.clickable(onClick = { onClickItem(item) }),
         contentColor = LocalContentColor.current,
-        tonalElevation = ((item?.score ?: 0) / 10).dp
+        tonalElevation = ((item.score ?: 0) / 10).dp
     ) {
         Column(modifier = Modifier.padding(4.dp)) {
             Row(verticalAlignment = Alignment.Top) {
                 Text(
-                    text = item?.title ?: item?.text ?: AnnotatedString(""),
+                    text = item.title ?: item.text ?: AnnotatedString(""),
                     minLines = 2,
                     maxLines = 2,
                     modifier = Modifier
@@ -139,7 +123,7 @@ fun Item(
                             text = {
                                 Text(
                                     text = stringResource(
-                                        if (item?.favourited == true) {
+                                        if (item.favourited == true) {
                                             Res.string.un_favorite
                                         } else {
                                             Res.string.favorite
@@ -148,18 +132,18 @@ fun Item(
                                 )
                             },
                             onClick = {
-                                onClickFavorite()
+                                onClickFavorite(item)
                                 setContextExpanded(false)
                             },
                             leadingIcon = {
                                 Icon(
-                                    imageVector = if (item?.favourited == true) {
+                                    imageVector = if (item.favourited == true) {
                                         Icons.Filled.Favorite
                                     } else {
                                         Icons.TwoTone.Favorite
                                     },
                                     contentDescription = stringResource(
-                                        if (item?.favourited == true) {
+                                        if (item.favourited == true) {
                                             Res.string.un_favorite
                                         } else {
                                             Res.string.favorite
@@ -173,7 +157,7 @@ fun Item(
                             text = {
                                 Text(
                                     text = stringResource(
-                                        if (item?.followed == true) {
+                                        if (item.followed) {
                                             Res.string.unfollow
                                         } else {
                                             Res.string.follow
@@ -182,18 +166,18 @@ fun Item(
                                 )
                             },
                             onClick = {
-                                onClickFollow()
+                                onClickFollow(item)
                                 setContextExpanded(false)
                             },
                             leadingIcon = {
                                 Icon(
-                                    imageVector = if (item?.followed == true) {
+                                    imageVector = if (item.followed) {
                                         Icons.Filled.Quickreply
                                     } else {
                                         Icons.TwoTone.Quickreply
                                     },
                                     contentDescription = stringResource(
-                                        if (item?.followed == true) {
+                                        if (item.followed) {
                                             Res.string.unfollow
                                         } else {
                                             Res.string.follow
@@ -207,7 +191,7 @@ fun Item(
                             text = {
                                 Text(
                                     text = stringResource(
-                                        if (item?.flagged == true) {
+                                        if (item.flagged == true) {
                                             Res.string.un_flag
                                         } else {
                                             Res.string.flag
@@ -216,18 +200,18 @@ fun Item(
                                 )
                             },
                             onClick = {
-                                onClickFlag()
+                                onClickFlag(item)
                                 setContextExpanded(false)
                             },
                             leadingIcon = {
                                 Icon(
-                                    imageVector = if (item?.flagged == true) {
+                                    imageVector = if (item.flagged == true) {
                                         Icons.Filled.Flag
                                     } else {
                                         Icons.TwoTone.Flag
                                     },
                                     contentDescription = stringResource(
-                                        if (item?.flagged == true) {
+                                        if (item.flagged == true) {
                                             Res.string.un_flag
                                         } else {
                                             Res.string.flag
@@ -242,43 +226,19 @@ fun Item(
 
             Spacer(modifier = Modifier.height(4.dp))
 
-            val timeUserAnnotatedString: AnnotatedString = item
-                ?.let { rememberTimeBy(time = it.time, by = it.by) }
-                ?: AnnotatedString("")
+            val timeUserAnnotatedString: AnnotatedString =
+                rememberTimeBy(time = item.time, by = item.by)
 
-            ClickableTextBlock(
+            val style = MaterialTheme.typography.labelMedium
+                .copy(color = LocalContentColor.current)
+
+            // TODO: add onClickUser handler
+            Text(
                 text = timeUserAnnotatedString,
-                lines = 1,
-//                onClick = { offset ->
-//                    val username = timeUserAnnotatedString.value
-//                        .getStringAnnotations(
-//                            tag = userTag,
-//                            start = offset,
-//                            end = offset,
-//                        )
-//                        .firstOrNull()
-//                        ?.item
-//                        ?.let { Username(it) }
-//
-//                    if (username != null) {
-//                        onClickUser(username)
-//                    } else {
-//                        onClickDetail()
-//                    }
-//                },
-                modifier = Modifier
-                    .padding(horizontal = 8.dp)
-                    .let {
-                        if (isLoading) {
-                            it.fillMaxWidth()
-                        } else {
-                            it
-                        }
-                    },
+                modifier = modifier.height(with(LocalDensity.current) { style.lineHeight.toDp() }),
+                style = style,
                 overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.labelMedium.copy(
-                    color = LocalContentColor.current
-                )
+                maxLines = 1,
             )
 
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -289,17 +249,17 @@ fun Item(
                         state = rememberTooltipState(),
                     ) {
                         IconButton(
-                            onClick = onClickUpvote,
+                            onClick = { onClickUpvote(item) },
                             enabled = isStoryOrComment,
                         ) {
                             Icon(
-                                imageVector = if (item?.upvoted == true) {
+                                imageVector = if (item.upvoted == true) {
                                     Icons.Filled.ThumbUp
                                 } else {
                                     Icons.TwoTone.ThumbUp
                                 },
                                 contentDescription = stringResource(
-                                    if (item?.upvoted == true) {
+                                    if (item.upvoted == true) {
                                         Res.string.un_vote
                                     } else {
                                         Res.string.upvote
@@ -309,7 +269,7 @@ fun Item(
                         }
                     }
 
-                    val score = item?.score
+                    val score = item.score
 
                     Text(
                         text = remember(score) { score?.toString().orEmpty() },
@@ -321,7 +281,7 @@ fun Item(
                 }
 
                 key("comments") {
-                    val descendants = item?.descendants
+                    val descendants = item.descendants
 
                     TooltipBox(
                         positionProvider = TooltipPopupPositionProvider(),
@@ -329,7 +289,7 @@ fun Item(
                         state = rememberTooltipState(),
                     ) {
                         IconButton(
-                            onClick = onClickReply,
+                            onClick = { onClickReply(item) },
                             enabled = isStoryOrComment,
                         ) {
                             Icon(
@@ -349,7 +309,7 @@ fun Item(
                 }
 
                 key("url") {
-                    if (item?.url != null) {
+                    if (item.url != null) {
                         val host: String = remember(item.url) {
                             item.url?.let { Url(it) }?.host.orEmpty()
                         }
@@ -368,7 +328,7 @@ fun Item(
                             tooltip = { Surface { Text(stringResource(Res.string.open_in_browser)) } },
                             state = rememberTooltipState(),
                         ) {
-                            IconButton(onClick = onClickBrowser) {
+                            IconButton(onClick = { onOpenUrl(item) }) {
                                 Icon(
                                     imageVector = Icons.Filled.OpenInBrowser,
                                     contentDescription = stringResource(Res.string.open_in_browser),

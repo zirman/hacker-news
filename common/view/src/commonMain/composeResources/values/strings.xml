@@ -80,6 +80,7 @@ Best regards,
 I agree to the <i>Hacker News</i> <a href="https://www.ycombinator.com/legal/">terms of service</a> and
 agree to follow the <a href="https://news.ycombinator.com/newsguidelines.html">user guidelines</a>
 ]]></string>
+    <string name="an_error_occurred">A error occurred. Please try again later.</string>
     <string name="comment">Comment</string>
     <string name="login_description">Login with your HN account.</string>
     <string name="top_stories_description">Most popular stories currently.</string>

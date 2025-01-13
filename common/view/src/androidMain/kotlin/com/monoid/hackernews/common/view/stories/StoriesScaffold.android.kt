@@ -23,7 +23,8 @@ private val contentKeyRegex = """^(\d*):(.*)$""".toRegex()
 @Composable
 fun StoriesScaffold(
     navigator: ThreePaneScaffoldNavigator<Any>,
-    onClickBrowser: (Item) -> Unit,
+    onOpenUrl: (Item) -> Unit,
+    onClickLogin: () -> Unit,
     modifier: Modifier = Modifier,
     key: String = "default",
     viewModel: StoriesViewModel = createStoriesViewModel(key),
@@ -49,7 +50,19 @@ fun StoriesScaffold(
                             )
                         }
                     },
-                    onClickBrowser = onClickBrowser,
+                    onClickReply = {
+                    },
+                    onClickUser = {
+                    },
+                    onOpenUrl = onOpenUrl,
+                    onClickUpvote = {
+                    },
+                    onClickFavorite = {
+                    },
+                    onClickFollow = {
+                    },
+                    onClickFlag = {
+                    },
                 )
             },
             detailPane = {

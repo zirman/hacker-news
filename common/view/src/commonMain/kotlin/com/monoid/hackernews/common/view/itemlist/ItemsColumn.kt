@@ -11,13 +11,20 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import com.monoid.hackernews.common.data.model.Item
+import com.monoid.hackernews.common.data.model.Username
 
 @Composable
 fun ItemsColumn(
     itemsList: List<Item>?,
-    onItemVisible: (Item) -> Unit,
-    onItemClick: (Item) -> Unit,
-    onOpenBrowser: (Item) -> Unit,
+    onVisibleItem: (Item) -> Unit,
+    onClickItem: (Item) -> Unit,
+    onClickReply: (Item) -> Unit,
+    onClickUser: (Username) -> Unit,
+    onOpenUrl: (Item) -> Unit,
+    onClickUpvote: (Item) -> Unit,
+    onClickFavorite: (Item) -> Unit,
+    onClickFollow: (Item) -> Unit,
+    onClickFlag: (Item) -> Unit,
     listState: LazyListState,
     modifier: Modifier = Modifier,
 ) {
@@ -28,28 +35,18 @@ fun ItemsColumn(
     ) {
         items(itemsList.orEmpty(), { it.id.long }) { item ->
             LifecycleEventEffect(event = Lifecycle.Event.ON_START) {
-                onItemVisible(item)
+                onVisibleItem(item)
             }
             Item(
                 item = item,
-                onClickDetail = {
-                    onItemClick(item)
-                },
-                onClickReply = {
-                },
-                onClickUser = {
-                },
-                onClickBrowser = {
-                    onOpenBrowser(item)
-                },
-                onClickUpvote = {
-                },
-                onClickFavorite = {
-                },
-                onClickFollow = {
-                },
-                onClickFlag = {
-                },
+                onClickItem = onClickItem,
+                onClickReply = onClickReply,
+                onClickUser = onClickUser,
+                onOpenUrl = onOpenUrl,
+                onClickUpvote = onClickUpvote,
+                onClickFavorite = onClickFavorite,
+                onClickFollow = onClickFollow,
+                onClickFlag = onClickFlag,
                 modifier = Modifier.animateItem(),
             )
         }
