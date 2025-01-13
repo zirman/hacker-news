@@ -287,7 +287,7 @@ wear = [
     "playServicesWearable",
 ]
 iosMain = [
-    #    "koinCore",
+    "koinCore",
     "ktorClientDarwin",
 ]
 commonTest = [

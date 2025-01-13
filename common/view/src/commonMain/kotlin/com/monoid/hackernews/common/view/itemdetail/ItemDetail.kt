@@ -75,15 +75,8 @@ fun ItemDetail(
     onOpenBrowser: (Item) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isLoading = false // item.lastUpdate == null
     Surface(
-        modifier = modifier.placeholder(
-            visible = isLoading,
-            color = Color.Transparent,
-            highlight = PlaceholderHighlight.shimmer(
-                highlightColor = LocalContentColor.current.copy(alpha = .5f),
-            ),
-        ),
+        modifier = modifier,
         contentColor = MaterialTheme.colorScheme.secondary,
     ) {
         Column {
@@ -326,7 +319,6 @@ fun ItemDetail(
                             onClick = {
 //                                item.id.let { onClickReply(ItemId(it)) }
                             },
-                            enabled = isLoading.not(),
                         ) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.TwoTone.Comment,

@@ -25,9 +25,6 @@ kotlin {
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)
         }
-        androidUnitTest.dependencies {
-            implementation(libs.bundles.androidUnitTest)
-        }
     }
     jvm("desktop")
     compilerOptions {
