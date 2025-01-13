@@ -211,24 +211,53 @@ plugins = [
     "plugin-firebasePerf",
     "plugin-detektGradle",
 ]
-kotlin = [
+commonMain = [
+    "koinAnnotations",
+    "koinCompose",
+    "koinComposeViewmodel",
+    "annotation",
     "kotlinSerializationJson",
     "kotlinCollectionsImmutable",
     "kotlinDatetime",
-]
-ktor = [
     "ktorClientCore",
     "ktorClientLogging",
     "ktorClientContentNegotiation",
     "ktorSerializationKotlinJson",
+    "roomRuntime",
+    "datastore",
+    "datastorePreferencesCore",
+    "datastorePreferences",
+    #    "datastoreCoreOkio",
+    #    "datastoreCoreOkioJvm",
+    "sqliteBundled",
+    "jetbrainsLifecycleRuntimeCompose",
+    "jetbrainsLifecycleViewmodel",
+    "jetbrainsLifecycleViewmodelCompose",
+    "jetbrainsNavigationCompose",
+    "jetbrainsCore",
+    "jetbrainsWindowCore",
+    "jetbrainsSavedState",
+    "material3WindowSizeClassMultiplatform",
+    "slf4jSimple",
+    "kermit",
 ]
-google = [
-    "kspSymbolProcessingApi",
-]
-androidx = [
+androidMain = [
+    "roomKtx",
+    "kotlinCoroutinesAndroid",
+    "collectionKtx",
+    "koinAndroid",
+    "koinKtor",
+    "koinLoggerSlf4j",
+    "ktorClientAndroid",
+    "firebaseCrashlytics",
+    "firebaseAnalyticsKtx",
+    "firebasePerfKtx",
+    "material3AdaptiveNavigation",
+    "material3AdaptiveNavigationSuite",
+    "lifecycleProcess",
+    "metricsPerformance",
     "coreKtx",
     "coreSplashscreen",
-    "collectionKtx",
     "appcompat",
     "window",
     "activityKtx",
@@ -243,28 +272,34 @@ androidx = [
     "jetbrainsLifecycleRuntimeCompose",
     "jetbrainsLifecycleViewmodel",
     "jetbrainsLifecycleViewmodelCompose",
+    "accompanistAdaptive", # handle foldable devices
+    "kspSymbolProcessingApi",
+    "material3Adaptive",
+    "material3AdaptiveLayout",
 ]
-androidxWear = [
+jvmMain = [
+    "kotlinCoroutinesSwing",
+    "ktorClientJava",
+]
+wear = [
     "composeMaterialWear",
     "composeNavigationWear",
-]
-datastore = [
-    "datastore",
-    "datastorePreferencesCore",
-    "datastorePreferences",
-    #    "datastoreCoreOkio",
-    #    "datastoreCoreOkioJvm",
-]
-googleApp = [
-    "accompanistAdaptive", # handle foldable devices
-]
-googleWear = [
     "playServicesWearable",
 ]
-firebase = [
-    "firebaseCrashlytics",
-    "firebaseAnalyticsKtx",
-    "firebasePerfKtx",
+iosMain = [
+    #    "koinCore",
+    "ktorClientDarwin",
+]
+commonTest = [
+    "kotlinTest",
+    "kotlinCoroutinesTest",
+]
+androidUnitTest = [
+    "junit",
+    "junitExt",
+    "uiTestJunit4",
+    "espressoCore",
+    "mockk",
 ]
 #lintApi = [
 #    "kotlinStdlib",

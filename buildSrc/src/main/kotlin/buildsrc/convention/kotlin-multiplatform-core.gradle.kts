@@ -17,11 +17,8 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(project.dependencies.platform(libs.koinBom))
-            compileOnly(libs.koinCore)
-            api(libs.koinAnnotations)
-            api(libs.koinCompose)
-            api(libs.koinComposeViewmodel)
-
+            api(project.dependencies.platform(libs.kotlinWrappersBom))
+            api(project.dependencies.platform(libs.firebaseBom))
             api(compose.animation)
             api(compose.animationGraphics)
             api(compose.components.resources)
@@ -31,65 +28,18 @@ kotlin {
             api(compose.runtime)
             api(compose.ui)
             api(compose.uiUtil)
-
-            api(libs.annotation)
-            api(libs.bundles.kotlin)
-            api(libs.bundles.ktor)
-            api(libs.roomRuntime)
-            api(libs.bundles.datastore)
-            api(libs.sqliteBundled)
-            api(libs.ktorSerializationKotlinJson)
-            api(project.dependencies.platform(libs.kotlinWrappersBom))
-            api(project.dependencies.platform(libs.firebaseBom))
-            api(libs.jetbrainsLifecycleRuntimeCompose)
-            api(libs.jetbrainsLifecycleViewmodel)
-            api(libs.jetbrainsLifecycleViewmodelCompose)
-            api(libs.jetbrainsNavigationCompose)
-            api(libs.jetbrainsCore)
-            api(libs.jetbrainsWindowCore)
-            api(libs.jetbrainsSavedState)
-            api(libs.material3WindowSizeClassMultiplatform)
-            api(libs.slf4jSimple)
-            api(libs.kermit)
+            compileOnly(libs.koinCore)
+            api(libs.bundles.commonMain)
         }
         commonMain {
             kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
         }
-        commonTest.dependencies {
-            api(libs.kotlinTest)
-            api(libs.kotlinCoroutinesTest)
-            @OptIn(ExperimentalComposeLibrary::class)
-            api(compose.uiTest)
-        }
         androidMain.dependencies {
+            api(project.dependencies.platform(libs.kotilnCoroutinesBom))
             api(compose.uiTooling)
             api(compose.preview)
             api(compose.components.uiToolingPreview)
-            api(project.dependencies.platform(libs.kotilnCoroutinesBom))
-            api(libs.roomKtx)
-            api(libs.kotlinCoroutinesAndroid)
-            api(libs.collectionKtx)
-            api(libs.koinAndroid)
-            api(libs.koinKtor)
-            api(libs.koinLoggerSlf4j)
-            api(libs.ktorClientAndroid)
-            api(libs.bundles.firebase)
-            api(libs.material3AdaptiveNavigation)
-            api(libs.material3AdaptiveNavigationSuite)
-            api(libs.lifecycleProcess)
-            api(libs.metricsPerformance)
-            api(libs.bundles.androidx)
-            api(libs.bundles.googleApp)
-            api(libs.bundles.google)
-            api(libs.material3Adaptive)
-            api(libs.material3AdaptiveLayout)
-        }
-        androidUnitTest.dependencies {
-            implementation(libs.junit)
-            implementation(libs.junitExt)
-            implementation(libs.uiTestJunit4)
-            implementation(libs.espressoCore)
-            implementation(libs.mockk)
+            api(libs.bundles.androidMain)
         }
         jvmMain.dependencies {
             api(project.dependencies.platform(libs.kotilnCoroutinesBom))
@@ -99,12 +49,18 @@ kotlin {
             api(compose.desktop.components.animatedImage)
             @OptIn(ExperimentalComposeLibrary::class)
             api(compose.desktop.components.splitPane)
-            api(libs.kotlinCoroutinesSwing)
-            api(libs.ktorClientJava)
+            api(libs.bundles.jvmMain)
         }
         iosMain.dependencies {
-            api(libs.koinCore)
-            api(libs.ktorClientDarwin)
+            api(libs.bundles.iosMain)
+        }
+        commonTest.dependencies {
+            implementation(libs.bundles.commonTest)
+            @OptIn(ExperimentalComposeLibrary::class)
+            implementation(compose.uiTest)
+        }
+        androidUnitTest.dependencies {
+            implementation(libs.bundles.androidUnitTest)
         }
     }
     jvm()

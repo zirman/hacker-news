@@ -1,6 +1,7 @@
 package buildsrc.convention
 
 import org.gradle.accessors.dm.LibrariesForLibs
+import org.jetbrains.compose.ExperimentalComposeLibrary
 
 plugins {
     id("buildsrc.convention.detekt-rules")
@@ -18,6 +19,14 @@ kotlin {
         }
         commonMain {
             kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
+        }
+        commonTest.dependencies {
+            implementation(libs.bundles.commonTest)
+            @OptIn(ExperimentalComposeLibrary::class)
+            implementation(compose.uiTest)
+        }
+        androidUnitTest.dependencies {
+            implementation(libs.bundles.androidUnitTest)
         }
     }
     jvm("desktop")

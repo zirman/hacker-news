@@ -2,8 +2,7 @@ plugins {
     id("buildsrc.convention.kotlin-multiplatform-mobile")
 }
 dependencies {
-    implementation(libs.bundles.androidxWear)
-    implementation(libs.bundles.googleWear)
+    implementation(libs.bundles.wear)
     implementation(project(":common:view"))
 }
 val appId = "com.monoid.hackernews.wear"

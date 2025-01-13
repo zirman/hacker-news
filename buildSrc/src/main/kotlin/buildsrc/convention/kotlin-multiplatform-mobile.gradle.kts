@@ -1,6 +1,7 @@
 package buildsrc.convention
 
 import org.gradle.accessors.dm.LibrariesForLibs
+import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
@@ -23,6 +24,14 @@ kotlin {
         }
         commonMain {
             kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
+        }
+        commonTest.dependencies {
+            implementation(libs.bundles.commonTest)
+            @OptIn(ExperimentalComposeLibrary::class)
+            implementation(compose.uiTest)
+        }
+        androidUnitTest.dependencies {
+            implementation(libs.bundles.androidUnitTest)
         }
     }
     androidTarget()
