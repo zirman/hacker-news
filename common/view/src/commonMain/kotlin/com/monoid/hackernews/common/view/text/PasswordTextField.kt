@@ -16,7 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -60,7 +60,7 @@ fun PasswordTextField(
 ) {
     Column(modifier = modifier) {
         val (isPasswordVisible, setPasswordVisible) =
-            rememberSaveable { mutableStateOf(false) }
+            rememberSaveable { mutableIntStateOf(0) }
 
         val autofillNode = AutofillNode(
             autofillTypes = listOf(AutofillType.Password),
@@ -114,11 +114,11 @@ fun PasswordTextField(
             placeholder = { Text(text = stringResource(Res.string.password)) },
             trailingIcon = {
                 IconToggleButton(
-                    checked = isPasswordVisible,
-                    onCheckedChange = { setPasswordVisible(it) },
+                    checked = isPasswordVisible != 0,
+                    onCheckedChange = { setPasswordVisible(if (it) 1 else 0) },
                 ) {
                     Icon(
-                        imageVector = if (isPasswordVisible) {
+                        imageVector = if (isPasswordVisible != 0) {
                             Icons.Default.Visibility
                         } else {
                             Icons.Default.VisibilityOff
@@ -127,7 +127,7 @@ fun PasswordTextField(
                     )
                 }
             },
-            visualTransformation = if (isPasswordVisible) {
+            visualTransformation = if (isPasswordVisible != 0) {
                 VisualTransformation.None
             } else {
                 PasswordVisualTransformation()

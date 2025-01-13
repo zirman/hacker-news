@@ -146,24 +146,24 @@ fun ItemComment(
                     }
                     Spacer(modifier = Modifier.weight(1f))
                     Box {
-                        val (expanded: Boolean, setContextExpanded) = remember {
-                            mutableStateOf(false)
+                        val (expanded: Int, setContextExpanded) = remember {
+                            mutableStateOf(0)
                         }
-                        IconButton(onClick = { setContextExpanded(true) }) {
+                        IconButton(onClick = { setContextExpanded(1) }) {
                             Icon(
                                 imageVector = Icons.TwoTone.MoreVert,
                                 contentDescription = stringResource(Res.string.more_options),
                             )
                         }
                         DropdownMenu(
-                            expanded = expanded,
-                            onDismissRequest = { setContextExpanded(false) },
+                            expanded = expanded != 0,
+                            onDismissRequest = { setContextExpanded(0) },
                         ) {
                             DropdownMenuItem(
                                 text = { Text(text = stringResource(Res.string.reply)) },
                                 onClick = {
 //                                itemUi.id.let { onClickReply(ItemId(it)) }
-                                    setContextExpanded(false)
+                                    setContextExpanded(0)
                                 },
                                 leadingIcon = {
                                     Icon(
@@ -187,7 +187,7 @@ fun ItemComment(
 //                                    itemUi?.itemUi?.toggleUpvote(onNavigateLogin = onNavigateLogin)
 //                                }
 
-                                setContextExpanded(false)
+                                setContextExpanded(0)
                             }, leadingIcon = {
                                 Icon(
                                     imageVector = if (item.upvoted == true) {
@@ -221,7 +221,7 @@ fun ItemComment(
 //                                    itemUi.toggleFollowed()
 //                                }
 
-                                    setContextExpanded(false)
+                                    setContextExpanded(0)
                                 },
                                 leadingIcon = {
                                     Icon(
@@ -258,7 +258,7 @@ fun ItemComment(
 //                                    itemUi.toggleFlag(onNavigateLogin)
 //                                }
 
-                                    setContextExpanded(false)
+                                    setContextExpanded(0)
                                 },
                                 leadingIcon = {
                                     Icon(

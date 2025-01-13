@@ -36,7 +36,7 @@ import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -100,12 +100,12 @@ fun Item(
                     style = MaterialTheme.typography.titleMedium
                 )
 
-                val (contextExpanded: Boolean, setContextExpanded) =
-                    rememberSaveable { mutableStateOf(false) }
+                val (contextExpanded: Int, setContextExpanded) =
+                    rememberSaveable { mutableIntStateOf(0) }
 
                 Box {
                     IconButton(
-                        onClick = { setContextExpanded(true) },
+                        onClick = { setContextExpanded(1) },
                         enabled = isStoryOrComment
                     ) {
                         Icon(
@@ -115,8 +115,8 @@ fun Item(
                     }
 
                     DropdownMenu(
-                        expanded = contextExpanded,
-                        onDismissRequest = { setContextExpanded(false) },
+                        expanded = contextExpanded != 0,
+                        onDismissRequest = { setContextExpanded(0) },
                         modifier = Modifier
                     ) {
                         DropdownMenuItem(
@@ -133,7 +133,7 @@ fun Item(
                             },
                             onClick = {
                                 onClickFavorite(item)
-                                setContextExpanded(false)
+                                setContextExpanded(0)
                             },
                             leadingIcon = {
                                 Icon(
@@ -167,7 +167,7 @@ fun Item(
                             },
                             onClick = {
                                 onClickFollow(item)
-                                setContextExpanded(false)
+                                setContextExpanded(0)
                             },
                             leadingIcon = {
                                 Icon(
@@ -201,7 +201,7 @@ fun Item(
                             },
                             onClick = {
                                 onClickFlag(item)
-                                setContextExpanded(false)
+                                setContextExpanded(0)
                             },
                             leadingIcon = {
                                 Icon(
@@ -235,7 +235,9 @@ fun Item(
             // TODO: add onClickUser handler
             Text(
                 text = timeUserAnnotatedString,
-                modifier = modifier.height(with(LocalDensity.current) { style.lineHeight.toDp() }),
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .height(with(LocalDensity.current) { style.lineHeight.toDp() }),
                 style = style,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,

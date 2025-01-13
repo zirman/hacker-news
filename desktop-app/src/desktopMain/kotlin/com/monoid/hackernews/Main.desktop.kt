@@ -24,7 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -56,10 +56,10 @@ fun main() {
             KoinContext {
                 AppTheme {
                     var showLoginDialog by rememberSaveable {
-                        mutableStateOf(false)
+                        mutableIntStateOf(0)
                     }
-                    if (showLoginDialog) {
-                        LoginDialog(onDismissRequest = { showLoginDialog = false })
+                    if (showLoginDialog != 0) {
+                        LoginDialog(onDismissRequest = { showLoginDialog = 0 })
                     }
                     Scaffold(
                         bottomBar = {
@@ -103,7 +103,7 @@ fun main() {
                         },
                     ) { innerPadding ->
                         HNPanes(
-                            onOpenLogin = { showLoginDialog = true },
+                            onOpenLogin = { showLoginDialog = 1 },
                             modifier = Modifier.padding(innerPadding),
                         )
                     }

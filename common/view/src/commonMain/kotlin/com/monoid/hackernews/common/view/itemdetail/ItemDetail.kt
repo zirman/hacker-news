@@ -36,7 +36,7 @@ import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -100,12 +100,12 @@ fun ItemDetail(
                     )
                 }
 
-                val (contextExpanded: Boolean, setContextExpanded) =
-                    rememberSaveable { mutableStateOf(false) }
+                val (contextExpanded: Int, setContextExpanded) =
+                    rememberSaveable { mutableIntStateOf(0) }
 
                 if (item?.lastUpdate != null) {
                     Box {
-                        IconButton(onClick = { setContextExpanded(true) }) {
+                        IconButton(onClick = { setContextExpanded(1) }) {
                             Icon(
                                 imageVector = Icons.TwoTone.MoreVert,
                                 contentDescription = stringResource(Res.string.more_options),
@@ -113,8 +113,8 @@ fun ItemDetail(
                         }
 
                         DropdownMenu(
-                            expanded = contextExpanded,
-                            onDismissRequest = { setContextExpanded(false) },
+                            expanded = contextExpanded != 0,
+                            onDismissRequest = { setContextExpanded(0) },
                         ) {
                             if (item.type == ItemType.Story) {
                                 DropdownMenuItem(
