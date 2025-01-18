@@ -20,6 +20,8 @@ import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.ItemType
 import kotlinx.coroutines.delay
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 @Composable
 fun ItemDetailPane(
@@ -34,12 +36,10 @@ fun ItemDetailPane(
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
             while (true) {
                 viewModel.updateItem(itemId)
-                delay(timeMillis = 5_000)
+                delay(5.toDuration(DurationUnit.SECONDS))
             }
         }
     }
-    val commentItems = uiState.comments
-
     LazyColumn(
         state = viewModel.lazyListState,
         modifier = modifier
@@ -48,7 +48,7 @@ fun ItemDetailPane(
         contentPadding = WindowInsets.safeDrawing.asPaddingValues(),
     ) {
         itemsIndexed(
-            items = commentItems.orEmpty(),
+            items = uiState.comments.orEmpty(),
             key = { _, item -> item.item.id.long },
             contentType = { _, item -> item.item.type },
         ) { index, item ->

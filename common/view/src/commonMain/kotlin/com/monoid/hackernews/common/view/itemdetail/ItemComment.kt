@@ -64,6 +64,8 @@ import com.monoid.hackernews.common.view.unfollow
 import com.monoid.hackernews.common.view.upvote
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.stringResource
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 @Suppress("CyclomaticComplexMethod")
 @Composable
@@ -82,7 +84,7 @@ fun ItemComment(
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
             while (true) {
                 onVisible(item.id)
-                delay(timeMillis = 5_000)
+                delay(5.toDuration(DurationUnit.SECONDS))
             }
         }
     }

@@ -14,8 +14,6 @@ import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextIndent
 import androidx.compose.ui.unit.em
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 private val boldStyle = SpanStyle(fontWeight = FontWeight.Bold)
 private val italicStyle = SpanStyle(fontStyle = FontStyle.Italic)
@@ -69,12 +67,6 @@ class HtmlParser(
     )
 ) {
     fun parse(htmlString: String): AnnotatedString = ParseState().parse(htmlString)
-
-    suspend fun parseParallel(
-        htmlString: String,
-    ): AnnotatedString = withContext(Dispatchers.Default) {
-        parse(htmlString)
-    }
 
     private inner class ParseState {
         private val tokens: ArrayDeque<HtmlToken> = ArrayDeque()

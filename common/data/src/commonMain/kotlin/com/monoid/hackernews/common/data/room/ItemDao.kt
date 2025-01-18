@@ -23,23 +23,32 @@ interface ItemDao {
     suspend fun itemUpsert(item: ItemDb)
 
     @Transaction
-    suspend fun itemToggleExpanded(itemId: Long): ItemWithKids? = itemByIdWithKidsById(itemId = itemId)
-        ?.let { item ->
-            item.copy(item = item.item.copy(expanded = item.item.expanded.not()))
-        }
-        ?.also { itemUpsert(it.item) }
+    suspend fun itemToggleExpanded(itemId: Long): ItemWithKids? =
+        itemByIdWithKidsById(itemId = itemId)
+            ?.let { item -> item.copy(item = item.item.copy(expanded = item.item.expanded.not())) }
+            ?.also { itemUpsert(it.item) }
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun itemInsertStub(item: ItemDb)
 
     @Transaction
-    suspend fun itemApiInsert(itemApi: ItemApi, instant: Instant) {
+    suspend fun itemApiInsert(
+        itemApi: ItemApi,
+        instant: Instant,
+        expanded: Boolean,
+        followed: Boolean,
+    ) {
         // update children entries
         itemApi.kids.orEmpty().forEach { itemId ->
             // TODO: multi insert
             itemInsertStub(ItemDb(id = itemId.long, parent = itemApi.id.long))
         }
-
-        itemUpsert(itemApi.toItemDb(instant))
+        itemUpsert(
+            itemApi.toItemDb(
+                instant = instant,
+                expanded = expanded,
+                followed = followed,
+            )
+        )
     }
 }

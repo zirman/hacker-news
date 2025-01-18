@@ -33,8 +33,8 @@ import com.monoid.hackernews.common.data.WeakHashMap
 
 private val htmlParserHash: WeakHashMap<String, AnnotatedString> = WeakHashMap()
 private val htmlParser = HtmlParser()
-suspend fun String.toHtmlAnnotatedString(): AnnotatedString = htmlParserHash.getOrPut(this) {
-    htmlParser.parseParallel(this)
+fun String.toHtmlAnnotatedString(): AnnotatedString = htmlParserHash.getOrPut(this) {
+    htmlParser.parse(this)
 }
 
 internal fun ParagraphStyle.applyAttributes(attributes: List<String>?): ParagraphStyle {

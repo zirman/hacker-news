@@ -145,6 +145,8 @@ sealed class ItemApi(
 
 fun ItemApi.toItemDb(
     instant: Instant,
+    expanded: Boolean,
+    followed: Boolean,
 ): ItemDb {
     val lastUpdate = instant.epochSeconds
     return when (this) {
@@ -158,6 +160,8 @@ fun ItemApi.toItemDb(
                 by = by,
                 text = text,
                 parent = parent.long,
+                expanded = expanded,
+                followed = followed,
             )
         }
 
@@ -172,6 +176,8 @@ fun ItemApi.toItemDb(
                 title = title,
                 text = text,
                 url = url,
+                expanded = expanded,
+                followed = followed,
             )
         }
 
@@ -186,6 +192,8 @@ fun ItemApi.toItemDb(
                 descendants = descendants,
                 score = score,
                 title = title,
+                expanded = expanded,
+                followed = followed,
             )
         }
 
@@ -199,6 +207,8 @@ fun ItemApi.toItemDb(
                 by = by,
                 score = score,
                 title = title,
+                expanded = expanded,
+                followed = followed,
             )
         }
 
@@ -215,6 +225,8 @@ fun ItemApi.toItemDb(
                 title = title,
                 text = text,
                 url = url,
+                expanded = expanded,
+                followed = followed,
             )
         }
     }
