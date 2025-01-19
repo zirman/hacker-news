@@ -16,7 +16,7 @@ jetbrainsCompose = "1.8.0-alpha01" # https://github.com/JetBrains/compose-multip
 kotlinCoroutines = "1.10.1"
 kotlinSerialization = "1.7.3"
 kotlinCollectionsImmutable = "0.3.8"
-koin = "4.1.0-Beta3"
+koin = "4.1.0-Beta5" # https://github.com/InsertKoinIO/koin/releases
 koinAnnotations = "2.0.0-Beta3"
 material3WindowSizeClassMultiplatform = "0.5.0"
 kotlinDatetime = "0.6.1"
@@ -45,7 +45,7 @@ workRuntimeKtx = "2.10.0"
 preferenceKtx = "1.2.1"
 metricsPerformance = "1.0.0-beta01"
 composeLintChecks = "1.4.2"
-material3Adaptive = "1.1.0-alpha01"
+material3Adaptive = "material3Adaptive"
 wearCompose = "1.4.0"
 accompanist = "0.37.0" # https://github.com/google/accompanist/releases
 uiTestJunit4 = "1.7.6"
@@ -167,8 +167,8 @@ composeLintChecks = { group = "com.slack.lint.compose", name = "compose-lint-che
 material3WindowSizeClassMultiplatform = { group = "dev.chrisbanes.material3", name = "material3-window-size-class-multiplatform", version.ref = "material3WindowSizeClassMultiplatform" }
 material3Adaptive = { group = "androidx.compose.material3.adaptive", name = "adaptive", version.ref = "material3Adaptive" }
 material3AdaptiveLayout = { group = "androidx.compose.material3.adaptive", name = "adaptive-layout", version.ref = "material3Adaptive" }
-material3AdaptiveNavigation = { group = "org.jetbrains.compose.material3.adaptive", name = "adaptive-navigation", version.ref = "material3Adaptive" }
-material3AdaptiveNavigationSuite = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite", version = "1.4.0-alpha05" }
+material3AdaptiveNavigation = { group = "org.jetbrains.compose.material3.adaptive", name = "adaptive-navigation", version = "1.1.0-alpha01" }
+material3AdaptiveNavigationSuite = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite", version = "1.4.0-alpha06" }
 
 uiTestJunit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "uiTestJunit4" }
 
