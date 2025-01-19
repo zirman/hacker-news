@@ -18,31 +18,31 @@ internal fun Map<ItemId, Item>.traverse(
         val item = this@traverse[itemId] ?: makeItem(id = itemId)
         val kids = item.kids.orEmpty()
         return 1 + if (item.expanded) {
-            var decendents = 0
+            var descendants = 0
             for (i in kids.size - 1 downTo 0) {
-                decendents += recur(kids[i], depth = depth + 1)
+                descendants += recur(kids[i], depth = depth + 1)
             }
             add(
                 ItemDetailViewModel.ThreadItemUiState(
                     item = item,
                     depth = depth,
-                    decendents = decendents,
+                    descendants = descendants,
                 )
             )
-            decendents
+            descendants
         } else {
-            var decendents = 0
+            var descendants = 0
             for (i in kids.size - 1 downTo 0) {
-                decendents += recurDescendants(kids[i])
+                descendants += recurDescendants(kids[i])
             }
             add(
                 ItemDetailViewModel.ThreadItemUiState(
                     item = item,
                     depth = depth,
-                    decendents = decendents,
+                    descendants = descendants,
                 )
             )
-            decendents
+            descendants
         }
     }
     recur(itemId, depth = 0)

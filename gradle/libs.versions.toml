@@ -269,9 +269,6 @@ androidMain = [
     "roomRuntime",
     #    "roomKtx",
     "roomPaging",
-    "jetbrainsLifecycleRuntimeCompose",
-    "jetbrainsLifecycleViewmodel",
-    "jetbrainsLifecycleViewmodelCompose",
     "accompanistAdaptive", # handle foldable devices
     "kspSymbolProcessingApi",
     "material3Adaptive",

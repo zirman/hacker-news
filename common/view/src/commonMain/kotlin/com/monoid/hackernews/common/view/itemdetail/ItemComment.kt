@@ -42,7 +42,6 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextIndent
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
@@ -95,7 +94,7 @@ fun ItemComment(
             .animateContentSize(),
     ) {
         ThreadDepth(threadItem.depth)
-        Surface(tonalElevation = (threadItem.decendents * 4).dp) {
+        Surface(tonalElevation = (threadItem.descendants * 4).dp) {
             Column {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     val timeByUserAnnotatedString: AnnotatedString =
@@ -141,7 +140,7 @@ fun ItemComment(
                             modifier = Modifier.padding(4.dp),
                         ) {
                             Text(
-                                text = "${threadItem.decendents} responses",
+                                text = "${threadItem.descendants} responses",
                                 maxLines = 1,
                             )
                         }
@@ -293,7 +292,7 @@ fun ItemComment(
                         style = LocalTextStyle.current.merge(
                             TextStyle(
                                 textIndent = TextIndent(
-                                    firstLine = LocalCommentIndentation.current.em,
+                                    firstLine = LocalTextStyle.current.fontSize * LocalCommentIndentation.current,
                                 ),
                             ),
                         ),

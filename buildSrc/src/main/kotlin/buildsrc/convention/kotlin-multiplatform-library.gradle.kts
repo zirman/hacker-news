@@ -5,12 +5,12 @@ import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
-    id("buildsrc.convention.detekt-rules")
     kotlin("multiplatform")
     id("com.android.library")
     id("org.jetbrains.kotlin.plugin.compose")
     id("org.jetbrains.compose")
     id("com.google.devtools.ksp")
+    id("buildsrc.convention.detekt-rules")
 }
 val libs = the<LibrariesForLibs>()
 kotlin {

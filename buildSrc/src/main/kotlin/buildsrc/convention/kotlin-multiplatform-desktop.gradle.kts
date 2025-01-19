@@ -4,12 +4,12 @@ import org.gradle.accessors.dm.LibrariesForLibs
 import org.jetbrains.compose.ExperimentalComposeLibrary
 
 plugins {
-    id("buildsrc.convention.detekt-rules")
     kotlin("multiplatform")
     id("org.jetbrains.kotlin.plugin.compose")
     id("org.jetbrains.compose")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("com.google.devtools.ksp")
+    id("buildsrc.convention.detekt-rules")
 }
 val libs = the<LibrariesForLibs>()
 kotlin {

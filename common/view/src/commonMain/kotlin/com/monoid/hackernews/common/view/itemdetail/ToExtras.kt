@@ -17,7 +17,7 @@ internal fun ItemId.toExtras(): CreationExtras = MutableCreationExtras().apply {
     set(
         DEFAULT_ARGS_KEY,
         bundleOf(
-            ItemDetailViewModel.ITEM_ID to this@toExtras,
+            ItemDetailViewModel.ITEM_ID to this@toExtras.long,
         ),
     )
     set(VIEW_MODEL_STORE_OWNER_KEY, viewModelStoreOwner)

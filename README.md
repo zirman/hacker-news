@@ -1,15 +1,18 @@
 Build for Android:
 `gradle :androidApp:assembleDebug`
 
+Run on Desktop
+`gradle :desktopApp:run`
+
+Run on iOS
+Run project `ios-app/iosApp.xcodeproj`
+
 Build for Wear OS
 `gradle :wearApp:assembleDebug`
 
-Run Desktop
-`gradle :desktopApp:run`
-
 TODO:
+ + add copy text to item context menu
  + WorkManager get update follow notifications
- + Customize Light/Dark mode setting
  + Customize colors
  + Glance Widget
  + Follow item with local notifications on updates
@@ -29,7 +32,6 @@ TODO:
  + Read comments using voice synthesis
  + Customize font from google font lib
  + Search
- + Long Click
  + Swipe
  + Favorites paging
  + Fix arrows keys leaving text field when replying to thread

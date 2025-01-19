@@ -40,13 +40,13 @@ class ItemDetailViewModel(
         val comments: List<ThreadItemUiState>? = null,
     )
 
-    data class ThreadItemUiState(val item: Item, val depth: Int, val decendents: Int)
+    data class ThreadItemUiState(val item: Item, val depth: Int, val descendants: Int)
 
     sealed interface Event {
         data class Error(val message: String?) : Event
     }
 
-    private val itemId: ItemId by lazy { checkNotNull(savedStateHandle[ITEM_ID]) }
+    private val itemId: ItemId by lazy { ItemId(checkNotNull(savedStateHandle[ITEM_ID])) }
 
     private val context = CoroutineExceptionHandler { _, throwable ->
         logger.recordException(
@@ -75,7 +75,7 @@ class ItemDetailViewModel(
                 ThreadItemUiState(
                     item = repository.cache.value[itemId] ?: makeItem(id = itemId),
                     depth = 0,
-                    decendents = 0,
+                    descendants = 0,
                 ),
             ),
         ),

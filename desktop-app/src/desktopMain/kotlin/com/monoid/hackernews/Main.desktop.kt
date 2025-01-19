@@ -5,7 +5,6 @@ package com.monoid.hackernews
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.IconButton
@@ -25,6 +24,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -35,8 +35,17 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.monoid.hackernews.common.data.api.ItemId
+import com.monoid.hackernews.common.domain.navigation.Route
+import com.monoid.hackernews.common.view.itemdetail.ItemDetailPane
+import com.monoid.hackernews.common.view.itemlist.ItemsColumn
 import com.monoid.hackernews.common.view.main.LoginDialog
-import com.monoid.hackernews.common.view.main.MainNavHost
+import com.monoid.hackernews.common.view.stories.StoriesViewModel
+import com.monoid.hackernews.common.view.stories.createStoriesViewModel
 import com.monoid.hackernews.common.view.theme.AppTheme
 import org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi
 import org.jetbrains.compose.splitpane.HorizontalSplitPane
@@ -102,10 +111,18 @@ fun main() {
                             )
                         },
                     ) { innerPadding ->
-                        HNPanes(
-                            onOpenLogin = { showLoginDialog = 1 },
+                        val navController = rememberNavController()
+                        NavHost(
+                            navController = navController,
+                            startDestination = Route.Home,
                             modifier = Modifier.padding(innerPadding),
-                        )
+                        ) {
+                            composable<Route.Home> {
+                                HNPanes(
+                                    onOpenLogin = { showLoginDialog = 1 },
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -116,21 +133,40 @@ fun main() {
 @Composable
 fun HNPanes(onOpenLogin: () -> Unit, modifier: Modifier = Modifier) {
     val splitterState = rememberSplitPaneState()
+    var itemId by rememberSaveable {
+        mutableLongStateOf(-1L)
+    }
     HorizontalSplitPane(
         splitPaneState = splitterState,
         modifier = modifier,
     ) {
-        first(320.dp) {
-            MainNavHost(
-                onClickLogin = onOpenLogin,
-                modifier = Modifier.fillMaxSize(),
+        first(640.dp) {
+            val viewModel: StoriesViewModel = createStoriesViewModel(key = "default")
+            val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+            ItemsColumn(
+                listState = viewModel.listState,
+                itemsList = uiState.itemsList,
+                onVisibleItem = { viewModel.updateItem(it.id) },
+                onClickItem = {
+                    itemId = it.id.long
+                },
+                onClickReply = { },
+                onClickUser = { },
+                onOpenUrl = { },
+                onClickUpvote = { },
+                onClickFavorite = { },
+                onClickFollow = { },
+                onClickFlag = { },
+                modifier = Modifier.fillMaxHeight(),
             )
         }
-        second(320.dp) {
-            MainNavHost(
-                onClickLogin = onOpenLogin,
-                modifier = Modifier.fillMaxSize(),
-            )
+        second(640.dp) {
+            if (itemId != -1L) {
+                ItemDetailPane(
+                    itemId = ItemId(itemId),
+                    onOpenBrowser = {},
+                )
+            }
         }
         splitter {
             visiblePart {

@@ -5,7 +5,6 @@ import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
-    id("buildsrc.convention.detekt-rules")
     kotlin("multiplatform")
     id("com.android.application")
     id("org.jetbrains.kotlin.plugin.compose")
@@ -15,6 +14,7 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
+    id("buildsrc.convention.detekt-rules")
 }
 val libs = the<LibrariesForLibs>()
 kotlin {
