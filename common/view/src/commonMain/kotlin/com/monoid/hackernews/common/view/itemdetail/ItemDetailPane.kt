@@ -65,7 +65,10 @@ fun ItemDetailPane(
                 }
 
                 ItemType.Story, ItemType.Job, ItemType.Poll, ItemType.PollOpt -> {
-                    ItemDetail(item.item, onOpenBrowser)
+                    ItemDetail(
+                        item = item.item,
+                        onOpenBrowser = onOpenBrowser,
+                    )
                 }
             }
         }

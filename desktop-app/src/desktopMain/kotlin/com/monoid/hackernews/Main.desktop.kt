@@ -39,11 +39,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.monoid.hackernews.common.data.Uri
 import com.monoid.hackernews.common.data.api.ItemId
+import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.domain.navigation.Route
 import com.monoid.hackernews.common.view.itemdetail.ItemDetailPane
 import com.monoid.hackernews.common.view.itemlist.ItemsColumn
 import com.monoid.hackernews.common.view.main.LoginDialog
+import com.monoid.hackernews.common.view.main.openWebpage
 import com.monoid.hackernews.common.view.stories.StoriesViewModel
 import com.monoid.hackernews.common.view.stories.createStoriesViewModel
 import com.monoid.hackernews.common.view.theme.AppTheme
@@ -119,7 +122,12 @@ fun main() {
                         ) {
                             composable<Route.Home> {
                                 HNPanes(
-                                    onOpenLogin = { showLoginDialog = 1 },
+                                    onOpenLogin = {
+                                        showLoginDialog = 1
+                                    },
+                                    onOpenBrowser = {
+                                        openWebpage(Uri(checkNotNull(it.url)))
+                                    },
                                 )
                             }
                         }
@@ -131,7 +139,11 @@ fun main() {
 }
 
 @Composable
-fun HNPanes(onOpenLogin: () -> Unit, modifier: Modifier = Modifier) {
+fun HNPanes(
+    onOpenLogin: () -> Unit,
+    onOpenBrowser: (Item) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val splitterState = rememberSplitPaneState()
     var itemId by rememberSaveable {
         mutableLongStateOf(-1L)
@@ -152,7 +164,7 @@ fun HNPanes(onOpenLogin: () -> Unit, modifier: Modifier = Modifier) {
                 },
                 onClickReply = { },
                 onClickUser = { },
-                onOpenUrl = { },
+                onOpenUrl = onOpenBrowser,
                 onClickUpvote = { },
                 onClickFavorite = { },
                 onClickFollow = { },
@@ -164,7 +176,7 @@ fun HNPanes(onOpenLogin: () -> Unit, modifier: Modifier = Modifier) {
             if (itemId != -1L) {
                 ItemDetailPane(
                     itemId = ItemId(itemId),
-                    onOpenBrowser = {},
+                    onOpenBrowser = onOpenBrowser,
                 )
             }
         }
