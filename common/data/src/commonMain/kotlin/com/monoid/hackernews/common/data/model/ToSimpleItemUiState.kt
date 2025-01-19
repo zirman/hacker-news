@@ -31,7 +31,8 @@ fun ItemDb.toSimpleItemUiState(kids: List<ItemId>): Item = makeItem(
 
 fun ItemApi.toSimpleItemUiState(instant: Instant, item: Item?): Item {
     val lastUpdate = instant.epochSeconds
-    val kids = kids ?: item?.kids
+    // TODO: understand why this order is required
+    val kids = item?.kids ?: kids
     val expanded = item?.expanded ?: EXPANDED_DEFAULT
     val followed = item?.followed ?: FOLLOWED_DEFAULT
     return when (this) {
