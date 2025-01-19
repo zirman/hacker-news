@@ -2,15 +2,13 @@
 
 package com.monoid.hackernews.common.view.itemdetail
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.twotone.Comment
 import androidx.compose.material.icons.filled.Favorite
@@ -79,23 +77,24 @@ fun ItemDetail(
         modifier = modifier,
         contentColor = MaterialTheme.colorScheme.secondary,
     ) {
-        Column {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+            modifier = Modifier.padding(vertical = 4.dp),
+        ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.Top,
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                SelectionContainer(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = (if (item?.type == ItemType.Comment) item.text else item?.title)
-                            ?: AnnotatedString(""),
-                        modifier = Modifier.padding(horizontal = 8.dp),
-                        style = MaterialTheme.typography.titleMedium,
-                    )
-                }
-
+                Text(
+                    text = (if (item?.type == ItemType.Comment) item.text else item?.title)
+                        ?: AnnotatedString(""),
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .weight(1f),
+                    style = MaterialTheme.typography.titleMedium,
+                )
                 val (contextExpanded: Int, setContextExpanded) =
                     rememberSaveable { mutableIntStateOf(0) }
-
                 if (item?.lastUpdate != null) {
                     Box {
                         IconButton(onClick = { setContextExpanded(1) }) {
@@ -104,7 +103,6 @@ fun ItemDetail(
                                 contentDescription = stringResource(Res.string.more_options),
                             )
                         }
-
                         DropdownMenu(
                             expanded = contextExpanded != 0,
                             onDismissRequest = { setContextExpanded(0) },
@@ -149,7 +147,6 @@ fun ItemDetail(
                                     }
                                 )
                             }
-
                             DropdownMenuItem(
                                 text = {
                                     Text(
@@ -186,7 +183,6 @@ fun ItemDetail(
                                     )
                                 }
                             )
-
                             DropdownMenuItem(
                                 text = {
                                     Text(
@@ -227,14 +223,27 @@ fun ItemDetail(
                     }
                 }
             }
-
-            Spacer(modifier = Modifier.height(4.dp))
-
+            val itemText = item?.text
+            if (item?.type != ItemType.Comment && itemText != null) {
+                Text(
+                    text = itemText,
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .placeholder(
+                            visible = false,
+                            color = Color.Transparent,
+                            shape = MaterialTheme.shapes.small,
+                            highlight = PlaceholderHighlight.shimmer(
+                                highlightColor = LocalContentColor.current.copy(alpha = .5f),
+                            ),
+                        ),
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
             val timeUserAnnotatedString: AnnotatedString = rememberTimeBy(
                 time = item?.time,
                 by = item?.by,
             )
-
             Text(
                 text = timeUserAnnotatedString,
 //                onClick = { offset ->
@@ -259,7 +268,6 @@ fun ItemDetail(
                     color = LocalContentColor.current,
                 )
             )
-
             Row(verticalAlignment = Alignment.CenterVertically) {
                 if (item?.lastUpdate == null || item.type == ItemType.Story) {
                     item?.score.let { score ->
@@ -304,9 +312,7 @@ fun ItemDetail(
                         }
                     }
                 }
-
                 val descendants = item?.descendants
-
                 key("comments") {
                     TooltipBox(
                         positionProvider = TooltipPopupPositionProvider(),
@@ -335,7 +341,6 @@ fun ItemDetail(
                         style = MaterialTheme.typography.labelMedium,
                     )
                 }
-
                 val host: String? = remember(item, item?.url) {
                     if (item?.lastUpdate != null) {
                         item.url?.let { Url(it) }?.host
@@ -343,25 +348,15 @@ fun ItemDetail(
                         ""
                     }
                 }
-
                 if (host != null) {
                     Text(
                         text = host,
                         modifier = Modifier
                             .padding(start = 16.dp)
                             .weight(1f),
-//                            .placeholder(
-//                                visible = false,
-//                                color = Color.Transparent,
-//                                shape = MaterialTheme.shapes.small,
-//                                highlight = PlaceholderHighlight.shimmer(
-//                                    highlightColor = LocalContentColor.current.copy(alpha = .5f)
-//                                ),
-//                            ),
                         textAlign = TextAlign.End,
                         style = MaterialTheme.typography.labelLarge,
                     )
-
                     TooltipBox(
                         positionProvider = TooltipPopupPositionProvider(),
                         tooltip = {
@@ -383,25 +378,6 @@ fun ItemDetail(
                         }
                     }
                 }
-            }
-
-            val itemText = item?.text
-
-            if (item?.type != ItemType.Comment && itemText != null) {
-                Text(
-                    text = itemText,
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .placeholder(
-                            visible = false,
-                            color = Color.Transparent,
-                            shape = MaterialTheme.shapes.small,
-                            highlight = PlaceholderHighlight.shimmer(
-                                highlightColor = LocalContentColor.current.copy(alpha = .5f),
-                            ),
-                        ),
-                    style = MaterialTheme.typography.bodyMedium,
-                )
             }
         }
     }

@@ -99,16 +99,14 @@ class StoriesRepository(
                     itemId,
                     remoteData.toSimpleItemUiState(
                         instant = currentInstant,
-                        expanded = item?.expanded ?: EXPANDED_DEFAULT,
-                        followed = item?.followed ?: FOLLOWED_DEFAULT,
+                        item = item,
                     ),
                 )
             }
             itemLocalDataSource.itemApiInsert(
-                itemApi = remoteData,
                 instant = currentInstant,
-                expanded = item?.expanded ?: EXPANDED_DEFAULT,
-                followed = item?.followed ?: FOLLOWED_DEFAULT,
+                itemApi = remoteData,
+                item = item,
             )
         }
     }
@@ -131,6 +129,3 @@ class StoriesRepository(
         private const val TAG = "StoriesRepository"
     }
 }
-
-private const val EXPANDED_DEFAULT = true
-private const val FOLLOWED_DEFAULT = false

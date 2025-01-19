@@ -3,6 +3,8 @@ package com.monoid.hackernews.common.data.model
 import com.monoid.hackernews.common.data.api.ItemApi
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.html.toHtmlAnnotatedString
+import com.monoid.hackernews.common.data.room.EXPANDED_DEFAULT
+import com.monoid.hackernews.common.data.room.FOLLOWED_DEFAULT
 import com.monoid.hackernews.common.data.room.ItemDb
 import kotlinx.datetime.Instant
 
@@ -27,8 +29,11 @@ fun ItemDb.toSimpleItemUiState(kids: List<ItemId>): Item = makeItem(
     followed = followed,
 )
 
-fun ItemApi.toSimpleItemUiState(instant: Instant, expanded: Boolean, followed: Boolean): Item {
+fun ItemApi.toSimpleItemUiState(instant: Instant, item: Item?): Item {
     val lastUpdate = instant.epochSeconds
+    val kids = item?.kids ?: kids
+    val expanded = item?.expanded ?: EXPANDED_DEFAULT
+    val followed = item?.followed ?: FOLLOWED_DEFAULT
     return when (this) {
         is ItemApi.Comment -> {
             makeItem(

@@ -8,6 +8,7 @@ import androidx.room.Transaction
 import androidx.room.Upsert
 import com.monoid.hackernews.common.data.api.ItemApi
 import com.monoid.hackernews.common.data.api.toItemDb
+import com.monoid.hackernews.common.data.model.Item
 import kotlinx.datetime.Instant
 
 @Dao
@@ -33,10 +34,9 @@ interface ItemDao {
 
     @Transaction
     suspend fun itemApiInsert(
-        itemApi: ItemApi,
         instant: Instant,
-        expanded: Boolean,
-        followed: Boolean,
+        itemApi: ItemApi,
+        item: Item?,
     ) {
         // update children entries
         itemApi.kids.orEmpty().forEach { itemId ->
@@ -46,9 +46,12 @@ interface ItemDao {
         itemUpsert(
             itemApi.toItemDb(
                 instant = instant,
-                expanded = expanded,
-                followed = followed,
+                expanded = item?.expanded ?: EXPANDED_DEFAULT,
+                followed = item?.followed ?: FOLLOWED_DEFAULT,
             )
         )
     }
 }
+
+internal const val EXPANDED_DEFAULT = true
+internal const val FOLLOWED_DEFAULT = false
