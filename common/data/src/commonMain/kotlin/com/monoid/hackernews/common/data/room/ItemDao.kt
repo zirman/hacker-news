@@ -39,7 +39,7 @@ interface ItemDao {
         item: Item?,
     ) {
         // update children entries
-        itemApi.kids.orEmpty().forEach { itemId ->
+        (itemApi.kids ?: item?.kids).orEmpty().forEach { itemId ->
             // TODO: multi insert
             itemInsertStub(ItemDb(id = itemId.long, parent = itemApi.id.long))
         }
