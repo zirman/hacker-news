@@ -23,6 +23,7 @@ compose {
                 packageName = name
                 packageVersion = "1.0.0"
                 buildTypes.release.proguard {
+                    version = "7.6.1"
                     isEnabled = true
                     optimize = true
                     obfuscate = false // Currently obfuscated builds crash
