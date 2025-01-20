@@ -11,7 +11,8 @@ Build for Wear OS
 `gradle :wearApp:assembleDebug`
 
 TODO:
- + add copy text to item context menu
+ + Fix launching to blank screen
+ + Add copy text to item context menu
  + WorkManager get update follow notifications
  + Customize colors
  + Glance Widget
@@ -19,7 +20,6 @@ TODO:
  + Chat bubbles
  + Show your reply immediately when replying
  + Highlight new items/Update items when back new or back online/Jump to unread items
- + Logout
  + Post story
  + Synchronize expanded items between devices
  + Google Play Review API
