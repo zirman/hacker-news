@@ -102,7 +102,7 @@ firebasePerfKtx = { group = "com.google.firebase", name = "firebase-perf-ktx" }
 
 ktorClientCore = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktorClientAndroid = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }
-ktorClientJava = { group = "io.ktor", name = "ktor-client-java", version.ref = "ktor" }
+ktorClientJvm = { group = "io.ktor", name = "ktor-client-apache5", version.ref = "ktor" }
 ktorClientDarwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
 ktorClientJs = { group = "io.ktor", name = "ktor-client-js", version.ref = "ktor" }
 ktorClientLogging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
@@ -227,8 +227,7 @@ commonMain = [
     "datastore",
     "datastorePreferencesCore",
     "datastorePreferences",
-    #    "datastoreCoreOkio",
-    #    "datastoreCoreOkioJvm",
+    "datastoreCoreOkio",
     "sqliteBundled",
     "jetbrainsLifecycleRuntimeCompose",
     "jetbrainsLifecycleViewmodel",
@@ -276,7 +275,8 @@ androidMain = [
 ]
 jvmMain = [
     "kotlinCoroutinesSwing",
-    "ktorClientJava",
+    "ktorClientJvm",
+    "datastoreCoreOkioJvm",
 ]
 wear = [
     "composeMaterialWear",

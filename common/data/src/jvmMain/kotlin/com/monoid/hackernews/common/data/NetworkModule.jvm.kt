@@ -1,7 +1,7 @@
 package com.monoid.hackernews.common.data
 
 import io.ktor.client.HttpClient
-import io.ktor.client.engine.java.Java
+import io.ktor.client.engine.apache5.Apache5
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
@@ -21,12 +21,19 @@ actual class NetworkModule {
     }
 
     @Single
-    actual fun httpClient(json: Json): HttpClient = HttpClient(Java) {
+    actual fun httpClient(json: Json): HttpClient = HttpClient(Apache5) {
         install(Logging) {
             logger = Logger.DEFAULT
             level = LogLevel.NONE
         }
 
         install(ContentNegotiation) { json(json) }
+
+        engine {
+            followRedirects = true
+            socketTimeout = 10_000
+            connectTimeout = 10_000
+            connectionRequestTimeout = 20_000
+        }
     }
 }
