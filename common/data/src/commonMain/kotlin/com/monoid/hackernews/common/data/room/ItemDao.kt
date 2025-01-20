@@ -16,16 +16,20 @@ interface ItemDao {
     @Query("SELECT * FROM item WHERE id = :itemId")
     suspend fun itemById(itemId: Long): ItemDb?
 
-    @Transaction
     @Query("SELECT * FROM item WHERE id = :itemId")
-    suspend fun itemByIdWithKidsById(itemId: Long): ItemWithKids?
+    suspend fun itemByIdWithKidsByIdInternal(itemId: Long): ItemWithKids?
+
+    @Transaction
+    suspend fun itemByIdWithKidsById(itemId: Long): ItemWithKids? =
+        itemByIdWithKidsByIdInternal(itemId)
+            ?.let { item -> item.copy(kids = item.kids.sortedBy { it.id }) }
 
     @Upsert(entity = ItemDb::class)
     suspend fun itemUpsert(item: ItemDb)
 
     @Transaction
     suspend fun itemToggleExpanded(itemId: Long): ItemWithKids? =
-        itemByIdWithKidsById(itemId = itemId)
+        itemByIdWithKidsById(itemId)
             ?.let { item -> item.copy(item = item.item.copy(expanded = item.item.expanded.not())) }
             ?.also { itemUpsert(it.item) }
 
@@ -39,7 +43,7 @@ interface ItemDao {
         item: Item?,
     ) {
         // update children entries
-        (itemApi.kids ?: item?.kids).orEmpty().forEach { itemId ->
+        itemApi.kids?.forEach { itemId ->
             // TODO: multi insert
             itemInsertStub(ItemDb(id = itemId.long, parent = itemApi.id.long))
         }
