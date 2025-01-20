@@ -308,9 +308,10 @@ fun ThreadDepth(depth: Int, modifier: Modifier = Modifier) {
     val primary = MaterialTheme.colorScheme.primary
     val secondary = MaterialTheme.colorScheme.secondary
     val tertiary = MaterialTheme.colorScheme.tertiary
-    val threadGap = 8.dp
+    // TODO: make configurable
+    val threadGap = 16.dp
     Canvas(modifier = modifier.fillMaxHeight().width(threadGap * (depth - 1))) {
-        val threadGapPx = 8.dp.toPx()
+        val threadGapPx = threadGap.toPx()
         val thicknessPx = 1.dp.toPx()
         val thicknessPx2 = thicknessPx / 2
         for (d in 1..<depth) {
