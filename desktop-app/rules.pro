@@ -57,13 +57,14 @@
 # However, since in this case they will not be used, we can disable these warnings
 -dontwarn kotlinx.serialization.internal.ClassValueReferences
 
-# Fixes Ktor submitForm()
--keepclassmembers class io.ktor.http.** { *; }
+-keep class com.monoid.hackernews.common.data.room.** { *; }
+-keep class com.monoid.hackernews.common.data.api.** { *; }
+
+-keep class io.ktor.serialization.kotlinx.json.KotlinxSerializationJsonExtensionProvider { *; }
+-keep class kotlinx.coroutines.swing.SwingDispatcherFactory { *; }
+-keep class kotlinx.coroutines.flow.** { *; }
+-keep class okio.** { *; }
+-keep class androidx.compose.runtime.** { *; }
+#-keepclassmembers class io.ktor.http.** { *; }
 
 -dontwarn **
-
--keep class kotlinx.coroutines.swing.SwingDispatcherFactory { *; }
--keep class io.ktor.serialization.kotlinx.json.KotlinxSerializationJsonExtensionProvider { *; }
--keep class com.monoid.hackernews.common.data.model.StoriesRepository { *; }
--keep class com.monoid.hackernews.common.data.** { *; }
--keep class androidx.sqlite.driver.** { *; }
