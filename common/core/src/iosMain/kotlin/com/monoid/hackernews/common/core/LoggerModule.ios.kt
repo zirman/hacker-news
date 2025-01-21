@@ -7,5 +7,5 @@ import org.koin.core.annotation.Single
 class LoggerModule {
 
     @Single
-    actual fun logger(): LoggerAdapter = LoggerAdapterImpl()
+    fun logger(): LoggerAdapter = LoggerAdapterImpl()
 }
