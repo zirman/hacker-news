@@ -5,8 +5,8 @@ import org.koin.core.annotation.Module
 import org.koin.core.annotation.Single
 
 @Module
-actual class LoggerModule {
+class LoggerModule {
 
     @Single
-    actual fun logger(): LoggerAdapter = LoggerAdapterImpl(FirebaseCrashlytics.getInstance())
+    fun logger(): LoggerAdapter = LoggerAdapterImpl(FirebaseCrashlytics.getInstance())
 }

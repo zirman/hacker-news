@@ -18,4 +18,4 @@ import org.koin.core.annotation.Module
     ],
 )
 @ComponentScan("com.monoid.hackernews")
-actual class ApplicationModule
+class ApplicationModule

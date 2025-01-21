@@ -15,7 +15,7 @@ import platform.Foundation.NSURL
 import platform.Foundation.NSUserDomainMask
 
 @Module
-actual class DataStoreModule {
+class DataStoreModule {
 
     @Single
     fun dataStorePreferences(): DataStore<Preferences> {

@@ -120,7 +120,7 @@ compose {
     }
 }
 // Trigger Common Metadata Generation from Native tasks
-tasks.withType(KotlinCompilationTask::class.java).configureEach {
+tasks.withType<KotlinCompilationTask<*>>().configureEach {
     if (name != "kspCommonMainKotlinMetadata") {
         dependsOn("kspCommonMainKotlinMetadata")
     }

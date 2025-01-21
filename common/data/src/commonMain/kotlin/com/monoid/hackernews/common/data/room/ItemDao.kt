@@ -16,6 +16,7 @@ interface ItemDao {
     @Query("SELECT * FROM item WHERE id = :itemId")
     suspend fun itemById(itemId: Long): ItemDb?
 
+    @Transaction
     @Query("SELECT * FROM item WHERE id = :itemId")
     suspend fun itemByIdWithKidsByIdInternal(itemId: Long): ItemWithKids?
 

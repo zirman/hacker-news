@@ -4,8 +4,8 @@ import org.koin.core.annotation.Module
 import org.koin.core.annotation.Single
 
 @Module
-actual class LoggerModule {
+class LoggerModule {
 
     @Single
-    actual fun logger(): LoggerAdapter = LoggerAdapterImpl()
+    fun logger(): LoggerAdapter = LoggerAdapterImpl()
 }
