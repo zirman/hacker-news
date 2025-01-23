@@ -312,7 +312,7 @@ fun ThreadDepth(depth: Int, modifier: Modifier = Modifier) {
     val threadGap = 16.dp
     Canvas(modifier = modifier.fillMaxHeight().width(threadGap * (depth - 1))) {
         val threadGapPx = threadGap.toPx()
-        val thicknessPx = 1.dp.toPx()
+        val thicknessPx = 15.dp.toPx()
         val thicknessPx2 = thicknessPx / 2
         for (d in 1..<depth) {
             val x = d * threadGapPx - thicknessPx2
