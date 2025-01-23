@@ -1,5 +1,6 @@
 package com.monoid.hackernews.common.data.html
 
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.ParagraphStyle
@@ -52,19 +53,23 @@ class HtmlParser(
         ),
     ),
     val textLinkStyles: TextLinkStyles = TextLinkStyles(
-        style = SpanStyle(),
+        style = SpanStyle(
+            fontWeight = FontWeight.SemiBold,
+        ),
         focusedStyle = SpanStyle(
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.SemiBold,
+            textDecoration = TextDecoration.Underline,
         ),
         hoveredStyle = SpanStyle(
-            fontWeight = FontWeight.Bold,
-            textDecoration = TextDecoration.Underline,
+            fontWeight = FontWeight.SemiBold,
+            color = Color.Blue,
         ),
         pressedStyle = SpanStyle(
-            fontWeight = FontWeight.ExtraBold,
+            fontWeight = FontWeight.SemiBold,
+            color = Color.Blue,
             textDecoration = TextDecoration.Underline,
         ),
-    )
+    ),
 ) {
     fun parse(htmlString: String): AnnotatedString = ParseState().parse(htmlString)
 
@@ -288,15 +293,16 @@ class HtmlParser(
                 ParagraphStyle(
                     textIndent = when (tag.start) {
                         "<pre", "</pre", "<h1", "</h1", "<h2", "</h2", "<h3", "</h3", "<h4", "</h4", "<h5", "</h5",
-                        "<h6", "</h6" -> TextIndent.None
+                        "<h6", "</h6",
+                            -> TextIndent.None
 
                         else -> null
                     },
                     lineBreak = when (tag.start) {
                         "<p", "</p" -> LineBreak.Paragraph
                         "<pre", "</pre" -> LineBreak.Unspecified // TODO: disable soft wrap when possible
-                        "<h1", "</h1", "<h2", "</h2", "<h3", "</h3", "<h4", "</h4", "<h5", "</h5", "<h6", "</h6"
-                        -> LineBreak.Heading
+                        "<h1", "</h1", "<h2", "</h2", "<h3", "</h3", "<h4", "</h4", "<h5", "</h5", "<h6", "</h6",
+                            -> LineBreak.Heading
 
                         else -> throw IllegalStateException("Token doesn't have configured linebreak")
                     },
