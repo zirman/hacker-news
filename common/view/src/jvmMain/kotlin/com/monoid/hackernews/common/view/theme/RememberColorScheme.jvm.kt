@@ -10,5 +10,5 @@ actual fun rememberColorScheme(
     lightDarkMode: LightDarkMode,
     colors: Colors
 ): ColorScheme {
-    return LightThemeColors
+    return DarkThemeColors
 }

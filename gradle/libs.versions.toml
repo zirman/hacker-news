@@ -12,7 +12,7 @@ desugarJdkLibs = "2.1.4"
 kotlin = "2.1.20-Beta1"
 ksp = "2.1.20-Beta1-1.0.29" # https://github.com/google/ksp/releases
 kotlinWrappersBom = "2025.1.2" # https://github.com/JetBrains/kotlin-wrappers/releases
-jetbrainsCompose = "1.8.0-alpha01" # https://github.com/JetBrains/compose-multiplatform/releases
+jetbrainsCompose = "1.8.0-alpha02" # https://github.com/JetBrains/compose-multiplatform/releases
 kotlinCoroutines = "1.10.1"
 kotlinSerialization = "1.7.3"
 kotlinCollectionsImmutable = "0.3.8"
@@ -48,16 +48,19 @@ composeLintChecks = "1.4.2"
 material3Adaptive = "material3Adaptive"
 wearCompose = "1.4.0"
 accompanist = "0.37.0" # https://github.com/google/accompanist/releases
-uiTestJunit4 = "1.7.6"
-slf4jSimple = "2.0.16"
-junitExt = "1.2.1"
-coil = "2.6.0"
-espressoCore = "3.6.1"
 junit = "4.13.2"
+junitExt = "1.2.1"
+espressoCore = "3.6.1"
+uiTestJunit4 = "1.7.6"
+uiTestManifest = "1.8.0-alpha08"
 mockk = "1.13.9"
-detekt = "1.23.7"
+robolectric = "4.14.1"
+roborazzi = "1.40.1"
 junitJupiter = "5.11.3"
 assertjCore = "3.26.3"
+slf4jSimple = "2.0.16"
+detekt = "1.23.7"
+coil = "2.6.0"
 
 [libraries]
 plugin-kotlinGradle = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -73,6 +76,7 @@ plugin-googlePlayServices = { group = "com.google.gms.google-services", name = "
 plugin-crashlytics = { group = "com.google.firebase.crashlytics", name = "com.google.firebase.crashlytics.gradle.plugin", version.ref = "crashlytics" }
 plugin-firebasePerf = { group = "com.google.firebase.firebase-perf", name = "com.google.firebase.firebase-perf.gradle.plugin", version.ref = "firebasePerf" }
 plugin-detektGradle = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
+plugin-roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi-gradle-plugin", version.ref = "roborazzi" }
 
 # dependencies
 kotilnCoroutinesBom = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-bom", version.ref = "kotlinCoroutines" }
@@ -170,8 +174,6 @@ material3AdaptiveLayout = { group = "androidx.compose.material3.adaptive", name 
 material3AdaptiveNavigation = { group = "org.jetbrains.compose.material3.adaptive", name = "adaptive-navigation", version = "1.1.0-alpha01" }
 material3AdaptiveNavigationSuite = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite", version = "1.4.0-alpha06" }
 
-uiTestJunit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "uiTestJunit4" }
-
 composeMaterialWear = { group = "androidx.wear.compose", name = "compose-material", version.ref = "wearCompose" }
 composeNavigationWear = { group = "androidx.wear.compose", name = "compose-navigation", version.ref = "wearCompose" }
 
@@ -181,19 +183,24 @@ playServicesWearable = { group = "com.google.android.gms", name = "play-services
 
 slf4jSimple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4jSimple" }
 
-espressoCore = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-junitExt = { group = "androidx.test.ext", name = "junit", version.ref = "junitExt" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+junitExt = { group = "androidx.test.ext", name = "junit", version.ref = "junitExt" }
+espressoCore = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+uiTestJunit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "uiTestJunit4" }
+uiTestManifest = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref = "uiTestManifest" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
+roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi", version.ref = "roborazzi" }
+roborazziCompose = { group = "io.github.takahirom.roborazzi", name = "roborazzi-compose", version.ref = "roborazzi" }
+roborazziJUnitRule = { group = "io.github.takahirom.roborazzi", name = "roborazzi-junit-rule", version.ref = "roborazzi" }
+junitJupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junitJupiter" }
+assertjCore = { module = "org.assertj:assertj-core", version.ref = "assertjCore" }
 
 detektApi = { group = "io.gitlab.arturbosch.detekt", name = "detekt-api", version.ref = "detekt" }
 detektTooling = { group = "io.gitlab.arturbosch.detekt", name = "detekt-tooling", version.ref = "detekt" }
 detektTest = { group = "io.gitlab.arturbosch.detekt", name = "detekt-test", version.ref = "detekt" }
 detektFormatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
 detektRulesRuleauthors = { group = "io.gitlab.arturbosch.detekt", name = "detekt-rules-ruleauthors", version.ref = "detekt" }
-
-junitJupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junitJupiter" }
-assertjCore = { module = "org.assertj:assertj-core", version.ref = "assertjCore" }
 
 [bundles]
 plugins = [
@@ -210,6 +217,7 @@ plugins = [
     "plugin-crashlytics",
     "plugin-firebasePerf",
     "plugin-detektGradle",
+    "plugin-roborazzi",
 ]
 commonMain = [
     "koinAnnotations",
@@ -294,9 +302,16 @@ commonTest = [
 androidUnitTest = [
     "junit",
     "junitExt",
-    "uiTestJunit4",
     "espressoCore",
+    "uiTestJunit4",
+    # "uiTestManifest", include in debugImplementation only
     "mockk",
+    "robolectric",
+    "roborazzi",
+    "roborazziCompose",
+    "roborazziJUnitRule",
+    "junitJupiter",
+    "assertjCore",
 ]
 #lintApi = [
 #    "kotlinStdlib",

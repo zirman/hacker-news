@@ -10,6 +10,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
     id("org.jetbrains.compose")
     id("com.google.devtools.ksp")
+    id("io.github.takahirom.roborazzi")
     id("buildsrc.convention.detekt-rules")
 }
 val libs = the<LibrariesForLibs>()
@@ -54,6 +55,11 @@ android {
         targetCompatibility =
             JavaVersion.toVersion(libs.versions.jvmTarget.get().toInt())
     }
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
     sourceSets.named("main").get().apply {
         manifest.srcFile("src/androidMain/AndroidManifest.xml")
         res.srcDirs("src/androidMain/res")
@@ -75,6 +81,7 @@ dependencies {
     "kspIosArm64"(libs.koinKspCompiler)
     "kspIosSimulatorArm64"(libs.koinKspCompiler)
     lintChecks(libs.composeLintChecks)
+    debugImplementation(libs.uiTestManifest)
 }
 ksp {
     arg("KOIN_CONFIG_CHECK", "false")
