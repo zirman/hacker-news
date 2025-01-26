@@ -36,7 +36,7 @@ class ScreenshotTest {
     @get:Rule
     val roborazziRule = RoborazziRule(
         options = RoborazziRule.Options(
-            outputDirectoryPath = "androidUnitTest/screenshotTest/reference",
+            outputDirectoryPath = "src/androidUnitTest/screenshotTest",
             roborazziOptions = RoborazziOptions(
                 compareOptions = RoborazziOptions.CompareOptions(
                     imageComparator = SimpleImageComparator(
