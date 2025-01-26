@@ -1560,7 +1560,7 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
             val code = """
                 class OperatorClass {
                     @Suppress("RedundantSuspendModifier")
-                    suspend operator fun plusAssign(operatorClass: OperatorClass) { }
+                    suspend operator fun plusAssign(operatorClass: OperatorClass) {}
                 }
                 suspend fun foo() {
                     runCatching {
@@ -1584,7 +1584,7 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
                 import kotlinx.coroutines.*
                 class OperatorClass {
                     @Suppress("RedundantSuspendModifier")
-                    suspend operator fun plusAssign(operatorClass: OperatorClass) { }
+                    suspend operator fun plusAssign(operatorClass: OperatorClass) {}
                 }
                 suspend fun foo() {
                     runCatching {
@@ -1988,7 +1988,7 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
                 val code = """
                     import kotlinx.coroutines.delay
                     suspend fun foo() {
-                        val suspendBlock = suspend { }
+                        val suspendBlock = suspend {}
                         runCatching {
                             suspendBlock()
                         }
@@ -2007,7 +2007,7 @@ class RunCatchingCoroutineCancellationSpec(private val env: KotlinCoreEnvironmen
                 val code = """
                     import kotlinx.coroutines.*
                     suspend fun foo() {
-                        val suspendBlock = suspend { }
+                        val suspendBlock = suspend {}
                         runCatching {
                             suspendBlock()
                         }.onFailure { currentCoroutineContext().ensureActive() }

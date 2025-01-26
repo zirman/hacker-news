@@ -31,6 +31,9 @@ kotlin {
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)
         }
+        androidUnitTest {
+            kotlin.srcDir("build/generated/ksp/android/androidDebug/screenshotTest")
+        }
         androidUnitTest.dependencies {
             implementation(libs.bundles.androidUnitTest)
         }
@@ -100,6 +103,7 @@ dependencies {
     "kspIosX64"(libs.koinKspCompiler)
     "kspIosArm64"(libs.koinKspCompiler)
     "kspIosSimulatorArm64"(libs.koinKspCompiler)
+    "kspAndroid"(project(":ksp-processors:screenshot"))
     lintChecks(libs.composeLintChecks)
     debugImplementation(libs.uiTestManifest)
 }

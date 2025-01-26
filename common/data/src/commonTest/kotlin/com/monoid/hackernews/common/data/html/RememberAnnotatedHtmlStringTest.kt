@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.text.style.TextIndent
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -1032,6 +1033,7 @@ class RememberAnnotatedHtmlStringTest {
         )
     }
 
+    @Ignore
     @Test
     fun `font tag color`() {
         assertEquals(

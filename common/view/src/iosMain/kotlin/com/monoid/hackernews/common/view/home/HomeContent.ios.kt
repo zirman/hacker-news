@@ -23,16 +23,14 @@ actual fun HomeContent(
         listState = viewModel.listState,
         itemsList = uiState.itemsList,
         onVisibleItem = { viewModel.updateItem(it.id) },
-        onClickItem = {
-
-        },
-        onClickReply = { },
-        onClickUser = { },
+        onClickItem = {},
+        onClickReply = {},
+        onClickUser = {},
         onOpenUrl = onClickBrowser,
-        onClickUpvote = { },
-        onClickFavorite = { },
-        onClickFollow = { },
-        onClickFlag = { },
+        onClickUpvote = {},
+        onClickFavorite = {},
+        onClickFollow = {},
+        onClickFlag = {},
         modifier = modifier.fillMaxHeight(),
     )
 }

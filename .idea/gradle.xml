@@ -30,6 +30,8 @@
             <option value="$PROJECT_DIR$/common/view" />
             <option value="$PROJECT_DIR$/desktop-app" />
             <option value="$PROJECT_DIR$/detekt-rules" />
+            <option value="$PROJECT_DIR$/ksp-processors" />
+            <option value="$PROJECT_DIR$/ksp-processors/screenshot" />
             <option value="$PROJECT_DIR$/mobile-app" />
             <option value="$PROJECT_DIR$/wear-app" />
           </set>

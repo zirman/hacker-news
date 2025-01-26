@@ -162,13 +162,13 @@ fun HNPanes(
                 onClickItem = {
                     itemId = it.id.long
                 },
-                onClickReply = { },
-                onClickUser = { },
+                onClickReply = {},
+                onClickUser = {},
                 onOpenUrl = onOpenBrowser,
-                onClickUpvote = { },
-                onClickFavorite = { },
-                onClickFollow = { },
-                onClickFlag = { },
+                onClickUpvote = {},
+                onClickFavorite = {},
+                onClickFollow = {},
+                onClickFlag = {},
                 modifier = Modifier.fillMaxHeight(),
             )
         }

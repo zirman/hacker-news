@@ -2,7 +2,7 @@ package com.monoid.hackernews.common.view.home
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import com.monoid.hackernews.common.data.model.Item
@@ -14,7 +14,7 @@ actual fun HomeScaffold(
     onClickLogin: () -> Unit,
     modifier: Modifier,
 ) {
-    val currentDestination by rememberSaveable { mutableStateOf(0) }
+    val currentDestination by rememberSaveable { mutableIntStateOf(0) }
     HomeContent(
         currentDestination = BottomNav.entries[currentDestination],
         onClickBrowser = onClickBrowser,

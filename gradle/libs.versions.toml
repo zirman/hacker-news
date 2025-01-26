@@ -11,6 +11,7 @@ android = "8.8.0"
 desugarJdkLibs = "2.1.4"
 kotlin = "2.1.20-Beta1"
 ksp = "2.1.20-Beta1-1.0.29" # https://github.com/google/ksp/releases
+kotlinPoet = "2.0.0"
 kotlinWrappersBom = "2025.1.2" # https://github.com/JetBrains/kotlin-wrappers/releases
 jetbrainsCompose = "1.8.0-alpha02" # https://github.com/JetBrains/compose-multiplatform/releases
 kotlinCoroutines = "1.10.1"
@@ -98,6 +99,7 @@ desugarJdkLibsNio = { group = "com.android.tools", name = "desugar_jdk_libs_nio"
 #lintTests = { group = "com.android.tools.lint", name = "lint-tests", version.ref = "lint" }
 
 kspSymbolProcessingApi = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
+kotlinPoet = { group = "com.squareup", name = "kotlinpoet", version.ref = "kotlinPoet" }
 
 firebaseBom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebaseCrashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
