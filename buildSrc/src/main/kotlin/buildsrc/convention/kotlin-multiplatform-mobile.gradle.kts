@@ -117,6 +117,13 @@ compose {
         generateResClass = always
     }
 }
+roborazzi {
+    outputDir.set(file("src/androidUnitTest/screenshotTest"))
+    // Directory for comparison images (Experimental option)
+    compare {
+        outputDir.set(file("build/roborazzi/comparison"))
+    }
+}
 // Trigger Common Metadata Generation from Native tasks
 tasks.withType<KotlinCompilationTask<*>>().configureEach {
     if (name != "kspCommonMainKotlinMetadata") {

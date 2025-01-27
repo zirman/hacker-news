@@ -148,7 +148,6 @@ private fun KSFile.toScreenshotTestFileSpec(
                                                     ),
                                                 ),
                                             ),
-                                            outputDirectoryPath = "src/androidUnitTest/screenshotTest",
                                         ),
                                     )
                                 """.trimIndent(),
