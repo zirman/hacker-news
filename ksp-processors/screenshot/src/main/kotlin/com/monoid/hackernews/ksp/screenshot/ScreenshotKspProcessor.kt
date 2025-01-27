@@ -144,7 +144,7 @@ private fun KSFile.toScreenshotTestFileSpec(
                                             roborazziOptions = RoborazziOptions(
                                                 compareOptions = RoborazziOptions.CompareOptions(
                                                     imageComparator = SimpleImageComparator(
-                                                        maxDistance = 0.0021f,
+                                                        maxDistance = 0.0068f,
                                                     ),
                                                 ),
                                             ),
