@@ -1,6 +1,7 @@
 package com.monoid.hackernews.ksp.screenshot
 
 import com.google.devtools.ksp.getVisibility
+import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
@@ -27,6 +28,18 @@ class ScreenshotKspProcessor(
 ) : SymbolProcessor {
     private val codeGenerator = environment.codeGenerator
 
+    private val createNewFile = codeGenerator::class
+        .declaredMemberFunctions
+        .find { it.name == "createNewFile" }
+        .let { checkNotNull(it) }
+        .apply { isAccessible = true }
+
+    private val extensionToDirectory = codeGenerator::class
+        .declaredMemberFunctions
+        .find { it.name == "extensionToDirectory" }
+        .let { checkNotNull(it) }
+        .apply { isAccessible = true }
+
     override fun process(resolver: Resolver): List<KSAnnotated> {
         resolver
             .getSymbolsWithAnnotation("org.jetbrains.compose.ui.tooling.preview.Preview")
@@ -44,24 +57,12 @@ class ScreenshotKspProcessor(
             .forEach { (ksFile, ksFunctionDeclarations) ->
                 val fileSpec = checkNotNull(ksFile).toScreenshotTestFileSpec(ksFunctionDeclarations)
                 OutputStreamWriter(
-                    codeGenerator::class
-                        .declaredMemberFunctions
-                        .find { it.name == "createNewFile" }
-                        .let { checkNotNull(it) }
-                        .apply { isAccessible = true }
-                        .call(
+                    createNewFile.call(
                             codeGenerator,
                             Dependencies(false, ksFile),
                             fileSpec.name,
                             File(
-                                run {
-                                    codeGenerator::class
-                                        .declaredMemberFunctions
-                                        .find { it.name == "extensionToDirectory" }
-                                        .let { checkNotNull(it) }
-                                        .apply { isAccessible = true }
-                                        .call(codeGenerator, "kotlin") as File
-                                }.parentFile,
+                                run { extensionToDirectory.call(codeGenerator, "kotlin") as File }.parentFile,
                                 "screenshotTest/${fileSpec.packageName.replace('.', '/')}",
                             ),
                         ) as OutputStream,
