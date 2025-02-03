@@ -19,6 +19,8 @@ import com.squareup.kotlinpoet.TypeSpec
 import java.io.File
 import java.io.OutputStream
 import java.io.OutputStreamWriter
+import kotlin.reflect.full.declaredMemberFunctions
+import kotlin.reflect.jvm.isAccessible
 
 class ScreenshotKspProcessor(
     environment: SymbolProcessorEnvironment,
@@ -42,27 +44,23 @@ class ScreenshotKspProcessor(
             .forEach { (ksFile, ksFunctionDeclarations) ->
                 val fileSpec = checkNotNull(ksFile).toScreenshotTestFileSpec(ksFunctionDeclarations)
                 OutputStreamWriter(
-                    codeGenerator::class.java
-                        .getDeclaredMethod(
-                            "createNewFile",
-                            Dependencies::class.java,
-                            String::class.java,
-                            File::class.java,
-                        )
+                    codeGenerator::class
+                        .declaredMemberFunctions
+                        .find { it.name == "createNewFile" }
+                        .let { checkNotNull(it) }
                         .apply { isAccessible = true }
-                        .invoke(
+                        .call(
                             codeGenerator,
                             Dependencies(false, ksFile),
                             fileSpec.name,
                             File(
                                 run {
-                                    codeGenerator::class.java
-                                        .getDeclaredMethod(
-                                            "extensionToDirectory",
-                                            String::class.java,
-                                        )
+                                    codeGenerator::class
+                                        .declaredMemberFunctions
+                                        .find { it.name == "extensionToDirectory" }
+                                        .let { checkNotNull(it) }
                                         .apply { isAccessible = true }
-                                        .invoke(codeGenerator, "kotlin") as File
+                                        .call(codeGenerator, "kotlin") as File
                                 }.parentFile,
                                 "screenshotTest/${fileSpec.packageName.replace('.', '/')}",
                             ),
