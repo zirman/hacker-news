@@ -100,6 +100,7 @@ desugarJdkLibsNio = { group = "com.android.tools", name = "desugar_jdk_libs_nio"
 
 kspSymbolProcessingApi = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
 kotlinPoet = { group = "com.squareup", name = "kotlinpoet", version.ref = "kotlinPoet" }
+kotlinPoetKsp = { group = "com.squareup", name = "kotlinpoet-ksp", version.ref = "kotlinPoet" }
 
 firebaseBom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebaseCrashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
