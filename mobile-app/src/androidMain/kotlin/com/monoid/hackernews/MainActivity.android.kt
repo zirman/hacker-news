@@ -124,13 +124,14 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                             setSystemBarsAppearance(repository.preferences.value.lightDarkMode)
                         }
                         animateIn.start()
-                        startedAnimation = true
                     } catch (throwable: Throwable) {
                         logger.recordException(
                             messageString = "CoroutineExceptionHandler",
                             throwable = throwable,
                             tag = TAG,
                         )
+                    } finally {
+                        startedAnimation = true
                     }
                 }
             }
