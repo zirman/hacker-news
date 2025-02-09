@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun Scrim(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
@@ -34,80 +35,88 @@ fun Scrim(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
             background.copy(alpha = 0f),
         )
         val topPadding = systemBarsPadding.calculateTopPadding()
-        Canvas(
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .fillMaxWidth()
-                .height(topPadding),
-            onDraw = {
-                val topPaddingPx = topPadding.toPx()
-                drawRect(
-                    brush = Brush.verticalGradient(colors = colors, endY = topPaddingPx),
-                    size = size.copy(height = topPaddingPx),
-                    blendMode = BlendMode.SrcAtop,
-                )
-            },
-        )
+        if (topPadding > 0.dp) {
+            Canvas(
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .fillMaxWidth()
+                    .height(topPadding),
+                onDraw = {
+                    val topPaddingPx = topPadding.toPx()
+                    drawRect(
+                        brush = Brush.verticalGradient(colors = colors, endY = topPaddingPx),
+                        size = size.copy(height = topPaddingPx),
+                        blendMode = BlendMode.SrcAtop,
+                    )
+                },
+            )
+        }
         val bottomPadding = systemBarsPadding.calculateBottomPadding()
-        Canvas(
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .fillMaxWidth()
-                .height(topPadding),
-            onDraw = {
-                val bottomPaddingPx = bottomPadding.toPx()
-                val bottomPaddingOffset = size.height - bottomPaddingPx
-                drawRect(
-                    brush = Brush.verticalGradient(
-                        colors = colors,
-                        startY = size.height,
-                        endY = bottomPaddingOffset,
-                    ),
-                    topLeft = Offset(
-                        x = 0f,
-                        y = bottomPaddingOffset,
-                    ),
-                    size = size.copy(height = bottomPaddingPx),
-                )
-            },
-        )
+        if (bottomPadding > 0.dp) {
+            Canvas(
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .fillMaxWidth()
+                    .height(topPadding),
+                onDraw = {
+                    val bottomPaddingPx = bottomPadding.toPx()
+                    val bottomPaddingOffset = size.height - bottomPaddingPx
+                    drawRect(
+                        brush = Brush.verticalGradient(
+                            colors = colors,
+                            startY = size.height,
+                            endY = bottomPaddingOffset,
+                        ),
+                        topLeft = Offset(
+                            x = 0f,
+                            y = bottomPaddingOffset,
+                        ),
+                        size = size.copy(height = bottomPaddingPx),
+                    )
+                },
+            )
+        }
         val leftPadding = systemBarsPadding.calculateLeftPadding(layoutDirection)
-        Canvas(
-            modifier = Modifier
-                .align(Alignment.CenterStart)
-                .fillMaxHeight()
-                .height(leftPadding),
-            onDraw = {
-                val leftPaddingPx = leftPadding.toPx()
-                drawRect(
-                    brush = Brush.horizontalGradient(colors = colors, endX = leftPaddingPx),
-                    size = size.copy(width = leftPaddingPx),
-                    blendMode = BlendMode.SrcAtop,
-                )
-            },
-        )
+        if (leftPadding > 0.dp) {
+            Canvas(
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .fillMaxHeight()
+                    .height(leftPadding),
+                onDraw = {
+                    val leftPaddingPx = leftPadding.toPx()
+                    drawRect(
+                        brush = Brush.horizontalGradient(colors = colors, endX = leftPaddingPx),
+                        size = size.copy(width = leftPaddingPx),
+                        blendMode = BlendMode.SrcAtop,
+                    )
+                },
+            )
+        }
         val rightPadding = systemBarsPadding.calculateRightPadding(layoutDirection)
-        Canvas(
-            modifier = Modifier
-                .align(Alignment.CenterStart)
-                .fillMaxHeight()
-                .height(rightPadding),
-            onDraw = {
-                val rightPaddingPx = rightPadding.toPx()
-                val rightPaddingOffset = size.width - rightPaddingPx
-                drawRect(
-                    brush = Brush.horizontalGradient(
-                        colors = colors,
-                        startX = size.width,
-                        endX = rightPaddingOffset,
-                    ),
-                    topLeft = Offset(
-                        x = rightPaddingOffset,
-                        y = 0f,
-                    ),
-                    size = size.copy(width = rightPaddingPx),
-                )
-            },
-        )
+        if (rightPadding > 0.dp) {
+            Canvas(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .fillMaxHeight()
+                    .height(rightPadding),
+                onDraw = {
+                    val rightPaddingPx = rightPadding.toPx()
+                    val rightPaddingOffset = size.width - rightPaddingPx
+                    drawRect(
+                        brush = Brush.horizontalGradient(
+                            colors = colors,
+                            startX = size.width,
+                            endX = rightPaddingOffset,
+                        ),
+                        topLeft = Offset(
+                            x = rightPaddingOffset,
+                            y = 0f,
+                        ),
+                        size = size.copy(width = rightPaddingPx),
+                    )
+                },
+            )
+        }
     }
 }
