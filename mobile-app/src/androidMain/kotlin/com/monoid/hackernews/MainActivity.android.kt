@@ -97,12 +97,21 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                 setKeepOnScreenCondition {
                     false
                 }
+                var startedAnimation = false
                 setOnExitAnimationListener { splashScreenView ->
+                    @Suppress("DEPRECATION")
+                    window.statusBarColor = getColor(android.R.color.transparent)
+                    @Suppress("DEPRECATION")
+                    window.navigationBarColor = getColor(android.R.color.transparent)
+                    // Work around for showing a blank screen bug when resuming activity
+                    // Animation cannot be done a second time because accessing the icon gets
+                    // an NPE
+                    if (startedAnimation) {
+                        splashScreenView.remove()
+                        setSystemBarsAppearance(repository.preferences.value.lightDarkMode)
+                        return@setOnExitAnimationListener
+                    }
                     try {
-                        @Suppress("DEPRECATION")
-                        window.statusBarColor = getColor(android.R.color.transparent)
-                        @Suppress("DEPRECATION")
-                        window.navigationBarColor = getColor(android.R.color.transparent)
                         val animateIn = ObjectAnimator.ofPropertyValuesHolder(
                             splashScreenView.iconView,
                             PropertyValuesHolder.ofFloat(View.SCALE_X, 1f, 0f),
@@ -115,6 +124,7 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                             setSystemBarsAppearance(repository.preferences.value.lightDarkMode)
                         }
                         animateIn.start()
+                        startedAnimation = true
                     } catch (throwable: Throwable) {
                         logger.recordException(
                             messageString = "CoroutineExceptionHandler",
