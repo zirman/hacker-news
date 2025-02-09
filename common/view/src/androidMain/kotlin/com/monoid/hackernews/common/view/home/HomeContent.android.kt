@@ -16,7 +16,7 @@ import com.monoid.hackernews.common.view.stories.StoriesScaffold
 actual fun HomeContent(
     currentDestination: BottomNav,
     onClickBrowser: (Item) -> Unit,
-    onClickLogin: () -> Unit,
+    onNavigateLogin: () -> Unit,
     modifier: Modifier,
 ) {
     Box(modifier = modifier) {
@@ -28,7 +28,7 @@ actual fun HomeContent(
                 StoriesScaffold(
                     navigator = storiesNavigator,
                     onOpenUrl = onClickBrowser,
-                    onClickLogin = onClickLogin,
+                    onNavigateLogin = onNavigateLogin,
                 )
             }
 
@@ -37,14 +37,14 @@ actual fun HomeContent(
                     navigator = favoritesNavigator,
                     onOpenUrl = onClickBrowser,
                     key = "favorites",
-                    onClickLogin = onClickLogin,
+                    onNavigateLogin = onNavigateLogin,
                 )
             }
 
             BottomNav.Settings -> {
                 SettingsScaffold(
                     navigator = profileNavigator,
-                    onClickLogin = onClickLogin,
+                    onNavigateLogin = onNavigateLogin,
                 )
             }
         }

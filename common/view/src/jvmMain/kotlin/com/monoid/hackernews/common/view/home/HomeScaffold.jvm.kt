@@ -11,14 +11,14 @@ import com.monoid.hackernews.common.domain.navigation.BottomNav
 @Composable
 actual fun HomeScaffold(
     onClickBrowser: (Item) -> Unit,
-    onClickLogin: () -> Unit,
+    onNavigateLogin: () -> Unit,
     modifier: Modifier,
 ) {
     val currentDestination by rememberSaveable { mutableIntStateOf(0) }
     HomeContent(
         currentDestination = BottomNav.entries[currentDestination],
         onClickBrowser = onClickBrowser,
-        onClickLogin = onClickLogin,
+        onNavigateLogin = onNavigateLogin,
     )
 //    BackHandler(currentDestination != 0) {
 //        currentDestination = 0

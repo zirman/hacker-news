@@ -9,7 +9,7 @@ import com.monoid.hackernews.common.domain.navigation.BottomNav
 expect fun HomeContent(
     currentDestination: BottomNav,
     onClickBrowser: (Item) -> Unit,
-    onClickLogin: () -> Unit,
+    onNavigateLogin: () -> Unit,
     modifier: Modifier = Modifier,
 )
 // {

@@ -8,7 +8,7 @@ import com.monoid.hackernews.common.data.room.FOLLOWED_DEFAULT
 import com.monoid.hackernews.common.data.room.ItemDb
 import kotlinx.datetime.Instant
 
-fun ItemDb.toSimpleItemUiState(kids: List<ItemId>): Item = makeItem(
+fun ItemDb.toSimpleItemUiState(kids: List<ItemId>): Item = Item(
     id = ItemId(id),
     lastUpdate = lastUpdate,
     kids = kids,
@@ -37,7 +37,7 @@ fun ItemApi.toSimpleItemUiState(instant: Instant, item: Item?): Item {
     val followed = item?.followed ?: FOLLOWED_DEFAULT
     return when (this) {
         is ItemApi.Comment -> {
-            makeItem(
+            Item(
                 id = id,
                 lastUpdate = lastUpdate,
                 kids = kids,
@@ -55,7 +55,7 @@ fun ItemApi.toSimpleItemUiState(instant: Instant, item: Item?): Item {
         is ItemApi.Job -> {
             val title = title?.toHtmlAnnotatedString()
             val text = text?.toHtmlAnnotatedString()
-            makeItem(
+            Item(
                 id = id,
                 lastUpdate = lastUpdate,
                 kids = kids,
@@ -73,7 +73,7 @@ fun ItemApi.toSimpleItemUiState(instant: Instant, item: Item?): Item {
 
         is ItemApi.Poll -> {
             val title = title?.toHtmlAnnotatedString()
-            makeItem(
+            Item(
                 id = id,
                 lastUpdate = lastUpdate,
                 kids = kids,
@@ -91,7 +91,7 @@ fun ItemApi.toSimpleItemUiState(instant: Instant, item: Item?): Item {
 
         is ItemApi.PollOpt -> {
             val title = title?.toHtmlAnnotatedString()
-            makeItem(
+            Item(
                 id = id,
                 lastUpdate = lastUpdate,
                 kids = kids,
@@ -109,7 +109,7 @@ fun ItemApi.toSimpleItemUiState(instant: Instant, item: Item?): Item {
         is ItemApi.Story -> {
             val title = title?.toHtmlAnnotatedString()
             val text = text?.toHtmlAnnotatedString()
-            makeItem(
+            Item(
                 id = id,
                 lastUpdate = lastUpdate,
                 kids = kids,

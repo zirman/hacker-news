@@ -11,7 +11,7 @@ Build for Wear OS
 `gradle :wearApp:assembleDebug`
 
 TODO:
- + Fix launching to blank screen
+ + Reply to comment/story
  + Add copy text to item context menu
  + WorkManager get update follow notifications
  + Customize colors

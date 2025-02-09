@@ -10,7 +10,6 @@ import com.monoid.hackernews.common.data.WeakHashMap
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.StoriesRepository
-import com.monoid.hackernews.common.data.model.makeItem
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
@@ -73,7 +72,7 @@ class ItemDetailViewModel(
             loading = false,
             comments = listOf(
                 ThreadItemUiState(
-                    item = repository.cache.value[itemId] ?: makeItem(id = itemId),
+                    item = repository.cache.value[itemId] ?: Item(id = itemId),
                     depth = 0,
                     descendants = 0,
                 ),

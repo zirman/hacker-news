@@ -24,7 +24,7 @@ fun MainNavHost(onClickLogin: () -> Unit, modifier: Modifier = Modifier) {
                         ?.let { Url(it) }
                         ?.run { openWebpage(this) }
                 },
-                onClickLogin = onClickLogin,
+                onNavigateLogin = onClickLogin,
             )
         }
     }

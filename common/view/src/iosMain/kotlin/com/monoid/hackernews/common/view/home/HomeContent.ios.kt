@@ -14,7 +14,7 @@ import com.monoid.hackernews.common.view.stories.createStoriesViewModel
 actual fun HomeContent(
     currentDestination: BottomNav,
     onClickBrowser: (Item) -> Unit,
-    onClickLogin: () -> Unit,
+    onNavigateLogin: () -> Unit,
     modifier: Modifier,
 ) {
     val viewModel: StoriesViewModel = createStoriesViewModel(key = "default")
@@ -22,7 +22,7 @@ actual fun HomeContent(
     ItemsColumn(
         listState = viewModel.listState,
         itemsList = uiState.itemsList,
-        onVisibleItem = { viewModel.updateItem(it.id) },
+        onVisibleItem = viewModel::updateItem,
         onClickItem = {},
         onClickReply = {},
         onClickUser = {},

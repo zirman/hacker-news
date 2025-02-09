@@ -8,12 +8,12 @@ import com.monoid.hackernews.common.domain.navigation.BottomNav
 @Composable
 actual fun HomeScaffold(
     onClickBrowser: (Item) -> Unit,
-    onClickLogin: () -> Unit,
+    onNavigateLogin: () -> Unit,
     modifier: Modifier
 ) {
     HomeContent(
         currentDestination = BottomNav.Stories,
         onClickBrowser = onClickBrowser,
-        onClickLogin = onClickLogin,
+        onNavigateLogin = onNavigateLogin,
     )
 }

@@ -20,7 +20,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun SettingsScaffold(
     navigator: ThreePaneScaffoldNavigator<Any>,
-    onClickLogin: () -> Unit,
+    onNavigateLogin: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SettingsViewModel = koinViewModel(),
 ) {
@@ -33,7 +33,7 @@ fun SettingsScaffold(
             listPane = {
                 SettingsListPane(
                     username = username,
-                    onClickLogin = onClickLogin,
+                    onClickLogin = onNavigateLogin,
                     onClickLogout = {
                         viewModel.logout()
                     },

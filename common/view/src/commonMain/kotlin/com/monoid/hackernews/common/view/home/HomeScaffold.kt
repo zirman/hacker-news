@@ -52,6 +52,6 @@ inline val BottomNav.label: StringResource
 @Composable
 expect fun HomeScaffold(
     onClickBrowser: (Item) -> Unit,
-    onClickLogin: () -> Unit,
+    onNavigateLogin: () -> Unit,
     modifier: Modifier = Modifier,
 )

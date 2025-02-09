@@ -4,6 +4,7 @@ import com.monoid.hackernews.common.core.LoggerAdapter
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.api.getItem
 import com.monoid.hackernews.common.data.api.getTopStories
+import com.monoid.hackernews.common.data.api.upvoteItem
 import com.monoid.hackernews.common.data.room.ItemDao
 import com.monoid.hackernews.common.data.room.TopStoryDao
 import com.monoid.hackernews.common.data.room.TopStoryDb
@@ -12,6 +13,8 @@ import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -30,6 +33,7 @@ class StoriesRepository(
     private val remoteDataSource: HttpClient,
     private val topStoryLocalDataSource: TopStoryDao,
     private val itemLocalDataSource: ItemDao,
+    private val settingsRepository: SettingsRepository,
 ) {
     private val context = CoroutineExceptionHandler { _, throwable ->
         logger.recordException(
@@ -57,7 +61,7 @@ class StoriesRepository(
     val topStories = combine(_cache, topStoryIds, ::Pair)
         .map { (cache, itemIds) ->
             itemIds?.map { id ->
-                cache[id] ?: makeItem(id = id)
+                cache[id] ?: Item(id = id)
             }
         }
         .stateIn(
@@ -109,6 +113,36 @@ class StoriesRepository(
                 item = item,
             )
         }
+    }
+
+    suspend fun toggleUpvoted(item: Item) {
+        val upvoted = item.upvoted != false
+        // optimistically update the ui state
+        _cache.update { cache ->
+            cache.put(
+                key = item.id,
+                value = cache.getValue(item.id).copy(upvoted = upvoted),
+            )
+        }
+        try {
+            remoteDataSource.upvoteItem(
+                settings = settingsRepository.preferences.value,
+                itemId = item.id,
+                flag = upvoted,
+            )
+        } catch (throwable: Throwable) {
+            currentCoroutineContext().ensureActive()
+            // revert ui state if an error occurred
+            _cache.update { cache ->
+                cache.put(
+                    key = item.id,
+                    value = cache.getValue(item.id).copy(upvoted = upvoted.not()),
+                )
+            }
+            throw throwable
+        }
+        // update the local data store
+        itemLocalDataSource.setUpvotedByItemId(itemId = item.id.long, upvoted = upvoted)
     }
 
     suspend fun itemToggleExpanded(itemId: ItemId) {

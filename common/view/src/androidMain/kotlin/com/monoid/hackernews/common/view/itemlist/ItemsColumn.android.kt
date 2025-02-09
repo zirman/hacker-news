@@ -7,8 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import com.monoid.hackernews.common.data.api.ItemId
+import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.ItemType
-import com.monoid.hackernews.common.data.model.makeItem
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview
@@ -17,7 +17,7 @@ internal fun ItemsColumnPreview() {
     MaterialTheme {
         ItemsColumn(
             itemsList = listOf(
-                makeItem(
+                Item(
                     id = ItemId(0),
                     lastUpdate = 123,
                     type = ItemType.Story,
@@ -37,7 +37,7 @@ internal fun ItemsColumnPreview() {
                     expanded = true,
                     followed = false,
                 ),
-                makeItem(
+                Item(
                     id = ItemId(1),
                     lastUpdate = 123,
                     type = ItemType.Story,

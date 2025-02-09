@@ -28,6 +28,9 @@ interface ItemDao {
     @Upsert(entity = ItemDb::class)
     suspend fun itemUpsert(item: ItemDb)
 
+    @Query("UPDATE item SET upvoted = :upvoted WHERE id = :itemId")
+    suspend fun setUpvotedByItemId(itemId: Long, upvoted: Boolean): Int
+
     @Transaction
     suspend fun itemToggleExpanded(itemId: Long): ItemWithKids? =
         itemByIdWithKidsById(itemId)

@@ -19,7 +19,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 actual fun HomeScaffold(
     onClickBrowser: (Item) -> Unit,
-    onClickLogin: () -> Unit,
+    onNavigateLogin: () -> Unit,
     modifier: Modifier,
 ) {
     var currentDestination by rememberSaveable { mutableIntStateOf(0) }
@@ -56,7 +56,7 @@ actual fun HomeScaffold(
             HomeContent(
                 currentDestination = BottomNav.entries[currentDestination],
                 onClickBrowser = onClickBrowser,
-                onClickLogin = onClickLogin,
+                onNavigateLogin = onNavigateLogin,
             )
         },
     )

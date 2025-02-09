@@ -7,6 +7,7 @@ import com.monoid.hackernews.common.core.LoggerAdapter
 import com.monoid.hackernews.common.data.WeakHashMap
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
+import com.monoid.hackernews.common.data.model.SettingsRepository
 import com.monoid.hackernews.common.data.model.StoriesRepository
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
@@ -25,6 +26,7 @@ import org.koin.android.annotation.KoinViewModel
 class StoriesViewModel(
     private val logger: LoggerAdapter,
     private val repository: StoriesRepository,
+    private val settingsRepository: SettingsRepository,
 ) : ViewModel() {
     data class UiState(
         val loading: Boolean = false,
@@ -33,9 +35,10 @@ class StoriesViewModel(
 
     sealed interface Event {
         data class Error(val message: String?) : Event
+        data object NavigateLogin : Event
     }
 
-    private val context = CoroutineExceptionHandler { _, throwable ->
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         logger.recordException(
             messageString = "CoroutineExceptionHandler",
             throwable = throwable,
@@ -52,7 +55,7 @@ class StoriesViewModel(
     val listState = LazyListState()
 
     init {
-        viewModelScope.launch(context) {
+        viewModelScope.launch(coroutineExceptionHandler) {
             repository.topStories.collect {
                 _uiState.update { uiState ->
                     uiState.copy(itemsList = it)
@@ -64,8 +67,9 @@ class StoriesViewModel(
 
     private var updateItemsJob: Job? = null
 
-    private fun updateItems(): Job = updateItemsJob.takeIf { it?.isActive == true } ?: viewModelScope
-        .launch(context) {
+    private fun updateItems(): Job = updateItemsJob
+        .takeIf { it?.isActive == true } ?: viewModelScope
+        .launch(coroutineExceptionHandler) {
             try {
                 _uiState.update { it.copy(loading = true) }
                 repository.updateBestStories()
@@ -83,12 +87,12 @@ class StoriesViewModel(
 
     private val updateItemJob: MutableMap<ItemId, Job> = WeakHashMap()
 
-    fun updateItem(itemId: ItemId): Job {
-        updateItemJob[itemId]?.takeIf { it.isActive }?.run { return this }
+    fun updateItem(item: Item): Job {
+        updateItemJob[item.id]?.takeIf { it.isActive }?.run { return this }
         return viewModelScope
-            .launch(context) {
+            .launch(coroutineExceptionHandler) {
                 try {
-                    repository.updateItem(itemId)
+                    repository.updateItem(item.id)
                 } catch (throwable: Throwable) {
                     currentCoroutineContext().ensureActive()
                     _events.send(Event.Error(throwable.message))
@@ -96,11 +100,19 @@ class StoriesViewModel(
                 }
             }
             .also {
-                updateItemJob[itemId] = it
+                updateItemJob[item.id] = it
             }
     }
 
+    fun toggleUpvoted(item: Item): Job = viewModelScope.launch(coroutineExceptionHandler) {
+        if (settingsRepository.isLoggedIn.not()) {
+            _events.send(Event.NavigateLogin)
+            return@launch
+        }
+        repository.toggleUpvoted(item)
+    }
+
     companion object {
-        private const val TAG = "HomeViewModel"
+        private const val TAG = "StoriesViewModel"
     }
 }

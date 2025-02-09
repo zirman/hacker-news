@@ -9,6 +9,7 @@ import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneScaffold
 import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -24,24 +25,35 @@ private val contentKeyRegex = """^(\d*):(.*)$""".toRegex()
 fun StoriesScaffold(
     navigator: ThreePaneScaffoldNavigator<Any>,
     onOpenUrl: (Item) -> Unit,
-    onClickLogin: () -> Unit,
+    onNavigateLogin: () -> Unit,
     modifier: Modifier = Modifier,
     key: String = "default",
-    viewModel: StoriesViewModel = createStoriesViewModel(key),
+    storiesViewModel: StoriesViewModel = createStoriesViewModel(key),
 ) {
     Box(modifier = modifier) {
-        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+        LaunchedEffect(Unit) {
+            storiesViewModel.events.collect { event ->
+                when (event) {
+                    is StoriesViewModel.Event.Error -> {
+                        // TODO
+                    }
+
+                    is StoriesViewModel.Event.NavigateLogin -> {
+                        onNavigateLogin()
+                    }
+                }
+            }
+        }
+        val uiState by storiesViewModel.uiState.collectAsStateWithLifecycle()
         val (loading, itemsList) = uiState
         val scope = rememberCoroutineScope()
         NavigableListDetailPaneScaffold(
             navigator = navigator,
             listPane = {
                 StoriesListPane(
-                    listState = viewModel.listState,
+                    listState = storiesViewModel.listState,
                     itemsList = itemsList,
-                    onVisibleItem = { item ->
-                        viewModel.updateItem(item.id)
-                    },
+                    onVisibleItem = storiesViewModel::updateItem,
                     onClickItem = { item ->
                         scope.launch {
                             navigator.navigateTo(
@@ -55,8 +67,7 @@ fun StoriesScaffold(
                     onClickUser = {
                     },
                     onOpenUrl = onOpenUrl,
-                    onClickUpvote = {
-                    },
+                    onClickUpvote = storiesViewModel::toggleUpvoted,
                     onClickFavorite = {
                     },
                     onClickFollow = {

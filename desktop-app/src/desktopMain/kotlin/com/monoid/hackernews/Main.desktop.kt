@@ -158,7 +158,7 @@ fun HNPanes(
             ItemsColumn(
                 listState = viewModel.listState,
                 itemsList = uiState.itemsList,
-                onVisibleItem = { viewModel.updateItem(it.id) },
+                onVisibleItem = viewModel::updateItem,
                 onClickItem = {
                     itemId = it.id.long
                 },

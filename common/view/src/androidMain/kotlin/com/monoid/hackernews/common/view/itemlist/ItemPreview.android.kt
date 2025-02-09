@@ -4,8 +4,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.AnnotatedString
 import com.monoid.hackernews.common.data.api.ItemId
+import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.ItemType
-import com.monoid.hackernews.common.data.model.makeItem
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview
@@ -13,7 +13,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 internal fun ItemPreview() {
     MaterialTheme {
         Item(
-            item = makeItem(
+            item = Item(
                 id = ItemId(0),
                 type = ItemType.Story,
                 title = AnnotatedString("Hello World"),
