@@ -1,6 +1,7 @@
 package com.monoid.hackernews.common.data.model
 
 import com.monoid.hackernews.common.core.LoggerAdapter
+import com.monoid.hackernews.common.core.coroutines.doOnErrorThenThrow
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.api.getItem
 import com.monoid.hackernews.common.data.api.getTopStories
@@ -14,6 +15,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -116,30 +118,28 @@ class StoriesRepository(
     }
 
     suspend fun toggleUpvoted(item: Item) {
-        val upvoted = item.upvoted != false
-        // optimistically update the ui state
+        val upvoted = item.upvoted == true
+        // optimistically update the cache
         _cache.update { cache ->
             cache.put(
                 key = item.id,
-                value = cache.getValue(item.id).copy(upvoted = upvoted),
+                value = cache.getValue(item.id).copy(upvoted = upvoted.not()),
             )
         }
-        try {
+        runCatching {
             remoteDataSource.upvoteItem(
                 settings = settingsRepository.preferences.value,
                 itemId = item.id,
-                flag = upvoted,
+                flag = upvoted.not(),
             )
-        } catch (throwable: Throwable) {
-            currentCoroutineContext().ensureActive()
-            // revert ui state if an error occurred
+        }.doOnErrorThenThrow {
+            // revert cache if an error occurred
             _cache.update { cache ->
                 cache.put(
                     key = item.id,
-                    value = cache.getValue(item.id).copy(upvoted = upvoted.not()),
+                    value = cache.getValue(item.id).copy(upvoted = upvoted),
                 )
             }
-            throw throwable
         }
         // update the local data store
         itemLocalDataSource.setUpvotedByItemId(itemId = item.id.long, upvoted = upvoted)
