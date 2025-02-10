@@ -142,7 +142,7 @@ class StoriesRepository(
             }
         }
         // update the local data store
-        itemLocalDataSource.setUpvotedByItemId(itemId = item.id.long, upvoted = upvoted)
+        itemLocalDataSource.setUpvotedByItemId(itemId = item.id.long, upvoted = upvoted.not())
     }
 
     suspend fun itemToggleExpanded(itemId: ItemId) {
