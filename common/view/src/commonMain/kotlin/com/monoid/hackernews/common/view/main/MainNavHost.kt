@@ -10,7 +10,7 @@ import com.monoid.hackernews.common.domain.navigation.Route
 import com.monoid.hackernews.common.view.home.HomeScaffold
 
 @Composable
-fun MainNavHost(onClickLogin: () -> Unit, modifier: Modifier = Modifier) {
+fun MainNavHost(onNavigateLogin: () -> Unit, modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
@@ -24,7 +24,7 @@ fun MainNavHost(onClickLogin: () -> Unit, modifier: Modifier = Modifier) {
                         ?.let { Url(it) }
                         ?.run { openWebpage(this) }
                 },
-                onNavigateLogin = onClickLogin,
+                onNavigateLogin = onNavigateLogin,
             )
         }
     }

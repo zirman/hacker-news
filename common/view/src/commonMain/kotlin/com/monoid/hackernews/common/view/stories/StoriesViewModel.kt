@@ -4,6 +4,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.monoid.hackernews.common.core.LoggerAdapter
+import com.monoid.hackernews.common.core.coroutines.doOnErrorThenThrow
 import com.monoid.hackernews.common.data.WeakHashMap
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
@@ -109,7 +110,11 @@ class StoriesViewModel(
             _events.send(Event.NavigateLogin)
             return@launch
         }
-        repository.toggleUpvoted(item)
+        runCatching {
+            repository.toggleUpvoted(item)
+        }.doOnErrorThenThrow {
+            _events.send(Event.Error(it.message))
+        }
     }
 
     companion object {

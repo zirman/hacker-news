@@ -2,6 +2,7 @@ package com.monoid.hackernews.common.view.home
 
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.data.model.Item
@@ -18,6 +19,18 @@ actual fun HomeContent(
     modifier: Modifier,
 ) {
     val viewModel: StoriesViewModel = createStoriesViewModel(key = "default")
+    LaunchedEffect(Unit) {
+        viewModel.events.collect { event ->
+            when (event) {
+                is StoriesViewModel.Event.Error -> {
+                    // TODO
+                }
+                is StoriesViewModel.Event.NavigateLogin -> {
+                    onNavigateLogin()
+                }
+            }
+        }
+    }
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
     ItemsColumn(
         listState = viewModel.listState,
@@ -27,7 +40,7 @@ actual fun HomeContent(
         onClickReply = {},
         onClickUser = {},
         onOpenUrl = onClickBrowser,
-        onClickUpvote = {},
+        onClickUpvote = viewModel::toggleUpvoted,
         onClickFavorite = {},
         onClickFollow = {},
         onClickFlag = {},

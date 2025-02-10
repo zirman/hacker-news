@@ -2,6 +2,7 @@
 
 package com.monoid.hackernews.common.view.stories
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
@@ -14,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
@@ -31,11 +33,14 @@ fun StoriesScaffold(
     storiesViewModel: StoriesViewModel = createStoriesViewModel(key),
 ) {
     Box(modifier = modifier) {
+        val context = LocalContext.current
         LaunchedEffect(Unit) {
             storiesViewModel.events.collect { event ->
                 when (event) {
                     is StoriesViewModel.Event.Error -> {
-                        // TODO
+                        Toast
+                            .makeText(context, "An error occurred: ${event.message}", Toast.LENGTH_SHORT)
+                            .show()
                     }
 
                     is StoriesViewModel.Event.NavigateLogin -> {

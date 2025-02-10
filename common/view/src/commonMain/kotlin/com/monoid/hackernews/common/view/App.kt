@@ -22,7 +22,7 @@ fun App() {
                         mutableIntStateOf(0)
                     }
                     MainNavHost(
-                        onClickLogin = {
+                        onNavigateLogin = {
                             showDialog = 1
                         },
                     )
