@@ -12,6 +12,9 @@ Build for Wear OS
 
 TODO:
  + Reply to comment/story
+ + Open link to detail pane
+ + Offline mode
+ + hide loader on error
  + Add copy text to item context menu
  + WorkManager get update follow notifications
  + Customize colors
