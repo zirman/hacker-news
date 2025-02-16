@@ -32,9 +32,10 @@ kotlin {
     }
     jvmToolchain(libs.versions.jvmToolchain.get().toInt())
 }
+val kspDesktop by configurations.named("kspDesktop")
 dependencies {
     kspCommonMainMetadata(libs.koinKspCompiler)
-    "kspDesktop"(libs.koinKspCompiler)
+    kspDesktop(libs.koinKspCompiler)
 }
 compose {
     resources {

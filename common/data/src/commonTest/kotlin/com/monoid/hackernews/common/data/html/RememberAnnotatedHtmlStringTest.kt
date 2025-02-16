@@ -1528,4 +1528,10 @@ class RememberAnnotatedHtmlStringTest {
             actual = htmlParser.parse("SRBs were in fact reusable."),
         )
     }
+
+    // tests from https://blog.dwac.dev/posts/html-whitespace/
+    @Test
+    fun `asdfj `() {
+
+    }
 }
