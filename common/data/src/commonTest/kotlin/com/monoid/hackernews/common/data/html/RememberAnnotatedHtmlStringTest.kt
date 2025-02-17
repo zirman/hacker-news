@@ -800,7 +800,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(
                     ParagraphStyle(
                         textIndent = TextIndent.None,
-                        lineBreak = LineBreak.Unspecified,
+                        lineBreak = LineBreak.Simple,
                     )
                 )
                 append("  Hello\n  World!")
@@ -825,7 +825,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(
                     ParagraphStyle(
                         textIndent = TextIndent.None,
-                        lineBreak = LineBreak.Unspecified,
+                        lineBreak = LineBreak.Simple,
                     )
                 )
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
@@ -855,7 +855,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(
                     ParagraphStyle(
                         textIndent = TextIndent.None,
-                        lineBreak = LineBreak.Unspecified,
+                        lineBreak = LineBreak.Simple,
                     )
                 )
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
@@ -882,7 +882,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(
                     ParagraphStyle(
                         textIndent = TextIndent.None,
-                        lineBreak = LineBreak.Unspecified,
+                        lineBreak = LineBreak.Simple,
                     )
                 )
                 append("  Hello\n  World!")
@@ -904,7 +904,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(
                     ParagraphStyle(
                         textIndent = TextIndent.None,
-                        lineBreak = LineBreak.Unspecified,
+                        lineBreak = LineBreak.Simple,
                     )
                 )
                 append("  ")
@@ -1170,7 +1170,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(
                     ParagraphStyle(
                         textIndent = TextIndent.None,
-                        lineBreak = LineBreak.Unspecified,
+                        lineBreak = LineBreak.Simple,
                     )
                 )
                 append("Hello World!")
@@ -1190,7 +1190,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(
                     ParagraphStyle(
                         textIndent = TextIndent.None,
-                        lineBreak = LineBreak.Unspecified,
+                        lineBreak = LineBreak.Simple,
                     )
                 )
                 append("Hello")
@@ -1201,7 +1201,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(
                     ParagraphStyle(
                         textIndent = TextIndent.None,
-                        lineBreak = LineBreak.Unspecified,
+                        lineBreak = LineBreak.Simple,
                     )
                 )
             },
@@ -1490,10 +1490,34 @@ class RememberAnnotatedHtmlStringTest {
     }
 
     @Test
-    fun `escape non breaking whitespace`() {
+    fun `escape non breaking space`() {
         assertEquals(
             expected = buildAnnotatedString { append('\u00a0') },
             actual = htmlParser.parse("""&nbsp;"""),
+        )
+    }
+
+    @Test
+    fun `escape thin space`() {
+        assertEquals(
+            expected = buildAnnotatedString { append('\u2009') },
+            actual = htmlParser.parse("""&thinsp;"""),
+        )
+    }
+
+    @Test
+    fun `escape en space`() {
+        assertEquals(
+            expected = buildAnnotatedString { append('\u2002') },
+            actual = htmlParser.parse("""&ensp;"""),
+        )
+    }
+
+    @Test
+    fun `escape em space`() {
+        assertEquals(
+            expected = buildAnnotatedString { append('\u2003') },
+            actual = htmlParser.parse("""&emsp;"""),
         )
     }
 
@@ -1531,7 +1555,413 @@ class RememberAnnotatedHtmlStringTest {
 
     // tests from https://blog.dwac.dev/posts/html-whitespace/
     @Test
-    fun `asdfj `() {
-
+    fun `no whitespace`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushLink(
+                    LinkAnnotation.Url(
+                        url = "#",
+                        styles = htmlParser.textLinkStyles,
+                    ),
+                )
+                append("First")
+                pop()
+                pushLink(
+                    LinkAnnotation.Url(
+                        url = "#",
+                        styles = htmlParser.textLinkStyles,
+                    ),
+                )
+                append("Second")
+            },
+            actual = htmlParser.parse("""<a href="#">First</a><a href="#">Second</a>""")
+        )
     }
+
+    @Test
+    fun `single space`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushLink(
+                    LinkAnnotation.Url(
+                        url = "#",
+                        styles = htmlParser.textLinkStyles,
+                    ),
+                )
+                append("First")
+                pop()
+                append(' ')
+                pushLink(
+                    LinkAnnotation.Url(
+                        url = "#",
+                        styles = htmlParser.textLinkStyles,
+                    ),
+                )
+                append("Second")
+            },
+            actual = htmlParser.parse("""<a href="#">First</a> <a href="#">Second</a>""")
+        )
+    }
+
+    @Test
+    fun `lots of spaces`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushLink(
+                    LinkAnnotation.Url(
+                        url = "#",
+                        styles = htmlParser.textLinkStyles,
+                    ),
+                )
+                append("First")
+                pop()
+                append(' ')
+                pushLink(
+                    LinkAnnotation.Url(
+                        url = "#",
+                        styles = htmlParser.textLinkStyles,
+                    ),
+                )
+                append("Second")
+            },
+            actual = htmlParser.parse("""<a href="#">First</a>       <a href="#">Second</a>""")
+        )
+    }
+
+    @Test
+    fun newline() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushLink(
+                    LinkAnnotation.Url(
+                        url = "#",
+                        styles = htmlParser.textLinkStyles,
+                    ),
+                )
+                append("First")
+                pop()
+                append(' ')
+                pushLink(
+                    LinkAnnotation.Url(
+                        url = "#",
+                        styles = htmlParser.textLinkStyles,
+                    ),
+                )
+                append("Second")
+            },
+            actual = htmlParser.parse(
+                """<a href="#">First</a>
+<a href="#">Second</a>"""
+            )
+        )
+    }
+
+    @Test
+    fun indented() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                pushLink(
+                    LinkAnnotation.Url(
+                        url = "#",
+                        styles = htmlParser.textLinkStyles,
+                    ),
+                )
+                append("First")
+                pop()
+                append(' ')
+                pushLink(
+                    LinkAnnotation.Url(
+                        url = "#",
+                        styles = htmlParser.textLinkStyles,
+                    ),
+                )
+                append("Second")
+            },
+            actual = htmlParser.parse(
+                """<span>
+            <a href="#">First</a>
+            <a href="#">Second</a>
+</span>"""
+            )
+        )
+    }
+
+    @Test
+    fun `basic link`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                append("Hello, ")
+                pushLink(
+                    LinkAnnotation.Url(
+                        url = "#",
+                        styles = htmlParser.textLinkStyles,
+                    ),
+                )
+                append("World")
+                pop()
+                append('!')
+            },
+            actual = htmlParser.parse("""Hello, <a href="#">World</a>!""")
+        )
+    }
+
+    @Test
+    fun `spaced link`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                append("Hello, ")
+                pushLink(
+                    LinkAnnotation.Url(
+                        url = "#",
+                        styles = htmlParser.textLinkStyles,
+                    ),
+                )
+                append("World ")
+                pop()
+                append('!')
+            },
+            actual = htmlParser.parse("""Hello, <a href="#"> World </a>!""")
+        )
+    }
+
+    @Test
+    fun `very spacey link`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                append("Hello, ")
+                pushLink(
+                    LinkAnnotation.Url(
+                        url = "#",
+                        styles = htmlParser.textLinkStyles,
+                    ),
+                )
+                append("World ")
+                pop()
+                append('!')
+            },
+            actual = htmlParser.parse("""Hello, <a href="#">        World          </a>!""")
+        )
+    }
+
+    @Test
+    fun `link before text`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushLink(
+                    LinkAnnotation.Url(
+                        url = "#",
+                        styles = htmlParser.textLinkStyles,
+                    ),
+                )
+                append("Hello, ")
+                pop()
+                append("World!")
+            },
+            actual = htmlParser.parse("""<a href="#">Hello, </a> World!""")
+        )
+    }
+
+    @Test
+    fun `long link text`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                append("Hello, ")
+                pushLink(
+                    LinkAnnotation.Url(
+                        url = "#",
+                        styles = htmlParser.textLinkStyles,
+                    ),
+                )
+                append("here is some long link text that goes on its own line ")
+                pop()
+                append("please take a look at it!")
+            },
+            actual = htmlParser.parse(
+                """Hello, <a href="#">
+    here is some long link text that goes on its own line
+</a> please take a look at it!""",
+            )
+        )
+    }
+
+    @Test
+    fun `single-line link`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                append("Hello, ")
+                pushLink(
+                    LinkAnnotation.Url(
+                        url = "#",
+                        styles = htmlParser.textLinkStyles,
+                    ),
+                )
+                append("here is some long link text that goes on its own line")
+                pop()
+                append(" please take a look at it!")
+            },
+            actual = htmlParser.parse(
+                """Hello,
+<a href="#">here is some long link text that goes on its own line</a>
+please take a look at it!""",
+            )
+        )
+    }
+
+    @Test
+    fun `block elements without whitespace`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Simple,
+                    ),
+                )
+                append("Hello")
+                pop()
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Simple,
+                    ),
+                )
+                append("World")
+            },
+            actual = htmlParser.parse(
+                """<div>Hello</div><div>World</div>""",
+            )
+        )
+    }
+
+    @Test
+    fun `block elements with whitespace`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Simple,
+                    ),
+                )
+                append("Hello")
+                pop()
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Simple,
+                    ),
+                )
+                append("World")
+            },
+            actual = htmlParser.parse(
+                """<div>Hello</div>      <div>World</div>""",
+            )
+        )
+    }
+
+    @Test
+    fun `block elements with newline`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Simple,
+                    ),
+                )
+                append("Hello")
+                pop()
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Simple,
+                    ),
+                )
+                append("World")
+            },
+            actual = htmlParser.parse(
+                """<div>Hello</div>
+<div>World</div>""",
+            )
+        )
+    }
+
+    @Test
+    fun `preformatted text`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Simple,
+                    ),
+                )
+                append(
+                    """Hello world
+I am preformatted         text, which is interesting.
+    This line is indented more than the rest!"""
+                )
+            },
+            actual = htmlParser.parse(
+                """<pre>
+Hello world
+I am preformatted         text, which is interesting.
+    This line is indented more than the rest!
+</pre>""",
+            )
+        )
+    }
+
+    @Test
+    fun `preformatted text with leading - trailing whitespace`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Simple,
+                    ),
+                )
+                append(
+                    """Hello world
+
+"""
+                )
+            },
+            actual = htmlParser.parse(
+                """<pre>
+
+Hello world
+
+</pre>""",
+            )
+        )
+    }
+
+    @Test
+    fun `preformatted text with leading-trailing spaces`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Simple,
+                    ),
+                )
+                append(
+                    """ 
+Hello world
+ 
+"""
+                )
+            },
+            actual = htmlParser.parse(
+                """<pre> 
+Hello world
+ </pre>""",
+            )
+        )
+    }
+
 }
