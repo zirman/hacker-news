@@ -175,7 +175,7 @@ material3WindowSizeClassMultiplatform = { group = "dev.chrisbanes.material3", na
 material3Adaptive = { group = "androidx.compose.material3.adaptive", name = "adaptive", version.ref = "material3Adaptive" }
 material3AdaptiveLayout = { group = "androidx.compose.material3.adaptive", name = "adaptive-layout", version.ref = "material3Adaptive" }
 material3AdaptiveNavigation = { group = "org.jetbrains.compose.material3.adaptive", name = "adaptive-navigation", version = "1.1.0-alpha01" }
-material3AdaptiveNavigationSuite = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite", version = "1.4.0-alpha07" }
+material3AdaptiveNavigationSuite = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite", version = "1.4.0-alpha08" }
 
 composeMaterialWear = { group = "androidx.wear.compose", name = "compose-material", version.ref = "wearCompose" }
 composeNavigationWear = { group = "androidx.wear.compose", name = "compose-navigation", version.ref = "wearCompose" }
