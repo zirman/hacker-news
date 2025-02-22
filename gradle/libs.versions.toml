@@ -29,7 +29,7 @@ datastore = "1.1.2"
 activityKtx = "1.10.0"
 fragmentKtx = "1.8.6"
 lifecycle = "2.8.4" # https://mvnrepository.com/artifact/org.jetbrains.androidx.lifecycle/lifecycle-viewmodel
-navigation = "2.8.7"
+#navigation = "2.8.7"
 googlePlayServices = "4.4.2"
 playServicesWearable = "19.0.0"
 crashlytics = "3.0.3"
@@ -61,7 +61,7 @@ junitJupiter = "5.11.3"
 assertjCore = "3.26.3"
 slf4jSimple = "2.0.16"
 detekt = "1.23.7"
-coil = "2.6.0"
+#coil = "2.6.0"
 
 [libraries]
 plugin-kotlinGradle = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -84,7 +84,7 @@ kotilnCoroutinesBom = { group = "org.jetbrains.kotlinx", name = "kotlinx-corouti
 #kotlinStdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 kotlinCoroutinesAndroid = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android" }
 kotlinCoroutinesSwing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing" }
-kotlinCoroutinesJavaFx = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-javafx" }
+#kotlinCoroutinesJavaFx = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-javafx" }
 kotlinCoroutinesTest = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test" }
 kotlinSerializationJson = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
 kotlinCollectionsImmutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinCollectionsImmutable" }
@@ -111,7 +111,7 @@ ktorClientCore = { group = "io.ktor", name = "ktor-client-core", version.ref = "
 ktorClientAndroid = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }
 ktorClientJvm = { group = "io.ktor", name = "ktor-client-apache5", version.ref = "ktor" }
 ktorClientDarwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
-ktorClientJs = { group = "io.ktor", name = "ktor-client-js", version.ref = "ktor" }
+#ktorClientJs = { group = "io.ktor", name = "ktor-client-js", version.ref = "ktor" }
 ktorClientLogging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
 ktorClientContentNegotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktorSerializationKotlinJson = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
@@ -167,7 +167,7 @@ koinAnnotations = { group = "io.insert-koin", name = "koin-annotations", version
 koinKspCompiler = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref = "koinAnnotations" }
 #koinAndroidxWorkmanager = { group = "io.insert-koin", name = "koin-androidx-workmanager" }
 
-navigationUiKtx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
+#navigationUiKtx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
 
 composeLintChecks = { group = "com.slack.lint.compose", name = "compose-lint-checks", version.ref = "composeLintChecks" }
 
