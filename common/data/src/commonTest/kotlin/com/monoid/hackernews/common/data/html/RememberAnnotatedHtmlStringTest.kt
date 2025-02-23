@@ -155,7 +155,7 @@ class RememberAnnotatedHtmlStringTest {
             expected = listOf(
                 HtmlToken.Tag("<br", emptyList(), "/>"),
             ),
-            actual = """<br />""".tokenizeHtml().toList(),
+            actual = "<br />".tokenizeHtml().toList(),
         )
     }
 
@@ -168,7 +168,7 @@ class RememberAnnotatedHtmlStringTest {
                 HtmlToken.Word("Hello"),
                 HtmlToken.Tag("</u", emptyList(), ">"),
             ),
-            actual = """  <u>Hello</u>""".tokenizeHtml().toList(),
+            actual = "  <u>Hello</u>".tokenizeHtml().toList(),
         )
     }
 
@@ -178,7 +178,7 @@ class RememberAnnotatedHtmlStringTest {
             expected = listOf(
                 HtmlToken.Tag("<br", emptyList(), "/>"),
             ),
-            actual = """<br/>""".tokenizeHtml().toList(),
+            actual = "<br/>".tokenizeHtml().toList(),
         )
     }
 
@@ -188,7 +188,7 @@ class RememberAnnotatedHtmlStringTest {
             expected = listOf(
                 HtmlToken.Word("<"),
             ),
-            actual = """<""".tokenizeHtml().toList(),
+            actual = "<".tokenizeHtml().toList(),
         )
     }
 
@@ -199,7 +199,7 @@ class RememberAnnotatedHtmlStringTest {
                 HtmlToken.Word("World!"),
                 HtmlToken.Tag("</p", emptyList(), ">"),
             ),
-            actual = """World!</p>""".tokenizeHtml().toList(),
+            actual = "World!</p>".tokenizeHtml().toList(),
         )
     }
 
@@ -370,7 +370,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 append("Hello World!")
             },
-            actual = htmlParser.parse("""<u>Hello  World!</u>"""),
+            actual = htmlParser.parse("<u>Hello  World!</u>"),
         )
     }
 
@@ -384,7 +384,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("d!")
             },
-            actual = htmlParser.parse("""H<u>ello  Worl</u>d!"""),
+            actual = htmlParser.parse("H<u>ello  Worl</u>d!"),
         )
     }
 
@@ -398,7 +398,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("d!")
             },
-            actual = htmlParser.parse("""H  <u>ello  Worl</u>d!"""),
+            actual = htmlParser.parse("H  <u>ello  Worl</u>d!"),
         )
     }
 
@@ -412,7 +412,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append(" d!")
             },
-            actual = htmlParser.parse("""H<u>ello  Worl</u>  d!"""),
+            actual = htmlParser.parse("H<u>ello  Worl</u>  d!"),
         )
     }
 
@@ -426,7 +426,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append(" d!")
             },
-            actual = htmlParser.parse("""H<u>ello  Worl</u>  d!  """),
+            actual = htmlParser.parse("H<u>ello  Worl</u>  d!  "),
         )
     }
 
@@ -440,7 +440,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("d!")
             },
-            actual = htmlParser.parse("""H<u>ello  Worl  </u>  d!"""),
+            actual = htmlParser.parse("H<u>ello  Worl  </u>  d!"),
         )
     }
 
@@ -454,7 +454,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("World")
             }, // consumes spaces between tags
-            actual = htmlParser.parse("""  <u>  <s>  Hello  </s>World</u>  """),
+            actual = htmlParser.parse("  <u>  <s>  Hello  </s>World</u>  "),
         )
     }
 
@@ -468,7 +468,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.LineThrough))
                 append("Kotlin")
             }, // should consume spaces between tags
-            actual = htmlParser.parse("""  Hello  <u>  World  <s>  Kotlin  </s>  </u>  """),
+            actual = htmlParser.parse("  Hello  <u>  World  <s>  Kotlin  </s>  </u>  "),
         )
     }
 
@@ -484,7 +484,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("Kotlin")
             }, // should consume spaces between tags
-            actual = htmlParser.parse("""  <u>  <s>  Hello  </s>  World  </u>  Kotlin  """),
+            actual = htmlParser.parse("  <u>  <s>  Hello  </s>  World  </u>  Kotlin  "),
         )
     }
 
@@ -495,7 +495,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
                 append("Hello World!")
             },
-            actual = htmlParser.parse("""<b>Hello World!</b>"""),
+            actual = htmlParser.parse("<b>Hello World!</b>"),
         )
     }
 
@@ -505,7 +505,7 @@ class RememberAnnotatedHtmlStringTest {
             expected = buildAnnotatedString {
                 appendLine()
             },
-            actual = htmlParser.parse("""<br>"""),
+            actual = htmlParser.parse("<br>"),
         )
     }
 
@@ -515,7 +515,7 @@ class RememberAnnotatedHtmlStringTest {
             expected = buildAnnotatedString {
                 appendLine()
             },
-            actual = htmlParser.parse("""<br/>"""),
+            actual = htmlParser.parse("<br/>"),
         )
     }
 
@@ -525,7 +525,7 @@ class RememberAnnotatedHtmlStringTest {
             expected = buildAnnotatedString {
                 appendLine()
             },
-            actual = htmlParser.parse("""</br>"""),
+            actual = htmlParser.parse("</br>"),
         )
     }
 
@@ -535,7 +535,7 @@ class RememberAnnotatedHtmlStringTest {
             expected = buildAnnotatedString {
                 appendLine()
             },
-            actual = htmlParser.parse("""<br />"""),
+            actual = htmlParser.parse("<br />"),
         )
     }
 
@@ -547,7 +547,7 @@ class RememberAnnotatedHtmlStringTest {
                 appendLine()
                 append("World!")
             },
-            actual = htmlParser.parse("""Hello<br>World!"""),
+            actual = htmlParser.parse("Hello<br>World!"),
         )
     }
 
@@ -564,7 +564,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(htmlParser.hStyles[0])
                 append("Hello World!")
             },
-            actual = htmlParser.parse("""<h1>Hello World!</h1>"""),
+            actual = htmlParser.parse("<h1>Hello World!</h1>"),
         )
     }
 
@@ -581,7 +581,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(htmlParser.hStyles[1])
                 append("Hello World!")
             },
-            actual = htmlParser.parse("""<h2>Hello World!</h2>"""),
+            actual = htmlParser.parse("<h2>Hello World!</h2>"),
         )
     }
 
@@ -598,7 +598,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(htmlParser.hStyles[2])
                 append("Hello World!")
             },
-            actual = htmlParser.parse("""<h3>Hello World!</h3>"""),
+            actual = htmlParser.parse("<h3>Hello World!</h3>"),
         )
     }
 
@@ -615,7 +615,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(htmlParser.hStyles[3])
                 append("Hello World!")
             },
-            actual = htmlParser.parse("""<h4>Hello World!</h4>"""),
+            actual = htmlParser.parse("<h4>Hello World!</h4>"),
         )
     }
 
@@ -632,7 +632,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(htmlParser.hStyles[4])
                 append("Hello World!")
             },
-            actual = htmlParser.parse("""<h5>Hello World!</h5>"""),
+            actual = htmlParser.parse("<h5>Hello World!</h5>"),
         )
     }
 
@@ -649,7 +649,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(htmlParser.hStyles[5])
                 append("Hello World!")
             },
-            actual = htmlParser.parse("""<h6>Hello World!</h6>"""),
+            actual = htmlParser.parse("<h6>Hello World!</h6>"),
         )
     }
 
@@ -685,7 +685,7 @@ class RememberAnnotatedHtmlStringTest {
                 )
                 pushStyle(htmlParser.hStyles[0])
             },
-            actual = htmlParser.parse("""<h1>Hello<h2>World!</h1>"""),
+            actual = htmlParser.parse("<h1>Hello<h2>World!</h1>"),
         )
     }
 
@@ -696,7 +696,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
                 append("Hello World!")
             },
-            actual = htmlParser.parse("""<i>Hello World!</i>"""),
+            actual = htmlParser.parse("<i>Hello World!</i>"),
         )
     }
 
@@ -707,7 +707,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
                 append("Hello World!")
             },
-            actual = htmlParser.parse("""<cite>Hello World!</cite>"""),
+            actual = htmlParser.parse("<cite>Hello World!</cite>"),
         )
     }
 
@@ -718,7 +718,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
                 append("Hello World!")
             },
-            actual = htmlParser.parse("""<dfn>Hello World!</dfn>"""),
+            actual = htmlParser.parse("<dfn>Hello World!</dfn>"),
         )
     }
 
@@ -729,7 +729,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(fontStyle = FontStyle.Italic))
                 append("Hello World!")
             },
-            actual = htmlParser.parse("""<em>Hello World!</em>"""),
+            actual = htmlParser.parse("<em>Hello World!</em>"),
         )
     }
 
@@ -740,7 +740,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(fontSize = 1.25f.em))
                 append("Hello World!")
             },
-            actual = htmlParser.parse("""<big>Hello World!</big>"""),
+            actual = htmlParser.parse("<big>Hello World!</big>"),
         )
     }
 
@@ -751,7 +751,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(fontSize = .8.em))
                 append("Hello World!")
             },
-            actual = htmlParser.parse("""<small>Hello World!</small>"""),
+            actual = htmlParser.parse("<small>Hello World!</small>"),
         )
     }
 
@@ -762,7 +762,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(fontFamily = FontFamily.Monospace))
                 append("Hello World!")
             },
-            actual = htmlParser.parse("""<tt>Hello World!</tt>"""),
+            actual = htmlParser.parse("<tt>Hello World!</tt>"),
         )
     }
 
@@ -773,7 +773,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(fontFamily = FontFamily.Monospace))
                 append("Hello World!")
             },
-            actual = htmlParser.parse("""<code>Hello World!</code>"""),
+            actual = htmlParser.parse("<code>Hello World!</code>"),
         )
     }
 
@@ -789,7 +789,7 @@ class RememberAnnotatedHtmlStringTest {
                 )
                 append("Hello World!")
             },
-            actual = htmlParser.parse("""<a href=https://www.wikipedia.com/>Hello World!</a>"""),
+            actual = htmlParser.parse("<a href=https://www.wikipedia.com/>Hello World!</a>"),
         )
     }
 
@@ -974,7 +974,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.LineThrough))
                 append("Hello")
             },
-            actual = htmlParser.parse("""<s>Hello</s>"""),
+            actual = htmlParser.parse("<s>Hello</s>"),
         )
     }
 
@@ -985,7 +985,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.LineThrough))
                 append("Hello")
             },
-            actual = htmlParser.parse("""<strike>Hello</strike>"""),
+            actual = htmlParser.parse("<strike>Hello</strike>"),
         )
     }
 
@@ -996,7 +996,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.LineThrough))
                 append("Hello")
             },
-            actual = htmlParser.parse("""<del>Hello</del>"""),
+            actual = htmlParser.parse("<del>Hello</del>"),
         )
     }
 
@@ -1007,7 +1007,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
                 append("Hello")
             },
-            actual = htmlParser.parse("""<u>Hello</u>"""),
+            actual = htmlParser.parse("<u>Hello</u>"),
         )
     }
 
@@ -1018,7 +1018,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(baselineShift = BaselineShift.Superscript))
                 append("Hello")
             },
-            actual = htmlParser.parse("""<sup>Hello</sup>"""),
+            actual = htmlParser.parse("<sup>Hello</sup>"),
         )
     }
 
@@ -1096,7 +1096,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
                 append("Hello")
             },
-            actual = htmlParser.parse("""<p>Hello</p>"""),
+            actual = htmlParser.parse("<p>Hello</p>"),
         )
     }
 
@@ -1110,7 +1110,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
                 append("World!")
             },
-            actual = htmlParser.parse("""<p>Hello</p><p>World!</p>"""),
+            actual = htmlParser.parse("<p>Hello</p><p>World!</p>"),
         )
     }
 
@@ -1124,7 +1124,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
                 append("World!")
             },
-            actual = htmlParser.parse("""<p>Hello<p>World!"""),
+            actual = htmlParser.parse("<p>Hello<p>World!"),
         )
     }
 
@@ -1169,7 +1169,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
             },
-            actual = htmlParser.parse("""<p><p>Hello</p></p>"""),
+            actual = htmlParser.parse("<p><p>Hello</p></p>"),
         )
     }
 
@@ -1185,7 +1185,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("World!")
             },
-            actual = htmlParser.parse("""<p>Hello</p>World!</p>World!"""),
+            actual = htmlParser.parse("<p>Hello</p>World!</p>World!"),
         )
     }
 
@@ -1200,7 +1200,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("World!")
             },
-            actual = htmlParser.parse("""</p>Hello</p>World!"""),
+            actual = htmlParser.parse("</p>Hello</p>World!"),
         )
     }
 
@@ -1220,7 +1220,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 pushStyle(ParagraphStyle(lineBreak = LineBreak.Paragraph))
             },
-            actual = htmlParser.parse("""<p><pre>Hello World!</pre></p>"""),
+            actual = htmlParser.parse("<p><pre>Hello World!</pre></p>"),
         )
     }
 
@@ -1248,7 +1248,7 @@ class RememberAnnotatedHtmlStringTest {
                     )
                 )
             },
-            actual = htmlParser.parse("""<p><pre>Hello</p>World!</pre>"""),
+            actual = htmlParser.parse("<p><pre>Hello</p>World!</pre>"),
         )
     }
 
@@ -1264,7 +1264,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append(" World!")
             },
-            actual = htmlParser.parse("""<u><p>Hello</u> World!</p>"""),
+            actual = htmlParser.parse("<u><p>Hello</u> World!</p>"),
         )
     }
 
@@ -1456,7 +1456,7 @@ class RememberAnnotatedHtmlStringTest {
                 )
                 append("Hello World!")
             },
-            actual = htmlParser.parse("""<p dir=rtl>Hello World!</p>"""),
+            actual = htmlParser.parse("<p dir=rtl>Hello World!</p>"),
         )
     }
 
@@ -1472,7 +1472,7 @@ class RememberAnnotatedHtmlStringTest {
                 )
                 append("Hello World!")
             },
-            actual = htmlParser.parse("""<p dir=ltr>Hello World!</p>"""),
+            actual = htmlParser.parse("<p dir=ltr>Hello World!</p>"),
         )
     }
 
@@ -1480,7 +1480,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape tab`() {
         assertEquals(
             expected = buildAnnotatedString { append("\t") },
-            actual = htmlParser.parse("""&Tab;"""),
+            actual = htmlParser.parse("&Tab;"),
         )
     }
 
@@ -1488,7 +1488,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape newline`() {
         assertEquals(
             expected = buildAnnotatedString { append("\n") },
-            actual = htmlParser.parse("""&NewLine;"""),
+            actual = htmlParser.parse("&NewLine;"),
         )
     }
 
@@ -1496,7 +1496,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape ampersand`() {
         assertEquals(
             expected = buildAnnotatedString { append("&") },
-            actual = htmlParser.parse("""&amp;"""),
+            actual = htmlParser.parse("&amp;"),
         )
     }
 
@@ -1504,7 +1504,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape ampersand 2`() {
         assertEquals(
             expected = buildAnnotatedString { append("A&B") },
-            actual = htmlParser.parse("""A&amp;B"""),
+            actual = htmlParser.parse("A&amp;B"),
         )
     }
 
@@ -1512,7 +1512,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape less than`() {
         assertEquals(
             expected = buildAnnotatedString { append("<") },
-            actual = htmlParser.parse("""&lt;"""),
+            actual = htmlParser.parse("&lt;"),
         )
     }
 
@@ -1520,7 +1520,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape greater than`() {
         assertEquals(
             expected = buildAnnotatedString { append(">") },
-            actual = htmlParser.parse("""&gt;"""),
+            actual = htmlParser.parse("&gt;"),
         )
     }
 
@@ -1528,7 +1528,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape quote`() {
         assertEquals(
             expected = buildAnnotatedString { append("\"") },
-            actual = htmlParser.parse("""&quot;"""),
+            actual = htmlParser.parse("&quot;"),
         )
     }
 
@@ -1536,7 +1536,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape non breaking space`() {
         assertEquals(
             expected = buildAnnotatedString { append('\u00a0') },
-            actual = htmlParser.parse("""&nbsp;"""),
+            actual = htmlParser.parse("&nbsp;"),
         )
     }
 
@@ -1544,7 +1544,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape thin space`() {
         assertEquals(
             expected = buildAnnotatedString { append('\u2009') },
-            actual = htmlParser.parse("""&thinsp;"""),
+            actual = htmlParser.parse("&thinsp;"),
         )
     }
 
@@ -1552,7 +1552,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape en space`() {
         assertEquals(
             expected = buildAnnotatedString { append('\u2002') },
-            actual = htmlParser.parse("""&ensp;"""),
+            actual = htmlParser.parse("&ensp;"),
         )
     }
 
@@ -1560,7 +1560,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape em space`() {
         assertEquals(
             expected = buildAnnotatedString { append('\u2003') },
-            actual = htmlParser.parse("""&emsp;"""),
+            actual = htmlParser.parse("&emsp;"),
         )
     }
 
@@ -1568,7 +1568,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape apostrophe`() {
         assertEquals(
             expected = buildAnnotatedString { append("'") },
-            actual = htmlParser.parse("""&#39;"""),
+            actual = htmlParser.parse("&#39;"),
         )
     }
 
@@ -1576,7 +1576,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape apostrophe in hex`() {
         assertEquals(
             expected = buildAnnotatedString { append("'") },
-            actual = htmlParser.parse("""&#x27;"""),
+            actual = htmlParser.parse("&#x27;"),
         )
     }
 
@@ -1584,7 +1584,7 @@ class RememberAnnotatedHtmlStringTest {
     fun `escape two characters in a row`() {
         assertEquals(
             expected = buildAnnotatedString { append("A<B>C") },
-            actual = htmlParser.parse("""A&lt;B&gt;C"""),
+            actual = htmlParser.parse("A&lt;B&gt;C"),
         )
     }
 
@@ -1617,7 +1617,7 @@ class RememberAnnotatedHtmlStringTest {
                 )
                 append("Second")
             },
-            actual = htmlParser.parse("""<a href="#">First</a><a href="#">Second</a>""")
+            actual = htmlParser.parse("""<a href="#">First</a><a href="#">Second</a>"""),
         )
     }
 
@@ -1642,7 +1642,7 @@ class RememberAnnotatedHtmlStringTest {
                 )
                 append("Second")
             },
-            actual = htmlParser.parse("""<a href="#">First</a> <a href="#">Second</a>""")
+            actual = htmlParser.parse("""<a href="#">First</a> <a href="#">Second</a>"""),
         )
     }
 
@@ -1667,7 +1667,7 @@ class RememberAnnotatedHtmlStringTest {
                 )
                 append("Second")
             },
-            actual = htmlParser.parse("""<a href="#">First</a>       <a href="#">Second</a>""")
+            actual = htmlParser.parse("""<a href="#">First</a>       <a href="#">Second</a>"""),
         )
     }
 
@@ -1695,7 +1695,7 @@ class RememberAnnotatedHtmlStringTest {
             actual = htmlParser.parse(
                 """|<a href="#">First</a>
                    |<a href="#">Second</a>""".trimMargin(),
-            )
+            ),
         )
     }
 
@@ -1726,7 +1726,7 @@ class RememberAnnotatedHtmlStringTest {
                    |            <a href="#">First</a>
                    |            <a href="#">Second</a>
                    |</span>""".trimMargin(),
-            )
+            ),
         )
     }
 
@@ -1745,7 +1745,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append('!')
             },
-            actual = htmlParser.parse("""Hello, <a href="#">World</a>!""")
+            actual = htmlParser.parse("""Hello, <a href="#">World</a>!"""),
         )
     }
 
@@ -1764,7 +1764,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append('!')
             },
-            actual = htmlParser.parse("""Hello, <a href="#"> World </a>!""")
+            actual = htmlParser.parse("""Hello, <a href="#"> World </a>!"""),
         )
     }
 
@@ -1801,7 +1801,7 @@ class RememberAnnotatedHtmlStringTest {
                 pop()
                 append("World!")
             },
-            actual = htmlParser.parse("""<a href="#">Hello, </a> World!""")
+            actual = htmlParser.parse("""<a href="#">Hello, </a> World!"""),
         )
     }
 
@@ -1824,7 +1824,7 @@ class RememberAnnotatedHtmlStringTest {
                 """|Hello, <a href="#">
                    |    here is some long link text that goes on its own line
                    |</a> please take a look at it!""".trimMargin(),
-            )
+            ),
         )
     }
 
@@ -1847,7 +1847,7 @@ class RememberAnnotatedHtmlStringTest {
                 """|Hello,
                    |<a href="#">here is some long link text that goes on its own line</a>
                    |please take a look at it!""".trimMargin(),
-            )
+            ),
         )
     }
 
@@ -1872,8 +1872,8 @@ class RememberAnnotatedHtmlStringTest {
                 append("World")
             },
             actual = htmlParser.parse(
-                """<div>Hello</div><div>World</div>""",
-            )
+                "<div>Hello</div><div>World</div>",
+            ),
         )
     }
 
@@ -1898,8 +1898,8 @@ class RememberAnnotatedHtmlStringTest {
                 append("World")
             },
             actual = htmlParser.parse(
-                """<div>Hello</div>      <div>World</div>""",
-            )
+                "<div>Hello</div>      <div>World</div>",
+            ),
         )
     }
 
@@ -1926,7 +1926,7 @@ class RememberAnnotatedHtmlStringTest {
             actual = htmlParser.parse(
                 """|<div>Hello</div>
                    |<div>World</div>""".trimMargin(),
-            )
+            ),
         )
     }
 
@@ -1952,7 +1952,7 @@ class RememberAnnotatedHtmlStringTest {
                    |I am preformatted         text, which is interesting.
                    |    This line is indented more than the rest!
                    |</pre>""".trimMargin(),
-            )
+            ),
         )
     }
 
@@ -1979,7 +1979,7 @@ class RememberAnnotatedHtmlStringTest {
                    |
                    |</pre>
                    |""".trimMargin(),
-            )
+            ),
         )
     }
 
@@ -2007,7 +2007,7 @@ class RememberAnnotatedHtmlStringTest {
                    |Hello world
                    |
                    |</pre>a""".trimMargin(),
-            )
+            ),
         )
     }
 
@@ -2031,7 +2031,7 @@ class RememberAnnotatedHtmlStringTest {
                 """|<pre> 
                    |Hello world
                    | </pre>""".trimMargin(),
-            )
+            ),
         )
     }
 
@@ -2051,7 +2051,7 @@ class RememberAnnotatedHtmlStringTest {
                 """|<pre>
                    |    Hello, World!
                    |</pre>""".trimMargin(),
-            )
+            ),
         )
     }
 
