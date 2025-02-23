@@ -1676,9 +1676,8 @@ class RememberAnnotatedHtmlStringTest {
                 append("Second")
             },
             actual = htmlParser.parse(
-                """
-                |<a href="#">First</a>
-                |<a href="#">Second</a>""".trimMargin(),
+                """ |<a href="#">First</a>
+                    |<a href="#">Second</a>""".trimMargin(),
             )
         )
     }
@@ -1706,11 +1705,10 @@ class RememberAnnotatedHtmlStringTest {
                 append("Second")
             },
             actual = htmlParser.parse(
-                """
-                |<span>
-                |            <a href="#">First</a>
-                |            <a href="#">Second</a>
-                |</span>""".trimMargin(),
+                """ |<span>
+                    |            <a href="#">First</a>
+                    |            <a href="#">Second</a>
+                    |</span>""".trimMargin(),
             )
         )
     }
@@ -1806,8 +1804,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("please take a look at it!")
             },
             actual = htmlParser.parse(
-                """
-                    |Hello, <a href="#">
+                """ |Hello, <a href="#">
                     |    here is some long link text that goes on its own line
                     |</a> please take a look at it!""".trimMargin(),
             )
@@ -1830,8 +1827,7 @@ class RememberAnnotatedHtmlStringTest {
                 append(" please take a look at it!")
             },
             actual = htmlParser.parse(
-                """
-                    |Hello,
+                """ |Hello,
                     |<a href="#">here is some long link text that goes on its own line</a>
                     |please take a look at it!""".trimMargin(),
             )
@@ -1911,9 +1907,8 @@ class RememberAnnotatedHtmlStringTest {
                 append("World")
             },
             actual = htmlParser.parse(
-                """
-                |<div>Hello</div>
-                |<div>World</div>""".trimMargin(),
+                """ |<div>Hello</div>
+                    |<div>World</div>""".trimMargin(),
             )
         )
     }
@@ -1929,15 +1924,13 @@ class RememberAnnotatedHtmlStringTest {
                     ),
                 )
                 append(
-                    """
-                        |Hello world
+                    """ |Hello world
                         |I am preformatted         text, which is interesting.
                         |    This line is indented more than the rest!""".trimMargin(),
                 )
             },
             actual = htmlParser.parse(
-                """
-                    |<pre>
+                """ |<pre>
                     |Hello world
                     |I am preformatted         text, which is interesting.
                     |    This line is indented more than the rest!
@@ -1957,15 +1950,13 @@ class RememberAnnotatedHtmlStringTest {
                     ),
                 )
                 append(
-                    """
-                        |
+                    """ |
                         |Hello world
                         |""".trimMargin(),
                 )
             },
             actual = htmlParser.parse(
-                """
-                    |<pre>
+                """ |<pre>
                     |
                     |Hello world
                     |
@@ -1986,8 +1977,7 @@ class RememberAnnotatedHtmlStringTest {
                     ),
                 )
                 append(
-                    """
-                        |
+                    """ |
                         |Hello world
                         |""".trimMargin(),
                 )
@@ -1995,8 +1985,7 @@ class RememberAnnotatedHtmlStringTest {
                 append('a')
             },
             actual = htmlParser.parse(
-                """
-                    |<pre>
+                """ |<pre>
                     |
                     |Hello world
                     |
@@ -2016,19 +2005,75 @@ class RememberAnnotatedHtmlStringTest {
                     ),
                 )
                 append(
-                    """
-                        | 
+                    """ | 
                         |Hello world
                         | """.trimMargin(),
                 )
             },
             actual = htmlParser.parse(
-                """
-                    |<pre> 
+                """ |<pre> 
                     |Hello world
                     | </pre>""".trimMargin(),
             )
         )
     }
 
+    @Test
+    fun `indented pre tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Simple,
+                    ),
+                )
+                append("    Hello, World!")
+            },
+            actual = htmlParser.parse(
+                """ |<pre>
+                    |    Hello, World!
+                    |</pre>""".trimMargin(),
+            )
+        )
+    }
+
+    @Test
+    fun `double indented pre tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Simple,
+                    ),
+                )
+                pop()
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Simple,
+                    ),
+                )
+                append(
+                    """ |        Hello, World!
+                        |    """.trimMargin()
+                )
+                pop()
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Simple,
+                    ),
+                )
+            },
+            actual = htmlParser.parse(
+                """ |<div>
+                    |    <pre>
+                    |        Hello, World!
+                    |    </pre>
+                    |</div>""".trimMargin(),
+            ),
+        )
+    }
 }
