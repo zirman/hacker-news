@@ -2100,4 +2100,40 @@ class RememberAnnotatedHtmlStringTest {
             ),
         )
     }
+
+    @Test
+    fun nbsp() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Simple,
+                    ),
+                )
+                append("Hello,\u00a0\u00a0\u00a0\u00a0\u00a0World")
+                pop()
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Simple,
+                    ),
+                )
+                append('\u00a0')
+                pop()
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Simple,
+                    ),
+                )
+                append("\u00a0\u00a0\u00a0\u00a0test")
+            },
+            actual = htmlParser.parse(
+                """ |<div>Hello,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;World</div>
+                    |<div>&nbsp;</div>
+                    |<div>&nbsp;&nbsp;&nbsp;&nbsp;test</div>""".trimMargin(),
+            ),
+        )
+    }
 }
