@@ -126,6 +126,9 @@ class HtmlParser(
                                 // save block
                                 stack.addFirst(token)
                             } else if (stack.firstOrNull()?.isBlock() == true) {
+                                if (stack.first().isPreformatted()) {
+                                    appendWhitespacePreformatted()
+                                }
                                 // handle close tag
                                 repeat(stack.size) { pop() }
                                 if (stack.first().isHeader()) {
@@ -256,6 +259,31 @@ class HtmlParser(
                     }
                 }
             }
+        }
+
+        private fun AnnotatedString.Builder.appendWhitespacePreformatted() {
+            repeat(index) { iteration ->
+                when (val token = tokens.removeFirst()) {
+                    is HtmlToken.Tag -> {
+                        spanTag(token)
+                    }
+
+                    is HtmlToken.Whitespace -> {
+                        append(
+                            if (iteration == index - 1) {
+                                token.whitespace.removeSuffix("\n")
+                            } else {
+                                token.whitespace
+                            },
+                        )
+                    }
+
+                    is HtmlToken.Word -> {
+                        throw IllegalStateException("Invalid tag")
+                    }
+                }
+            }
+            index = 0
         }
 
         private fun AnnotatedString.Builder.pushBlock() {

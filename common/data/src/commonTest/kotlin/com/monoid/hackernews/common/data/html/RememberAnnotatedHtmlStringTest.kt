@@ -803,7 +803,7 @@ class RememberAnnotatedHtmlStringTest {
                         lineBreak = LineBreak.Simple,
                     )
                 )
-                append("  Hello\n  World!")
+                append("  Hello\n  World!  ")
             },
             actual = htmlParser.parse(
                 htmlString = """
@@ -907,16 +907,42 @@ class RememberAnnotatedHtmlStringTest {
                         lineBreak = LineBreak.Simple,
                     )
                 )
-                append("  ")
+                append(" ")
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
-                append("Hello\n  ")
+                append(" Hello\n ")
                 pop()
-                append("World!")
+                append(" World!")
             },
             actual = htmlParser.parse(
                 htmlString = """
-                    |<pre>  <u>Hello
-                    |  </u>World!
+                    |<pre> <u> Hello
+                    | </u> World!
+                    |</pre>
+                    |""".trimMargin(),
+            ),
+        )
+    }
+
+    @Test
+    fun `pre tag 5`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Simple,
+                    )
+                )
+                append(" ")
+                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                append(" Hello\n ")
+                pop()
+                append(" ")
+            },
+            actual = htmlParser.parse(
+                htmlString = """
+                    |<pre> <u> Hello
+                    | </u> 
                     |</pre>
                     |""".trimMargin(),
             ),
@@ -1650,8 +1676,9 @@ class RememberAnnotatedHtmlStringTest {
                 append("Second")
             },
             actual = htmlParser.parse(
-                """<a href="#">First</a>
-<a href="#">Second</a>"""
+                """
+                |<a href="#">First</a>
+                |<a href="#">Second</a>""".trimMargin(),
             )
         )
     }
@@ -1679,10 +1706,11 @@ class RememberAnnotatedHtmlStringTest {
                 append("Second")
             },
             actual = htmlParser.parse(
-                """<span>
-            <a href="#">First</a>
-            <a href="#">Second</a>
-</span>"""
+                """
+                |<span>
+                |            <a href="#">First</a>
+                |            <a href="#">Second</a>
+                |</span>""".trimMargin(),
             )
         )
     }
@@ -1778,9 +1806,10 @@ class RememberAnnotatedHtmlStringTest {
                 append("please take a look at it!")
             },
             actual = htmlParser.parse(
-                """Hello, <a href="#">
-    here is some long link text that goes on its own line
-</a> please take a look at it!""",
+                """
+                    |Hello, <a href="#">
+                    |    here is some long link text that goes on its own line
+                    |</a> please take a look at it!""".trimMargin(),
             )
         )
     }
@@ -1801,9 +1830,10 @@ class RememberAnnotatedHtmlStringTest {
                 append(" please take a look at it!")
             },
             actual = htmlParser.parse(
-                """Hello,
-<a href="#">here is some long link text that goes on its own line</a>
-please take a look at it!""",
+                """
+                    |Hello,
+                    |<a href="#">here is some long link text that goes on its own line</a>
+                    |please take a look at it!""".trimMargin(),
             )
         )
     }
@@ -1881,8 +1911,9 @@ please take a look at it!""",
                 append("World")
             },
             actual = htmlParser.parse(
-                """<div>Hello</div>
-<div>World</div>""",
+                """
+                |<div>Hello</div>
+                |<div>World</div>""".trimMargin(),
             )
         )
     }
@@ -1898,17 +1929,19 @@ please take a look at it!""",
                     ),
                 )
                 append(
-                    """Hello world
-I am preformatted         text, which is interesting.
-    This line is indented more than the rest!"""
+                    """
+                        |Hello world
+                        |I am preformatted         text, which is interesting.
+                        |    This line is indented more than the rest!""".trimMargin(),
                 )
             },
             actual = htmlParser.parse(
-                """<pre>
-Hello world
-I am preformatted         text, which is interesting.
-    This line is indented more than the rest!
-</pre>""",
+                """
+                    |<pre>
+                    |Hello world
+                    |I am preformatted         text, which is interesting.
+                    |    This line is indented more than the rest!
+                    |</pre>""".trimMargin(),
             )
         )
     }
@@ -1924,17 +1957,50 @@ I am preformatted         text, which is interesting.
                     ),
                 )
                 append(
-                    """Hello world
-
-"""
+                    """
+                        |
+                        |Hello world
+                        |""".trimMargin(),
                 )
             },
             actual = htmlParser.parse(
-                """<pre>
+                """
+                    |<pre>
+                    |
+                    |Hello world
+                    |
+                    |</pre>
+                    |""".trimMargin(),
+            )
+        )
+    }
 
-Hello world
-
-</pre>""",
+    @Test
+    fun `preformatted text with leading - trailing whitespace2`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Simple,
+                    ),
+                )
+                append(
+                    """
+                        |
+                        |Hello world
+                        |""".trimMargin(),
+                )
+                pop()
+                append('a')
+            },
+            actual = htmlParser.parse(
+                """
+                    |<pre>
+                    |
+                    |Hello world
+                    |
+                    |</pre>a""".trimMargin(),
             )
         )
     }
@@ -1950,16 +2016,17 @@ Hello world
                     ),
                 )
                 append(
-                    """ 
-Hello world
- 
-"""
+                    """
+                        | 
+                        |Hello world
+                        | """.trimMargin(),
                 )
             },
             actual = htmlParser.parse(
-                """<pre> 
-Hello world
- </pre>""",
+                """
+                    |<pre> 
+                    |Hello world
+                    | </pre>""".trimMargin(),
             )
         )
     }
