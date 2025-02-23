@@ -950,6 +950,30 @@ class RememberAnnotatedHtmlStringTest {
     }
 
     @Test
+    fun `input ends without closing out pre tag`() {
+        assertEquals(
+            expected = buildAnnotatedString {
+                pushStyle(
+                    ParagraphStyle(
+                        textIndent = TextIndent.None,
+                        lineBreak = LineBreak.Simple,
+                    ),
+                )
+                append("Hello ")
+                pushStyle(
+                    SpanStyle(
+                        textDecoration = TextDecoration.Underline,
+                    ),
+                )
+            },
+            actual = htmlParser.parse(
+                """ |<pre>
+                    |Hello <u>""".trimMargin(),
+            ),
+        )
+    }
+
+    @Test
     fun `s tag`() {
         assertEquals(
             expected = buildAnnotatedString {

@@ -92,6 +92,9 @@ class HtmlParser(
                         false
                     }.not()
                 ) {
+                    if (stack.firstOrNull()?.isPreformatted() == true) {
+                        appendWhitespacePreformatted()
+                    }
                     tokens.clear()
                     stack.clear()
                     index = 0
