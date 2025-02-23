@@ -806,8 +806,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("  Hello\n  World!  ")
             },
             actual = htmlParser.parse(
-                htmlString = """
-                    |<pre>
+                """ |<pre>
                     |  Hello
                     |  World!  
                     |</pre>
@@ -835,8 +834,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
             },
             actual = htmlParser.parse(
-                htmlString = """
-                    |<u> <pre>
+                """ |<u> <pre>
                     |  Hello
                     |  World!
                     |</pre> </u>
@@ -865,8 +863,7 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
             },
             actual = htmlParser.parse(
-                htmlString = """
-                    |a <u> <pre>
+                """ |a <u> <pre>
                     |  Hello
                     |  World!
                     |</pre> </u>
@@ -888,8 +885,7 @@ class RememberAnnotatedHtmlStringTest {
                 append("  Hello\n  World!")
             },
             actual = htmlParser.parse(
-                htmlString = """
-                    |<pre>  Hello
+                """ |<pre>  Hello
                     |  World!
                     |</pre>
                     |""".trimMargin(),
@@ -914,8 +910,7 @@ class RememberAnnotatedHtmlStringTest {
                 append(" World!")
             },
             actual = htmlParser.parse(
-                htmlString = """
-                    |<pre> <u> Hello
+                """ |<pre> <u> Hello
                     | </u> World!
                     |</pre>
                     |""".trimMargin(),
@@ -940,8 +935,7 @@ class RememberAnnotatedHtmlStringTest {
                 append(" ")
             },
             actual = htmlParser.parse(
-                htmlString = """
-                    |<pre> <u> Hello
+                """ |<pre> <u> Hello
                     | </u> 
                     |</pre>
                     |""".trimMargin(),
@@ -1155,12 +1149,11 @@ class RememberAnnotatedHtmlStringTest {
                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
             },
             actual = htmlParser.parse(
-                htmlString = """
-                     |<u>
-                     |  <p>Hello</p>
-                     |  <p>World!</p>
-                     |</u>
-                     |""".trimMargin(),
+                """ |<u>
+                    |  <p>Hello</p>
+                    |  <p>World!</p>
+                    |</u>
+                    |""".trimMargin(),
             ),
         )
     }
