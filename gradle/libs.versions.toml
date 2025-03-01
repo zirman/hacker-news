@@ -6,14 +6,14 @@ targetSdk = "35"
 compileSdk = "35"
 compileSdkPreview = "Baklava"
 buildToolsVersion = "36.0.0-rc4"
-android = "8.8.1"
+android = "8.8.2"
 #lint = "31.4.0"
-desugarJdkLibs = "2.1.4"
+desugarJdkLibs = "2.1.5"
 kotlin = "2.1.20-RC"
-ksp = "2.1.20-RC-1.0.30" # https://github.com/google/ksp/releases
+ksp = "2.1.20-RC-1.0.31" # https://github.com/google/ksp/releases
 kotlinPoet = "2.0.0"
-kotlinWrappersBom = "2025.2.2" # https://github.com/JetBrains/kotlin-wrappers/releases
-jetbrainsCompose = "1.8.0-alpha02" # https://github.com/JetBrains/compose-multiplatform/releases
+kotlinWrappersBom = "2025.2.12" # https://github.com/JetBrains/kotlin-wrappers/releases
+jetbrainsCompose = "1.8.0-alpha03" # https://github.com/JetBrains/compose-multiplatform/releases
 kotlinCoroutines = "1.10.1"
 kotlinSerialization = "1.7.3"
 kotlinCollectionsImmutable = "0.3.8"
@@ -21,12 +21,12 @@ koin = "4.1.0-Beta5" # https://github.com/InsertKoinIO/koin/releases
 koinAnnotations = "2.0.0-Beta3"
 material3WindowSizeClassMultiplatform = "0.5.0"
 kotlinDatetime = "0.6.1"
-ktor = "3.0.3" # https://github.com/ktorio/ktor/releases
+ktor = "3.1.1" # https://github.com/ktorio/ktor/releases
 kermit = "2.0.3"
-room = "2.7.0-beta01"
-sqlite = "2.5.0-beta01"
-datastore = "1.1.2"
-activityKtx = "1.10.0"
+room = "2.7.0-rc01"
+sqlite = "2.5.0-rc01"
+datastore = "1.1.3"
+activityKtx = "1.10.1"
 fragmentKtx = "1.8.6"
 lifecycle = "2.8.4" # https://mvnrepository.com/artifact/org.jetbrains.androidx.lifecycle/lifecycle-viewmodel
 #navigation = "2.8.7"
@@ -34,7 +34,7 @@ googlePlayServices = "4.4.2"
 playServicesWearable = "19.0.0"
 crashlytics = "3.0.3"
 firebasePerf = "1.4.2"
-firebaseBom = "33.9.0"
+firebaseBom = "33.10.0"
 window = "1.3.0"
 appcompat = "1.7.0"
 coreKtx = "1.15.0"
@@ -48,12 +48,12 @@ metricsPerformance = "1.0.0-beta01"
 composeLintChecks = "1.4.2"
 material3Adaptive = "material3Adaptive"
 wearCompose = "1.4.1"
-accompanist = "0.37.0" # https://github.com/google/accompanist/releases
+accompanist = "0.37.2" # https://github.com/google/accompanist/releases
 junit = "4.13.2"
 junitExt = "1.2.1"
 espressoCore = "3.6.1"
 uiTestJunit4 = "1.7.8"
-uiTestManifest = "1.8.0-beta02"
+uiTestManifest = "1.8.0-beta03"
 mockk = "1.13.9"
 robolectric = "4.14.1"
 roborazzi = "1.40.1"
@@ -175,7 +175,7 @@ material3WindowSizeClassMultiplatform = { group = "dev.chrisbanes.material3", na
 material3Adaptive = { group = "androidx.compose.material3.adaptive", name = "adaptive", version.ref = "material3Adaptive" }
 material3AdaptiveLayout = { group = "androidx.compose.material3.adaptive", name = "adaptive-layout", version.ref = "material3Adaptive" }
 material3AdaptiveNavigation = { group = "org.jetbrains.compose.material3.adaptive", name = "adaptive-navigation", version = "1.1.0-alpha01" }
-material3AdaptiveNavigationSuite = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite", version = "1.4.0-alpha08" }
+material3AdaptiveNavigationSuite = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite", version = "1.4.0-alpha09" }
 
 composeMaterialWear = { group = "androidx.wear.compose", name = "compose-material", version.ref = "wearCompose" }
 composeNavigationWear = { group = "androidx.wear.compose", name = "compose-navigation", version.ref = "wearCompose" }
