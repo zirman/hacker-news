@@ -15,14 +15,14 @@ class DispatchersModule {
     fun dispatchersMain(): MainCoroutineDispatcher = Dispatchers.Main
 
     @Single
-    @Named(type = DispatcherQualifier.Default::class)
+    @Named(type = DefaultDispatcherQualifier::class)
     fun dispatchersDefault(): CoroutineDispatcher = Dispatchers.Default
 
     @Single
-    @Named(type = DispatcherQualifier.Io::class)
+    @Named(type = IoDispatcherQualifier::class)
     fun dispatchersIo(): CoroutineDispatcher = Dispatchers.IO
 
     @Single
-    @Named(type = DispatcherQualifier.Unconfined::class)
+    @Named(type = UnconfinedDispatcherQualifier::class)
     fun dispatchersUnconfined(): CoroutineDispatcher = Dispatchers.Unconfined
 }

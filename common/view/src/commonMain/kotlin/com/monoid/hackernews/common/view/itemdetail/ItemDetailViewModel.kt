@@ -4,7 +4,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.monoid.hackernews.common.core.DispatcherQualifier
+import com.monoid.hackernews.common.core.DefaultDispatcherQualifier
 import com.monoid.hackernews.common.core.LoggerAdapter
 import com.monoid.hackernews.common.data.WeakHashMap
 import com.monoid.hackernews.common.data.api.ItemId
@@ -29,7 +29,7 @@ import org.koin.core.annotation.Named
 @KoinViewModel
 class ItemDetailViewModel(
     savedStateHandle: SavedStateHandle,
-    @Named(type = DispatcherQualifier.Default::class)
+    @Named(type = DefaultDispatcherQualifier::class)
     defaultDispatcher: CoroutineDispatcher,
     private val logger: LoggerAdapter,
     private val repository: StoriesRepository,

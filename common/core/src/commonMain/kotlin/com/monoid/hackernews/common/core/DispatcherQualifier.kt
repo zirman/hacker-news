@@ -1,7 +1,5 @@
 package com.monoid.hackernews.common.core
 
-object DispatcherQualifier {
-    class Default private constructor()
-    class Io private constructor()
-    class Unconfined private constructor()
-}
+class DefaultDispatcherQualifier private constructor()
+class IoDispatcherQualifier private constructor()
+class UnconfinedDispatcherQualifier private constructor()
