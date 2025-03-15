@@ -1,14 +1,14 @@
 Build for Android:
-`gradle :androidApp:assembleDebug`
+`gradle :mobile-app:assembleDebug`
 
 Run on Desktop
-`gradle :desktopApp:run`
+`gradle :desktop-app:run`
 
 Run on iOS
 Run project `ios-app/iosApp.xcodeproj`
 
 Build for Wear OS
-`gradle :wearApp:assembleDebug`
+`gradle :wear-app:assembleDebug`
 
 TODO:
  + Reply to comment/story
