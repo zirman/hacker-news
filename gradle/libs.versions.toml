@@ -5,7 +5,7 @@ minSdk = "26"
 targetSdk = "35"
 compileSdk = "35"
 compileSdkPreview = "Baklava"
-buildToolsVersion = "36.0.0-rc4"
+buildToolsVersion = "36.0.0"
 android = "8.9.0"
 #lint = "31.4.0"
 desugarJdkLibs = "2.1.5"
@@ -23,8 +23,8 @@ material3WindowSizeClassMultiplatform = "0.5.0"
 kotlinDatetime = "0.6.1"
 ktor = "3.1.1" # https://github.com/ktorio/ktor/releases
 kermit = "2.0.3"
-room = "2.7.0-rc01"
-sqlite = "2.5.0-rc01"
+room = "2.7.0-rc02"
+sqlite = "2.5.0-rc02"
 datastore = "1.1.3"
 activityKtx = "1.10.1"
 fragmentKtx = "1.8.6"
@@ -39,12 +39,12 @@ window = "1.3.0"
 appcompat = "1.7.0"
 coreKtx = "1.15.0"
 coreSplashscreen = "1.0.1"
-collectionKtx = "1.4.5"
+collectionKtx = "1.5.0"
 annotation = "1.9.1"
 paletteKtx = "1.0.0"
 workRuntimeKtx = "2.10.0"
 preferenceKtx = "1.2.1"
-metricsPerformance = "1.0.0-beta01"
+metricsPerformance = "1.0.0-beta02"
 composeLintChecks = "1.4.2"
 material3Adaptive = "material3Adaptive"
 wearCompose = "1.4.1"
@@ -53,7 +53,7 @@ junit = "4.13.2"
 junitExt = "1.2.1"
 espressoCore = "3.6.1"
 uiTestJunit4 = "1.7.8"
-uiTestManifest = "1.8.0-beta03"
+uiTestManifest = "1.8.0-rc01"
 mockk = "1.13.9"
 robolectric = "4.14.1"
 roborazzi = "1.40.1"
@@ -175,7 +175,7 @@ material3WindowSizeClassMultiplatform = { group = "dev.chrisbanes.material3", na
 material3Adaptive = { group = "androidx.compose.material3.adaptive", name = "adaptive", version.ref = "material3Adaptive" }
 material3AdaptiveLayout = { group = "androidx.compose.material3.adaptive", name = "adaptive-layout", version.ref = "material3Adaptive" }
 material3AdaptiveNavigation = { group = "org.jetbrains.compose.material3.adaptive", name = "adaptive-navigation", version = "1.1.0-alpha01" }
-material3AdaptiveNavigationSuite = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite", version = "1.4.0-alpha09" }
+material3AdaptiveNavigationSuite = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite", version = "1.4.0-alpha10" }
 
 composeMaterialWear = { group = "androidx.wear.compose", name = "compose-material", version.ref = "wearCompose" }
 composeNavigationWear = { group = "androidx.wear.compose", name = "compose-navigation", version.ref = "wearCompose" }
