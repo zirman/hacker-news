@@ -6,5 +6,5 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 enum class SettingsDetailUiState : Parcelable {
     Profile,
-    Styling,
+    Appearance,
 }

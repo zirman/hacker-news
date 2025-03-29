@@ -7,18 +7,24 @@
     <string name="url_is_null">Url is null</string>
     <string name="deleted">[Deleted]</string>
     <string name="login">Login</string>
-    <string name="logout">Logout</string>
-    <string name="style">Style</string>
+    <string name="logout_format">Logout: %1$s</string>
+    <string name="appearance">Appearance</string>
     <string name="password">Password</string>
+    <string name="notifications">Notifications</string>
+    <string name="help">Help</string>
+    <string name="terms_of_service">Terms of Service</string>
+    <string name="user_guidelines">User Guidelines</string>
+    <string name="send_feedback">Send Feedback</string>
+    <string name="about">About</string>
     <string name="username">Username</string>
     <string name="upvote">Upvote</string>
     <string name="un_vote">UnVote</string>
     <string name="favorite">Favorite</string>
     <string name="un_favorite">UnFavorite</string>
+    <string name="profile">Profile</string>
     <string name="flag">Flag</string>
     <string name="un_flag">UnFlag</string>
     <string name="favorites">Favorites</string>
-    <string name="profile">Profile</string>
     <string name="reply">Reply</string>
     <string name="new_stories">New</string>
     <string name="best_stories">Best</string>
@@ -36,6 +42,7 @@
     <string name="submit">Submit</string>
     <string name="hacker_news_login">Hacker News Login</string>
     <string name="send">Send</string>
+    <string name="an_error_occurred">A error occurred. Please try again later.</string>
     <string name="back_online">Back Online</string>
     <string name="offline">Offline</string>
     <string name="expand">Expand</string>
@@ -80,7 +87,6 @@ Best regards,
 I agree to the <i>Hacker News</i> <a href="https://www.ycombinator.com/legal/">terms of service</a> and
 agree to follow the <a href="https://news.ycombinator.com/newsguidelines.html">user guidelines</a>
 ]]></string>
-    <string name="an_error_occurred">A error occurred. Please try again later.</string>
     <string name="comment">Comment</string>
     <string name="login_description">Login with your HN account.</string>
     <string name="top_stories_description">Most popular stories currently.</string>

@@ -14,7 +14,7 @@ import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.no_setting_selected
 import org.jetbrains.compose.resources.stringResource
 
-@Suppress("ComposeUnstableReceiver")
+@Suppress("ComposeUnstableReceiver", "")
 @Composable
 fun ThreePaneScaffoldScope.SettingsDetailPane(
     settingsDetailUiState: SettingsDetailUiState?,
@@ -26,7 +26,7 @@ fun ThreePaneScaffoldScope.SettingsDetailPane(
                 ProfileDetail()
             }
 
-            SettingsDetailUiState.Styling -> {
+            SettingsDetailUiState.Appearance -> {
                 PreferencesDetail()
             }
 

@@ -11,9 +11,8 @@ import com.monoid.hackernews.common.view.home.HomeScaffold
 
 @Composable
 fun MainNavHost(onNavigateLogin: () -> Unit, modifier: Modifier = Modifier) {
-    val navController = rememberNavController()
     NavHost(
-        navController = navController,
+        navController =  rememberNavController(),
         startDestination = Route.Home,
         modifier = modifier,
     ) {

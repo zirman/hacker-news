@@ -37,13 +37,36 @@ fun SettingsScaffold(
                     onClickLogout = {
                         viewModel.logout()
                     },
-                    onClickStyle = {
+                    onClickAppearance = {
                         scope.launch {
                             navigator.navigateTo(
                                 pane = ListDetailPaneScaffoldRole.Detail,
-                                contentKey = SettingsDetailUiState.Styling.ordinal,
+                                contentKey = SettingsDetailUiState.Appearance.ordinal,
                             )
                         }
+                    },
+                    onClickNotifications = {
+                        // TODO
+                    },
+                    onClickHelp = {
+                        // TODO
+                        // https://news.ycombinator.com/newsfaq.html
+                    },
+                    onClickTermsOfService = {
+                        // TODO
+                        // https://www.ycombinator.com/legal/
+                    },
+                    onClickUserGuidelines = {
+                        // TODO
+                        // https://news.ycombinator.com/newsguidelines.html
+                    },
+                    onClickSendFeedback = {
+                        // TODO
+                        // hn@ycombinator.com
+                        // monoids@gmail.com
+                    },
+                    onClickAbout = {
+                        // TODO
                     },
                 )
             },

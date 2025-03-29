@@ -1,9 +1,6 @@
 package com.monoid.hackernews.common.view.home
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Bookmarks
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.twotone.Bookmarks
 import androidx.compose.material.icons.twotone.Home
 import androidx.compose.material.icons.twotone.Settings
@@ -30,9 +27,9 @@ inline val BottomNav.icon: ImageVector
 
 inline val BottomNav.selectedIcon: ImageVector
     get() = when (this) {
-        BottomNav.Stories -> Icons.Default.Home
-        BottomNav.Favorites -> Icons.Default.Bookmarks
-        BottomNav.Settings -> Icons.Default.Settings
+        BottomNav.Stories -> Icons.TwoTone.Home
+        BottomNav.Favorites -> Icons.TwoTone.Bookmarks
+        BottomNav.Settings -> Icons.TwoTone.Settings
     }
 
 inline val BottomNav.contentDescription: StringResource

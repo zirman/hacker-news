@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.twotone.Visibility
+import androidx.compose.material.icons.twotone.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
@@ -97,9 +97,9 @@ fun PasswordTextField(
                 ) {
                     Icon(
                         imageVector = if (isPasswordVisible != 0) {
-                            Icons.Default.Visibility
+                            Icons.TwoTone.Visibility
                         } else {
-                            Icons.Default.VisibilityOff
+                            Icons.TwoTone.VisibilityOff
                         },
                         contentDescription = stringResource(Res.string.password_toggle),
                     )

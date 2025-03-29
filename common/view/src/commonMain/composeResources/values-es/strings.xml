@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="top_stories">Cuentos Destacadas</string>
     <string name="more_options">Mas Opciones</string>
@@ -6,13 +7,21 @@
     <string name="url_is_null">URL es nula</string>
     <string name="deleted">[Eliminada]</string>
     <string name="login">Acceso</string>
+    <string name="logout_format">Cerrar Sesión: %1$s</string>
+    <string name="appearance">Apariencia</string>
     <string name="password">Clave</string>
-    <string name="username">Nombre de usuario</string>
+    <string name="notifications">Notificaciones</string>
+    <string name="help">Ayuda</string>
+    <string name="terms_of_service">Condiciones de Servicio</string>
+    <string name="user_guidelines">Instrucciones Para el Usuario</string>
+    <string name="send_feedback">Enviar Comentarios</string>
+    <string name="about">Acerca de</string>
+    <string name="username">Nombre de Usuario</string>
     <string name="upvote">Votar a favor</string>
     <string name="un_vote">No votar</string>
     <string name="favorite">Favorita</string>
-    <string name="profile">Perfil</string>
     <string name="un_favorite">No favorito</string>
+    <string name="profile">Perfil</string>
     <string name="flag">Bandera</string>
     <string name="un_flag">Desmarcar</string>
     <string name="favorites">Favorites</string>
@@ -32,12 +41,17 @@
     <string name="invalid_username_or_password">Usuario o contraseña invalido</string>
     <string name="submit">Enviar</string>
     <string name="hacker_news_login">Hacker News Acceso</string>
-    <string name="an_error_occurred">Ocurrió un error. Inténtalo de nuevo más tarde.</string>
     <string name="send">Enviar</string>
+    <string name="an_error_occurred">Ocurrió un error. Inténtalo de nuevo más tarde.</string>
     <string name="back_online">De nuevo en línea</string>
     <string name="offline">Desconectada</string>
     <string name="expand">Expandir</string>
     <string name="settings">Ajustes</string>
+    <string name="fonts">Fuentes</string>
+    <string name="font_size_format">Tamaño de Fuente: %1$d</string>
+    <string name="line_spacing_format">Tamaño de Fuente: %1$d</string>
+    <string name="paragraph_indent_format">Sangría de Párrafo: %1$d</string>
+    <string name="shapes">Formas</string>
     <string name="default_string">Defecto</string>
     <string name="sans_serif">Sans Serif</string>
     <string name="serif">Serif</string>
@@ -86,4 +100,11 @@ Saludos cordiales,
     <string name="dismiss">Despedir</string>
     <string name="follow">Seguir</string>
     <string name="unfollow">Dejar de seguir</string>
+    <string name="no_setting_selected">ninguna configuración seleccionada</string>
+    <string name="rounded">Redondeada</string>
+    <string name="cut">Cortar</string>
+    <string name="light_dark_mode">Modo Claro y Oscuro</string>
+    <string name="system">Sistema</string>
+    <string name="light_mode">Modo Claro</string>
+    <string name="dark_mode">Modo Oscuro</string>
 </resources>
