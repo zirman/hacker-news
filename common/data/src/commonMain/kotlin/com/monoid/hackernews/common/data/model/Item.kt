@@ -12,7 +12,7 @@ data class Item(
     val by: String? = null,
     val descendants: Int? = null,
     val score: Int? = null,
-    val title: AnnotatedString? = null,
+    val title: String? = null,
     val text: AnnotatedString? = null,
     val url: String? = null,
     val parent: ItemId? = null,

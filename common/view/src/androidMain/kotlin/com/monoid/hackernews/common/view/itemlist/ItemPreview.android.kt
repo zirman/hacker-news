@@ -16,7 +16,7 @@ internal fun ItemPreview() {
             item = Item(
                 id = ItemId(0),
                 type = ItemType.Story,
-                title = AnnotatedString("Hello World"),
+                title = "Hello World",
                 text = AnnotatedString("Lorum Ipsum"),
                 url = "https://www.wikipedia.com/",
                 kids = emptyList(),

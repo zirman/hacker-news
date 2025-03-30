@@ -5,7 +5,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
@@ -26,7 +25,7 @@ internal fun ItemsColumnPreview() {
                     by = "Jane Doe",
                     descendants = 0,
                     score = 5,
-                    title = AnnotatedString("Hello World"),
+                    title = "Hello World",
                     text = null,
                     url = "https://www.wikipedia.org/",
                     parent = null,
@@ -46,7 +45,7 @@ internal fun ItemsColumnPreview() {
                     by = "Jane Doe",
                     descendants = 0,
                     score = 5,
-                    title = AnnotatedString("Hello World"),
+                    title = "Hello World",
                     text = null,
                     url = "https://www.wikipedia.org/",
                     parent = null,

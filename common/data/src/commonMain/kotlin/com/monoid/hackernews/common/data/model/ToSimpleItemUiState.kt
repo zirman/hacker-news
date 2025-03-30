@@ -18,7 +18,7 @@ fun ItemDb.toSimpleItemUiState(kids: List<ItemId>): Item = Item(
     by = by,
     descendants = descendants,
     score = score,
-    title = title?.toHtmlAnnotatedString(),
+    title = title,
     text = text?.toHtmlAnnotatedString(),
     url = url,
     parent = parent?.let { ItemId(it) },
@@ -53,8 +53,6 @@ fun ItemApi.toSimpleItemUiState(instant: Instant, item: Item?): Item {
         }
 
         is ItemApi.Job -> {
-            val title = title?.toHtmlAnnotatedString()
-            val text = text?.toHtmlAnnotatedString()
             Item(
                 id = id,
                 lastUpdate = lastUpdate,
@@ -64,7 +62,7 @@ fun ItemApi.toSimpleItemUiState(instant: Instant, item: Item?): Item {
                 deleted = deleted,
                 by = by,
                 title = title,
-                text = text,
+                text = text?.toHtmlAnnotatedString(),
                 url = url,
                 expanded = expanded,
                 followed = followed,
@@ -72,7 +70,6 @@ fun ItemApi.toSimpleItemUiState(instant: Instant, item: Item?): Item {
         }
 
         is ItemApi.Poll -> {
-            val title = title?.toHtmlAnnotatedString()
             Item(
                 id = id,
                 lastUpdate = lastUpdate,
@@ -90,7 +87,6 @@ fun ItemApi.toSimpleItemUiState(instant: Instant, item: Item?): Item {
         }
 
         is ItemApi.PollOpt -> {
-            val title = title?.toHtmlAnnotatedString()
             Item(
                 id = id,
                 lastUpdate = lastUpdate,
@@ -107,8 +103,6 @@ fun ItemApi.toSimpleItemUiState(instant: Instant, item: Item?): Item {
         }
 
         is ItemApi.Story -> {
-            val title = title?.toHtmlAnnotatedString()
-            val text = text?.toHtmlAnnotatedString()
             Item(
                 id = id,
                 lastUpdate = lastUpdate,
@@ -120,7 +114,7 @@ fun ItemApi.toSimpleItemUiState(instant: Instant, item: Item?): Item {
                 descendants = descendants,
                 score = score,
                 title = title,
-                text = text,
+                text = text?.toHtmlAnnotatedString(),
                 url = url,
                 expanded = expanded,
                 followed = followed,

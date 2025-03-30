@@ -90,7 +90,9 @@ fun Item(
         Column(modifier = Modifier.padding(4.dp)) {
             Row(verticalAlignment = Alignment.Top) {
                 Text(
-                    text = item.title ?: item.text ?: AnnotatedString(""),
+                    text = item.title?.let { AnnotatedString(it) }
+                        ?: item.text
+                        ?: AnnotatedString(""),
                     minLines = 2,
                     maxLines = 2,
                     modifier = Modifier
@@ -99,10 +101,8 @@ fun Item(
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.titleMedium
                 )
-
                 val (contextExpanded: Int, setContextExpanded) =
                     rememberSaveable { mutableIntStateOf(0) }
-
                 Box {
                     IconButton(
                         onClick = { setContextExpanded(1) },
@@ -113,7 +113,6 @@ fun Item(
                             contentDescription = stringResource(Res.string.more_options),
                         )
                     }
-
                     DropdownMenu(
                         expanded = contextExpanded != 0,
                         onDismissRequest = { setContextExpanded(0) },
@@ -152,7 +151,6 @@ fun Item(
                                 )
                             },
                         )
-
                         DropdownMenuItem(
                             text = {
                                 Text(
@@ -186,7 +184,6 @@ fun Item(
                                 )
                             },
                         )
-
                         DropdownMenuItem(
                             text = {
                                 Text(
@@ -223,15 +220,11 @@ fun Item(
                     }
                 }
             }
-
             Spacer(modifier = Modifier.height(4.dp))
-
             val timeUserAnnotatedString: AnnotatedString =
                 rememberTimeBy(time = item.time, by = item.by)
-
             val style = MaterialTheme.typography.labelMedium
                 .copy(color = LocalContentColor.current)
-
             // TODO: add onClickUser handler
             Text(
                 text = timeUserAnnotatedString,
@@ -242,7 +235,6 @@ fun Item(
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
             )
-
             Row(verticalAlignment = Alignment.CenterVertically) {
                 key("score") {
                     TooltipBox(
@@ -270,9 +262,7 @@ fun Item(
                             )
                         }
                     }
-
                     val score = item.score
-
                     Text(
                         text = remember(score) { score?.toString().orEmpty() },
                         maxLines = 1,
@@ -281,7 +271,6 @@ fun Item(
                         style = MaterialTheme.typography.labelMedium
                     )
                 }
-
                 key("comments") {
                     val descendants = item.descendants
 
@@ -300,7 +289,6 @@ fun Item(
                             )
                         }
                     }
-
                     Text(
                         text = remember(descendants) { descendants?.toString().orEmpty() },
                         maxLines = 1,
@@ -309,7 +297,6 @@ fun Item(
                         style = MaterialTheme.typography.labelMedium,
                     )
                 }
-
                 key("url") {
                     if (item.url != null) {
                         val host: String = remember(item.url) {
@@ -340,7 +327,6 @@ fun Item(
                     }
                 }
             }
-
             HorizontalDivider(
                 thickness = Dp.Hairline,
                 color = LocalContentColor.current,

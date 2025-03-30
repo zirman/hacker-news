@@ -85,9 +85,13 @@ fun ItemDetail(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
+
                 Text(
-                    text = (if (item?.type == ItemType.Comment) item.text else item?.title)
-                        ?: AnnotatedString(""),
+                    text = if (item?.type == ItemType.Comment) {
+                        item.text ?: AnnotatedString("")
+                    } else {
+                        AnnotatedString(item?.title.orEmpty())
+                    },
                     modifier = Modifier
                         .padding(horizontal = 8.dp)
                         .weight(1f),
