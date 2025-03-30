@@ -61,6 +61,7 @@ fun LoginDialog(
                         password = password,
                     )
                 },
+                onDismissRequest = onDismissRequest,
             )
         }
     }
