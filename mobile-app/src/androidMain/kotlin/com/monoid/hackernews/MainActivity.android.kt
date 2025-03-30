@@ -7,13 +7,13 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.WindowInsetsController
 import android.view.animation.AnticipateInterpolator
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -46,8 +46,8 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         windowSetup()
+        super.onCreate(savedInstanceState)
         setContent {
             App()
         }
@@ -70,28 +70,21 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
             LightDarkMode.Light -> false
             LightDarkMode.Dark -> true
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            window.insetsController?.setSystemBarsAppearance(
-                /* appearance = */
-                if (darkMode) {
-                    0
-                } else {
-                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
-                        WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
-                },
-                /* mask = */
-                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
-                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS,
+        val systemBarStyle = if (darkMode) {
+            SystemBarStyle.dark(android.graphics.Color.TRANSPARENT)
+        } else {
+            SystemBarStyle.light(
+                android.graphics.Color.TRANSPARENT,
+                android.graphics.Color.TRANSPARENT,
             )
         }
+        enableEdgeToEdge(
+            navigationBarStyle = systemBarStyle,
+            statusBarStyle = systemBarStyle,
+        )
     }
 
     private fun windowSetup() {
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        @Suppress("DEPRECATION")
-        window.statusBarColor = getColor(android.R.color.transparent)
-        @Suppress("DEPRECATION")
-        window.navigationBarColor = getColor(android.R.color.transparent)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             installSplashScreen().apply {
                 setKeepOnScreenCondition {
@@ -99,10 +92,6 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                 }
                 var startedAnimation = false
                 setOnExitAnimationListener { splashScreenView ->
-                    @Suppress("DEPRECATION")
-                    window.statusBarColor = getColor(android.R.color.transparent)
-                    @Suppress("DEPRECATION")
-                    window.navigationBarColor = getColor(android.R.color.transparent)
                     // Work around for showing a blank screen bug when resuming activity
                     // Animation cannot be done a second time because accessing the icon gets
                     // an NPE
