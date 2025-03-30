@@ -90,7 +90,7 @@ class PreferencesViewModel(
 
 private const val TAG = "PreferencesViewModel"
 
-private fun Settings.toUiState(): UiState = UiState(
+private fun Settings.toUiState(): PreferencesViewModel.UiState = PreferencesViewModel.UiState(
     lightDarkMode = lightDarkMode,
     font = font,
     fontSize = fontSize,
