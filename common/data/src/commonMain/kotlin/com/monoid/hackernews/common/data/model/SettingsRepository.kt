@@ -111,8 +111,6 @@ class SettingsRepository(
     }
 
     val isLoggedIn: Boolean get() = preferences.value.username.string.isNotEmpty()
-
-    companion object {
-        private const val TAG = "StoriesRepository"
-    }
 }
+
+private const val TAG = "StoriesRepository"

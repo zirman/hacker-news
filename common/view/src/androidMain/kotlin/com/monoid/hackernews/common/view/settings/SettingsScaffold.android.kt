@@ -21,6 +21,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun SettingsScaffold(
     navigator: ThreePaneScaffoldNavigator<Any>,
     onNavigateLogin: () -> Unit,
+    onNavigateLogout: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SettingsViewModel = koinViewModel(),
 ) {
@@ -34,9 +35,7 @@ fun SettingsScaffold(
                 SettingsListPane(
                     username = username,
                     onClickLogin = onNavigateLogin,
-                    onClickLogout = {
-                        viewModel.logout()
-                    },
+                    onClickLogout = onNavigateLogout,
                     onClickAppearance = {
                         scope.launch {
                             navigator.navigateTo(

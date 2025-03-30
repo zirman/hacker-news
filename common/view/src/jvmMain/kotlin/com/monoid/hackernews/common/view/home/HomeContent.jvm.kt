@@ -16,6 +16,7 @@ actual fun HomeContent(
     currentDestination: BottomNav,
     onClickBrowser: (Item) -> Unit,
     onNavigateLogin: () -> Unit,
+    onNavigateLogout: () -> Unit,
     modifier: Modifier,
 ) {
     val viewModel: StoriesViewModel = createStoriesViewModel(key = "default")

@@ -3,11 +3,12 @@ package com.monoid.hackernews.common.view
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import com.monoid.hackernews.common.view.main.LoginDialog
+import com.monoid.hackernews.common.view.login.LoginDialog
+import com.monoid.hackernews.common.view.logout.LogoutDialog
 import com.monoid.hackernews.common.view.main.MainNavHost
 import com.monoid.hackernews.common.view.theme.AppTheme
 import org.koin.compose.KoinContext
@@ -18,19 +19,32 @@ fun App() {
         AppTheme {
             Scrim {
                 Box(contentAlignment = Alignment.Center) {
-                    var showDialog by rememberSaveable {
-                        mutableIntStateOf(0)
+                    var showLoginDialog by rememberSaveable {
+                        mutableStateOf(false)
+                    }
+                    var showLogoutDialog by rememberSaveable {
+                        mutableStateOf(false)
                     }
                     MainNavHost(
                         onNavigateLogin = {
-                            showDialog = 1
+                            showLoginDialog = true
+                        },
+                        onNavigateLogout = {
+                            showLogoutDialog = true
                         },
                     )
-                    if (showDialog != 0) {
+                    if (showLoginDialog) {
                         LoginDialog(
                             onDismissRequest = {
-                                showDialog = 0
-                            }
+                                showLoginDialog = false
+                            },
+                        )
+                    }
+                    if(showLogoutDialog) {
+                        LogoutDialog(
+                            onDismissRequest = {
+                                showLogoutDialog = false
+                            },
                         )
                     }
                 }

@@ -116,8 +116,6 @@ class StoriesViewModel(
             _events.send(Event.Error(it.message))
         }
     }
-
-    companion object {
-        private const val TAG = "StoriesViewModel"
-    }
 }
+
+private const val TAG = "StoriesViewModel"

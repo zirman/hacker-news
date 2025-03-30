@@ -1,6 +1,4 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
-package com.monoid.hackernews.common.view.main
+package com.monoid.hackernews.common.view.login
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.BasicAlertDialog
@@ -17,7 +15,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
-import com.monoid.hackernews.common.view.login.LoginDialogContent
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -46,6 +43,7 @@ fun LoginDialog(
         }
     }
     val uiState = loginViewModel.uiState.collectAsStateWithLifecycle().value
+    @OptIn(ExperimentalMaterial3Api::class)
     BasicAlertDialog(
         onDismissRequest = onDismissRequest,
         modifier = modifier,

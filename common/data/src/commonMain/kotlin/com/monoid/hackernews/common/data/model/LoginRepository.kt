@@ -58,8 +58,6 @@ class LoginRepository(
             }
         }
     }
-
-    companion object {
-        private const val TAG = "StoriesRepository"
-    }
 }
+
+private const val TAG = "StoriesRepository"

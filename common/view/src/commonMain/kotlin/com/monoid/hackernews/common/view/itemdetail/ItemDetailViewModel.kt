@@ -98,7 +98,8 @@ class ItemDetailViewModel(
     }
 
     companion object {
-        private const val TAG = "HomeViewModel"
         const val ITEM_ID = "item_id"
     }
 }
+
+private const val TAG = "HomeViewModel"

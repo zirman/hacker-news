@@ -86,18 +86,16 @@ class PreferencesViewModel(
     fun onClickShape(shape: Shape): Job = viewModelScope.launch(context) {
         repository.setShape(shape)
     }
-
-    companion object {
-        private const val TAG = "PreferencesViewModel"
-
-        private fun Settings.toUiState(): UiState = UiState(
-            lightDarkMode = lightDarkMode,
-            font = font,
-            fontSize = fontSize,
-            lineHeight = lineHeight,
-            paragraphIndent = paragraphIndent,
-            shape = shape,
-            colors = colors,
-        )
-    }
 }
+
+private const val TAG = "PreferencesViewModel"
+
+private fun Settings.toUiState(): UiState = UiState(
+    lightDarkMode = lightDarkMode,
+    font = font,
+    fontSize = fontSize,
+    lineHeight = lineHeight,
+    paragraphIndent = paragraphIndent,
+    shape = shape,
+    colors = colors,
+)

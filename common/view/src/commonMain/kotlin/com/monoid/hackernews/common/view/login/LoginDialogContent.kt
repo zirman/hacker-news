@@ -52,18 +52,14 @@ fun LoginDialogContent(
         ) {
             var username by rememberSaveable { mutableStateOf("") }
             var password by rememberSaveable { mutableStateOf("") }
-
             Text(
                 text = stringResource(Res.string.hacker_news_login),
                 style = MaterialTheme.typography.headlineMedium,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
             )
-
             Column {
-                val focusManager: FocusManager =
-                    LocalFocusManager.current
-
+                val focusManager: FocusManager = LocalFocusManager.current
                 UsernameTextField(
                     username = username,
                     enabled = loading.not(),
@@ -71,7 +67,6 @@ fun LoginDialogContent(
                     onNext = { focusManager.moveFocus(FocusDirection.Down) },
                     onPrev = { focusManager.moveFocus(FocusDirection.Up) },
                 )
-
                 PasswordTextField(
                     password = password,
                     enabled = loading.not(),
@@ -104,7 +99,6 @@ fun LoginDialogContent(
                     ),
                 )
             }
-
             if (showErrorText) {
                 Text(
                     text = stringResource(Res.string.an_error_occurred),
@@ -113,7 +107,6 @@ fun LoginDialogContent(
                     ),
                 )
             }
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -134,7 +127,7 @@ fun LoginDialogContent(
                 ) {
                     Text(text = stringResource(Res.string.submit))
                     if (loading) CircularProgressIndicator(
-                        modifier = Modifier.padding(start = 16.dp).size(24.dp)
+                        modifier = Modifier.padding(start = 16.dp).size(24.dp),
                     )
                 }
             }

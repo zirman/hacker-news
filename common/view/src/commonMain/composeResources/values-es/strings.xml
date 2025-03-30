@@ -7,6 +7,7 @@
     <string name="url_is_null">URL es nula</string>
     <string name="deleted">[Eliminada]</string>
     <string name="login">Acceso</string>
+    <string name="logout">Cerrar Sesión</string>
     <string name="logout_format">Cerrar Sesión: %1$s</string>
     <string name="appearance">Apariencia</string>
     <string name="password">Clave</string>
@@ -42,6 +43,7 @@
     <string name="submit">Enviar</string>
     <string name="cancel">Cancelar</string>
     <string name="hacker_news_login">Hacker News Acceso</string>
+    <string name="hacker_news_logout">Cerrar sesión en Hacker News</string>
     <string name="send">Enviar</string>
     <string name="an_error_occurred">Ocurrió un error. Inténtalo de nuevo más tarde.</string>
     <string name="back_online">De nuevo en línea</string>

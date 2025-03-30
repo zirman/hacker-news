@@ -10,9 +10,13 @@ import com.monoid.hackernews.common.domain.navigation.Route
 import com.monoid.hackernews.common.view.home.HomeScaffold
 
 @Composable
-fun MainNavHost(onNavigateLogin: () -> Unit, modifier: Modifier = Modifier) {
+fun MainNavHost(
+    onNavigateLogin: () -> Unit,
+    onNavigateLogout: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     NavHost(
-        navController =  rememberNavController(),
+        navController = rememberNavController(),
         startDestination = Route.Home,
         modifier = modifier,
     ) {
@@ -24,6 +28,7 @@ fun MainNavHost(onNavigateLogin: () -> Unit, modifier: Modifier = Modifier) {
                         ?.run { openWebpage(this) }
                 },
                 onNavigateLogin = onNavigateLogin,
+                onNavigateLogout = onNavigateLogout,
             )
         }
     }

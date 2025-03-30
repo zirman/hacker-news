@@ -12,6 +12,7 @@ import com.monoid.hackernews.common.domain.navigation.BottomNav
 actual fun HomeScaffold(
     onClickBrowser: (Item) -> Unit,
     onNavigateLogin: () -> Unit,
+    onNavigateLogout: () -> Unit,
     modifier: Modifier,
 ) {
     val currentDestination by rememberSaveable { mutableIntStateOf(0) }
@@ -19,6 +20,7 @@ actual fun HomeScaffold(
         currentDestination = BottomNav.entries[currentDestination],
         onClickBrowser = onClickBrowser,
         onNavigateLogin = onNavigateLogin,
+        onNavigateLogout = onNavigateLogout,
     )
 //    BackHandler(currentDestination != 0) {
 //        currentDestination = 0

@@ -17,6 +17,7 @@ actual fun HomeContent(
     currentDestination: BottomNav,
     onClickBrowser: (Item) -> Unit,
     onNavigateLogin: () -> Unit,
+    onNavigateLogout: () -> Unit,
     modifier: Modifier,
 ) {
     Box(modifier = modifier) {
@@ -45,6 +46,7 @@ actual fun HomeContent(
                 SettingsScaffold(
                     navigator = profileNavigator,
                     onNavigateLogin = onNavigateLogin,
+                    onNavigateLogout = onNavigateLogout,
                 )
             }
         }

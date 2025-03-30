@@ -156,8 +156,6 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
             }
         }
     }
-
-    companion object {
-        private const val TAG = "MainActivity"
-    }
 }
+
+private const val TAG = "MainActivity"

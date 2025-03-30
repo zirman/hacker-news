@@ -7,6 +7,7 @@
     <string name="url_is_null">Url is null</string>
     <string name="deleted">[Deleted]</string>
     <string name="login">Login</string>
+    <string name="logout">Logout</string>
     <string name="logout_format">Logout: %1$s</string>
     <string name="appearance">Appearance</string>
     <string name="password">Password</string>
@@ -42,6 +43,7 @@
     <string name="submit">Submit</string>
     <string name="cancel">Cancel</string>
     <string name="hacker_news_login">Hacker News Login</string>
+    <string name="hacker_news_logout">Hacker News Logout</string>
     <string name="send">Send</string>
     <string name="an_error_occurred">A error occurred. Please try again later.</string>
     <string name="back_online">Back Online</string>

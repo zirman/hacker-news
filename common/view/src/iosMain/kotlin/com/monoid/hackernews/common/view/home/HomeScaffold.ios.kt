@@ -9,11 +9,13 @@ import com.monoid.hackernews.common.domain.navigation.BottomNav
 actual fun HomeScaffold(
     onClickBrowser: (Item) -> Unit,
     onNavigateLogin: () -> Unit,
+    onNavigateLogout: () -> Unit,
     modifier: Modifier
 ) {
     HomeContent(
         currentDestination = BottomNav.Stories,
         onClickBrowser = onClickBrowser,
         onNavigateLogin = onNavigateLogin,
+        onNavigateLogout = onNavigateLogout,
     )
 }

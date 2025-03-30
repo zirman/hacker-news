@@ -45,7 +45,7 @@ import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.domain.navigation.Route
 import com.monoid.hackernews.common.view.itemdetail.ItemDetailPane
 import com.monoid.hackernews.common.view.itemlist.ItemsColumn
-import com.monoid.hackernews.common.view.main.LoginDialog
+import com.monoid.hackernews.common.view.login.LoginDialog
 import com.monoid.hackernews.common.view.main.openWebpage
 import com.monoid.hackernews.common.view.stories.StoriesViewModel
 import com.monoid.hackernews.common.view.stories.createStoriesViewModel
@@ -62,7 +62,6 @@ fun main() {
     startKoin {
         modules(ApplicationModule().module)
     }
-
     application {
         Window(onCloseRequest = ::exitApplication) {
             KoinContext {

@@ -158,8 +158,6 @@ class StoriesRepository(
             it.clear()
         }
     }
-
-    companion object {
-        private const val TAG = "StoriesRepository"
-    }
 }
+
+private const val TAG = "StoriesRepository"

@@ -10,6 +10,7 @@ expect fun HomeContent(
     currentDestination: BottomNav,
     onClickBrowser: (Item) -> Unit,
     onNavigateLogin: () -> Unit,
+    onNavigateLogout: () -> Unit,
     modifier: Modifier = Modifier,
 )
 // {

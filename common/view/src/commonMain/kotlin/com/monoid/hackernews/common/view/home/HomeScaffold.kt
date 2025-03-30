@@ -50,5 +50,6 @@ inline val BottomNav.label: StringResource
 expect fun HomeScaffold(
     onClickBrowser: (Item) -> Unit,
     onNavigateLogin: () -> Unit,
+    onNavigateLogout: () -> Unit,
     modifier: Modifier = Modifier,
 )
