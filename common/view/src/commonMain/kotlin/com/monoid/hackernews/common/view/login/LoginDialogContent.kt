@@ -1,19 +1,18 @@
 package com.monoid.hackernews.common.view.login
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -29,12 +28,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.monoid.hackernews.common.data.model.Password
 import com.monoid.hackernews.common.data.model.Username
-import com.monoid.hackernews.common.view.Res
-import com.monoid.hackernews.common.view.an_error_occurred
-import com.monoid.hackernews.common.view.hacker_news_login
+import com.monoid.hackernews.common.view.*
 import com.monoid.hackernews.common.view.html.rememberAnnotatedHtmlString
-import com.monoid.hackernews.common.view.i_agree_html
-import com.monoid.hackernews.common.view.submit
 import com.monoid.hackernews.common.view.text.PasswordTextField
 import com.monoid.hackernews.common.view.text.UsernameTextField
 import org.jetbrains.compose.resources.stringResource
@@ -44,6 +39,7 @@ fun LoginDialogContent(
     showErrorText: Boolean,
     loading: Boolean,
     onClickSubmit: (Username, Password) -> Unit,
+    onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Surface(
@@ -52,7 +48,6 @@ fun LoginDialogContent(
     ) {
         Column(
             modifier = Modifier.padding(16.dp).fillMaxWidth(),
-            //horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             var username by rememberSaveable { mutableStateOf("") }
@@ -119,11 +114,14 @@ fun LoginDialogContent(
                 )
             }
 
-            Box(
-                contentAlignment = Alignment.Center,
+            Row(
                 modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Button(
+                TextButton(onClick = onDismissRequest) {
+                    Text(text = stringResource(Res.string.cancel))
+                }
+                TextButton(
                     onClick = {
                         if (username.isNotBlank() && password.isNotEmpty()) {
                             onClickSubmit(Username(username), Password(password))

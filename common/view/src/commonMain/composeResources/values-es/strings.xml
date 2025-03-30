@@ -40,6 +40,7 @@
     <string name="login_error">Error de inicio de sesión</string>
     <string name="invalid_username_or_password">Usuario o contraseña invalido</string>
     <string name="submit">Enviar</string>
+    <string name="cancel">Cancelar</string>
     <string name="hacker_news_login">Hacker News Acceso</string>
     <string name="send">Enviar</string>
     <string name="an_error_occurred">Ocurrió un error. Inténtalo de nuevo más tarde.</string>

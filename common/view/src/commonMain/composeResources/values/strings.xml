@@ -40,6 +40,7 @@
     <string name="login_error">Login Error</string>
     <string name="invalid_username_or_password">Invalid username or password</string>
     <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
     <string name="hacker_news_login">Hacker News Login</string>
     <string name="send">Send</string>
     <string name="an_error_occurred">A error occurred. Please try again later.</string>
