@@ -19,7 +19,6 @@ class SettingsViewModel(
         val loading: Boolean = true,
         val username: Username? = null,
     )
-
     val uiState = loginRepository.preferences
         .map { preferences ->
             UiState(
