@@ -36,7 +36,7 @@ import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -74,7 +74,7 @@ fun Item(
     onClickItem: (Item) -> Unit,
     onClickReply: (Item) -> Unit,
     onClickUser: (Username) -> Unit,
-    onOpenUrl: (Item) -> Unit,
+    onClickUrl: (Url) -> Unit,
     onClickUpvote: (Item) -> Unit,
     onClickFavorite: (Item) -> Unit,
     onClickFollow: (Item) -> Unit,
@@ -101,11 +101,11 @@ fun Item(
                     overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.titleMedium
                 )
-                val (contextExpanded: Int, setContextExpanded) =
-                    rememberSaveable { mutableIntStateOf(0) }
+                val (contextExpanded: Boolean, setContextExpanded) =
+                    rememberSaveable { mutableStateOf(false) }
                 Box {
                     IconButton(
-                        onClick = { setContextExpanded(1) },
+                        onClick = { setContextExpanded(true) },
                         enabled = isStoryOrComment
                     ) {
                         Icon(
@@ -114,8 +114,8 @@ fun Item(
                         )
                     }
                     DropdownMenu(
-                        expanded = contextExpanded != 0,
-                        onDismissRequest = { setContextExpanded(0) },
+                        expanded = contextExpanded,
+                        onDismissRequest = { setContextExpanded(false) },
                         modifier = Modifier
                     ) {
                         DropdownMenuItem(
@@ -132,7 +132,7 @@ fun Item(
                             },
                             onClick = {
                                 onClickFavorite(item)
-                                setContextExpanded(0)
+                                setContextExpanded(false)
                             },
                             leadingIcon = {
                                 Icon(
@@ -165,7 +165,7 @@ fun Item(
                             },
                             onClick = {
                                 onClickFollow(item)
-                                setContextExpanded(0)
+                                setContextExpanded(false)
                             },
                             leadingIcon = {
                                 Icon(
@@ -198,7 +198,7 @@ fun Item(
                             },
                             onClick = {
                                 onClickFlag(item)
-                                setContextExpanded(0)
+                                setContextExpanded(false)
                             },
                             leadingIcon = {
                                 Icon(
@@ -317,7 +317,13 @@ fun Item(
                             tooltip = { Surface { Text(stringResource(Res.string.open_in_browser)) } },
                             state = rememberTooltipState(),
                         ) {
-                            IconButton(onClick = { onOpenUrl(item) }) {
+                            IconButton(
+                                onClick = {
+                                    item.url?.let { Url(it) }?.run {
+                                        onClickUrl(this)
+                                    }
+                                },
+                            ) {
                                 Icon(
                                     imageVector = Icons.Filled.OpenInBrowser,
                                     contentDescription = stringResource(Res.string.open_in_browser),

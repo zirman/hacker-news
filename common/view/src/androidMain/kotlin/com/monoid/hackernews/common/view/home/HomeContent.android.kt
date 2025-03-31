@@ -7,7 +7,7 @@ import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.monoid.hackernews.common.data.model.Item
+import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.domain.navigation.BottomNav
 import com.monoid.hackernews.common.view.settings.SettingsScaffold
 import com.monoid.hackernews.common.view.stories.StoriesScaffold
@@ -15,9 +15,9 @@ import com.monoid.hackernews.common.view.stories.StoriesScaffold
 @Composable
 actual fun HomeContent(
     currentDestination: BottomNav,
-    onClickBrowser: (Item) -> Unit,
-    onNavigateLogin: () -> Unit,
-    onNavigateLogout: () -> Unit,
+    onClickLogin: () -> Unit,
+    onClickLogout: () -> Unit,
+    onClickUrl: (Url) -> Unit,
     modifier: Modifier,
 ) {
     Box(modifier = modifier) {
@@ -28,25 +28,25 @@ actual fun HomeContent(
             BottomNav.Stories -> {
                 StoriesScaffold(
                     navigator = storiesNavigator,
-                    onOpenUrl = onClickBrowser,
-                    onNavigateLogin = onNavigateLogin,
+                    onClickLogin = onClickLogin,
+                    onClickUrl = onClickUrl,
                 )
             }
 
             BottomNav.Favorites -> {
                 StoriesScaffold(
                     navigator = favoritesNavigator,
-                    onOpenUrl = onClickBrowser,
                     key = "favorites",
-                    onNavigateLogin = onNavigateLogin,
+                    onClickLogin = onClickLogin,
+                    onClickUrl = onClickUrl,
                 )
             }
 
             BottomNav.Settings -> {
                 SettingsScaffold(
                     navigator = profileNavigator,
-                    onNavigateLogin = onNavigateLogin,
-                    onNavigateLogout = onNavigateLogout,
+                    onClickLogin = onClickLogin,
+                    onClickLogout = onClickLogout,
                 )
             }
         }

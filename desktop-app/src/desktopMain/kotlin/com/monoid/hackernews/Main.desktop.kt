@@ -23,8 +23,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -39,14 +39,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.monoid.hackernews.common.data.Uri
+import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.data.api.ItemId
-import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.domain.navigation.Route
 import com.monoid.hackernews.common.view.itemdetail.ItemDetailPane
 import com.monoid.hackernews.common.view.itemlist.ItemsColumn
 import com.monoid.hackernews.common.view.login.LoginDialog
-import com.monoid.hackernews.common.view.main.openWebpage
 import com.monoid.hackernews.common.view.stories.StoriesViewModel
 import com.monoid.hackernews.common.view.stories.createStoriesViewModel
 import com.monoid.hackernews.common.view.theme.AppTheme
@@ -57,6 +55,7 @@ import org.koin.compose.KoinContext
 import org.koin.core.context.startKoin
 import org.koin.ksp.generated.module
 import java.awt.Cursor
+import java.awt.Desktop
 
 fun main() {
     startKoin {
@@ -67,10 +66,10 @@ fun main() {
             KoinContext {
                 AppTheme {
                     var showLoginDialog by rememberSaveable {
-                        mutableIntStateOf(0)
+                        mutableStateOf(false)
                     }
-                    if (showLoginDialog != 0) {
-                        LoginDialog(onDismissRequest = { showLoginDialog = 0 })
+                    if (showLoginDialog) {
+                        LoginDialog(onDismissRequest = { showLoginDialog = false })
                     }
                     Scaffold(
                         bottomBar = {
@@ -121,11 +120,21 @@ fun main() {
                         ) {
                             composable<Route.Home> {
                                 HNPanes(
-                                    onOpenLogin = {
-                                        showLoginDialog = 1
+                                    onClickLogin = {
+                                        showLoginDialog = true
                                     },
-                                    onOpenBrowser = {
-                                        openWebpage(Uri(checkNotNull(it.url)))
+                                    onClickUrl = { url ->
+                                        try {
+                                            (if (Desktop.isDesktopSupported()) Desktop.getDesktop() else null)
+                                                ?.takeIf { it.isSupported(Desktop.Action.BROWSE) }
+                                                ?.run {
+                                                    browse(url.toUri().uri)
+                                                    true
+                                                }
+                                                ?: false
+                                        } catch (throwable: Throwable) {
+                                            // TODO
+                                        }
                                     },
                                 )
                             }
@@ -139,8 +148,8 @@ fun main() {
 
 @Composable
 fun HNPanes(
-    onOpenLogin: () -> Unit,
-    onOpenBrowser: (Item) -> Unit,
+    onClickLogin: () -> Unit,
+    onClickUrl: (Url) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val splitterState = rememberSplitPaneState()
@@ -163,7 +172,7 @@ fun HNPanes(
                 },
                 onClickReply = {},
                 onClickUser = {},
-                onOpenUrl = onOpenBrowser,
+                onClickUrl = onClickUrl,
                 onClickUpvote = {},
                 onClickFavorite = {},
                 onClickFollow = {},
@@ -175,7 +184,7 @@ fun HNPanes(
             if (itemId != -1L) {
                 ItemDetailPane(
                     itemId = ItemId(itemId),
-                    onOpenBrowser = onOpenBrowser,
+                    onClickUrl = onClickUrl,
                 )
             }
         }

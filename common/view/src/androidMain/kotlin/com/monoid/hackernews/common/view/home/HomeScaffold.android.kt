@@ -12,15 +12,15 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import com.monoid.hackernews.common.data.model.Item
+import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.domain.navigation.BottomNav
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 actual fun HomeScaffold(
-    onClickBrowser: (Item) -> Unit,
-    onNavigateLogin: () -> Unit,
-    onNavigateLogout: () -> Unit,
+    onClickLogin: () -> Unit,
+    onClickLogout: () -> Unit,
+    onClickUrl: (Url) -> Unit,
     modifier: Modifier,
 ) {
     var currentDestination by rememberSaveable { mutableIntStateOf(0) }
@@ -56,9 +56,9 @@ actual fun HomeScaffold(
         content = {
             HomeContent(
                 currentDestination = BottomNav.entries[currentDestination],
-                onClickBrowser = onClickBrowser,
-                onNavigateLogin = onNavigateLogin,
-                onNavigateLogout = onNavigateLogout,
+                onClickLogin = onClickLogin,
+                onClickLogout = onClickLogout,
+                onClickUrl = onClickUrl,
             )
         },
     )

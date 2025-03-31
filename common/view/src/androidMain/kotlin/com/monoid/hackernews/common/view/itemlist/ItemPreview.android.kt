@@ -36,7 +36,7 @@ internal fun ItemPreview() {
             onClickItem = {},
             onClickReply = {},
             onClickUser = {},
-            onOpenUrl = {},
+            onClickUrl = {},
             onClickUpvote = {},
             onClickFavorite = {},
             onClickFollow = {},

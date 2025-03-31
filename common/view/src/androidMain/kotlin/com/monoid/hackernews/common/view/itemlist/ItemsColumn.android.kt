@@ -61,7 +61,7 @@ internal fun ItemsColumnPreview() {
             onClickItem = {},
             onClickReply = {},
             onClickUser = {},
-            onOpenUrl = {},
+            onClickUrl = {},
             onClickUpvote = {},
             onClickFavorite = {},
             onClickFollow = {},

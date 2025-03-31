@@ -13,8 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.data.api.ItemId
-import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.itemdetail.ItemDetailPane
 import com.monoid.hackernews.common.view.no_story_selected
@@ -24,7 +24,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun ThreePaneScaffoldScope.StoriesDetailPane(
     itemId: ItemId?,
-    onOpenBrowser: (Item) -> Unit,
+    onClickUrl: (Url) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     if (itemId == null) {
@@ -38,7 +38,7 @@ fun ThreePaneScaffoldScope.StoriesDetailPane(
         key(itemId) {
             ItemDetailPane(
                 itemId = itemId,
-                onOpenBrowser = onOpenBrowser,
+                onClickUrl = onClickUrl,
                 modifier = modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.primaryContainer),

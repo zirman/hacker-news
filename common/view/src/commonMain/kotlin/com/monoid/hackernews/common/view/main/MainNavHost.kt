@@ -11,27 +11,23 @@ import com.monoid.hackernews.common.view.home.HomeScaffold
 
 @Composable
 fun MainNavHost(
-    onNavigateLogin: () -> Unit,
-    onNavigateLogout: () -> Unit,
+    onClickLogin: () -> Unit,
+    onClickLogout: () -> Unit,
+    onClickUrl: (Url) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val navController = rememberNavController()
     NavHost(
-        navController = rememberNavController(),
+        navController = navController,
         startDestination = Route.Home,
         modifier = modifier,
     ) {
         composable<Route.Home> {
             HomeScaffold(
-                onClickBrowser = { item ->
-                    item.url
-                        ?.let { Url(it) }
-                        ?.run { openWebpage(this) }
-                },
-                onNavigateLogin = onNavigateLogin,
-                onNavigateLogout = onNavigateLogout,
+                onClickLogin = onClickLogin,
+                onClickLogout = onClickLogout,
+                onClickUrl = onClickUrl,
             )
         }
     }
 }
-
-expect fun openWebpage(url: Url): Boolean

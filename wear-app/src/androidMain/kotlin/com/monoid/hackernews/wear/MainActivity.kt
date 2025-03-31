@@ -7,7 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.ReportDrawnWhen
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.Lifecycle
@@ -29,11 +29,11 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             var contentComposed by remember {
-                mutableIntStateOf(0)
+                mutableStateOf(false)
             }
 
             ReportDrawnWhen {
-                contentComposed != 0
+                contentComposed
             }
 
             val mainViewModel: MainViewModel = koinViewModel()
@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
             HackerNewsTheme {
             }
 
-            contentComposed = 1
+            contentComposed = true
         }
 
         if (true) { // TODO: debug config

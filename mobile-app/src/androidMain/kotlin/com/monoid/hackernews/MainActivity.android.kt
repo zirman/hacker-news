@@ -2,6 +2,7 @@ package com.monoid.hackernews
 
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
@@ -13,12 +14,14 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.animation.doOnEnd
+import androidx.core.net.toUri
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.metrics.performance.JankStats
 import com.monoid.hackernews.common.core.LoggerAdapter
+import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.data.model.LightDarkMode
 import com.monoid.hackernews.common.data.model.SettingsRepository
 import com.monoid.hackernews.common.view.App
@@ -49,7 +52,7 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
         windowSetup()
         super.onCreate(savedInstanceState)
         setContent {
-            App()
+            App(onClickUrl = ::onClickUrl)
         }
         jankStats()
         lifecycleScope.launch(context) {
@@ -154,6 +157,18 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                     }
                 }
             }
+        }
+    }
+
+    private fun onClickUrl(url: Url) {
+        try {
+            startActivity(
+                Intent(Intent.ACTION_VIEW).apply {
+                    data = url.toString().toUri()
+                },
+            )
+        } catch (throwable: Throwable) {
+            // TODO
         }
     }
 }

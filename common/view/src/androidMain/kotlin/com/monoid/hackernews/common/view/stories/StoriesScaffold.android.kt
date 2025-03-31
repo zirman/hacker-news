@@ -17,17 +17,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.data.api.ItemId
-import com.monoid.hackernews.common.data.model.Item
 import kotlinx.coroutines.launch
-
-private val contentKeyRegex = """^(\d*):(.*)$""".toRegex()
 
 @Composable
 fun StoriesScaffold(
     navigator: ThreePaneScaffoldNavigator<Any>,
-    onOpenUrl: (Item) -> Unit,
-    onNavigateLogin: () -> Unit,
+    onClickLogin: () -> Unit,
+    onClickUrl: (Url) -> Unit,
     modifier: Modifier = Modifier,
     key: String = "default",
     storiesViewModel: StoriesViewModel = createStoriesViewModel(key),
@@ -39,12 +37,16 @@ fun StoriesScaffold(
                 when (event) {
                     is StoriesViewModel.Event.Error -> {
                         Toast
-                            .makeText(context, "An error occurred: ${event.message}", Toast.LENGTH_SHORT)
+                            .makeText(
+                                context,
+                                "An error occurred: ${event.message}",
+                                Toast.LENGTH_SHORT,
+                            )
                             .show()
                     }
 
                     is StoriesViewModel.Event.NavigateLogin -> {
-                        onNavigateLogin()
+                        onClickLogin()
                     }
                 }
             }
@@ -63,7 +65,7 @@ fun StoriesScaffold(
                         scope.launch {
                             navigator.navigateTo(
                                 pane = ListDetailPaneScaffoldRole.Detail,
-                                contentKey = "${item.id.long}:",
+                                contentKey = "${item.id.long}",
                             )
                         }
                     },
@@ -71,7 +73,7 @@ fun StoriesScaffold(
                     },
                     onClickUser = {
                     },
-                    onOpenUrl = onOpenUrl,
+                    onClickUrl = onClickUrl,
                     onClickUpvote = storiesViewModel::toggleUpvoted,
                     onClickFavorite = {
                     },
@@ -82,30 +84,13 @@ fun StoriesScaffold(
                 )
             },
             detailPane = {
-                val (itemId, _) = checkNotNull(
-                    contentKeyRegex.matchEntire(
-                        navigator.currentDestination?.contentKey as? String ?: ":",
-                    ),
-                ).destructured
+                val itemId = (navigator.currentDestination?.contentKey as? String)
+                    ?.toLong()
+                    ?.let { ItemId(it) }
                 StoriesDetailPane(
-                    itemId = itemId.toLongOrNull()?.let { ItemId(it) },
-                    onOpenBrowser = { item ->
-                        scope.launch {
-                            navigator.navigateTo(
-                                pane = ListDetailPaneScaffoldRole.Extra,
-                                contentKey = "$itemId:${item.url}",
-                            )
-                        }
-                    },
+                    itemId = itemId,
+                    onClickUrl = onClickUrl,
                 )
-            },
-            extraPane = {
-                val (_, url) = checkNotNull(
-                    contentKeyRegex.matchEntire(
-                        navigator.currentDestination?.contentKey as? String ?: ":",
-                    ),
-                ).destructured
-                StoriesExtraPane(url = url)
             },
         )
         if (loading) {

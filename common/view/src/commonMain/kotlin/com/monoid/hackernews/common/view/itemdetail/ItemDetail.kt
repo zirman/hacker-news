@@ -34,7 +34,7 @@ import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -70,7 +70,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun ItemDetail(
     item: Item?,
-    onOpenBrowser: (Item) -> Unit,
+    onClickUrl: (Url) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Surface(
@@ -97,19 +97,19 @@ fun ItemDetail(
                         .weight(1f),
                     style = MaterialTheme.typography.titleMedium,
                 )
-                val (contextExpanded: Int, setContextExpanded) =
-                    rememberSaveable { mutableIntStateOf(0) }
+                val (contextExpanded: Boolean, setContextExpanded) =
+                    rememberSaveable { mutableStateOf(false) }
                 if (item?.lastUpdate != null) {
                     Box {
-                        IconButton(onClick = { setContextExpanded(1) }) {
+                        IconButton(onClick = { setContextExpanded(true) }) {
                             Icon(
                                 imageVector = Icons.TwoTone.MoreVert,
                                 contentDescription = stringResource(Res.string.more_options),
                             )
                         }
                         DropdownMenu(
-                            expanded = contextExpanded != 0,
-                            onDismissRequest = { setContextExpanded(0) },
+                            expanded = contextExpanded,
+                            onDismissRequest = { setContextExpanded(false) },
                         ) {
                             if (item.type == ItemType.Story) {
                                 DropdownMenuItem(
@@ -372,7 +372,9 @@ fun ItemDetail(
                     ) {
                         IconButton(
                             onClick = {
-                                item?.url?.let { onOpenBrowser(item) }
+                                item?.url?.let { Url(it) }?.run {
+                                    onClickUrl(this)
+                                }
                             },
                         ) {
                             Icon(

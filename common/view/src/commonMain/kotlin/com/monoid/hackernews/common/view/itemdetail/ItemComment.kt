@@ -72,7 +72,7 @@ fun ItemComment(
     threadItem: ItemDetailViewModel.ThreadItemUiState,
     onClickUser: (Username) -> Unit,
     onClickReply: (ItemId) -> Unit,
-    onNavigateLogin: (LoginAction) -> Unit,
+    onClickLogin: (LoginAction) -> Unit,
     onVisible: (ItemId) -> Unit,
     onClick: (ItemId) -> Unit,
     modifier: Modifier = Modifier,

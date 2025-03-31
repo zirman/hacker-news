@@ -9,6 +9,7 @@ import androidx.compose.material3.adaptive.layout.ThreePaneScaffoldScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.view.itemlist.ItemsColumn
@@ -22,7 +23,7 @@ fun ThreePaneScaffoldScope.StoriesListPane(
     onClickItem: (Item) -> Unit,
     onClickReply: (Item) -> Unit,
     onClickUser: (Username) -> Unit,
-    onOpenUrl: (Item) -> Unit,
+    onClickUrl: (Url) -> Unit,
     onClickUpvote: (Item) -> Unit,
     onClickFavorite: (Item) -> Unit,
     onClickFollow: (Item) -> Unit,
@@ -36,7 +37,7 @@ fun ThreePaneScaffoldScope.StoriesListPane(
         onClickItem = onClickItem,
         onClickReply = onClickReply,
         onClickUser = onClickUser,
-        onOpenUrl = onOpenUrl,
+        onClickUrl = onClickUrl,
         onClickUpvote = onClickUpvote,
         onClickFavorite = onClickFavorite,
         onClickFollow = onClickFollow,

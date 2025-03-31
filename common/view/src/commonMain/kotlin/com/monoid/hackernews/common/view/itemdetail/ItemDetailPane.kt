@@ -16,8 +16,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
+import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.data.api.ItemId
-import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.ItemType
 import kotlinx.coroutines.delay
 import kotlin.time.DurationUnit
@@ -26,7 +26,7 @@ import kotlin.time.toDuration
 @Composable
 fun ItemDetailPane(
     itemId: ItemId,
-    onOpenBrowser: (Item) -> Unit,
+    onClickUrl: (Url) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val viewModel = createItemDetailViewModel(itemId)
@@ -58,7 +58,7 @@ fun ItemDetailPane(
                         threadItem = item,
                         onClickUser = {},
                         onClickReply = {},
-                        onNavigateLogin = {},
+                        onClickLogin = {},
                         onVisible = viewModel::updateItem,
                         onClick = viewModel::toggleCommentExpanded,
                     )
@@ -67,7 +67,7 @@ fun ItemDetailPane(
                 ItemType.Story, ItemType.Job, ItemType.Poll, ItemType.PollOpt -> {
                     ItemDetail(
                         item = item.item,
-                        onOpenBrowser = onOpenBrowser,
+                        onClickUrl = onClickUrl,
                     )
                 }
             }

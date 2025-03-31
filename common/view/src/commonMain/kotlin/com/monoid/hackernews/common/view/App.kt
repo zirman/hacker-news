@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.view.login.LoginDialog
 import com.monoid.hackernews.common.view.logout.LogoutDialog
 import com.monoid.hackernews.common.view.main.MainNavHost
@@ -14,7 +15,7 @@ import com.monoid.hackernews.common.view.theme.AppTheme
 import org.koin.compose.KoinContext
 
 @Composable
-fun App() {
+fun App(onClickUrl: (Url) -> Unit) {
     KoinContext {
         AppTheme {
             Scrim {
@@ -26,12 +27,13 @@ fun App() {
                         mutableStateOf(false)
                     }
                     MainNavHost(
-                        onNavigateLogin = {
+                        onClickLogin = {
                             showLoginDialog = true
                         },
-                        onNavigateLogout = {
+                        onClickLogout = {
                             showLogoutDialog = true
                         },
+                        onClickUrl = onClickUrl,
                     )
                     if (showLoginDialog) {
                         LoginDialog(

@@ -6,7 +6,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -24,8 +24,8 @@ fun LoginDialog(
     loginViewModel: LoginViewModel = koinViewModel(),
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
-    var showErrorText: Int by rememberSaveable {
-        mutableIntStateOf(0)
+    var showErrorText by rememberSaveable {
+        mutableStateOf(false)
     }
     LaunchedEffect(Unit) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -36,7 +36,7 @@ fun LoginDialog(
                     }
 
                     LoginViewModel.Event.Error -> {
-                        showErrorText = 1
+                        showErrorText = true
                     }
                 }
             }
@@ -50,10 +50,10 @@ fun LoginDialog(
     ) {
         Box(contentAlignment = Alignment.Center) {
             LoginDialogContent(
-                showErrorText = showErrorText != 0,
+                showErrorText = showErrorText,
                 loading = uiState.loading,
                 onClickSubmit = { username, password ->
-                    showErrorText = 0
+                    showErrorText = false
                     loginViewModel.onSubmit(
                         username = username,
                         password = password,

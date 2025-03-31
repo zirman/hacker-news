@@ -7,7 +7,6 @@ import com.monoid.hackernews.common.data.model.LoginAction
 import com.monoid.hackernews.common.data.model.Username
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 expect fun encodeUrl(str: String): String
@@ -33,10 +32,6 @@ object Route {
     @Serializable
     @SerialName("Home")
     data object Home
-
-    @Serializable
-    @SerialName("Browser")
-    data class Browser(val url: String)
 }
 
 val jsonDecoder: Json = Json { ignoreUnknownKeys = true }
@@ -46,7 +41,9 @@ data object ActualStoriesNavType : NavType<Story>(isNullableAllowed = false) {
         bundle.putString(key, value.name)
     }
 
-    override fun get(bundle: Bundle, key: String): Story = Story.valueOf(checkNotNull(bundle.getString(key)))
+    override fun get(bundle: Bundle, key: String): Story =
+        Story.valueOf(checkNotNull(bundle.getString(key)))
+
     override fun serializeAsValue(value: Story): String = value.name
     override fun parseValue(value: String): Story = Story.valueOf(value)
 }
@@ -87,7 +84,9 @@ data object ActualUsernameNavType : NavType<Username>(isNullableAllowed = false)
         bundle.putString(key, value.string)
     }
 
-    override fun get(bundle: Bundle, key: String): Username = Username(checkNotNull(bundle.getString(key)))
+    override fun get(bundle: Bundle, key: String): Username =
+        Username(checkNotNull(bundle.getString(key)))
+
     override fun serializeAsValue(value: Username): String = encodeUrl(value.string)
     override fun parseValue(value: String): Username = Username(decodeUrl(value))
 }

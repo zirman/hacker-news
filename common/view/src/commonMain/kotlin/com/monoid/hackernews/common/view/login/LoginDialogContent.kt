@@ -15,7 +15,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -28,8 +27,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.monoid.hackernews.common.data.model.Password
 import com.monoid.hackernews.common.data.model.Username
-import com.monoid.hackernews.common.view.*
+import com.monoid.hackernews.common.view.Res
+import com.monoid.hackernews.common.view.an_error_occurred
+import com.monoid.hackernews.common.view.cancel
+import com.monoid.hackernews.common.view.hacker_news_login
 import com.monoid.hackernews.common.view.html.rememberAnnotatedHtmlString
+import com.monoid.hackernews.common.view.i_agree_html
+import com.monoid.hackernews.common.view.submit
 import com.monoid.hackernews.common.view.text.PasswordTextField
 import com.monoid.hackernews.common.view.text.UsernameTextField
 import org.jetbrains.compose.resources.stringResource
@@ -81,14 +85,14 @@ fun LoginDialogContent(
                 )
             }
             var acceptTermsState by rememberSaveable {
-                mutableIntStateOf(0)
+                mutableStateOf(false)
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(
-                    checked = acceptTermsState != 0,
+                    checked = acceptTermsState,
                     enabled = loading.not(),
                     onCheckedChange = {
-                        acceptTermsState = if (it) 1 else 0
+                        acceptTermsState = it
                     },
                 )
                 val htmlString = stringResource(Res.string.i_agree_html)
@@ -123,7 +127,7 @@ fun LoginDialogContent(
                     enabled = loading.not() &&
                         username.isNotBlank() &&
                         password.isNotEmpty() &&
-                        acceptTermsState != 0,
+                        acceptTermsState,
                 ) {
                     Text(text = stringResource(Res.string.submit))
                     if (loading) CircularProgressIndicator(

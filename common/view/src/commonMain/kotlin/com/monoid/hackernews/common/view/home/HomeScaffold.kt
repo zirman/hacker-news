@@ -7,7 +7,7 @@ import androidx.compose.material.icons.twotone.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.monoid.hackernews.common.data.model.Item
+import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.domain.navigation.BottomNav
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.favorites
@@ -48,8 +48,8 @@ inline val BottomNav.label: StringResource
 
 @Composable
 expect fun HomeScaffold(
-    onClickBrowser: (Item) -> Unit,
-    onNavigateLogin: () -> Unit,
-    onNavigateLogout: () -> Unit,
+    onClickLogin: () -> Unit,
+    onClickLogout: () -> Unit,
+    onClickUrl: (Url) -> Unit,
     modifier: Modifier = Modifier,
 )
