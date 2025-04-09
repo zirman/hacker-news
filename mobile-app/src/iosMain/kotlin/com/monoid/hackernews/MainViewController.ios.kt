@@ -11,4 +11,8 @@ fun MainViewController() = ComposeUIViewController(
     configure = {
         // accessibilitySyncOptions = AccessibilitySyncOptions.Always
     },
-) { App() }
+) { App(
+    onClickUrl = {
+        // TODO
+    },
+) }
