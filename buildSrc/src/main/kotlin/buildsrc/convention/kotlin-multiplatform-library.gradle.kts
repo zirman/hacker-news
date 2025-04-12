@@ -1,5 +1,8 @@
+@file:Suppress("OPT_IN_USAGE")
+
 package buildsrc.convention
 
+import com.google.devtools.ksp.gradle.KspAATask
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
@@ -111,6 +114,11 @@ roborazzi {
 }
 // Trigger Common Metadata Generation from Native tasks
 tasks.withType<KotlinCompilationTask<*>>().configureEach {
+    if (name != "kspCommonMainKotlinMetadata") {
+        dependsOn("kspCommonMainKotlinMetadata")
+    }
+}
+tasks.withType<KspAATask>().configureEach {
     if (name != "kspCommonMainKotlinMetadata") {
         dependsOn("kspCommonMainKotlinMetadata")
     }

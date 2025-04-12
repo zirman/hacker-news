@@ -28,47 +28,47 @@ class ScreenshotKspProcessor(
 ) : SymbolProcessor {
     private val codeGenerator = environment.codeGenerator
 
-    private val createNewFile = codeGenerator::class
-        .declaredMemberFunctions
-        .find { it.name == "createNewFile" }
-        .let { checkNotNull(it) }
-        .apply { isAccessible = true }
-
-    private val extensionToDirectory = codeGenerator::class
-        .declaredMemberFunctions
-        .find { it.name == "extensionToDirectory" }
-        .let { checkNotNull(it) }
-        .apply { isAccessible = true }
+//    private val createNewFile = codeGenerator::class
+//        .declaredMemberFunctions
+//        .find { it.name == "createNewFile" }
+//        .let { checkNotNull(it) }
+//        .apply { isAccessible = true }
+//
+//    private val extensionToDirectory = codeGenerator::class
+//        .declaredMemberFunctions
+//        .find { it.name == "extensionToDirectory" }
+//        .let { checkNotNull(it) }
+//        .apply { isAccessible = true }
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
-        resolver
-            .getSymbolsWithAnnotation("androidx.compose.ui.tooling.preview.Preview")
-            .filterIsInstance<KSFunctionDeclaration>()
-            .filter { ksFunctionDeclaration ->
-                when (ksFunctionDeclaration.getVisibility()) {
-                    Visibility.INTERNAL,
-                    Visibility.PUBLIC,
-                        -> ksFunctionDeclaration.parameters.isEmpty()
-
-                    else -> false
-                }
-            }
-            .groupBy { it.containingFile }
-            .forEach { (ksFile, ksFunctionDeclarations) ->
-                val fileSpec = checkNotNull(ksFile).toScreenshotTestFileSpec(ksFunctionDeclarations)
-                OutputStreamWriter(
-                    createNewFile.call(
-                            codeGenerator,
-                            Dependencies(false, ksFile),
-                            fileSpec.name,
-                            File(
-                                run { extensionToDirectory.call(codeGenerator, "kotlin") as File }.parentFile,
-                                "screenshotTest/${fileSpec.packageName.replace('.', '/')}",
-                            ),
-                        ) as OutputStream,
-                    Charsets.UTF_8,
-                ).use(fileSpec::writeTo)
-            }
+//        resolver
+//            .getSymbolsWithAnnotation("androidx.compose.ui.tooling.preview.Preview")
+//            .filterIsInstance<KSFunctionDeclaration>()
+//            .filter { ksFunctionDeclaration ->
+//                when (ksFunctionDeclaration.getVisibility()) {
+//                    Visibility.INTERNAL,
+//                    Visibility.PUBLIC,
+//                        -> ksFunctionDeclaration.parameters.isEmpty()
+//
+//                    else -> false
+//                }
+//            }
+//            .groupBy { it.containingFile }
+//            .forEach { (ksFile, ksFunctionDeclarations) ->
+//                val fileSpec = checkNotNull(ksFile).toScreenshotTestFileSpec(ksFunctionDeclarations)
+//                OutputStreamWriter(
+//                    createNewFile.call(
+//                            codeGenerator,
+//                            Dependencies(false, ksFile),
+//                            fileSpec.name,
+//                            File(
+//                                run { extensionToDirectory.call(codeGenerator, "kotlin") as File }.parentFile,
+//                                "screenshotTest/${fileSpec.packageName.replace('.', '/')}",
+//                            ),
+//                        ) as OutputStream,
+//                    Charsets.UTF_8,
+//                ).use(fileSpec::writeTo)
+//            }
         return emptyList()
     }
 
@@ -78,132 +78,132 @@ class ScreenshotKspProcessor(
     }
 }
 
-private fun KSFile.toScreenshotTestFileSpec(
-    ksFunctionDeclarations: List<KSFunctionDeclaration>,
-): FileSpec {
-    val testClassName = "${fileName.removeSuffix(".kt").removeSuffix(".android")}ScreenshotTest"
-    return FileSpec
-        .builder(packageName.asString(), "$testClassName.kt")
-        .addImport("androidx.compose.runtime", "CompositionLocalProvider")
-        .addImport("androidx.compose.ui.platform", "LocalInspectionMode")
-        .addImport("org.jetbrains.compose.resources", "PreviewContextConfigurationEffect")
-        .addImport("org.jetbrains.compose.resources", "ExperimentalResourceApi")
-        .addImport("androidx.compose.ui.test.junit4", "createComposeRule")
-        .addImport("androidx.compose.ui.test", "onRoot")
-        .addImport("com.github.takahirom.roborazzi", "captureRoboImage")
-        .addImport("org.robolectric", "RobolectricTestRunner")
-        .addImport("org.robolectric.annotation.GraphicsMode.Mode", "NATIVE")
-        .addImport("com.github.takahirom.roborazzi", "RoborazziOptions")
-        .addImport("com.dropbox.differ", "SimpleImageComparator")
-        .addImport(CONFIG.packageName, CONFIG.simpleName)
-        .addImport(PIXEL_5.packageName, PIXEL_5.simpleName)
-        .indent("    ")
-        .addFileComment("Code generated by $PROCESSOR_NAME. Do not edit.")
-        .addType(
-            TypeSpec
-                .classBuilder(testClassName)
-                .addAnnotation(
-                    AnnotationSpec
-                        .builder(RUN_WITH)
-                        .addMember("RobolectricTestRunner::class")
-                        .build(),
-                )
-                .addAnnotation(
-                    AnnotationSpec
-                        .builder(GRAPHICS_MODE)
-                        .addMember("NATIVE")
-                        .build(),
-                )
-                .addAnnotation(
-                    AnnotationSpec
-                        .builder(CONFIG)
-                        .addMember("qualifiers = %T", PIXEL_5)
-                        .build(),
-                )
-                .apply {
-                    val composeTestRule = "composeTestRule"
-                    addProperty(
-                        PropertySpec
-                            .builder(composeTestRule, COMPOSE_CONTENT_TEST_RULE)
-                            .addAnnotation(
-                                AnnotationSpec
-                                    .builder(RULE)
-                                    .useSiteTarget(AnnotationSpec.UseSiteTarget.GET)
-                                    .build(),
-                            )
-                            .initializer("createComposeRule()")
-                            .build()
-                    )
-                    val roborazziRule = "roborazziRule"
-                    addProperty(
-                        PropertySpec
-                            .builder(roborazziRule, ROBORAZZI_RULE)
-                            .addAnnotation(
-                                AnnotationSpec
-                                    .builder(RULE)
-                                    .useSiteTarget(AnnotationSpec.UseSiteTarget.GET)
-                                    .build(),
-                            )
-                            .initializer(
-                                """
-                                    RoborazziRule(
-                                        options = RoborazziRule.Options(
-                                            roborazziOptions = RoborazziOptions(
-                                                compareOptions = RoborazziOptions.CompareOptions(
-                                                    imageComparator = SimpleImageComparator(
-                                                        maxDistance = 0.0068f,
-                                                    ),
-                                                ),
-                                            ),
-                                        ),
-                                    )
-                                """.trimIndent(),
-                            )
-                            .build(),
-                    )
-                    ksFunctionDeclarations.forEach { ksFunctionDeclaration ->
-                        addFunction(
-                            FunSpec
-                                .builder("${ksFunctionDeclaration.simpleName.asString()} Screenshot")
-                                .addAnnotation(TEST)
-                                .addStatement(
-                                    """
-                                        composeTestRule.run {                                       
-                                            setContent {
-                                                CompositionLocalProvider(LocalInspectionMode provides true) {
-                                                    @OptIn(ExperimentalResourceApi::class)
-                                                    PreviewContextConfigurationEffect()
-                                                    ${ksFunctionDeclaration.simpleName.asString()}()
-                                                }
-                                            }
-                                            onRoot().captureRoboImage()
-                                        }
-                                    """.trimIndent(),
-                                )
-                                .build(),
-                        )
-                    }
-                }
-                .build()
-        )
-        .build()
-}
+//private fun KSFile.toScreenshotTestFileSpec(
+//    ksFunctionDeclarations: List<KSFunctionDeclaration>,
+//): FileSpec {
+//    val testClassName = "${fileName.removeSuffix(".kt").removeSuffix(".android")}ScreenshotTest"
+//    return FileSpec
+//        .builder(packageName.asString(), "$testClassName.kt")
+//        .addImport("androidx.compose.runtime", "CompositionLocalProvider")
+//        .addImport("androidx.compose.ui.platform", "LocalInspectionMode")
+//        .addImport("org.jetbrains.compose.resources", "PreviewContextConfigurationEffect")
+//        .addImport("org.jetbrains.compose.resources", "ExperimentalResourceApi")
+//        .addImport("androidx.compose.ui.test.junit4", "createComposeRule")
+//        .addImport("androidx.compose.ui.test", "onRoot")
+//        .addImport("com.github.takahirom.roborazzi", "captureRoboImage")
+//        .addImport("org.robolectric", "RobolectricTestRunner")
+//        .addImport("org.robolectric.annotation.GraphicsMode.Mode", "NATIVE")
+//        .addImport("com.github.takahirom.roborazzi", "RoborazziOptions")
+//        .addImport("com.dropbox.differ", "SimpleImageComparator")
+//        .addImport(CONFIG.packageName, CONFIG.simpleName)
+//        .addImport(PIXEL_5.packageName, PIXEL_5.simpleName)
+//        .indent("    ")
+//        .addFileComment("Code generated by $PROCESSOR_NAME. Do not edit.")
+//        .addType(
+//            TypeSpec
+//                .classBuilder(testClassName)
+//                .addAnnotation(
+//                    AnnotationSpec
+//                        .builder(RUN_WITH)
+//                        .addMember("RobolectricTestRunner::class")
+//                        .build(),
+//                )
+//                .addAnnotation(
+//                    AnnotationSpec
+//                        .builder(GRAPHICS_MODE)
+//                        .addMember("NATIVE")
+//                        .build(),
+//                )
+//                .addAnnotation(
+//                    AnnotationSpec
+//                        .builder(CONFIG)
+//                        .addMember("qualifiers = %T", PIXEL_5)
+//                        .build(),
+//                )
+//                .apply {
+//                    val composeTestRule = "composeTestRule"
+//                    addProperty(
+//                        PropertySpec
+//                            .builder(composeTestRule, COMPOSE_CONTENT_TEST_RULE)
+//                            .addAnnotation(
+//                                AnnotationSpec
+//                                    .builder(RULE)
+//                                    .useSiteTarget(AnnotationSpec.UseSiteTarget.GET)
+//                                    .build(),
+//                            )
+//                            .initializer("createComposeRule()")
+//                            .build()
+//                    )
+//                    val roborazziRule = "roborazziRule"
+//                    addProperty(
+//                        PropertySpec
+//                            .builder(roborazziRule, ROBORAZZI_RULE)
+//                            .addAnnotation(
+//                                AnnotationSpec
+//                                    .builder(RULE)
+//                                    .useSiteTarget(AnnotationSpec.UseSiteTarget.GET)
+//                                    .build(),
+//                            )
+//                            .initializer(
+//                                """
+//                                    RoborazziRule(
+//                                        options = RoborazziRule.Options(
+//                                            roborazziOptions = RoborazziOptions(
+//                                                compareOptions = RoborazziOptions.CompareOptions(
+//                                                    imageComparator = SimpleImageComparator(
+//                                                        maxDistance = 0.0068f,
+//                                                    ),
+//                                                ),
+//                                            ),
+//                                        ),
+//                                    )
+//                                """.trimIndent(),
+//                            )
+//                            .build(),
+//                    )
+//                    ksFunctionDeclarations.forEach { ksFunctionDeclaration ->
+//                        addFunction(
+//                            FunSpec
+//                                .builder("${ksFunctionDeclaration.simpleName.asString()} Screenshot")
+//                                .addAnnotation(TEST)
+//                                .addStatement(
+//                                    """
+//                                        composeTestRule.run {
+//                                            setContent {
+//                                                CompositionLocalProvider(LocalInspectionMode provides true) {
+//                                                    @OptIn(ExperimentalResourceApi::class)
+//                                                    PreviewContextConfigurationEffect()
+//                                                    ${ksFunctionDeclaration.simpleName.asString()}()
+//                                                }
+//                                            }
+//                                            onRoot().captureRoboImage()
+//                                        }
+//                                    """.trimIndent(),
+//                                )
+//                                .build(),
+//                        )
+//                    }
+//                }
+//                .build()
+//        )
+//        .build()
+//}
 
 private const val PROCESSOR_NAME = "ScreenshotKspProcessor"
 
-private val TEST =
-    ClassName("kotlin.test", "Test")
-private val RULE =
-    ClassName("org.junit", "Rule")
-private val RUN_WITH =
-    ClassName("org.junit.runner", "RunWith")
-private val COMPOSE_CONTENT_TEST_RULE =
-    ClassName("androidx.compose.ui.test.junit4", "ComposeContentTestRule")
-private val GRAPHICS_MODE =
-    ClassName("org.robolectric.annotation", "GraphicsMode")
-private val ROBORAZZI_RULE =
-    ClassName("com.github.takahirom.roborazzi", "RoborazziRule")
-private val CONFIG =
-    ClassName("org.robolectric.annotation", "Config")
-private val PIXEL_5 =
-    ClassName("com.github.takahirom.roborazzi.RobolectricDeviceQualifiers", "Pixel5")
+//private val TEST =
+//    ClassName("kotlin.test", "Test")
+//private val RULE =
+//    ClassName("org.junit", "Rule")
+//private val RUN_WITH =
+//    ClassName("org.junit.runner", "RunWith")
+//private val COMPOSE_CONTENT_TEST_RULE =
+//    ClassName("androidx.compose.ui.test.junit4", "ComposeContentTestRule")
+//private val GRAPHICS_MODE =
+//    ClassName("org.robolectric.annotation", "GraphicsMode")
+//private val ROBORAZZI_RULE =
+//    ClassName("com.github.takahirom.roborazzi", "RoborazziRule")
+//private val CONFIG =
+//    ClassName("org.robolectric.annotation", "Config")
+//private val PIXEL_5 =
+//    ClassName("com.github.takahirom.roborazzi.RobolectricDeviceQualifiers", "Pixel5")
