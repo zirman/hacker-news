@@ -45,27 +45,52 @@ fun SettingsScaffold(
                         }
                     },
                     onClickNotifications = {
-                        // TODO
+                        scope.launch {
+                            navigator.navigateTo(
+                                pane = ListDetailPaneScaffoldRole.Detail,
+                                contentKey = SettingsDetailUiState.Notifications.ordinal,
+                            )
+                        }
                     },
                     onClickHelp = {
-                        // TODO
-                        // https://news.ycombinator.com/newsfaq.html
+                        scope.launch {
+                            navigator.navigateTo(
+                                pane = ListDetailPaneScaffoldRole.Detail,
+                                contentKey = SettingsDetailUiState.Help.ordinal,
+                            )
+                        }
                     },
                     onClickTermsOfService = {
-                        // TODO
-                        // https://www.ycombinator.com/legal/
+                        scope.launch {
+                            navigator.navigateTo(
+                                pane = ListDetailPaneScaffoldRole.Detail,
+                                contentKey = SettingsDetailUiState.TermsOfService.ordinal,
+                            )
+                        }
                     },
                     onClickUserGuidelines = {
-                        // TODO
-                        // https://news.ycombinator.com/newsguidelines.html
+                        scope.launch {
+                            navigator.navigateTo(
+                                pane = ListDetailPaneScaffoldRole.Detail,
+                                contentKey = SettingsDetailUiState.UserGuidelines.ordinal,
+                            )
+                        }
                     },
                     onClickSendFeedback = {
-                        // TODO
-                        // hn@ycombinator.com
-                        // monoids@gmail.com
+                        scope.launch {
+                            navigator.navigateTo(
+                                pane = ListDetailPaneScaffoldRole.Detail,
+                                contentKey = SettingsDetailUiState.SendFeedback.ordinal,
+                            )
+                        }
                     },
                     onClickAbout = {
-                        // TODO
+                        scope.launch {
+                            navigator.navigateTo(
+                                pane = ListDetailPaneScaffoldRole.Detail,
+                                contentKey = SettingsDetailUiState.About.ordinal,
+                            )
+                        }
                     },
                 )
             },

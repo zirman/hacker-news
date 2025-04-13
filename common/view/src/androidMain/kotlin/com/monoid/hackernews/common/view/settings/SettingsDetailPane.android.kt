@@ -23,11 +23,11 @@ fun ThreePaneScaffoldScope.SettingsDetailPane(
     Box(modifier = modifier.fillMaxSize()) {
         when (settingsDetailUiState) {
             SettingsDetailUiState.Profile -> {
-                ProfileDetail()
+                ProfileDetailPane()
             }
 
             SettingsDetailUiState.Appearance -> {
-                PreferencesDetail()
+                PreferencesDetailPane()
             }
 
             null -> {
@@ -35,6 +35,30 @@ fun ThreePaneScaffoldScope.SettingsDetailPane(
                     text = stringResource(Res.string.no_setting_selected),
                     modifier = Modifier.align(Alignment.Center),
                 )
+            }
+
+            SettingsDetailUiState.Notifications -> {
+                NotificationsPane()
+            }
+
+            SettingsDetailUiState.Help -> {
+                HelpPane()
+            }
+
+            SettingsDetailUiState.TermsOfService -> {
+                TermsOfServicePane()
+            }
+
+            SettingsDetailUiState.UserGuidelines -> {
+                UserGuidelinesPane()
+            }
+
+            SettingsDetailUiState.SendFeedback -> {
+                SendFeedbackPane()
+            }
+
+            SettingsDetailUiState.About -> {
+                AboutPane()
             }
         }
     }

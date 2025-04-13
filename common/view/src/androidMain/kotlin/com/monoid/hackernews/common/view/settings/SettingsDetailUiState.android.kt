@@ -7,4 +7,10 @@ import kotlinx.parcelize.Parcelize
 enum class SettingsDetailUiState : Parcelable {
     Profile,
     Appearance,
+    Notifications,
+    Help,
+    TermsOfService,
+    UserGuidelines,
+    SendFeedback,
+    About,
 }
