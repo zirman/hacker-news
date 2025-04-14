@@ -34,12 +34,15 @@ class ScreenshotKspProcessor(
         )
         .apply { isAccessible = true }
 
-    private val extensionToDirectory = codeGenerator::class.java
-        .getDeclaredMethod(
-            "extensionToDirectory",
-            String::class.java,
-        )
-        .apply { isAccessible = true }
+    private val outputDirectory = run {
+        codeGenerator::class.java
+            .getDeclaredMethod(
+                "extensionToDirectory",
+                String::class.java,
+            )
+            .apply { isAccessible = true }
+            .invoke(codeGenerator, "kotlin") as File
+    }.parentFile.let { File(it, "screenshotTest") }
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
         resolver
@@ -63,16 +66,8 @@ class ScreenshotKspProcessor(
                         Dependencies(false, ksFile),
                         fileSpec.name,
                         File(
-                            run {
-                                codeGenerator::class.java
-                                    .getDeclaredMethod(
-                                        "extensionToDirectory",
-                                        String::class.java,
-                                    )
-                                    .apply { isAccessible = true }
-                                    .invoke(codeGenerator, "kotlin") as File
-                            }.parentFile,
-                            "screenshotTest/${fileSpec.packageName.replace('.', '/')}",
+                            outputDirectory,
+                            fileSpec.packageName.replace('.', '/'),
                         ),
                     ) as OutputStream,
                     Charsets.UTF_8,
