@@ -105,9 +105,8 @@ class HtmlParser(
                     is HtmlToken.Tag -> {
                         if (token.isBreak()) {
                             appendLine()
-                            index = 0
                             haveAppendedWord = false
-                            tokens.removeFirst()
+                            tokens.removeLast()
                             continue
                         } else if (token.isBlock()) {
                             if (token.isOpen()) {
