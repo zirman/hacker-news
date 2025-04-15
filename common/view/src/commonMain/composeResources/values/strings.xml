@@ -114,7 +114,7 @@ agree to follow the <a href="https://news.ycombinator.com/newsguidelines.html">u
     <string name="faq"><![CDATA[
 <h1>Hacker News FAQ<br></h1>
 <h3>Are there rules about submissions and comments?<br></h3>
-<a href="newsguidelines.html">https://news.ycombinator.com/newsguidelines.html</a>
+<a href="https://news.ycombinator.com/newsguidelines.html">https://news.ycombinator.com/newsguidelines.html</a>
 <br><h3>How are stories ranked?<br></h3>
 <p>The basic algorithm divides points by a power of the time since a
 story was submitted. Comments in threads are ranked the same way.
@@ -131,33 +131,33 @@ dropped by anti-abuse software.
 <p>There are no down arrows on stories. They appear on comments after
 users reach a certain karma threshold, but never on direct replies.
 <br><h3>What kind of formatting can you use in comments?<br></h3>
-<p><a href="formatdoc">http://news.ycombinator.com/formatdoc</a>
+<p><a href="https://news.ycombinator.com/formatdoc">http://news.ycombinator.com/formatdoc</a>
 <br><h3>How do I submit a question?<br></h3>
 <p>Use the submit link in the top bar, and leave the url field blank.
 <br><h3>How do I submit a poll?<br></h3>
-<p><a href="newpoll">http://news.ycombinator.com/newpoll</a>
+<p><a href="https://news.ycombinator.com/newpoll">http://news.ycombinator.com/newpoll</a>
 <br><h3>How do I make a link in a text submission?<br></h3>
 <p>You can't. This is to prevent people from submitting a link
 with their comments in a privileged position at the top of the
 page. If you want to submit a link with comments, just submit
 the link, then add a regular comment.
 <br><h3>What are Ask HN and Show HN?<br></h3>
-<p><a href="ask">Ask HN</a> lists questions and other text submissions.
-<a href="show">Show HN</a> is for sharing your personal work and has
-special <a href="showhn.html">rules</a>.
+<p><a href="https://news.ycombinator.com/ask">Ask HN</a> lists questions and other text submissions.
+<a href="https://news.ycombinator.com/show">Show HN</a> is for sharing your personal work and has
+special <a href="https://news.ycombinator.com/showhn.html">rules</a>.
 <br><h3>Why hasn't my submission appeared on Ask HN or Show HN?<br></h3>
-<p>All Ask HNs appear on <a href="newest">newest</a> and <a
-href="asknew">asknew</a>, and all Show HNs on <a
-href="newest">newest</a> and <a href="shownew">shownew</a>, but there
+<p>All Ask HNs appear on <a href="https://news.ycombinator.com/newest">newest</a> and <a
+href="https://news.ycombinator.com/asknew">asknew</a>, and all Show HNs on <a
+href="https://news.ycombinator.com/newest">newest</a> and <a href="https://news.ycombinator.com/shownew">shownew</a>, but there
 is a small points threshold before a post makes it to <a
-href="ask">ask</a> or <a href="show">show</a>.
+href="https://news.ycombinator.com/ask">ask</a> or <a href="https://news.ycombinator.com/show">show</a>.
 <br><h3>What do green usernames mean?<br></h3>
 <p>Green indicates a new account.
 <br><h3>Why are some comments faded?<br></h3>
 <p>Faded text means that a comment has been downvoted. You can read the comment
 in normal text by clicking on its timestamp to go to its page.
 <br><h3>What does [flagged] mean?<br></h3>
-<p>Users flagged the post as breaking the <a href="newsguidelines.html">guidelines</a>
+<p>Users flagged the post as breaking the <a href="https://news.ycombinator.com/newsguidelines.html">guidelines</a>
 or otherwise not belonging on HN.
 <p>Moderators sometimes also add [flagged] (though not usually on
 submissions), and sometimes turn flags off when they are unfair.
@@ -173,8 +173,7 @@ Click on its timestamp to go to its page, then click 'vouch' at the
 top. When enough users do this, the post is restored. There's a small
 karma threshold before vouch links appear.
 <br><h3>What does [deleted] mean?<br></h3>
-<p>The author deleted the post, or asked us to. Unlike <a
-href="#dead">dead</a> posts, these remain deleted even when showdead
+<p>The author deleted the post, or asked us to. Unlike dead posts, these remain deleted even when showdead
 is turned on.
 <br><h3>Are reposts ok?<br></h3>
 <p>If a story has not had significant attention in the last year or so,
@@ -185,7 +184,7 @@ that shouldn't have been submitted in the first place.
 <p>It's ok to post stories from sites with paywalls that have workarounds.
 <p>In comments, it's ok to ask how to read an article and to help other
 users do so. But please don't post complaints about paywalls. Those
-are <a href="item?id=10178989">off topic</a>. More <a href="https://hn.algolia.com/?query=paywalls%20by:dang&dateRange=all&page=0&prefix=false&sort=byDate&type=comment">here</a>.
+are <a href="https://news.ycombinator.com/item?id=10178989">off topic</a>. More <a href="https://hn.algolia.com/?query=paywalls%20by:dang&dateRange=all&page=0&prefix=false&sort=byDate&type=comment">here</a>.
 <br><h3>Can I ask people to upvote my submission?<br></h3>
 <p>No. Users should vote for a story because they personally find it
 intellectually interesting, not because someone has content to
@@ -199,18 +198,18 @@ and use unkind words like 'spam'.
 <p>Please don't post job ads as submissions to HN.
 <p>A regular "Who Is Hiring?" thread appears on the first weekday of each
 month (or Jan 2). Most job ads are welcome there. Only an account called
-<a href="submitted?id=whoishiring">whoishiring</a> is allowed to
+<a href="https://news.ycombinator.com/submitted?id=whoishiring">whoishiring</a> is allowed to
 submit the thread itself. This prevents a race to post it first.
 <p>Another kind of job ad is reserved for YC-funded startups. These
 appear on the front page, but are not stories: they have no vote arrows,
 points, or comments. They begin part-way down and fall steadily.
 Only one is on the front page at a time. The rest are listed
-at <a href="jobs">jobs</a>.
+at <a href="https://news.ycombinator.com/jobs">jobs</a>.
 <br><h3>What's the relationship between YC and HN?<br></h3>
 <p><a href="https://ycombinator.com">Y Combinator</a> owns and funds HN. The
 HN team is <a href="https://venturebeat.com/2015/09/29/y-combinator-spins-out-hacker-news-to-give-it-full-editorial-independence/">editorially</a> <a href="https://blog.ycombinator.com/two-hn-announcements/">independent</a>.
 <p>HN gives three features to YC:
-job ads (see <a href="#jobads">above</a>) and startup <a href="launches">launches</a>
+job ads (see <a href="#jobads">above</a>) and startup <a href="https://news.ycombinator.com/launches">launches</a>
 get placed on the front page, and YC founder names
 are displayed to other YC alumni in orange.
 <br><h3>Are negative stories about YC suppressed on HN?<br></h3>
@@ -234,21 +233,21 @@ minutes at a time, and then not allow you back in for 3 hours.
 <br><h3>How do I reset my password?<br></h3>
 <p>If you have an email address in your profile, you can do that
 <a href="https://news.ycombinator.com/forgot?id=">here</a>. If
-you haven't, email hn@ycombinator.com for help.
+you haven't, email <a href="mailto:hn@ycombinator.com">hn@ycombinator.com</a> for help.
 <br><h3>Can I change my username?<br></h3>
-<p>Yes. Email hn@ycombinator.com and we'll help.
+<p>Yes. Email <a href="mailto:hn@ycombinator.com">hn@ycombinator.com</a> and we'll help.
 <br><h3>Can I delete my account?<br></h3>
 <p>We try not to delete entire account histories because that would gut
 the threads the account had participated in. However, we care about
 protecting individual users and take care of privacy requests every
-day, so if we can help, please email hn@ycombinator.com. We don't want
+day, so if we can help, please email <a href="mailto:hn@ycombinator.com">hn@ycombinator.com</a>. We don't want
 anyone to get in trouble from anything they posted to HN. More <a
-href="item?id=23623799">here</a>.
+href="https://news.ycombinator.com/item?id=23623799">here</a>.
 <br><h3>My IP address seems to be banned. How can I unban it?<br></h3>
 <p>If you request many pages quickly, your IP address might get
 banned.
 This <a href="https://news.ycombinator.com/item?id=4761102">self-serve
-unbanning procedure</a> works most of the time. If not, email hn@ycombinator.com.
+unbanning procedure</a> works most of the time. If not, email <a href="mailto:hn@ycombinator.com">hn@ycombinator.com</a>.
 ]]></string>
     <!-- https://news.ycombinator.com/newsguidelines.html -->
     <string name="guidelines"><![CDATA[
@@ -282,7 +281,7 @@ is misleading or linkbait; don't editorialize.
 <p>If you submit a video or pdf, please warn us by appending
 [video] or [pdf] to the title.
 <p>Please don't post on HN to ask or tell us something. Send it
-to hn@ycombinator.com.
+to <a href="mailto:hn@ycombinator.com">hn@ycombinator.com</a>.
 <p>Please don't delete and repost. Deletion is for things
 that shouldn't have been submitted in the first place.
 <p>Don't solicit upvotes, comments, or submissions. Users should vote and
@@ -321,10 +320,10 @@ italicized.
 <p>Please don't post insinuations about astroturfing, shilling,
 brigading, foreign agents, and the like. It degrades discussion
 and is usually mistaken. If you're worried about abuse, email
-hn@ycombinator.com and we'll look at the data.
+<a href="mailto:hn@ycombinator.com">hn@ycombinator.com</a> and we'll look at the data.
 <p>Please don't complain that a submission is inappropriate. If a story
 is spam or off-topic, flag it. Don't feed egregious comments by
-replying; <a href="newsfaq.html#cflag">flag</a> them instead. If you
+replying; <a href="https://news.ycombinator.com/newsfaq.html#cflag">flag</a> them instead. If you
 flag, please don't also comment that you did.
 <p>Please don't complain about tangential annoyances&mdash;e.g.
 article or website formats, name collisions, or back-button breakage.
