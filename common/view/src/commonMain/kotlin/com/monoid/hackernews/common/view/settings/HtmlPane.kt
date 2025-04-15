@@ -1,10 +1,11 @@
 package com.monoid.hackernews.common.view.settings
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.widthIn
@@ -42,18 +43,15 @@ fun HtmlPane(htmlString: String, modifier: Modifier = Modifier) {
     ) {
         val htmlAnnotatedStringPinned = htmlAnnotatedString
         if (htmlAnnotatedStringPinned != null) {
-            Column(
+            Text(
+                text = htmlAnnotatedStringPinned,
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
-                    .padding(WindowInsets.safeDrawing.asPaddingValues()),
-            ) {
-                Text(
-                    text = htmlAnnotatedStringPinned,
-                    modifier = Modifier
-                        .widthIn(max = 640.dp)
-                        .fillMaxSize(),
-                )
-            }
+                    .widthIn(max = 640.dp)
+                    .padding(WindowInsets.safeDrawing.only(WindowInsetsSides.Vertical + WindowInsetsSides.End).asPaddingValues())
+                    .padding(16.dp)
+                    .fillMaxSize(),
+            )
         } else {
             CircularProgressIndicator()
         }
