@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import com.monoid.hackernews.common.data.html.toHtmlAnnotatedString
+import com.monoid.hackernews.common.view.itemdetail.htmlTextStyle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -51,6 +52,7 @@ fun HtmlPane(htmlString: String, modifier: Modifier = Modifier) {
                     .padding(WindowInsets.safeDrawing.only(WindowInsetsSides.Vertical + WindowInsetsSides.End).asPaddingValues())
                     .padding(16.dp)
                     .fillMaxSize(),
+                style = htmlTextStyle(),
             )
         } else {
             CircularProgressIndicator()

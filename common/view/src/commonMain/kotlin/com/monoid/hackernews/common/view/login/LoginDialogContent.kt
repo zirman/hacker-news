@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -33,6 +33,7 @@ import com.monoid.hackernews.common.view.cancel
 import com.monoid.hackernews.common.view.hacker_news_login
 import com.monoid.hackernews.common.view.html.rememberAnnotatedHtmlString
 import com.monoid.hackernews.common.view.i_agree_html
+import com.monoid.hackernews.common.view.itemdetail.htmlTextStyle
 import com.monoid.hackernews.common.view.submit
 import com.monoid.hackernews.common.view.text.PasswordTextField
 import com.monoid.hackernews.common.view.text.UsernameTextField
@@ -98,17 +99,13 @@ fun LoginDialogContent(
                 val htmlString = stringResource(Res.string.i_agree_html)
                 Text(
                     text = rememberAnnotatedHtmlString(htmlString),
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        color = LocalContentColor.current,
-                    ),
+                    style = htmlTextStyle().merge(MaterialTheme.typography.bodyMedium),
                 )
             }
             if (showErrorText) {
                 Text(
                     text = stringResource(Res.string.an_error_occurred),
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        color = MaterialTheme.colorScheme.error,
-                    ),
+                    style = LocalTextStyle.current.merge(MaterialTheme.typography.bodyLarge),
                 )
             }
             Row(

@@ -27,6 +27,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -95,7 +96,7 @@ fun ItemDetail(
                     modifier = Modifier
                         .padding(horizontal = 8.dp)
                         .weight(1f),
-                    style = MaterialTheme.typography.titleMedium,
+                    style = LocalTextStyle.current.merge(MaterialTheme.typography.titleMedium),
                 )
                 val (contextExpanded: Boolean, setContextExpanded) =
                     rememberSaveable { mutableStateOf(false) }
@@ -241,7 +242,7 @@ fun ItemDetail(
                                 highlightColor = LocalContentColor.current.copy(alpha = .5f),
                             ),
                         ),
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = htmlTextStyle().merge(MaterialTheme.typography.bodyMedium),
                 )
             }
             val timeUserAnnotatedString: AnnotatedString = rememberTimeBy(
@@ -268,9 +269,7 @@ fun ItemDetail(
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
                     .fillMaxWidth(),
-                style = MaterialTheme.typography.labelMedium.copy(
-                    color = LocalContentColor.current,
-                )
+                style = LocalTextStyle.current.merge(MaterialTheme.typography.labelMedium),
             )
             Row(verticalAlignment = Alignment.CenterVertically) {
                 if (item?.lastUpdate == null || item.type == ItemType.Story) {

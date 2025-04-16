@@ -3,6 +3,7 @@ package com.monoid.hackernews.common.view.home
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
@@ -11,7 +12,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.domain.navigation.BottomNav
 import org.jetbrains.compose.resources.stringResource
@@ -46,7 +46,7 @@ actual fun HomeScaffold(
                     label = {
                         Text(
                             text = stringResource(story.label),
-                            textAlign = TextAlign.Center,
+                            style = LocalTextStyle.current.copy(textIndent = null),
                         )
                     },
                 )

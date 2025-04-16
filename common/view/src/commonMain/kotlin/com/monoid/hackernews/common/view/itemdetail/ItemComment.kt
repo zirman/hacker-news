@@ -26,7 +26,7 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -38,6 +38,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextIndent
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -53,6 +55,7 @@ import com.monoid.hackernews.common.view.follow
 import com.monoid.hackernews.common.view.more_options
 import com.monoid.hackernews.common.view.reply
 import com.monoid.hackernews.common.view.text.ClickableTextBlock
+import com.monoid.hackernews.common.view.theme.LocalCommentIndentation
 import com.monoid.hackernews.common.view.un_flag
 import com.monoid.hackernews.common.view.un_vote
 import com.monoid.hackernews.common.view.unfollow
@@ -126,9 +129,7 @@ fun ItemComment(
                         modifier = Modifier
                             .padding(start = 16.dp, top = 16.dp)
                             .align(Alignment.Top),
-                        style = MaterialTheme.typography.labelMedium.copy(
-                            color = LocalContentColor.current,
-                        ),
+                        style = LocalTextStyle.current.merge(MaterialTheme.typography.labelMedium),
                     )
                     if (item.expanded.not()) {
                         Badge(
@@ -285,6 +286,7 @@ fun ItemComment(
                             item.text ?: AnnotatedString("")
                         },
                         modifier = Modifier.padding(horizontal = 16.dp),
+                        style = htmlTextStyle(),
                     )
                 }
             }
@@ -318,3 +320,12 @@ fun ThreadDepth(depth: Int, modifier: Modifier = Modifier) {
         }
     }
 }
+
+@Composable
+fun htmlTextStyle(): TextStyle = LocalTextStyle.current.merge(
+    TextStyle(
+        textIndent = TextIndent(
+            firstLine = LocalTextStyle.current.fontSize * LocalCommentIndentation.current,
+        ),
+    ),
+)

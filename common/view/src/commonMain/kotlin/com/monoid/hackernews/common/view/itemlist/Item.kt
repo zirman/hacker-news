@@ -29,6 +29,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -58,6 +59,7 @@ import com.monoid.hackernews.common.view.comment
 import com.monoid.hackernews.common.view.favorite
 import com.monoid.hackernews.common.view.flag
 import com.monoid.hackernews.common.view.follow
+import com.monoid.hackernews.common.view.itemdetail.htmlTextStyle
 import com.monoid.hackernews.common.view.more_options
 import com.monoid.hackernews.common.view.open_in_browser
 import com.monoid.hackernews.common.view.un_favorite
@@ -84,7 +86,7 @@ fun Item(
     val isStoryOrComment = item.type == ItemType.Story || item.type == ItemType.Comment
     Surface(
         modifier = modifier.clickable(onClick = { onClickItem(item) }),
-        contentColor = LocalContentColor.current,
+        // contentColor = LocalContentColor.current,
         tonalElevation = ((item.score ?: 0) / 10).dp
     ) {
         Column(modifier = Modifier.padding(4.dp)) {
@@ -99,7 +101,7 @@ fun Item(
                         .padding(start = 8.dp)
                         .weight(1f),
                     overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.titleMedium
+                    style = LocalTextStyle.current.merge(MaterialTheme.typography.titleMedium),
                 )
                 val (contextExpanded: Boolean, setContextExpanded) =
                     rememberSaveable { mutableStateOf(false) }
@@ -223,8 +225,7 @@ fun Item(
             Spacer(modifier = Modifier.height(4.dp))
             val timeUserAnnotatedString: AnnotatedString =
                 rememberTimeBy(time = item.time, by = item.by)
-            val style = MaterialTheme.typography.labelMedium
-                .copy(color = LocalContentColor.current)
+            val style = LocalTextStyle.current.merge(MaterialTheme.typography.labelMedium)
             // TODO: add onClickUser handler
             Text(
                 text = timeUserAnnotatedString,
@@ -268,7 +269,7 @@ fun Item(
                         maxLines = 1,
                         modifier = Modifier.widthIn(min = 24.dp),
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.labelMedium
+                        style = MaterialTheme.typography.labelMedium,
                     )
                 }
                 key("comments") {
