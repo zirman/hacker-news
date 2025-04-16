@@ -111,7 +111,7 @@ agree to follow the <a href="https://news.ycombinator.com/newsguidelines.html">u
     <string name="light_mode">Light Mode</string>
     <string name="dark_mode">Dark Mode</string>
     <!-- https://news.ycombinator.com/newsfaq.html -->
-    <string name="faq"><![CDATA[
+    <string name="faq_content"><![CDATA[
 <h1>Hacker News FAQ<br></h1>
 <h3>Are there rules about submissions and comments?<br></h3>
 <a href="https://news.ycombinator.com/newsguidelines.html">https://news.ycombinator.com/newsguidelines.html</a>
@@ -250,7 +250,7 @@ This <a href="https://news.ycombinator.com/item?id=4761102">self-serve
 unbanning procedure</a> works most of the time. If not, email <a href="mailto:hn@ycombinator.com">hn@ycombinator.com</a>.
 ]]></string>
     <!-- https://news.ycombinator.com/newsguidelines.html -->
-    <string name="guidelines"><![CDATA[
+    <string name="guidelines_content"><![CDATA[
 <h1>Hacker News Guidelines<br></h1>
 <h3>What to Submit<br></h3>
 <p>On-Topic: Anything that good hackers would find interesting. That includes
@@ -340,5 +340,14 @@ It's
 <a href="https://news.ycombinator.com/item?id=66057">as</a>
 <a href="https://news.ycombinator.com/item?id=60767">the</a>
 <a href="https://news.ycombinator.com/item?id=13852">hills</a>.
+]]></string>
+    <string name="send_feedback_content"><![CDATA[
+<h1>Send Feedback<br></h1>
+<h3><a href="mailto:hn@ycombinator.com">hn@ycombinator.com</a></h3>
+<h3><a href="mailto:monoidscorp+feedback@gmail.com">monoidscorp+feedback@gmail.com</a></h3>
+]]></string>
+    <string name="terms_of_service_content"><![CDATA[
+<h1>Terms of Service<br></h1>
+<h3><a href="https://www.ycombinator.com/legal/">https://www.ycombinator.com/legal/</a></h3>
 ]]></string>
 </resources>
