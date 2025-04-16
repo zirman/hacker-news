@@ -6,8 +6,6 @@ import androidx.compose.material3.Shapes
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.compositionLocalOf
-import androidx.compose.runtime.structuralEqualityPolicy
 import androidx.compose.ui.text.font.FontFamily
 import com.monoid.hackernews.common.data.model.HNFont
 import com.monoid.hackernews.common.data.model.LightDarkMode
@@ -141,6 +139,3 @@ fun rememberShapes(shape: Shape, shapes: Shapes = MaterialTheme.shapes): Shapes 
         ),
     )
 }
-
-@Suppress("ComposeCompositionLocalUsage")
-val LocalCommentIndentation = compositionLocalOf(structuralEqualityPolicy()) { 0 }
