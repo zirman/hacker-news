@@ -3,7 +3,6 @@ package com.monoid.hackernews.common.view.home
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
@@ -44,10 +43,7 @@ actual fun HomeScaffold(
                         )
                     },
                     label = {
-                        Text(
-                            text = stringResource(story.label),
-                            style = LocalTextStyle.current.copy(textIndent = null),
-                        )
+                        Text(text = stringResource(story.label))
                     },
                 )
             }
