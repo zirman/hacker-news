@@ -98,6 +98,9 @@ android {
             isShrinkResources = true
         }
     }
+    lint {
+        warningsAsErrors = true
+    }
 }
 val kspAndroid by configurations.named("kspAndroid")
 val kspIosX64 by configurations.named("kspIosX64")

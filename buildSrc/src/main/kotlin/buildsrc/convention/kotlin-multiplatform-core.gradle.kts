@@ -110,6 +110,9 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    lint {
+        warningsAsErrors = true
+    }
 }
 val kspAndroid by configurations.named("kspAndroid")
 val kspJvm by configurations.named("kspJvm")
