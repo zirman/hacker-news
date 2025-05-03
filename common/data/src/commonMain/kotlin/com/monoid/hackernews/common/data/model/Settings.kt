@@ -23,8 +23,10 @@ data class Settings(
     val paragraphIndent: ParagraphIndent = ParagraphIndent.default,
     @SerialName("shape")
     val shape: Shape = Shape.default,
-    @SerialName("Colors")
+    @SerialName("colors")
     val colors: Colors = Colors.default,
+    @SerialName("notifications")
+    val notifications: Boolean = true,
 )
 
 val SETTINGS_KEY = byteArrayPreferencesKey("settings")

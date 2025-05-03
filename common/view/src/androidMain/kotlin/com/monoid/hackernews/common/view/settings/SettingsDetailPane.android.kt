@@ -27,7 +27,7 @@ fun ThreePaneScaffoldScope.SettingsDetailPane(
             }
 
             SettingsDetailUiState.Appearance -> {
-                PreferencesDetailPane()
+                AppearanceDetailPane()
             }
 
             null -> {

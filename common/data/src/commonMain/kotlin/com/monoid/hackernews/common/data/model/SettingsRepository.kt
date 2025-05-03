@@ -110,6 +110,15 @@ class SettingsRepository(
         }
     }
 
+    suspend fun setNotifications(enabled: Boolean) {
+        localDataSource.updateData { preferences ->
+            preferences.toMutablePreferences().apply {
+                settings = run { settings ?: Settings() }
+                    .copy(notifications = enabled)
+            }
+        }
+    }
+
     val isLoggedIn: Boolean get() = preferences.value.username.string.isNotEmpty()
 }
 

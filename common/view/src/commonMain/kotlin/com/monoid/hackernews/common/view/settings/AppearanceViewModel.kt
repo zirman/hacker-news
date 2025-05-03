@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
-class PreferencesViewModel(
+class AppearanceViewModel(
     private val repository: SettingsRepository,
     logger: LoggerAdapter,
 ) : ViewModel() {
@@ -90,7 +90,7 @@ class PreferencesViewModel(
 
 private const val TAG = "PreferencesViewModel"
 
-private fun Settings.toUiState(): PreferencesViewModel.UiState = PreferencesViewModel.UiState(
+private fun Settings.toUiState(): AppearanceViewModel.UiState = AppearanceViewModel.UiState(
     lightDarkMode = lightDarkMode,
     font = font,
     fontSize = fontSize,

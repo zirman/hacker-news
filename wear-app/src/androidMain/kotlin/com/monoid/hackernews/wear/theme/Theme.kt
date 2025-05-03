@@ -5,13 +5,13 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.wear.compose.material.MaterialTheme
-import com.monoid.hackernews.common.view.settings.PreferencesViewModel
+import com.monoid.hackernews.common.view.settings.AppearanceViewModel
 import com.monoid.hackernews.common.view.theme.LocalCommentIndentation
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun HackerNewsTheme(
-    viewModel: PreferencesViewModel = koinViewModel(),
+    viewModel: AppearanceViewModel = koinViewModel(),
     content: @Composable () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

@@ -8,7 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.data.model.Colors
 import com.monoid.hackernews.common.data.model.LightDarkMode
-import com.monoid.hackernews.common.view.settings.PreferencesViewModel
+import com.monoid.hackernews.common.view.settings.AppearanceViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -19,7 +19,7 @@ expect fun rememberColorScheme(
 
 @Composable
 fun AppTheme(
-    viewModel: PreferencesViewModel = koinViewModel(),
+    viewModel: AppearanceViewModel = koinViewModel(),
     content: @Composable () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

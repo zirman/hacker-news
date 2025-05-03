@@ -36,9 +36,9 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun PreferencesDetailPane(
+fun AppearanceDetailPane(
     modifier: Modifier = Modifier,
-    viewModel: PreferencesViewModel = koinViewModel(),
+    viewModel: AppearanceViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val selectedLightDarkMode = uiState.lightDarkMode
