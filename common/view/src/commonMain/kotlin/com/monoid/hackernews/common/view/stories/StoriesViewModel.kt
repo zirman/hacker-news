@@ -1,6 +1,7 @@
 package com.monoid.hackernews.common.view.stories
 
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.monoid.hackernews.common.core.LoggerAdapter
@@ -23,64 +24,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 
-enum class StoryOrdering {
-    Trending {
-        override fun stories(repository: StoriesRepository): StateFlow<List<Item>?> =
-            repository.trendingStories
-
-        override suspend fun update(repository: StoriesRepository) {
-            repository.updateTrendingStories()
-        }
-    },
-    New {
-        override fun stories(repository: StoriesRepository): StateFlow<List<Item>?> =
-            repository.newStories
-
-        override suspend fun update(repository: StoriesRepository) {
-            repository.updateNewStories()
-        }
-    },
-    Hot {
-        override fun stories(repository: StoriesRepository): StateFlow<List<Item>?> =
-            repository.hotStories
-
-        override suspend fun update(repository: StoriesRepository) {
-            repository.updateHotStories()
-        }
-    },
-    Show {
-        override fun stories(repository: StoriesRepository): StateFlow<List<Item>?> =
-            repository.showStories
-
-        override suspend fun update(repository: StoriesRepository) {
-            repository.updateShowStories()
-        }
-    },
-    Ask {
-        override fun stories(repository: StoriesRepository): StateFlow<List<Item>?> =
-            repository.askStories
-
-        override suspend fun update(repository: StoriesRepository) {
-            repository.updateAskStories()
-        }
-    },
-    Jobs {
-        override fun stories(repository: StoriesRepository): StateFlow<List<Item>?> =
-            repository.jobStories
-
-        override suspend fun update(repository: StoriesRepository) {
-            repository.updateJobStories()
-        }
-    },
-    ;
-
-    abstract fun stories(repository: StoriesRepository): StateFlow<List<Item>?>
-    abstract suspend fun update(repository: StoriesRepository)
-}
-
 @KoinViewModel
 class StoriesViewModel(
-    private val storyOrdering: StoryOrdering,
+    handle: SavedStateHandle,
     private val logger: LoggerAdapter,
     private val storiesRepository: StoriesRepository,
     private val settingsRepository: SettingsRepository,
@@ -110,6 +56,8 @@ class StoriesViewModel(
     val events = _events.receiveAsFlow()
 
     val listState = LazyListState()
+
+    private val storyOrdering = StoryOrdering.valueOf(checkNotNull(handle[STORY_ORDERING]))
 
     init {
         viewModelScope.launch(coroutineExceptionHandler) {
@@ -172,6 +120,65 @@ class StoriesViewModel(
             _events.send(Event.Error(it.message))
         }
     }
+
+    companion object {
+        const val STORY_ORDERING = "STORY_ORDERING"
+    }
 }
 
 private const val TAG = "StoriesViewModel"
+
+enum class StoryOrdering {
+    Trending {
+        override fun stories(repository: StoriesRepository): StateFlow<List<Item>?> =
+            repository.trendingStories
+
+        override suspend fun update(repository: StoriesRepository) {
+            repository.updateTrendingStories()
+        }
+    },
+    New {
+        override fun stories(repository: StoriesRepository): StateFlow<List<Item>?> =
+            repository.newStories
+
+        override suspend fun update(repository: StoriesRepository) {
+            repository.updateNewStories()
+        }
+    },
+    Hot {
+        override fun stories(repository: StoriesRepository): StateFlow<List<Item>?> =
+            repository.hotStories
+
+        override suspend fun update(repository: StoriesRepository) {
+            repository.updateHotStories()
+        }
+    },
+    Show {
+        override fun stories(repository: StoriesRepository): StateFlow<List<Item>?> =
+            repository.showStories
+
+        override suspend fun update(repository: StoriesRepository) {
+            repository.updateShowStories()
+        }
+    },
+    Ask {
+        override fun stories(repository: StoriesRepository): StateFlow<List<Item>?> =
+            repository.askStories
+
+        override suspend fun update(repository: StoriesRepository) {
+            repository.updateAskStories()
+        }
+    },
+    Jobs {
+        override fun stories(repository: StoriesRepository): StateFlow<List<Item>?> =
+            repository.jobStories
+
+        override suspend fun update(repository: StoriesRepository) {
+            repository.updateJobStories()
+        }
+    },
+    ;
+
+    abstract fun stories(repository: StoriesRepository): StateFlow<List<Item>?>
+    abstract suspend fun update(repository: StoriesRepository)
+}
