@@ -4,8 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "beststory")
-data class BestStoryDb(
+@Entity(tableName = "hot_story")
+data class HotStoryDb(
     @ColumnInfo(name = "itemId")
     val itemId: Long,
     @ColumnInfo(name = "order")

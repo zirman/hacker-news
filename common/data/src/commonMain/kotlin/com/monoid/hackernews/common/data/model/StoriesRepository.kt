@@ -3,20 +3,34 @@ package com.monoid.hackernews.common.data.model
 import com.monoid.hackernews.common.core.LoggerAdapter
 import com.monoid.hackernews.common.core.coroutines.doOnErrorThenThrow
 import com.monoid.hackernews.common.data.api.ItemId
+import com.monoid.hackernews.common.data.api.getAskStories
+import com.monoid.hackernews.common.data.api.getHotStories
 import com.monoid.hackernews.common.data.api.getItem
+import com.monoid.hackernews.common.data.api.getJobStories
+import com.monoid.hackernews.common.data.api.getNewStories
+import com.monoid.hackernews.common.data.api.getShowStories
 import com.monoid.hackernews.common.data.api.getTopStories
 import com.monoid.hackernews.common.data.api.upvoteItem
+import com.monoid.hackernews.common.data.room.AskStoryDao
+import com.monoid.hackernews.common.data.room.AskStoryDb
+import com.monoid.hackernews.common.data.room.HotStoryDao
+import com.monoid.hackernews.common.data.room.HotStoryDb
 import com.monoid.hackernews.common.data.room.ItemDao
-import com.monoid.hackernews.common.data.room.TopStoryDao
-import com.monoid.hackernews.common.data.room.TopStoryDb
+import com.monoid.hackernews.common.data.room.JobStoryDao
+import com.monoid.hackernews.common.data.room.JobStoryDb
+import com.monoid.hackernews.common.data.room.NewStoryDao
+import com.monoid.hackernews.common.data.room.NewStoryDb
+import com.monoid.hackernews.common.data.room.ShowStoryDao
+import com.monoid.hackernews.common.data.room.ShowStoryDb
+import com.monoid.hackernews.common.data.room.TrendingStoryDb
+import com.monoid.hackernews.common.data.room.TrendingStoryDao
 import io.ktor.client.HttpClient
+import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.currentCoroutineContext
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -33,7 +47,12 @@ import org.koin.core.annotation.Single
 class StoriesRepository(
     private val logger: LoggerAdapter,
     private val remoteDataSource: HttpClient,
-    private val topStoryLocalDataSource: TopStoryDao,
+    private val trendingStoryLocalDataSource: TrendingStoryDao,
+    private val newStoryLocalDataSource: NewStoryDao,
+    private val hotStoryLocalDataSource: HotStoryDao,
+    private val showStoryLocalDataSource: ShowStoryDao,
+    private val askStoryLocalDataSource: AskStoryDao,
+    private val jobStoryLocalDataSource: JobStoryDao,
     private val itemLocalDataSource: ItemDao,
     private val settingsRepository: SettingsRepository,
 ) {
@@ -49,8 +68,8 @@ class StoriesRepository(
     private val _cache = MutableStateFlow(persistentMapOf<ItemId, Item>())
     val cache = _cache.asStateFlow()
 
-    private val topStoryIds: StateFlow<List<ItemId>?> = topStoryLocalDataSource
-        .getTopStories()
+    private val trendingStoryIds: StateFlow<List<ItemId>?> = trendingStoryLocalDataSource
+        .getTrendingStories()
         .map { items ->
             items.sortedBy { it.order }.map { item -> ItemId(item.itemId) }
         }
@@ -60,11 +79,10 @@ class StoriesRepository(
             initialValue = null,
         )
 
-    val topStories = combine(_cache, topStoryIds, ::Pair)
-        .map { (cache, itemIds) ->
-            itemIds?.map { id ->
-                cache[id] ?: Item(id = id)
-            }
+    private val newStoryIds: StateFlow<List<ItemId>?> = newStoryLocalDataSource
+        .getNewStories()
+        .map { items ->
+            items.sortedBy { it.order }.map { item -> ItemId(item.itemId) }
         }
         .stateIn(
             scope = scope,
@@ -72,10 +90,125 @@ class StoriesRepository(
             initialValue = null,
         )
 
-    suspend fun updateBestStories() {
-        topStoryLocalDataSource.replaceTopStories(
+    private val hotStoryIds: StateFlow<List<ItemId>?> = hotStoryLocalDataSource
+        .getHotStories()
+        .map { items ->
+            items.sortedBy { it.order }.map { item -> ItemId(item.itemId) }
+        }
+        .stateIn(
+            scope = scope,
+            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
+            initialValue = null,
+        )
+
+    private val showStoryIds: StateFlow<List<ItemId>?> = showStoryLocalDataSource
+        .getShowStories()
+        .map { items ->
+            items.sortedBy { it.order }.map { item -> ItemId(item.itemId) }
+        }
+        .stateIn(
+            scope = scope,
+            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
+            initialValue = null,
+        )
+
+    private val askStoryIds: StateFlow<List<ItemId>?> = askStoryLocalDataSource
+        .getAskStories()
+        .map { items ->
+            items.sortedBy { it.order }.map { item -> ItemId(item.itemId) }
+        }.stateIn(
+            scope = scope,
+            started = SharingStarted.Lazily,
+            initialValue = null,
+        )
+
+    private val jobStoryIds = jobStoryLocalDataSource
+        .getJobStories()
+        .map { items ->
+            items.sortedBy { it.order }.map { item -> ItemId(item.itemId) }
+        }.stateIn(
+            scope = scope,
+            started = SharingStarted.Lazily,
+            initialValue = null,
+        )
+
+    val trendingStories = combine(_cache, trendingStoryIds, ::Pair).toStories()
+    val newStories = combine(_cache, newStoryIds, ::Pair).toStories()
+    val hotStories = combine(_cache, hotStoryIds, ::Pair).toStories()
+    val showStories = combine(_cache, showStoryIds, ::Pair).toStories()
+    val askStories = combine(_cache, askStoryIds, ::Pair).toStories()
+    val jobStories = combine(_cache, jobStoryIds, ::Pair).toStories()
+
+    private fun Flow<Pair<PersistentMap<ItemId, Item>, List<ItemId>?>>.toStories(
+    ): StateFlow<List<Item>?> = map { (cache, itemIds) ->
+        itemIds?.map { id ->
+            cache[id] ?: Item(id = id)
+        }
+    }.stateIn(
+        scope = scope,
+        started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
+        initialValue = null,
+    )
+
+    suspend fun updateTrendingStories() {
+        trendingStoryLocalDataSource.replaceTopStories(
             remoteDataSource.getTopStories().mapIndexed { order, storyId ->
-                TopStoryDb(
+                TrendingStoryDb(
+                    itemId = storyId,
+                    order = order,
+                )
+            },
+        )
+    }
+
+    suspend fun updateNewStories() {
+        newStoryLocalDataSource.replaceNewStories(
+            remoteDataSource.getNewStories().mapIndexed { order, storyId ->
+                NewStoryDb(
+                    itemId = storyId,
+                    order = order,
+                )
+            },
+        )
+    }
+
+    suspend fun updateHotStories() {
+        hotStoryLocalDataSource.replaceHotStories(
+            remoteDataSource.getHotStories().mapIndexed { order, storyId ->
+                HotStoryDb(
+                    itemId = storyId,
+                    order = order,
+                )
+            },
+        )
+    }
+
+    suspend fun updateShowStories() {
+        showStoryLocalDataSource.replaceShowStories(
+            remoteDataSource.getShowStories().mapIndexed { order, storyId ->
+                ShowStoryDb(
+                    itemId = storyId,
+                    order = order,
+                )
+            },
+        )
+    }
+
+    suspend fun updateAskStories() {
+        askStoryLocalDataSource.replaceAskStories(
+            remoteDataSource.getAskStories().mapIndexed { order, storyId ->
+                AskStoryDb(
+                    itemId = storyId,
+                    order = order,
+                )
+            },
+        )
+    }
+
+    suspend fun updateJobStories() {
+        jobStoryLocalDataSource.replaceJobStories(
+            remoteDataSource.getJobStories().mapIndexed { order, storyId ->
+                JobStoryDb(
                     itemId = storyId,
                     order = order,
                 )

@@ -1,7 +1,7 @@
 package com.monoid.hackernews.common.view.itemlist
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -66,7 +66,7 @@ internal fun ItemsColumnPreview() {
             onClickFavorite = {},
             onClickFollow = {},
             onClickFlag = {},
-            listState = rememberLazyListState(),
+            contentPadding = PaddingValues(),
             modifier = Modifier.fillMaxHeight(),
         )
     }

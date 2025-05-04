@@ -15,7 +15,7 @@ suspend fun HttpClient.getNewStories(): List<Long> {
     return get(urlString = "${HACKER_NEWS_API_BASE}newstories.json").body()
 }
 
-suspend fun HttpClient.getBestStories(): List<Long> {
+suspend fun HttpClient.getHotStories(): List<Long> {
     return get(urlString = "${HACKER_NEWS_API_BASE}beststories.json").body()
 }
 

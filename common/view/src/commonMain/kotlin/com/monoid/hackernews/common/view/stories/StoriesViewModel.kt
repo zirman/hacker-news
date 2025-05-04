@@ -23,12 +23,69 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 
+enum class StoryOrdering {
+    Trending {
+        override fun stories(repository: StoriesRepository): StateFlow<List<Item>?> =
+            repository.trendingStories
+
+        override suspend fun update(repository: StoriesRepository) {
+            repository.updateTrendingStories()
+        }
+    },
+    New {
+        override fun stories(repository: StoriesRepository): StateFlow<List<Item>?> =
+            repository.newStories
+
+        override suspend fun update(repository: StoriesRepository) {
+            repository.updateNewStories()
+        }
+    },
+    Hot {
+        override fun stories(repository: StoriesRepository): StateFlow<List<Item>?> =
+            repository.hotStories
+
+        override suspend fun update(repository: StoriesRepository) {
+            repository.updateHotStories()
+        }
+    },
+    Show {
+        override fun stories(repository: StoriesRepository): StateFlow<List<Item>?> =
+            repository.showStories
+
+        override suspend fun update(repository: StoriesRepository) {
+            repository.updateShowStories()
+        }
+    },
+    Ask {
+        override fun stories(repository: StoriesRepository): StateFlow<List<Item>?> =
+            repository.askStories
+
+        override suspend fun update(repository: StoriesRepository) {
+            repository.updateAskStories()
+        }
+    },
+    Jobs {
+        override fun stories(repository: StoriesRepository): StateFlow<List<Item>?> =
+            repository.jobStories
+
+        override suspend fun update(repository: StoriesRepository) {
+            repository.updateJobStories()
+        }
+    },
+    ;
+
+    abstract fun stories(repository: StoriesRepository): StateFlow<List<Item>?>
+    abstract suspend fun update(repository: StoriesRepository)
+}
+
 @KoinViewModel
 class StoriesViewModel(
     private val logger: LoggerAdapter,
-    private val repository: StoriesRepository,
+    private val storiesRepository: StoriesRepository,
     private val settingsRepository: SettingsRepository,
 ) : ViewModel() {
+    private val storyOrdering = StoryOrdering.Trending
+
     data class UiState(
         val loading: Boolean = false,
         val itemsList: List<Item>? = null,
@@ -57,7 +114,7 @@ class StoriesViewModel(
 
     init {
         viewModelScope.launch(coroutineExceptionHandler) {
-            repository.topStories.collect {
+            storyOrdering.stories(storiesRepository).collect {
                 _uiState.update { uiState ->
                     uiState.copy(itemsList = it)
                 }
@@ -73,7 +130,7 @@ class StoriesViewModel(
         .launch(coroutineExceptionHandler) {
             try {
                 _uiState.update { it.copy(loading = true) }
-                repository.updateBestStories()
+                storyOrdering.update(storiesRepository)
             } catch (throwable: Throwable) {
                 currentCoroutineContext().ensureActive()
                 _events.send(Event.Error(throwable.message))
@@ -93,7 +150,7 @@ class StoriesViewModel(
         return viewModelScope
             .launch(coroutineExceptionHandler) {
                 try {
-                    repository.updateItem(item.id)
+                    storiesRepository.updateItem(item.id)
                 } catch (throwable: Throwable) {
                     currentCoroutineContext().ensureActive()
                     _events.send(Event.Error(throwable.message))
@@ -111,7 +168,7 @@ class StoriesViewModel(
             return@launch
         }
         runCatching {
-            repository.toggleUpvoted(item)
+            storiesRepository.toggleUpvoted(item)
         }.doOnErrorThenThrow {
             _events.send(Event.Error(it.message))
         }

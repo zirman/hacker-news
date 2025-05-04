@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="top_stories">Cuentos Destacadas</string>
+    <string name="trending">Tendencias</string>
+    <string name="stories">Historias</string>
     <string name="more_options">Mas Opciones</string>
     <string name="no_story_selected">Ninguna historia seleccionada</string>
     <string name="hacker_news">Hacker News</string>
@@ -27,10 +28,10 @@
     <string name="un_flag">Desmarcar</string>
     <string name="favorites">Favorites</string>
     <string name="reply">Respuesta</string>
-    <string name="new_stories">Nueva Cuentos</string>
-    <string name="best_stories">Mejores Cuentos</string>
-    <string name="show_hn">Mostrar HN</string>
-    <string name="ask_hn">Pedir HN</string>
+    <string name="new">Nueva</string>
+    <string name="hot">Cálido</string>
+    <string name="show">Mostrar</string>
+    <string name="ask">Pedir</string>
     <string name="jobs">Trabajos</string>
     <string name="ask_hacker_news">Pedir Hacker News</string>
     <string name="show_hacker_news">Mostrar Hacker News</string>
@@ -92,11 +93,11 @@ Saludos cordiales,
     usuario</a>]]></string>
     <string name="comment">Comentario</string>
     <string name="login_description">Inicie sesión con su cuenta HN.</string>
-    <string name="top_stories_description">Historias más populares actualmente.</string>
-    <string name="new_stories_description">Últimas historias enviadas.</string>
-    <string name="best_stories_description">Las historias más votadas.</string>
-    <string name="show_hn_description">Show HN es para algo que has hecho con lo que otras personas pueden jugar. Los usuarios de HN pueden probarlo, brindarle comentarios y hacer preguntas en el hilo.</string>
-    <string name="ask_hn_description">Pida comentarios a HN.</string>
+    <string name="trending_description">Historias que son tendencia actualmente.</string>
+    <string name="new_description">Últimas historias enviadas.</string>
+    <string name="hot_description">Las historias más votadas.</string>
+    <string name="show_description">Show HN es para algo que has hecho con lo que otras personas pueden jugar. Los usuarios de HN pueden probarlo, brindarle comentarios y hacer preguntas en el hilo.</string>
+    <string name="ask_description">Pida comentarios a HN.</string>
     <string name="jobs_description">Estos son trabajos en las nuevas empresas de YC.</string>
     <string name="favorites_description">Historias que has marcado como favoritas.</string>
     <string name="profile_description">Cambia la configuración de tu perfil.</string>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="top_stories">Top</string>
+    <string name="trending">Trending</string>
+    <string name="stories">Stories</string>
     <string name="more_options">More Options</string>
     <string name="no_story_selected">no story selected</string>
     <string name="hacker_news">Hacker News</string>
@@ -27,10 +28,10 @@
     <string name="un_flag">UnFlag</string>
     <string name="favorites">Favorites</string>
     <string name="reply">Reply</string>
-    <string name="new_stories">New</string>
-    <string name="best_stories">Best</string>
-    <string name="show_hn">Show</string>
-    <string name="ask_hn">Ask</string>
+    <string name="new">New</string>
+    <string name="hot">Hot</string>
+    <string name="show">Show</string>
+    <string name="ask">Ask</string>
     <string name="jobs">Jobs</string>
     <string name="ask_hacker_news">Ask Hacker News</string>
     <string name="show_hacker_news">Show Hacker News</string>
@@ -92,11 +93,11 @@ agree to follow the <a href="https://news.ycombinator.com/newsguidelines.html">u
 ]]></string>
     <string name="comment">Comment</string>
     <string name="login_description">Login with your HN account.</string>
-    <string name="top_stories_description">Most popular stories currently.</string>
-    <string name="new_stories_description">Latest stories submitted.</string>
-    <string name="best_stories_description">The most upvoted stories.</string>
-    <string name="show_hn_description">Show HS is for something you\'ve made that other people can play with. HN users can try it out, give you feedback, and ask questions in the thread.</string>
-    <string name="ask_hn_description">Ask HN for comments.</string>
+    <string name="trending_description">Currently trending stories.</string>
+    <string name="new_description">Latest stories submitted.</string>
+    <string name="hot_description">The most upvoted stories.</string>
+    <string name="show_description">Show HS is for something you\'ve made that other people can play with. HN users can try it out, give you feedback, and ask questions in the thread.</string>
+    <string name="ask_description">Ask HN for comments.</string>
     <string name="jobs_description">These are jobs at YC startups.</string>
     <string name="favorites_description">Stories that you have favorited.</string>
     <string name="profile_description">Change your profile settings.</string>

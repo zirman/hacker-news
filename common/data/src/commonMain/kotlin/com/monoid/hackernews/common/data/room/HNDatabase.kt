@@ -9,9 +9,9 @@ import com.monoid.hackernews.common.data.model.ItemType
 
 @Database(
     entities = [
-        TopStoryDb::class,
+        TrendingStoryDb::class,
         NewStoryDb::class,
-        BestStoryDb::class,
+        HotStoryDb::class,
         ShowStoryDb::class,
         AskStoryDb::class,
         JobStoryDb::class,
@@ -28,9 +28,9 @@ import com.monoid.hackernews.common.data.model.ItemType
 @TypeConverters(ItemType.Converter::class)
 @ConstructedBy(HNDatabaseConstructor::class)
 abstract class HNDatabase : RoomDatabase() {
-    abstract fun topStoryDao(): TopStoryDao
+    abstract fun topStoryDao(): TrendingStoryDao
     abstract fun newStoryDao(): NewStoryDao
-    abstract fun bestStoryDao(): BestStoryDao
+    abstract fun bestStoryDao(): HotStoryDao
     abstract fun showStoryDao(): ShowStoryDao
     abstract fun askStoryDao(): AskStoryDao
     abstract fun jobStoryDao(): JobStoryDao

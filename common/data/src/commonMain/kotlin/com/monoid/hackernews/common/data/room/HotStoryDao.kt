@@ -7,18 +7,18 @@ import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface BestStoryDao {
-    @Query("SELECT * FROM beststory ORDER BY `order`")
-    fun getBestStories(): Flow<List<BestStoryDb>>
+interface HotStoryDao {
+    @Query("SELECT * FROM hot_story ORDER BY `order`")
+    fun getHotStories(): Flow<List<HotStoryDb>>
 
-    @Query("DELETE FROM beststory")
+    @Query("DELETE FROM hot_story")
     suspend fun deleteBestStories()
 
     @Upsert
-    suspend fun upsertBestStories(bestStories: List<BestStoryDb>)
+    suspend fun upsertBestStories(bestStories: List<HotStoryDb>)
 
     @Transaction
-    suspend fun replaceBestStories(bestStories: List<BestStoryDb>) {
+    suspend fun replaceHotStories(bestStories: List<HotStoryDb>) {
         deleteBestStories()
         upsertBestStories(bestStories)
     }

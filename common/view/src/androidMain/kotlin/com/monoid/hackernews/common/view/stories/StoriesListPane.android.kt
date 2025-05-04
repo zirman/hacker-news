@@ -2,6 +2,7 @@
 
 package com.monoid.hackernews.common.view.stories
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
@@ -28,6 +29,7 @@ fun ThreePaneScaffoldScope.StoriesListPane(
     onClickFavorite: (Item) -> Unit,
     onClickFollow: (Item) -> Unit,
     onClickFlag: (Item) -> Unit,
+    contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
     ItemsColumn(
@@ -42,6 +44,7 @@ fun ThreePaneScaffoldScope.StoriesListPane(
         onClickFavorite = onClickFavorite,
         onClickFollow = onClickFollow,
         onClickFlag = onClickFlag,
+        contentPadding = contentPadding,
         modifier = modifier
             .preferredWidth(320.dp)
             .fillMaxHeight(),
