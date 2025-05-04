@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3AdaptiveApi::class)
-
 package com.monoid.hackernews.common.view.stories
 
 import androidx.compose.foundation.background
@@ -7,8 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
-import androidx.compose.material3.adaptive.layout.ThreePaneScaffoldScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
@@ -22,7 +18,7 @@ import org.jetbrains.compose.resources.stringResource
 
 @Suppress("ComposeUnstableReceiver")
 @Composable
-fun ThreePaneScaffoldScope.StoriesDetailPane(
+fun StoriesDetailPane(
     itemId: ItemId?,
     onClickUrl: (Url) -> Unit,
     modifier: Modifier = Modifier,

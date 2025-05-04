@@ -50,12 +50,12 @@ import com.monoid.hackernews.common.view.itemlist.ItemsColumn
 import com.monoid.hackernews.common.view.login.LoginDialog
 import com.monoid.hackernews.common.view.stories.StoriesViewModel
 import com.monoid.hackernews.common.view.stories.StoryOrdering
-import com.monoid.hackernews.common.view.stories.createStoriesViewModel
 import com.monoid.hackernews.common.view.theme.AppTheme
 import org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi
 import org.jetbrains.compose.splitpane.HorizontalSplitPane
 import org.jetbrains.compose.splitpane.rememberSplitPaneState
 import org.koin.compose.KoinContext
+import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.context.startKoin
 import org.koin.ksp.generated.module
 import java.awt.Cursor
@@ -165,10 +165,11 @@ fun HNPanes(
         modifier = modifier,
     ) {
         first(640.dp) {
-            val viewModel: StoriesViewModel = createStoriesViewModel(StoryOrdering.Trending)
+            val viewModel: StoriesViewModel = koinViewModel(
+                extras = StoriesViewModel.extras(StoryOrdering.Trending),
+            )
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             ItemsColumn(
-                listState = viewModel.listState,
                 itemsList = uiState.itemsList,
                 onVisibleItem = viewModel::updateItem,
                 onClickItem = {
@@ -183,7 +184,7 @@ fun HNPanes(
                 onClickFlag = {},
                 contentPadding = WindowInsets.safeDrawing.asPaddingValues(),
                 modifier = Modifier.fillMaxHeight(),
-            )
+            ) {}
         }
         second(640.dp) {
             if (itemId != -1L) {

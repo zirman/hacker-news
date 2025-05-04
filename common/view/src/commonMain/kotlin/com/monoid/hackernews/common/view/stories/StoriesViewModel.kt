@@ -1,9 +1,17 @@
 package com.monoid.hackernews.common.view.stories
 
-import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.runtime.Composable
+import androidx.lifecycle.DEFAULT_ARGS_KEY
+import androidx.lifecycle.SAVED_STATE_REGISTRY_OWNER_KEY
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.VIEW_MODEL_STORE_OWNER_KEY
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.CreationExtras
+import androidx.lifecycle.viewmodel.MutableCreationExtras
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.savedstate.SavedStateRegistryOwner
+import androidx.savedstate.savedState
 import com.monoid.hackernews.common.core.LoggerAdapter
 import com.monoid.hackernews.common.core.coroutines.doOnErrorThenThrow
 import com.monoid.hackernews.common.data.WeakHashMap
@@ -54,8 +62,6 @@ class StoriesViewModel(
 
     private val _events: Channel<Event> = Channel()
     val events = _events.receiveAsFlow()
-
-    val listState = LazyListState()
 
     private val storyOrdering = StoryOrdering.valueOf(checkNotNull(handle[STORY_ORDERING]))
 
@@ -122,11 +128,23 @@ class StoriesViewModel(
     }
 
     companion object {
-        const val STORY_ORDERING = "STORY_ORDERING"
+        @Composable
+        fun extras(storyOrdering: StoryOrdering): CreationExtras = MutableCreationExtras().apply {
+            val viewModelStoreOwner = checkNotNull(LocalViewModelStoreOwner.current)
+            set(
+                DEFAULT_ARGS_KEY,
+                savedState {
+                    putString(STORY_ORDERING, storyOrdering.name)
+                },
+            )
+            set(VIEW_MODEL_STORE_OWNER_KEY, viewModelStoreOwner)
+            set(SAVED_STATE_REGISTRY_OWNER_KEY, viewModelStoreOwner as SavedStateRegistryOwner)
+        }
     }
 }
 
 private const val TAG = "StoriesViewModel"
+private const val STORY_ORDERING = "STORY_ORDERING"
 
 enum class StoryOrdering {
     Trending {

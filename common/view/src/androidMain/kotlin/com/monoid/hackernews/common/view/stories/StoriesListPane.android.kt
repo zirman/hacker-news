@@ -1,52 +1,62 @@
-@file:OptIn(ExperimentalMaterial3AdaptiveApi::class)
-
 package com.monoid.hackernews.common.view.stories
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
-import androidx.compose.material3.adaptive.layout.ThreePaneScaffoldScope
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.movableContentOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.Username
-import com.monoid.hackernews.common.view.itemlist.ItemsColumn
 
 @Suppress("ComposeUnstableReceiver")
 @Composable
-fun ThreePaneScaffoldScope.StoriesListPane(
-    listState: LazyListState,
-    itemsList: List<Item>?,
-    onVisibleItem: (Item) -> Unit,
+fun StoriesListPane(
     onClickItem: (Item) -> Unit,
     onClickReply: (Item) -> Unit,
     onClickUser: (Username) -> Unit,
     onClickUrl: (Url) -> Unit,
-    onClickUpvote: (Item) -> Unit,
     onClickFavorite: (Item) -> Unit,
     onClickFollow: (Item) -> Unit,
     onClickFlag: (Item) -> Unit,
+    onClickLogin: () -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
-    ItemsColumn(
-        listState = listState,
-        itemsList = itemsList,
-        onVisibleItem = onVisibleItem,
-        onClickItem = onClickItem,
-        onClickReply = onClickReply,
-        onClickUser = onClickUser,
-        onClickUrl = onClickUrl,
-        onClickUpvote = onClickUpvote,
-        onClickFavorite = onClickFavorite,
-        onClickFollow = onClickFollow,
-        onClickFlag = onClickFlag,
-        contentPadding = contentPadding,
-        modifier = modifier
-            .preferredWidth(320.dp)
-            .fillMaxHeight(),
-    )
+    Box(modifier = modifier) {
+        var fabAction by remember { mutableStateOf(FabAction.Trending) }
+        val movableContent = remember {
+            movableContentOf { (boxScope, hasScrolled): Pair<BoxScope, Boolean> ->
+                with(boxScope) {
+                    StoriesFab(
+                        fabAction = fabAction,
+                        expanded = hasScrolled,
+                        onClick = { fabAction = it },
+                        modifier = Modifier.align(Alignment.BottomEnd),
+                    )
+                }
+            }
+        }
+        // This contrived composable is so that lazyListState scroll position resets to the top when
+        // switching story ordering
+        fabAction.Compose(
+            fabAction = fabAction,
+            onClickLogin = onClickLogin,
+            onClickItem = onClickItem,
+            onClickReply = onClickReply,
+            onClickUser = onClickUser,
+            onClickUrl = onClickUrl,
+            onClickFavorite = onClickFavorite,
+            onClickFollow = onClickFollow,
+            onClickFlag = onClickFlag,
+            contentPadding = contentPadding,
+            content = movableContent,
+        )
+    }
 }

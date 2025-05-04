@@ -68,6 +68,6 @@ internal fun ItemsColumnPreview() {
             onClickFlag = {},
             contentPadding = PaddingValues(),
             modifier = Modifier.fillMaxHeight(),
-        )
+        ) {}
     }
 }

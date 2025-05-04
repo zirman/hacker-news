@@ -1,6 +1,9 @@
 package com.monoid.hackernews.common.view.itemlist
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -28,28 +31,35 @@ fun ItemsColumn(
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState(),
+    content: @Composable BoxScope.(scrolled: Boolean) -> Unit,
 ) {
-    LazyColumn(
-        modifier = modifier,
-        state = listState,
-        contentPadding = contentPadding,
-    ) {
-        items(itemsList.orEmpty(), { it.id.long }) { item ->
-            LifecycleEventEffect(event = Lifecycle.Event.ON_START) {
-                onVisibleItem(item)
+    Box {
+        LazyColumn(
+            modifier = modifier.fillMaxSize(),
+            state = listState,
+            contentPadding = contentPadding,
+        ) {
+            items(itemsList.orEmpty(), { it.id.long }) { item ->
+                LifecycleEventEffect(event = Lifecycle.Event.ON_START) {
+                    onVisibleItem(item)
+                }
+                Item(
+                    item = item,
+                    onClickItem = onClickItem,
+                    onClickReply = onClickReply,
+                    onClickUser = onClickUser,
+                    onClickUrl = onClickUrl,
+                    onClickUpvote = onClickUpvote,
+                    onClickFavorite = onClickFavorite,
+                    onClickFollow = onClickFollow,
+                    onClickFlag = onClickFlag,
+                    modifier = Modifier.animateItem(),
+                )
             }
-            Item(
-                item = item,
-                onClickItem = onClickItem,
-                onClickReply = onClickReply,
-                onClickUser = onClickUser,
-                onClickUrl = onClickUrl,
-                onClickUpvote = onClickUpvote,
-                onClickFavorite = onClickFavorite,
-                onClickFollow = onClickFollow,
-                onClickFlag = onClickFlag,
-                modifier = Modifier.animateItem(),
-            )
         }
+        content(listState.hasScrolled())
     }
 }
+
+private fun LazyListState.hasScrolled(): Boolean =
+    firstVisibleItemIndex == 0 && firstVisibleItemScrollOffset == 0

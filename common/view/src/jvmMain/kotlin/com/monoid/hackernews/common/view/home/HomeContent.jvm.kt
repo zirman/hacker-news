@@ -13,7 +13,7 @@ import com.monoid.hackernews.common.domain.navigation.BottomNav
 import com.monoid.hackernews.common.view.itemlist.ItemsColumn
 import com.monoid.hackernews.common.view.stories.StoriesViewModel
 import com.monoid.hackernews.common.view.stories.StoryOrdering
-import com.monoid.hackernews.common.view.stories.createStoriesViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 actual fun HomeContent(
@@ -23,13 +23,16 @@ actual fun HomeContent(
     onClickUrl: (Url) -> Unit,
     modifier: Modifier,
 ) {
-    val viewModel: StoriesViewModel = createStoriesViewModel(StoryOrdering.Trending)
+    val viewModel: StoriesViewModel = koinViewModel(
+        extras = StoriesViewModel.extras(StoryOrdering.Trending),
+    )
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
                 is StoriesViewModel.Event.Error -> {
                     // TODO
                 }
+
                 is StoriesViewModel.Event.NavigateLogin -> {
                     onClickLogin()
                 }
@@ -38,7 +41,6 @@ actual fun HomeContent(
     }
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
     ItemsColumn(
-        listState = viewModel.listState,
         itemsList = uiState.itemsList,
         onVisibleItem = viewModel::updateItem,
         onClickItem = {},
@@ -51,5 +53,5 @@ actual fun HomeContent(
         onClickFlag = {},
         contentPadding = WindowInsets.safeDrawing.asPaddingValues(),
         modifier = Modifier.fillMaxHeight(),
-    )
+    ) {}
 }
