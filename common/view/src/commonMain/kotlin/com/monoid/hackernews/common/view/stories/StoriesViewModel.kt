@@ -80,12 +80,11 @@ enum class StoryOrdering {
 
 @KoinViewModel
 class StoriesViewModel(
+    private val storyOrdering: StoryOrdering,
     private val logger: LoggerAdapter,
     private val storiesRepository: StoriesRepository,
     private val settingsRepository: SettingsRepository,
 ) : ViewModel() {
-    private val storyOrdering = StoryOrdering.Trending
-
     data class UiState(
         val loading: Boolean = false,
         val itemsList: List<Item>? = null,

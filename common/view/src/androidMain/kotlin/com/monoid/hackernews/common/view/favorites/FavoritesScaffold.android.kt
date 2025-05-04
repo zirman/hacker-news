@@ -24,6 +24,7 @@ import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.view.stories.StoriesDetailPane
 import com.monoid.hackernews.common.view.stories.StoriesListPane
 import com.monoid.hackernews.common.view.stories.StoriesViewModel
+import com.monoid.hackernews.common.view.stories.StoryOrdering
 import com.monoid.hackernews.common.view.stories.createStoriesViewModel
 import kotlinx.coroutines.launch
 
@@ -33,7 +34,7 @@ fun FavoritesScaffold(
     onClickLogin: () -> Unit,
     onClickUrl: (Url) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: StoriesViewModel = createStoriesViewModel("favorites"),
+    viewModel: StoriesViewModel = createStoriesViewModel(StoryOrdering.Trending),
 ) {
     Box(modifier = modifier) {
         val context = LocalContext.current

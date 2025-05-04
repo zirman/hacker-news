@@ -4,8 +4,11 @@ package com.monoid.hackernews
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
@@ -46,6 +49,7 @@ import com.monoid.hackernews.common.view.itemdetail.ItemDetailPane
 import com.monoid.hackernews.common.view.itemlist.ItemsColumn
 import com.monoid.hackernews.common.view.login.LoginDialog
 import com.monoid.hackernews.common.view.stories.StoriesViewModel
+import com.monoid.hackernews.common.view.stories.StoryOrdering
 import com.monoid.hackernews.common.view.stories.createStoriesViewModel
 import com.monoid.hackernews.common.view.theme.AppTheme
 import org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi
@@ -161,7 +165,7 @@ fun HNPanes(
         modifier = modifier,
     ) {
         first(640.dp) {
-            val viewModel: StoriesViewModel = createStoriesViewModel(key = "default")
+            val viewModel: StoriesViewModel = createStoriesViewModel(StoryOrdering.Trending)
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             ItemsColumn(
                 listState = viewModel.listState,
@@ -177,6 +181,7 @@ fun HNPanes(
                 onClickFavorite = {},
                 onClickFollow = {},
                 onClickFlag = {},
+                contentPadding = WindowInsets.safeDrawing.asPaddingValues(),
                 modifier = Modifier.fillMaxHeight(),
             )
         }

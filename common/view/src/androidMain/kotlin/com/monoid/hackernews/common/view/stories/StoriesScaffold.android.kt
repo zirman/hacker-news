@@ -68,7 +68,7 @@ fun StoriesScaffold(
     modifier: Modifier = Modifier,
 ) {
     val (fabAction, setFabAction) = rememberSaveable { mutableStateOf(FabAction.Trending) }
-    val storiesViewModel = createStoriesViewModel(fabAction.toString())
+    val storiesViewModel = createStoriesViewModel(fabAction.storyOrdering)
     Box(modifier = modifier) {
         val context = LocalContext.current
         LaunchedEffect(Unit) {
@@ -190,14 +190,19 @@ fun StoriesFab(
     }
 }
 
-enum class FabAction(val icon: ImageVector, val text: StringResource) {
+enum class FabAction(
+    val icon: ImageVector,
+    val text: StringResource,
+    val storyOrdering: StoryOrdering,
+) {
     // TODO: post
-    Jobs(Icons.TwoTone.Work, Res.string.jobs),
-    Ask(Icons.TwoTone.Forum, Res.string.ask),
-    Show(Icons.TwoTone.Feedback, Res.string.show),
-    Hot(Icons.TwoTone.Whatshot, Res.string.hot),
-    New(Icons.TwoTone.RssFeed, Res.string.new),
-    Trending(Icons.AutoMirrored.TwoTone.TrendingUp, Res.string.trending),
+    // Post(Icons.TwoTone.Add, Res.string.post),
+    Jobs(Icons.TwoTone.Work, Res.string.jobs, StoryOrdering.Jobs),
+    Ask(Icons.TwoTone.Forum, Res.string.ask, StoryOrdering.Ask),
+    Show(Icons.TwoTone.Feedback, Res.string.show, StoryOrdering.Show),
+    Hot(Icons.TwoTone.Whatshot, Res.string.hot, StoryOrdering.Hot),
+    New(Icons.TwoTone.RssFeed, Res.string.new, StoryOrdering.New),
+    Trending(Icons.AutoMirrored.TwoTone.TrendingUp, Res.string.trending, StoryOrdering.Trending),
 }
 
 fun LazyListState.expandedFab(): Boolean =
