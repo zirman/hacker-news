@@ -74,6 +74,7 @@ fun ItemDetail(
     onClickUrl: (Url) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val isStoryOrComment = item?.type == ItemType.Story || item?.type == ItemType.Comment
     Surface(
         modifier = modifier,
         contentColor = MaterialTheme.colorScheme.secondary,
@@ -317,25 +318,26 @@ fun ItemDetail(
                 }
                 val descendants = item?.descendants
                 key("comments") {
-                    TooltipBox(
-                        positionProvider = TooltipPopupPositionProvider(),
-                        tooltip = {
-                            Surface { Text(text = stringResource(Res.string.comment)) }
-                        },
-                        state = rememberTooltipState(),
-                    ) {
-                        IconButton(
-                            onClick = {
-//                                item.id.let { onClickReply(ItemId(it)) }
+                    if (isStoryOrComment) {
+                        TooltipBox(
+                            positionProvider = TooltipPopupPositionProvider(),
+                            tooltip = {
+                                Surface { Text(text = stringResource(Res.string.comment)) }
                             },
+                            state = rememberTooltipState(),
                         ) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.TwoTone.Comment,
-                                contentDescription = null,
-                            )
+                            IconButton(
+                                onClick = {
+//                                item.id.let { onClickReply(ItemId(it)) }
+                                },
+                            ) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.TwoTone.Comment,
+                                    contentDescription = null,
+                                )
+                            }
                         }
                     }
-
                     Text(
                         text = remember(descendants) { descendants?.toString().orEmpty() },
                         maxLines = 1,

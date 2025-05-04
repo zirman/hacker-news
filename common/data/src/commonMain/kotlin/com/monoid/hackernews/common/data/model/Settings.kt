@@ -98,7 +98,7 @@ enum class Shape {
     ;
 
     companion object {
-        val default = Cut
+        val default = Rounded
     }
 }
 

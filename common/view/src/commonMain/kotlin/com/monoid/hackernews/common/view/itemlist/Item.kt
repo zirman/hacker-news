@@ -59,7 +59,6 @@ import com.monoid.hackernews.common.view.comment
 import com.monoid.hackernews.common.view.favorite
 import com.monoid.hackernews.common.view.flag
 import com.monoid.hackernews.common.view.follow
-import com.monoid.hackernews.common.view.itemdetail.htmlTextStyle
 import com.monoid.hackernews.common.view.more_options
 import com.monoid.hackernews.common.view.open_in_browser
 import com.monoid.hackernews.common.view.un_favorite
@@ -106,14 +105,13 @@ fun Item(
                 val (contextExpanded: Boolean, setContextExpanded) =
                     rememberSaveable { mutableStateOf(false) }
                 Box {
-                    IconButton(
-                        onClick = { setContextExpanded(true) },
-                        enabled = isStoryOrComment
-                    ) {
-                        Icon(
-                            imageVector = Icons.TwoTone.MoreVert,
-                            contentDescription = stringResource(Res.string.more_options),
-                        )
+                    if (isStoryOrComment) {
+                        IconButton(onClick = { setContextExpanded(true) }) {
+                            Icon(
+                                imageVector = Icons.TwoTone.MoreVert,
+                                contentDescription = stringResource(Res.string.more_options),
+                            )
+                        }
                     }
                     DropdownMenu(
                         expanded = contextExpanded,
@@ -238,29 +236,28 @@ fun Item(
             )
             Row(verticalAlignment = Alignment.CenterVertically) {
                 key("score") {
-                    TooltipBox(
-                        positionProvider = TooltipPopupPositionProvider(),
-                        tooltip = { Surface { Text(stringResource(Res.string.upvote)) } },
-                        state = rememberTooltipState(),
-                    ) {
-                        IconButton(
-                            onClick = { onClickUpvote(item) },
-                            enabled = isStoryOrComment,
+                    if (isStoryOrComment) {
+                        TooltipBox(
+                            positionProvider = TooltipPopupPositionProvider(),
+                            tooltip = { Surface { Text(stringResource(Res.string.upvote)) } },
+                            state = rememberTooltipState(),
                         ) {
-                            Icon(
-                                imageVector = if (item.upvoted == true) {
-                                    Icons.Filled.ThumbUp
-                                } else {
-                                    Icons.TwoTone.ThumbUp
-                                },
-                                contentDescription = stringResource(
-                                    if (item.upvoted == true) {
-                                        Res.string.un_vote
+                            IconButton(onClick = { onClickUpvote(item) }) {
+                                Icon(
+                                    imageVector = if (item.upvoted == true) {
+                                        Icons.Filled.ThumbUp
                                     } else {
-                                        Res.string.upvote
+                                        Icons.TwoTone.ThumbUp
                                     },
-                                ),
-                            )
+                                    contentDescription = stringResource(
+                                        if (item.upvoted == true) {
+                                            Res.string.un_vote
+                                        } else {
+                                            Res.string.upvote
+                                        },
+                                    ),
+                                )
+                            }
                         }
                     }
                     val score = item.score
@@ -274,20 +271,18 @@ fun Item(
                 }
                 key("comments") {
                     val descendants = item.descendants
-
-                    TooltipBox(
-                        positionProvider = TooltipPopupPositionProvider(),
-                        tooltip = { Surface { Text(stringResource(Res.string.comment)) } },
-                        state = rememberTooltipState(),
-                    ) {
-                        IconButton(
-                            onClick = { onClickReply(item) },
-                            enabled = isStoryOrComment,
+                    if (isStoryOrComment) {
+                        TooltipBox(
+                            positionProvider = TooltipPopupPositionProvider(),
+                            tooltip = { Surface { Text(stringResource(Res.string.comment)) } },
+                            state = rememberTooltipState(),
                         ) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.TwoTone.Comment,
-                                contentDescription = null,
-                            )
+                            IconButton(onClick = { onClickReply(item) }) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.TwoTone.Comment,
+                                    contentDescription = null,
+                                )
+                            }
                         }
                     }
                     Text(
