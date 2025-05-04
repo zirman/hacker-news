@@ -78,3 +78,6 @@
 -dontwarn java.net.http.WebSocket$Listener
 -dontwarn java.net.http.WebSocket
 -dontwarn java.net.http.WebSocketHandshakeException
+
+# prevent androidx.lifecycle.** obfuscation
+-keepnames class androidx.lifecycle.** { *; }
