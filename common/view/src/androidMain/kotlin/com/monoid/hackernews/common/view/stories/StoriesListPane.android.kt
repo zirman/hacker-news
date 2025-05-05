@@ -30,6 +30,8 @@ fun StoriesListPane(
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {
+        // TODO: submit issue tracker for this not updating
+        // val (fabAction, setFabAction) = remember { mutableStateOf(FabAction.Trending) }
         var fabAction by remember { mutableStateOf(FabAction.Trending) }
         val movableContent = remember {
             movableContentOf { (boxScope, hasScrolled): Pair<BoxScope, Boolean> ->
