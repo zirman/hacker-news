@@ -31,7 +31,8 @@ suspend fun HttpClient.getJobStories(): List<Long> {
     return get(urlString = "${HACKER_NEWS_API_BASE}jobstories.json").body()
 }
 
-suspend fun HttpClient.getItem(itemId: ItemId): ItemApi {
+// api randomly returns null
+suspend fun HttpClient.getItem(itemId: ItemId): ItemApi? {
     return get(urlString = "${HACKER_NEWS_API_BASE}item/${itemId.long}.json").body()
 }
 

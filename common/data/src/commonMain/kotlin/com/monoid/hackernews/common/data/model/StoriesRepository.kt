@@ -231,22 +231,24 @@ class StoriesRepository(
         // Only query remote if data is older than 5 minutes
         if (lastUpdate == null || (currentInstant - lastUpdate).inWholeMinutes > 5) {
             val remoteData = remoteDataSource.getItem(itemId = itemId)
-            var item: Item? = null
-            _cache.update { cache ->
-                item = cache[itemId]
-                cache.put(
-                    itemId,
-                    remoteData.toSimpleItemUiState(
-                        instant = currentInstant,
-                        item = item,
-                    ),
+            if (remoteData != null) {
+                var item: Item? = null
+                _cache.update { cache ->
+                    item = cache[itemId]
+                    cache.put(
+                        itemId,
+                        remoteData.toSimpleItemUiState(
+                            instant = currentInstant,
+                            item = item,
+                        ),
+                    )
+                }
+                itemLocalDataSource.itemApiInsert(
+                    instant = currentInstant,
+                    itemApi = remoteData,
+                    item = item,
                 )
             }
-            itemLocalDataSource.itemApiInsert(
-                instant = currentInstant,
-                itemApi = remoteData,
-                item = item,
-            )
         }
     }
 
