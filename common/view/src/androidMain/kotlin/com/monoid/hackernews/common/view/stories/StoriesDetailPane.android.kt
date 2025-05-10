@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.data.api.ItemId
+import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.itemdetail.ItemDetailPane
 import com.monoid.hackernews.common.view.no_story_selected
@@ -21,6 +22,9 @@ import org.jetbrains.compose.resources.stringResource
 fun StoriesDetailPane(
     itemId: ItemId?,
     onClickUrl: (Url) -> Unit,
+    onClickUser: (Username) -> Unit,
+    onClickReply: (ItemId) -> Unit,
+    onClickLogin: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     if (itemId == null) {
@@ -35,6 +39,9 @@ fun StoriesDetailPane(
             ItemDetailPane(
                 itemId = itemId,
                 onClickUrl = onClickUrl,
+                onClickUser = onClickUser,
+                onClickReply = onClickReply,
+                onClickLogin = onClickLogin,
                 modifier = modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.primaryContainer),

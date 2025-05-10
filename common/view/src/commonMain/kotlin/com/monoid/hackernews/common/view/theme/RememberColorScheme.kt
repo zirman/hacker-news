@@ -29,7 +29,6 @@ fun AppTheme(
             fontFamily = uiState.font.toFontFamily(),
             fontSizeDelta = uiState.fontSize,
             lineHeightDelta = uiState.lineHeight,
-            paragraphIndent = uiState.paragraphIndent,
         ),
         shapes = rememberShapes(uiState.shape),
         content = {

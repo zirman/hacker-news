@@ -191,6 +191,9 @@ fun HNPanes(
                 ItemDetailPane(
                     itemId = ItemId(itemId),
                     onClickUrl = onClickUrl,
+                    onClickUser = {},
+                    onClickReply = {},
+                    onClickLogin = {},
                 )
             }
         }

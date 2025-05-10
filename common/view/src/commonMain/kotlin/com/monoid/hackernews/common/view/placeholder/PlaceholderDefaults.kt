@@ -78,8 +78,6 @@ object PlaceholderDefaults {
  * [Placeholder UI](https://material.io/design/communication/launch-screen.html#placeholder-ui)
  * guidelines.
  *
- * @sample com.google.accompanist.sample.placeholder.DocSample_Foundation_Placeholder
- *
  * @param visible whether the placeholder should be visible or not.
  * @param color the color used to draw the placeholder UI.
  * @param shape desired shape of the placeholder. Defaults to [RectangleShape].
@@ -144,40 +142,27 @@ fun Modifier.placeholder(
     }
 
     val paint = remember { Paint() }
-    remember(color, shape, highlight) {
-        drawWithContent {
-            // Draw the composable content first
-            if (contentAlpha in 0.01f..0.99f) {
-                // If the content alpha is between 1% and 99%, draw it in a layer with
-                // the alpha applied
-                paint.alpha = contentAlpha
-                withLayer(paint) {
-                    with(this@drawWithContent) {
-                        drawContent()
-                    }
+    drawWithContent {
+        // Draw the composable content first
+        if (contentAlpha in 0.01f..0.99f) {
+            // If the content alpha is between 1% and 99%, draw it in a layer with
+            // the alpha applied
+            paint.alpha = contentAlpha
+            withLayer(paint) {
+                with(this@drawWithContent) {
+                    drawContent()
                 }
-            } else if (contentAlpha >= 0.99f) {
-                // If the content alpha is > 99%, draw it with no alpha
-                drawContent()
             }
+        } else if (contentAlpha >= 0.99f) {
+            // If the content alpha is > 99%, draw it with no alpha
+            drawContent()
+        }
 
-            if (placeholderAlpha in 0.01f..0.99f) {
-                // If the placeholder alpha is between 1% and 99%, draw it in a layer with
-                // the alpha applied
-                paint.alpha = placeholderAlpha
-                withLayer(paint) {
-                    lastOutline.value = drawPlaceholder(
-                        shape = shape,
-                        color = color,
-                        highlight = highlight,
-                        progress = highlightProgress,
-                        lastOutline = lastOutline.value,
-                        lastLayoutDirection = lastLayoutDirection.value,
-                        lastSize = lastSize.value,
-                    )
-                }
-            } else if (placeholderAlpha >= 0.99f) {
-                // If the placeholder alpha is > 99%, draw it with no alpha
+        if (placeholderAlpha in 0.01f..0.99f) {
+            // If the placeholder alpha is between 1% and 99%, draw it in a layer with
+            // the alpha applied
+            paint.alpha = placeholderAlpha
+            withLayer(paint) {
                 lastOutline.value = drawPlaceholder(
                     shape = shape,
                     color = color,
@@ -188,11 +173,22 @@ fun Modifier.placeholder(
                     lastSize = lastSize.value,
                 )
             }
-
-            // Keep track of the last size & layout direction
-            lastSize.value = size
-            lastLayoutDirection.value = layoutDirection
+        } else if (placeholderAlpha >= 0.99f) {
+            // If the placeholder alpha is > 99%, draw it with no alpha
+            lastOutline.value = drawPlaceholder(
+                shape = shape,
+                color = color,
+                highlight = highlight,
+                progress = highlightProgress,
+                lastOutline = lastOutline.value,
+                lastLayoutDirection = lastLayoutDirection.value,
+                lastSize = lastSize.value,
+            )
         }
+
+        // Keep track of the last size & layout direction
+        lastSize.value = size
+        lastLayoutDirection.value = layoutDirection
     }
 }
 

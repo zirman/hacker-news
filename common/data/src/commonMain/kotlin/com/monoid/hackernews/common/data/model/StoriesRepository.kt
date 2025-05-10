@@ -254,7 +254,7 @@ class StoriesRepository(
         }
     }
 
-    suspend fun toggleUpvoted(item: Item) {
+    suspend fun toggleUpvote(item: Item) {
         val upvoted = item.upvoted == true
         // optimistically update the cache
         _cache.update { cache ->
@@ -282,7 +282,7 @@ class StoriesRepository(
         itemLocalDataSource.setUpvotedByItemId(itemId = item.id.long, upvoted = upvoted.not())
     }
 
-    suspend fun toggleFavorited(item: Item) {
+    suspend fun toggleFavorite(item: Item) {
         val favorited = item.favorited == true
         // optimistically update the cache
         _cache.update { cache ->
@@ -310,7 +310,7 @@ class StoriesRepository(
         itemLocalDataSource.setFavoritedByItemId(itemId = item.id.long, favorited = favorited.not())
     }
 
-    suspend fun toggleFollowed(item: Item) {
+    suspend fun toggleFollow(item: Item) {
         val followed = item.followed
         // optimistically update the cache
         _cache.update { cache ->

@@ -47,7 +47,7 @@ actual fun HomeContent(
         onClickReply = {},
         onClickUser = {},
         onClickUrl = onClickUrl,
-        onClickUpvote = viewModel::toggleUpvoted,
+        onClickUpvote = viewModel::toggleUpvote,
         onClickFavorite = {},
         onClickFollow = {},
         onClickFlag = {},

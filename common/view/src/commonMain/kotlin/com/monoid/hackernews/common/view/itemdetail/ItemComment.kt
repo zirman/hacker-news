@@ -45,9 +45,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.monoid.hackernews.common.data.api.ItemId
-import com.monoid.hackernews.common.data.model.LoginAction
 import com.monoid.hackernews.common.data.model.Username
-import com.monoid.hackernews.common.domain.util.rememberTimeBy
+import com.monoid.hackernews.common.domain.util.timeBy
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.deleted
 import com.monoid.hackernews.common.view.flag
@@ -71,7 +70,7 @@ fun ItemComment(
     threadItem: ItemDetailViewModel.ThreadItemUiState,
     onClickUser: (Username) -> Unit,
     onClickReply: (ItemId) -> Unit,
-    onClickLogin: (LoginAction) -> Unit,
+    onClickLogin: () -> Unit,
     onVisible: (ItemId) -> Unit,
     onClick: (ItemId) -> Unit,
     modifier: Modifier = Modifier,
@@ -96,8 +95,7 @@ fun ItemComment(
         Surface(tonalElevation = (threadItem.descendants * 4).dp) {
             Column {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    val timeByUserAnnotatedString: AnnotatedString =
-                        rememberTimeBy(time = item.time, by = item.by)
+                    val timeByUserAnnotatedString = timeBy(time = item.time, by = item.by)
                     ClickableTextBlock(
                         text = timeByUserAnnotatedString,
                         lines = 1,

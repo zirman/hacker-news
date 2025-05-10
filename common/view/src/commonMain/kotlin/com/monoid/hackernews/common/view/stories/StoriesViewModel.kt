@@ -115,37 +115,37 @@ class StoriesViewModel(
             }
     }
 
-    fun toggleUpvoted(item: Item): Job = viewModelScope.launch(coroutineExceptionHandler) {
+    fun toggleUpvote(item: Item): Job = viewModelScope.launch(coroutineExceptionHandler) {
         if (settingsRepository.isLoggedIn.not()) {
             _events.send(Event.NavigateLogin)
             return@launch
         }
         runCatching {
-            storiesRepository.toggleUpvoted(item)
+            storiesRepository.toggleUpvote(item)
         }.doOnErrorThenThrow {
             _events.send(Event.Error(it.message))
         }
     }
 
-    fun toggleFavorited(item: Item): Job = viewModelScope.launch(coroutineExceptionHandler) {
+    fun toggleFavorite(item: Item): Job = viewModelScope.launch(coroutineExceptionHandler) {
         if (settingsRepository.isLoggedIn.not()) {
             _events.send(Event.NavigateLogin)
             return@launch
         }
         runCatching {
-            storiesRepository.toggleFavorited(item)
+            storiesRepository.toggleFavorite(item)
         }.doOnErrorThenThrow {
             _events.send(Event.Error(it.message))
         }
     }
 
-    fun toggleFollowed(item: Item): Job = viewModelScope.launch(coroutineExceptionHandler) {
+    fun toggleFollow(item: Item): Job = viewModelScope.launch(coroutineExceptionHandler) {
         if (settingsRepository.isLoggedIn.not()) {
             _events.send(Event.NavigateLogin)
             return@launch
         }
         runCatching {
-            storiesRepository.toggleFollowed(item)
+            storiesRepository.toggleFollow(item)
         }.doOnErrorThenThrow {
             _events.send(Event.Error(it.message))
         }

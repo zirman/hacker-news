@@ -6,9 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.monoid.hackernews.common.core.DefaultDispatcherQualifier
 import com.monoid.hackernews.common.core.LoggerAdapter
+import com.monoid.hackernews.common.core.coroutines.doOnErrorThenThrow
 import com.monoid.hackernews.common.data.WeakHashMap
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
+import com.monoid.hackernews.common.data.model.SettingsRepository
 import com.monoid.hackernews.common.data.model.StoriesRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -32,7 +34,8 @@ class ItemDetailViewModel(
     @Named(type = DefaultDispatcherQualifier::class)
     defaultDispatcher: CoroutineDispatcher,
     private val logger: LoggerAdapter,
-    private val repository: StoriesRepository,
+    private val storiesRepository: StoriesRepository,
+    private val settingsRepository: SettingsRepository,
 ) : ViewModel() {
     data class UiState(
         val loading: Boolean = true,
@@ -43,11 +46,12 @@ class ItemDetailViewModel(
 
     sealed interface Event {
         data class Error(val message: String?) : Event
+        data object NavigateLogin : Event
     }
 
     private val itemId: ItemId by lazy { ItemId(checkNotNull(savedStateHandle[ITEM_ID])) }
 
-    private val context = CoroutineExceptionHandler { _, throwable ->
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
         logger.recordException(
             messageString = "CoroutineExceptionHandler",
             throwable = throwable,
@@ -59,7 +63,7 @@ class ItemDetailViewModel(
 
     val uiState: StateFlow<UiState> = combine(
         loading,
-        repository.cache.map { cache ->
+        storiesRepository.cache.map { cache ->
             withContext(defaultDispatcher) {
                 cache.traverse(itemId)
             }
@@ -72,7 +76,7 @@ class ItemDetailViewModel(
             loading = false,
             comments = listOf(
                 ThreadItemUiState(
-                    item = repository.cache.value[itemId] ?: Item(id = itemId),
+                    item = storiesRepository.cache.value[itemId] ?: Item(id = itemId),
                     depth = 0,
                     descendants = 0,
                 ),
@@ -89,12 +93,61 @@ class ItemDetailViewModel(
 
     fun updateItem(itemId: ItemId): Job {
         return updateItemJob[itemId]?.takeIf { it.isActive }
-            ?: viewModelScope.launch(context) { repository.updateItem(itemId) }
+            ?: viewModelScope.launch(coroutineExceptionHandler) { storiesRepository.updateItem(itemId) }
                 .also { updateItemJob[itemId] = it }
     }
 
-    fun toggleCommentExpanded(itemId: ItemId): Job = viewModelScope.launch(context) {
-        repository.itemToggleExpanded(itemId)
+    fun toggleCommentExpanded(itemId: ItemId): Job =
+        viewModelScope.launch(coroutineExceptionHandler) {
+            storiesRepository.itemToggleExpanded(itemId)
+        }
+
+    fun toggleUpvote(item: Item): Job = viewModelScope.launch(coroutineExceptionHandler) {
+        if (settingsRepository.isLoggedIn.not()) {
+            _events.send(Event.NavigateLogin)
+            return@launch
+        }
+        runCatching {
+            storiesRepository.toggleUpvote(item)
+        }.doOnErrorThenThrow {
+            _events.send(Event.Error(it.message))
+        }
+    }
+
+    fun toggleFavorite(item: Item): Job = viewModelScope.launch(coroutineExceptionHandler) {
+        if (settingsRepository.isLoggedIn.not()) {
+            _events.send(Event.NavigateLogin)
+            return@launch
+        }
+        runCatching {
+            storiesRepository.toggleFavorite(item)
+        }.doOnErrorThenThrow {
+            _events.send(Event.Error(it.message))
+        }
+    }
+
+    fun toggleFollow(item: Item): Job = viewModelScope.launch(coroutineExceptionHandler) {
+        if (settingsRepository.isLoggedIn.not()) {
+            _events.send(Event.NavigateLogin)
+            return@launch
+        }
+        runCatching {
+            storiesRepository.toggleFollow(item)
+        }.doOnErrorThenThrow {
+            _events.send(Event.Error(it.message))
+        }
+    }
+
+    fun toggleFlagged(item: Item): Job = viewModelScope.launch(coroutineExceptionHandler) {
+        if (settingsRepository.isLoggedIn.not()) {
+            _events.send(Event.NavigateLogin)
+            return@launch
+        }
+        runCatching {
+            storiesRepository.toggleFlagged(item)
+        }.doOnErrorThenThrow {
+            _events.send(Event.Error(it.message))
+        }
     }
 
     companion object {

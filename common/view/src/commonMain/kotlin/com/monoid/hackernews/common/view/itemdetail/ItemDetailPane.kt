@@ -19,6 +19,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.ItemType
+import com.monoid.hackernews.common.data.model.Username
 import kotlinx.coroutines.delay
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
@@ -27,6 +28,9 @@ import kotlin.time.toDuration
 fun ItemDetailPane(
     itemId: ItemId,
     onClickUrl: (Url) -> Unit,
+    onClickUser: (Username) -> Unit,
+    onClickReply: (ItemId) -> Unit,
+    onClickLogin: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val viewModel = createItemDetailViewModel(itemId)
@@ -56,9 +60,9 @@ fun ItemDetailPane(
                 ItemType.Comment -> {
                     ItemComment(
                         threadItem = item,
-                        onClickUser = {},
-                        onClickReply = {},
-                        onClickLogin = {},
+                        onClickUser = onClickUser,
+                        onClickReply = onClickReply,
+                        onClickLogin = onClickLogin,
                         onVisible = viewModel::updateItem,
                         onClick = viewModel::toggleCommentExpanded,
                     )
@@ -67,7 +71,13 @@ fun ItemDetailPane(
                 ItemType.Story, ItemType.Job, ItemType.Poll, ItemType.PollOpt -> {
                     ItemDetail(
                         item = item.item,
+                        onClickUser = onClickUser,
                         onClickUrl = onClickUrl,
+                        onClickReply = onClickReply,
+                        onClickUpvote = viewModel::toggleUpvote,
+                        onClickFavorite = viewModel::toggleFavorite,
+                        onClickFollow = viewModel::toggleFollow,
+                        onClickFlag = viewModel::toggleFlagged,
                     )
                 }
             }

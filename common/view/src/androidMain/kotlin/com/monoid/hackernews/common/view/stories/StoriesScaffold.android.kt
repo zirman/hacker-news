@@ -49,6 +49,9 @@ fun StoriesScaffold(
                 StoriesDetailPane(
                     itemId = itemId,
                     onClickUrl = onClickUrl,
+                    onClickUser = {},
+                    onClickReply = {},
+                    onClickLogin = {},
                 )
             },
         )

@@ -38,7 +38,6 @@ import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,7 +51,7 @@ import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.ItemType
 import com.monoid.hackernews.common.data.model.Username
-import com.monoid.hackernews.common.domain.util.rememberTimeBy
+import com.monoid.hackernews.common.domain.util.timeBy
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.TooltipPopupPositionProvider
 import com.monoid.hackernews.common.view.comment
@@ -221,12 +220,10 @@ fun Item(
                 }
             }
             Spacer(modifier = Modifier.height(4.dp))
-            val timeUserAnnotatedString: AnnotatedString =
-                rememberTimeBy(time = item.time, by = item.by)
             val style = LocalTextStyle.current.merge(MaterialTheme.typography.labelMedium)
             // TODO: add onClickUser handler
             Text(
-                text = timeUserAnnotatedString,
+                text = timeBy(time = item.time, by = item.by),
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
                     .height(with(LocalDensity.current) { style.lineHeight.toDp() }),
@@ -262,7 +259,7 @@ fun Item(
                     }
                     val score = item.score
                     Text(
-                        text = remember(score) { score?.toString().orEmpty() },
+                        text = score?.toString().orEmpty(),
                         maxLines = 1,
                         modifier = Modifier.widthIn(min = 24.dp),
                         overflow = TextOverflow.Ellipsis,
@@ -286,7 +283,7 @@ fun Item(
                         }
                     }
                     Text(
-                        text = remember(descendants) { descendants?.toString().orEmpty() },
+                        text = descendants?.toString().orEmpty(),
                         maxLines = 1,
                         modifier = Modifier.widthIn(min = 24.dp),
                         overflow = TextOverflow.Ellipsis,
@@ -295,35 +292,27 @@ fun Item(
                 }
                 key("url") {
                     if (item.url != null) {
-                        val host: String = remember(item.url) {
-                            item.url?.let { Url(it) }?.host.orEmpty()
-                        }
-
-                        Text(
-                            text = host,
-                            maxLines = 1,
-                            modifier = Modifier.weight(1f),
-                            textAlign = TextAlign.End,
-                            overflow = TextOverflow.Ellipsis,
-                            style = MaterialTheme.typography.labelLarge,
-                        )
-
-                        TooltipBox(
-                            positionProvider = TooltipPopupPositionProvider(),
-                            tooltip = { Surface { Text(stringResource(Res.string.open_in_browser)) } },
-                            state = rememberTooltipState(),
-                        ) {
-                            IconButton(
-                                onClick = {
-                                    item.url?.let { Url(it) }?.run {
-                                        onClickUrl(this)
-                                    }
-                                },
+                        val url = item.url?.let { Url(it) }
+                        if (url != null) {
+                            Text(
+                                text = url.host,
+                                maxLines = 1,
+                                modifier = Modifier.weight(1f),
+                                textAlign = TextAlign.End,
+                                overflow = TextOverflow.Ellipsis,
+                                style = MaterialTheme.typography.labelLarge,
+                            )
+                            TooltipBox(
+                                positionProvider = TooltipPopupPositionProvider(),
+                                tooltip = { Surface { Text(stringResource(Res.string.open_in_browser)) } },
+                                state = rememberTooltipState(),
                             ) {
-                                Icon(
-                                    imageVector = Icons.Filled.OpenInBrowser,
-                                    contentDescription = stringResource(Res.string.open_in_browser),
-                                )
+                                IconButton(onClick = { onClickUrl(url) }) {
+                                    Icon(
+                                        imageVector = Icons.Filled.OpenInBrowser,
+                                        contentDescription = stringResource(Res.string.open_in_browser),
+                                    )
+                                }
                             }
                         }
                     }

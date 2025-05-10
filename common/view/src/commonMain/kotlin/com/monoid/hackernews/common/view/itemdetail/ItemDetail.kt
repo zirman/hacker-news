@@ -36,7 +36,6 @@ import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,9 +45,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.monoid.hackernews.common.data.Url
+import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.ItemType
-import com.monoid.hackernews.common.domain.util.rememberTimeBy
+import com.monoid.hackernews.common.data.model.Username
+import com.monoid.hackernews.common.domain.util.timeBy
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.TooltipPopupPositionProvider
 import com.monoid.hackernews.common.view.comment
@@ -71,10 +72,15 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun ItemDetail(
     item: Item?,
+    onClickUser: (Username) -> Unit,
     onClickUrl: (Url) -> Unit,
+    onClickReply: (ItemId) -> Unit,
+    onClickUpvote: (Item) -> Unit,
+    onClickFavorite: (Item) -> Unit,
+    onClickFollow: (Item) -> Unit,
+    onClickFlag: (Item) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isStoryOrComment = item?.type == ItemType.Story || item?.type == ItemType.Comment
     Surface(
         modifier = modifier,
         contentColor = MaterialTheme.colorScheme.secondary,
@@ -126,13 +132,7 @@ fun ItemDetail(
                                             )
                                         )
                                     },
-                                    onClick = {
-//                                        coroutineScope.launch {
-//                                            itemUi.itemUi?.toggleFavorite(onNavigateLogin)
-//                                        }
-//
-//                                        setContextExpanded(false)
-                                    },
+                                    onClick = { onClickFavorite(item) },
                                     leadingIcon = {
                                         Icon(
                                             imageVector = if (
@@ -165,13 +165,7 @@ fun ItemDetail(
                                         )
                                     )
                                 },
-                                onClick = {
-//                                    coroutineScope.launch {
-//                                        itemUi.itemUi?.toggleFollowed()
-//                                    }
-//
-//                                    setContextExpanded(false)
-                                },
+                                onClick = { onClickFollow(item) },
                                 leadingIcon = {
                                     Icon(
                                         imageVector = if (item.followed) {
@@ -201,13 +195,7 @@ fun ItemDetail(
                                         ),
                                     )
                                 },
-                                onClick = {
-//                                    coroutineScope.launch {
-//                                        itemUi.itemUi?.toggleFlag(onNavigateLogin)
-//                                    }
-//
-//                                    setContextExpanded(false)
-                                },
+                                onClick = { onClickFlag(item) },
                                 leadingIcon = {
                                     Icon(
                                         imageVector = if (item.flagged == true) {
@@ -246,7 +234,7 @@ fun ItemDetail(
                     style = htmlTextStyle().merge(MaterialTheme.typography.bodyMedium),
                 )
             }
-            val timeUserAnnotatedString: AnnotatedString = rememberTimeBy(
+            val timeUserAnnotatedString: AnnotatedString = timeBy(
                 time = item?.time,
                 by = item?.by,
             )
@@ -273,8 +261,8 @@ fun ItemDetail(
                 style = LocalTextStyle.current.merge(MaterialTheme.typography.labelMedium),
             )
             Row(verticalAlignment = Alignment.CenterVertically) {
-                if (item?.lastUpdate == null || item.type == ItemType.Story) {
-                    item?.score.let { score ->
+                if (item != null && (item.lastUpdate == null || item.type == ItemType.Story)) {
+                    item.score.let { score ->
                         key("score") {
                             TooltipBox(
                                 positionProvider = TooltipPopupPositionProvider(),
@@ -284,21 +272,17 @@ fun ItemDetail(
                                 state = rememberTooltipState(),
                             ) {
                                 IconButton(
-                                    onClick = {
-//                                        coroutineScope.launch {
-//                                            itemUi?.itemUi?.toggleUpvote(onNavigateLogin)
-//                                        }
-                                    },
-                                    enabled = item?.type == ItemType.Story,
+                                    onClick = { onClickUpvote(item) },
+                                    enabled = item.type == ItemType.Story,
                                 ) {
                                     Icon(
-                                        imageVector = if (item?.upvoted == true) {
+                                        imageVector = if (item.upvoted == true) {
                                             Icons.Filled.ThumbUp
                                         } else {
                                             Icons.TwoTone.ThumbUp
                                         },
                                         contentDescription = stringResource(
-                                            if (item?.upvoted == true) {
+                                            if (item.upvoted == true) {
                                                 Res.string.un_vote
                                             } else {
                                                 Res.string.upvote
@@ -309,7 +293,7 @@ fun ItemDetail(
                             }
 
                             Text(
-                                text = remember(score) { score?.toString().orEmpty() },
+                                text = score?.toString().orEmpty(),
                                 modifier = Modifier.widthIn(min = 24.dp),
                                 style = MaterialTheme.typography.labelMedium
                             )
@@ -318,7 +302,7 @@ fun ItemDetail(
                 }
                 val descendants = item?.descendants
                 key("comments") {
-                    if (isStoryOrComment) {
+                    if (item != null && (item.type == ItemType.Story || item.type == ItemType.Comment)) {
                         TooltipBox(
                             positionProvider = TooltipPopupPositionProvider(),
                             tooltip = {
@@ -326,11 +310,7 @@ fun ItemDetail(
                             },
                             state = rememberTooltipState(),
                         ) {
-                            IconButton(
-                                onClick = {
-//                                item.id.let { onClickReply(ItemId(it)) }
-                                },
-                            ) {
+                            IconButton(onClick = { onClickReply(item.id) }) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.TwoTone.Comment,
                                     contentDescription = null,
@@ -339,23 +319,17 @@ fun ItemDetail(
                         }
                     }
                     Text(
-                        text = remember(descendants) { descendants?.toString().orEmpty() },
+                        text = descendants?.toString().orEmpty(),
                         maxLines = 1,
                         modifier = Modifier.widthIn(min = 24.dp),
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.labelMedium,
                     )
                 }
-                val host: String? = remember(item, item?.url) {
-                    if (item?.lastUpdate != null) {
-                        item.url?.let { Url(it) }?.host
-                    } else {
-                        ""
-                    }
-                }
-                if (host != null) {
+                val url = item?.takeIf { it.lastUpdate != null }?.url?.let { Url(it) }
+                if (item != null && url != null) {
                     Text(
-                        text = host,
+                        text = url.host,
                         modifier = Modifier
                             .padding(start = 16.dp)
                             .weight(1f),
@@ -371,13 +345,7 @@ fun ItemDetail(
                         },
                         state = rememberTooltipState(),
                     ) {
-                        IconButton(
-                            onClick = {
-                                item?.url?.let { Url(it) }?.run {
-                                    onClickUrl(this)
-                                }
-                            },
-                        ) {
+                        IconButton(onClick = { onClickUrl(url) }) {
                             Icon(
                                 imageVector = Icons.Filled.OpenInBrowser,
                                 contentDescription = stringResource(Res.string.open_in_browser)

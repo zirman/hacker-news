@@ -2,7 +2,6 @@ package com.monoid.hackernews.common.view.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -10,15 +9,13 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import com.monoid.hackernews.common.data.model.FontSize
 import com.monoid.hackernews.common.data.model.LineHeight
-import com.monoid.hackernews.common.data.model.ParagraphIndent
 
 @Composable
 fun rememberAppTypography(
     fontFamily: FontFamily,
     fontSizeDelta: FontSize,
     lineHeightDelta: LineHeight,
-    paragraphIndent: ParagraphIndent,
-): Typography = remember(fontFamily, fontSizeDelta, lineHeightDelta, paragraphIndent) {
+): Typography {
     fun getTextStyle(
         baseFontSize: Int,
         spaceBetween: Int,
@@ -34,7 +31,7 @@ fun rememberAppTypography(
             letterSpacing = letterSpacing,
         )
     }
-    Typography(
+    return Typography(
         displayLarge = getTextStyle(
             baseFontSize = 57,
             spaceBetween = 7,

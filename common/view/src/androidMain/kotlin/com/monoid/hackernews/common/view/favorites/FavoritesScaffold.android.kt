@@ -51,6 +51,9 @@ fun FavoritesScaffold(
                 StoriesDetailPane(
                     itemId = itemId,
                     onClickUrl = onClickUrl,
+                    onClickUser = {},
+                    onClickReply = {},
+                    onClickLogin = onClickLogin,
                 )
             },
         )
