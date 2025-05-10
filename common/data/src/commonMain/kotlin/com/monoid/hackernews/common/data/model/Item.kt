@@ -18,7 +18,7 @@ data class Item(
     val parent: ItemId? = null,
     val kids: List<ItemId>? = null,
     val upvoted: Boolean? = null,
-    val favourited: Boolean? = null,
+    val favorited: Boolean? = null,
     val flagged: Boolean? = null,
 
     // local only data

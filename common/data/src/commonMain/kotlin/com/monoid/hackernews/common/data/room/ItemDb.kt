@@ -34,8 +34,8 @@ data class ItemDb(
     val parent: Long? = null,
     @ColumnInfo(name = "upvoted")
     val upvoted: Boolean? = null,
-    @ColumnInfo(name = "favourited")
-    val favourited: Boolean? = null,
+    @ColumnInfo(name = "favorited")
+    val favorited: Boolean? = null,
     @ColumnInfo(name = "flagged")
     val flagged: Boolean? = null,
     // local only data

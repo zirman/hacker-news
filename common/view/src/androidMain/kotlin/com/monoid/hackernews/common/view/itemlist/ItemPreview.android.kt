@@ -21,7 +21,7 @@ internal fun ItemPreview() {
                 url = "https://www.wikipedia.com/",
                 kids = emptyList(),
                 upvoted = false,
-                favourited = false,
+                favorited = false,
                 flagged = false,
                 expanded = false,
                 followed = false,

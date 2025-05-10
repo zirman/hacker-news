@@ -3,6 +3,7 @@ package com.monoid.hackernews.common.data.model
 import com.monoid.hackernews.common.core.LoggerAdapter
 import com.monoid.hackernews.common.core.coroutines.doOnErrorThenThrow
 import com.monoid.hackernews.common.data.api.ItemId
+import com.monoid.hackernews.common.data.api.favoriteRequest
 import com.monoid.hackernews.common.data.api.getAskStories
 import com.monoid.hackernews.common.data.api.getHotStories
 import com.monoid.hackernews.common.data.api.getItem
@@ -278,6 +279,34 @@ class StoriesRepository(
         }
         // update the local data store
         itemLocalDataSource.setUpvotedByItemId(itemId = item.id.long, upvoted = upvoted.not())
+    }
+
+    suspend fun toggleFavorited(item: Item) {
+        val favorited = item.favorited == true
+        // optimistically update the cache
+        _cache.update { cache ->
+            cache.put(
+                key = item.id,
+                value = cache.getValue(item.id).copy(favorited = favorited.not()),
+            )
+        }
+        runCatching {
+            remoteDataSource.favoriteRequest(
+                settings = settingsRepository.preferences.value,
+                itemId = item.id,
+                flag = favorited.not(),
+            )
+        }.doOnErrorThenThrow {
+            // revert cache if an error occurred
+            _cache.update { cache ->
+                cache.put(
+                    key = item.id,
+                    value = cache.getValue(item.id).copy(favorited = favorited),
+                )
+            }
+        }
+        // update the local data store
+        itemLocalDataSource.setFavoritedByItemId(itemId = item.id.long, favorited = favorited.not())
     }
 
     suspend fun itemToggleExpanded(itemId: ItemId) {

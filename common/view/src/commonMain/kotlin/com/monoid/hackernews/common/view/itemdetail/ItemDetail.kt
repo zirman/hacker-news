@@ -118,7 +118,7 @@ fun ItemDetail(
                                     text = {
                                         Text(
                                             text = stringResource(
-                                                if (item.favourited == true) {
+                                                if (item.favorited == true) {
                                                     Res.string.un_favorite
                                                 } else {
                                                     Res.string.favorite
@@ -136,14 +136,14 @@ fun ItemDetail(
                                     leadingIcon = {
                                         Icon(
                                             imageVector = if (
-                                                item.favourited == true
+                                                item.favorited == true
                                             ) {
                                                 Icons.Filled.Favorite
                                             } else {
                                                 Icons.TwoTone.Favorite
                                             },
                                             contentDescription = stringResource(
-                                                if (item.favourited == true) {
+                                                if (item.favorited == true) {
                                                     Res.string.un_favorite
                                                 } else {
                                                     Res.string.favorite
