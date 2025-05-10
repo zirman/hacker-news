@@ -139,6 +139,18 @@ class StoriesViewModel(
         }
     }
 
+    fun toggleFollowed(item: Item): Job = viewModelScope.launch(coroutineExceptionHandler) {
+        if (settingsRepository.isLoggedIn.not()) {
+            _events.send(Event.NavigateLogin)
+            return@launch
+        }
+        runCatching {
+            storiesRepository.toggleFollowed(item)
+        }.doOnErrorThenThrow {
+            _events.send(Event.Error(it.message))
+        }
+    }
+
     companion object {
         @Composable
         fun extras(storyOrdering: StoryOrdering): CreationExtras = MutableCreationExtras().apply {

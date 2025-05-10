@@ -34,6 +34,9 @@ interface ItemDao {
     @Query("UPDATE item SET favorited = :favorited WHERE id = :itemId")
     suspend fun setFavoritedByItemId(itemId: Long, favorited: Boolean): Int
 
+    @Query("UPDATE item SET followed = :followed WHERE id = :itemId")
+    suspend fun setFollowedByItemId(itemId: Long, followed: Boolean): Int
+
     @Transaction
     suspend fun itemToggleExpanded(itemId: Long): ItemWithKids? =
         itemByIdWithKidsById(itemId)

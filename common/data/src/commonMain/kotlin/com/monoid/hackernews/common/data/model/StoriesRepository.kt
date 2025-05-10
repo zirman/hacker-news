@@ -309,6 +309,19 @@ class StoriesRepository(
         itemLocalDataSource.setFavoritedByItemId(itemId = item.id.long, favorited = favorited.not())
     }
 
+    suspend fun toggleFollowed(item: Item) {
+        val followed = item.followed
+        // optimistically update the cache
+        _cache.update { cache ->
+            cache.put(
+                key = item.id,
+                value = cache.getValue(item.id).copy(followed = followed.not()),
+            )
+        }
+        // update the local data store
+        itemLocalDataSource.setFollowedByItemId(itemId = item.id.long, followed = followed.not())
+    }
+
     suspend fun itemToggleExpanded(itemId: ItemId) {
         val itemWithKids = itemLocalDataSource.itemToggleExpanded(itemId = itemId.long) ?: return
         val item = itemWithKids.item.toSimpleItemUiState(itemWithKids.kids.map { ItemId(it.id) })

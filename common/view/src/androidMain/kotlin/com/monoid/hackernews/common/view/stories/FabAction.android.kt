@@ -417,7 +417,7 @@ enum class FabAction(
                     onClickUrl = onClickUrl,
                     onClickUpvote = viewModel::toggleUpvoted,
                     onClickFavorite = viewModel::toggleFavorited,
-                    onClickFollow = onClickFollow,
+                    onClickFollow = viewModel::toggleFollowed,
                     onClickFlag = onClickFlag,
                     contentPadding = contentPadding,
                     modifier = modifier,
