@@ -4,9 +4,6 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.twotone.TrendingUp
 import androidx.compose.material.icons.twotone.Feedback
@@ -21,9 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.data.model.Item
@@ -38,7 +32,6 @@ import com.monoid.hackernews.common.view.show
 import com.monoid.hackernews.common.view.trending
 import org.jetbrains.compose.resources.StringResource
 import org.koin.compose.viewmodel.koinViewModel
-import kotlin.math.roundToInt
 
 enum class FabAction(
     val icon: ImageVector,
@@ -454,23 +447,4 @@ enum class FabAction(
         modifier: Modifier = Modifier,
         content: @Composable (x: Pair<BoxScope, Boolean>) -> Unit,
     )
-}
-
-@Composable
-fun listContentPadding(): PaddingValues {
-    val density = LocalDensity.current
-    return with(density) {
-        val safeDrawing = WindowInsets.safeDrawing
-        val layoutDirection = LocalLayoutDirection.current
-        WindowInsets(
-            top = safeDrawing.getTop(density),
-            // TODO: ignore safe drawing bottom if using bottom nav
-            bottom = safeDrawing.getBottom(density).coerceAtLeast(
-                // height of fab
-                80.dp.toPx().roundToInt()
-            ),
-            left = safeDrawing.getLeft(density, layoutDirection),
-            right = safeDrawing.getRight(density, layoutDirection),
-        )
-    }.asPaddingValues()
 }
