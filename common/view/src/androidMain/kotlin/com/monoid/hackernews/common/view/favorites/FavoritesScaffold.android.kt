@@ -40,9 +40,6 @@ fun FavoritesScaffold(
                     onClickReply = {},
                     onClickUser = {},
                     onClickUrl = onClickUrl,
-                    onClickFavorite = {},
-                    onClickFollow = {},
-                    onClickFlag = {},
                     onClickLogin = onClickLogin,
                     contentPadding = listContentPadding(),
                 )

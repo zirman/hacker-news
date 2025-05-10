@@ -4,6 +4,7 @@ import com.monoid.hackernews.common.core.LoggerAdapter
 import com.monoid.hackernews.common.core.coroutines.doOnErrorThenThrow
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.api.favoriteRequest
+import com.monoid.hackernews.common.data.api.flagRequest
 import com.monoid.hackernews.common.data.api.getAskStories
 import com.monoid.hackernews.common.data.api.getHotStories
 import com.monoid.hackernews.common.data.api.getItem
@@ -320,6 +321,34 @@ class StoriesRepository(
         }
         // update the local data store
         itemLocalDataSource.setFollowedByItemId(itemId = item.id.long, followed = followed.not())
+    }
+
+    suspend fun toggleFlagged(item: Item) {
+        val flagged = item.flagged == true
+        // optimistically update the cache
+        _cache.update { cache ->
+            cache.put(
+                key = item.id,
+                value = cache.getValue(item.id).copy(flagged = flagged.not()),
+            )
+        }
+        runCatching {
+            remoteDataSource.flagRequest(
+                settings = settingsRepository.preferences.value,
+                itemId = item.id,
+                flag = flagged.not(),
+            )
+        }.doOnErrorThenThrow {
+            // revert cache if an error occurred
+            _cache.update { cache ->
+                cache.put(
+                    key = item.id,
+                    value = cache.getValue(item.id).copy(flagged = flagged),
+                )
+            }
+        }
+        // update the local data store
+        itemLocalDataSource.setFlaggedByItemId(itemId = item.id.long, flagged = flagged.not())
     }
 
     suspend fun itemToggleExpanded(itemId: ItemId) {

@@ -38,9 +38,6 @@ fun StoriesScaffold(
                     onClickReply = {},
                     onClickUser = {},
                     onClickUrl = {},
-                    onClickFavorite = {},
-                    onClickFollow = {},
-                    onClickFlag = {},
                     onClickLogin = onClickLogin,
                     contentPadding = listContentPadding(),
                 )

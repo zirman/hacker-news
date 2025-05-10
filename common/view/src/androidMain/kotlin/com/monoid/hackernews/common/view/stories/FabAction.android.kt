@@ -49,334 +49,6 @@ enum class FabAction(
             onClickReply: (Item) -> Unit,
             onClickUser: (Username) -> Unit,
             onClickUrl: (Url) -> Unit,
-            onClickFavorite: (Item) -> Unit,
-            onClickFollow: (Item) -> Unit,
-            onClickFlag: (Item) -> Unit,
-            contentPadding: PaddingValues,
-            modifier: Modifier,
-            content: @Composable (x: Pair<BoxScope, Boolean>) -> Unit,
-        ) {
-            val viewModel: StoriesViewModel = koinViewModel(
-                // we set a key so a unique viewmodel is created for each story ordering
-                key = fabAction.storyOrdering.toString(),
-                extras = StoriesViewModel.extras(fabAction.storyOrdering),
-            )
-            val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
-            val context = LocalContext.current
-            LaunchedEffect(Unit) {
-                viewModel.events.collect { event ->
-                    when (event) {
-                        is StoriesViewModel.Event.Error -> {
-                            Toast
-                                .makeText(
-                                    context,
-                                    "An error occurred: ${event.message}",
-                                    Toast.LENGTH_SHORT,
-                                )
-                                .show()
-                        }
-
-                        is StoriesViewModel.Event.NavigateLogin -> {
-                            onClickLogin()
-                        }
-                    }
-                }
-            }
-            Box {
-                ItemsColumn(
-                    itemsList = uiState.itemsList,
-                    onVisibleItem = viewModel::updateItem,
-                    onClickItem = onClickItem,
-                    onClickReply = onClickReply,
-                    onClickUser = onClickUser,
-                    onClickUrl = onClickUrl,
-                    onClickUpvote = viewModel::toggleUpvoted,
-                    onClickFavorite = onClickFavorite,
-                    onClickFollow = onClickFollow,
-                    onClickFlag = onClickFlag,
-                    contentPadding = contentPadding,
-                    modifier = modifier,
-                ) {
-                    content(Pair(this@Box, it))
-                }
-                if (uiState.loading) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                }
-            }
-        }
-    },
-    Ask(Icons.TwoTone.Forum, Res.string.ask, StoryOrdering.Ask) {
-        @Composable
-        override fun Compose(
-            fabAction: FabAction,
-            onClickLogin: () -> Unit,
-            onClickItem: (Item) -> Unit,
-            onClickReply: (Item) -> Unit,
-            onClickUser: (Username) -> Unit,
-            onClickUrl: (Url) -> Unit,
-            onClickFavorite: (Item) -> Unit,
-            onClickFollow: (Item) -> Unit,
-            onClickFlag: (Item) -> Unit,
-            contentPadding: PaddingValues,
-            modifier: Modifier,
-            content: @Composable (x: Pair<BoxScope, Boolean>) -> Unit,
-        ) {
-            val viewModel: StoriesViewModel = koinViewModel(
-                // we set a key so a unique viewmodel is created for each story ordering
-                key = fabAction.storyOrdering.toString(),
-                extras = StoriesViewModel.extras(fabAction.storyOrdering),
-            )
-            val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
-            val context = LocalContext.current
-            LaunchedEffect(Unit) {
-                viewModel.events.collect { event ->
-                    when (event) {
-                        is StoriesViewModel.Event.Error -> {
-                            Toast
-                                .makeText(
-                                    context,
-                                    "An error occurred: ${event.message}",
-                                    Toast.LENGTH_SHORT,
-                                )
-                                .show()
-                        }
-
-                        is StoriesViewModel.Event.NavigateLogin -> {
-                            onClickLogin()
-                        }
-                    }
-                }
-            }
-            Box {
-                ItemsColumn(
-                    itemsList = uiState.itemsList,
-                    onVisibleItem = viewModel::updateItem,
-                    onClickItem = onClickItem,
-                    onClickReply = onClickReply,
-                    onClickUser = onClickUser,
-                    onClickUrl = onClickUrl,
-                    onClickUpvote = viewModel::toggleUpvoted,
-                    onClickFavorite = onClickFavorite,
-                    onClickFollow = onClickFollow,
-                    onClickFlag = onClickFlag,
-                    contentPadding = contentPadding,
-                    modifier = modifier,
-                ) {
-                    content(Pair(this@Box, it))
-                }
-                if (uiState.loading) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                }
-            }
-        }
-    },
-    Show(Icons.TwoTone.Feedback, Res.string.show, StoryOrdering.Show) {
-        @Composable
-        override fun Compose(
-            fabAction: FabAction,
-            onClickLogin: () -> Unit,
-            onClickItem: (Item) -> Unit,
-            onClickReply: (Item) -> Unit,
-            onClickUser: (Username) -> Unit,
-            onClickUrl: (Url) -> Unit,
-            onClickFavorite: (Item) -> Unit,
-            onClickFollow: (Item) -> Unit,
-            onClickFlag: (Item) -> Unit,
-            contentPadding: PaddingValues,
-            modifier: Modifier,
-            content: @Composable (x: Pair<BoxScope, Boolean>) -> Unit,
-        ) {
-            val viewModel: StoriesViewModel = koinViewModel(
-                // we set a key so a unique viewmodel is created for each story ordering
-                key = fabAction.storyOrdering.toString(),
-                extras = StoriesViewModel.extras(fabAction.storyOrdering),
-            )
-            val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
-            val context = LocalContext.current
-            LaunchedEffect(Unit) {
-                viewModel.events.collect { event ->
-                    when (event) {
-                        is StoriesViewModel.Event.Error -> {
-                            Toast
-                                .makeText(
-                                    context,
-                                    "An error occurred: ${event.message}",
-                                    Toast.LENGTH_SHORT,
-                                )
-                                .show()
-                        }
-
-                        is StoriesViewModel.Event.NavigateLogin -> {
-                            onClickLogin()
-                        }
-                    }
-                }
-            }
-            Box {
-                ItemsColumn(
-                    itemsList = uiState.itemsList,
-                    onVisibleItem = viewModel::updateItem,
-                    onClickItem = onClickItem,
-                    onClickReply = onClickReply,
-                    onClickUser = onClickUser,
-                    onClickUrl = onClickUrl,
-                    onClickUpvote = viewModel::toggleUpvoted,
-                    onClickFavorite = onClickFavorite,
-                    onClickFollow = onClickFollow,
-                    onClickFlag = onClickFlag,
-                    contentPadding = contentPadding,
-                    modifier = modifier,
-                ) {
-                    content(Pair(this@Box, it))
-                }
-                if (uiState.loading) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                }
-            }
-        }
-    },
-    Hot(Icons.TwoTone.Whatshot, Res.string.hot, StoryOrdering.Hot) {
-        @Composable
-        override fun Compose(
-            fabAction: FabAction,
-            onClickLogin: () -> Unit,
-            onClickItem: (Item) -> Unit,
-            onClickReply: (Item) -> Unit,
-            onClickUser: (Username) -> Unit,
-            onClickUrl: (Url) -> Unit,
-            onClickFavorite: (Item) -> Unit,
-            onClickFollow: (Item) -> Unit,
-            onClickFlag: (Item) -> Unit,
-            contentPadding: PaddingValues,
-            modifier: Modifier,
-            content: @Composable (x: Pair<BoxScope, Boolean>) -> Unit,
-        ) {
-            val viewModel: StoriesViewModel = koinViewModel(
-                // we set a key so a unique viewmodel is created for each story ordering
-                key = fabAction.storyOrdering.toString(),
-                extras = StoriesViewModel.extras(fabAction.storyOrdering),
-            )
-            val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
-            val context = LocalContext.current
-            LaunchedEffect(Unit) {
-                viewModel.events.collect { event ->
-                    when (event) {
-                        is StoriesViewModel.Event.Error -> {
-                            Toast
-                                .makeText(
-                                    context,
-                                    "An error occurred: ${event.message}",
-                                    Toast.LENGTH_SHORT,
-                                )
-                                .show()
-                        }
-
-                        is StoriesViewModel.Event.NavigateLogin -> {
-                            onClickLogin()
-                        }
-                    }
-                }
-            }
-            Box {
-                ItemsColumn(
-                    itemsList = uiState.itemsList,
-                    onVisibleItem = viewModel::updateItem,
-                    onClickItem = onClickItem,
-                    onClickReply = onClickReply,
-                    onClickUser = onClickUser,
-                    onClickUrl = onClickUrl,
-                    onClickUpvote = viewModel::toggleUpvoted,
-                    onClickFavorite = onClickFavorite,
-                    onClickFollow = onClickFollow,
-                    onClickFlag = onClickFlag,
-                    contentPadding = contentPadding,
-                    modifier = modifier,
-                ) {
-                    content(Pair(this@Box, it))
-                }
-                if (uiState.loading) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                }
-            }
-        }
-    },
-    New(Icons.TwoTone.RssFeed, Res.string.new, StoryOrdering.New) {
-        @Composable
-        override fun Compose(
-            fabAction: FabAction,
-            onClickLogin: () -> Unit,
-            onClickItem: (Item) -> Unit,
-            onClickReply: (Item) -> Unit,
-            onClickUser: (Username) -> Unit,
-            onClickUrl: (Url) -> Unit,
-            onClickFavorite: (Item) -> Unit,
-            onClickFollow: (Item) -> Unit,
-            onClickFlag: (Item) -> Unit,
-            contentPadding: PaddingValues,
-            modifier: Modifier,
-            content: @Composable (x: Pair<BoxScope, Boolean>) -> Unit,
-        ) {
-            val viewModel: StoriesViewModel = koinViewModel(
-                // we set a key so a unique viewmodel is created for each story ordering
-                key = fabAction.storyOrdering.toString(),
-                extras = StoriesViewModel.extras(fabAction.storyOrdering),
-            )
-            val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
-            val context = LocalContext.current
-            LaunchedEffect(Unit) {
-                viewModel.events.collect { event ->
-                    when (event) {
-                        is StoriesViewModel.Event.Error -> {
-                            Toast
-                                .makeText(
-                                    context,
-                                    "An error occurred: ${event.message}",
-                                    Toast.LENGTH_SHORT,
-                                )
-                                .show()
-                        }
-
-                        is StoriesViewModel.Event.NavigateLogin -> {
-                            onClickLogin()
-                        }
-                    }
-                }
-            }
-            Box {
-                ItemsColumn(
-                    itemsList = uiState.itemsList,
-                    onVisibleItem = viewModel::updateItem,
-                    onClickItem = onClickItem,
-                    onClickReply = onClickReply,
-                    onClickUser = onClickUser,
-                    onClickUrl = onClickUrl,
-                    onClickUpvote = viewModel::toggleUpvoted,
-                    onClickFavorite = onClickFavorite,
-                    onClickFollow = onClickFollow,
-                    onClickFlag = onClickFlag,
-                    contentPadding = contentPadding,
-                    modifier = modifier,
-                ) {
-                    content(Pair(this@Box, it))
-                }
-                if (uiState.loading) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                }
-            }
-        }
-    },
-    Trending(Icons.AutoMirrored.TwoTone.TrendingUp, Res.string.trending, StoryOrdering.Trending) {
-        @Composable
-        override fun Compose(
-            fabAction: FabAction,
-            onClickLogin: () -> Unit,
-            onClickItem: (Item) -> Unit,
-            onClickReply: (Item) -> Unit,
-            onClickUser: (Username) -> Unit,
-            onClickUrl: (Url) -> Unit,
-            onClickFavorite: (Item) -> Unit,
-            onClickFollow: (Item) -> Unit,
-            onClickFlag: (Item) -> Unit,
             contentPadding: PaddingValues,
             modifier: Modifier,
             content: @Composable (x: Pair<BoxScope, Boolean>) -> Unit,
@@ -418,7 +90,317 @@ enum class FabAction(
                     onClickUpvote = viewModel::toggleUpvoted,
                     onClickFavorite = viewModel::toggleFavorited,
                     onClickFollow = viewModel::toggleFollowed,
-                    onClickFlag = onClickFlag,
+                    onClickFlag = {},
+                    contentPadding = contentPadding,
+                    modifier = modifier,
+                ) {
+                    content(Pair(this@Box, it))
+                }
+                if (uiState.loading) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
+            }
+        }
+    },
+    Ask(Icons.TwoTone.Forum, Res.string.ask, StoryOrdering.Ask) {
+        @Composable
+        override fun Compose(
+            fabAction: FabAction,
+            onClickLogin: () -> Unit,
+            onClickItem: (Item) -> Unit,
+            onClickReply: (Item) -> Unit,
+            onClickUser: (Username) -> Unit,
+            onClickUrl: (Url) -> Unit,
+            contentPadding: PaddingValues,
+            modifier: Modifier,
+            content: @Composable (x: Pair<BoxScope, Boolean>) -> Unit,
+        ) {
+            val viewModel: StoriesViewModel = koinViewModel(
+                // we set a key so a unique viewmodel is created for each story ordering
+                key = fabAction.storyOrdering.toString(),
+                extras = StoriesViewModel.extras(fabAction.storyOrdering),
+            )
+            val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+            val context = LocalContext.current
+            LaunchedEffect(Unit) {
+                viewModel.events.collect { event ->
+                    when (event) {
+                        is StoriesViewModel.Event.Error -> {
+                            Toast
+                                .makeText(
+                                    context,
+                                    "An error occurred: ${event.message}",
+                                    Toast.LENGTH_SHORT,
+                                )
+                                .show()
+                        }
+
+                        is StoriesViewModel.Event.NavigateLogin -> {
+                            onClickLogin()
+                        }
+                    }
+                }
+            }
+            Box {
+                ItemsColumn(
+                    itemsList = uiState.itemsList,
+                    onVisibleItem = viewModel::updateItem,
+                    onClickItem = onClickItem,
+                    onClickReply = onClickReply,
+                    onClickUser = onClickUser,
+                    onClickUrl = onClickUrl,
+                    onClickUpvote = viewModel::toggleUpvoted,
+                    onClickFavorite = viewModel::toggleFavorited,
+                    onClickFollow = viewModel::toggleFollowed,
+                    onClickFlag = viewModel::toggleFlagged,
+                    contentPadding = contentPadding,
+                    modifier = modifier,
+                ) {
+                    content(Pair(this@Box, it))
+                }
+                if (uiState.loading) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
+            }
+        }
+    },
+    Show(Icons.TwoTone.Feedback, Res.string.show, StoryOrdering.Show) {
+        @Composable
+        override fun Compose(
+            fabAction: FabAction,
+            onClickLogin: () -> Unit,
+            onClickItem: (Item) -> Unit,
+            onClickReply: (Item) -> Unit,
+            onClickUser: (Username) -> Unit,
+            onClickUrl: (Url) -> Unit,
+            contentPadding: PaddingValues,
+            modifier: Modifier,
+            content: @Composable (x: Pair<BoxScope, Boolean>) -> Unit,
+        ) {
+            val viewModel: StoriesViewModel = koinViewModel(
+                // we set a key so a unique viewmodel is created for each story ordering
+                key = fabAction.storyOrdering.toString(),
+                extras = StoriesViewModel.extras(fabAction.storyOrdering),
+            )
+            val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+            val context = LocalContext.current
+            LaunchedEffect(Unit) {
+                viewModel.events.collect { event ->
+                    when (event) {
+                        is StoriesViewModel.Event.Error -> {
+                            Toast
+                                .makeText(
+                                    context,
+                                    "An error occurred: ${event.message}",
+                                    Toast.LENGTH_SHORT,
+                                )
+                                .show()
+                        }
+
+                        is StoriesViewModel.Event.NavigateLogin -> {
+                            onClickLogin()
+                        }
+                    }
+                }
+            }
+            Box {
+                ItemsColumn(
+                    itemsList = uiState.itemsList,
+                    onVisibleItem = viewModel::updateItem,
+                    onClickItem = onClickItem,
+                    onClickReply = onClickReply,
+                    onClickUser = onClickUser,
+                    onClickUrl = onClickUrl,
+                    onClickUpvote = viewModel::toggleUpvoted,
+                    onClickFavorite = viewModel::toggleFavorited,
+                    onClickFollow = viewModel::toggleFollowed,
+                    onClickFlag = viewModel::toggleFlagged,
+                    contentPadding = contentPadding,
+                    modifier = modifier,
+                ) {
+                    content(Pair(this@Box, it))
+                }
+                if (uiState.loading) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
+            }
+        }
+    },
+    Hot(Icons.TwoTone.Whatshot, Res.string.hot, StoryOrdering.Hot) {
+        @Composable
+        override fun Compose(
+            fabAction: FabAction,
+            onClickLogin: () -> Unit,
+            onClickItem: (Item) -> Unit,
+            onClickReply: (Item) -> Unit,
+            onClickUser: (Username) -> Unit,
+            onClickUrl: (Url) -> Unit,
+            contentPadding: PaddingValues,
+            modifier: Modifier,
+            content: @Composable (x: Pair<BoxScope, Boolean>) -> Unit,
+        ) {
+            val viewModel: StoriesViewModel = koinViewModel(
+                // we set a key so a unique viewmodel is created for each story ordering
+                key = fabAction.storyOrdering.toString(),
+                extras = StoriesViewModel.extras(fabAction.storyOrdering),
+            )
+            val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+            val context = LocalContext.current
+            LaunchedEffect(Unit) {
+                viewModel.events.collect { event ->
+                    when (event) {
+                        is StoriesViewModel.Event.Error -> {
+                            Toast
+                                .makeText(
+                                    context,
+                                    "An error occurred: ${event.message}",
+                                    Toast.LENGTH_SHORT,
+                                )
+                                .show()
+                        }
+
+                        is StoriesViewModel.Event.NavigateLogin -> {
+                            onClickLogin()
+                        }
+                    }
+                }
+            }
+            Box {
+                ItemsColumn(
+                    itemsList = uiState.itemsList,
+                    onVisibleItem = viewModel::updateItem,
+                    onClickItem = onClickItem,
+                    onClickReply = onClickReply,
+                    onClickUser = onClickUser,
+                    onClickUrl = onClickUrl,
+                    onClickUpvote = viewModel::toggleUpvoted,
+                    onClickFavorite = viewModel::toggleFavorited,
+                    onClickFollow = viewModel::toggleFollowed,
+                    onClickFlag = viewModel::toggleFlagged,
+                    contentPadding = contentPadding,
+                    modifier = modifier,
+                ) {
+                    content(Pair(this@Box, it))
+                }
+                if (uiState.loading) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
+            }
+        }
+    },
+    New(Icons.TwoTone.RssFeed, Res.string.new, StoryOrdering.New) {
+        @Composable
+        override fun Compose(
+            fabAction: FabAction,
+            onClickLogin: () -> Unit,
+            onClickItem: (Item) -> Unit,
+            onClickReply: (Item) -> Unit,
+            onClickUser: (Username) -> Unit,
+            onClickUrl: (Url) -> Unit,
+            contentPadding: PaddingValues,
+            modifier: Modifier,
+            content: @Composable (x: Pair<BoxScope, Boolean>) -> Unit,
+        ) {
+            val viewModel: StoriesViewModel = koinViewModel(
+                // we set a key so a unique viewmodel is created for each story ordering
+                key = fabAction.storyOrdering.toString(),
+                extras = StoriesViewModel.extras(fabAction.storyOrdering),
+            )
+            val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+            val context = LocalContext.current
+            LaunchedEffect(Unit) {
+                viewModel.events.collect { event ->
+                    when (event) {
+                        is StoriesViewModel.Event.Error -> {
+                            Toast
+                                .makeText(
+                                    context,
+                                    "An error occurred: ${event.message}",
+                                    Toast.LENGTH_SHORT,
+                                )
+                                .show()
+                        }
+
+                        is StoriesViewModel.Event.NavigateLogin -> {
+                            onClickLogin()
+                        }
+                    }
+                }
+            }
+            Box {
+                ItemsColumn(
+                    itemsList = uiState.itemsList,
+                    onVisibleItem = viewModel::updateItem,
+                    onClickItem = onClickItem,
+                    onClickReply = onClickReply,
+                    onClickUser = onClickUser,
+                    onClickUrl = onClickUrl,
+                    onClickUpvote = viewModel::toggleUpvoted,
+                    onClickFavorite = viewModel::toggleFavorited,
+                    onClickFollow = viewModel::toggleFollowed,
+                    onClickFlag = viewModel::toggleFlagged,
+                    contentPadding = contentPadding,
+                    modifier = modifier,
+                ) {
+                    content(Pair(this@Box, it))
+                }
+                if (uiState.loading) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
+            }
+        }
+    },
+    Trending(Icons.AutoMirrored.TwoTone.TrendingUp, Res.string.trending, StoryOrdering.Trending) {
+        @Composable
+        override fun Compose(
+            fabAction: FabAction,
+            onClickLogin: () -> Unit,
+            onClickItem: (Item) -> Unit,
+            onClickReply: (Item) -> Unit,
+            onClickUser: (Username) -> Unit,
+            onClickUrl: (Url) -> Unit,
+            contentPadding: PaddingValues,
+            modifier: Modifier,
+            content: @Composable (x: Pair<BoxScope, Boolean>) -> Unit,
+        ) {
+            val viewModel: StoriesViewModel = koinViewModel(
+                // we set a key so a unique viewmodel is created for each story ordering
+                key = fabAction.storyOrdering.toString(),
+                extras = StoriesViewModel.extras(fabAction.storyOrdering),
+            )
+            val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+            val context = LocalContext.current
+            LaunchedEffect(Unit) {
+                viewModel.events.collect { event ->
+                    when (event) {
+                        is StoriesViewModel.Event.Error -> {
+                            Toast
+                                .makeText(
+                                    context,
+                                    "An error occurred: ${event.message}",
+                                    Toast.LENGTH_SHORT,
+                                )
+                                .show()
+                        }
+
+                        is StoriesViewModel.Event.NavigateLogin -> {
+                            onClickLogin()
+                        }
+                    }
+                }
+            }
+            Box {
+                ItemsColumn(
+                    itemsList = uiState.itemsList,
+                    onVisibleItem = viewModel::updateItem,
+                    onClickItem = onClickItem,
+                    onClickReply = onClickReply,
+                    onClickUser = onClickUser,
+                    onClickUrl = onClickUrl,
+                    onClickUpvote = viewModel::toggleUpvoted,
+                    onClickFavorite = viewModel::toggleFavorited,
+                    onClickFollow = viewModel::toggleFollowed,
+                    onClickFlag = viewModel::toggleFlagged,
                     contentPadding = contentPadding,
                     modifier = modifier,
                 ) {
@@ -440,9 +422,6 @@ enum class FabAction(
         onClickReply: (Item) -> Unit,
         onClickUser: (Username) -> Unit,
         onClickUrl: (Url) -> Unit,
-        onClickFavorite: (Item) -> Unit,
-        onClickFollow: (Item) -> Unit,
-        onClickFlag: (Item) -> Unit,
         contentPadding: PaddingValues,
         modifier: Modifier = Modifier,
         content: @Composable (x: Pair<BoxScope, Boolean>) -> Unit,
