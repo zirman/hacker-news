@@ -42,7 +42,7 @@ fun UsernameTextField(
         onValueChange = onUsernameChange,
         modifier = modifier
             .semantics {
-                contentType = ContentType.Password
+                contentType = ContentType.Username
             }
             .onPreviewKeyEvent { event -> // handle hardware keyboards
                 if (event.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
