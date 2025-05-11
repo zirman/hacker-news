@@ -8,6 +8,7 @@ import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaf
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.monoid.hackernews.common.data.Url
+import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.domain.navigation.BottomNav
 import com.monoid.hackernews.common.view.favorites.FavoritesScaffold
 import com.monoid.hackernews.common.view.settings.SettingsScaffold
@@ -18,6 +19,7 @@ actual fun HomeContent(
     currentDestination: BottomNav,
     onClickLogin: () -> Unit,
     onClickLogout: () -> Unit,
+    onClickUser: (Username) -> Unit,
     onClickUrl: (Url) -> Unit,
     modifier: Modifier,
 ) {
@@ -30,6 +32,7 @@ actual fun HomeContent(
                 StoriesScaffold(
                     navigator = storiesNavigator,
                     onClickLogin = onClickLogin,
+                    onClickUser = onClickUser,
                     onClickUrl = onClickUrl,
                 )
             }

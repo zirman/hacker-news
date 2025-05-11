@@ -12,12 +12,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.data.api.ItemId
+import com.monoid.hackernews.common.data.model.Username
 import kotlinx.coroutines.launch
 
 @Composable
 fun StoriesScaffold(
     navigator: ThreePaneScaffoldNavigator<Any>,
     onClickLogin: () -> Unit,
+    onClickUser: (Username) -> Unit,
     onClickUrl: (Url) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -36,7 +38,7 @@ fun StoriesScaffold(
                         }
                     },
                     onClickReply = {},
-                    onClickUser = {},
+                    onClickUser = onClickUser,
                     onClickUrl = onClickUrl,
                     onClickLogin = onClickLogin,
                     contentPadding = listContentPadding(),
@@ -49,7 +51,7 @@ fun StoriesScaffold(
                 StoriesDetailPane(
                     itemId = itemId,
                     onClickUrl = onClickUrl,
-                    onClickUser = {},
+                    onClickUser = onClickUser,
                     onClickReply = {},
                     onClickLogin = onClickLogin,
                 )

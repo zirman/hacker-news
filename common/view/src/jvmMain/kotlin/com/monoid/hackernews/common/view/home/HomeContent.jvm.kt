@@ -9,6 +9,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.data.Url
+import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.domain.navigation.BottomNav
 import com.monoid.hackernews.common.view.itemlist.ItemsColumn
 import com.monoid.hackernews.common.view.stories.StoriesViewModel
@@ -20,6 +21,7 @@ actual fun HomeContent(
     currentDestination: BottomNav,
     onClickLogin: () -> Unit,
     onClickLogout: () -> Unit,
+    onClickUser: (Username) -> Unit,
     onClickUrl: (Url) -> Unit,
     modifier: Modifier,
 ) {

@@ -34,6 +34,10 @@ object Route {
     @Serializable
     @SerialName("Home")
     data object Home
+
+    @Serializable
+    @SerialName("User")
+    data class User(val username: Username)
 }
 
 val jsonDecoder: Json = Json { ignoreUnknownKeys = true }

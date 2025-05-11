@@ -6,12 +6,14 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import com.monoid.hackernews.common.data.Url
+import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.domain.navigation.BottomNav
 
 @Composable
 actual fun HomeScaffold(
     onClickLogin: () -> Unit,
     onClickLogout: () -> Unit,
+    onClickUser: (Username) -> Unit,
     onClickUrl: (Url) -> Unit,
     modifier: Modifier,
 ) {
@@ -20,6 +22,7 @@ actual fun HomeScaffold(
         currentDestination = BottomNav.entries[currentDestination],
         onClickLogin = onClickLogin,
         onClickLogout = onClickLogout,
+        onClickUser = onClickUser,
         onClickUrl = onClickUrl,
     )
 }
