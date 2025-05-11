@@ -70,7 +70,6 @@ fun ItemComment(
     threadItem: ItemDetailViewModel.ThreadItemUiState,
     onClickUser: (Username) -> Unit,
     onClickReply: (ItemId) -> Unit,
-    onClickLogin: () -> Unit,
     onVisible: (ItemId) -> Unit,
     onClick: (ItemId) -> Unit,
     modifier: Modifier = Modifier,
@@ -95,7 +94,11 @@ fun ItemComment(
         Surface(tonalElevation = (threadItem.descendants * 4).dp) {
             Column {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    val timeByUserAnnotatedString = timeBy(time = item.time, by = item.by)
+                    val timeByUserAnnotatedString = timeBy(
+                        time = item.time,
+                        by = item.by,
+                        onClick = onClickUser,
+                    )
                     ClickableTextBlock(
                         text = timeByUserAnnotatedString,
                         lines = 1,
@@ -158,8 +161,8 @@ fun ItemComment(
                             DropdownMenuItem(
                                 text = { Text(text = stringResource(Res.string.reply)) },
                                 onClick = {
-//                                itemUi.id.let { onClickReply(ItemId(it)) }
                                     setContextExpanded(0)
+                                    onClickReply(threadItem.item.id)
                                 },
                                 leadingIcon = {
                                     Icon(

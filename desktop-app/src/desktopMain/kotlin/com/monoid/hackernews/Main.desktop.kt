@@ -193,7 +193,7 @@ fun HNPanes(
                     onClickUrl = onClickUrl,
                     onClickUser = {},
                     onClickReply = {},
-                    onClickLogin = {},
+                    onClickLogin = onClickLogin,
                 )
             }
         }

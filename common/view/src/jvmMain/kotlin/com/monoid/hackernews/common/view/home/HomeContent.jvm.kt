@@ -27,7 +27,7 @@ actual fun HomeContent(
         extras = StoriesViewModel.extras(StoryOrdering.Trending),
     )
     LaunchedEffect(Unit) {
-        viewModel.events.collect { event ->
+        for (event in viewModel.events) {
             when (event) {
                 is StoriesViewModel.Event.Error -> {
                     // TODO

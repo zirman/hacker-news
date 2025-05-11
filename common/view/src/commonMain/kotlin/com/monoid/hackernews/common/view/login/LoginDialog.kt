@@ -29,7 +29,7 @@ fun LoginDialog(
     }
     LaunchedEffect(Unit) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            loginViewModel.events.collect { event ->
+            for (event in loginViewModel.events) {
                 when (event) {
                     LoginViewModel.Event.DismissRequest -> {
                         onDismissRequest()

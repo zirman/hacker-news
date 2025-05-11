@@ -51,7 +51,7 @@ fun StoriesScaffold(
                     onClickUrl = onClickUrl,
                     onClickUser = {},
                     onClickReply = {},
-                    onClickLogin = {},
+                    onClickLogin = onClickLogin,
                 )
             },
         )

@@ -223,7 +223,11 @@ fun Item(
             val style = LocalTextStyle.current.merge(MaterialTheme.typography.labelMedium)
             // TODO: add onClickUser handler
             Text(
-                text = timeBy(time = item.time, by = item.by),
+                text = timeBy(
+                    time = item.time,
+                    by = item.by,
+                    onClick = onClickUser,
+                ),
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
                     .height(with(LocalDensity.current) { style.lineHeight.toDp() }),

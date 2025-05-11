@@ -1,6 +1,6 @@
 package com.monoid.hackernews.common.data.html
 
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.ParagraphStyle
@@ -52,24 +52,7 @@ class HtmlParser(
             fontWeight = FontWeight.Bold,
         ),
     ),
-    val textLinkStyles: TextLinkStyles = TextLinkStyles(
-        style = SpanStyle(
-            fontWeight = FontWeight.SemiBold,
-        ),
-        focusedStyle = SpanStyle(
-            fontWeight = FontWeight.SemiBold,
-            textDecoration = TextDecoration.Underline,
-        ),
-        hoveredStyle = SpanStyle(
-            fontWeight = FontWeight.SemiBold,
-            color = Color.Blue,
-        ),
-        pressedStyle = SpanStyle(
-            fontWeight = FontWeight.SemiBold,
-            color = Color.Blue,
-            textDecoration = TextDecoration.Underline,
-        ),
-    ),
+    val textLinkStyles: TextLinkStyles = DEFAULT_TEXT_LINK_STYLES,
 ) {
     fun parse(htmlString: String): AnnotatedString = ParseState().parse(htmlString)
 
@@ -434,3 +417,12 @@ class HtmlParser(
         }
     }
 }
+
+val DEFAULT_TEXT_LINK_STYLES = TextLinkStyles(
+    style = SpanStyle(
+        textDecoration = TextDecoration.Underline,
+    ),
+    pressedStyle = SpanStyle(
+        drawStyle = Stroke(width = 1f),
+    ),
+)

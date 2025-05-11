@@ -234,12 +234,12 @@ fun ItemDetail(
                     style = htmlTextStyle().merge(MaterialTheme.typography.bodyMedium),
                 )
             }
-            val timeUserAnnotatedString: AnnotatedString = timeBy(
-                time = item?.time,
-                by = item?.by,
-            )
             Text(
-                text = timeUserAnnotatedString,
+                text = timeBy(
+                    time = item?.time,
+                    by = item?.by,
+                    onClick = onClickUser,
+                ),
 //                onClick = { offset ->
 //                    val username = timeUserAnnotatedString.value
 //                        .getStringAnnotations(

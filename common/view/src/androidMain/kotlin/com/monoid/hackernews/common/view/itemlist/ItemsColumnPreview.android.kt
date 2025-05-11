@@ -9,6 +9,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.ItemType
+import com.monoid.hackernews.common.data.model.Username
 
 @Preview
 @Composable
@@ -22,7 +23,7 @@ internal fun ItemsColumnPreview() {
                     type = ItemType.Story,
                     time = 123,
                     deleted = false,
-                    by = "Jane Doe",
+                    by = Username("Jane Doe"),
                     descendants = 0,
                     score = 5,
                     title = "Hello World",
@@ -42,7 +43,7 @@ internal fun ItemsColumnPreview() {
                     type = ItemType.Story,
                     time = 123,
                     deleted = false,
-                    by = "Jane Doe",
+                    by = Username("Jane Doe"),
                     descendants = 0,
                     score = 5,
                     title = "Hello World",

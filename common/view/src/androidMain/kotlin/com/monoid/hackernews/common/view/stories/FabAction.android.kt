@@ -61,7 +61,7 @@ enum class FabAction(
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             val context = LocalContext.current
             LaunchedEffect(Unit) {
-                viewModel.events.collect { event ->
+                for (event in viewModel.events) {
                     when (event) {
                         is StoriesViewModel.Event.Error -> {
                             Toast
@@ -123,7 +123,7 @@ enum class FabAction(
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             val context = LocalContext.current
             LaunchedEffect(Unit) {
-                viewModel.events.collect { event ->
+                for (event in viewModel.events) {
                     when (event) {
                         is StoriesViewModel.Event.Error -> {
                             Toast
@@ -185,7 +185,7 @@ enum class FabAction(
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             val context = LocalContext.current
             LaunchedEffect(Unit) {
-                viewModel.events.collect { event ->
+                for (event in viewModel.events) {
                     when (event) {
                         is StoriesViewModel.Event.Error -> {
                             Toast
@@ -247,7 +247,7 @@ enum class FabAction(
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             val context = LocalContext.current
             LaunchedEffect(Unit) {
-                viewModel.events.collect { event ->
+                for (event in viewModel.events) {
                     when (event) {
                         is StoriesViewModel.Event.Error -> {
                             Toast
@@ -309,7 +309,7 @@ enum class FabAction(
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             val context = LocalContext.current
             LaunchedEffect(Unit) {
-                viewModel.events.collect { event ->
+                for (event in viewModel.events) {
                     when (event) {
                         is StoriesViewModel.Event.Error -> {
                             Toast
@@ -371,7 +371,7 @@ enum class FabAction(
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             val context = LocalContext.current
             LaunchedEffect(Unit) {
-                viewModel.events.collect { event ->
+                for (event in viewModel.events) {
                     when (event) {
                         is StoriesViewModel.Event.Error -> {
                             Toast

@@ -9,12 +9,11 @@ import com.monoid.hackernews.common.data.model.Username
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
@@ -39,7 +38,7 @@ class LoginViewModel(
     }
 
     private val _events: Channel<Event> = Channel()
-    val events: Flow<Event> = _events.receiveAsFlow()
+    val events: ReceiveChannel<Event> = _events
 
     private val context = CoroutineExceptionHandler { _, throwable ->
         logger.recordException(

@@ -44,6 +44,19 @@ fun ItemDetailPane(
             }
         }
     }
+    LaunchedEffect(Unit) {
+        for (event in viewModel.events) {
+            when (event) {
+                is ItemDetailViewModel.Event.Error -> {
+                    // TODO
+                }
+
+                is ItemDetailViewModel.Event.NavigateLogin -> {
+                    onClickLogin()
+                }
+            }
+        }
+    }
     LazyColumn(
         state = viewModel.lazyListState,
         modifier = modifier
@@ -62,7 +75,6 @@ fun ItemDetailPane(
                         threadItem = item,
                         onClickUser = onClickUser,
                         onClickReply = onClickReply,
-                        onClickLogin = onClickLogin,
                         onVisible = viewModel::updateItem,
                         onClick = viewModel::toggleCommentExpanded,
                     )

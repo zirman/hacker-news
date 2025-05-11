@@ -9,7 +9,7 @@ data class Item(
     val type: ItemType? = null,
     val time: Long? = null,
     val deleted: Boolean? = null,
-    val by: String? = null,
+    val by: Username? = null,
     val descendants: Int? = null,
     val score: Int? = null,
     val title: String? = null,
