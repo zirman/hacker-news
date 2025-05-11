@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        windowSetup()
+        windowSetup(savedInstanceState)
         super.onCreate(savedInstanceState)
         setContent {
             App(onClickUrl = ::onClickUrl)
@@ -87,7 +87,7 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
         )
     }
 
-    private fun windowSetup() {
+    private fun windowSetup(savedInstanceState: Bundle?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             installSplashScreen().apply {
                 setKeepOnScreenCondition {
@@ -98,7 +98,7 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                     // Work around for showing a blank screen bug when resuming activity
                     // Animation cannot be done a second time because accessing the icon gets
                     // an NPE
-                    if (startedAnimation) {
+                    if (savedInstanceState != null || startedAnimation) {
                         splashScreenView.remove()
                         setSystemBarsAppearance(repository.preferences.value.lightDarkMode)
                         return@setOnExitAnimationListener
