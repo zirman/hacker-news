@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import com.monoid.hackernews.common.data.Url
+import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.Username
 
@@ -21,7 +22,7 @@ fun ItemsColumn(
     itemsList: List<Item>?,
     onVisibleItem: (Item) -> Unit,
     onClickItem: (Item) -> Unit,
-    onClickReply: (Item) -> Unit,
+    onClickReply: (ItemId) -> Unit,
     onClickUser: (Username) -> Unit,
     onClickUrl: (Url) -> Unit,
     onClickUpvote: (Item) -> Unit,

@@ -12,6 +12,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.monoid.hackernews.common.data.Url
+import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.Username
 
@@ -19,7 +20,7 @@ import com.monoid.hackernews.common.data.model.Username
 @Composable
 fun StoriesListPane(
     onClickItem: (Item) -> Unit,
-    onClickReply: (Item) -> Unit,
+    onClickReply: (ItemId) -> Unit,
     onClickUser: (Username) -> Unit,
     onClickUrl: (Url) -> Unit,
     onClickLogin: () -> Unit,

@@ -12,6 +12,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.monoid.hackernews.common.data.Url
+import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.domain.navigation.BottomNav
 import org.jetbrains.compose.resources.stringResource
@@ -21,6 +22,7 @@ actual fun HomeScaffold(
     onClickLogin: () -> Unit,
     onClickLogout: () -> Unit,
     onClickUser: (Username) -> Unit,
+    onClickReply: (ItemId) -> Unit,
     onClickUrl: (Url) -> Unit,
     modifier: Modifier,
 ) {
@@ -57,6 +59,7 @@ actual fun HomeScaffold(
                 onClickLogin = onClickLogin,
                 onClickLogout = onClickLogout,
                 onClickUser = onClickUser,
+                onClickReply = onClickReply,
                 onClickUrl = onClickUrl,
             )
         },

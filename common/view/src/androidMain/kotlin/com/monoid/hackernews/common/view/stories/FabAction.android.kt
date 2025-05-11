@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.data.Url
+import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.view.Res
@@ -46,7 +47,7 @@ enum class FabAction(
             fabAction: FabAction,
             onClickLogin: () -> Unit,
             onClickItem: (Item) -> Unit,
-            onClickReply: (Item) -> Unit,
+            onClickReply: (ItemId) -> Unit,
             onClickUser: (Username) -> Unit,
             onClickUrl: (Url) -> Unit,
             contentPadding: PaddingValues,
@@ -108,7 +109,7 @@ enum class FabAction(
             fabAction: FabAction,
             onClickLogin: () -> Unit,
             onClickItem: (Item) -> Unit,
-            onClickReply: (Item) -> Unit,
+            onClickReply: (ItemId) -> Unit,
             onClickUser: (Username) -> Unit,
             onClickUrl: (Url) -> Unit,
             contentPadding: PaddingValues,
@@ -170,7 +171,7 @@ enum class FabAction(
             fabAction: FabAction,
             onClickLogin: () -> Unit,
             onClickItem: (Item) -> Unit,
-            onClickReply: (Item) -> Unit,
+            onClickReply: (ItemId) -> Unit,
             onClickUser: (Username) -> Unit,
             onClickUrl: (Url) -> Unit,
             contentPadding: PaddingValues,
@@ -232,7 +233,7 @@ enum class FabAction(
             fabAction: FabAction,
             onClickLogin: () -> Unit,
             onClickItem: (Item) -> Unit,
-            onClickReply: (Item) -> Unit,
+            onClickReply: (ItemId) -> Unit,
             onClickUser: (Username) -> Unit,
             onClickUrl: (Url) -> Unit,
             contentPadding: PaddingValues,
@@ -294,7 +295,7 @@ enum class FabAction(
             fabAction: FabAction,
             onClickLogin: () -> Unit,
             onClickItem: (Item) -> Unit,
-            onClickReply: (Item) -> Unit,
+            onClickReply: (ItemId) -> Unit,
             onClickUser: (Username) -> Unit,
             onClickUrl: (Url) -> Unit,
             contentPadding: PaddingValues,
@@ -356,7 +357,7 @@ enum class FabAction(
             fabAction: FabAction,
             onClickLogin: () -> Unit,
             onClickItem: (Item) -> Unit,
-            onClickReply: (Item) -> Unit,
+            onClickReply: (ItemId) -> Unit,
             onClickUser: (Username) -> Unit,
             onClickUrl: (Url) -> Unit,
             contentPadding: PaddingValues,
@@ -419,7 +420,7 @@ enum class FabAction(
         fabAction: FabAction,
         onClickLogin: () -> Unit,
         onClickItem: (Item) -> Unit,
-        onClickReply: (Item) -> Unit,
+        onClickReply: (ItemId) -> Unit,
         onClickUser: (Username) -> Unit,
         onClickUrl: (Url) -> Unit,
         contentPadding: PaddingValues,

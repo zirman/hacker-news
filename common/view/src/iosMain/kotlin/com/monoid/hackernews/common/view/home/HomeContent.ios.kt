@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.data.Url
+import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.domain.navigation.BottomNav
 import com.monoid.hackernews.common.view.itemlist.ItemsColumn
@@ -21,6 +22,7 @@ actual fun HomeContent(
     onClickLogin: () -> Unit,
     onClickLogout: () -> Unit,
     onClickUser: (Username) -> Unit,
+    onClickReply: (ItemId) -> Unit,
     onClickUrl: (Url) -> Unit,
     modifier: Modifier,
 ) {

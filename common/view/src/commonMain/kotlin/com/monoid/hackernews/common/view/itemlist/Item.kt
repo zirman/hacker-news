@@ -48,6 +48,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.monoid.hackernews.common.data.Url
+import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.ItemType
 import com.monoid.hackernews.common.data.model.Username
@@ -72,7 +73,7 @@ import org.jetbrains.compose.resources.stringResource
 fun Item(
     item: Item,
     onClickItem: (Item) -> Unit,
-    onClickReply: (Item) -> Unit,
+    onClickReply: (ItemId) -> Unit,
     onClickUser: (Username) -> Unit,
     onClickUrl: (Url) -> Unit,
     onClickUpvote: (Item) -> Unit,
@@ -278,7 +279,7 @@ fun Item(
                             tooltip = { Surface { Text(stringResource(Res.string.comment)) } },
                             state = rememberTooltipState(),
                         ) {
-                            IconButton(onClick = { onClickReply(item) }) {
+                            IconButton(onClick = { onClickReply(item.id) }) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.TwoTone.Comment,
                                     contentDescription = null,

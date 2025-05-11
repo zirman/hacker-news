@@ -20,6 +20,7 @@ fun StoriesScaffold(
     navigator: ThreePaneScaffoldNavigator<Any>,
     onClickLogin: () -> Unit,
     onClickUser: (Username) -> Unit,
+    onClickReply: (ItemId) -> Unit,
     onClickUrl: (Url) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -37,7 +38,7 @@ fun StoriesScaffold(
                             )
                         }
                     },
-                    onClickReply = {},
+                    onClickReply = onClickReply,
                     onClickUser = onClickUser,
                     onClickUrl = onClickUrl,
                     onClickLogin = onClickLogin,
@@ -52,7 +53,7 @@ fun StoriesScaffold(
                     itemId = itemId,
                     onClickUrl = onClickUrl,
                     onClickUser = onClickUser,
-                    onClickReply = {},
+                    onClickReply = onClickReply,
                     onClickLogin = onClickLogin,
                 )
             },
