@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.monoid.hackernews.common.data.Url
@@ -41,7 +42,7 @@ fun MainNavHost(
                 onClickUrl = onClickUrl,
             )
         }
-        composable<Route.User>(typeMap = mapOf(typeOf<Username>() to NavType.UsernameNavType)) { navBackStackEntry ->
+        dialog<Route.User>(typeMap = mapOf(typeOf<Username>() to NavType.UsernameNavType)) { navBackStackEntry ->
             Scaffold { padding ->
                 Text(
                     navBackStackEntry.toRoute<Route.User>().username.string,
@@ -49,7 +50,7 @@ fun MainNavHost(
                 )
             }
         }
-        composable<Route.Reply>(typeMap = mapOf(typeOf<ItemId>() to NavType.ItemIdNavType)) { navBackStackEntry ->
+        dialog<Route.Reply>(typeMap = mapOf(typeOf<ItemId>() to NavType.ItemIdNavType)) { navBackStackEntry ->
             Scaffold { padding ->
                 Text(
                     navBackStackEntry.toRoute<Route.Reply>().itemId.long.toString(),

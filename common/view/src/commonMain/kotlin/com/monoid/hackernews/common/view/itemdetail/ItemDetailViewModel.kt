@@ -1,6 +1,5 @@
 package com.monoid.hackernews.common.view.itemdetail
 
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -83,19 +82,19 @@ class ItemDetailViewModel(
             ),
         ),
     )
-
     private val _events: Channel<Event> = Channel()
     val events: ReceiveChannel<Event> = _events
-
-    val lazyListState = LazyListState()
-
     private val updateItemJob = WeakHashMap<ItemId, Job>()
 
-    fun updateItem(itemId: ItemId): Job {
-        return updateItemJob[itemId]?.takeIf { it.isActive }
-            ?: viewModelScope.launch(coroutineExceptionHandler) { storiesRepository.updateItem(itemId) }
-                .also { updateItemJob[itemId] = it }
-    }
+    fun updateItem(itemId: ItemId): Job = updateItemJob[itemId]
+        ?.takeIf { it.isActive }
+        ?: viewModelScope
+            .launch(coroutineExceptionHandler) {
+                storiesRepository.updateItem(
+                    itemId
+                )
+            }
+            .also { updateItemJob[itemId] = it }
 
     fun toggleCommentExpanded(itemId: ItemId): Job =
         viewModelScope.launch(coroutineExceptionHandler) {
