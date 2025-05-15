@@ -19,8 +19,6 @@ fun timeBy(
     by: Username?,
     onClick: (Username) -> Unit,
 ): AnnotatedString {
-//    LocalTextStyle.current.
-//    LocalTextStyle.current
     return buildAnnotatedString {
         val dateTimePeriod = time
             ?.let { Instant.fromEpochSeconds(it) }
@@ -35,6 +33,32 @@ fun timeBy(
             append(by.string)
         }
         pop()
+        // TODO: locale
+        append(
+            when {
+                dateTimePeriod == null -> ""
+                dateTimePeriod.years > 0 -> " - ${dateTimePeriod.years} years ago"
+                dateTimePeriod.months > 0 -> " - ${dateTimePeriod.months} months ago"
+                dateTimePeriod.days > 0 -> " - ${dateTimePeriod.days} days ago"
+                dateTimePeriod.hours > 0 -> " - ${dateTimePeriod.hours} hours ago"
+                else -> " - ${dateTimePeriod.minutes} minutes ago"
+            },
+        )
+    }
+}
+
+@Composable
+fun timeBy2(
+    time: Long?,
+    by: Username?,
+): AnnotatedString {
+    return buildAnnotatedString {
+        val dateTimePeriod = time
+            ?.let { Instant.fromEpochSeconds(it) }
+            ?.periodUntil(Clock.System.now(), TimeZone.UTC)
+        if (by?.string != null) {
+            append(by.string)
+        }
         // TODO: locale
         append(
             when {

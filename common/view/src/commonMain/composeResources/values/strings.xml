@@ -28,6 +28,7 @@
     <string name="un_flag">UnFlag</string>
     <string name="favorites">Favorites</string>
     <string name="reply">Reply</string>
+    <string name="reply_colon">Reply:</string>
     <string name="new">New</string>
     <string name="hot">Hot</string>
     <string name="show">Show</string>

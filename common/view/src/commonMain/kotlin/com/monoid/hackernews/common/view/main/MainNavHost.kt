@@ -1,7 +1,9 @@
 package com.monoid.hackernews.common.view.main
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,6 +19,7 @@ import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.domain.navigation.ItemIdNavType
 import com.monoid.hackernews.common.domain.navigation.Route
 import com.monoid.hackernews.common.domain.navigation.UsernameNavType
+import com.monoid.hackernews.common.view.comment.CommentDialog
 import com.monoid.hackernews.common.view.home.HomeScaffold
 import kotlin.reflect.typeOf
 
@@ -42,21 +45,21 @@ fun MainNavHost(
                 onClickUrl = onClickUrl,
             )
         }
-        dialog<Route.User>(typeMap = mapOf(typeOf<Username>() to NavType.UsernameNavType)) { navBackStackEntry ->
-            Scaffold { padding ->
-                Text(
-                    navBackStackEntry.toRoute<Route.User>().username.string,
-                    modifier = Modifier.padding(padding),
-                )
-            }
+        dialog<Route.User>(
+            typeMap = mapOf(typeOf<Username>() to NavType.UsernameNavType),
+        ) { navBackStackEntry ->
+            Text(
+                navBackStackEntry.toRoute<Route.User>().username.string,
+            )
         }
-        dialog<Route.Reply>(typeMap = mapOf(typeOf<ItemId>() to NavType.ItemIdNavType)) { navBackStackEntry ->
-            Scaffold { padding ->
-                Text(
-                    navBackStackEntry.toRoute<Route.Reply>().itemId.long.toString(),
-                    modifier = Modifier.padding(padding),
-                )
-            }
+        dialog<Route.Reply>(
+            typeMap = mapOf(typeOf<ItemId>() to NavType.ItemIdNavType),
+        ) { navBackStackEntry ->
+            CommentDialog(
+                navBackStackEntry.toRoute<Route.Reply>().parentId,
+                onDismiss = navController::navigateUp,
+                modifier = Modifier.padding(WindowInsets.safeDrawing.asPaddingValues()),
+            )
         }
     }
 }

@@ -41,7 +41,7 @@ object Route {
 
     @Serializable
     @SerialName("Reply")
-    data class Reply(val itemId: ItemId)
+    data class Reply(val parentId: ItemId)
 }
 
 val jsonDecoder: Json = Json { ignoreUnknownKeys = true }

@@ -6,6 +6,7 @@ import com.monoid.hackernews.common.data.room.HNDatabase
 import com.monoid.hackernews.common.data.room.ItemDao
 import com.monoid.hackernews.common.data.room.JobStoryDao
 import com.monoid.hackernews.common.data.room.NewStoryDao
+import com.monoid.hackernews.common.data.room.CommentDao
 import com.monoid.hackernews.common.data.room.ShowStoryDao
 import com.monoid.hackernews.common.data.room.TrendingStoryDao
 import com.monoid.hackernews.common.data.room.UserDao
@@ -38,4 +39,7 @@ class DatabaseDaoModule {
 
     @Single
     fun userDao(hnDatabase: HNDatabase): UserDao = hnDatabase.userDao()
+
+    @Single
+    fun commentDao(hnDatabase: HNDatabase): CommentDao = hnDatabase.commentDao()
 }

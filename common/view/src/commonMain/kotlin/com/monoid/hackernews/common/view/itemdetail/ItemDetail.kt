@@ -93,7 +93,6 @@ fun ItemDetail(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-
                 Text(
                     text = if (item?.type == ItemType.Comment) {
                         item.text ?: AnnotatedString("")

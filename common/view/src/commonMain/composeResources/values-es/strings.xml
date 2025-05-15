@@ -28,6 +28,7 @@
     <string name="un_flag">Desmarcar</string>
     <string name="favorites">Favorites</string>
     <string name="reply">Respuesta</string>
+    <string name="reply_colon">Respuesta:</string>
     <string name="new">Nueva</string>
     <string name="hot">Cálido</string>
     <string name="show">Mostrar</string>

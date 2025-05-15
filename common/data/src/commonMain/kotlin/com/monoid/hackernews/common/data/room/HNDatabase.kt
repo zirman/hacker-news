@@ -17,6 +17,7 @@ import com.monoid.hackernews.common.data.model.ItemType
         JobStoryDb::class,
         ItemDb::class,
         UserDb::class,
+        CommentDb::class,
     ],
     version = 3,
     exportSchema = false,
@@ -36,6 +37,7 @@ abstract class HNDatabase : RoomDatabase() {
     abstract fun jobStoryDao(): JobStoryDao
     abstract fun itemDao(): ItemDao
     abstract fun userDao(): UserDao
+    abstract fun commentDao(): CommentDao
 }
 
 @Suppress("NO_ACTUAL_FOR_EXPECT")

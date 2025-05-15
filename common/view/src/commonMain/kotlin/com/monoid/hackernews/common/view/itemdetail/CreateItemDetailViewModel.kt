@@ -7,5 +7,5 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun createItemDetailViewModel(itemId: ItemId): ItemDetailViewModel = koinViewModel(
     key = itemId.toString(),
-    extras = itemId.toExtras(),
+    extras = itemId.toItemDetailViewModelExtras(),
 )
