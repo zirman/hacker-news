@@ -1,10 +1,14 @@
 package com.monoid.hackernews.common.view.comment
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -22,6 +26,7 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.view.Res
@@ -40,25 +45,28 @@ fun CommentDialog(
     windowSizeClass: WindowSizeClass = calculateWindowSizeClass(),
 ) {
     val compact = windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
-    Box(modifier = modifier) {
-        val (item, loading, text) = viewModel.uiState.collectAsStateWithLifecycle().value
-        Card(modifier = Modifier.fillMaxSize()) {
-            if (compact.not()) {
-                if (item != null) {
-                    ReplyItem(
-                        item = item,
-                        modifier = Modifier
-                            .verticalScroll(rememberScrollState())
-                            .weight(1f),
-                    )
-                }
+    val (item, loading, text) = viewModel.uiState.collectAsStateWithLifecycle().value
+    Card(modifier = modifier.fillMaxSize()) {
+        if (compact.not()) {
+            if (item != null) {
+                ReplyItem(
+                    item = item,
+                    modifier = Modifier
+                        .verticalScroll(rememberScrollState())
+                        .weight(1f),
+                )
             }
-            TextField(
-                text,
-                onValueChange = viewModel::updateComment,
-                label = { Text(stringResource(Res.string.reply)) },
-                trailingIcon = if (compact) {
-                    {
+        }
+        TextField(
+            text,
+            enabled = loading.not(),
+            onValueChange = viewModel::updateComment,
+            label = { Text(stringResource(Res.string.reply)) },
+            trailingIcon = if (compact) {
+                {
+                    if (loading) {
+                        CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                    } else {
                         IconButton(onClick = viewModel::sendComment) {
                             Icon(
                                 Icons.AutoMirrored.TwoTone.Send,
@@ -66,29 +74,31 @@ fun CommentDialog(
                             )
                         }
                     }
-                } else {
-                    null
-                },
-                modifier = Modifier
-                    .weight(2f)
-                    .fillMaxWidth(),
-            )
-            if (compact.not()) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    TextButton(onClick = onDismiss) {
-                        Text(stringResource(Res.string.cancel))
-                    }
-                    TextButton(onClick = viewModel::sendComment) {
-                        Text(stringResource(Res.string.send))
+                }
+            } else {
+                null
+            },
+            modifier = Modifier
+                .weight(2f)
+                .fillMaxWidth(),
+        )
+        if (compact.not()) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                TextButton(onClick = onDismiss, enabled = loading.not()) {
+                    Text(stringResource(Res.string.cancel))
+                }
+                TextButton(onClick = viewModel::sendComment, enabled = loading.not()) {
+                    Text(stringResource(Res.string.send))
+                    AnimatedVisibility(loading) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.padding(start = 16.dp).size(24.dp),
+                        )
                     }
                 }
             }
-        }
-        if (loading) {
-            CircularProgressIndicator()
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.monoid.hackernews.common.view.login
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -127,9 +128,11 @@ fun LoginDialogContent(
                         acceptTermsState,
                 ) {
                     Text(text = stringResource(Res.string.submit))
-                    if (loading) CircularProgressIndicator(
-                        modifier = Modifier.padding(start = 16.dp).size(24.dp),
-                    )
+                    AnimatedVisibility(loading) {
+                        CircularProgressIndicator (
+                            modifier = Modifier.padding(start = 16.dp).size(24.dp),
+                        )
+                    }
                 }
             }
         }
