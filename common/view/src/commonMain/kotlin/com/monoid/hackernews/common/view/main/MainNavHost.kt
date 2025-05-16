@@ -21,6 +21,7 @@ import com.monoid.hackernews.common.domain.navigation.Route
 import com.monoid.hackernews.common.domain.navigation.UsernameNavType
 import com.monoid.hackernews.common.view.comment.CommentDialog
 import com.monoid.hackernews.common.view.home.HomeScaffold
+import org.koin.compose.viewmodel.koinViewModel
 import kotlin.reflect.typeOf
 
 @Composable
@@ -37,20 +38,25 @@ fun MainNavHost(
         modifier = modifier,
     ) {
         composable<Route.Home> {
+            val viewModel: HomeViewModel = koinViewModel()
             HomeScaffold(
                 onClickLogin = onClickLogin,
                 onClickLogout = onClickLogout,
                 onClickUser = { navController.navigate(Route.User(it)) },
-                onClickReply = { navController.navigate(Route.Reply(it)) },
+                onClickReply = {
+                    if (viewModel.isLoggedIn) {
+                        navController.navigate(Route.Reply(it))
+                    } else {
+                        onClickLogin()
+                    }
+                },
                 onClickUrl = onClickUrl,
             )
         }
         dialog<Route.User>(
             typeMap = mapOf(typeOf<Username>() to NavType.UsernameNavType),
         ) { navBackStackEntry ->
-            Text(
-                navBackStackEntry.toRoute<Route.User>().username.string,
-            )
+            Text(navBackStackEntry.toRoute<Route.User>().username.string)
         }
         dialog<Route.Reply>(
             typeMap = mapOf(typeOf<ItemId>() to NavType.ItemIdNavType),
