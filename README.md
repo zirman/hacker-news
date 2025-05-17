@@ -11,10 +11,10 @@ Build for Wear OS
 `gradle :wear-app:assembleDebug`
 
 TODO:
- + Database upgrade
- + Opening hacker news links in app
- + Open specific user's stores
  + View my favorites
+ + Open specific user's stores
+ + Opening hacker news links in app
+ + Transition animations
  + Add comment quote button to reply
  + Post stories
  + Offline mode
