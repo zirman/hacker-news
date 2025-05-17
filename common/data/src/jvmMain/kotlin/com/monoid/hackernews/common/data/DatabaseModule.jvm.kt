@@ -25,6 +25,7 @@ class DatabaseModule {
                     DATABASE_FILE_NAME,
                 ).absolutePath,
             )
+            .fallbackToDestructiveMigration(true)
             .setDriver(BundledSQLiteDriver())
             .setQueryCoroutineContext(coroutineDispatcher)
             .build()

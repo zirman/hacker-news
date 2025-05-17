@@ -25,6 +25,7 @@ class DatabaseModule {
                 name = context.getDatabasePath(DATABASE_FILE_NAME).absolutePath,
                 // factory = { HNDatabase::class.instantiateImpl() },
             )
+            .fallbackToDestructiveMigration(true)
             .setDriver(BundledSQLiteDriver())
             .setQueryCoroutineContext(coroutineDispatcher)
             .build()

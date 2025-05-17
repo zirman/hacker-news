@@ -20,7 +20,7 @@ import com.monoid.hackernews.common.data.model.ItemType
         CommentDb::class,
     ],
     version = 3,
-    exportSchema = false,
+    exportSchema = true,
 //    autoMigrations = [
 //        AutoMigration(from = 1, to = 2),
 //        AutoMigration(from = 2, to = 3),
