@@ -11,18 +11,22 @@ Build for Wear OS
 `gradle :wear-app:assembleDebug`
 
 TODO:
- + Post story
+ + Database upgrade
+ + Opening hacker news links in app
+ + Open specific user's stores
+ + View my favorites
+ + Add comment quote button to reply
+ + Post stories
  + Offline mode
  + hide loader on error
  + Add copy text to item context menu
  + WorkManager get update follow notifications
- + Customize colors
+ + Customize theme colors
  + Glance Widget
  + Follow item with local notifications on updates
  + Chat bubbles
  + Show your reply immediately when replying
  + Highlight new items/Update items when back new or back online/Jump to unread items
- + Post story
  + Synchronize expanded items between devices
  + Google Play Review API
  + Register account
@@ -34,7 +38,7 @@ TODO:
  + Read comments using voice synthesis
  + Customize font from google font lib
  + Search
- + Swipe
+ + Swipe Left/Right
  + Favorites paging
  + Fix arrows keys leaving text field when replying to thread
  + Replying queues when offline
