@@ -39,14 +39,14 @@ kotlin {
             kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
         }
         androidMain.dependencies {
-            api(project.dependencies.platform(libs.kotilnCoroutinesBom))
+            api(project.dependencies.platform(libs.kotlinCoroutinesBom))
             api(compose.uiTooling)
             api(compose.preview)
             api(compose.components.uiToolingPreview)
             api(libs.bundles.androidMain)
         }
         jvmMain.dependencies {
-            api(project.dependencies.platform(libs.kotilnCoroutinesBom))
+            api(project.dependencies.platform(libs.kotlinCoroutinesBom))
             api(compose.desktop.common)
             api(compose.desktop.currentOs)
             @OptIn(ExperimentalComposeLibrary::class)

@@ -81,7 +81,7 @@ plugin-detektGradle = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gr
 plugin-roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi-gradle-plugin", version.ref = "roborazzi" }
 
 # dependencies
-kotilnCoroutinesBom = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-bom", version.ref = "kotlinCoroutines" }
+kotlinCoroutinesBom = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-bom", version.ref = "kotlinCoroutines" }
 #kotlinStdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 kotlinCoroutinesAndroid = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android" }
 kotlinCoroutinesSwing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing" }
