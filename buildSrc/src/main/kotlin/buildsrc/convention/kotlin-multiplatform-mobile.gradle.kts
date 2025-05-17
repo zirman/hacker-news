@@ -24,7 +24,10 @@ val libs = the<LibrariesForLibs>()
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":common:core"))
+            implementation(project(":common:core")) {
+                // work around duplicate Koin JVM dependencies
+                exclude("io.insert-koin", "koin-core-annotations-jvm")
+            }
         }
         commonMain {
             kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")

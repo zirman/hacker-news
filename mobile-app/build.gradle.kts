@@ -4,7 +4,10 @@ plugins {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":common:view"))
+            implementation(project(":common:view")) {
+                // work around duplicate Koin JVM dependencies
+                exclude("io.insert-koin", "koin-core-annotations-jvm")
+            }
         }
     }
 }
