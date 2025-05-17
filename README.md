@@ -11,8 +11,7 @@ Build for Wear OS
 `gradle :wear-app:assembleDebug`
 
 TODO:
- + Reply to comment/story
- + Open link to detail pane
+ + Post story
  + Offline mode
  + hide loader on error
  + Add copy text to item context menu
