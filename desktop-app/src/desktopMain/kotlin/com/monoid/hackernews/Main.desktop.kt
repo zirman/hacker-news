@@ -54,7 +54,6 @@ import com.monoid.hackernews.common.view.theme.AppTheme
 import org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi
 import org.jetbrains.compose.splitpane.HorizontalSplitPane
 import org.jetbrains.compose.splitpane.rememberSplitPaneState
-import org.koin.compose.KoinContext
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.context.startKoin
 import org.koin.ksp.generated.module
@@ -67,81 +66,79 @@ fun main() {
     }
     application {
         Window(onCloseRequest = ::exitApplication) {
-            KoinContext {
-                AppTheme {
-                    var showLoginDialog by rememberSaveable {
-                        mutableStateOf(false)
-                    }
-                    if (showLoginDialog) {
-                        LoginDialog(onDismissRequest = { showLoginDialog = false })
-                    }
-                    Scaffold(
-                        bottomBar = {
-                            BottomAppBar(
-                                actions = {
-                                    IconButton(onClick = { /* do something */ }) {
-                                        Icon(
-                                            Icons.Filled.Check,
-                                            contentDescription = "Localized description"
-                                        )
-                                    }
-                                    IconButton(onClick = { /* do something */ }) {
-                                        Icon(
-                                            Icons.Filled.Edit,
-                                            contentDescription = "Localized description",
-                                        )
-                                    }
-                                    IconButton(onClick = { /* do something */ }) {
-                                        Icon(
-                                            Icons.Filled.Mic,
-                                            contentDescription = "Localized description",
-                                        )
-                                    }
-                                    IconButton(onClick = { /* do something */ }) {
-                                        Icon(
-                                            Icons.Filled.Image,
-                                            contentDescription = "Localized description",
-                                        )
+            AppTheme {
+                var showLoginDialog by rememberSaveable {
+                    mutableStateOf(false)
+                }
+                if (showLoginDialog) {
+                    LoginDialog(onDismissRequest = { showLoginDialog = false })
+                }
+                Scaffold(
+                    bottomBar = {
+                        BottomAppBar(
+                            actions = {
+                                IconButton(onClick = { /* do something */ }) {
+                                    Icon(
+                                        Icons.Filled.Check,
+                                        contentDescription = "Localized description"
+                                    )
+                                }
+                                IconButton(onClick = { /* do something */ }) {
+                                    Icon(
+                                        Icons.Filled.Edit,
+                                        contentDescription = "Localized description",
+                                    )
+                                }
+                                IconButton(onClick = { /* do something */ }) {
+                                    Icon(
+                                        Icons.Filled.Mic,
+                                        contentDescription = "Localized description",
+                                    )
+                                }
+                                IconButton(onClick = { /* do something */ }) {
+                                    Icon(
+                                        Icons.Filled.Image,
+                                        contentDescription = "Localized description",
+                                    )
+                                }
+                            },
+                            floatingActionButton = {
+                                FloatingActionButton(
+                                    onClick = { /* do something */ },
+                                    containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
+                                    elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
+                                ) {
+                                    Icon(Icons.Filled.Add, "Localized description")
+                                }
+                            }
+                        )
+                    },
+                ) { innerPadding ->
+                    val navController = rememberNavController()
+                    NavHost(
+                        navController = navController,
+                        startDestination = Route.Home,
+                        modifier = Modifier.padding(innerPadding),
+                    ) {
+                        composable<Route.Home> {
+                            HNPanes(
+                                onClickLogin = {
+                                    showLoginDialog = true
+                                },
+                                onClickUrl = { url ->
+                                    try {
+                                        (if (Desktop.isDesktopSupported()) Desktop.getDesktop() else null)
+                                            ?.takeIf { it.isSupported(Desktop.Action.BROWSE) }
+                                            ?.run {
+                                                browse(url.toUri().uri)
+                                                true
+                                            }
+                                            ?: false
+                                    } catch (throwable: Throwable) {
+                                        // TODO
                                     }
                                 },
-                                floatingActionButton = {
-                                    FloatingActionButton(
-                                        onClick = { /* do something */ },
-                                        containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
-                                        elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
-                                    ) {
-                                        Icon(Icons.Filled.Add, "Localized description")
-                                    }
-                                }
                             )
-                        },
-                    ) { innerPadding ->
-                        val navController = rememberNavController()
-                        NavHost(
-                            navController = navController,
-                            startDestination = Route.Home,
-                            modifier = Modifier.padding(innerPadding),
-                        ) {
-                            composable<Route.Home> {
-                                HNPanes(
-                                    onClickLogin = {
-                                        showLoginDialog = true
-                                    },
-                                    onClickUrl = { url ->
-                                        try {
-                                            (if (Desktop.isDesktopSupported()) Desktop.getDesktop() else null)
-                                                ?.takeIf { it.isSupported(Desktop.Action.BROWSE) }
-                                                ?.run {
-                                                    browse(url.toUri().uri)
-                                                    true
-                                                }
-                                                ?: false
-                                        } catch (throwable: Throwable) {
-                                            // TODO
-                                        }
-                                    },
-                                )
-                            }
                         }
                     }
                 }
