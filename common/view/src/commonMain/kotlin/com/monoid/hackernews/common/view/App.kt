@@ -12,43 +12,40 @@ import com.monoid.hackernews.common.view.login.LoginDialog
 import com.monoid.hackernews.common.view.logout.LogoutDialog
 import com.monoid.hackernews.common.view.main.MainNavHost
 import com.monoid.hackernews.common.view.theme.AppTheme
-import org.koin.compose.KoinContext
 
 @Composable
 fun App(onClickUrl: (Url) -> Unit) {
-    KoinContext {
-        AppTheme {
-            Scrim {
-                Box(contentAlignment = Alignment.Center) {
-                    var showLoginDialog by rememberSaveable {
-                        mutableStateOf(false)
-                    }
-                    var showLogoutDialog by rememberSaveable {
-                        mutableStateOf(false)
-                    }
-                    MainNavHost(
-                        onClickLogin = {
-                            showLoginDialog = true
+    AppTheme {
+        Scrim {
+            Box(contentAlignment = Alignment.Center) {
+                var showLoginDialog by rememberSaveable {
+                    mutableStateOf(false)
+                }
+                var showLogoutDialog by rememberSaveable {
+                    mutableStateOf(false)
+                }
+                MainNavHost(
+                    onClickLogin = {
+                        showLoginDialog = true
+                    },
+                    onClickLogout = {
+                        showLogoutDialog = true
+                    },
+                    onClickUrl = onClickUrl,
+                )
+                if (showLoginDialog) {
+                    LoginDialog(
+                        onDismissRequest = {
+                            showLoginDialog = false
                         },
-                        onClickLogout = {
-                            showLogoutDialog = true
-                        },
-                        onClickUrl = onClickUrl,
                     )
-                    if (showLoginDialog) {
-                        LoginDialog(
-                            onDismissRequest = {
-                                showLoginDialog = false
-                            },
-                        )
-                    }
-                    if(showLogoutDialog) {
-                        LogoutDialog(
-                            onDismissRequest = {
-                                showLogoutDialog = false
-                            },
-                        )
-                    }
+                }
+                if(showLogoutDialog) {
+                    LogoutDialog(
+                        onDismissRequest = {
+                            showLogoutDialog = false
+                        },
+                    )
                 }
             }
         }
