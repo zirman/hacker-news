@@ -83,6 +83,8 @@ enum class FabAction(
             Box {
                 ItemsColumn(
                     itemsList = uiState.itemsList,
+                    isRefreshing = uiState.isRefreshing,
+                    onRefresh = viewModel::refreshItems,
                     onVisibleItem = viewModel::updateItem,
                     onClickItem = onClickItem,
                     onClickReply = onClickReply,
@@ -97,7 +99,7 @@ enum class FabAction(
                 ) {
                     content(Pair(this@Box, it))
                 }
-                if (uiState.loading) {
+                if (uiState.loading && uiState.isRefreshing.not()) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
             }
@@ -145,7 +147,8 @@ enum class FabAction(
             Box {
                 ItemsColumn(
                     itemsList = uiState.itemsList,
-                    onVisibleItem = viewModel::updateItem,
+                    isRefreshing = uiState.isRefreshing,
+                    onRefresh = viewModel::refreshItems,                    onVisibleItem = viewModel::updateItem,
                     onClickItem = onClickItem,
                     onClickReply = onClickReply,
                     onClickUser = onClickUser,
@@ -159,7 +162,7 @@ enum class FabAction(
                 ) {
                     content(Pair(this@Box, it))
                 }
-                if (uiState.loading) {
+                if (uiState.loading && uiState.isRefreshing.not()) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
             }
@@ -207,7 +210,8 @@ enum class FabAction(
             Box {
                 ItemsColumn(
                     itemsList = uiState.itemsList,
-                    onVisibleItem = viewModel::updateItem,
+                    isRefreshing = uiState.isRefreshing,
+                    onRefresh = viewModel::refreshItems,                    onVisibleItem = viewModel::updateItem,
                     onClickItem = onClickItem,
                     onClickReply = onClickReply,
                     onClickUser = onClickUser,
@@ -221,7 +225,7 @@ enum class FabAction(
                 ) {
                     content(Pair(this@Box, it))
                 }
-                if (uiState.loading) {
+                if (uiState.loading && uiState.isRefreshing.not()) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
             }
@@ -269,7 +273,8 @@ enum class FabAction(
             Box {
                 ItemsColumn(
                     itemsList = uiState.itemsList,
-                    onVisibleItem = viewModel::updateItem,
+                    isRefreshing = uiState.isRefreshing,
+                    onRefresh = viewModel::refreshItems,                    onVisibleItem = viewModel::updateItem,
                     onClickItem = onClickItem,
                     onClickReply = onClickReply,
                     onClickUser = onClickUser,
@@ -283,7 +288,7 @@ enum class FabAction(
                 ) {
                     content(Pair(this@Box, it))
                 }
-                if (uiState.loading) {
+                if (uiState.loading && uiState.isRefreshing.not()) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
             }
@@ -331,7 +336,8 @@ enum class FabAction(
             Box {
                 ItemsColumn(
                     itemsList = uiState.itemsList,
-                    onVisibleItem = viewModel::updateItem,
+                    isRefreshing = uiState.isRefreshing,
+                    onRefresh = viewModel::refreshItems,                    onVisibleItem = viewModel::updateItem,
                     onClickItem = onClickItem,
                     onClickReply = onClickReply,
                     onClickUser = onClickUser,
@@ -345,7 +351,7 @@ enum class FabAction(
                 ) {
                     content(Pair(this@Box, it))
                 }
-                if (uiState.loading) {
+                if (uiState.loading && uiState.isRefreshing.not()) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
             }
@@ -393,7 +399,8 @@ enum class FabAction(
             Box {
                 ItemsColumn(
                     itemsList = uiState.itemsList,
-                    onVisibleItem = viewModel::updateItem,
+                    isRefreshing = uiState.isRefreshing,
+                    onRefresh = viewModel::refreshItems,                    onVisibleItem = viewModel::updateItem,
                     onClickItem = onClickItem,
                     onClickReply = onClickReply,
                     onClickUser = onClickUser,
@@ -407,7 +414,7 @@ enum class FabAction(
                 ) {
                     content(Pair(this@Box, it))
                 }
-                if (uiState.loading) {
+                if (uiState.loading && uiState.isRefreshing.not()) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
             }

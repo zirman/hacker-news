@@ -58,6 +58,8 @@ internal fun ItemsColumnPreview() {
                     followed = false,
                 ),
             ),
+            isRefreshing = false,
+            onRefresh = {},
             onVisibleItem = {},
             onClickItem = {},
             onClickReply = {},

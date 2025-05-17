@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.monoid.hackernews.common.view.itemlist
 
 import androidx.compose.foundation.layout.Box
@@ -8,6 +10,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
@@ -20,6 +24,8 @@ import com.monoid.hackernews.common.data.model.Username
 @Composable
 fun ItemsColumn(
     itemsList: List<Item>?,
+    isRefreshing: Boolean,
+    onRefresh: () -> Unit,
     onVisibleItem: (Item) -> Unit,
     onClickItem: (Item) -> Unit,
     onClickReply: (ItemId) -> Unit,
@@ -34,28 +40,33 @@ fun ItemsColumn(
     listState: LazyListState = rememberLazyListState(),
     content: @Composable BoxScope.(scrolled: Boolean) -> Unit,
 ) {
-    Box {
-        LazyColumn(
-            modifier = modifier.fillMaxSize(),
-            state = listState,
-            contentPadding = contentPadding,
+    Box(modifier = modifier) {
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = onRefresh,
         ) {
-            items(itemsList.orEmpty(), { it.id.long }) { item ->
-                LifecycleEventEffect(event = Lifecycle.Event.ON_START) {
-                    onVisibleItem(item)
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                state = listState,
+                contentPadding = contentPadding,
+            ) {
+                items(itemsList.orEmpty(), { it.id.long }) { item ->
+                    LifecycleEventEffect(event = Lifecycle.Event.ON_START) {
+                        onVisibleItem(item)
+                    }
+                    Item(
+                        item = item,
+                        onClickItem = onClickItem,
+                        onClickReply = onClickReply,
+                        onClickUser = onClickUser,
+                        onClickUrl = onClickUrl,
+                        onClickUpvote = onClickUpvote,
+                        onClickFavorite = onClickFavorite,
+                        onClickFollow = onClickFollow,
+                        onClickFlag = onClickFlag,
+                        modifier = Modifier.animateItem(),
+                    )
                 }
-                Item(
-                    item = item,
-                    onClickItem = onClickItem,
-                    onClickReply = onClickReply,
-                    onClickUser = onClickUser,
-                    onClickUrl = onClickUrl,
-                    onClickUpvote = onClickUpvote,
-                    onClickFavorite = onClickFavorite,
-                    onClickFollow = onClickFollow,
-                    onClickFlag = onClickFlag,
-                    modifier = Modifier.animateItem(),
-                )
             }
         }
         content(listState.hasScrolled())

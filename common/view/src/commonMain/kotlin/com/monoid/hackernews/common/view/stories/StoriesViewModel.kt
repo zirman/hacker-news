@@ -41,6 +41,7 @@ class StoriesViewModel(
 ) : ViewModel() {
     data class UiState(
         val loading: Boolean = false,
+        val isRefreshing: Boolean = false,
         val itemsList: List<Item>? = null,
     )
 
@@ -113,6 +114,22 @@ class StoriesViewModel(
             .also {
                 updateItemJob[item.id] = it
             }
+    }
+
+    private var refreshItemsJob: Job? = null
+
+    fun refreshItems(): Job {
+        refreshItemsJob?.takeIf { it.isActive }?.run { return this }
+        return viewModelScope
+            .launch {
+                try {
+                    _uiState.update { it.copy(isRefreshing = true) }
+                    updateItems().join()
+                } finally {
+                    _uiState.update { it.copy(isRefreshing = false) }
+                }
+            }
+            .also { refreshItemsJob = it }
     }
 
     fun toggleUpvote(item: Item): Job = viewModelScope.launch(coroutineExceptionHandler) {

@@ -45,8 +45,8 @@ import androidx.navigation.compose.rememberNavController
 import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.domain.navigation.Route
+import com.monoid.hackernews.common.view.home.ItemsColumn
 import com.monoid.hackernews.common.view.itemdetail.ItemDetailPane
-import com.monoid.hackernews.common.view.itemlist.ItemsColumn
 import com.monoid.hackernews.common.view.login.LoginDialog
 import com.monoid.hackernews.common.view.stories.StoriesViewModel
 import com.monoid.hackernews.common.view.stories.StoryOrdering
