@@ -106,7 +106,7 @@ fun LightDarkMode.toNameId(): StringResource = when (this) {
 }
 
 @Composable
-fun rememberShapes(shape: Shape, shapes: Shapes = MaterialTheme.shapes): Shapes = when (shape) {
+fun appShapes(shape: Shape, shapes: Shapes = MaterialTheme.shapes): Shapes = when (shape) {
     Shape.Rounded -> shapes
     Shape.Cut -> shapes.copy(
         extraSmall = CutCornerShape(

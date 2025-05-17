@@ -1,30 +1,37 @@
 package com.monoid.hackernews.common.view.theme
 
 import android.content.res.Configuration
+import android.os.Build
 import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration
-import com.monoid.hackernews.common.data.model.Colors
-import com.monoid.hackernews.common.data.model.LightDarkMode
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
-actual fun rememberColorScheme(
-    lightDarkMode: LightDarkMode,
-    colors: Colors, // TODO
-): ColorScheme {
+actual fun appColorScheme(): ColorScheme {
     val configuration: Configuration = LocalConfiguration.current
-    return when (lightDarkMode) {
-        LightDarkMode.System -> {
-            if (configuration.uiMode.and(Configuration.UI_MODE_NIGHT_MASK) ==
-                Configuration.UI_MODE_NIGHT_YES
-            ) {
-                DarkThemeColors
+    val context = LocalContext.current
+    val useDarkTheme = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        configuration.isNightModeActive
+    } else {
+        configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK ==
+            Configuration.UI_MODE_NIGHT_YES
+    }
+    return when {
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+            if (useDarkTheme) {
+                dynamicDarkColorScheme(context)
             } else {
-                LightThemeColors
+                dynamicLightColorScheme(context)
             }
         }
-
-        LightDarkMode.Light -> LightThemeColors
-        LightDarkMode.Dark -> DarkThemeColors
+        useDarkTheme -> {
+            DarkThemeColors
+        }
+        else -> {
+            LightThemeColors
+        }
     }
 }

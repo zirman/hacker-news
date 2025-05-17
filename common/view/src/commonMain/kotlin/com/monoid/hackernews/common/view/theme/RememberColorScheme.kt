@@ -6,16 +6,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.monoid.hackernews.common.data.model.Colors
-import com.monoid.hackernews.common.data.model.LightDarkMode
 import com.monoid.hackernews.common.view.settings.AppearanceViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-expect fun rememberColorScheme(
-    lightDarkMode: LightDarkMode,
-    colors: Colors, // TODO
-): ColorScheme
+expect fun appColorScheme(): ColorScheme
 
 @Composable
 fun AppTheme(
@@ -24,13 +19,13 @@ fun AppTheme(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     MaterialTheme(
-        colorScheme = rememberColorScheme(uiState.lightDarkMode, uiState.colors),
-        typography = rememberAppTypography(
+        colorScheme = appColorScheme(),
+        typography = appTypography(
             fontFamily = uiState.font.toFontFamily(),
             fontSizeDelta = uiState.fontSize,
             lineHeightDelta = uiState.lineHeight,
         ),
-        shapes = rememberShapes(uiState.shape),
+        shapes = appShapes(uiState.shape),
         content = {
             CompositionLocalProvider(
                 LocalCommentIndentation provides uiState.paragraphIndent.em,

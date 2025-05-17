@@ -11,7 +11,7 @@ import com.monoid.hackernews.common.data.model.FontSize
 import com.monoid.hackernews.common.data.model.LineHeight
 
 @Composable
-fun rememberAppTypography(
+fun appTypography(
     fontFamily: FontFamily,
     fontSizeDelta: FontSize,
     lineHeightDelta: LineHeight,
