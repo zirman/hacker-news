@@ -1,17 +1,17 @@
 [versions]
+buildToolsVersion = "36.0.0"
 jvmToolchain = "21"
 jvmTarget = "21"
 minSdk = "26"
 targetSdk = "35"
 compileSdk = "35"
 compileSdkPreview = "Baklava"
-buildToolsVersion = "36.0.0"
 android = "8.10.0"
 #lint = "31.4.0"
 desugarJdkLibs = "2.1.5"
 kotlin = "2.1.21-RC2" # https://github.com/jetbrains/kotlin/releases
 ksp = "2.1.21-RC2-2.0.1" # https://github.com/google/ksp/releases
-kotlinPoet = "2.1.0" # https://github.com/square/kotlinpoet/releases
+kotlinPoet = "2.2.0" # https://github.com/square/kotlinpoet/releases
 kotlinWrappersBom = "2025.5.8" # https://github.com/JetBrains/kotlin-wrappers/releases
 jetbrainsCompose = "1.8.0" # https://github.com/JetBrains/compose-multiplatform/releases
 kotlinCoroutines = "1.10.1"
