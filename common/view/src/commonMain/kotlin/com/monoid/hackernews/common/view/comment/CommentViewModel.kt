@@ -18,6 +18,10 @@ import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.StoriesRepository
 import com.monoid.hackernews.common.data.room.CommentDb
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -33,6 +37,14 @@ class CommentViewModel(
     storiesRepository: StoriesRepository,
 ) : ViewModel() {
     private val parentId = ItemId(checkNotNull(savedStateHandle[PARENT_ID]))
+
+    sealed interface Event {
+        data object CloseComment : Event
+        data object Error : Event
+    }
+
+    private val _events: Channel<Event> = Channel()
+    val events: ReceiveChannel<Event> = _events
 
     data class UiState(
         val parentComment: Item?,
@@ -67,6 +79,11 @@ class CommentViewModel(
             try {
                 _uiState.update { it.copy(loading = true) }
                 commentRepository.sendComment(parentId = parentId)
+                _events.send(Event.CloseComment)
+            } catch (throwable: Throwable) {
+                currentCoroutineContext().ensureActive()
+                _events.send(Event.Error)
+                throw throwable
             } finally {
                 _uiState.update { it.copy(loading = false) }
             }

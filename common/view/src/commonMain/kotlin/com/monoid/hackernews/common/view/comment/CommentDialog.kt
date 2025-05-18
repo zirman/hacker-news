@@ -1,9 +1,7 @@
 package com.monoid.hackernews.common.view.comment
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +15,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -25,9 +24,17 @@ import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.cancel
@@ -45,7 +52,24 @@ fun CommentDialog(
     windowSizeClass: WindowSizeClass = calculateWindowSizeClass(),
 ) {
     val compact = windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
+    var erred by rememberSaveable { mutableStateOf(true) }
     val (item, loading, text) = viewModel.uiState.collectAsStateWithLifecycle().value
+    val lifecycleOwner = LocalLifecycleOwner.current
+    LaunchedEffect(Unit) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            for (event in viewModel.events) {
+                when (event) {
+                    CommentViewModel.Event.CloseComment -> {
+                        onDismiss()
+                    }
+
+                    CommentViewModel.Event.Error -> {
+                        erred = true
+                    }
+                }
+            }
+        }
+    }
     Card(modifier = modifier.fillMaxSize()) {
         if (compact.not()) {
             if (item != null) {
@@ -60,6 +84,7 @@ fun CommentDialog(
         TextField(
             text,
             enabled = loading.not(),
+            isError = erred,
             onValueChange = viewModel::updateComment,
             label = { Text(stringResource(Res.string.reply)) },
             trailingIcon = if (compact) {
@@ -67,7 +92,12 @@ fun CommentDialog(
                     if (loading) {
                         CircularProgressIndicator(modifier = Modifier.size(24.dp))
                     } else {
-                        IconButton(onClick = viewModel::sendComment) {
+                        IconButton(
+                            onClick = {
+                                erred = false
+                                viewModel.sendComment()
+                            },
+                        ) {
                             Icon(
                                 Icons.AutoMirrored.TwoTone.Send,
                                 contentDescription = stringResource(Res.string.send)
@@ -82,6 +112,16 @@ fun CommentDialog(
                 .weight(2f)
                 .fillMaxWidth(),
         )
+        AnimatedVisibility(erred) {
+            Text(
+                "An error occurred",
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.labelLarge,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp),
+            )
+        }
         if (compact.not()) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
