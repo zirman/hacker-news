@@ -78,7 +78,6 @@ fun FavoriteStoriesListPane(
             contentPadding = contentPadding,
             modifier = modifier,
         ) {
-            //content(Pair(this@Box, it))
         }
         if (uiState.loading && uiState.isRefreshing.not()) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))

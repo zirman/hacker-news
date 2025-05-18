@@ -42,7 +42,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -142,54 +141,43 @@ class StoriesRepository(
             initialValue = null,
         )
 
+    // TODO: refactor to database
+    private val favoriteStoryIds: MutableStateFlow<List<ItemId>> = MutableStateFlow(listOf())
+
     val trendingStories = combine(_cache, trendingStoryIds, ::Pair).toStories()
     val newStories = combine(_cache, newStoryIds, ::Pair).toStories()
     val hotStories = combine(_cache, hotStoryIds, ::Pair).toStories()
     val showStories = combine(_cache, showStoryIds, ::Pair).toStories()
     val askStories = combine(_cache, askStoryIds, ::Pair).toStories()
     val jobStories: StateFlow<List<Item>?> = combine(_cache, jobStoryIds, ::Pair).toStories()
+    val favoriteStories: StateFlow<List<Item>?> = combine(_cache, favoriteStoryIds, ::Pair).toStories()
 
-    fun favoriteStories(username: Username) = combine(
-        _cache,
-        flow {
-            val html = remoteDataSource.getFavorites(username)
-            val itemIds = withContext(Dispatchers.Default) {
-                buildList {
-                    val ksoupHtmlParser = KsoupHtmlParser(
-                        KsoupHtmlHandler
-                            .Builder()
-                            .onOpenTag { name, attributes, isImplied ->
-                                if (
-                                    attributes["class"].equals(
-                                        "athing submission",
-                                        ignoreCase = true,
-                                    )
-                                ) {
-                                    attributes["id"]?.toLongOrNull()?.run {
-                                        add(ItemId(this))
-                                    }
+    suspend fun updateFavoriteStories(username: Username) {
+        val html = remoteDataSource.getFavorites(username)
+        favoriteStoryIds.value = withContext(Dispatchers.Default) {
+            buildList {
+                val ksoupHtmlParser = KsoupHtmlParser(
+                    KsoupHtmlHandler
+                        .Builder()
+                        .onOpenTag { name, attributes, isImplied ->
+                            if (
+                                attributes["class"].equals(
+                                    "athing submission",
+                                    ignoreCase = true,
+                                )
+                            ) {
+                                attributes["id"]?.toLongOrNull()?.run {
+                                    add(ItemId(this))
                                 }
                             }
-                            .build(),
-                    )
-                    ksoupHtmlParser.write(html)
-                    ksoupHtmlParser.end()
-                }
-            }
-            emit(itemIds)
-        },
-        ::Pair,
-    )
-        .map { (cache, itemIds) ->
-            itemIds.map { id ->
-                cache[id] ?: Item(id = id)
+                        }
+                        .build(),
+                )
+                ksoupHtmlParser.write(html)
+                ksoupHtmlParser.end()
             }
         }
-        .stateIn(
-            scope = scope,
-            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
-            initialValue = null,
-        )
+    }
 
     private fun Flow<Pair<PersistentMap<ItemId, Item>, List<ItemId>?>>.toStories(
     ): StateFlow<List<Item>?> = map { (cache, itemIds) ->

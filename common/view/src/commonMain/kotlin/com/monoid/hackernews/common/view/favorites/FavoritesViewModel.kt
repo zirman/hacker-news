@@ -68,14 +68,14 @@ class FavoritesViewModel(
     private val username = Username(checkNotNull(handle[USERNAME]))
 
     init {
+        updateItems()
         viewModelScope.launch {
-            storiesRepository.favoriteStories(username).collect {
+            storiesRepository.favoriteStories.collect {
                 _uiState.update { uiState ->
                     uiState.copy(itemsList = it)
                 }
             }
         }
-//        updateItems()
     }
 
     private var updateItemsJob: Job? = null
@@ -85,7 +85,7 @@ class FavoritesViewModel(
         .launch(coroutineExceptionHandler) {
             try {
                 _uiState.update { it.copy(loading = true) }
-//                storyOrdering.update(storiesRepository)
+                storiesRepository.updateFavoriteStories(username)
             } catch (throwable: Throwable) {
                 currentCoroutineContext().ensureActive()
                 _events.send(Event.Error(throwable.message))
