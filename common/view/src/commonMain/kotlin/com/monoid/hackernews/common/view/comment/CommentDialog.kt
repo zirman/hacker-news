@@ -52,7 +52,7 @@ fun CommentDialog(
     windowSizeClass: WindowSizeClass = calculateWindowSizeClass(),
 ) {
     val compact = windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
-    var erred by rememberSaveable { mutableStateOf(true) }
+    var erred by rememberSaveable { mutableStateOf(false) }
     val (item, loading, text) = viewModel.uiState.collectAsStateWithLifecycle().value
     val lifecycleOwner = LocalLifecycleOwner.current
     LaunchedEffect(Unit) {
