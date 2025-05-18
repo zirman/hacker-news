@@ -18,7 +18,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
@@ -61,21 +64,24 @@ enum class FabAction(
             )
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             val context = LocalContext.current
+            val lifecycleOwner = LocalLifecycleOwner.current
             LaunchedEffect(Unit) {
-                for (event in viewModel.events) {
-                    when (event) {
-                        is StoriesViewModel.Event.Error -> {
-                            Toast
-                                .makeText(
-                                    context,
-                                    "An error occurred: ${event.message}",
-                                    Toast.LENGTH_SHORT,
-                                )
-                                .show()
-                        }
+                lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    for (event in viewModel.events) {
+                        when (event) {
+                            is StoriesViewModel.Event.Error -> {
+                                Toast
+                                    .makeText(
+                                        context,
+                                        "An error occurred: ${event.message}",
+                                        Toast.LENGTH_SHORT,
+                                    )
+                                    .show()
+                            }
 
-                        is StoriesViewModel.Event.NavigateLogin -> {
-                            onClickLogin()
+                            is StoriesViewModel.Event.NavigateLogin -> {
+                                onClickLogin()
+                            }
                         }
                     }
                 }
@@ -125,21 +131,24 @@ enum class FabAction(
             )
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             val context = LocalContext.current
+            val lifecycleOwner = LocalLifecycleOwner.current
             LaunchedEffect(Unit) {
-                for (event in viewModel.events) {
-                    when (event) {
-                        is StoriesViewModel.Event.Error -> {
-                            Toast
-                                .makeText(
-                                    context,
-                                    "An error occurred: ${event.message}",
-                                    Toast.LENGTH_SHORT,
-                                )
-                                .show()
-                        }
+                lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    for (event in viewModel.events) {
+                        when (event) {
+                            is StoriesViewModel.Event.Error -> {
+                                Toast
+                                    .makeText(
+                                        context,
+                                        "An error occurred: ${event.message}",
+                                        Toast.LENGTH_SHORT,
+                                    )
+                                    .show()
+                            }
 
-                        is StoriesViewModel.Event.NavigateLogin -> {
-                            onClickLogin()
+                            is StoriesViewModel.Event.NavigateLogin -> {
+                                onClickLogin()
+                            }
                         }
                     }
                 }
@@ -148,7 +157,7 @@ enum class FabAction(
                 ItemsColumn(
                     itemsList = uiState.itemsList,
                     isRefreshing = uiState.isRefreshing,
-                    onRefresh = viewModel::refreshItems,                    onVisibleItem = viewModel::updateItem,
+                    onRefresh = viewModel::refreshItems, onVisibleItem = viewModel::updateItem,
                     onClickItem = onClickItem,
                     onClickReply = onClickReply,
                     onClickUser = onClickUser,
@@ -188,21 +197,24 @@ enum class FabAction(
             )
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             val context = LocalContext.current
+            val lifecycleOwner = LocalLifecycleOwner.current
             LaunchedEffect(Unit) {
-                for (event in viewModel.events) {
-                    when (event) {
-                        is StoriesViewModel.Event.Error -> {
-                            Toast
-                                .makeText(
-                                    context,
-                                    "An error occurred: ${event.message}",
-                                    Toast.LENGTH_SHORT,
-                                )
-                                .show()
-                        }
+                lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    for (event in viewModel.events) {
+                        when (event) {
+                            is StoriesViewModel.Event.Error -> {
+                                Toast
+                                    .makeText(
+                                        context,
+                                        "An error occurred: ${event.message}",
+                                        Toast.LENGTH_SHORT,
+                                    )
+                                    .show()
+                            }
 
-                        is StoriesViewModel.Event.NavigateLogin -> {
-                            onClickLogin()
+                            is StoriesViewModel.Event.NavigateLogin -> {
+                                onClickLogin()
+                            }
                         }
                     }
                 }
@@ -211,7 +223,7 @@ enum class FabAction(
                 ItemsColumn(
                     itemsList = uiState.itemsList,
                     isRefreshing = uiState.isRefreshing,
-                    onRefresh = viewModel::refreshItems,                    onVisibleItem = viewModel::updateItem,
+                    onRefresh = viewModel::refreshItems, onVisibleItem = viewModel::updateItem,
                     onClickItem = onClickItem,
                     onClickReply = onClickReply,
                     onClickUser = onClickUser,
@@ -251,21 +263,24 @@ enum class FabAction(
             )
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             val context = LocalContext.current
+            val lifecycleOwner = LocalLifecycleOwner.current
             LaunchedEffect(Unit) {
-                for (event in viewModel.events) {
-                    when (event) {
-                        is StoriesViewModel.Event.Error -> {
-                            Toast
-                                .makeText(
-                                    context,
-                                    "An error occurred: ${event.message}",
-                                    Toast.LENGTH_SHORT,
-                                )
-                                .show()
-                        }
+                lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    for (event in viewModel.events) {
+                        when (event) {
+                            is StoriesViewModel.Event.Error -> {
+                                Toast
+                                    .makeText(
+                                        context,
+                                        "An error occurred: ${event.message}",
+                                        Toast.LENGTH_SHORT,
+                                    )
+                                    .show()
+                            }
 
-                        is StoriesViewModel.Event.NavigateLogin -> {
-                            onClickLogin()
+                            is StoriesViewModel.Event.NavigateLogin -> {
+                                onClickLogin()
+                            }
                         }
                     }
                 }
@@ -274,7 +289,7 @@ enum class FabAction(
                 ItemsColumn(
                     itemsList = uiState.itemsList,
                     isRefreshing = uiState.isRefreshing,
-                    onRefresh = viewModel::refreshItems,                    onVisibleItem = viewModel::updateItem,
+                    onRefresh = viewModel::refreshItems, onVisibleItem = viewModel::updateItem,
                     onClickItem = onClickItem,
                     onClickReply = onClickReply,
                     onClickUser = onClickUser,
@@ -314,21 +329,24 @@ enum class FabAction(
             )
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             val context = LocalContext.current
+            val lifecycleOwner = LocalLifecycleOwner.current
             LaunchedEffect(Unit) {
-                for (event in viewModel.events) {
-                    when (event) {
-                        is StoriesViewModel.Event.Error -> {
-                            Toast
-                                .makeText(
-                                    context,
-                                    "An error occurred: ${event.message}",
-                                    Toast.LENGTH_SHORT,
-                                )
-                                .show()
-                        }
+                lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    for (event in viewModel.events) {
+                        when (event) {
+                            is StoriesViewModel.Event.Error -> {
+                                Toast
+                                    .makeText(
+                                        context,
+                                        "An error occurred: ${event.message}",
+                                        Toast.LENGTH_SHORT,
+                                    )
+                                    .show()
+                            }
 
-                        is StoriesViewModel.Event.NavigateLogin -> {
-                            onClickLogin()
+                            is StoriesViewModel.Event.NavigateLogin -> {
+                                onClickLogin()
+                            }
                         }
                     }
                 }
@@ -337,7 +355,7 @@ enum class FabAction(
                 ItemsColumn(
                     itemsList = uiState.itemsList,
                     isRefreshing = uiState.isRefreshing,
-                    onRefresh = viewModel::refreshItems,                    onVisibleItem = viewModel::updateItem,
+                    onRefresh = viewModel::refreshItems, onVisibleItem = viewModel::updateItem,
                     onClickItem = onClickItem,
                     onClickReply = onClickReply,
                     onClickUser = onClickUser,
@@ -377,21 +395,24 @@ enum class FabAction(
             )
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             val context = LocalContext.current
+            val lifecycleOwner = LocalLifecycleOwner.current
             LaunchedEffect(Unit) {
-                for (event in viewModel.events) {
-                    when (event) {
-                        is StoriesViewModel.Event.Error -> {
-                            Toast
-                                .makeText(
-                                    context,
-                                    "An error occurred: ${event.message}",
-                                    Toast.LENGTH_SHORT,
-                                )
-                                .show()
-                        }
+                lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    for (event in viewModel.events) {
+                        when (event) {
+                            is StoriesViewModel.Event.Error -> {
+                                Toast
+                                    .makeText(
+                                        context,
+                                        "An error occurred: ${event.message}",
+                                        Toast.LENGTH_SHORT,
+                                    )
+                                    .show()
+                            }
 
-                        is StoriesViewModel.Event.NavigateLogin -> {
-                            onClickLogin()
+                            is StoriesViewModel.Event.NavigateLogin -> {
+                                onClickLogin()
+                            }
                         }
                     }
                 }
@@ -400,7 +421,7 @@ enum class FabAction(
                 ItemsColumn(
                     itemsList = uiState.itemsList,
                     isRefreshing = uiState.isRefreshing,
-                    onRefresh = viewModel::refreshItems,                    onVisibleItem = viewModel::updateItem,
+                    onRefresh = viewModel::refreshItems, onVisibleItem = viewModel::updateItem,
                     onClickItem = onClickItem,
                     onClickReply = onClickReply,
                     onClickUser = onClickUser,

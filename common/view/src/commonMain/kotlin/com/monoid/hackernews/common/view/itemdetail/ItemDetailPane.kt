@@ -46,14 +46,16 @@ fun ItemDetailPane(
         }
     }
     LaunchedEffect(Unit) {
-        for (event in viewModel.events) {
-            when (event) {
-                is ItemDetailViewModel.Event.Error -> {
-                    // TODO
-                }
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            for (event in viewModel.events) {
+                when (event) {
+                    is ItemDetailViewModel.Event.Error -> {
+                        // TODO
+                    }
 
-                is ItemDetailViewModel.Event.NavigateLogin -> {
-                    onClickLogin()
+                    is ItemDetailViewModel.Event.NavigateLogin -> {
+                        onClickLogin()
+                    }
                 }
             }
         }

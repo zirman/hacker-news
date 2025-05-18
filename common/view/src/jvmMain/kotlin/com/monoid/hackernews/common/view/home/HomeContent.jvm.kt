@@ -17,7 +17,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
@@ -40,15 +42,18 @@ actual fun HomeContent(
     val viewModel: StoriesViewModel = koinViewModel(
         extras = StoriesViewModel.extras(StoryOrdering.Trending),
     )
+    val lifecycleOwner = LocalLifecycleOwner.current
     LaunchedEffect(Unit) {
-        for (event in viewModel.events) {
-            when (event) {
-                is StoriesViewModel.Event.Error -> {
-                    // TODO
-                }
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            for (event in viewModel.events) {
+                when (event) {
+                    is StoriesViewModel.Event.Error -> {
+                        // TODO
+                    }
 
-                is StoriesViewModel.Event.NavigateLogin -> {
-                    onClickLogin()
+                    is StoriesViewModel.Event.NavigateLogin -> {
+                        onClickLogin()
+                    }
                 }
             }
         }
