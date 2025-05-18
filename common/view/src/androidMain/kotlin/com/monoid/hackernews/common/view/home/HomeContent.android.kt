@@ -44,6 +44,8 @@ actual fun HomeContent(
                 FavoritesScaffold(
                     navigator = favoritesNavigator,
                     onClickLogin = onClickLogin,
+                    onClickUser = onClickUser,
+                    onClickReply = onClickReply,
                     onClickUrl = onClickUrl,
                 )
             }

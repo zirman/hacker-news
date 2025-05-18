@@ -62,6 +62,7 @@ junitJupiter = "5.12.1"
 assertjCore = "3.27.3"
 slf4jSimple = "2.0.17"
 detekt = "1.23.8"
+ksoup = "0.5.0"
 #coil = "2.6.0"
 
 [libraries]
@@ -183,6 +184,8 @@ composeNavigationWear = { group = "androidx.wear.compose", name = "compose-navig
 
 accompanistAdaptive = { group = "com.google.accompanist", name = "accompanist-adaptive", version.ref = "accompanist" }
 
+ksoup = { group = "com.mohamedrejeb.ksoup", name = "ksoup-html", version.ref = "ksoup" }
+
 playServicesWearable = { group = "com.google.android.gms", name = "play-services-wearable", version.ref = "playServicesWearable" }
 
 slf4jSimple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4jSimple" }
@@ -251,6 +254,7 @@ commonMain = [
     "material3WindowSizeClassMultiplatform",
     "slf4jSimple",
     "kermit",
+    "ksoup",
 ]
 androidMain = [
     "roomKtx",

@@ -1,11 +1,14 @@
 package com.monoid.hackernews.common.data.model
 
+import com.mohamedrejeb.ksoup.html.parser.KsoupHtmlHandler
+import com.mohamedrejeb.ksoup.html.parser.KsoupHtmlParser
 import com.monoid.hackernews.common.core.LoggerAdapter
 import com.monoid.hackernews.common.core.coroutines.doOnErrorThenThrow
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.api.favoriteRequest
 import com.monoid.hackernews.common.data.api.flagRequest
 import com.monoid.hackernews.common.data.api.getAskStories
+import com.monoid.hackernews.common.data.api.getFavorites
 import com.monoid.hackernews.common.data.api.getHotStories
 import com.monoid.hackernews.common.data.api.getItem
 import com.monoid.hackernews.common.data.api.getJobStories
@@ -31,6 +34,7 @@ import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,9 +42,11 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import org.koin.core.annotation.Single
@@ -118,7 +124,8 @@ class StoriesRepository(
         .getAskStories()
         .map { items ->
             items.sortedBy { it.order }.map { item -> ItemId(item.itemId) }
-        }.stateIn(
+        }
+        .stateIn(
             scope = scope,
             started = SharingStarted.Lazily,
             initialValue = null,
@@ -128,7 +135,8 @@ class StoriesRepository(
         .getJobStories()
         .map { items ->
             items.sortedBy { it.order }.map { item -> ItemId(item.itemId) }
-        }.stateIn(
+        }
+        .stateIn(
             scope = scope,
             started = SharingStarted.Lazily,
             initialValue = null,
@@ -139,7 +147,49 @@ class StoriesRepository(
     val hotStories = combine(_cache, hotStoryIds, ::Pair).toStories()
     val showStories = combine(_cache, showStoryIds, ::Pair).toStories()
     val askStories = combine(_cache, askStoryIds, ::Pair).toStories()
-    val jobStories = combine(_cache, jobStoryIds, ::Pair).toStories()
+    val jobStories: StateFlow<List<Item>?> = combine(_cache, jobStoryIds, ::Pair).toStories()
+
+    fun favoriteStories(username: Username) = combine(
+        _cache,
+        flow {
+            val html = remoteDataSource.getFavorites(username)
+            val itemIds = withContext(Dispatchers.Default) {
+                buildList {
+                    val ksoupHtmlParser = KsoupHtmlParser(
+                        KsoupHtmlHandler
+                            .Builder()
+                            .onOpenTag { name, attributes, isImplied ->
+                                if (
+                                    attributes["class"].equals(
+                                        "athing submission",
+                                        ignoreCase = true,
+                                    )
+                                ) {
+                                    attributes["id"]?.toLongOrNull()?.run {
+                                        add(ItemId(this))
+                                    }
+                                }
+                            }
+                            .build(),
+                    )
+                    ksoupHtmlParser.write(html)
+                    ksoupHtmlParser.end()
+                }
+            }
+            emit(itemIds)
+        },
+        ::Pair,
+    )
+        .map { (cache, itemIds) ->
+            itemIds.map { id ->
+                cache[id] ?: Item(id = id)
+            }
+        }
+        .stateIn(
+            scope = scope,
+            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
+            initialValue = null,
+        )
 
     private fun Flow<Pair<PersistentMap<ItemId, Item>, List<ItemId>?>>.toStories(
     ): StateFlow<List<Item>?> = map { (cache, itemIds) ->
@@ -359,11 +409,11 @@ class StoriesRepository(
         }
     }
 
-    fun clearCache() {
-        _cache.update {
-            it.clear()
-        }
-    }
+//    fun clearCache() {
+//        _cache.update {
+//            it.clear()
+//        }
+//    }
 }
 
 private const val TAG = "StoriesRepository"

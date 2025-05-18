@@ -18,8 +18,9 @@ import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
 
 actual suspend fun HttpClient.yCombRequest(
-    settings: Settings?,
     path: String,
+    settings: Settings?,
+    httpStatusCode: HttpStatusCode,
     parametersBuilder: ParametersBuilder.() -> Unit,
 ): HttpResponse {
     val httpResponse: HttpResponse = submitForm(
@@ -34,7 +35,7 @@ actual suspend fun HttpClient.yCombRequest(
         },
     ) { expectSuccess = false }
 
-    if (httpResponse.status != HttpStatusCode.Found) {
+    if (httpResponse.status != httpStatusCode) {
         val contentType: ContentType? =
             httpResponse.contentType()
 
