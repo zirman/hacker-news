@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import org.koin.core.annotation.Single
 
-@Single
+@Single(createdAtStart = true)
 class LoginRepository(
     private val logger: LoggerAdapter,
     private val remoteDataSource: HttpClient,
@@ -32,7 +32,7 @@ class LoginRepository(
         .map { it.settings ?: Settings() }
         .stateIn(
             scope = scope,
-            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
+            started = SharingStarted.Eagerly,
             initialValue = Settings(),
         )
 

@@ -36,7 +36,7 @@ fun FavoritesScaffold(
         NavigableListDetailPaneScaffold(
             navigator = navigator,
             listPane = {
-                if (uiState.username != null) {
+                if (uiState.username.string.isNotBlank()) {
                     val scope = rememberCoroutineScope()
                     FavoriteStoriesListPane(
                         username = uiState.username,
