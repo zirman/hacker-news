@@ -49,7 +49,7 @@ import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.ItemType
 import com.monoid.hackernews.common.data.model.Username
-import com.monoid.hackernews.common.domain.util.timeBy
+import com.monoid.hackernews.common.domain.util.timeBy2
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.TooltipPopupPositionProvider
 import com.monoid.hackernews.common.view.comment
@@ -234,10 +234,10 @@ fun ItemDetail(
                 )
             }
             Text(
-                text = timeBy(
+                text = timeBy2(
                     time = item?.time,
                     by = item?.by,
-                    onClick = onClickUser,
+//                    onClick = onClickUser,
                 ),
 //                onClick = { offset ->
 //                    val username = timeUserAnnotatedString.value

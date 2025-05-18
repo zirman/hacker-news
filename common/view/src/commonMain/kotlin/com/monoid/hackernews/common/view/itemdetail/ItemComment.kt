@@ -46,7 +46,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Username
-import com.monoid.hackernews.common.domain.util.timeBy
+import com.monoid.hackernews.common.domain.util.timeBy2
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.deleted
 import com.monoid.hackernews.common.view.flag
@@ -94,10 +94,10 @@ fun ItemComment(
         Surface(tonalElevation = (threadItem.descendants * 4).dp) {
             Column {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    val timeByUserAnnotatedString = timeBy(
+                    val timeByUserAnnotatedString = timeBy2(
                         time = item.time,
                         by = item.by,
-                        onClick = onClickUser,
+//                        onClick = onClickUser,
                     )
                     ClickableTextBlock(
                         text = timeByUserAnnotatedString,
