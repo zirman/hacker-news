@@ -37,6 +37,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.view.Res
+import com.monoid.hackernews.common.view.an_error_occurred
 import com.monoid.hackernews.common.view.cancel
 import com.monoid.hackernews.common.view.reply
 import com.monoid.hackernews.common.view.send
@@ -114,7 +115,7 @@ fun CommentDialog(
         )
         AnimatedVisibility(erred) {
             Text(
-                "An error occurred",
+                stringResource(Res.string.an_error_occurred),
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.labelLarge,
                 modifier = Modifier
