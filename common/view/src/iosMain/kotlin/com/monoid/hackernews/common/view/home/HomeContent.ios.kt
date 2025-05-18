@@ -32,6 +32,8 @@ actual fun HomeContent(
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
     ItemsColumn(
         itemsList = uiState.itemsList,
+        isRefreshing = false,
+        onRefresh = {},
         onVisibleItem = viewModel::updateItem,
         onClickItem = {},
         onClickReply = {},
