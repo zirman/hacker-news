@@ -11,6 +11,9 @@ Build for Wear OS
 `gradle :wear-app:assembleDebug`
 
 TODO:
+ + Saved State, View Model, Lifecycle, Paging* KMP libraries
+ + Modifier.onVisibilityChanged()
+ + Modifier.contentType(Username)
  + View my favorites
  + Open specific user's stores
  + Opening hacker news links in app
