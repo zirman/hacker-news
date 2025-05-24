@@ -30,7 +30,7 @@ android {
     }
     defaultConfig {
         applicationId = appId
-        versionCode = 45
+        versionCode = 46
         versionName = "2.0.0"
         // reduces apk sizes by not including unsupported languages
         androidResources {
