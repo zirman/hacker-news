@@ -79,5 +79,7 @@
 -dontwarn java.net.http.WebSocket
 -dontwarn java.net.http.WebSocketHandshakeException
 
-# prevent androidx.lifecycle.** obfuscation
+# prevent some name obfuscation to prevent runtime errors
 -keepnames class androidx.lifecycle.** { *; }
+-keepnames class com.mohamedrejeb.ksoup.html.parser.** { *; }
+#-keeppackagenames
