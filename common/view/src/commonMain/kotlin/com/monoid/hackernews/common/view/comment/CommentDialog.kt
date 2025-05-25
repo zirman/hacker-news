@@ -12,7 +12,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.twotone.Send
 import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -39,6 +38,7 @@ import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.an_error_occurred
 import com.monoid.hackernews.common.view.cancel
+import com.monoid.hackernews.common.view.platform.PlatformLoadingIndicator
 import com.monoid.hackernews.common.view.reply
 import com.monoid.hackernews.common.view.send
 import org.jetbrains.compose.resources.stringResource
@@ -91,7 +91,7 @@ fun CommentDialog(
             trailingIcon = if (compact) {
                 {
                     if (loading) {
-                        CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                        PlatformLoadingIndicator(modifier = Modifier.size(24.dp))
                     } else {
                         IconButton(
                             onClick = {
@@ -134,7 +134,7 @@ fun CommentDialog(
                 TextButton(onClick = viewModel::sendComment, enabled = loading.not()) {
                     Text(stringResource(Res.string.send))
                     AnimatedVisibility(loading) {
-                        CircularProgressIndicator(
+                        PlatformLoadingIndicator(
                             modifier = Modifier.padding(start = 16.dp).size(24.dp),
                         )
                     }

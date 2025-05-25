@@ -3,7 +3,6 @@ package com.monoid.hackernews.common.view.favorites
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -18,6 +17,7 @@ import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.view.itemlist.ItemsColumn
+import com.monoid.hackernews.common.view.platform.PlatformLoadingIndicator
 import org.koin.compose.viewmodel.koinViewModel
 
 @Suppress("ComposeUnstableReceiver")
@@ -80,7 +80,7 @@ fun FavoriteStoriesListPane(
         ) {
         }
         if (uiState.loading && uiState.isRefreshing.not()) {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            PlatformLoadingIndicator(modifier = Modifier.align(Alignment.Center))
         }
     }
 }

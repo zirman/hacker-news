@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -35,6 +34,7 @@ import com.monoid.hackernews.common.view.hacker_news_login
 import com.monoid.hackernews.common.view.html.rememberAnnotatedHtmlString
 import com.monoid.hackernews.common.view.i_agree_html
 import com.monoid.hackernews.common.view.itemdetail.htmlTextStyle
+import com.monoid.hackernews.common.view.platform.PlatformLoadingIndicator
 import com.monoid.hackernews.common.view.submit
 import com.monoid.hackernews.common.view.text.PasswordTextField
 import com.monoid.hackernews.common.view.text.UsernameTextField
@@ -129,7 +129,7 @@ fun LoginDialogContent(
                 ) {
                     Text(text = stringResource(Res.string.submit))
                     AnimatedVisibility(loading) {
-                        CircularProgressIndicator (
+                        PlatformLoadingIndicator(
                             modifier = Modifier.padding(start = 16.dp).size(24.dp),
                         )
                     }

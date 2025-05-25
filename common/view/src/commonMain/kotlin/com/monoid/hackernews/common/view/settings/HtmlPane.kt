@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,6 +24,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import com.monoid.hackernews.common.data.html.toHtmlAnnotatedString
 import com.monoid.hackernews.common.view.itemdetail.htmlTextStyle
+import com.monoid.hackernews.common.view.platform.PlatformLoadingIndicator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -55,7 +55,7 @@ fun HtmlPane(htmlString: String, modifier: Modifier = Modifier) {
                 style = htmlTextStyle(),
             )
         } else {
-            CircularProgressIndicator()
+            PlatformLoadingIndicator()
         }
     }
 }

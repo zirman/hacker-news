@@ -3,7 +3,6 @@
 package com.monoid.hackernews.common.view.settings
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneScaffold
@@ -14,6 +13,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.monoid.hackernews.common.view.platform.PlatformLoadingIndicator
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -102,7 +102,7 @@ fun SettingsScaffold(
             },
         )
         if (loading) {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            PlatformLoadingIndicator(modifier = Modifier.align(Alignment.Center))
         }
     }
 }

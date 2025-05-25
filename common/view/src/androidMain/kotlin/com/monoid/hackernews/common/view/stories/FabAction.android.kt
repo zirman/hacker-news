@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
+
 package com.monoid.hackernews.common.view.stories
 
 import android.widget.Toast
@@ -11,7 +13,8 @@ import androidx.compose.material.icons.twotone.Forum
 import androidx.compose.material.icons.twotone.RssFeed
 import androidx.compose.material.icons.twotone.Whatshot
 import androidx.compose.material.icons.twotone.Work
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.LoadingIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -106,7 +109,7 @@ enum class FabAction(
                     content(Pair(this@Box, it))
                 }
                 if (uiState.loading && uiState.isRefreshing.not()) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    LoadingIndicator(modifier = Modifier.align(Alignment.Center))
                 }
             }
         }
@@ -172,7 +175,7 @@ enum class FabAction(
                     content(Pair(this@Box, it))
                 }
                 if (uiState.loading && uiState.isRefreshing.not()) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    LoadingIndicator(modifier = Modifier.align(Alignment.Center))
                 }
             }
         }
@@ -238,7 +241,7 @@ enum class FabAction(
                     content(Pair(this@Box, it))
                 }
                 if (uiState.loading && uiState.isRefreshing.not()) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    LoadingIndicator(modifier = Modifier.align(Alignment.Center))
                 }
             }
         }
@@ -304,7 +307,7 @@ enum class FabAction(
                     content(Pair(this@Box, it))
                 }
                 if (uiState.loading && uiState.isRefreshing.not()) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    LoadingIndicator(modifier = Modifier.align(Alignment.Center))
                 }
             }
         }
@@ -370,7 +373,7 @@ enum class FabAction(
                     content(Pair(this@Box, it))
                 }
                 if (uiState.loading && uiState.isRefreshing.not()) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    LoadingIndicator(modifier = Modifier.align(Alignment.Center))
                 }
             }
         }
@@ -436,7 +439,7 @@ enum class FabAction(
                     content(Pair(this@Box, it))
                 }
                 if (uiState.loading && uiState.isRefreshing.not()) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    LoadingIndicator(modifier = Modifier.align(Alignment.Center))
                 }
             }
         }
