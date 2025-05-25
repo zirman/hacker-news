@@ -26,8 +26,8 @@ compose {
                     version = "7.6.1"
                     isEnabled = true
                     optimize = true
-                    obfuscate = false // Currently obfuscated builds crash
-                    configurationFiles.from("rules.pro")
+                    obfuscate = false // Currently obfuscated builds are broken
+                    configurationFiles.from("proguard-rules.pro")
                 }
             }
         }

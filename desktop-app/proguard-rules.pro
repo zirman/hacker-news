@@ -68,3 +68,4 @@
 #-keepclassmembers class io.ktor.http.** { *; }
 
 -dontwarn **
+-keep class com.monoid.hackernews.common.view.stories.** { *; }
