@@ -47,7 +47,7 @@ workRuntimeKtx = "2.10.1"
 preferenceKtx = "1.2.1"
 metricsPerformance = "1.0.0-beta02"
 composeLintChecks = "1.4.2"
-material3Adaptive = "material3Adaptive"
+material3Adaptive = "1.2.0-alpha06"
 wearCompose = "1.4.1"
 accompanist = "0.37.3" # https://github.com/google/accompanist/releases
 junit = "4.13.2"
@@ -226,7 +226,7 @@ plugins = [
     "plugin-room",
 ]
 commonMain = [
-    "annotation",
+#    "annotation",
     "datastore",
     "datastoreCoreOkio",
     "datastorePreferences",
