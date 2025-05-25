@@ -3,7 +3,7 @@ package com.monoid.hackernews.common.view.home
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.safeContent
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -43,7 +43,7 @@ actual fun HomeContent(
         onClickFavorite = {},
         onClickFollow = {},
         onClickFlag = {},
-        contentPadding = WindowInsets.safeContent.asPaddingValues(),
+        contentPadding = WindowInsets.safeDrawing.asPaddingValues(),
         modifier = modifier.fillMaxHeight(),
     ) {}
 }
