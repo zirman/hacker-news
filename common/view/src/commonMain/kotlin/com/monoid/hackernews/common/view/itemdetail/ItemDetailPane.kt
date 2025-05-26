@@ -2,8 +2,10 @@ package com.monoid.hackernews.common.view.itemdetail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -63,9 +65,11 @@ fun ItemDetailPane(
     LazyColumn(
         state = rememberLazyListState(),
         modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface),
-        contentPadding = WindowInsets.safeDrawing.asPaddingValues(),
+            .background(MaterialTheme.colorScheme.surface)
+            .fillMaxSize(),
+        contentPadding = WindowInsets.safeDrawing
+            .only(WindowInsetsSides.Top)
+            .asPaddingValues(),
     ) {
         itemsIndexed(
             items = uiState.comments.orEmpty(),

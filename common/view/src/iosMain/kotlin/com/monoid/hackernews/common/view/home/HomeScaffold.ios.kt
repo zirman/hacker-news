@@ -1,8 +1,10 @@
 package com.monoid.hackernews.common.view.home
 
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,7 +19,7 @@ import com.monoid.hackernews.common.view.stories.StoryOrdering
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun HomeScaffold(
+fun StoriesPane(
     onClickLogin: () -> Unit,
     onClickLogout: () -> Unit,
     onClickUser: (Username) -> Unit,
@@ -43,7 +45,9 @@ fun HomeScaffold(
         onClickFavorite = {},
         onClickFollow = {},
         onClickFlag = {},
-        contentPadding = WindowInsets.safeDrawing.asPaddingValues(),
+        contentPadding = WindowInsets.safeDrawing
+            .only(WindowInsetsSides.Top)
+            .asPaddingValues(),
         modifier = modifier.fillMaxHeight(),
     ) {}
 }

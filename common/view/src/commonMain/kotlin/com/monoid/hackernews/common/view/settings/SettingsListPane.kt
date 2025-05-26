@@ -1,5 +1,6 @@
 package com.monoid.hackernews.common.view.settings
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -19,6 +20,7 @@ import androidx.compose.material.icons.twotone.TextFields
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -51,15 +53,15 @@ fun SettingsListPane(
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
-        modifier = modifier.fillMaxHeight(),
+        modifier = modifier
+            .background(MaterialTheme.colorScheme.background)
+            .fillMaxHeight(),
         contentPadding = WindowInsets.safeDrawing.asPaddingValues(),
     ) {
         item {
             if (username == null) {
                 ListItem(
-                    headlineContent = {
-                        Text(text = stringResource(Res.string.login))
-                    },
+                    headlineContent = { Text(text = stringResource(Res.string.login)) },
                     modifier = Modifier.clickable(onClick = onClickLogin),
                     leadingContent = {
                         Icon(

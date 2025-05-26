@@ -32,9 +32,17 @@ actual fun App(onClickUrl: (Url) -> Unit) {
                     onClickLogout = {
                         showLogoutDialog = true
                     },
+                    onClickItem = {},
                     onClickReply = {},
                     onClickUser = {},
                     onClickUrl = onClickUrl,
+                    onClickAppearance = {},
+                    onClickNotifications = {},
+                    onClickHelp = {},
+                    onClickTermsOfService = {},
+                    onClickUserGuidelines = {},
+                    onClickSendFeedback = {},
+                    onClickAbout = {},
                 )
                 if (showLoginDialog) {
                     LoginDialog(

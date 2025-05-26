@@ -1,17 +1,14 @@
 package com.monoid.hackernews.common.view.main
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -22,16 +19,24 @@ import androidx.navigation.compose.dialog
 import androidx.navigation.toRoute
 import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.data.api.ItemId
+import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.domain.navigation.ItemIdNavType
 import com.monoid.hackernews.common.domain.navigation.Route
 import com.monoid.hackernews.common.domain.navigation.UsernameNavType
 import com.monoid.hackernews.common.view.comment.CommentDialog
 import com.monoid.hackernews.common.view.favorites.FavoriteStoriesListPane
-import com.monoid.hackernews.common.view.home.HomeScaffold
+import com.monoid.hackernews.common.view.home.StoriesPane
 import com.monoid.hackernews.common.view.itemdetail.ItemDetailPane
+import com.monoid.hackernews.common.view.settings.AboutPane
+import com.monoid.hackernews.common.view.settings.AppearanceDetailPane
+import com.monoid.hackernews.common.view.settings.HelpPane
+import com.monoid.hackernews.common.view.settings.NotificationsPane
+import com.monoid.hackernews.common.view.settings.SendFeedbackPane
 import com.monoid.hackernews.common.view.settings.SettingsListPane
 import com.monoid.hackernews.common.view.settings.SettingsViewModel
+import com.monoid.hackernews.common.view.settings.TermsOfServicePane
+import com.monoid.hackernews.common.view.settings.UserGuidelinesPane
 import com.monoid.hackernews.common.view.stories.listContentPadding
 import org.koin.compose.viewmodel.koinViewModel
 import kotlin.reflect.typeOf
@@ -40,9 +45,17 @@ import kotlin.reflect.typeOf
 actual fun MainNavHost(
     onClickLogin: () -> Unit,
     onClickLogout: () -> Unit,
+    onClickItem: (Item) -> Unit,
     onClickReply: (ItemId) -> Unit,
     onClickUser: (Username) -> Unit,
     onClickUrl: (Url) -> Unit,
+    onClickAppearance: () -> Unit,
+    onClickNotifications: () -> Unit,
+    onClickHelp: () -> Unit,
+    onClickTermsOfService: () -> Unit,
+    onClickUserGuidelines: () -> Unit,
+    onClickSendFeedback: () -> Unit,
+    onClickAbout: () -> Unit,
     modifier: Modifier,
     navController: NavHostController,
 ) {
@@ -53,7 +66,7 @@ actual fun MainNavHost(
     ) {
         composable<Route.BottomNav.Stories> {
             val viewModel: HomeViewModel = koinViewModel()
-            HomeScaffold(
+            StoriesPane(
                 onClickLogin = onClickLogin,
                 onClickLogout = onClickLogout,
                 onClickUser = { navController.navigate(Route.User(it)) },
@@ -72,17 +85,9 @@ actual fun MainNavHost(
             val viewModel: SettingsViewModel = koinViewModel()
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             if (uiState.username.string.isNotBlank()) {
-                val scope = rememberCoroutineScope()
                 FavoriteStoriesListPane(
                     username = uiState.username,
-                    onClickItem = { item ->
-//                        scope.launch {
-//                            navigator.navigateTo(
-//                                pane = ListDetailPaneScaffoldRole.Detail,
-//                                contentKey = "${item.id.long}",
-//                            )
-//                        }
-                    },
+                    onClickItem = onClickItem,
                     onClickReply = onClickReply,
                     onClickUser = onClickUser,
                     onClickUrl = onClickUrl,
@@ -103,62 +108,13 @@ actual fun MainNavHost(
                 username = username,
                 onClickLogin = onClickLogin,
                 onClickLogout = onClickLogout,
-                onClickAppearance = {
-//                    scope.launch {
-//                        navigator.navigateTo(
-//                            pane = ListDetailPaneScaffoldRole.Detail,
-//                            contentKey = SettingsDetailUiState.Appearance.ordinal,
-//                        )
-//                    }
-                },
-                onClickNotifications = {
-//                    scope.launch {
-//                        navigator.navigateTo(
-//                            pane = ListDetailPaneScaffoldRole.Detail,
-//                            contentKey = SettingsDetailUiState.Notifications.ordinal,
-//                        )
-//                    }
-                },
-                onClickHelp = {
-//                    scope.launch {
-//                        navigator.navigateTo(
-//                            pane = ListDetailPaneScaffoldRole.Detail,
-//                            contentKey = SettingsDetailUiState.Help.ordinal,
-//                        )
-//                    }
-                },
-                onClickTermsOfService = {
-//                    scope.launch {
-//                        navigator.navigateTo(
-//                            pane = ListDetailPaneScaffoldRole.Detail,
-//                            contentKey = SettingsDetailUiState.TermsOfService.ordinal,
-//                        )
-//                    }
-                },
-                onClickUserGuidelines = {
-//                    scope.launch {
-//                        navigator.navigateTo(
-//                            pane = ListDetailPaneScaffoldRole.Detail,
-//                            contentKey = SettingsDetailUiState.UserGuidelines.ordinal,
-//                        )
-//                    }
-                },
-                onClickSendFeedback = {
-//                    scope.launch {
-//                        navigator.navigateTo(
-//                            pane = ListDetailPaneScaffoldRole.Detail,
-//                            contentKey = SettingsDetailUiState.SendFeedback.ordinal,
-//                        )
-//                    }
-                },
-                onClickAbout = {
-//                    scope.launch {
-//                        navigator.navigateTo(
-//                            pane = ListDetailPaneScaffoldRole.Detail,
-//                            contentKey = SettingsDetailUiState.About.ordinal,
-//                        )
-//                    }
-                },
+                onClickAppearance = onClickAppearance,
+                onClickNotifications = onClickNotifications,
+                onClickHelp = onClickHelp,
+                onClickTermsOfService = onClickTermsOfService,
+                onClickUserGuidelines = onClickUserGuidelines,
+                onClickSendFeedback = onClickSendFeedback,
+                onClickAbout = onClickAbout,
             )
         }
         composable<Route.Story>(
@@ -171,9 +127,6 @@ actual fun MainNavHost(
                 onClickUser = {},
                 onClickReply = {},
                 onClickLogin = onClickLogin,
-                modifier = modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.primaryContainer),
             )
         }
         composable<Route.User>(
@@ -189,6 +142,27 @@ actual fun MainNavHost(
                 onDismiss = navController::navigateUp,
                 modifier = Modifier.padding(WindowInsets.safeDrawing.asPaddingValues()),
             )
+        }
+        composable<Route.Settings.Appearance> {
+            AppearanceDetailPane()
+        }
+        composable<Route.Settings.Help> {
+            HelpPane()
+        }
+        composable<Route.Settings.About> {
+            AboutPane()
+        }
+        composable<Route.Settings.SendFeedback> {
+            SendFeedbackPane()
+        }
+        composable<Route.Settings.Notifications> {
+            NotificationsPane()
+        }
+        composable<Route.Settings.TermsOfService> {
+            TermsOfServicePane()
+        }
+        composable<Route.Settings.UserGuidelines> {
+            UserGuidelinesPane()
         }
     }
 }

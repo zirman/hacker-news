@@ -2,6 +2,7 @@
 
 package com.monoid.hackernews.common.view.settings
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -16,6 +17,7 @@ import androidx.compose.material.icons.twotone.Add
 import androidx.compose.material.icons.twotone.Remove
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -49,6 +51,7 @@ fun AppearanceDetailPane(
     val selectedShape = uiState.shape
     Column(
         modifier = modifier
+            .background(MaterialTheme.colorScheme.background)
             .padding(16.dp)
             .fillMaxWidth()
             .padding(WindowInsets.safeDrawing.asPaddingValues()),

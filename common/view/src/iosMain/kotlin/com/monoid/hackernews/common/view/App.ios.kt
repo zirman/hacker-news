@@ -1,6 +1,10 @@
 package com.monoid.hackernews.common.view
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarDefaults
@@ -14,6 +18,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.monoid.hackernews.common.data.Url
@@ -66,7 +73,8 @@ actual fun App(onClickUrl: (Url) -> Unit) {
                             }
                         }
                     }
-                ) {
+                ) { padding ->
+                    val dir = LocalLayoutDirection.current
                     MainNavHost(
                         onClickLogin = {
                             showLoginDialog = true
@@ -74,34 +82,25 @@ actual fun App(onClickUrl: (Url) -> Unit) {
                         onClickLogout = {
                             showLogoutDialog = true
                         },
-                        onClickReply = {
-                            val route = Route.Reply(it)
-                            navController.navigate(
-                                route = route,
-                                navOptions = navOptions {
-                                    popUpTo(route) {
-                                        saveState = true
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                },
-                            )
-                        },
-                        onClickUser = {
-                            val route = Route.User(it)
-                            navController.navigate(
-                                route = route,
-                                navOptions = navOptions {
-                                    popUpTo(route) {
-                                        saveState = true
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                },
-                            )
-                        },
+                        onClickItem = {},
+                        onClickReply = { navController.nav(Route.Reply(it)) },
+                        onClickUser = { navController.nav(Route.User(it)) },
                         onClickUrl = onClickUrl,
+                        onClickAppearance = { navController.nav(Route.Settings.Appearance) },
+                        onClickNotifications = { navController.nav(Route.Settings.Notifications) },
+                        onClickHelp = { navController.nav(Route.Settings.Help) },
+                        onClickTermsOfService = { navController.nav(Route.Settings.TermsOfService) },
+                        onClickUserGuidelines = { navController.nav(Route.Settings.UserGuidelines) },
+                        onClickSendFeedback = { navController.nav(Route.Settings.SendFeedback) },
+                        onClickAbout = { navController.nav(Route.Settings.About) },
                         navController = navController,
+                        modifier = Modifier.padding(
+                            PaddingValues(
+                                start = padding.calculateStartPadding(dir),
+                                end = padding.calculateEndPadding(dir),
+                                bottom = padding.calculateBottomPadding(),
+                            ),
+                        ),
                     )
                 }
                 if (showLoginDialog) {
@@ -121,4 +120,17 @@ actual fun App(onClickUrl: (Url) -> Unit) {
             }
         }
     }
+}
+
+fun <T : Any> NavHostController.nav(route: T) {
+    navigate(
+        route = route,
+        navOptions = navOptions {
+            popUpTo(route) {
+                saveState = true
+            }
+            launchSingleTop = true
+            restoreState = true
+        },
+    )
 }

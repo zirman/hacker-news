@@ -16,6 +16,7 @@ import androidx.navigation.compose.dialog
 import androidx.navigation.toRoute
 import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.data.api.ItemId
+import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.domain.navigation.ItemIdNavType
 import com.monoid.hackernews.common.domain.navigation.Route
@@ -29,9 +30,17 @@ import kotlin.reflect.typeOf
 actual fun MainNavHost(
     onClickLogin: () -> Unit,
     onClickLogout: () -> Unit,
+    onClickItem: (Item) -> Unit,
     onClickReply: (ItemId) -> Unit,
     onClickUser: (Username) -> Unit,
     onClickUrl: (Url) -> Unit,
+    onClickAppearance: () -> Unit,
+    onClickNotifications: () -> Unit,
+    onClickHelp: () -> Unit,
+    onClickTermsOfService: () -> Unit,
+    onClickUserGuidelines: () -> Unit,
+    onClickSendFeedback: () -> Unit,
+    onClickAbout: () -> Unit,
     modifier: Modifier,
     navController: NavHostController,
 ) {

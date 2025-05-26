@@ -68,6 +68,36 @@ object Route {
     @Serializable
     @SerialName("Reply")
     data class Reply(val parentId: ItemId)
+
+    object Settings {
+        @Serializable
+        @SerialName("Appearance")
+        data object Appearance
+
+        @Serializable
+        @SerialName("Notifications")
+        data object Notifications
+
+        @Serializable
+        @SerialName("Help")
+        data object Help
+
+        @Serializable
+        @SerialName("TermsOfService")
+        data object TermsOfService
+
+        @Serializable
+        @SerialName("UserGuidelines")
+        data object UserGuidelines
+
+        @Serializable
+        @SerialName("SendFeedback")
+        data object SendFeedback
+
+        @Serializable
+        @SerialName("About")
+        data object About
+    }
 }
 
 val jsonDecoder: Json = Json { ignoreUnknownKeys = true }

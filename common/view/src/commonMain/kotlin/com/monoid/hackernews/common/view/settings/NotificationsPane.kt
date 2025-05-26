@@ -1,11 +1,13 @@
 package com.monoid.hackernews.common.view.settings
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,7 +25,11 @@ fun NotificationsPane(
     viewModel: NotificationsViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    Column(modifier = modifier.padding(WindowInsets.safeDrawing.asPaddingValues())) {
+    Column(
+        modifier = modifier
+            .background(MaterialTheme.colorScheme.background)
+            .padding(WindowInsets.safeDrawing.asPaddingValues()),
+    ) {
         ListItem(
             headlineContent = {
                 Text(stringResource(Res.string.notifications))
