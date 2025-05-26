@@ -2,7 +2,6 @@
 
 package com.monoid.hackernews.common.view.settings
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -17,7 +16,7 @@ import androidx.compose.material.icons.twotone.Add
 import androidx.compose.material.icons.twotone.Remove
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -42,95 +41,96 @@ fun AppearanceDetailPane(
     modifier: Modifier = Modifier,
     viewModel: AppearanceViewModel = koinViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val selectedLightDarkMode = uiState.lightDarkMode
-    val selectedFont = uiState.font
-    val fontSize = uiState.fontSize
-    val lineSpacing = uiState.lineHeight
-    val paragraphIndent = uiState.paragraphIndent
-    val selectedShape = uiState.shape
-    Column(
+    Surface(
         modifier = modifier
-            .background(MaterialTheme.colorScheme.background)
             .padding(16.dp)
             .fillMaxWidth()
             .padding(WindowInsets.safeDrawing.asPaddingValues()),
     ) {
-        Text(stringResource(Res.string.light_dark_mode))
-        FlowRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            LightDarkMode.entries.forEach { lightDarkMode ->
-                LightDarkButton(
-                    lightDarkMode = lightDarkMode,
-                    selected = lightDarkMode == selectedLightDarkMode,
-                    onClickLightDarkMode = viewModel::onClickLightDarkMode,
-                )
+        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+        val selectedLightDarkMode = uiState.lightDarkMode
+        val selectedFont = uiState.font
+        val fontSize = uiState.fontSize
+        val lineSpacing = uiState.lineHeight
+        val paragraphIndent = uiState.paragraphIndent
+        val selectedShape = uiState.shape
+        Column {
+            Text(stringResource(Res.string.light_dark_mode))
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                LightDarkMode.entries.forEach { lightDarkMode ->
+                    LightDarkButton(
+                        lightDarkMode = lightDarkMode,
+                        selected = lightDarkMode == selectedLightDarkMode,
+                        onClickLightDarkMode = viewModel::onClickLightDarkMode,
+                    )
+                }
             }
+            Text(stringResource(Res.string.fonts))
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                HNFont.entries.forEach { font ->
+                    FontButton(
+                        font = font,
+                        selected = font == selectedFont,
+                        onClickFont = viewModel::onClickFont,
+                    )
+                }
+            }
+            Text(stringResource(Res.string.font_size_format, fontSize.delta))
+            FlowRow {
+                IconButton(onClick = viewModel::onClickIncreaseFontSize) {
+                    Icon(
+                        imageVector = Icons.TwoTone.Add,
+                        contentDescription = null,
+                    )
+                }
+                IconButton(onClick = viewModel::onClickDecreaseFontSize) {
+                    Icon(
+                        imageVector = Icons.TwoTone.Remove,
+                        contentDescription = null,
+                    )
+                }
+            }
+            Text(stringResource(Res.string.line_spacing_format, lineSpacing.delta))
+            FlowRow {
+                IconButton(onClick = viewModel::onClickIncreaseLineHeight) {
+                    Icon(
+                        imageVector = Icons.TwoTone.Add,
+                        contentDescription = null,
+                    )
+                }
+                IconButton(onClick = viewModel::onClickDecreaseLineHeight) {
+                    Icon(
+                        imageVector = Icons.TwoTone.Remove,
+                        contentDescription = null,
+                    )
+                }
+            }
+            Text(stringResource(Res.string.paragraph_indent_format, paragraphIndent.em))
+            FlowRow {
+                IconButton(onClick = viewModel::onClickIncreaseParagraphIndent) {
+                    Icon(
+                        imageVector = Icons.TwoTone.Add,
+                        contentDescription = null,
+                    )
+                }
+                IconButton(onClick = viewModel::onClickDecreaseParagraphIndent) {
+                    Icon(
+                        imageVector = Icons.TwoTone.Remove,
+                        contentDescription = null,
+                    )
+                }
+            }
+            Text(stringResource(Res.string.shapes))
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                Shape.entries.forEach { shape ->
+                    ShapeButton(
+                        shape = shape,
+                        selected = shape == selectedShape,
+                        onClickShape = viewModel::onClickShape,
+                    )
+                }
+            }
+            // TODO: colors
         }
-        Text(stringResource(Res.string.fonts))
-        FlowRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            HNFont.entries.forEach { font ->
-                FontButton(
-                    font = font,
-                    selected = font == selectedFont,
-                    onClickFont = viewModel::onClickFont,
-                )
-            }
-        }
-        Text(stringResource(Res.string.font_size_format, fontSize.delta))
-        FlowRow {
-            IconButton(onClick = viewModel::onClickIncreaseFontSize) {
-                Icon(
-                    imageVector = Icons.TwoTone.Add,
-                    contentDescription = null,
-                )
-            }
-            IconButton(onClick = viewModel::onClickDecreaseFontSize) {
-                Icon(
-                    imageVector = Icons.TwoTone.Remove,
-                    contentDescription = null,
-                )
-            }
-        }
-        Text(stringResource(Res.string.line_spacing_format, lineSpacing.delta))
-        FlowRow {
-            IconButton(onClick = viewModel::onClickIncreaseLineHeight) {
-                Icon(
-                    imageVector = Icons.TwoTone.Add,
-                    contentDescription = null,
-                )
-            }
-            IconButton(onClick = viewModel::onClickDecreaseLineHeight) {
-                Icon(
-                    imageVector = Icons.TwoTone.Remove,
-                    contentDescription = null,
-                )
-            }
-        }
-        Text(stringResource(Res.string.paragraph_indent_format, paragraphIndent.em))
-        FlowRow {
-            IconButton(onClick = viewModel::onClickIncreaseParagraphIndent) {
-                Icon(
-                    imageVector = Icons.TwoTone.Add,
-                    contentDescription = null,
-                )
-            }
-            IconButton(onClick = viewModel::onClickDecreaseParagraphIndent) {
-                Icon(
-                    imageVector = Icons.TwoTone.Remove,
-                    contentDescription = null,
-                )
-            }
-        }
-        Text(stringResource(Res.string.shapes))
-        FlowRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            Shape.entries.forEach { shape ->
-                ShapeButton(
-                    shape = shape,
-                    selected = shape == selectedShape,
-                    onClickShape = viewModel::onClickShape,
-                )
-            }
-        }
-        // TODO: colors
     }
 }
