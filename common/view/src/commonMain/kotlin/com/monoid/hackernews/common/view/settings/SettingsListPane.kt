@@ -41,7 +41,7 @@ import org.jetbrains.compose.resources.stringResource
 @Suppress("ComposeUnstableReceiver")
 @Composable
 fun SettingsListPane(
-    username: Username?,
+    username: Username,
     onClickLogin: () -> Unit,
     onClickLogout: () -> Unit,
     onClickAppearance: () -> Unit,
@@ -60,7 +60,7 @@ fun SettingsListPane(
                 .asPaddingValues(),
         ) {
             item {
-                if (username == null) {
+                if (username.string.isBlank()) {
                     ListItem(
                         headlineContent = { Text(text = stringResource(Res.string.login)) },
                         modifier = Modifier.clickable(onClick = onClickLogin),
