@@ -103,7 +103,7 @@ fun CommentDialog(
                         ) {
                             Icon(
                                 Icons.AutoMirrored.TwoTone.Send,
-                                contentDescription = stringResource(Res.string.send)
+                                contentDescription = stringResource(Res.string.send),
                             )
                         }
                     }
