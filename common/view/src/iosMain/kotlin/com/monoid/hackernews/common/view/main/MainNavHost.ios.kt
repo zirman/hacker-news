@@ -3,6 +3,7 @@ package com.monoid.hackernews.common.view.main
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.Text
@@ -37,7 +38,7 @@ import com.monoid.hackernews.common.view.settings.SettingsListPane
 import com.monoid.hackernews.common.view.settings.SettingsViewModel
 import com.monoid.hackernews.common.view.settings.TermsOfServicePane
 import com.monoid.hackernews.common.view.settings.UserGuidelinesPane
-import com.monoid.hackernews.common.view.stories.listContentPadding
+import com.monoid.hackernews.common.view.stories.listContentInsetSides
 import org.koin.compose.viewmodel.koinViewModel
 import kotlin.reflect.typeOf
 
@@ -92,7 +93,9 @@ actual fun MainNavHost(
                     onClickUser = onClickUser,
                     onClickUrl = onClickUrl,
                     onClickLogin = onClickLogin,
-                    contentPadding = listContentPadding(),
+                    contentPadding = WindowInsets.safeDrawing
+                        .only(listContentInsetSides())
+                        .asPaddingValues(),
                 )
             } else {
                 LaunchedEffect(Unit) {

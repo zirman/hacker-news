@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -33,6 +34,7 @@ import com.monoid.hackernews.common.view.login
 import com.monoid.hackernews.common.view.logout_format
 import com.monoid.hackernews.common.view.notifications
 import com.monoid.hackernews.common.view.send_feedback
+import com.monoid.hackernews.common.view.stories.detailContentInsetSides
 import com.monoid.hackernews.common.view.terms_of_service
 import com.monoid.hackernews.common.view.user_guidelines
 import org.jetbrains.compose.resources.stringResource
@@ -56,7 +58,9 @@ fun SettingsListPane(
         modifier = modifier
             .background(MaterialTheme.colorScheme.background)
             .fillMaxHeight(),
-        contentPadding = WindowInsets.safeDrawing.asPaddingValues(),
+        contentPadding = WindowInsets.safeDrawing
+            .only(detailContentInsetSides())
+            .asPaddingValues(),
     ) {
         item {
             if (username == null) {

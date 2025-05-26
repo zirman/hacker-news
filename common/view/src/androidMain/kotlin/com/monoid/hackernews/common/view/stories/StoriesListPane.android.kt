@@ -3,6 +3,7 @@ package com.monoid.hackernews.common.view.stories
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.movableContentOf
@@ -38,7 +39,9 @@ fun StoriesListPane(
                         fabAction = fabAction,
                         expanded = hasScrolled,
                         onClick = { fabAction = it },
-                        modifier = Modifier.align(Alignment.BottomEnd),
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .padding(contentPadding),
                     )
                 }
             }

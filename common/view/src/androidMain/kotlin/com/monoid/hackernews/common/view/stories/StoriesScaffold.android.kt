@@ -3,6 +3,10 @@
 package com.monoid.hackernews.common.view.stories
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneScaffold
@@ -42,7 +46,9 @@ fun StoriesScaffold(
                     onClickUser = onClickUser,
                     onClickUrl = onClickUrl,
                     onClickLogin = onClickLogin,
-                    contentPadding = listContentPadding(),
+                    contentPadding = WindowInsets.safeDrawing
+                        .only(listContentInsetSides())
+                        .asPaddingValues(),
                 )
             },
             detailPane = {

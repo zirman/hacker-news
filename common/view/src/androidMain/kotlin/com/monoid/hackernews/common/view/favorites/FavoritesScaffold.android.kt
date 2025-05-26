@@ -3,6 +3,10 @@
 package com.monoid.hackernews.common.view.favorites
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneScaffold
@@ -17,7 +21,7 @@ import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.view.settings.SettingsViewModel
 import com.monoid.hackernews.common.view.stories.StoriesDetailPane
-import com.monoid.hackernews.common.view.stories.listContentPadding
+import com.monoid.hackernews.common.view.stories.listContentInsetSides
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -52,7 +56,9 @@ fun FavoritesScaffold(
                         onClickUser = onClickUser,
                         onClickUrl = onClickUrl,
                         onClickLogin = onClickLogin,
-                        contentPadding = listContentPadding(),
+                        contentPadding = WindowInsets.safeDrawing
+                            .only(listContentInsetSides())
+                            .asPaddingValues(),
                     )
                 } else {
                     LaunchedEffect(Unit) {
