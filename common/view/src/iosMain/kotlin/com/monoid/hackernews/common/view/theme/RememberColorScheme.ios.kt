@@ -6,11 +6,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.monoid.hackernews.common.data.model.LightDarkMode
 import com.monoid.hackernews.common.view.settings.AppearanceViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 actual fun appColorScheme(): ColorScheme {
-    return LightThemeColors
+    val viewModel: AppearanceViewModel = koinViewModel()
+    return when (viewModel.uiState.collectAsStateWithLifecycle().value.lightDarkMode) {
+        LightDarkMode.System -> LightThemeColors // TODO: get system setting
+        LightDarkMode.Light -> LightThemeColors
+        LightDarkMode.Dark -> DarkThemeColors
+    }
 }
 
 @Composable
