@@ -8,16 +8,16 @@ import androidx.compose.ui.Modifier
 import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Username
-import com.monoid.hackernews.common.domain.navigation.BottomNav
+import com.monoid.hackernews.common.domain.navigation.Route.BottomNav
 
 @Composable
-actual fun HomeScaffold(
+fun HomeScaffold(
     onClickLogin: () -> Unit,
     onClickLogout: () -> Unit,
     onClickUser: (Username) -> Unit,
     onClickReply: (ItemId) -> Unit,
     onClickUrl: (Url) -> Unit,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
     val currentDestination by rememberSaveable { mutableIntStateOf(0) }
     HomeContent(
@@ -27,5 +27,6 @@ actual fun HomeScaffold(
         onClickUser = onClickUser,
         onClickReply = onClickReply,
         onClickUrl = onClickUrl,
+        modifier = modifier,
     )
 }

@@ -226,7 +226,7 @@ plugins = [
     "plugin-room",
 ]
 commonMain = [
-#    "annotation",
+    "annotation",
     "datastore",
     "datastoreCoreOkio",
     "datastorePreferences",

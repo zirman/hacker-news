@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3AdaptiveApi::class)
-
 package com.monoid.hackernews.common.view.settings
 
 import androidx.compose.foundation.clickable
@@ -22,11 +20,8 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
-import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
-import androidx.compose.material3.adaptive.layout.ThreePaneScaffoldScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.about
@@ -42,7 +37,7 @@ import org.jetbrains.compose.resources.stringResource
 
 @Suppress("ComposeUnstableReceiver")
 @Composable
-fun ThreePaneScaffoldScope.SettingsListPane(
+fun SettingsListPane(
     username: Username?,
     onClickLogin: () -> Unit,
     onClickLogout: () -> Unit,
@@ -56,9 +51,7 @@ fun ThreePaneScaffoldScope.SettingsListPane(
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
-        modifier = modifier
-            .preferredWidth(320.dp)
-            .fillMaxHeight(),
+        modifier = modifier.fillMaxHeight(),
         contentPadding = WindowInsets.safeDrawing.asPaddingValues(),
     ) {
         item {

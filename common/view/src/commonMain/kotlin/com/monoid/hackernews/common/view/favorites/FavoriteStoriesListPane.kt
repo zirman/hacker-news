@@ -1,13 +1,11 @@
 package com.monoid.hackernews.common.view.favorites
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -38,20 +36,13 @@ fun FavoriteStoriesListPane(
         extras = FavoritesViewModel.extras(username),
     )
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
-    val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     LaunchedEffect(Unit) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
             for (event in viewModel.events) {
                 when (event) {
                     is FavoritesViewModel.Event.Error -> {
-                        Toast
-                            .makeText(
-                                context,
-                                "An error occurred: ${event.message}",
-                                Toast.LENGTH_SHORT,
-                            )
-                            .show()
+                        // TODO
                     }
 
                     is FavoritesViewModel.Event.NavigateLogin -> {

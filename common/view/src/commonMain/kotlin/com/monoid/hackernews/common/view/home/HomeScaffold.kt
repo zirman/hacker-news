@@ -7,13 +7,8 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.twotone.Bookmarks
 import androidx.compose.material.icons.twotone.Newspaper
 import androidx.compose.material.icons.twotone.Settings
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.monoid.hackernews.common.data.Url
-import com.monoid.hackernews.common.data.api.ItemId
-import com.monoid.hackernews.common.data.model.Username
-import com.monoid.hackernews.common.domain.navigation.BottomNav
+import com.monoid.hackernews.common.domain.navigation.Route
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.favorites
 import com.monoid.hackernews.common.view.favorites_description
@@ -23,40 +18,30 @@ import com.monoid.hackernews.common.view.stories
 import com.monoid.hackernews.common.view.trending_description
 import org.jetbrains.compose.resources.StringResource
 
-inline val BottomNav.icon: ImageVector
+inline val Route.BottomNav.icon: ImageVector
     get() = when (this) {
-        BottomNav.Stories -> Icons.TwoTone.Newspaper
-        BottomNav.Favorites -> Icons.TwoTone.Bookmarks
-        BottomNav.Settings -> Icons.TwoTone.Settings
+        Route.BottomNav.Stories -> Icons.TwoTone.Newspaper
+        Route.BottomNav.Favorites -> Icons.TwoTone.Bookmarks
+        Route.BottomNav.Settings -> Icons.TwoTone.Settings
     }
 
-inline val BottomNav.selectedIcon: ImageVector
+inline val Route.BottomNav.selectedIcon: ImageVector
     get() = when (this) {
-        BottomNav.Stories -> Icons.Filled.Newspaper
-        BottomNav.Favorites -> Icons.Filled.Bookmarks
-        BottomNav.Settings -> Icons.Filled.Settings
+        Route.BottomNav.Stories -> Icons.Filled.Newspaper
+        Route.BottomNav.Favorites -> Icons.Filled.Bookmarks
+        Route.BottomNav.Settings -> Icons.Filled.Settings
     }
 
-inline val BottomNav.contentDescription: StringResource
+inline val Route.BottomNav.contentDescription: StringResource
     get() = when (this) {
-        BottomNav.Stories -> Res.string.trending_description
-        BottomNav.Favorites -> Res.string.favorites_description
-        BottomNav.Settings -> Res.string.profile_description
+        Route.BottomNav.Stories -> Res.string.trending_description
+        Route.BottomNav.Favorites -> Res.string.favorites_description
+        Route.BottomNav.Settings -> Res.string.profile_description
     }
 
-inline val BottomNav.label: StringResource
+inline val Route.BottomNav.label: StringResource
     get() = when (this) {
-        BottomNav.Stories -> Res.string.stories
-        BottomNav.Favorites -> Res.string.favorites
-        BottomNav.Settings -> Res.string.settings
+        Route.BottomNav.Stories -> Res.string.stories
+        Route.BottomNav.Favorites -> Res.string.favorites
+        Route.BottomNav.Settings -> Res.string.settings
     }
-
-@Composable
-expect fun HomeScaffold(
-    onClickLogin: () -> Unit,
-    onClickLogout: () -> Unit,
-    onClickUser: (Username) -> Unit,
-    onClickReply: (ItemId) -> Unit,
-    onClickUrl: (Url) -> Unit,
-    modifier: Modifier = Modifier,
-)

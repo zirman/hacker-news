@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.view.platform.PlatformLoadingIndicator
 import kotlinx.coroutines.launch
@@ -92,6 +93,7 @@ fun SettingsScaffold(
                             )
                         }
                     },
+                    modifier = Modifier.preferredWidth(320.dp),
                 )
             },
             detailPane = {

@@ -14,12 +14,6 @@ import kotlinx.serialization.json.Json
 expect fun encodeUrl(str: String): String
 expect fun decodeUrl(str: String): String
 
-enum class BottomNav {
-    Stories,
-    Favorites,
-    Settings,
-}
-
 enum class Story {
     Top,
     New,
@@ -31,6 +25,34 @@ enum class Story {
 }
 
 object Route {
+    sealed interface BottomNav {
+        @Serializable
+        @SerialName("Stories")
+        data object Stories : BottomNav {
+            override val route: String get() = "Stories"
+        }
+
+        @Serializable
+        @SerialName("Favorites")
+        data object Favorites : BottomNav {
+            override val route: String get() = "Favorites"
+        }
+
+        @Serializable
+        @SerialName("Settings")
+        data object Settings : BottomNav {
+            override val route: String get() = "Settings"
+        }
+
+        val route: String
+        val ordinal: Int get() = entries.indexOf(this)
+
+        companion object {
+            // type needs to be specified or we get a compile error
+            val entries: List<BottomNav> = listOf(Stories, Favorites, Settings)
+        }
+    }
+
     @Serializable
     @SerialName("Home")
     data object Home
@@ -38,6 +60,10 @@ object Route {
     @Serializable
     @SerialName("User")
     data class User(val username: Username)
+
+    @Serializable
+    @SerialName("Story")
+    data class Story(val itemId: ItemId)
 
     @Serializable
     @SerialName("Reply")
