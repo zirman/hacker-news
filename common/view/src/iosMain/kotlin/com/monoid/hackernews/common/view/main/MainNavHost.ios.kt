@@ -158,11 +158,28 @@ actual fun MainNavHost(
             typeMap = mapOf(typeOf<ItemId>() to NavType.ItemIdNavType),
         ) { navBackStackEntry ->
             val itemId = navBackStackEntry.toRoute<Route.Story>().itemId
+            val viewModel: SettingsViewModel = koinViewModel()
+            val lifecycleOwner = LocalLifecycleOwner.current
+            LaunchedEffect(Unit) {
+                lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    for (event in viewModel.events) {
+                        when (event) {
+                            is SettingsViewModel.Event.OpenLogin -> {
+                                onClickLogin()
+                            }
+
+                            is SettingsViewModel.Event.OpenReply -> {
+                                navController.navigate(Route.Reply(event.itemId))
+                            }
+                        }
+                    }
+                }
+            }
             ItemDetailPane(
                 itemId = itemId,
                 onClickUrl = onClickUrl,
-                onClickUser = {},
-                onClickReply = {},
+                onClickUser = onClickUser,
+                onClickReply = viewModel::onClickReply,
                 onClickLogin = onClickLogin,
             )
         }
