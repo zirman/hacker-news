@@ -19,7 +19,7 @@ actual fun PlatformLoadingIndicator(modifier: Modifier) {
 actual fun PlatformPullToRefreshIndicator(state: PullToRefreshState, isRefreshing: Boolean, modifier: Modifier) {
     PullToRefreshDefaults.LoadingIndicator(
         state = state,
-        isRefreshing = true,
+        isRefreshing = isRefreshing,
         modifier = modifier,
     )
 }
