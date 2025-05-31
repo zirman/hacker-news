@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -38,10 +39,11 @@ fun StoriesPane(
     LaunchedEffect(Unit) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
             for (event in viewModel.events) {
-                when (event){
+                when (event) {
                     is StoriesViewModel.Event.Error -> {
                         // TODO
                     }
+
                     is StoriesViewModel.Event.OpenLogin -> {
                         onClickLogin()
                     }
@@ -67,5 +69,12 @@ fun StoriesPane(
             .only(WindowInsetsSides.Top)
             .asPaddingValues(),
         modifier = modifier.fillMaxHeight(),
-    ) {}
+    ) {
+        StoriesFab(
+            fabAction = FabAction.Ask,
+            expanded = true,
+            onClick = {},
+            modifier = Modifier.align(Alignment.BottomEnd),
+        )
+    }
 }
