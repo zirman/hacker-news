@@ -52,7 +52,7 @@ fun StoriesPane(
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
     ItemsColumn(
         itemsList = uiState.itemsList,
-        isRefreshing = false,
+        isRefreshing = uiState.isRefreshing,
         onRefresh = viewModel::refreshItems,
         onVisibleItem = viewModel::updateItem,
         onClickItem = onClickStory,

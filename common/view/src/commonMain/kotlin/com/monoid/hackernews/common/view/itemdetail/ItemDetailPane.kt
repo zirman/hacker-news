@@ -27,8 +27,7 @@ import com.monoid.hackernews.common.data.model.ItemType
 import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.view.stories.detailContentInsetSides
 import kotlinx.coroutines.delay
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
+import kotlin.time.Duration.Companion.seconds
 
 @Composable
 fun ItemDetailPane(
@@ -46,7 +45,7 @@ fun ItemDetailPane(
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
             while (true) {
                 viewModel.updateItem(itemId)
-                delay(5.toDuration(DurationUnit.SECONDS))
+                delay(5.seconds)
             }
         }
     }

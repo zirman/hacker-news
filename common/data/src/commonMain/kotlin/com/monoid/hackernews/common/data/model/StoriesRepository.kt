@@ -159,7 +159,7 @@ class StoriesRepository(
                 val ksoupHtmlParser = KsoupHtmlParser(
                     KsoupHtmlHandler
                         .Builder()
-                        .onOpenTag { name, attributes, isImplied ->
+                        .onOpenTag { _, attributes, _ ->
                             if (
                                 attributes["class"].equals(
                                     "athing submission",
