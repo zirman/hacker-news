@@ -1,11 +1,11 @@
 Build for Android:
 `gradle :mobile-app:assembleDebug`
 
-Run on Desktop
-`gradle :desktop-app:run`
-
 Run on iOS
 Run project `ios-app/iosApp.xcodeproj`
+
+Run on Desktop
+`gradle :desktop-app:run`
 
 Build for Wear OS
 `gradle :wear-app:assembleDebug`
@@ -14,9 +14,7 @@ TODO:
  + Saved State, View Model, Lifecycle, Paging* KMP libraries
  + Modifier.onVisibilityChanged()
  + Modifier.contentType(Username)
- + View my favorites
  + Open specific user's stores
- + Opening hacker news links in app
  + Transition animations
  + Add comment quote button to reply
  + Post stories
@@ -28,7 +26,7 @@ TODO:
  + Glance Widget
  + Follow item with local notifications on updates
  + Chat bubbles
- + Show your reply immediately when replying
+ + Show your reply immediately
  + Highlight new items/Update items when back new or back online/Jump to unread items
  + Synchronize expanded items between devices
  + Google Play Review API
