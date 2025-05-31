@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view.home
+package com.monoid.hackernews.common.view.stories
 
 internal object StateTokens {
     const val DraggedStateLayerOpacity = 0.16f

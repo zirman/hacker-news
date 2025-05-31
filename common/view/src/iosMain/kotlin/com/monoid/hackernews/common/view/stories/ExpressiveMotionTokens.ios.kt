@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view.home
+package com.monoid.hackernews.common.view.stories
 
 internal object ExpressiveMotionTokens {
     val SpringDefaultSpatialDamping = 0.8f

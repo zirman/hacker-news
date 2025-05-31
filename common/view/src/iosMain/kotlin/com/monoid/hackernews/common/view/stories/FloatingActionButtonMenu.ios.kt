@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view.home
+package com.monoid.hackernews.common.view.stories
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D

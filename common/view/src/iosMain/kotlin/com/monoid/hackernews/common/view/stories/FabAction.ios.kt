@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view.home
+package com.monoid.hackernews.common.view.stories
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -31,8 +31,6 @@ import com.monoid.hackernews.common.view.jobs
 import com.monoid.hackernews.common.view.new
 import com.monoid.hackernews.common.view.platform.PlatformLoadingIndicator
 import com.monoid.hackernews.common.view.show
-import com.monoid.hackernews.common.view.stories.StoriesViewModel
-import com.monoid.hackernews.common.view.stories.StoryOrdering
 import com.monoid.hackernews.common.view.trending
 import org.jetbrains.compose.resources.StringResource
 import org.koin.compose.viewmodel.koinViewModel

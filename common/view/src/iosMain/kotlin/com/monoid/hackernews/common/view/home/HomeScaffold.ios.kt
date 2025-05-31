@@ -1,26 +1,23 @@
 package com.monoid.hackernews.common.view.home
 
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.Username
-import com.monoid.hackernews.common.view.itemlist.ItemsColumn
+import com.monoid.hackernews.common.view.stories.StoriesListPane
 import com.monoid.hackernews.common.view.stories.StoriesViewModel
 import com.monoid.hackernews.common.view.stories.StoryOrdering
+import com.monoid.hackernews.common.view.stories.listContentInsetSides
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -51,30 +48,15 @@ fun StoriesPane(
             }
         }
     }
-    val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
-    ItemsColumn(
-        itemsList = uiState.itemsList,
-        isRefreshing = uiState.isRefreshing,
-        onRefresh = viewModel::refreshItems,
-        onVisibleItem = viewModel::updateItem,
+    StoriesListPane(
         onClickItem = onClickStory,
         onClickReply = onClickReply,
         onClickUser = onClickUser,
         onClickUrl = onClickUrl,
-        onClickUpvote = viewModel::toggleUpvote,
-        onClickFavorite = viewModel::toggleFavorite,
-        onClickFollow = viewModel::toggleFollow,
-        onClickFlag = viewModel::toggleFlagged,
+        onClickLogin = onClickLogin,
         contentPadding = WindowInsets.safeDrawing
-            .only(WindowInsetsSides.Top)
+            .only(listContentInsetSides())
             .asPaddingValues(),
-        modifier = modifier.fillMaxHeight(),
-    ) {
-        StoriesFab(
-            fabAction = FabAction.Ask,
-            expanded = true,
-            onClick = {},
-            modifier = Modifier.align(Alignment.BottomEnd),
-        )
-    }
+        modifier = modifier,
+    )
 }

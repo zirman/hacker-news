@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view.home
+package com.monoid.hackernews.common.view.stories
 
 import androidx.compose.foundation.Indication
 import androidx.compose.foundation.IndicationNodeFactory
