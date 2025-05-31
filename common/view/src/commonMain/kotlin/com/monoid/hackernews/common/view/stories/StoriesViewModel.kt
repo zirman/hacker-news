@@ -47,7 +47,7 @@ class StoriesViewModel(
 
     sealed interface Event {
         data class Error(val message: String?) : Event
-        data object NavigateLogin : Event
+        data object OpenLogin : Event
     }
 
     private val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
@@ -134,7 +134,7 @@ class StoriesViewModel(
 
     fun toggleUpvote(item: Item): Job = viewModelScope.launch(coroutineExceptionHandler) {
         if (settingsRepository.isLoggedIn.not()) {
-            _events.send(Event.NavigateLogin)
+            _events.send(Event.OpenLogin)
             return@launch
         }
         runCatching {
@@ -146,7 +146,7 @@ class StoriesViewModel(
 
     fun toggleFavorite(item: Item): Job = viewModelScope.launch(coroutineExceptionHandler) {
         if (settingsRepository.isLoggedIn.not()) {
-            _events.send(Event.NavigateLogin)
+            _events.send(Event.OpenLogin)
             return@launch
         }
         runCatching {
@@ -158,7 +158,7 @@ class StoriesViewModel(
 
     fun toggleFollow(item: Item): Job = viewModelScope.launch(coroutineExceptionHandler) {
         if (settingsRepository.isLoggedIn.not()) {
-            _events.send(Event.NavigateLogin)
+            _events.send(Event.OpenLogin)
             return@launch
         }
         runCatching {
@@ -170,7 +170,7 @@ class StoriesViewModel(
 
     fun toggleFlagged(item: Item): Job = viewModelScope.launch(coroutineExceptionHandler) {
         if (settingsRepository.isLoggedIn.not()) {
-            _events.send(Event.NavigateLogin)
+            _events.send(Event.OpenLogin)
             return@launch
         }
         runCatching {

@@ -9,9 +9,11 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -67,29 +69,62 @@ actual fun MainNavHost(
     ) {
         composable<Route.BottomNav.Stories> {
             val viewModel: HomeViewModel = koinViewModel()
+            val lifecycleOwner = LocalLifecycleOwner.current
+            LaunchedEffect(Unit) {
+                lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    for (event in viewModel.events) {
+                        when (event) {
+                            is HomeViewModel.Event.OpenLogin -> {
+                                onClickLogin()
+                            }
+
+                            is HomeViewModel.Event.OpenReply -> {
+                                navController.navigate(Route.Reply(event.itemId))
+                            }
+
+                            is HomeViewModel.Event.OpenUser -> {
+                                navController.navigate(Route.User(event.username))
+                            }
+
+                            is HomeViewModel.Event.OpenStory -> {
+                                navController.navigate(Route.Story(event.itemId))
+                            }
+                        }
+                    }
+                }
+            }
             StoriesPane(
                 onClickLogin = onClickLogin,
-                onClickLogout = onClickLogout,
-                onClickUser = { navController.navigate(Route.User(it)) },
-                onClickStory = { navController.navigate(Route.Story(it.id)) },
-                onClickReply = {
-                    if (viewModel.isLoggedIn) {
-                        navController.navigate(Route.Reply(it))
-                    } else {
-                        onClickLogin()
-                    }
-                },
+                onClickUser = viewModel::onClickUser,
+                onClickStory = viewModel::onClickStory,
+                onClickReply = viewModel::onClickReply,
                 onClickUrl = onClickUrl,
             )
         }
         composable<Route.BottomNav.Favorites> {
             val viewModel: SettingsViewModel = koinViewModel()
+            val lifecycleOwner = LocalLifecycleOwner.current
+            LaunchedEffect(Unit) {
+                lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    for (event in viewModel.events) {
+                        when (event) {
+                            is SettingsViewModel.Event.OpenLogin -> {
+                                onClickLogin()
+                            }
+
+                            is SettingsViewModel.Event.OpenReply -> {
+                                navController.navigate(Route.Reply(event.itemId))
+                            }
+                        }
+                    }
+                }
+            }
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             if (uiState.username.string.isNotBlank()) {
                 FavoriteStoriesListPane(
                     username = uiState.username,
                     onClickItem = onClickItem,
-                    onClickReply = onClickReply,
+                    onClickReply = viewModel::onClickReply,
                     onClickUser = onClickUser,
                     onClickUrl = onClickUrl,
                     onClickLogin = onClickLogin,
@@ -105,10 +140,9 @@ actual fun MainNavHost(
         }
         composable<Route.BottomNav.Settings> {
             val viewModel: SettingsViewModel = koinViewModel()
-            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            val (_, username) = uiState
+            val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             SettingsListPane(
-                username = username,
+                username = uiState.username,
                 onClickLogin = onClickLogin,
                 onClickLogout = onClickLogout,
                 onClickAppearance = onClickAppearance,

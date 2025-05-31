@@ -82,7 +82,7 @@ enum class FabAction(
                                     .show()
                             }
 
-                            is StoriesViewModel.Event.NavigateLogin -> {
+                            is StoriesViewModel.Event.OpenLogin -> {
                                 onClickLogin()
                             }
                         }
@@ -149,7 +149,7 @@ enum class FabAction(
                                     .show()
                             }
 
-                            is StoriesViewModel.Event.NavigateLogin -> {
+                            is StoriesViewModel.Event.OpenLogin -> {
                                 onClickLogin()
                             }
                         }
@@ -215,7 +215,7 @@ enum class FabAction(
                                     .show()
                             }
 
-                            is StoriesViewModel.Event.NavigateLogin -> {
+                            is StoriesViewModel.Event.OpenLogin -> {
                                 onClickLogin()
                             }
                         }
@@ -281,7 +281,7 @@ enum class FabAction(
                                     .show()
                             }
 
-                            is StoriesViewModel.Event.NavigateLogin -> {
+                            is StoriesViewModel.Event.OpenLogin -> {
                                 onClickLogin()
                             }
                         }
@@ -347,7 +347,7 @@ enum class FabAction(
                                     .show()
                             }
 
-                            is StoriesViewModel.Event.NavigateLogin -> {
+                            is StoriesViewModel.Event.OpenLogin -> {
                                 onClickLogin()
                             }
                         }
@@ -413,7 +413,7 @@ enum class FabAction(
                                     .show()
                             }
 
-                            is StoriesViewModel.Event.NavigateLogin -> {
+                            is StoriesViewModel.Event.OpenLogin -> {
                                 onClickLogin()
                             }
                         }

@@ -3,8 +3,8 @@ package com.monoid.hackernews.common.view.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.monoid.hackernews.common.core.LoggerAdapter
-import com.monoid.hackernews.common.data.model.LoginRepository
 import com.monoid.hackernews.common.data.model.Password
+import com.monoid.hackernews.common.data.model.SettingsRepository
 import com.monoid.hackernews.common.data.model.Username
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
@@ -21,7 +21,7 @@ import org.koin.android.annotation.KoinViewModel
 @KoinViewModel
 class LoginViewModel(
     private val logger: LoggerAdapter,
-    private val loginRepository: LoginRepository,
+    private val settingsRepository: SettingsRepository,
 ) : ViewModel() {
     data class UiState(
         val showDialog: Boolean = false,
@@ -53,12 +53,12 @@ class LoginViewModel(
         password: Password,
     ): Job? {
         if (job?.isActive == true ||
-            loginRepository.preferences.value.username.string.isNotEmpty()
+            settingsRepository.preferences.value.username.string.isNotEmpty()
         ) return job
         job = viewModelScope.launch(context) {
             _uiState.update { it.copy(loading = true) }
             try {
-                loginRepository.login(username, password)
+                settingsRepository.login(username, password)
                 _events.send(Event.DismissRequest)
             } catch (throwable: Throwable) {
                 currentCoroutineContext().ensureActive()
@@ -72,7 +72,7 @@ class LoginViewModel(
     }
 
     fun logout(): Job = viewModelScope.launch(context) {
-        loginRepository.logout()
+        settingsRepository.logout()
     }
 }
 

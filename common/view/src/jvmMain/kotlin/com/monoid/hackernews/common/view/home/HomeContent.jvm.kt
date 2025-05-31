@@ -51,7 +51,7 @@ fun HomeContent(
                         // TODO
                     }
 
-                    is StoriesViewModel.Event.NavigateLogin -> {
+                    is StoriesViewModel.Event.OpenLogin -> {
                         onClickLogin()
                     }
                 }

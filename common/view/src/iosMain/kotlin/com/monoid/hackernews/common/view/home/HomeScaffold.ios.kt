@@ -7,8 +7,12 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
@@ -21,7 +25,6 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun StoriesPane(
     onClickLogin: () -> Unit,
-    onClickLogout: () -> Unit,
     onClickUser: (Username) -> Unit,
     onClickStory: (Item) -> Unit,
     onClickReply: (ItemId) -> Unit,
@@ -31,20 +34,35 @@ fun StoriesPane(
     val viewModel: StoriesViewModel = koinViewModel(
         extras = StoriesViewModel.extras(StoryOrdering.Trending),
     )
+    val lifecycleOwner = LocalLifecycleOwner.current
+    LaunchedEffect(Unit) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            for (event in viewModel.events) {
+                when (event){
+                    is StoriesViewModel.Event.Error -> {
+                        // TODO
+                    }
+                    is StoriesViewModel.Event.OpenLogin -> {
+                        onClickLogin()
+                    }
+                }
+            }
+        }
+    }
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
     ItemsColumn(
         itemsList = uiState.itemsList,
         isRefreshing = false,
-        onRefresh = {},
+        onRefresh = viewModel::refreshItems,
         onVisibleItem = viewModel::updateItem,
         onClickItem = onClickStory,
-        onClickReply = {},
-        onClickUser = {},
+        onClickReply = onClickReply,
+        onClickUser = onClickUser,
         onClickUrl = onClickUrl,
-        onClickUpvote = {},
-        onClickFavorite = {},
-        onClickFollow = {},
-        onClickFlag = {},
+        onClickUpvote = viewModel::toggleUpvote,
+        onClickFavorite = viewModel::toggleFavorite,
+        onClickFollow = viewModel::toggleFollow,
+        onClickFlag = viewModel::toggleFlagged,
         contentPadding = WindowInsets.safeDrawing
             .only(WindowInsetsSides.Top)
             .asPaddingValues(),

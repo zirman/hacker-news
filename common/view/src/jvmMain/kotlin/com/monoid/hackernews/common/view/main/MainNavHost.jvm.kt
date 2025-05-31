@@ -7,7 +7,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -51,17 +55,35 @@ actual fun MainNavHost(
     ) {
         composable<Route.Home> {
             val viewModel: HomeViewModel = koinViewModel()
+            val lifecycleOwner = LocalLifecycleOwner.current
+            LaunchedEffect(Unit) {
+                lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    for (event in viewModel.events) {
+                        when (event) {
+                            is HomeViewModel.Event.OpenLogin -> {
+                                onClickLogin()
+                            }
+
+                            is HomeViewModel.Event.OpenReply -> {
+                                navController.navigate(Route.Reply(event.itemId))
+                            }
+
+                            is HomeViewModel.Event.OpenUser -> {
+                                navController.navigate(Route.User(event.username))
+                            }
+
+                            is HomeViewModel.Event.OpenStory -> {
+                                navController.navigate(Route.Story(event.itemId))
+                            }
+                        }
+                    }
+                }
+            }
             HomeScaffold(
                 onClickLogin = onClickLogin,
                 onClickLogout = onClickLogout,
-                onClickUser = { navController.navigate(Route.User(it)) },
-                onClickReply = {
-                    if (viewModel.isLoggedIn) {
-                        navController.navigate(Route.Reply(it))
-                    } else {
-                        onClickLogin()
-                    }
-                },
+                onClickUser = viewModel::onClickUser,
+                onClickReply = viewModel::onClickReply,
                 onClickUrl = onClickUrl,
             )
         }

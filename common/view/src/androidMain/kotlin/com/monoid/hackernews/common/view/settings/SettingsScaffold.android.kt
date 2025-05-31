@@ -8,13 +8,10 @@ import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneScaffold
 import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.monoid.hackernews.common.view.platform.PlatformLoadingIndicator
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -27,14 +24,13 @@ fun SettingsScaffold(
     viewModel: SettingsViewModel = koinViewModel(),
 ) {
     Box(modifier = modifier) {
-        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-        val (loading, username) = uiState
+        val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
         val scope = rememberCoroutineScope()
         NavigableListDetailPaneScaffold(
             navigator = navigator,
             listPane = {
                 SettingsListPane(
-                    username = username,
+                    username = uiState.username,
                     onClickLogin = onClickLogin,
                     onClickLogout = onClickLogout,
                     onClickAppearance = {
@@ -103,8 +99,5 @@ fun SettingsScaffold(
                 )
             },
         )
-        if (loading) {
-            PlatformLoadingIndicator(modifier = Modifier.align(Alignment.Center))
-        }
     }
 }
