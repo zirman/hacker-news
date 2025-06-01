@@ -9,12 +9,24 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.data.model.LightDarkMode
 import com.monoid.hackernews.common.view.settings.AppearanceViewModel
 import org.koin.compose.viewmodel.koinViewModel
+import platform.UIKit.UIApplication
+import platform.UIKit.UIUserInterfaceStyle
+import platform.UIKit.UIWindow
 
 @Composable
 actual fun appColorScheme(): ColorScheme {
     val viewModel: AppearanceViewModel = koinViewModel()
     return when (viewModel.uiState.collectAsStateWithLifecycle().value.lightDarkMode) {
-        LightDarkMode.System -> LightThemeColors // TODO: get system setting
+        LightDarkMode.System -> {
+            if ((UIApplication.sharedApplication.windows.firstOrNull() as? UIWindow)?.windowScene?.traitCollection?.userInterfaceStyle ==
+                UIUserInterfaceStyle.UIUserInterfaceStyleDark
+            ) {
+                DarkThemeColors
+            } else {
+                LightThemeColors
+            }
+        }
+
         LightDarkMode.Light -> LightThemeColors
         LightDarkMode.Dark -> DarkThemeColors
     }
