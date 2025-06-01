@@ -10,6 +10,18 @@ Run on Desktop
 Build for Wear OS
 `gradle :wear-app:assembleDebug`
 
+Screenshots:
+Android:
+<img src="https://github.com/user-attachments/assets/0e37409a-65e2-44d9-8367-fb3c0e108cf3" width="320"/>
+<img src="https://github.com/user-attachments/assets/6532598b-65e4-4c20-b97b-fe2876b34395" width="320"/>
+
+Android Foldable:
+<img src="https://github.com/user-attachments/assets/9aa6c92a-28ce-4775-8e39-cfd9d3fd3277" width="640"/>
+
+iOS:
+<img src="https://github.com/user-attachments/assets/8e65715d-f8e8-4d8f-811f-40f0fcb7c39f" width="320"/>
+<img src="https://github.com/user-attachments/assets/a74416fc-df62-458b-b259-878056d08820" width="320"/>
+
 TODO:
  + Saved State, View Model, Lifecycle, Paging* KMP libraries
  + Modifier.onVisibilityChanged()
