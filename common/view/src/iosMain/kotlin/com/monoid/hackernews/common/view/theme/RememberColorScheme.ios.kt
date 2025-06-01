@@ -1,5 +1,6 @@
 package com.monoid.hackernews.common.view.theme
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -14,7 +15,14 @@ import org.koin.compose.viewmodel.koinViewModel
 actual fun appColorScheme(): ColorScheme {
     val viewModel: AppearanceViewModel = koinViewModel()
     return when (viewModel.uiState.collectAsStateWithLifecycle().value.lightDarkMode) {
-        LightDarkMode.System -> LightThemeColors // TODO: get system setting
+        LightDarkMode.System -> {
+            if (isSystemInDarkTheme()) {
+                DarkThemeColors
+            } else {
+                LightThemeColors
+            }
+        }
+
         LightDarkMode.Light -> LightThemeColors
         LightDarkMode.Dark -> DarkThemeColors
     }
