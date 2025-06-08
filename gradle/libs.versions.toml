@@ -14,6 +14,7 @@ ksp = "2.1.21-2.0.1" # https://github.com/google/ksp/releases
 kotlinPoet = "2.2.0" # https://github.com/square/kotlinpoet/releases
 kotlinWrappersBom = "2025.6.1" # https://github.com/JetBrains/kotlin-wrappers/releases
 jetbrainsCompose = "1.8.1" # https://github.com/JetBrains/compose-multiplatform/releases
+jetbrainsComposeHotReload = "1.0.0-alpha10" # https://mvnrepository.com/artifact/org.jetbrains.compose.hot-reload/hot-reload-gradle-plugin/1.0.0-alpha10
 kotlinCoroutines = "1.10.2"
 kotlinSerialization = "1.8.1"
 kotlinCollectionsImmutable = "0.3.8"
@@ -71,6 +72,7 @@ plugin-kotlinParcelize = { group = "org.jetbrains.kotlin.plugin.parcelize", name
 plugin-kotlinSerialization = { group = "org.jetbrains.kotlin.plugin.serialization", name = "org.jetbrains.kotlin.plugin.serialization.gradle.plugin", version.ref = "kotlin" }
 plugin-compose = { group = "org.jetbrains.kotlin.plugin.compose", name = "org.jetbrains.kotlin.plugin.compose.gradle.plugin", version.ref = "kotlin" }
 plugin-composeCompiler = { group = "org.jetbrains.compose", name = "compose-gradle-plugin", version.ref = "jetbrainsCompose" }
+plugin-composeHotReload = { group = "org.jetbrains.compose.hot-reload", name = "hot-reload-gradle-plugin", version.ref = "jetbrainsComposeHotReload" }
 plugin-androidApplication = { group = "com.android.application", name = "com.android.application.gradle.plugin", version.ref = "android" }
 plugin-androidLibrary = { group = "com.android.library", name = "com.android.library.gradle.plugin", version.ref = "android" }
 plugin-ksp = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
@@ -214,6 +216,7 @@ plugins = [
     "plugin-androidLibrary",
     "plugin-compose",
     "plugin-composeCompiler",
+    "plugin-composeHotReload",
     "plugin-crashlytics",
     "plugin-detektGradle",
     "plugin-firebasePerf",

@@ -12,6 +12,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.plugin.compose")
     id("org.jetbrains.compose")
+    id("org.jetbrains.compose.hot-reload")
     id("com.google.devtools.ksp")
     id("kotlin-parcelize")
     id("com.google.gms.google-services")

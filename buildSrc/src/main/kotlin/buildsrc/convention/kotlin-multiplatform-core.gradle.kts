@@ -12,6 +12,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.plugin.compose")
     id("org.jetbrains.compose")
+    id("org.jetbrains.compose.hot-reload")
     id("com.google.devtools.ksp")
     id("io.github.takahirom.roborazzi")
     id("buildsrc.convention.detekt-rules")

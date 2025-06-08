@@ -65,7 +65,11 @@ fun main() {
         modules(ApplicationModule().module)
     }
     application {
-        Window(onCloseRequest = ::exitApplication) {
+        Window(
+            onCloseRequest = ::exitApplication,
+            alwaysOnTop = true,
+            title = "Hacker News",
+        ) {
             AppTheme {
                 var showLoginDialog by rememberSaveable {
                     mutableStateOf(false)
