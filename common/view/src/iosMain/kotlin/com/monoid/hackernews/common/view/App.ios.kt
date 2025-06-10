@@ -82,7 +82,7 @@ actual fun App(onClickUrl: (Url) -> Unit) {
                         onClickLogout = {
                             showLogoutDialog = true
                         },
-                        onClickItem = {},
+                        onClickItem = { navController.nav(Route.Story(it.id)) },
                         onClickReply = { navController.nav(Route.Reply(it)) },
                         onClickUser = { navController.nav(Route.User(it)) },
                         onClickUrl = onClickUrl,
