@@ -13,4 +13,4 @@ JAVA_HOME=/usr/local/opt/openjdk@21
 
 export JAVA_HOME=/usr/local/opt/openjdk@21
 
-sudo ln -sfn /usr/local/opt/openjdk@21/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-21.jdk
+ln -sfn /usr/local/opt/openjdk@21/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-21.jdk
