@@ -9,8 +9,5 @@
 
 brew install openjdk@21
 
-JAVA_HOME=/usr/local/opt/openjdk@21
-
-export JAVA_HOME=/usr/local/opt/openjdk@21
-
-ln -sfn /usr/local/opt/openjdk@21/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-21.jdk
+#JAVA_HOME=/usr/local/opt/openjdk@21
+#export JAVA_HOME=/usr/local/opt/openjdk@21
