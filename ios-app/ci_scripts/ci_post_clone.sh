@@ -12,3 +12,4 @@ brew install openjdk@21
 JAVA_HOME=/usr/local/opt/openjdk@21
 
 export JAVA_HOME=/usr/local/opt/openjdk@21
+ls $JAVA_HOME
