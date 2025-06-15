@@ -67,7 +67,7 @@ enum class FabAction(
                     for (event in viewModel.events) {
                         when (event) {
                             is StoriesViewModel.Event.Error -> {
-                                // TODOa
+                                // TODO
                             }
 
                             is StoriesViewModel.Event.OpenLogin -> {

@@ -54,10 +54,10 @@ actual fun App(onClickUrl: (Url) -> Unit) {
                                         navController.navigate(
                                             route = destination,
                                             navOptions = navOptions {
-                                                popUpTo(destination) {
-                                                    saveState = true
-                                                }
-                                                launchSingleTop = true
+                                                // popUpTo(destination) {
+                                                //     saveState = true
+                                                // }
+                                                // launchSingleTop = true
                                             },
                                         )
                                         selectedDestination = index
