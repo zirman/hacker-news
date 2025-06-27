@@ -9,7 +9,7 @@ import androidx.room.Upsert
 import com.monoid.hackernews.common.data.api.ItemApi
 import com.monoid.hackernews.common.data.api.toItemDb
 import com.monoid.hackernews.common.data.model.Item
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 @Dao
 interface ItemDao {

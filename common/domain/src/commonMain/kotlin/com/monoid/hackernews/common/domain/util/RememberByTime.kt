@@ -6,10 +6,10 @@ import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.buildAnnotatedString
 import com.monoid.hackernews.common.data.html.DEFAULT_TEXT_LINK_STYLES
 import com.monoid.hackernews.common.data.model.Username
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.periodUntil
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 const val USER_TAG = "USER"
 

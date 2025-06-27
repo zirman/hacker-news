@@ -27,8 +27,8 @@ import com.monoid.hackernews.common.data.room.NewStoryDao
 import com.monoid.hackernews.common.data.room.NewStoryDb
 import com.monoid.hackernews.common.data.room.ShowStoryDao
 import com.monoid.hackernews.common.data.room.ShowStoryDb
-import com.monoid.hackernews.common.data.room.TrendingStoryDb
 import com.monoid.hackernews.common.data.room.TrendingStoryDao
+import com.monoid.hackernews.common.data.room.TrendingStoryDb
 import io.ktor.client.HttpClient
 import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.persistentMapOf
@@ -46,9 +46,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import org.koin.core.annotation.Single
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 @Single
 class StoriesRepository(

@@ -70,6 +70,9 @@ kotlin {
         androidUnitTest.dependencies {
             implementation(libs.bundles.androidUnitTest)
         }
+        all {
+            languageSettings.optIn("kotlin.time.ExperimentalTime")
+        }
     }
     jvm()
     androidTarget()

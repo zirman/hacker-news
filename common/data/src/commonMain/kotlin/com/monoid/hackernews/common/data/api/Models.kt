@@ -3,11 +3,11 @@ package com.monoid.hackernews.common.data.api
 import com.monoid.hackernews.common.data.model.ItemType
 import com.monoid.hackernews.common.data.room.ItemDb
 import com.monoid.hackernews.common.data.room.UserDb
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 @Serializable
 @JvmInline

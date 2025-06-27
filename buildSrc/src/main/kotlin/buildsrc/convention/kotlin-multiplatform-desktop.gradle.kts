@@ -26,6 +26,9 @@ kotlin {
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)
         }
+        all {
+            languageSettings.optIn("kotlin.time.ExperimentalTime")
+        }
     }
     jvm("desktop")
     compilerOptions {

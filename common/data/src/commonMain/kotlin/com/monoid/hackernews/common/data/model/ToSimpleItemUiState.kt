@@ -6,7 +6,7 @@ import com.monoid.hackernews.common.data.html.toHtmlAnnotatedString
 import com.monoid.hackernews.common.data.room.EXPANDED_DEFAULT
 import com.monoid.hackernews.common.data.room.FOLLOWED_DEFAULT
 import com.monoid.hackernews.common.data.room.ItemDb
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 fun ItemDb.toSimpleItemUiState(kids: List<ItemId>): Item = Item(
     id = ItemId(id),
