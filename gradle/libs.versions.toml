@@ -12,9 +12,9 @@ desugarJdkLibs = "2.1.5"
 kotlin = "2.1.21" # https://github.com/jetbrains/kotlin/releases
 ksp = "2.1.21-2.0.2" # https://github.com/google/ksp/releases
 kotlinPoet = "2.2.0" # https://github.com/square/kotlinpoet/releases
-kotlinWrappersBom = "2025.6.11" # https://github.com/JetBrains/kotlin-wrappers/releases
+kotlinWrappersBom = "2025.7.1" # https://github.com/JetBrains/kotlin-wrappers/releases
 jetbrainsCompose = "1.9.0-alpha02" # https://github.com/JetBrains/compose-multiplatform/releases
-jetbrainsComposeHotReload = "1.0.0-beta01" # https://mvnrepository.com/artifact/org.jetbrains.compose.hot-reload/hot-reload-gradle-plugin/1.0.0-alpha10
+jetbrainsComposeHotReload = "1.0.0-beta03" # https://mvnrepository.com/artifact/org.jetbrains.compose.hot-reload/hot-reload-gradle-plugin/
 kotlinCoroutines = "1.10.2"
 kotlinSerialization = "1.8.1"
 kotlinCollectionsImmutable = "0.4.0"
@@ -22,7 +22,7 @@ koin = "4.1.0" # https://github.com/InsertKoinIO/koin/releases
 koinAnnotations = "2.1.0" # https://github.com/InsertKoinIO/koin-annotations/releases
 material3WindowSizeClassMultiplatform = "0.5.0"
 kotlinDatetime = "0.7.0"
-ktor = "3.1.3" # https://github.com/ktorio/ktor/releases
+ktor = "3.2.1" # https://github.com/ktorio/ktor/releases
 kermit = "2.0.6"
 room = "2.7.2"
 sqlite = "2.5.2"
@@ -48,7 +48,7 @@ workRuntimeKtx = "2.10.2"
 preferenceKtx = "1.2.1"
 metricsPerformance = "1.0.0-beta02"
 composeLintChecks = "1.4.2"
-material3Adaptive = "1.2.0-alpha07"
+material3Adaptive = "1.2.0-alpha08"
 wearCompose = "1.4.1"
 accompanist = "0.37.3" # https://github.com/google/accompanist/releases
 junit = "4.13.2"
@@ -178,7 +178,7 @@ material3WindowSizeClassMultiplatform = { group = "dev.chrisbanes.material3", na
 material3Adaptive = { group = "androidx.compose.material3.adaptive", name = "adaptive", version.ref = "material3Adaptive" }
 material3AdaptiveLayout = { group = "androidx.compose.material3.adaptive", name = "adaptive-layout", version.ref = "material3Adaptive" }
 material3AdaptiveNavigation = { group = "org.jetbrains.compose.material3.adaptive", name = "adaptive-navigation", version = "1.1.2" }
-material3AdaptiveNavigationSuite = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite", version = "1.4.0-alpha16" }
+material3AdaptiveNavigationSuite = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite", version = "1.4.0-alpha17" }
 
 composeMaterialWear = { group = "androidx.wear.compose", name = "compose-material", version.ref = "wearCompose" }
 composeNavigationWear = { group = "androidx.wear.compose", name = "compose-navigation", version.ref = "wearCompose" }
