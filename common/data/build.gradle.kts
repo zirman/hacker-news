@@ -10,7 +10,7 @@ dependencies {
     // room
     "kspAndroid"(libs.roomCompiler)
     "kspJvm"(libs.roomCompiler)
-    "kspIosX64"(libs.roomCompiler)
+//    "kspIosX64"(libs.roomCompiler)
     "kspIosArm64"(libs.roomCompiler)
     "kspIosSimulatorArm64"(libs.roomCompiler)
 }

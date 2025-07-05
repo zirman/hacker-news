@@ -43,7 +43,7 @@ kotlin {
     }
     jvm()
     androidTarget()
-    iosX64()
+//    iosX64()
     iosArm64()
     iosSimulatorArm64()
     compilerOptions {
@@ -87,7 +87,7 @@ android {
 }
 val kspAndroid by configurations.named("kspAndroid")
 val kspJvm by configurations.named("kspJvm")
-val kspIosX64 by configurations.named("kspIosX64")
+//val kspIosX64 by configurations.named("kspIosX64")
 val kspIosArm64 by configurations.named("kspIosArm64")
 val kspIosSimulatorArm64 by configurations.named("kspIosSimulatorArm64")
 dependencies {
@@ -95,7 +95,7 @@ dependencies {
     kspCommonMainMetadata(libs.koinKspCompiler)
     kspAndroid(libs.koinKspCompiler)
     kspJvm(libs.koinKspCompiler)
-    kspIosX64(libs.koinKspCompiler)
+//    kspIosX64(libs.koinKspCompiler)
     kspIosArm64(libs.koinKspCompiler)
     kspIosSimulatorArm64(libs.koinKspCompiler)
     kspAndroid(project(":ksp-processors:screenshot"))
