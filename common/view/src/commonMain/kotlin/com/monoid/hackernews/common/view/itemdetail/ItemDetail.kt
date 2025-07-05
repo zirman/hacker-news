@@ -31,8 +31,6 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TooltipBox
-import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -51,8 +49,6 @@ import com.monoid.hackernews.common.data.model.ItemType
 import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.domain.util.timeBy2
 import com.monoid.hackernews.common.view.Res
-import com.monoid.hackernews.common.view.TooltipPopupPositionProvider
-import com.monoid.hackernews.common.view.comment
 import com.monoid.hackernews.common.view.favorite
 import com.monoid.hackernews.common.view.flag
 import com.monoid.hackernews.common.view.follow
@@ -263,34 +259,25 @@ fun ItemDetail(
                 if (item != null && (item.lastUpdate == null || item.type == ItemType.Story)) {
                     item.score.let { score ->
                         key("score") {
-                            TooltipBox(
-                                positionProvider = TooltipPopupPositionProvider(),
-                                tooltip = {
-                                    Surface { Text(text = stringResource(Res.string.upvote)) }
-                                },
-                                state = rememberTooltipState(),
+                            IconButton(
+                                onClick = { onClickUpvote(item) },
+                                enabled = item.type == ItemType.Story,
                             ) {
-                                IconButton(
-                                    onClick = { onClickUpvote(item) },
-                                    enabled = item.type == ItemType.Story,
-                                ) {
-                                    Icon(
-                                        imageVector = if (item.upvoted == true) {
-                                            Icons.Filled.ThumbUp
+                                Icon(
+                                    imageVector = if (item.upvoted == true) {
+                                        Icons.Filled.ThumbUp
+                                    } else {
+                                        Icons.TwoTone.ThumbUp
+                                    },
+                                    contentDescription = stringResource(
+                                        if (item.upvoted == true) {
+                                            Res.string.un_vote
                                         } else {
-                                            Icons.TwoTone.ThumbUp
+                                            Res.string.upvote
                                         },
-                                        contentDescription = stringResource(
-                                            if (item.upvoted == true) {
-                                                Res.string.un_vote
-                                            } else {
-                                                Res.string.upvote
-                                            },
-                                        ),
-                                    )
-                                }
+                                    ),
+                                )
                             }
-
                             Text(
                                 text = score?.toString().orEmpty(),
                                 modifier = Modifier.widthIn(min = 24.dp),
@@ -302,19 +289,11 @@ fun ItemDetail(
                 val descendants = item?.descendants
                 key("comments") {
                     if (item != null && (item.type == ItemType.Story || item.type == ItemType.Comment)) {
-                        TooltipBox(
-                            positionProvider = TooltipPopupPositionProvider(),
-                            tooltip = {
-                                Surface { Text(text = stringResource(Res.string.comment)) }
-                            },
-                            state = rememberTooltipState(),
-                        ) {
-                            IconButton(onClick = { onClickReply(item.id) }) {
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.TwoTone.Comment,
-                                    contentDescription = null,
-                                )
-                            }
+                        IconButton(onClick = { onClickReply(item.id) }) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.TwoTone.Comment,
+                                contentDescription = null,
+                            )
                         }
                     }
                     Text(
@@ -335,21 +314,11 @@ fun ItemDetail(
                         textAlign = TextAlign.End,
                         style = MaterialTheme.typography.labelLarge,
                     )
-                    TooltipBox(
-                        positionProvider = TooltipPopupPositionProvider(),
-                        tooltip = {
-                            Surface {
-                                Text(text = stringResource(Res.string.open_in_browser))
-                            }
-                        },
-                        state = rememberTooltipState(),
-                    ) {
-                        IconButton(onClick = { onClickUrl(url) }) {
-                            Icon(
-                                imageVector = Icons.Filled.OpenInBrowser,
-                                contentDescription = stringResource(Res.string.open_in_browser)
-                            )
-                        }
+                    IconButton(onClick = { onClickUrl(url) }) {
+                        Icon(
+                            imageVector = Icons.Filled.OpenInBrowser,
+                            contentDescription = stringResource(Res.string.open_in_browser)
+                        )
                     }
                 }
             }
