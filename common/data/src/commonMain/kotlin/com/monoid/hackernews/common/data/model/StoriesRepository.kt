@@ -150,7 +150,8 @@ class StoriesRepository(
     val showStories = combine(_cache, showStoryIds, ::Pair).toStories()
     val askStories = combine(_cache, askStoryIds, ::Pair).toStories()
     val jobStories: StateFlow<List<Item>?> = combine(_cache, jobStoryIds, ::Pair).toStories()
-    val favoriteStories: StateFlow<List<Item>?> = combine(_cache, favoriteStoryIds, ::Pair).toStories()
+    val favoriteStories: StateFlow<List<Item>?> = combine(_cache, favoriteStoryIds, ::Pair)
+        .toStories()
 
     suspend fun updateFavoriteStories(username: Username) {
         val html = remoteDataSource.getFavorites(username)

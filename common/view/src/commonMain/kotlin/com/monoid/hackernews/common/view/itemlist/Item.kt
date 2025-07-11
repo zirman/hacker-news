@@ -33,8 +33,6 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TooltipBox
-import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -54,8 +52,6 @@ import com.monoid.hackernews.common.data.model.ItemType
 import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.domain.util.timeBy2
 import com.monoid.hackernews.common.view.Res
-import com.monoid.hackernews.common.view.TooltipPopupPositionProvider
-import com.monoid.hackernews.common.view.comment
 import com.monoid.hackernews.common.view.favorite
 import com.monoid.hackernews.common.view.flag
 import com.monoid.hackernews.common.view.follow
@@ -229,42 +225,35 @@ fun Item(
                     by = item.by,
 //                    onClick = onClickUser,
                 ),
-                modifier = Modifier
-                    .padding(horizontal = 8.dp)
+                modifier = Modifier.padding(horizontal = 8.dp)
                     .height(with(LocalDensity.current) { style.lineHeight.toDp() }),
                 style = style,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
             )
             Row(verticalAlignment = Alignment.CenterVertically) {
-                key("score") {
+                key("upvotes") {
                     if (isStoryOrComment) {
-                        TooltipBox(
-                            positionProvider = TooltipPopupPositionProvider(),
-                            tooltip = { Surface { Text(stringResource(Res.string.upvote)) } },
-                            state = rememberTooltipState(),
-                        ) {
-                            IconButton(onClick = { onClickUpvote(item) }) {
-                                Icon(
-                                    imageVector = if (item.upvoted == true) {
-                                        Icons.Filled.ThumbUp
+                        IconButton(onClick = { onClickUpvote(item) }) {
+                            Icon(
+                                imageVector = if (item.upvoted == true) {
+                                    Icons.Filled.ThumbUp
+                                } else {
+                                    Icons.TwoTone.ThumbUp
+                                },
+                                contentDescription = stringResource(
+                                    if (item.upvoted == true) {
+                                        Res.string.un_vote
                                     } else {
-                                        Icons.TwoTone.ThumbUp
+                                        Res.string.upvote
                                     },
-                                    contentDescription = stringResource(
-                                        if (item.upvoted == true) {
-                                            Res.string.un_vote
-                                        } else {
-                                            Res.string.upvote
-                                        },
-                                    ),
-                                )
-                            }
+                                ),
+                            )
                         }
                     }
-                    val score = item.score
+                    val score = item.score?.toString().orEmpty()
                     Text(
-                        text = score?.toString().orEmpty(),
+                        text = score,
                         maxLines = 1,
                         modifier = Modifier.widthIn(min = 24.dp),
                         overflow = TextOverflow.Ellipsis,
@@ -274,17 +263,11 @@ fun Item(
                 key("comments") {
                     val descendants = item.descendants
                     if (isStoryOrComment) {
-                        TooltipBox(
-                            positionProvider = TooltipPopupPositionProvider(),
-                            tooltip = { Surface { Text(stringResource(Res.string.comment)) } },
-                            state = rememberTooltipState(),
-                        ) {
-                            IconButton(onClick = { onClickReply(item.id) }) {
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.TwoTone.Comment,
-                                    contentDescription = null,
-                                )
-                            }
+                        IconButton(onClick = { onClickReply(item.id) }) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.TwoTone.Comment,
+                                contentDescription = null,
+                            )
                         }
                     }
                     Text(
@@ -307,17 +290,11 @@ fun Item(
                                 overflow = TextOverflow.Ellipsis,
                                 style = MaterialTheme.typography.labelLarge,
                             )
-                            TooltipBox(
-                                positionProvider = TooltipPopupPositionProvider(),
-                                tooltip = { Surface { Text(stringResource(Res.string.open_in_browser)) } },
-                                state = rememberTooltipState(),
-                            ) {
-                                IconButton(onClick = { onClickUrl(url) }) {
-                                    Icon(
-                                        imageVector = Icons.Filled.OpenInBrowser,
-                                        contentDescription = stringResource(Res.string.open_in_browser),
-                                    )
-                                }
+                            IconButton(onClick = { onClickUrl(url) }) {
+                                Icon(
+                                    imageVector = Icons.Filled.OpenInBrowser,
+                                    contentDescription = stringResource(Res.string.open_in_browser),
+                                )
                             }
                         }
                     }
