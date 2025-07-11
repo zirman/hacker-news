@@ -11,7 +11,19 @@ dependencyResolutionManagement {
         }
     }
 }
-
+pluginManagement {
+    buildscript {
+        repositories {
+            mavenCentral()
+            maven {
+                url = uri("https://storage.googleapis.com/r8-releases/raw")
+            }
+        }
+        dependencies {
+            classpath("com.android.tools:r8:8.13.0-dev")
+        }
+    }
+}
 rootProject.name = "HackerNews"
 include(":mobile-app")
 include(":desktop-app")
