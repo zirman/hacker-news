@@ -2,15 +2,7 @@
 
 package com.monoid.hackernews.common.view.settings
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.Add
 import androidx.compose.material.icons.twotone.Remove
@@ -26,13 +18,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.data.model.HNFont
 import com.monoid.hackernews.common.data.model.LightDarkMode
 import com.monoid.hackernews.common.data.model.Shape
-import com.monoid.hackernews.common.view.Res
-import com.monoid.hackernews.common.view.font_size_format
-import com.monoid.hackernews.common.view.fonts
-import com.monoid.hackernews.common.view.light_dark_mode
-import com.monoid.hackernews.common.view.line_spacing_format
-import com.monoid.hackernews.common.view.paragraph_indent_format
-import com.monoid.hackernews.common.view.shapes
+import com.monoid.hackernews.common.view.*
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -43,9 +29,7 @@ fun AppearanceDetailPane(
 ) {
     Surface(
         modifier = modifier
-            .padding(16.dp)
-            .fillMaxWidth()
-            .padding(WindowInsets.safeDrawing.asPaddingValues()),
+            .fillMaxSize(),
     ) {
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         val selectedLightDarkMode = uiState.lightDarkMode
@@ -54,7 +38,11 @@ fun AppearanceDetailPane(
         val lineSpacing = uiState.lineHeight
         val paragraphIndent = uiState.paragraphIndent
         val selectedShape = uiState.shape
-        Column {
+        Column(
+            modifier = Modifier
+                .padding(WindowInsets.safeDrawing.asPaddingValues())
+                .padding(16.dp),
+        ) {
             Text(stringResource(Res.string.light_dark_mode))
             FlowRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 LightDarkMode.entries.forEach { lightDarkMode ->

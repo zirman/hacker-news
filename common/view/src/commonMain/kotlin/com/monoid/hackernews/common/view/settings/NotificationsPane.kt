@@ -1,11 +1,6 @@
 package com.monoid.hackernews.common.view.settings
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
@@ -25,15 +20,15 @@ fun NotificationsPane(
     modifier: Modifier = Modifier,
     viewModel: NotificationsViewModel = koinViewModel(),
 ) {
-    Surface(
-        modifier = modifier.padding(
-            WindowInsets.safeDrawing
-                .only(detailContentInsetSides())
-                .asPaddingValues(),
-        ),
-    ) {
+    Surface(modifier = modifier.fillMaxSize()) {
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-        Column {
+        Column(
+            modifier = modifier.padding(
+                WindowInsets.safeDrawing
+                    .only(detailContentInsetSides())
+                    .asPaddingValues(),
+            ),
+        ) {
             ListItem(
                 headlineContent = {
                     Text(stringResource(Res.string.notifications))
