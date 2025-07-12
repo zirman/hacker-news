@@ -64,7 +64,7 @@ assertjCore = "3.27.3"
 slf4jSimple = "2.0.17"
 detekt = "1.23.8"
 ksoup = "0.6.0"
-#coil = "2.6.0"
+coil = "3.2.0"
 
 [libraries]
 plugin-kotlinGradle = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -119,6 +119,12 @@ ktorClientDarwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref
 ktorClientLogging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
 ktorClientContentNegotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktorSerializationKotlinJson = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktorCoilAndroid = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }
+ktorCoilDarwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
+ktorCoilJvm = { group = "io.ktor", name = "ktor-client-java", version.ref = "ktor" }
+
+coil = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
+coilNetwork = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", version.ref = "coil" }
 
 kermit = { group = "co.touchlab", name = "kermit", version.ref = "kermit" }
 
@@ -201,8 +207,8 @@ robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "
 roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi", version.ref = "roborazzi" }
 roborazziCompose = { group = "io.github.takahirom.roborazzi", name = "roborazzi-compose", version.ref = "roborazzi" }
 roborazziJUnitRule = { group = "io.github.takahirom.roborazzi", name = "roborazzi-junit-rule", version.ref = "roborazzi" }
-junitJupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junitJupiter" }
-assertjCore = { module = "org.assertj:assertj-core", version.ref = "assertjCore" }
+junitJupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
+assertjCore = { group = "org.assertj", name = "assertj-core", version.ref = "assertjCore" }
 
 detektApi = { group = "io.gitlab.arturbosch.detekt", name = "detekt-api", version.ref = "detekt" }
 detektTooling = { group = "io.gitlab.arturbosch.detekt", name = "detekt-tooling", version.ref = "detekt" }
@@ -230,6 +236,8 @@ plugins = [
 ]
 commonMain = [
     "annotation",
+    "coil",
+    "coilNetwork",
     "datastore",
     "datastoreCoreOkio",
     "datastorePreferences",
@@ -271,6 +279,7 @@ androidMain = [
     "firebasePerfKtx",
     "fragmentKtx",
     "koinAndroid",
+    "ktorCoilAndroid",
     "koinKtor",
     "koinLoggerSlf4j",
     "kotlinCoroutinesAndroid",
@@ -293,6 +302,7 @@ jvmMain = [
     "datastoreCoreOkioJvm",
     "kotlinCoroutinesSwing",
     "ktorClientJvm",
+    "ktorCoilJvm",
 ]
 wear = [
     "composeMaterialWear",
@@ -301,6 +311,7 @@ wear = [
 ]
 iosMain = [
     "ktorClientDarwin",
+    "ktorCoilDarwin",
     "koinCore",
 ]
 commonTest = [
