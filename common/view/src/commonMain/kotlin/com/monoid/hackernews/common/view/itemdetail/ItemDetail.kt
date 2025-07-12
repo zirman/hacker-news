@@ -77,10 +77,7 @@ fun ItemDetail(
     onClickFlag: (Item) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Surface(
-        modifier = modifier,
-        contentColor = MaterialTheme.colorScheme.secondary,
-    ) {
+    Surface(modifier = modifier) {
         Column(
             verticalArrangement = Arrangement.spacedBy(4.dp),
             modifier = Modifier.padding(vertical = 4.dp),
