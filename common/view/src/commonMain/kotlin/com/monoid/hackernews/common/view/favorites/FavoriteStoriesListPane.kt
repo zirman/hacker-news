@@ -2,6 +2,7 @@ package com.monoid.hackernews.common.view.favorites
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -52,26 +53,28 @@ fun FavoriteStoriesListPane(
             }
         }
     }
-    Box {
-        ItemsColumn(
-            itemsList = uiState.itemsList,
-            isRefreshing = uiState.isRefreshing,
-            onRefresh = viewModel::refreshItems,
-            onVisibleItem = viewModel::updateItem,
-            onClickItem = onClickItem,
-            onClickReply = onClickReply,
-            onClickUser = onClickUser,
-            onClickUrl = onClickUrl,
-            onClickUpvote = viewModel::toggleUpvote,
-            onClickFavorite = viewModel::toggleFavorite,
-            onClickFollow = viewModel::toggleFollow,
-            onClickFlag = viewModel::toggleFlagged,
-            contentPadding = contentPadding,
-            modifier = modifier,
-        ) {
-        }
-        if (uiState.loading && uiState.isRefreshing.not()) {
-            PlatformLoadingIndicator(modifier = Modifier.align(Alignment.Center))
+    Surface {
+        Box {
+            ItemsColumn(
+                itemsList = uiState.itemsList,
+                isRefreshing = uiState.isRefreshing,
+                onRefresh = viewModel::refreshItems,
+                onVisibleItem = viewModel::updateItem,
+                onClickItem = onClickItem,
+                onClickReply = onClickReply,
+                onClickUser = onClickUser,
+                onClickUrl = onClickUrl,
+                onClickUpvote = viewModel::toggleUpvote,
+                onClickFavorite = viewModel::toggleFavorite,
+                onClickFollow = viewModel::toggleFollow,
+                onClickFlag = viewModel::toggleFlagged,
+                contentPadding = contentPadding,
+                modifier = modifier,
+            ) {
+            }
+            if (uiState.loading && uiState.isRefreshing.not()) {
+                PlatformLoadingIndicator(modifier = Modifier.align(Alignment.Center))
+            }
         }
     }
 }

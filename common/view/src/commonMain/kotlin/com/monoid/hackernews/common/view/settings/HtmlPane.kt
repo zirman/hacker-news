@@ -49,7 +49,11 @@ fun HtmlPane(htmlString: String, modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
                     .widthIn(max = 640.dp)
-                    .padding(WindowInsets.safeDrawing.only(WindowInsetsSides.Vertical + WindowInsetsSides.End).asPaddingValues())
+                    .padding(
+                        WindowInsets.safeDrawing
+                            .only(WindowInsetsSides.Vertical + WindowInsetsSides.End)
+                            .asPaddingValues(),
+                    )
                     .padding(16.dp)
                     .fillMaxSize(),
                 style = htmlTextStyle(),
