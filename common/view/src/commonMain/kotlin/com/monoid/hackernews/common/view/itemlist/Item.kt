@@ -35,12 +35,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.AnnotatedString
@@ -293,15 +295,21 @@ fun Item(
                             style = MaterialTheme.typography.labelLarge,
                         )
                         IconButton(onClick = { onClickUrl(url) }) {
-                            val painter = rememberVectorPainter(Icons.Filled.OpenInBrowser)
-                            AsyncImage(
-                                model = item.favicon.toString(),
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                placeholder = painter,
-                                error = painter,
-                                modifier = Modifier.size(24.dp),
-                            )
+                            var showFavicon by remember { mutableStateOf(true) }
+                            if (showFavicon) {
+                                AsyncImage(
+                                    model = item.favicon.toString(),
+                                    contentDescription = null,
+                                    contentScale = ContentScale.Crop,
+                                    onError = { showFavicon = false },
+                                    modifier = Modifier.size(24.dp),
+                                )
+                            } else {
+                                Icon(
+                                    imageVector = Icons.Filled.OpenInBrowser,
+                                    contentDescription = null,
+                                )
+                            }
                         }
                     }
                 }
