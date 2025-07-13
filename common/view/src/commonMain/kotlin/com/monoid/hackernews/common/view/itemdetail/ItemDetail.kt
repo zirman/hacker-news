@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.twotone.Comment
@@ -38,11 +39,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.monoid.hackernews.common.data.Url
+import coil3.compose.AsyncImage
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.ItemType
@@ -53,7 +56,6 @@ import com.monoid.hackernews.common.view.favorite
 import com.monoid.hackernews.common.view.flag
 import com.monoid.hackernews.common.view.follow
 import com.monoid.hackernews.common.view.more_options
-import com.monoid.hackernews.common.view.open_in_browser
 import com.monoid.hackernews.common.view.placeholder.PlaceholderHighlight
 import com.monoid.hackernews.common.view.placeholder.placeholder
 import com.monoid.hackernews.common.view.placeholder.shimmer
@@ -62,6 +64,7 @@ import com.monoid.hackernews.common.view.un_flag
 import com.monoid.hackernews.common.view.un_vote
 import com.monoid.hackernews.common.view.unfollow
 import com.monoid.hackernews.common.view.upvote
+import io.ktor.http.Url
 import org.jetbrains.compose.resources.stringResource
 
 @Suppress("CyclomaticComplexMethod")
@@ -80,10 +83,12 @@ fun ItemDetail(
     Surface(modifier = modifier) {
         Column(
             verticalArrangement = Arrangement.spacedBy(4.dp),
-            modifier = Modifier.padding(vertical = 4.dp),
+            modifier = Modifier.padding(top = 4.dp),
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
@@ -92,9 +97,7 @@ fun ItemDetail(
                     } else {
                         AnnotatedString(item?.title.orEmpty())
                     },
-                    modifier = Modifier
-                        .padding(horizontal = 8.dp)
-                        .weight(1f),
+                    modifier = Modifier.weight(1f),
                     style = LocalTextStyle.current.merge(MaterialTheme.typography.titleMedium),
                 )
                 val (contextExpanded: Boolean, setContextExpanded) =
@@ -214,7 +217,7 @@ fun ItemDetail(
                 Text(
                     text = itemText,
                     modifier = Modifier
-                        .padding(8.dp)
+                        .padding(start = 16.dp)
                         .placeholder(
                             visible = false,
                             color = Color.Transparent,
@@ -248,7 +251,7 @@ fun ItemDetail(
 //                    }
 //                },
                 modifier = Modifier
-                    .padding(horizontal = 8.dp)
+                    .padding(start = 16.dp)
                     .fillMaxWidth(),
                 style = LocalTextStyle.current.merge(MaterialTheme.typography.labelMedium),
             )
@@ -301,7 +304,7 @@ fun ItemDetail(
                         style = MaterialTheme.typography.labelMedium,
                     )
                 }
-                val url = item?.takeIf { it.lastUpdate != null }?.url?.let { Url(it) }
+                val url = item?.takeIf { it.lastUpdate != null }?.url
                 if (item != null && url != null) {
                     Text(
                         text = url.host,
@@ -312,9 +315,14 @@ fun ItemDetail(
                         style = MaterialTheme.typography.labelLarge,
                     )
                     IconButton(onClick = { onClickUrl(url) }) {
-                        Icon(
-                            imageVector = Icons.Filled.OpenInBrowser,
-                            contentDescription = stringResource(Res.string.open_in_browser)
+                        val painter = rememberVectorPainter(Icons.Filled.OpenInBrowser)
+                        AsyncImage(
+                            model = item.favicon.toString(),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            placeholder = painter,
+                            error = painter,
+                            modifier = Modifier.size(24.dp),
                         )
                     }
                 }

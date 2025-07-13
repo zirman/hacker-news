@@ -16,12 +16,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.view.settings.SettingsViewModel
 import com.monoid.hackernews.common.view.stories.StoriesDetailPane
 import com.monoid.hackernews.common.view.stories.listContentInsetSides
+import io.ktor.http.Url
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 

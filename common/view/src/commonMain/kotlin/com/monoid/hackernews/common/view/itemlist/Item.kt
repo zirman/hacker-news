@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.twotone.Comment
@@ -39,13 +40,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.monoid.hackernews.common.data.Url
+import coil3.compose.AsyncImage
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.ItemType
@@ -56,12 +59,12 @@ import com.monoid.hackernews.common.view.favorite
 import com.monoid.hackernews.common.view.flag
 import com.monoid.hackernews.common.view.follow
 import com.monoid.hackernews.common.view.more_options
-import com.monoid.hackernews.common.view.open_in_browser
 import com.monoid.hackernews.common.view.un_favorite
 import com.monoid.hackernews.common.view.un_flag
 import com.monoid.hackernews.common.view.un_vote
 import com.monoid.hackernews.common.view.unfollow
 import com.monoid.hackernews.common.view.upvote
+import io.ktor.http.Url
 import org.jetbrains.compose.resources.stringResource
 
 @Suppress("CyclomaticComplexMethod")
@@ -81,13 +84,13 @@ fun Item(
     val isStoryOrComment = item.type == ItemType.Story || item.type == ItemType.Comment
     Surface(
         modifier = modifier.clickable(onClick = { onClickItem(item) }),
-        // contentColor = LocalContentColor.current,
-        tonalElevation = ((item.score ?: 0) / 10).dp
+        tonalElevation = ((item.score ?: 0) / 10).dp,
     ) {
         Column(modifier = Modifier.padding(4.dp)) {
             Row(verticalAlignment = Alignment.Top) {
                 Text(
-                    text = item.title?.let { AnnotatedString(it) }
+                    text = item.title
+                        ?.let { AnnotatedString(it) }
                         ?: item.text
                         ?: AnnotatedString(""),
                     minLines = 2,
@@ -279,23 +282,26 @@ fun Item(
                     )
                 }
                 key("url") {
-                    if (item.url != null) {
-                        val url = item.url?.let { Url(it) }
-                        if (url != null) {
-                            Text(
-                                text = url.host,
-                                maxLines = 1,
-                                modifier = Modifier.weight(1f),
-                                textAlign = TextAlign.End,
-                                overflow = TextOverflow.Ellipsis,
-                                style = MaterialTheme.typography.labelLarge,
+                    val url = item.url
+                    if (url != null) {
+                        Text(
+                            text = url.host,
+                            maxLines = 1,
+                            modifier = Modifier.weight(1f),
+                            textAlign = TextAlign.End,
+                            overflow = TextOverflow.Ellipsis,
+                            style = MaterialTheme.typography.labelLarge,
+                        )
+                        IconButton(onClick = { onClickUrl(url) }) {
+                            val painter = rememberVectorPainter(Icons.Filled.OpenInBrowser)
+                            AsyncImage(
+                                model = item.favicon.toString(),
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop,
+                                placeholder = painter,
+                                error = painter,
+                                modifier = Modifier.size(24.dp),
                             )
-                            IconButton(onClick = { onClickUrl(url) }) {
-                                Icon(
-                                    imageVector = Icons.Filled.OpenInBrowser,
-                                    contentDescription = stringResource(Res.string.open_in_browser),
-                                )
-                            }
                         }
                     }
                 }

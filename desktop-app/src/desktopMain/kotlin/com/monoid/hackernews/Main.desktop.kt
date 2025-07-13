@@ -42,7 +42,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.domain.navigation.Route
 import com.monoid.hackernews.common.view.home.ItemsColumn
@@ -51,14 +50,16 @@ import com.monoid.hackernews.common.view.login.LoginDialog
 import com.monoid.hackernews.common.view.stories.StoriesViewModel
 import com.monoid.hackernews.common.view.stories.StoryOrdering
 import com.monoid.hackernews.common.view.theme.AppTheme
+import io.ktor.http.Url
+import io.ktor.http.toURI
+import java.awt.Cursor
+import java.awt.Desktop
 import org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi
 import org.jetbrains.compose.splitpane.HorizontalSplitPane
 import org.jetbrains.compose.splitpane.rememberSplitPaneState
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.context.startKoin
 import org.koin.ksp.generated.module
-import java.awt.Cursor
-import java.awt.Desktop
 
 fun main() {
     startKoin {
@@ -134,7 +135,7 @@ fun main() {
                                         (if (Desktop.isDesktopSupported()) Desktop.getDesktop() else null)
                                             ?.takeIf { it.isSupported(Desktop.Action.BROWSE) }
                                             ?.run {
-                                                browse(url.toUri().uri)
+                                                browse(url.toURI())
                                                 true
                                             }
                                             ?: false

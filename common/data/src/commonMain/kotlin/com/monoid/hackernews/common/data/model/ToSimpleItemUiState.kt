@@ -6,6 +6,9 @@ import com.monoid.hackernews.common.data.html.toHtmlAnnotatedString
 import com.monoid.hackernews.common.data.room.EXPANDED_DEFAULT
 import com.monoid.hackernews.common.data.room.FOLLOWED_DEFAULT
 import com.monoid.hackernews.common.data.room.ItemDb
+import io.ktor.http.URLBuilder
+import io.ktor.http.Url
+import io.ktor.http.path
 import kotlin.time.Instant
 
 fun ItemDb.toSimpleItemUiState(kids: List<ItemId>): Item = Item(
@@ -20,7 +23,14 @@ fun ItemDb.toSimpleItemUiState(kids: List<ItemId>): Item = Item(
     score = score,
     title = title,
     text = text?.toHtmlAnnotatedString(),
-    url = url,
+    url = url?.let { Url(it) },
+    favicon = url
+        ?.let { URLBuilder(it) }
+        ?.apply {
+            path("favicon.ico")
+            parameters.clear()
+        }
+        ?.build(),
     parent = parent?.let { ItemId(it) },
     upvoted = upvoted,
     favorited = favorited,
@@ -63,7 +73,14 @@ fun ItemApi.toSimpleItemUiState(instant: Instant, item: Item?): Item {
                 by = by?.let { Username(it) },
                 title = title,
                 text = text?.toHtmlAnnotatedString(),
-                url = url,
+                url = url?.let { Url(it) },
+                favicon = url
+                    ?.let { URLBuilder(it) }
+                    ?.apply {
+                        path("favicon.ico")
+                        parameters.clear()
+                    }
+                    ?.build(),
                 expanded = expanded,
                 followed = followed,
             )
@@ -115,7 +132,14 @@ fun ItemApi.toSimpleItemUiState(instant: Instant, item: Item?): Item {
                 score = score,
                 title = title,
                 text = text?.toHtmlAnnotatedString(),
-                url = url,
+                url = url?.let { Url(it) },
+                favicon = url
+                    ?.let { URLBuilder(it) }
+                    ?.apply {
+                        path("favicon.ico")
+                        parameters.clear()
+                    }
+                    ?.build(),
                 expanded = expanded,
                 followed = followed,
             )

@@ -7,11 +7,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.view.login.LoginDialog
 import com.monoid.hackernews.common.view.logout.LogoutDialog
 import com.monoid.hackernews.common.view.main.MainNavHost
 import com.monoid.hackernews.common.view.theme.AppTheme
+import io.ktor.http.Url
 
 @Composable
 actual fun App(onClickUrl: (Url) -> Unit) {

@@ -23,7 +23,6 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
-import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.domain.navigation.Route
 import com.monoid.hackernews.common.view.home.contentDescription
 import com.monoid.hackernews.common.view.home.icon
@@ -32,6 +31,7 @@ import com.monoid.hackernews.common.view.login.LoginDialog
 import com.monoid.hackernews.common.view.logout.LogoutDialog
 import com.monoid.hackernews.common.view.main.MainNavHost
 import com.monoid.hackernews.common.view.theme.AppTheme
+import io.ktor.http.Url
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

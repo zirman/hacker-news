@@ -2,6 +2,7 @@ package com.monoid.hackernews.common.data.model
 
 import androidx.compose.ui.text.AnnotatedString
 import com.monoid.hackernews.common.data.api.ItemId
+import io.ktor.http.Url
 
 data class Item(
     val id: ItemId,
@@ -14,7 +15,8 @@ data class Item(
     val score: Int? = null,
     val title: String? = null,
     val text: AnnotatedString? = null,
-    val url: String? = null,
+    val url: Url? = null,
+    val favicon: Url? = null,
     val parent: ItemId? = null,
     val kids: List<ItemId>? = null,
     val upvoted: Boolean? = null,

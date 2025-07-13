@@ -10,6 +10,7 @@ import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.ItemType
 import com.monoid.hackernews.common.data.model.Username
+import io.ktor.http.Url
 
 @Preview
 @Composable
@@ -28,7 +29,7 @@ internal fun ItemsColumnPreview() {
                     score = 5,
                     title = "Hello World",
                     text = null,
-                    url = "https://www.wikipedia.org/",
+                    url = Url("https://www.wikipedia.org/"),
                     parent = null,
                     kids = emptyList(),
                     upvoted = false,
@@ -48,7 +49,7 @@ internal fun ItemsColumnPreview() {
                     score = 5,
                     title = "Hello World",
                     text = null,
-                    url = "https://www.wikipedia.org/",
+                    url = Url("https://www.wikipedia.org/"),
                     parent = null,
                     kids = emptyList(),
                     upvoted = false,

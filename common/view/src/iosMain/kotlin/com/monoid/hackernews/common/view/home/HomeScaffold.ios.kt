@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
-import com.monoid.hackernews.common.data.Url
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.Username
@@ -18,6 +17,7 @@ import com.monoid.hackernews.common.view.stories.StoriesListPane
 import com.monoid.hackernews.common.view.stories.StoriesViewModel
 import com.monoid.hackernews.common.view.stories.StoryOrdering
 import com.monoid.hackernews.common.view.stories.listContentInsetSides
+import io.ktor.http.Url
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable

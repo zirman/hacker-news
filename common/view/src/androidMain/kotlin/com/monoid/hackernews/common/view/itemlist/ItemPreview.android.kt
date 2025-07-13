@@ -7,6 +7,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.ItemType
+import io.ktor.http.Url
 
 @Preview
 @Composable
@@ -18,7 +19,7 @@ internal fun ItemPreview() {
                 type = ItemType.Story,
                 title = "Hello World",
                 text = AnnotatedString("Lorum Ipsum"),
-                url = "https://www.wikipedia.com/",
+                url = Url("https://www.wikipedia.com/"),
                 kids = emptyList(),
                 upvoted = false,
                 favorited = false,
