@@ -2,7 +2,6 @@
 
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-
     repositories {
         google()
         mavenCentral()
@@ -21,6 +20,18 @@ pluginManagement {
         }
         dependencies {
             classpath("com.android.tools:r8:8.13.0-dev")
+        }
+    }
+}
+plugins {
+    id("org.gradle.toolchains.foojay-resolver") version "1.0.0"
+}
+toolchainManagement {
+    jvm {
+        javaRepositories {
+            repository("foojay") {
+                resolverClass.set(org.gradle.toolchains.foojay.FoojayToolchainResolver::class.java)
+            }
         }
     }
 }
