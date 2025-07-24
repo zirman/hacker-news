@@ -2,6 +2,7 @@ package buildsrc.convention
 
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.jetbrains.compose.ExperimentalComposeLibrary
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_1
 
 plugins {
     kotlin("multiplatform")
@@ -32,6 +33,9 @@ kotlin {
     }
     jvm("desktop")
     compilerOptions {
+        // Should be able to remove in 2.2.20-Beta2
+        // https://issuetracker.google.com/issues/429988549
+        apiVersion = KOTLIN_2_1
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }
     jvmToolchain(libs.versions.jvmToolchain.get().toInt())
