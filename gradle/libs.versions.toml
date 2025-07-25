@@ -6,20 +6,20 @@ minSdk = "26"
 targetSdk = "36"
 compileSdk = "36"
 compileSdkPreview = "Baklava"
-android = "8.10.0"
+android = "8.11.1"
 #lint = "31.4.0"
 desugarJdkLibs = "2.1.5"
-kotlin = "2.2.0" # https://github.com/jetbrains/kotlin/releases
-ksp = "2.2.0-2.0.2" # https://github.com/google/ksp/releases
+kotlin = "2.2.10-RC" # https://github.com/jetbrains/kotlin/releases
+ksp = "2.2.10-RC-2.0.2" # https://github.com/google/ksp/releases
 kotlinPoet = "2.2.0" # https://github.com/square/kotlinpoet/releases
-kotlinWrappersBom = "2025.7.9" # https://github.com/JetBrains/kotlin-wrappers/releases
-jetbrainsCompose = "1.9.0-alpha03" # https://github.com/JetBrains/compose-multiplatform/releases
+kotlinWrappersBom = "2025.7.12" # https://github.com/JetBrains/kotlin-wrappers/releases
+jetbrainsCompose = "1.9.0-beta01" # https://github.com/JetBrains/compose-multiplatform/releases
 jetbrainsComposeHotReload = "1.0.0-beta04" # https://mvnrepository.com/artifact/org.jetbrains.compose.hot-reload/hot-reload-gradle-plugin/
 kotlinCoroutines = "1.10.2"
 kotlinSerialization = "1.9.0"
 kotlinCollectionsImmutable = "0.4.0"
 koin = "4.1.0" # https://github.com/InsertKoinIO/koin/releases
-koinAnnotations = "2.1.0" # https://github.com/InsertKoinIO/koin-annotations/releases
+koinAnnotations = "2.1.1-RC1" # https://github.com/InsertKoinIO/koin-annotations/releases
 material3WindowSizeClassMultiplatform = "0.5.0"
 kotlinDatetime = "0.7.1"
 ktor = "3.2.2" # https://github.com/ktorio/ktor/releases
@@ -30,13 +30,13 @@ datastore = "1.1.7"
 activityKtx = "1.10.1"
 fragmentKtx = "1.8.8"
 lifecycle = "2.9.1" # https://mvnrepository.com/artifact/org.jetbrains.androidx.lifecycle/lifecycle-viewmodel
-navigationCompose = "2.9.0-beta03" # https://mvnrepository.com/artifact/org.jetbrains.androidx.navigation/navigation-compose
+navigationCompose = "2.9.0-beta04" # https://mvnrepository.com/artifact/org.jetbrains.androidx.navigation/navigation-compose
 #navigation = "2.8.7"
 googlePlayServices = "4.4.3"
 playServicesWearable = "19.0.0"
-crashlytics = "3.0.4"
-firebasePerf = "1.4.2"
-firebaseBom = "33.16.0"
+crashlytics = "3.0.5"
+firebasePerf = "2.0.0"
+firebaseBom = "34.0.0"
 window = "1.4.0"
 appcompat = "1.7.1"
 coreKtx = "1.16.0"
@@ -64,7 +64,7 @@ assertjCore = "3.27.3"
 slf4jSimple = "2.0.17"
 detekt = "1.23.8"
 ksoup = "0.6.0"
-coil = "3.2.0"
+coil = "3.3.0"
 
 [libraries]
 plugin-kotlinGradle = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -108,8 +108,8 @@ kotlinPoetKsp = { group = "com.squareup", name = "kotlinpoet-ksp", version.ref =
 
 firebaseBom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebaseCrashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
-firebaseAnalyticsKtx = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
-firebasePerfKtx = { group = "com.google.firebase", name = "firebase-perf-ktx" }
+firebaseAnalytics = { group = "com.google.firebase", name = "firebase-analytics" }
+firebasePerf = { group = "com.google.firebase", name = "firebase-perf" }
 
 ktorClientCore = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktorClientAndroid = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }
@@ -119,8 +119,6 @@ ktorClientDarwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref
 ktorClientLogging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
 ktorClientContentNegotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktorSerializationKotlinJson = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
-ktorCoilAndroid = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }
-ktorCoilDarwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
 ktorCoilJvm = { group = "io.ktor", name = "ktor-client-java", version.ref = "ktor" }
 
 coil = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
@@ -274,12 +272,11 @@ androidMain = [
     "collectionKtx",
     "coreKtx",
     "coreSplashscreen",
-    "firebaseAnalyticsKtx",
+    "firebaseAnalytics",
     "firebaseCrashlytics",
-    "firebasePerfKtx",
+    "firebasePerf",
     "fragmentKtx",
     "koinAndroid",
-    "ktorCoilAndroid",
     "koinKtor",
     "koinLoggerSlf4j",
     "kotlinCoroutinesAndroid",
@@ -311,7 +308,6 @@ wear = [
 ]
 iosMain = [
     "ktorClientDarwin",
-    "ktorCoilDarwin",
     "koinCore",
 ]
 commonTest = [
