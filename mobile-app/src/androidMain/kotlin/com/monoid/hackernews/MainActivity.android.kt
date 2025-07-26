@@ -3,14 +3,12 @@ package com.monoid.hackernews
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.animation.AnticipateInterpolator
 import androidx.activity.ComponentActivity
-import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.animation.doOnEnd
@@ -21,70 +19,26 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.metrics.performance.JankStats
 import com.monoid.hackernews.common.core.LoggerAdapter
-import com.monoid.hackernews.common.data.model.LightDarkMode
-import com.monoid.hackernews.common.data.model.SettingsRepository
 import com.monoid.hackernews.common.view.App
 import io.ktor.http.Url
-import java.util.concurrent.TimeUnit
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.awaitCancellation
-import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.android.scope.AndroidScopeComponent
 import org.koin.androidx.scope.activityRetainedScope
 import org.koin.core.scope.Scope
+import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity(), AndroidScopeComponent {
     override val scope: Scope by activityRetainedScope()
     private val logger: LoggerAdapter by inject()
-    private val repository: SettingsRepository by inject()
-
-    private val context = CoroutineExceptionHandler { _, throwable ->
-        logger.recordException(
-            messageString = "CoroutineExceptionHandler",
-            throwable = throwable,
-            tag = TAG,
-        )
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         windowSetup(savedInstanceState)
         super.onCreate(savedInstanceState)
-        setContent {
-            App(onClickUrl = ::onClickUrl)
-        }
+        enableEdgeToEdge()
+        setContent { App(onClickUrl = ::onClickUrl) }
         jankStats()
-        lifecycleScope.launch(context) {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                repository.preferences
-                    .distinctUntilChangedBy { it.lightDarkMode }
-                    .collect { preferences -> setSystemBarsAppearance(preferences.lightDarkMode) }
-            }
-        }
-    }
-
-    private fun setSystemBarsAppearance(lightDarkMode: LightDarkMode) {
-        val darkMode: Boolean = when (lightDarkMode) {
-            LightDarkMode.System ->
-                resources.configuration.uiMode and
-                    Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
-
-            LightDarkMode.Light -> false
-            LightDarkMode.Dark -> true
-        }
-        val systemBarStyle = if (darkMode) {
-            SystemBarStyle.dark(android.graphics.Color.TRANSPARENT)
-        } else {
-            SystemBarStyle.light(
-                android.graphics.Color.TRANSPARENT,
-                android.graphics.Color.TRANSPARENT,
-            )
-        }
-        enableEdgeToEdge(
-            navigationBarStyle = systemBarStyle,
-            statusBarStyle = systemBarStyle,
-        )
     }
 
     private fun windowSetup(savedInstanceState: Bundle?) {
@@ -100,7 +54,7 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                     // an NPE
                     if (savedInstanceState != null || startedAnimation) {
                         splashScreenView.remove()
-                        setSystemBarsAppearance(repository.preferences.value.lightDarkMode)
+                        enableEdgeToEdge()
                         return@setOnExitAnimationListener
                     }
                     try {
@@ -113,7 +67,7 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                         animateIn.duration = 400L
                         animateIn.doOnEnd {
                             splashScreenView.remove()
-                            setSystemBarsAppearance(repository.preferences.value.lightDarkMode)
+                            enableEdgeToEdge()
                         }
                         animateIn.start()
                     } catch (throwable: Throwable) {
@@ -168,7 +122,11 @@ class MainActivity : ComponentActivity(), AndroidScopeComponent {
                 },
             )
         } catch (throwable: Throwable) {
-            // TODO
+            logger.recordException(
+                messageString = "onClickUrl($url)",
+                throwable = throwable,
+                tag = TAG,
+            )
         }
     }
 }
