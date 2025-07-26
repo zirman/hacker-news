@@ -9,8 +9,8 @@ compileSdkPreview = "Baklava"
 android = "8.11.1"
 #lint = "31.4.0"
 desugarJdkLibs = "2.1.5"
-kotlin = "2.2.10-RC" # https://github.com/jetbrains/kotlin/releases
-ksp = "2.2.10-RC-2.0.2" # https://github.com/google/ksp/releases
+kotlin = "2.1.21" # https://github.com/jetbrains/kotlin/releases
+ksp = "2.1.21-2.0.2" # https://github.com/google/ksp/releases
 kotlinPoet = "2.2.0" # https://github.com/square/kotlinpoet/releases
 kotlinWrappersBom = "2025.7.12" # https://github.com/JetBrains/kotlin-wrappers/releases
 jetbrainsCompose = "1.9.0-beta01" # https://github.com/JetBrains/compose-multiplatform/releases
@@ -54,12 +54,12 @@ accompanist = "0.37.3" # https://github.com/google/accompanist/releases
 junit = "4.13.2"
 junitExt = "1.2.1"
 espressoCore = "3.6.1"
-uiTestJunit4 = "1.8.3"
-uiTestManifest = "1.8.3"
+uiTestJunit4 = "1.9.0-beta03" # https://mvnrepository.com/artifact/androidx.compose.ui/ui-test-junit4
 mockk = "1.14.5"
 robolectric = "4.15.1"
 roborazzi = "1.46.1"
-junitJupiter = "5.13.4"
+junitJupiter = "6.0.0-M2"
+junitPlatform = "1.13.4"
 assertjCore = "3.27.3"
 slf4jSimple = "2.0.17"
 detekt = "1.23.8"
@@ -199,13 +199,15 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 junitExt = { group = "androidx.test.ext", name = "junit", version.ref = "junitExt" }
 espressoCore = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 uiTestJunit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "uiTestJunit4" }
-uiTestManifest = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref = "uiTestManifest" }
+uiTestManifest = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref = "uiTestJunit4" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi", version.ref = "roborazzi" }
 roborazziCompose = { group = "io.github.takahirom.roborazzi", name = "roborazzi-compose", version.ref = "roborazzi" }
 roborazziJUnitRule = { group = "io.github.takahirom.roborazzi", name = "roborazzi-junit-rule", version.ref = "roborazzi" }
 junitJupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
+junitPlatformEngine = { group = "org.junit.platform", name = "junit-platform-engine", version.ref = "junitPlatform" }
+junitPlatformLauncher = { group = "org.junit.platform", name = "junit-platform-launcher", version.ref = "junitPlatform" }
 assertjCore = { group = "org.assertj", name = "assertj-core", version.ref = "assertjCore" }
 
 detektApi = { group = "io.gitlab.arturbosch.detekt", name = "detekt-api", version.ref = "detekt" }

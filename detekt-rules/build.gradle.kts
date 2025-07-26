@@ -9,6 +9,8 @@ dependencies {
     testImplementation(libs.assertjCore)
     testImplementation(libs.detektTest)
     testImplementation(libs.junitJupiter)
+    testRuntimeOnly(libs.junitPlatformEngine)
+    testRuntimeOnly(libs.junitPlatformLauncher)
 }
 tasks.named<Test>("test") {
     useJUnitPlatform()
