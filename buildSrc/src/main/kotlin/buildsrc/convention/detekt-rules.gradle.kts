@@ -19,7 +19,7 @@ detekt {
 }
 dependencies {
     detektPlugins(libs.detektFormatting)
-    detektPlugins(project(":detekt-rules"))
+    detektPlugins(libs.robsRules)
 }
 tasks.withType<Detekt> {
     config.setFrom(files("${rootProject.projectDir}/detekt.yml"))

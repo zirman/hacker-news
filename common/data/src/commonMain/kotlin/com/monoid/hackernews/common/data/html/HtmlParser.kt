@@ -308,20 +308,20 @@ class HtmlParser(
                         "<div", "</div",
                         "<h1", "</h1", "<h2", "</h2", "<h3", "</h3", "<h4", "</h4", "<h5", "</h5", "<h6", "</h6",
                         "<pre", "</pre",
-                            -> TextIndent.None
+                        -> TextIndent.None
 
                         else -> null
                     },
                     lineBreak = when (tag.start) {
                         "<p", "</p",
-                            -> LineBreak.Paragraph
+                        -> LineBreak.Paragraph
 
                         "<div", "</div",
                         "<pre", "</pre",
-                            -> LineBreak.Simple // TODO: disable soft wrap when possible
+                        -> LineBreak.Simple // TODO: disable soft wrap when possible
 
                         "<h1", "</h1", "<h2", "</h2", "<h3", "</h3", "<h4", "</h4", "<h5", "</h5", "<h6", "</h6",
-                            -> LineBreak.Heading
+                        -> LineBreak.Heading
 
                         else -> throw IllegalStateException("Token doesn't have configured linebreak")
                     },

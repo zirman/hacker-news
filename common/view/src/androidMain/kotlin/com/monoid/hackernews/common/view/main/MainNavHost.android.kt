@@ -27,8 +27,8 @@ import com.monoid.hackernews.common.domain.navigation.UsernameNavType
 import com.monoid.hackernews.common.view.comment.CommentDialog
 import com.monoid.hackernews.common.view.home.HomeScaffold
 import io.ktor.http.Url
-import kotlin.reflect.typeOf
 import org.koin.compose.viewmodel.koinViewModel
+import kotlin.reflect.typeOf
 
 @Composable
 actual fun MainNavHost(

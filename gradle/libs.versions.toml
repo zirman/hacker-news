@@ -9,8 +9,8 @@ compileSdkPreview = "Baklava"
 android = "8.11.1"
 #lint = "31.4.0"
 desugarJdkLibs = "2.1.5"
-kotlin = "2.1.21" # https://github.com/jetbrains/kotlin/releases
-ksp = "2.1.21-2.0.2" # https://github.com/google/ksp/releases
+kotlin = "2.2.10-RC" # https://github.com/jetbrains/kotlin/releases
+ksp = "2.2.10-RC-2.0.2" # https://github.com/google/ksp/releases
 kotlinPoet = "2.2.0" # https://github.com/square/kotlinpoet/releases
 kotlinWrappersBom = "2025.7.12" # https://github.com/JetBrains/kotlin-wrappers/releases
 jetbrainsCompose = "1.9.0-beta01" # https://github.com/JetBrains/compose-multiplatform/releases
@@ -63,6 +63,7 @@ junitPlatform = "1.13.4"
 assertjCore = "3.27.3"
 slf4jSimple = "2.0.17"
 detekt = "1.23.8"
+robsRules = "1.0.0"
 ksoup = "0.6.0"
 coil = "3.3.0"
 
@@ -210,11 +211,8 @@ junitPlatformEngine = { group = "org.junit.platform", name = "junit-platform-eng
 junitPlatformLauncher = { group = "org.junit.platform", name = "junit-platform-launcher", version.ref = "junitPlatform" }
 assertjCore = { group = "org.assertj", name = "assertj-core", version.ref = "assertjCore" }
 
-detektApi = { group = "io.gitlab.arturbosch.detekt", name = "detekt-api", version.ref = "detekt" }
-detektTooling = { group = "io.gitlab.arturbosch.detekt", name = "detekt-tooling", version.ref = "detekt" }
-detektTest = { group = "io.gitlab.arturbosch.detekt", name = "detekt-test", version.ref = "detekt" }
 detektFormatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
-detektRulesRuleauthors = { group = "io.gitlab.arturbosch.detekt", name = "detekt-rules-ruleauthors", version.ref = "detekt" }
+robsRules = { group = "dev.robch.rules", name = "robs-rules", version.ref = "robsRules" }
 
 [bundles]
 plugins = [

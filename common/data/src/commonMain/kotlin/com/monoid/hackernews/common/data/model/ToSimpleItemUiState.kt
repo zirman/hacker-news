@@ -39,6 +39,7 @@ fun ItemDb.toSimpleItemUiState(kids: List<ItemId>): Item = Item(
     followed = followed,
 )
 
+@Suppress("CyclomaticComplexMethod")
 fun ItemApi.toSimpleItemUiState(instant: Instant, item: Item?): Item {
     val lastUpdate = instant.epochSeconds
     // ensure kids are sorted by id

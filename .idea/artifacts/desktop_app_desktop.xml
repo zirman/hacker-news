@@ -2,7 +2,7 @@
   <artifact type="jar" name="desktop-app-desktop">
     <output-path>$PROJECT_DIR$/desktop-app/build/libs</output-path>
     <root id="archive" name="desktop-app-desktop.jar">
-      <element id="module-output" name="HackerNews.desktop-app.desktopMain" />
+      <element id="module-output" name="Hacker_News.desktop-app.desktopMain" />
     </root>
   </artifact>
 </component>

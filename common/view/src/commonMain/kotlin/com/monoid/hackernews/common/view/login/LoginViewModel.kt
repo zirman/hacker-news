@@ -54,7 +54,9 @@ class LoginViewModel(
     ): Job? {
         if (job?.isActive == true ||
             settingsRepository.preferences.value.username.string.isNotEmpty()
-        ) return job
+        ) {
+            return job
+        }
         job = viewModelScope.launch(context) {
             _uiState.update { it.copy(loading = true) }
             try {

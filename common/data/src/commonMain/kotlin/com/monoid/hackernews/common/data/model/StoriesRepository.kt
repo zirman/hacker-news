@@ -50,6 +50,7 @@ import org.koin.core.annotation.Single
 import kotlin.time.Clock
 import kotlin.time.Instant
 
+@Suppress("LongParameterList")
 @Single
 class StoriesRepository(
     private val logger: LoggerAdapter,
@@ -180,16 +181,16 @@ class StoriesRepository(
         }
     }
 
-    private fun Flow<Pair<PersistentMap<ItemId, Item>, List<ItemId>?>>.toStories(
-    ): StateFlow<List<Item>?> = map { (cache, itemIds) ->
-        itemIds?.map { id ->
-            cache[id] ?: Item(id = id)
-        }
-    }.stateIn(
-        scope = scope,
-        started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
-        initialValue = null,
-    )
+    private fun Flow<Pair<PersistentMap<ItemId, Item>, List<ItemId>?>>.toStories(): StateFlow<List<Item>?> =
+        map { (cache, itemIds) ->
+            itemIds?.map { id ->
+                cache[id] ?: Item(id = id)
+            }
+        }.stateIn(
+            scope = scope,
+            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000),
+            initialValue = null,
+        )
 
     suspend fun updateTrendingStories() {
         trendingStoryLocalDataSource.replaceTopStories(

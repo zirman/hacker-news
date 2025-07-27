@@ -1,5 +1,0 @@
-hackerRules:
-  CatchingCoroutineCancellation:
-    active: true
-  CatchingCoroutineCancellationLambda:
-    active: true

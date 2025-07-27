@@ -3,6 +3,7 @@
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
+        mavenLocal()
         google()
         mavenCentral()
         maven {
@@ -24,18 +25,9 @@ pluginManagement {
     }
 }
 plugins {
-    id("org.gradle.toolchains.foojay-resolver") version "1.0.0"
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
-toolchainManagement {
-    jvm {
-        javaRepositories {
-            repository("foojay") {
-                resolverClass.set(org.gradle.toolchains.foojay.FoojayToolchainResolver::class.java)
-            }
-        }
-    }
-}
-rootProject.name = "HackerNews"
+rootProject.name = "Hacker News"
 include(":mobile-app")
 include(":desktop-app")
 include(":wear-app")
@@ -43,5 +35,4 @@ include(":common:core")
 include(":common:view")
 include(":common:domain")
 include(":common:data")
-include(":detekt-rules")
 include(":ksp-processors:screenshot")

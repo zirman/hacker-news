@@ -19,8 +19,8 @@ internal fun HtmlToken.Tag.isBreak(): Boolean = when (start) {
 
 internal fun HtmlToken.Tag.isBlock(): Boolean = when (start) {
     "<p", "</p", "<pre", "</pre", "<h1", "</h1", "<h2", "</h2", "<h3", "</h3", "<h4", "</h4", "<h5", "</h5",
-    "<h6", "</h6", "<div", "</div",
-        -> true
+    "<h6", "</h6", "<div", "</div"
+    -> true
 
     else -> false
 }

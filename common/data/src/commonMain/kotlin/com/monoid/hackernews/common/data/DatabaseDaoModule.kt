@@ -1,12 +1,12 @@
 package com.monoid.hackernews.common.data
 
 import com.monoid.hackernews.common.data.room.AskStoryDao
-import com.monoid.hackernews.common.data.room.HotStoryDao
+import com.monoid.hackernews.common.data.room.CommentDao
 import com.monoid.hackernews.common.data.room.HNDatabase
+import com.monoid.hackernews.common.data.room.HotStoryDao
 import com.monoid.hackernews.common.data.room.ItemDao
 import com.monoid.hackernews.common.data.room.JobStoryDao
 import com.monoid.hackernews.common.data.room.NewStoryDao
-import com.monoid.hackernews.common.data.room.CommentDao
 import com.monoid.hackernews.common.data.room.ShowStoryDao
 import com.monoid.hackernews.common.data.room.TrendingStoryDao
 import com.monoid.hackernews.common.data.room.UserDao

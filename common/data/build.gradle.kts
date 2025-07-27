@@ -1,5 +1,3 @@
-import org.gradle.kotlin.dsl.resources
-
 plugins {
     id("buildsrc.convention.kotlin-multiplatform-library")
     id("kotlin-parcelize")

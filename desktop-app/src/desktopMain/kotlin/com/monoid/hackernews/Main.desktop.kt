@@ -52,14 +52,14 @@ import com.monoid.hackernews.common.view.stories.StoryOrdering
 import com.monoid.hackernews.common.view.theme.AppTheme
 import io.ktor.http.Url
 import io.ktor.http.toURI
-import java.awt.Cursor
-import java.awt.Desktop
 import org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi
 import org.jetbrains.compose.splitpane.HorizontalSplitPane
 import org.jetbrains.compose.splitpane.rememberSplitPaneState
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.context.startKoin
 import org.koin.ksp.generated.module
+import java.awt.Cursor
+import java.awt.Desktop
 
 fun main() {
     startKoin {
@@ -140,7 +140,7 @@ fun main() {
                                             }
                                             ?: false
                                     } catch (throwable: Throwable) {
-                                        // TODO
+                                        throwable.printStackTrace()
                                     }
                                 },
                             )
