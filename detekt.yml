@@ -1059,7 +1059,7 @@ formatting:
     indentSize: 4
     maxLineLength: 120
 
-coroutine:
+robs-rules:
   CatchingCoroutineCancellation:
     active: true
   RunCatchingCoroutineCancellation:

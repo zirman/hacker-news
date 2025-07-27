@@ -17,6 +17,9 @@ detekt {
     // point to your custom config defining rules to run, overwriting default behavior.
     config.setFrom("${rootProject.projectDir}/detekt.yml")
     baseline = projectDir.resolve("detekt-baseline.xml")
+    enableCompilerPlugin = false
+    // verbose output
+    debug = true
 }
 dependencies {
     detektPlugins(libs.detektFormatting)
