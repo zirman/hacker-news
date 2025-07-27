@@ -26,8 +26,8 @@ import com.monoid.hackernews.common.data.model.ItemType
 import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.view.stories.detailContentInsetSides
 import io.ktor.http.Url
-import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.seconds
 
 @Composable
 fun ItemDetailPane(

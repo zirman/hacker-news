@@ -9,13 +9,14 @@ plugins {
 }
 val libs = the<LibrariesForLibs>()
 detekt {
-    buildUponDefaultConfig = true // preconfigure defaults.
+    buildUponDefaultConfig = false // preconfigure defaults.
     allRules = false // activate all available (even unstable) rules.
     autoCorrect = false // To enable or disable auto formatting.
     // To enable or disable parallel execution of detekt on multiple submodules.
     parallel = true
     // point to your custom config defining rules to run, overwriting default behavior.
     config.setFrom("${rootProject.projectDir}/detekt.yml")
+    baseline = projectDir.resolve("detekt-baseline.xml")
 }
 dependencies {
     detektPlugins(libs.detektFormatting)
@@ -45,6 +46,9 @@ tasks.withType<Detekt> {
 tasks.withType<DetektCreateBaselineTask>().configureEach {
     config.setFrom(files("${rootProject.projectDir}/detekt.yml"))
     jvmTarget = libs.versions.jvmTarget.get()
+    exclude {
+        it.file.relativeTo(projectDir).startsWith("build")
+    }
 }
 pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
     tasks.withType<Detekt>().configureEach {
