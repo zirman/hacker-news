@@ -5,7 +5,7 @@ package buildsrc.convention
 import com.google.devtools.ksp.gradle.KspAATask
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.jetbrains.compose.ExperimentalComposeLibrary
-import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_1
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
@@ -50,7 +50,7 @@ kotlin {
     compilerOptions {
         // Should be able to remove in 2.2.20-Beta2
         // https://issuetracker.google.com/issues/429988549
-        apiVersion = KotlinVersion.KOTLIN_2_1
+        apiVersion = KOTLIN_2_1
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }
     jvmToolchain(libs.versions.jvmToolchain.get().toInt())
