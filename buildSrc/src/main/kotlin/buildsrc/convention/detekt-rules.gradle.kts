@@ -20,6 +20,7 @@ detekt {
     enableCompilerPlugin = false
     // verbose output
     debug = true
+    ignoredBuildTypes = listOf("release")
 }
 dependencies {
     detektPlugins(libs.detektFormatting)

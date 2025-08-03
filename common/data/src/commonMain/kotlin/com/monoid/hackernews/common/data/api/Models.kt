@@ -5,12 +5,10 @@ import com.monoid.hackernews.common.data.room.ItemDb
 import com.monoid.hackernews.common.data.room.UserDb
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlin.jvm.JvmInline
 import kotlin.time.Clock
 import kotlin.time.Instant
 
 @Serializable
-@JvmInline
 expect value class ItemId(
     val long: Long,
 )

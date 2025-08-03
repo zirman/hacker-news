@@ -6,13 +6,13 @@ minSdk = "26"
 targetSdk = "36"
 compileSdk = "36"
 compileSdkPreview = "Baklava"
-android = "8.11.1"
+android = "8.12.0"
 #lint = "31.4.0"
 desugarJdkLibs = "2.1.5"
-kotlin = "2.2.10-RC" # https://github.com/jetbrains/kotlin/releases
-ksp = "2.2.10-RC-2.0.2" # https://github.com/google/ksp/releases
+kotlin = "2.2.20-Beta2" # https://github.com/jetbrains/kotlin/releases
+ksp = "2.2.20-Beta2-2.0.2" # https://github.com/google/ksp/releases
 kotlinPoet = "2.2.0" # https://github.com/square/kotlinpoet/releases
-kotlinWrappersBom = "2025.7.12" # https://github.com/JetBrains/kotlin-wrappers/releases
+kotlinWrappersBom = "2025.8.2" # https://github.com/JetBrains/kotlin-wrappers/releases
 jetbrainsCompose = "1.9.0-beta01" # https://github.com/JetBrains/compose-multiplatform/releases
 jetbrainsComposeHotReload = "1.0.0-beta04" # https://mvnrepository.com/artifact/org.jetbrains.compose.hot-reload/hot-reload-gradle-plugin/
 kotlinCoroutines = "1.10.2"
@@ -22,7 +22,7 @@ koin = "4.1.0" # https://github.com/InsertKoinIO/koin/releases
 koinAnnotations = "2.1.1-RC1" # https://github.com/InsertKoinIO/koin-annotations/releases
 material3WindowSizeClassMultiplatform = "0.5.0"
 kotlinDatetime = "0.7.1"
-ktor = "3.2.2" # https://github.com/ktorio/ktor/releases
+ktor = "3.2.3" # https://github.com/ktorio/ktor/releases
 kermit = "2.0.6"
 room = "2.7.2"
 sqlite = "2.5.2"
@@ -44,17 +44,18 @@ coreSplashscreen = "1.0.1"
 collectionKtx = "1.5.0"
 annotation = "1.9.1"
 paletteKtx = "1.0.0"
-workRuntimeKtx = "2.10.2"
+workRuntimeKtx = "2.10.3"
 preferenceKtx = "1.2.1"
 metricsPerformance = "1.0.0-beta02"
 composeLintChecks = "1.4.2"
-material3Adaptive = "1.2.0-alpha09"
+material3 = "1.5.0-alpha01"
+material3Adaptive = "1.2.0-alpha10"
 wearCompose = "1.4.1"
 accompanist = "0.37.3" # https://github.com/google/accompanist/releases
 junit = "4.13.2"
-junitExt = "1.2.1"
-espressoCore = "3.6.1"
-uiTestJunit4 = "1.9.0-beta03" # https://mvnrepository.com/artifact/androidx.compose.ui/ui-test-junit4
+junitExt = "1.3.0"
+espressoCore = "3.7.0"
+uiTestJunit4 = "1.9.0-rc01" # https://mvnrepository.com/artifact/androidx.compose.ui/ui-test-junit4
 mockk = "1.14.5"
 robolectric = "4.15.1"
 roborazzi = "1.46.1"
@@ -63,7 +64,7 @@ junitPlatform = "1.13.4"
 assertjCore = "3.27.3"
 slf4jSimple = "2.0.17"
 detekt = "1.23.8"
-robsRules = "1.0.0"
+robsRules = "1.0.2"
 ksoup = "0.6.0"
 coil = "3.3.0"
 
@@ -179,11 +180,12 @@ koinKspCompiler = { group = "io.insert-koin", name = "koin-ksp-compiler", versio
 
 composeLintChecks = { group = "com.slack.lint.compose", name = "compose-lint-checks", version.ref = "composeLintChecks" }
 
+material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 material3WindowSizeClassMultiplatform = { group = "dev.chrisbanes.material3", name = "material3-window-size-class-multiplatform", version.ref = "material3WindowSizeClassMultiplatform" }
 material3Adaptive = { group = "androidx.compose.material3.adaptive", name = "adaptive", version.ref = "material3Adaptive" }
 material3AdaptiveLayout = { group = "androidx.compose.material3.adaptive", name = "adaptive-layout", version.ref = "material3Adaptive" }
 material3AdaptiveNavigation = { group = "org.jetbrains.compose.material3.adaptive", name = "adaptive-navigation", version = "1.1.2" }
-material3AdaptiveNavigationSuite = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite", version = "1.4.0-alpha18" }
+material3AdaptiveNavigationSuite = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite", version = "1.4.0-beta01" }
 
 composeMaterialWear = { group = "androidx.wear.compose", name = "compose-material", version.ref = "wearCompose" }
 composeNavigationWear = { group = "androidx.wear.compose", name = "compose-navigation", version.ref = "wearCompose" }
@@ -283,6 +285,7 @@ androidMain = [
     "kspSymbolProcessingApi",
     "ktorClientAndroid",
     "lifecycleProcess",
+    "material3",
     "material3Adaptive",
     "material3AdaptiveLayout",
     "material3AdaptiveNavigationSuite",
