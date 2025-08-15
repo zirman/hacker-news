@@ -163,7 +163,7 @@ jetbrainsLifecycleViewmodelCompose = { group = "org.jetbrains.androidx.lifecycle
 jetbrainsNavigationCompose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 jetbrainsCore = { group = "org.jetbrains.androidx.core", name = "core-bundle", version = "1.0.1" }
 jetbrainsWindowCore = { group = "org.jetbrains.androidx.window", name = "window-core", version = "1.3.1" }
-jetbrainsSavedState = { group = "org.jetbrains.androidx.savedstate", name = "savedstate", version = "1.3.1" }
+jetbrainsSavedState = { group = "org.jetbrains.androidx.savedstate", name = "savedstate", version = "1.3.2" }
 
 koinBom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
 koinCore = { group = "io.insert-koin", name = "koin-core" }
