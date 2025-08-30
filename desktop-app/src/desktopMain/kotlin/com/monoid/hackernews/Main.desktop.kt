@@ -44,6 +44,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.domain.navigation.Route
+import com.monoid.hackernews.common.view.ApplicationModule
+import com.monoid.hackernews.common.view.Res
+import com.monoid.hackernews.common.view.hacker_news
 import com.monoid.hackernews.common.view.home.ItemsColumn
 import com.monoid.hackernews.common.view.itemdetail.ItemDetailPane
 import com.monoid.hackernews.common.view.login.LoginDialog
@@ -52,6 +55,7 @@ import com.monoid.hackernews.common.view.stories.StoryOrdering
 import com.monoid.hackernews.common.view.theme.AppTheme
 import io.ktor.http.Url
 import io.ktor.http.toURI
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi
 import org.jetbrains.compose.splitpane.HorizontalSplitPane
 import org.jetbrains.compose.splitpane.rememberSplitPaneState
@@ -68,8 +72,8 @@ fun main() {
     application {
         Window(
             onCloseRequest = ::exitApplication,
-            alwaysOnTop = true,
-            title = "Hacker News",
+            alwaysOnTop = false,
+            title = stringResource(Res.string.hacker_news),
         ) {
             AppTheme {
                 var showLoginDialog by rememberSaveable {
