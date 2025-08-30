@@ -16,4 +16,4 @@ import org.koin.core.annotation.Module
         LoggerModule::class,
     ],
 )
-expect class ApplicationModule
+expect object ApplicationModule

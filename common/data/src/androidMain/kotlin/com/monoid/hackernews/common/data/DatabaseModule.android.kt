@@ -1,6 +1,9 @@
 package com.monoid.hackernews.common.data
 
 import android.content.Context
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.room.Room
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.monoid.hackernews.common.core.IoDispatcherQualifier
@@ -18,8 +21,10 @@ actual class DatabaseModule {
         context: Context,
         @Named(type = IoDispatcherQualifier::class)
         coroutineDispatcher: CoroutineDispatcher,
+        @Named(type = ProcessLifecycleOwner::class)
+        lifecycleOwner: LifecycleOwner,
     ): HNDatabase {
-        return Room
+        val database = Room
             .databaseBuilder<HNDatabase>(
                 context = context,
                 name = context.getDatabasePath(DATABASE_FILE_NAME).absolutePath,
@@ -29,5 +34,12 @@ actual class DatabaseModule {
             .setDriver(BundledSQLiteDriver())
             .setQueryCoroutineContext(coroutineDispatcher)
             .build()
+        lifecycleOwner.lifecycle.addObserver(object : DefaultLifecycleObserver {
+            override fun onDestroy(owner: LifecycleOwner) {
+                super.onDestroy(owner)
+                database.close()
+            }
+        })
+        return database
     }
 }
