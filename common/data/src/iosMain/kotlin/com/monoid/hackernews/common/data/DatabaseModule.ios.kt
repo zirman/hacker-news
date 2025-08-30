@@ -16,7 +16,7 @@ import platform.Foundation.NSFileManager
 import platform.Foundation.NSUserDomainMask
 
 @Module(includes = [DatabaseDaoModule::class])
-class DatabaseModule {
+actual class DatabaseModule {
 
     @Single
     fun hnDatabase(

@@ -11,7 +11,7 @@ import org.koin.core.annotation.Single
 import java.io.File
 
 @Module(includes = [DatabaseDaoModule::class])
-class DatabaseModule {
+actual class DatabaseModule {
 
     @Single
     fun hnDatabase(

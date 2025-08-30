@@ -11,7 +11,7 @@ import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
 
 @Module(includes = [DatabaseDaoModule::class])
-class DatabaseModule {
+actual class DatabaseModule {
 
     @Single
     fun hnDatabase(

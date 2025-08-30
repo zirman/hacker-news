@@ -15,6 +15,7 @@ import com.monoid.hackernews.common.core.LoggerAdapter
 import com.monoid.hackernews.common.data.model.LightDarkMode
 import com.monoid.hackernews.common.data.model.SettingsRepository
 import com.monoid.hackernews.common.data.room.HNDatabase
+import com.monoid.hackernews.common.view.ApplicationModule
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers

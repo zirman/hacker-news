@@ -44,6 +44,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.domain.navigation.Route
+import com.monoid.hackernews.common.view.ApplicationModule
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.hacker_news
 import com.monoid.hackernews.common.view.home.ItemsColumn

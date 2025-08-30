@@ -1,4 +1,4 @@
-package com.monoid.hackernews
+package com.monoid.hackernews.common.view
 
 import com.monoid.hackernews.common.core.DispatchersModule
 import com.monoid.hackernews.common.core.LoggerModule
@@ -18,4 +18,4 @@ import org.koin.core.annotation.Module
     ],
 )
 @ComponentScan("com.monoid.hackernews")
-class ApplicationModule
+actual class ApplicationModule

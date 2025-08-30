@@ -1,5 +1,6 @@
 package com.monoid.hackernews
 
+import com.monoid.hackernews.common.view.ApplicationModule
 import org.koin.core.context.startKoin
 import org.koin.ksp.generated.module
 

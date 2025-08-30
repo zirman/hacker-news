@@ -9,7 +9,7 @@ import org.koin.core.annotation.Single
 import java.io.File
 
 @Module
-class DataStoreModule {
+actual class DataStoreModule {
 
     @Single
     fun dataStorePreferences(): DataStore<Preferences> {
