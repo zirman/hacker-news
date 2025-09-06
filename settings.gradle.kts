@@ -20,7 +20,7 @@ pluginManagement {
             }
         }
         dependencies {
-            classpath("com.android.tools:r8:8.13.0-dev")
+            // classpath("com.android.tools:r8:8.13.0-dev")
         }
     }
 }
