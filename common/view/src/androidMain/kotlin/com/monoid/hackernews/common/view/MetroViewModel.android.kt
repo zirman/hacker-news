@@ -43,7 +43,7 @@ actual inline fun <reified VM : ViewModel> metroViewModel(
                 extras: CreationExtras
             ): T {
                 val viewModelGraph = metroViewModelProviderFactory.viewModelGraph(extras)
-                return modelClass.cast(viewModelGraph.factory())!!
+                return checkNotNull(modelClass.cast(viewModelGraph.factory()))
             }
         },
         extras = if (viewModelStoreOwner is HasDefaultViewModelProviderFactory) {

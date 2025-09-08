@@ -67,9 +67,10 @@ import androidx.compose.ui.util.fastForEachIndexed
 import androidx.compose.ui.util.fastMap
 import androidx.compose.ui.util.fastMaxBy
 import androidx.compose.ui.util.fastSumBy
+import com.monoid.hackernews.common.view.stories.ToggleFloatingActionButtonDefaults.animateIcon
+import kotlinx.coroutines.launch
 import kotlin.math.hypot
 import kotlin.math.roundToInt
-import kotlinx.coroutines.launch
 
 // TODO: link to spec and image
 /**
@@ -242,7 +243,7 @@ private fun FloatingActionButtonMenuItemColumn(
 
         val finalHeight = if (placeables.fastAny { item -> item.isVisible }) height else 0
 
-        itemsNeedVerticalScroll = finalHeight > originalConstraints!!.maxHeight
+        itemsNeedVerticalScroll = finalHeight > checkNotNull(originalConstraints).maxHeight
 
         layout(width, finalHeight, rulers = { MenuItemRuler provides height - visibleHeight }) {
             var y = 0

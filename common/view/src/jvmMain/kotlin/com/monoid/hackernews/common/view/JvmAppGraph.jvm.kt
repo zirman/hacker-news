@@ -5,10 +5,12 @@ import com.monoid.hackernews.common.core.JvmLoggerBindings
 import com.monoid.hackernews.common.data.JvmDataStoreBindings
 import com.monoid.hackernews.common.data.JvmDatabaseBindings
 import com.monoid.hackernews.common.data.JvmNetworkBindings
-import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.DependencyGraph
 
-@BindingContainer(
-    includes = [
+@DependencyGraph(
+    scope = AppScope::class,
+    bindingContainers = [
         DispatcherBindings::class,
         JvmNetworkBindings::class,
         JvmDatabaseBindings::class,
@@ -16,4 +18,6 @@ import dev.zacsweers.metro.BindingContainer
         JvmLoggerBindings::class,
     ],
 )
-interface JvmAppGraph : ViewModelGraph.Factory
+interface JvmAppGraph : ViewModelGraph.Factory {
+    val metroViewModelFactory: MetroViewModelFactory
+}

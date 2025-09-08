@@ -26,14 +26,14 @@ import io.ktor.client.HttpClient
 import kotlin.reflect.KClass
 
 @DependencyGraph(
-    AppScope::class,
+    scope = AppScope::class,
     bindingContainers = [
         DispatcherBindings::class,
         AndroidNetworkBindings::class,
         AndroidDatabaseBindings::class,
         AndroidDataStoreBindings::class,
         AndroidLoggerBindings::class,
-    ]
+    ],
 )
 interface AndroidAppGraph : ViewModelGraph.Factory {
     val db: HNDatabase

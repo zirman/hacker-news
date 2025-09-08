@@ -9,7 +9,7 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.DependencyGraph
 
 @DependencyGraph(
-    AppScope::class,
+    scope = AppScope::class,
     bindingContainers = [
         DispatcherBindings::class,
         IosNetworkBindings::class,
