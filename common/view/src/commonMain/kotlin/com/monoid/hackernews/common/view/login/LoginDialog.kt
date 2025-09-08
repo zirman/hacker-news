@@ -15,13 +15,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
-import org.koin.compose.viewmodel.koinViewModel
+import com.monoid.hackernews.common.view.metroViewModel
 
 @Composable
 fun LoginDialog(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
-    loginViewModel: LoginViewModel = koinViewModel(),
+    loginViewModel: LoginViewModel = metroViewModel(),
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     var showErrorText by rememberSaveable {

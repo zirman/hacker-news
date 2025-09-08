@@ -4,10 +4,7 @@ plugins {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":common:view")) {
-                // work around duplicate Koin JVM dependencies
-                exclude("io.insert-koin", "koin-core-annotations-jvm")
-            }
+            implementation(project(":common:view"))
         }
     }
 }
@@ -53,8 +50,5 @@ android {
                 "proguard-rules.pro",
             )
         }
-    }
-    lint {
-        baseline = file("lint-baseline.xml")
     }
 }

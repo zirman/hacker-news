@@ -19,6 +19,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
+import com.monoid.hackernews.common.view.metroViewModel
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.Username
@@ -33,7 +34,6 @@ import com.monoid.hackernews.common.view.show
 import com.monoid.hackernews.common.view.trending
 import io.ktor.http.Url
 import org.jetbrains.compose.resources.StringResource
-import org.koin.compose.viewmodel.koinViewModel
 
 enum class FabAction(
     val icon: ImageVector,
@@ -55,7 +55,7 @@ enum class FabAction(
             modifier: Modifier,
             content: @Composable (x: Pair<BoxScope, Boolean>) -> Unit,
         ) {
-            val viewModel: StoriesViewModel = koinViewModel(
+            val viewModel: StoriesViewModel = metroViewModel(
                 // we set a key so a unique viewmodel is created for each story ordering
                 key = fabAction.storyOrdering.toString(),
                 extras = StoriesViewModel.extras(fabAction.storyOrdering),
@@ -115,7 +115,7 @@ enum class FabAction(
             modifier: Modifier,
             content: @Composable (x: Pair<BoxScope, Boolean>) -> Unit,
         ) {
-            val viewModel: StoriesViewModel = koinViewModel(
+            val viewModel: StoriesViewModel = metroViewModel(
                 // we set a key so a unique viewmodel is created for each story ordering
                 key = fabAction.storyOrdering.toString(),
                 extras = StoriesViewModel.extras(fabAction.storyOrdering),
@@ -174,7 +174,7 @@ enum class FabAction(
             modifier: Modifier,
             content: @Composable (x: Pair<BoxScope, Boolean>) -> Unit,
         ) {
-            val viewModel: StoriesViewModel = koinViewModel(
+            val viewModel: StoriesViewModel = metroViewModel(
                 // we set a key so a unique viewmodel is created for each story ordering
                 key = fabAction.storyOrdering.toString(),
                 extras = StoriesViewModel.extras(fabAction.storyOrdering),
@@ -233,7 +233,7 @@ enum class FabAction(
             modifier: Modifier,
             content: @Composable (x: Pair<BoxScope, Boolean>) -> Unit,
         ) {
-            val viewModel: StoriesViewModel = koinViewModel(
+            val viewModel: StoriesViewModel = metroViewModel(
                 // we set a key so a unique viewmodel is created for each story ordering
                 key = fabAction.storyOrdering.toString(),
                 extras = StoriesViewModel.extras(fabAction.storyOrdering),
@@ -292,7 +292,7 @@ enum class FabAction(
             modifier: Modifier,
             content: @Composable (x: Pair<BoxScope, Boolean>) -> Unit,
         ) {
-            val viewModel: StoriesViewModel = koinViewModel(
+            val viewModel: StoriesViewModel = metroViewModel(
                 // we set a key so a unique viewmodel is created for each story ordering
                 key = fabAction.storyOrdering.toString(),
                 extras = StoriesViewModel.extras(fabAction.storyOrdering),
@@ -351,7 +351,7 @@ enum class FabAction(
             modifier: Modifier,
             content: @Composable (x: Pair<BoxScope, Boolean>) -> Unit,
         ) {
-            val viewModel: StoriesViewModel = koinViewModel(
+            val viewModel: StoriesViewModel = metroViewModel(
                 // we set a key so a unique viewmodel is created for each story ordering
                 key = fabAction.storyOrdering.toString(),
                 extras = StoriesViewModel.extras(fabAction.storyOrdering),

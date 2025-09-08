@@ -1,9 +1,15 @@
 plugins {
     id("buildsrc.convention.kotlin-multiplatform-mobile")
 }
-dependencies {
-    implementation(libs.bundles.wear)
-    implementation(project(":common:view"))
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(project(":common:view"))
+        }
+        androidMain.dependencies {
+            implementation(libs.bundles.wear)
+        }
+    }
 }
 val appId = "com.monoid.hackernews.wear"
 compose {

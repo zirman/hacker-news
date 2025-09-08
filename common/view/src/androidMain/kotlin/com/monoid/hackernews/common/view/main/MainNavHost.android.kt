@@ -18,6 +18,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.toRoute
+import com.monoid.hackernews.common.view.metroViewModel
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.Username
@@ -27,7 +28,6 @@ import com.monoid.hackernews.common.domain.navigation.UsernameNavType
 import com.monoid.hackernews.common.view.comment.CommentDialog
 import com.monoid.hackernews.common.view.home.HomeScaffold
 import io.ktor.http.Url
-import org.koin.compose.viewmodel.koinViewModel
 import kotlin.reflect.typeOf
 
 @Composable
@@ -54,7 +54,7 @@ actual fun MainNavHost(
         modifier = modifier.fillMaxSize(),
     ) {
         composable<Route.Home> {
-            val viewModel: HomeViewModel = koinViewModel()
+            val viewModel: HomeViewModel = metroViewModel()
             val lifecycleOwner = LocalLifecycleOwner.current
             LaunchedEffect(Unit) {
                 lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {

@@ -5,14 +5,11 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.StrictMode
-import com.monoid.hackernews.common.view.ApplicationModule
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidFileProperties
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
-import org.koin.ksp.generated.module
+import dev.zacsweers.metro.createGraphFactory
 
 class HNApplication : Application() {
+    val appGraph by lazy { createGraphFactory<AndroidAppGraph.Factory>().create(this) }
+
     override fun onCreate() {
         super.onCreate()
         StrictMode.setVmPolicy(
@@ -33,11 +30,11 @@ class HNApplication : Application() {
             /* filter = */
             IntentFilter(Intent.ACTION_LOCALE_CHANGED),
         )
-        startKoin {
-            androidContext(this@HNApplication)
-            androidLogger()
-            androidFileProperties()
-            modules(ApplicationModule.module)
-        }
+    }
+
+    override fun onTerminate() {
+        appGraph.httpClient.close()
+        appGraph.db.close()
+        super.onTerminate()
     }
 }

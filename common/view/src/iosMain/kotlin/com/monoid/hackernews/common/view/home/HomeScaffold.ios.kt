@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
+import com.monoid.hackernews.common.view.metroViewModel
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.Username
@@ -18,7 +19,6 @@ import com.monoid.hackernews.common.view.stories.StoriesViewModel
 import com.monoid.hackernews.common.view.stories.StoryOrdering
 import com.monoid.hackernews.common.view.stories.listContentInsetSides
 import io.ktor.http.Url
-import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun StoriesPane(
@@ -29,7 +29,7 @@ fun StoriesPane(
     onClickUrl: (Url) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val viewModel: StoriesViewModel = koinViewModel(
+    val viewModel: StoriesViewModel = metroViewModel(
         extras = StoriesViewModel.extras(StoryOrdering.Trending),
     )
     val lifecycleOwner = LocalLifecycleOwner.current

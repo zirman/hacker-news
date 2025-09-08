@@ -2,24 +2,22 @@
 buildToolsVersion = "36.0.0"
 jvmToolchain = "21"
 jvmTarget = "21"
-minSdk = "26"
+minSdk = "28"
 targetSdk = "36"
 compileSdk = "36"
 compileSdkPreview = "Baklava"
 android = "8.13.0"
 #lint = "31.4.0"
 desugarJdkLibs = "2.1.5"
-kotlin = "2.2.20-RC2" # https://github.com/jetbrains/kotlin/releases
-ksp = "2.2.20-RC2-2.0.2" # https://github.com/google/ksp/releases
+kotlin = "2.2.10" # https://github.com/jetbrains/kotlin/releases
+ksp = "2.2.10-2.0.2" # https://github.com/google/ksp/releases
 kotlinPoet = "2.2.0" # https://github.com/square/kotlinpoet/releases
-kotlinWrappersBom = "2025.9.2" # https://github.com/JetBrains/kotlin-wrappers/releases
+kotlinWrappersBom = "2025.9.3" # https://github.com/JetBrains/kotlin-wrappers/releases
 jetbrainsCompose = "1.9.0-rc01" # https://github.com/JetBrains/compose-multiplatform/releases
 jetbrainsComposeHotReload = "1.0.0-beta06" # https://mvnrepository.com/artifact/org.jetbrains.compose.hot-reload/hot-reload-gradle-plugin/
 kotlinCoroutines = "1.10.2"
 kotlinSerialization = "1.9.0"
 kotlinCollectionsImmutable = "0.4.0"
-koin = "4.1.1" # https://github.com/InsertKoinIO/koin/releases
-koinAnnotations = "2.2.0-RC1" # https://github.com/InsertKoinIO/koin-annotations/releases
 material3WindowSizeClassMultiplatform = "0.5.0"
 kotlinDatetime = "0.7.1"
 ktor = "3.2.3" # https://github.com/ktorio/ktor/releases
@@ -50,6 +48,7 @@ metricsPerformance = "1.0.0-beta03"
 composeLintChecks = "1.4.2"
 material3 = "1.5.0-alpha03"
 material3Adaptive = "1.2.0-beta01"
+metro = "0.6.4"
 wearCompose = "1.5.0"
 accompanist = "0.37.3" # https://github.com/google/accompanist/releases
 junit = "4.13.2"
@@ -78,6 +77,7 @@ plugin-composeHotReload = { group = "org.jetbrains.compose.hot-reload", name = "
 plugin-androidApplication = { group = "com.android.application", name = "com.android.application.gradle.plugin", version.ref = "android" }
 plugin-androidLibrary = { group = "com.android.library", name = "com.android.library.gradle.plugin", version.ref = "android" }
 plugin-ksp = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+plugin-metro = { group = "dev.zacsweers.metro", name = "gradle-plugin", version.ref = "metro" }
 plugin-room = { group = "androidx.room", name = "androidx.room.gradle.plugin", version.ref = "room" }
 plugin-googlePlayServices = { group = "com.google.gms.google-services", name = "com.google.gms.google-services.gradle.plugin", version.ref = "googlePlayServices" }
 plugin-crashlytics = { group = "com.google.firebase.crashlytics", name = "com.google.firebase.crashlytics.gradle.plugin", version.ref = "crashlytics" }
@@ -165,17 +165,6 @@ jetbrainsCore = { group = "org.jetbrains.androidx.core", name = "core-bundle", v
 jetbrainsWindowCore = { group = "org.jetbrains.androidx.window", name = "window-core", version = "1.3.1" }
 jetbrainsSavedState = { group = "org.jetbrains.androidx.savedstate", name = "savedstate", version = "1.3.3" }
 
-koinBom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
-koinCore = { group = "io.insert-koin", name = "koin-core" }
-koinKtor = { group = "io.insert-koin", name = "koin-ktor" }
-koinCompose = { group = "io.insert-koin", name = "koin-compose" }
-koinComposeViewmodel = { group = "io.insert-koin", name = "koin-compose-viewmodel" }
-koinLoggerSlf4j = { group = "io.insert-koin", name = "koin-logger-slf4j" }
-koinAndroid = { group = "io.insert-koin", name = "koin-android" }
-koinAnnotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koinAnnotations" }
-koinKspCompiler = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref = "koinAnnotations" }
-#koinAndroidxWorkmanager = { group = "io.insert-koin", name = "koin-androidx-workmanager" }
-
 #navigationUiKtx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
 
 composeLintChecks = { group = "com.slack.lint.compose", name = "compose-lint-checks", version.ref = "composeLintChecks" }
@@ -231,6 +220,7 @@ plugins = [
     "plugin-kotlinParcelize",
     "plugin-kotlinSerialization",
     "plugin-ksp",
+    "plugin-metro",
     "plugin-roborazzi",
     "plugin-room",
 ]
@@ -250,9 +240,6 @@ commonMain = [
     "jetbrainsSavedState",
     "jetbrainsWindowCore",
     "kermit",
-    "koinAnnotations",
-    "koinCompose",
-    "koinComposeViewmodel",
     "kotlinCollectionsImmutable",
     "kotlinDatetime",
     "kotlinSerializationJson",
@@ -278,9 +265,6 @@ androidMain = [
     "firebaseCrashlytics",
     "firebasePerf",
     "fragmentKtx",
-    "koinAndroid",
-    "koinKtor",
-    "koinLoggerSlf4j",
     "kotlinCoroutinesAndroid",
     "kspSymbolProcessingApi",
     "ktorClientAndroid",
@@ -311,7 +295,6 @@ wear = [
 ]
 iosMain = [
     "ktorClientDarwin",
-    "koinCore",
 ]
 commonTest = [
     "kotlinCoroutinesTest",

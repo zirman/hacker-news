@@ -12,8 +12,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.monoid.hackernews.common.view.metroViewModel
 import kotlinx.coroutines.launch
-import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun SettingsScaffold(
@@ -21,7 +21,7 @@ fun SettingsScaffold(
     onClickLogin: () -> Unit,
     onClickLogout: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SettingsViewModel = koinViewModel(),
+    viewModel: SettingsViewModel = metroViewModel(),
 ) {
     Box(modifier = modifier) {
         val uiState = viewModel.uiState.collectAsStateWithLifecycle().value

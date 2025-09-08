@@ -2,10 +2,8 @@
 
 package buildsrc.convention
 
-import com.google.devtools.ksp.gradle.KspAATask
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.jetbrains.compose.ExperimentalComposeLibrary
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
     kotlin("multiplatform")
@@ -14,6 +12,7 @@ plugins {
     id("org.jetbrains.compose")
     id("org.jetbrains.compose.hot-reload")
     id("com.google.devtools.ksp")
+    id("dev.zacsweers.metro")
     id("io.github.takahirom.roborazzi")
     id("buildsrc.convention.detekt-rules")
 }
@@ -21,7 +20,6 @@ val libs = the<LibrariesForLibs>()
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            api(project.dependencies.platform(libs.koinBom))
             api(project.dependencies.platform(libs.kotlinWrappersBom))
             api(project.dependencies.platform(libs.firebaseBom))
             api(compose.animation)
@@ -33,11 +31,7 @@ kotlin {
             api(compose.runtime)
             api(compose.ui)
             api(compose.uiUtil)
-            compileOnly(libs.koinCore)
             api(libs.bundles.commonMain)
-        }
-        commonMain {
-            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
         }
         androidMain.dependencies {
             api(project.dependencies.platform(libs.kotlinCoroutinesBom))
@@ -119,28 +113,15 @@ android {
     }
     lint {
         warningsAsErrors = true
+        baseline = file("lint-baseline.xml")
     }
 }
 val kspAndroid by configurations.named("kspAndroid")
-val kspJvm by configurations.named("kspJvm")
-//val kspIosX64 by configurations.named("kspIosX64")
-val kspIosArm64 by configurations.named("kspIosArm64")
-val kspIosSimulatorArm64 by configurations.named("kspIosSimulatorArm64")
 dependencies {
     coreLibraryDesugaring(libs.desugarJdkLibsNio)
-    kspCommonMainMetadata(libs.koinKspCompiler)
-    kspAndroid(libs.koinKspCompiler)
-    kspJvm(libs.koinKspCompiler)
-//    kspIosX64(libs.koinKspCompiler)
-    kspIosArm64(libs.koinKspCompiler)
-    kspIosSimulatorArm64(libs.koinKspCompiler)
     kspAndroid(project(":ksp-processors:screenshot"))
     lintChecks(libs.composeLintChecks)
     debugImplementation(libs.uiTestManifest)
-}
-ksp {
-    arg("KOIN_CONFIG_CHECK", "false")
-    arg("KOIN_USE_COMPOSE_VIEWMODEL", "true")
 }
 compose {
     resources {
@@ -153,16 +134,5 @@ roborazzi {
     // Directory for comparison images (Experimental option)
     compare {
         outputDir.set(file("build/roborazzi/comparison"))
-    }
-}
-// Trigger Common Metadata Generation from Native tasks
-tasks.withType<KotlinCompilationTask<*>>().configureEach {
-    if (name != "kspCommonMainKotlinMetadata") {
-        dependsOn("kspCommonMainKotlinMetadata")
-    }
-}
-tasks.withType<KspAATask>().configureEach {
-    if (name != "kspCommonMainKotlinMetadata") {
-        dependsOn("kspCommonMainKotlinMetadata")
     }
 }

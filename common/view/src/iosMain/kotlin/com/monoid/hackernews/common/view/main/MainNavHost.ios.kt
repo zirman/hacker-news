@@ -20,6 +20,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.toRoute
+import com.monoid.hackernews.common.view.metroViewModel
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.Username
@@ -42,7 +43,6 @@ import com.monoid.hackernews.common.view.settings.UserGuidelinesPane
 import com.monoid.hackernews.common.view.stories.listContentInsetSides
 import io.ktor.http.Url
 import kotlin.reflect.typeOf
-import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 actual fun MainNavHost(
@@ -68,7 +68,7 @@ actual fun MainNavHost(
         modifier = modifier.fillMaxSize(),
     ) {
         composable<Route.BottomNav.Stories> {
-            val viewModel: HomeViewModel = koinViewModel()
+            val viewModel: HomeViewModel = metroViewModel()
             val lifecycleOwner = LocalLifecycleOwner.current
             LaunchedEffect(Unit) {
                 lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -102,7 +102,7 @@ actual fun MainNavHost(
             )
         }
         composable<Route.BottomNav.Favorites> {
-            val viewModel: SettingsViewModel = koinViewModel()
+            val viewModel: SettingsViewModel = metroViewModel()
             val lifecycleOwner = LocalLifecycleOwner.current
             LaunchedEffect(Unit) {
                 lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -139,7 +139,7 @@ actual fun MainNavHost(
             }
         }
         composable<Route.BottomNav.Settings> {
-            val viewModel: SettingsViewModel = koinViewModel()
+            val viewModel: SettingsViewModel = metroViewModel()
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             SettingsListPane(
                 username = uiState.username,
@@ -158,7 +158,7 @@ actual fun MainNavHost(
             typeMap = mapOf(typeOf<ItemId>() to NavType.ItemIdNavType),
         ) { navBackStackEntry ->
             val itemId = navBackStackEntry.toRoute<Route.Story>().itemId
-            val viewModel: SettingsViewModel = koinViewModel()
+            val viewModel: SettingsViewModel = metroViewModel()
             val lifecycleOwner = LocalLifecycleOwner.current
             LaunchedEffect(Unit) {
                 lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {

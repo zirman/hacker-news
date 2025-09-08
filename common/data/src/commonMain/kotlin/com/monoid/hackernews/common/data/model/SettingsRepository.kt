@@ -4,15 +4,18 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.monoid.hackernews.common.core.LoggerAdapter
 import com.monoid.hackernews.common.data.api.loginRequest
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import org.koin.core.annotation.Single
 
-@Single
+@SingleIn(AppScope::class)
+@Inject
 class SettingsRepository(
     private val logger: LoggerAdapter,
     private val remoteDataSource: HttpClient,

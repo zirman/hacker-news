@@ -13,6 +13,8 @@ import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.savedState
 import com.monoid.hackernews.common.core.LoggerAdapter
+import com.monoid.hackernews.common.view.ViewModelKey
+import com.monoid.hackernews.common.view.ViewModelScope
 import com.monoid.hackernews.common.core.coroutines.doOnErrorThenThrow
 import com.monoid.hackernews.common.data.WeakHashMap
 import com.monoid.hackernews.common.data.api.ItemId
@@ -20,6 +22,8 @@ import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.SettingsRepository
 import com.monoid.hackernews.common.data.model.StoriesRepository
 import com.monoid.hackernews.common.data.model.Username
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
@@ -31,9 +35,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.koin.android.annotation.KoinViewModel
 
-@KoinViewModel
+@ContributesIntoMap(ViewModelScope::class)
+@ViewModelKey(FavoritesViewModel::class)
+@Inject
 class FavoritesViewModel(
     handle: SavedStateHandle,
     private val logger: LoggerAdapter,

@@ -3,13 +3,18 @@ package com.monoid.hackernews.common.view.logout
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.monoid.hackernews.common.core.LoggerAdapter
+import com.monoid.hackernews.common.view.ViewModelKey
+import com.monoid.hackernews.common.view.ViewModelScope
 import com.monoid.hackernews.common.data.model.SettingsRepository
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.koin.android.annotation.KoinViewModel
 
-@KoinViewModel
+@ContributesIntoMap(ViewModelScope::class)
+@ViewModelKey(LogoutViewModel::class)
+@Inject
 class LogoutViewModel(
     private val logger: LoggerAdapter,
     private val settingsRepository: SettingsRepository,

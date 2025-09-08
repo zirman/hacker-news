@@ -5,20 +5,17 @@ package com.monoid.hackernews
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import com.monoid.hackernews.common.view.App
-import com.monoid.hackernews.common.view.ApplicationModule
+import com.monoid.hackernews.common.view.JvmAppGraph
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.hacker_news
+import dev.zacsweers.metro.createGraph
 import io.ktor.http.toURI
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi
-import org.koin.core.context.startKoin
-import org.koin.ksp.generated.module
 import java.awt.Desktop
 
 fun main() {
-    startKoin {
-        modules(ApplicationModule.module)
-    }
+    val appGraph = createGraph<JvmAppGraph>()
     application {
         Window(
             onCloseRequest = ::exitApplication,

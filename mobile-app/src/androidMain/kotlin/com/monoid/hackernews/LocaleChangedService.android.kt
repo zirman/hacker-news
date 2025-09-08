@@ -3,13 +3,8 @@ package com.monoid.hackernews
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import org.koin.android.scope.AndroidScopeComponent
-import org.koin.android.scope.createServiceScope
-import org.koin.core.scope.Scope
 
-class LocaleChangedService : Service(), AndroidScopeComponent {
-    override val scope: Scope = createServiceScope()
-
+class LocaleChangedService : Service() {
     override fun onBind(intent: Intent): IBinder? {
         return null
     }

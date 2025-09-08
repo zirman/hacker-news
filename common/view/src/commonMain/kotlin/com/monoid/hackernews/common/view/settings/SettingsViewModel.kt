@@ -3,19 +3,24 @@ package com.monoid.hackernews.common.view.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.monoid.hackernews.common.core.LoggerAdapter
+import com.monoid.hackernews.common.view.ViewModelKey
+import com.monoid.hackernews.common.view.ViewModelScope
 import com.monoid.hackernews.common.core.coroutines.mapStateIn
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.SettingsRepository
 import com.monoid.hackernews.common.data.model.Username
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.launch
-import org.koin.android.annotation.KoinViewModel
 
-@KoinViewModel
+@ContributesIntoMap(ViewModelScope::class)
+@ViewModelKey(SettingsViewModel::class)
+@Inject
 class SettingsViewModel(
     logger: LoggerAdapter,
     settingsRepository: SettingsRepository,

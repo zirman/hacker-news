@@ -6,18 +6,17 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.getSystemService
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.monoid.hackernews.common.core.LoggerAdapter
 import com.monoid.hackernews.common.data.model.LightDarkMode
 import com.monoid.hackernews.common.data.model.SettingsRepository
+import dev.zacsweers.metro.Named
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
-import org.koin.core.annotation.Named
 
 class UiModeConfigurator(
     context: Context,
-    @Named(type = ProcessLifecycleOwner::class)
+    @Named("ProcessLifecycleOwner")
     lifecycleOwner: LifecycleOwner,
     settings: SettingsRepository,
     logger: LoggerAdapter,

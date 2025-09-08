@@ -29,6 +29,9 @@ import com.monoid.hackernews.common.data.room.ShowStoryDao
 import com.monoid.hackernews.common.data.room.ShowStoryDb
 import com.monoid.hackernews.common.data.room.TrendingStoryDao
 import com.monoid.hackernews.common.data.room.TrendingStoryDb
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import io.ktor.client.HttpClient
 import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.persistentMapOf
@@ -46,12 +49,12 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
-import org.koin.core.annotation.Single
 import kotlin.time.Clock
 import kotlin.time.Instant
 
 @Suppress("LongParameterList")
-@Single
+@SingleIn(AppScope::class)
+@Inject
 class StoriesRepository(
     private val logger: LoggerAdapter,
     private val remoteDataSource: HttpClient,

@@ -6,13 +6,13 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import org.koin.compose.viewmodel.koinViewModel
+import com.monoid.hackernews.common.view.metroViewModel
 
 @Composable
 fun LogoutDialog(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
-    loginViewModel: LogoutViewModel = koinViewModel(),
+    loginViewModel: LogoutViewModel = metroViewModel(),
 ) {
     @OptIn(ExperimentalMaterial3Api::class)
     BasicAlertDialog(

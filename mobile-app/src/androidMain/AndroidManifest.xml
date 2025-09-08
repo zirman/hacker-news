@@ -21,6 +21,7 @@
     <application
         android:name=".HNApplication"
         android:allowBackup="true"
+        android:appComponentFactory="com.monoid.hackernews.HnAppComponentFactory"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher"
@@ -31,13 +32,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SplashScreen.HackerNews"
         tools:ignore="DataExtractionRules"
+        tools:replace="android:appComponentFactory"
         tools:targetApi="33">
 
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="Instantiatable">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

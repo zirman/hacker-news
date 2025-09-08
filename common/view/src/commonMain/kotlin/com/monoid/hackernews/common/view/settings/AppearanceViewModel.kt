@@ -3,6 +3,8 @@ package com.monoid.hackernews.common.view.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.monoid.hackernews.common.core.LoggerAdapter
+import com.monoid.hackernews.common.view.ViewModelKey
+import com.monoid.hackernews.common.view.ViewModelScope
 import com.monoid.hackernews.common.data.model.Colors
 import com.monoid.hackernews.common.data.model.FontSize
 import com.monoid.hackernews.common.data.model.HNFont
@@ -12,15 +14,18 @@ import com.monoid.hackernews.common.data.model.ParagraphIndent
 import com.monoid.hackernews.common.data.model.Settings
 import com.monoid.hackernews.common.data.model.SettingsRepository
 import com.monoid.hackernews.common.data.model.Shape
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import org.koin.android.annotation.KoinViewModel
 
-@KoinViewModel
+@ContributesIntoMap(ViewModelScope::class)
+@ViewModelKey(AppearanceViewModel::class)
+@Inject
 class AppearanceViewModel(
     private val repository: SettingsRepository,
     logger: LoggerAdapter,

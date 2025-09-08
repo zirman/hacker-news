@@ -18,12 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Username
+import com.monoid.hackernews.common.view.metroViewModel
 import com.monoid.hackernews.common.view.settings.SettingsViewModel
 import com.monoid.hackernews.common.view.stories.StoriesDetailPane
 import com.monoid.hackernews.common.view.stories.listContentInsetSides
 import io.ktor.http.Url
 import kotlinx.coroutines.launch
-import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun FavoritesScaffold(
@@ -35,7 +35,7 @@ fun FavoritesScaffold(
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {
-        val viewModel: SettingsViewModel = koinViewModel()
+        val viewModel: SettingsViewModel = metroViewModel()
         val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
         NavigableListDetailPaneScaffold(
             navigator = navigator,

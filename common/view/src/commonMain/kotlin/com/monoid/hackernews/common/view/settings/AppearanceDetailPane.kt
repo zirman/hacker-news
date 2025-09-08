@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.monoid.hackernews.common.view.metroViewModel
 import com.monoid.hackernews.common.data.model.HNFont
 import com.monoid.hackernews.common.data.model.LightDarkMode
 import com.monoid.hackernews.common.data.model.Shape
@@ -34,12 +35,11 @@ import com.monoid.hackernews.common.view.line_spacing_format
 import com.monoid.hackernews.common.view.paragraph_indent_format
 import com.monoid.hackernews.common.view.shapes
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AppearanceDetailPane(
     modifier: Modifier = Modifier,
-    viewModel: AppearanceViewModel = koinViewModel(),
+    viewModel: AppearanceViewModel = metroViewModel(),
 ) {
     Surface(
         modifier = modifier

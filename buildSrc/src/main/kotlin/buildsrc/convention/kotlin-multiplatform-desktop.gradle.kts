@@ -10,6 +10,7 @@ plugins {
     id("org.jetbrains.compose.hot-reload")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("com.google.devtools.ksp")
+    id("dev.zacsweers.metro")
     id("buildsrc.convention.detekt-rules")
 }
 val libs = the<LibrariesForLibs>()
@@ -17,9 +18,6 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(project(":common:core"))
-        }
-        commonMain {
-            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
         }
         commonTest.dependencies {
             implementation(libs.bundles.commonTest)
@@ -39,18 +37,9 @@ kotlin {
     }
     jvmToolchain(libs.versions.jvmToolchain.get().toInt())
 }
-val kspDesktop by configurations.named("kspDesktop")
-dependencies {
-    kspCommonMainMetadata(libs.koinKspCompiler)
-    kspDesktop(libs.koinKspCompiler)
-}
 compose {
     resources {
         publicResClass = true
         generateResClass = always
     }
-}
-ksp {
-    arg("KOIN_CONFIG_CHECK", "true")
-    arg("KOIN_USE_COMPOSE_VIEWMODEL", "true")
 }

@@ -12,11 +12,16 @@ import androidx.lifecycle.viewmodel.MutableCreationExtras
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.savedState
+import com.monoid.hackernews.common.view.ViewModelKey
+import com.monoid.hackernews.common.view.ViewModelScope
+import com.monoid.hackernews.common.view.metroViewModel
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.CommentRepository
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.StoriesRepository
 import com.monoid.hackernews.common.data.room.CommentDb
+import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
@@ -27,10 +32,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.koin.android.annotation.KoinViewModel
-import org.koin.compose.viewmodel.koinViewModel
 
-@KoinViewModel
+@ContributesIntoMap(ViewModelScope::class)
+@ViewModelKey(CommentViewModel::class)
+@Inject
 class CommentViewModel(
     savedStateHandle: SavedStateHandle,
     private val commentRepository: CommentRepository,
@@ -98,7 +103,7 @@ class CommentViewModel(
 }
 
 @Composable
-fun createCommentViewModel(parentId: ItemId): CommentViewModel = koinViewModel(
+fun createCommentViewModel(parentId: ItemId): CommentViewModel = metroViewModel(
     key = parentId.toString(),
     extras = parentId.toCommentViewModelExtras(),
 )

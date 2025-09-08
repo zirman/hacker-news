@@ -50,7 +50,6 @@ import io.ktor.http.Url
 import org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi
 import org.jetbrains.compose.splitpane.HorizontalSplitPane
 import org.jetbrains.compose.splitpane.rememberSplitPaneState
-import org.koin.compose.viewmodel.koinViewModel
 import java.awt.Cursor
 
 @Composable
@@ -138,7 +137,7 @@ fun HNPanes(
         modifier = modifier,
     ) {
         first(640.dp) {
-            val viewModel: StoriesViewModel = koinViewModel(
+            val viewModel: StoriesViewModel = metroViewModel(
                 extras = StoriesViewModel.extras(StoryOrdering.Trending),
             )
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value

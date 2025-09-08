@@ -7,6 +7,9 @@ import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.api.commentRequest
 import com.monoid.hackernews.common.data.room.CommentDao
 import com.monoid.hackernews.common.data.room.CommentDb
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import io.ktor.client.HttpClient
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -21,9 +24,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.koin.core.annotation.Single
 
-@Single
+@SingleIn(AppScope::class)
+@Inject
 class CommentRepository(
     private val logger: LoggerAdapter,
     private val remoteDataSource: HttpClient,

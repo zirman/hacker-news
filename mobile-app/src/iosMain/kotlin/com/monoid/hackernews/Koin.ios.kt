@@ -1,12 +1,9 @@
 package com.monoid.hackernews
 
-import com.monoid.hackernews.common.view.ApplicationModule
-import org.koin.core.context.startKoin
-import org.koin.ksp.generated.module
+import com.monoid.hackernews.common.view.IosAppGraph
+import dev.zacsweers.metro.createGraph
 
 @Suppress("unused")
 fun initKoin() {
-    startKoin {
-        modules(ApplicationModule.module)
-    }
+    createGraph<IosAppGraph>()
 }

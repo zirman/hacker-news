@@ -23,6 +23,7 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
+import com.monoid.hackernews.common.view.metroViewModel
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.Username
@@ -30,7 +31,6 @@ import com.monoid.hackernews.common.domain.navigation.Route.BottomNav
 import com.monoid.hackernews.common.view.stories.StoriesViewModel
 import com.monoid.hackernews.common.view.stories.StoryOrdering
 import io.ktor.http.Url
-import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun HomeContent(
@@ -42,7 +42,7 @@ fun HomeContent(
     onClickUrl: (Url) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val viewModel: StoriesViewModel = koinViewModel(
+    val viewModel: StoriesViewModel = metroViewModel(
         extras = StoriesViewModel.extras(StoryOrdering.Trending),
     )
     val lifecycleOwner = LocalLifecycleOwner.current
