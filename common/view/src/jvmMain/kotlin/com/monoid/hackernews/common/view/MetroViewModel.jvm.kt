@@ -37,8 +37,8 @@ actual inline fun <reified VM : ViewModel> metroViewModel(
 ): VM {
     val metroViewModelProviderFactory = LocalJvmAppGraph.current
     return viewModel(
-        viewModelStoreOwner,
-        key,
+        viewModelStoreOwner = viewModelStoreOwner,
+        key = key,
         factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T {
                 val viewModelGraph = metroViewModelProviderFactory.createViewModelGraph(extras)

@@ -24,12 +24,9 @@ class MetroViewModelFactory(val appGraph: JvmAppGraph) : ViewModelProvider.Facto
 
     override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T {
         val viewModelGraph = viewModelGraph(extras)
-
         println(viewModelGraph.viewModelProviders)
-
         val provider = viewModelGraph.viewModelProviders[modelClass.java.kotlin]
             ?: throw IllegalArgumentException("Unknown model class $modelClass")
-
         @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
         return modelClass.cast(provider())
     }

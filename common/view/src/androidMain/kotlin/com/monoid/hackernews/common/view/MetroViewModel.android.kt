@@ -35,8 +35,8 @@ actual inline fun <reified VM : ViewModel> metroViewModel(
 ): VM {
     val metroViewModelProviderFactory = metroViewModelProviderFactory()
     return viewModel(
-        viewModelStoreOwner,
-        key,
+        viewModelStoreOwner = viewModelStoreOwner,
+        key = key,
         factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(
                 modelClass: Class<T>,

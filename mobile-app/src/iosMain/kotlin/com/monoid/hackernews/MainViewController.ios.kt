@@ -6,7 +6,7 @@ import platform.Foundation.NSURL
 import platform.UIKit.UIApplication
 
 @Suppress("unused")
-fun MainViewController() = ComposeUIViewController {
+fun mainViewController() = ComposeUIViewController {
     App(
         onClickUrl = { url ->
             UIApplication.sharedApplication.openURL(

@@ -1,12 +1,16 @@
 package com.monoid.hackernews.common.view
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.lifecycle.HasDefaultViewModelProviderFactory
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.plus
+import kotlin.reflect.KClass
+import kotlin.reflect.cast
 
 @Composable
 actual inline fun <reified VM : ViewModel> metroViewModel(
@@ -16,7 +20,7 @@ actual inline fun <reified VM : ViewModel> metroViewModel(
 ): VM = viewModel(
     viewModelStoreOwner = viewModelStoreOwner,
     key = key,
-    factory = metroViewModelProviderFactory(),
+    factory = LocalIosAppGraph.current.metroViewModelFactory,
     extras = if (viewModelStoreOwner is HasDefaultViewModelProviderFactory) {
         viewModelStoreOwner.defaultViewModelCreationExtras
     } else {
@@ -31,10 +35,24 @@ actual inline fun <reified VM : ViewModel> metroViewModel(
     extras: CreationExtras,
     crossinline factory: ViewModelGraph.() -> VM
 ): VM {
-    TODO("Not yet implemented")
+    val metroViewModelProviderFactory = LocalIosAppGraph.current
+    return viewModel(
+        viewModelStoreOwner = viewModelStoreOwner,
+        key = key,
+        factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T {
+                val viewModelGraph = metroViewModelProviderFactory.createViewModelGraph(extras)
+                return checkNotNull(modelClass.cast(viewModelGraph.factory()))
+            }
+        },
+        extras = if (viewModelStoreOwner is HasDefaultViewModelProviderFactory) {
+            viewModelStoreOwner.defaultViewModelCreationExtras
+        } else {
+            CreationExtras.Empty
+        } + extras,
+    )
 }
 
-@Composable
-fun metroViewModelProviderFactory(): MetroViewModelFactory = TODO()
-//    (LocalContext.current as HasDefaultViewModelProviderFactory)
-//        .defaultViewModelProviderFactory as MetroViewModelFactory
+val LocalIosAppGraph = staticCompositionLocalOf<IosAppGraph> {
+    error("CompositionLocal LocalJvmAppGraph not present")
+}
