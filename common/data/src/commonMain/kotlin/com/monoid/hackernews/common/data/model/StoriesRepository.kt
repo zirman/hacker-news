@@ -2,8 +2,8 @@ package com.monoid.hackernews.common.data.model
 
 import com.mohamedrejeb.ksoup.html.parser.KsoupHtmlHandler
 import com.mohamedrejeb.ksoup.html.parser.KsoupHtmlParser
-import com.monoid.hackernews.common.core.LoggerAdapter
 import com.monoid.hackernews.common.core.coroutines.doOnErrorThenThrow
+import com.monoid.hackernews.common.core.log.LoggerAdapter
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.api.favoriteRequest
 import com.monoid.hackernews.common.data.api.flagRequest

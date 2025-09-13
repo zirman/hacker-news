@@ -2,7 +2,7 @@ package com.monoid.hackernews.common.data.model
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import com.monoid.hackernews.common.core.LoggerAdapter
+import com.monoid.hackernews.common.core.log.LoggerAdapter
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.api.commentRequest
 import com.monoid.hackernews.common.data.room.CommentDao

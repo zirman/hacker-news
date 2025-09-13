@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.getSystemService
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import com.monoid.hackernews.common.core.LoggerAdapter
+import com.monoid.hackernews.common.core.log.LoggerAdapter
 import com.monoid.hackernews.common.data.model.LightDarkMode
 import com.monoid.hackernews.common.data.model.SettingsRepository
 import dev.zacsweers.metro.Named

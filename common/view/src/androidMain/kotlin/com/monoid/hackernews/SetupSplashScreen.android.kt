@@ -10,7 +10,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.monoid.hackernews.common.core.LoggerAdapter
+import com.monoid.hackernews.common.core.log.LoggerAdapter
 
 fun ComponentActivity.setupSplashScreen(savedInstanceState: Bundle?, logger: LoggerAdapter, tag: String) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return

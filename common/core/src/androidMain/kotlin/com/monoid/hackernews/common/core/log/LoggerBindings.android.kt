@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.core
+package com.monoid.hackernews.common.core.log
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dev.zacsweers.metro.BindingContainer

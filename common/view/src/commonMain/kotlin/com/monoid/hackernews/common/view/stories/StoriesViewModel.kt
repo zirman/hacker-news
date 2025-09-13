@@ -12,10 +12,10 @@ import androidx.lifecycle.viewmodel.MutableCreationExtras
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.savedState
-import com.monoid.hackernews.common.core.LoggerAdapter
-import com.monoid.hackernews.common.view.ViewModelKey
-import com.monoid.hackernews.common.view.ViewModelScope
 import com.monoid.hackernews.common.core.coroutines.doOnErrorThenThrow
+import com.monoid.hackernews.common.core.log.LoggerAdapter
+import com.monoid.hackernews.common.core.metro.ViewModelKey
+import com.monoid.hackernews.common.core.metro.ViewModelScope
 import com.monoid.hackernews.common.data.WeakHashMap
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item

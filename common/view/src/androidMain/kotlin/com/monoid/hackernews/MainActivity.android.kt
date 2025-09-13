@@ -13,7 +13,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
-import com.monoid.hackernews.common.core.LoggerAdapter
+import com.monoid.hackernews.common.core.log.LoggerAdapter
+import com.monoid.hackernews.common.core.metro.ActivityKey
 import com.monoid.hackernews.common.view.App
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap

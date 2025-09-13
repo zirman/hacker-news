@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.core
+package com.monoid.hackernews.common.core.log
 
 import co.touchlab.kermit.Logger
 import com.google.firebase.crashlytics.FirebaseCrashlytics

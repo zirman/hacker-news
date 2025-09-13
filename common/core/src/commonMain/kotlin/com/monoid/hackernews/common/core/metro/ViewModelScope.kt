@@ -1,3 +1,3 @@
-package com.monoid.hackernews.common.view
+package com.monoid.hackernews.common.core.metro
 
 abstract class ViewModelScope private constructor()

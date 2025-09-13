@@ -1,9 +1,9 @@
-package com.monoid.hackernews
+package com.monoid.hackernews.wear
 
 import androidx.lifecycle.ViewModel
-import com.monoid.hackernews.common.core.LoggerAdapter
-import com.monoid.hackernews.common.view.ViewModelKey
-import com.monoid.hackernews.common.view.ViewModelScope
+import com.monoid.hackernews.common.core.log.LoggerAdapter
+import com.monoid.hackernews.common.core.metro.ViewModelKey
+import com.monoid.hackernews.common.core.metro.ViewModelScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 

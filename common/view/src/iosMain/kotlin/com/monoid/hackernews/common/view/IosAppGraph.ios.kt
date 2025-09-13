@@ -1,7 +1,7 @@
 package com.monoid.hackernews.common.view
 
 import com.monoid.hackernews.common.core.DispatcherBindings
-import com.monoid.hackernews.common.core.IosLoggerBindings
+import com.monoid.hackernews.common.core.log.IosLoggerBindings
 import com.monoid.hackernews.common.data.IosDataStoreBindings
 import com.monoid.hackernews.common.data.IosDatabaseBindings
 import com.monoid.hackernews.common.data.IosNetworkBindings

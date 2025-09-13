@@ -5,9 +5,9 @@ import android.app.Application
 import android.content.Context
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.monoid.hackernews.common.core.AndroidLoggerBindings
 import com.monoid.hackernews.common.core.DispatcherBindings
-import com.monoid.hackernews.common.core.LoggerAdapter
+import com.monoid.hackernews.common.core.log.AndroidLoggerBindings
+import com.monoid.hackernews.common.core.log.LoggerAdapter
 import com.monoid.hackernews.common.data.AndroidDataStoreBindings
 import com.monoid.hackernews.common.data.AndroidDatabaseBindings
 import com.monoid.hackernews.common.data.AndroidNetworkBindings

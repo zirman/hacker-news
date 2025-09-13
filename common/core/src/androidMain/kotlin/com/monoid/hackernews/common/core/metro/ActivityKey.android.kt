@@ -1,4 +1,4 @@
-package com.monoid.hackernews
+package com.monoid.hackernews.common.core.metro
 
 import android.app.Activity
 import dev.zacsweers.metro.MapKey

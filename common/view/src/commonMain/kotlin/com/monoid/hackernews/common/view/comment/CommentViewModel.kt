@@ -12,14 +12,14 @@ import androidx.lifecycle.viewmodel.MutableCreationExtras
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.savedState
-import com.monoid.hackernews.common.view.ViewModelKey
-import com.monoid.hackernews.common.view.ViewModelScope
-import com.monoid.hackernews.common.view.metroViewModel
+import com.monoid.hackernews.common.core.metro.ViewModelKey
+import com.monoid.hackernews.common.core.metro.ViewModelScope
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.CommentRepository
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.StoriesRepository
 import com.monoid.hackernews.common.data.room.CommentDb
+import com.monoid.hackernews.common.view.metroViewModel
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.Job

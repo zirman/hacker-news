@@ -1,4 +1,4 @@
-package com.monoid.hackernews
+package com.monoid.hackernews.wear
 
 import android.app.Activity
 import android.os.Bundle
@@ -12,8 +12,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModelProvider
 import androidx.wear.compose.material.Text
-import com.monoid.hackernews.common.core.LoggerAdapter
+import com.monoid.hackernews.HackerNewsTheme
+import com.monoid.hackernews.common.core.log.LoggerAdapter
+import com.monoid.hackernews.common.core.metro.ActivityKey
 import com.monoid.hackernews.common.view.metroViewModel
+import com.monoid.hackernews.jankStats
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject

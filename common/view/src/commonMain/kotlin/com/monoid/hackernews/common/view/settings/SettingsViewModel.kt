@@ -2,10 +2,10 @@ package com.monoid.hackernews.common.view.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.monoid.hackernews.common.core.LoggerAdapter
-import com.monoid.hackernews.common.view.ViewModelKey
-import com.monoid.hackernews.common.view.ViewModelScope
 import com.monoid.hackernews.common.core.coroutines.mapStateIn
+import com.monoid.hackernews.common.core.log.LoggerAdapter
+import com.monoid.hackernews.common.core.metro.ViewModelKey
+import com.monoid.hackernews.common.core.metro.ViewModelScope
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.SettingsRepository
 import com.monoid.hackernews.common.data.model.Username
