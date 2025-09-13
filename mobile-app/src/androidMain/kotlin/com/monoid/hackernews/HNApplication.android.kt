@@ -12,6 +12,8 @@ class HNApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        // force creation of singleton UiModeConfigurator
+        appGraph.uiModeConfigurator
         StrictMode.setVmPolicy(
             StrictMode.VmPolicy.Builder()
                 .let {
