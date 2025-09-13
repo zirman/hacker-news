@@ -17,12 +17,10 @@ import kotlin.reflect.KClass
 class HNViewModelFactory(
     private val viewModelProviders: Map<KClass<out ViewModel>, Provider<ViewModel>>
 ) : ViewModelProvider.Factory {
-
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         val provider = viewModelProviders[modelClass.kotlin]
             ?: throw IllegalArgumentException("Unknown model class $modelClass")
-
         return try {
             provider() as T
         } catch (e: Exception) {

@@ -36,8 +36,10 @@ import kotlin.reflect.KClass
     ],
 )
 interface AndroidAppGraph : ViewModelGraph.Factory {
+    val application: Application
     val db: HNDatabase
     val httpClient: HttpClient
+    val uiModeConfigurator: UiModeConfigurator
 
     @Provides
     fun providesApplicationContext(application: Application): Context = application
@@ -50,15 +52,10 @@ interface AndroidAppGraph : ViewModelGraph.Factory {
         fun create(@Provides application: Application): AndroidAppGraph
     }
 
-    val application: Application
-
     @SingleIn(AppScope::class)
     @Named("ProcessLifecycleOwner")
     @Provides
     fun providesProcessLifecycleOwner(): LifecycleOwner = ProcessLifecycleOwner.get()
-
-    // @Factory
-    // fun channel(): Channel<Intent> = Channel()
 
     @SingleIn(AppScope::class)
     @Provides
