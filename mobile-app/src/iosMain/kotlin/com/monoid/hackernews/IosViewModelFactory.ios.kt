@@ -3,7 +3,6 @@ package com.monoid.hackernews
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.monoid.hackernews.common.core.metro.ViewModelGraph
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
@@ -17,12 +16,9 @@ import kotlin.reflect.cast
  */
 @ContributesBinding(AppScope::class)
 @Inject
-class MetroViewModelFactory(val appGraph: IosAppGraph) : ViewModelProvider.Factory {
-    fun viewModelGraph(extras: CreationExtras): ViewModelGraph =
-        appGraph.createViewModelGraph(extras)
-
+class IosViewModelFactory(val appGraph: IosAppGraph) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T {
-        val viewModelGraph = viewModelGraph(extras)
+        val viewModelGraph = appGraph.createViewModelGraph(extras)
         println(viewModelGraph.viewModelProviders)
         val provider = viewModelGraph.viewModelProviders[modelClass]
             ?: throw IllegalArgumentException("Unknown model class $modelClass")

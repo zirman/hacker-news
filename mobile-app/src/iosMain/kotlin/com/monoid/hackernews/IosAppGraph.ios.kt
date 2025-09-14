@@ -19,5 +19,5 @@ import dev.zacsweers.metro.DependencyGraph
     ],
 )
 interface IosAppGraph : IosViewModelGraph.Factory {
-    val metroViewModelFactory: MetroViewModelFactory
+    val iosViewModelFactory: IosViewModelFactory
 }

@@ -19,11 +19,11 @@ import java.awt.Desktop
 import kotlin.reflect.KClass
 
 fun main() {
-    val appGraph = createGraph<JvmAppGraph>()
+    val appGraph = createGraph<DesktopAppGraph>()
     application {
         CompositionLocalProvider(LocalViewModelProviderFactory provides object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T {
-                return appGraph.metroViewModelFactory.create(modelClass, extras)
+                return appGraph.desktopViewModelFactory.create(modelClass, extras)
             }
         }) {
             Window(
@@ -31,7 +31,7 @@ fun main() {
                 alwaysOnTop = false,
                 title = stringResource(Res.string.hacker_news),
             ) {
-                JvmApp(
+                DesktopApp(
                     onClickUrl = { url ->
                         try {
                             (if (Desktop.isDesktopSupported()) Desktop.getDesktop() else null)

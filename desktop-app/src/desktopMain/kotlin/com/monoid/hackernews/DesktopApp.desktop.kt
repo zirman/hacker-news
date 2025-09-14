@@ -53,7 +53,7 @@ import org.jetbrains.compose.splitpane.rememberSplitPaneState
 import java.awt.Cursor
 
 @Composable
-fun JvmApp(onClickUrl: (Url) -> Unit) {
+fun DesktopApp(onClickUrl: (Url) -> Unit) {
     AppTheme {
         var showLoginDialog by rememberSaveable {
             mutableStateOf(false)

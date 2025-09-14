@@ -13,7 +13,7 @@ import dev.zacsweers.metro.Provides
 import kotlin.reflect.KClass
 
 @GraphExtension(ViewModelScope::class)
-interface JvmViewModelGraph : ViewModelGraph {
+interface DesktopViewModelGraph : ViewModelGraph {
     override val viewModelProviders get() = jvmViewModelProviders
 
     @Multibinds
@@ -25,6 +25,6 @@ interface JvmViewModelGraph : ViewModelGraph {
 
     @GraphExtension.Factory
     fun interface Factory { // : ViewModelProvider.Factory
-        fun createViewModelGraph(@Provides creationExtras: CreationExtras): JvmViewModelGraph
+        fun createViewModelGraph(@Provides creationExtras: CreationExtras): DesktopViewModelGraph
     }
 }

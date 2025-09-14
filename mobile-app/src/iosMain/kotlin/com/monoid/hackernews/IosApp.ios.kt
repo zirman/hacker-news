@@ -48,7 +48,7 @@ fun IosApp(onClickUrl: (Url) -> Unit) {
     val appGraph = remember { createGraph<IosAppGraph>() }
     CompositionLocalProvider(LocalViewModelProviderFactory provides object : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T {
-            return appGraph.metroViewModelFactory.create(modelClass, extras)
+            return appGraph.iosViewModelFactory.create(modelClass, extras)
         }
     }) {
         AppTheme {
