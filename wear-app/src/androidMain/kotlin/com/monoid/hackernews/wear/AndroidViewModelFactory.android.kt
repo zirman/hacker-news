@@ -1,15 +1,13 @@
-package com.monoid.hackernews.common.view
+package com.monoid.hackernews.wear
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.monoid.hackernews.common.core.metro.ViewModelGraph
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.Provider
 import kotlin.reflect.KClass
-import kotlin.reflect.cast
 
 /**
  * A [ViewModelProvider.Factory] that uses an injected map of [KClass] to [Provider] of [ViewModel]
@@ -17,16 +15,12 @@ import kotlin.reflect.cast
  */
 @ContributesBinding(AppScope::class)
 @Inject
-class MetroViewModelFactory(val appGraph: JvmAppGraph) : ViewModelProvider.Factory {
+class AndroidViewModelFactory(val appGraph: AndroidAppGraph) : ViewModelProvider.Factory {
 
-    fun viewModelGraph(extras: CreationExtras): ViewModelGraph {
-        return appGraph.createViewModelGraph(extras)
-    }
-
-    override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T {
-        val viewModelGraph = viewModelGraph(extras)
+    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
+        val viewModelGraph = appGraph.createViewModelGraph(extras)
         println(viewModelGraph.viewModelProviders)
-        val provider = viewModelGraph.viewModelProviders[modelClass.java.kotlin]
+        val provider = viewModelGraph.viewModelProviders[modelClass.kotlin]
             ?: throw IllegalArgumentException("Unknown model class $modelClass")
         @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
         return modelClass.cast(provider())

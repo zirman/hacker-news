@@ -17,6 +17,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.monoid.hackernews.common.core.metro.metroViewModel
 import com.monoid.hackernews.common.data.api.ItemId
@@ -31,7 +32,7 @@ import io.ktor.http.Url
 import kotlin.reflect.typeOf
 
 @Composable
-actual fun MainNavHost(
+fun MainNavHost(
     onClickLogin: () -> Unit,
     onClickLogout: () -> Unit,
     onClickItem: (Item) -> Unit,
@@ -45,8 +46,8 @@ actual fun MainNavHost(
     onClickUserGuidelines: () -> Unit,
     onClickSendFeedback: () -> Unit,
     onClickAbout: () -> Unit,
-    modifier: Modifier,
-    navController: NavHostController,
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(),
 ) {
     NavHost(
         navController = navController,

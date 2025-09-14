@@ -9,8 +9,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.monoid.hackernews.common.core.metro.LocalViewModelProviderFactory
-import com.monoid.hackernews.common.view.App
-import com.monoid.hackernews.common.view.JvmAppGraph
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.hacker_news
 import dev.zacsweers.metro.createGraph
@@ -33,7 +31,7 @@ fun main() {
                 alwaysOnTop = false,
                 title = stringResource(Res.string.hacker_news),
             ) {
-                App(
+                JvmApp(
                     onClickUrl = { url ->
                         try {
                             (if (Desktop.isDesktopSupported()) Desktop.getDesktop() else null)

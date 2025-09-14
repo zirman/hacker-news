@@ -1,4 +1,4 @@
-package com.monoid.hackernews
+package com.monoid.hackernews.wear
 
 import android.app.Application
 import android.content.Intent
@@ -7,13 +7,12 @@ import android.os.Build
 import android.os.StrictMode
 import dev.zacsweers.metro.createGraphFactory
 
-class HNApplication : Application() {
+class WearHackerNewsApplication : Application() {
     val appGraph by lazy { createGraphFactory<AndroidAppGraph.Factory>().create(this) }
 
     override fun onCreate() {
         super.onCreate()
-        // force creation of singleton UiModeConfigurator
-        appGraph.uiModeConfigurator
+        // updateAndPushDynamicShortcuts(MainActivity::class.java)
         StrictMode.setVmPolicy(
             StrictMode.VmPolicy.Builder()
                 .let {

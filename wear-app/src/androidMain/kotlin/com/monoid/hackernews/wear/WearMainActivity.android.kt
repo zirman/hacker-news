@@ -12,7 +12,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModelProvider
 import androidx.wear.compose.material.Text
-import com.monoid.hackernews.HackerNewsTheme
 import com.monoid.hackernews.common.core.log.LoggerAdapter
 import com.monoid.hackernews.common.core.metro.ActivityKey
 import com.monoid.hackernews.common.core.metro.metroViewModel
@@ -36,7 +35,7 @@ class WearMainActivity(
             ReportDrawnWhen { contentComposed }
             SideEffect { contentComposed = true }
             val mainViewModel: WearMainViewModel = metroViewModel()
-            HackerNewsTheme {
+            WearHackerNewsTheme {
                 Text("Hello World")
             }
         }

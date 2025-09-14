@@ -1,7 +1,9 @@
-package com.monoid.hackernews.common.view
+package com.monoid.hackernews.wear
 
+import android.app.Application
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.monoid.hackernews.common.core.metro.ViewModelGraph
@@ -13,18 +15,22 @@ import dev.zacsweers.metro.Provides
 import kotlin.reflect.KClass
 
 @GraphExtension(ViewModelScope::class)
-interface JvmViewModelGraph : ViewModelGraph {
-    override val viewModelProviders get() = jvmViewModelProviders
+interface AndroidViewModelGraph : ViewModelGraph {
+    override val viewModelProviders get() = androidViewModelProviders
 
     @Multibinds
-    val jvmViewModelProviders: Map<KClass<out ViewModel>, Provider<ViewModel>>
+    val androidViewModelProviders: Map<KClass<out ViewModel>, Provider<ViewModel>>
+
+    @Provides
+    fun providesApplication(creationExtras: CreationExtras): Application =
+        checkNotNull(creationExtras[APPLICATION_KEY])
 
     @Provides
     fun providesSavedStateHandle(creationExtras: CreationExtras): SavedStateHandle =
         creationExtras.createSavedStateHandle()
 
     @GraphExtension.Factory
-    fun interface Factory { // : ViewModelProvider.Factory
-        fun createViewModelGraph(@Provides creationExtras: CreationExtras): JvmViewModelGraph
+    fun interface Factory {
+        fun createViewModelGraph(@Provides creationExtras: CreationExtras): AndroidViewModelGraph
     }
 }

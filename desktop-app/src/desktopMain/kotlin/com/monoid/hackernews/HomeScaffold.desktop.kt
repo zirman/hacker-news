@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view.home
+package com.monoid.hackernews
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue

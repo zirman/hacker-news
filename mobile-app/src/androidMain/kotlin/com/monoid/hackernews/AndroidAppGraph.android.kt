@@ -13,7 +13,6 @@ import com.monoid.hackernews.common.data.AndroidDatabaseBindings
 import com.monoid.hackernews.common.data.AndroidNetworkBindings
 import com.monoid.hackernews.common.data.model.SettingsRepository
 import com.monoid.hackernews.common.data.room.HNDatabase
-import com.monoid.hackernews.common.view.AndroidViewModelGraph
 import com.monoid.hackernews.common.view.UiModeConfigurator
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.DependencyGraph
@@ -36,7 +35,6 @@ import kotlin.reflect.KClass
     ],
 )
 interface AndroidAppGraph : AndroidViewModelGraph.Factory {
-    val application: Application
     val db: HNDatabase
     val httpClient: HttpClient
     val uiModeConfigurator: UiModeConfigurator

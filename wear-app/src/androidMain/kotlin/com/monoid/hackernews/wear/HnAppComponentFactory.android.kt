@@ -38,7 +38,7 @@ class HnAppComponentFactory : AppComponentFactory() {
 
     override fun instantiateApplicationCompat(cl: ClassLoader, className: String): Application {
         val app = super.instantiateApplicationCompat(cl, className)
-        activityProviders = (app as HNWearApplication).appGraph.activityProviders
+        activityProviders = (app as WearHackerNewsApplication).appGraph.activityProviders
         return app
     }
 

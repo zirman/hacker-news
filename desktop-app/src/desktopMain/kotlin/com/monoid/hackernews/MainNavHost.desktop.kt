@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view.main
+package com.monoid.hackernews
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -17,6 +17,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.monoid.hackernews.common.core.metro.metroViewModel
 import com.monoid.hackernews.common.data.api.ItemId
@@ -26,12 +27,12 @@ import com.monoid.hackernews.common.domain.navigation.ItemIdNavType
 import com.monoid.hackernews.common.domain.navigation.Route
 import com.monoid.hackernews.common.domain.navigation.UsernameNavType
 import com.monoid.hackernews.common.view.comment.CommentDialog
-import com.monoid.hackernews.common.view.home.HomeScaffold
+import com.monoid.hackernews.common.view.main.HomeViewModel
 import io.ktor.http.Url
 import kotlin.reflect.typeOf
 
 @Composable
-actual fun MainNavHost(
+fun MainNavHost(
     onClickLogin: () -> Unit,
     onClickLogout: () -> Unit,
     onClickItem: (Item) -> Unit,
@@ -45,8 +46,8 @@ actual fun MainNavHost(
     onClickUserGuidelines: () -> Unit,
     onClickSendFeedback: () -> Unit,
     onClickAbout: () -> Unit,
-    modifier: Modifier,
-    navController: NavHostController,
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(),
 ) {
     NavHost(
         navController = navController,

@@ -15,7 +15,7 @@ import io.ktor.http.Url
 
 @Suppress("ComposeModifierMissing")
 @Composable
-actual fun App(onClickUrl: (Url) -> Unit) {
+fun App(onClickUrl: (Url) -> Unit) {
     AppTheme {
         Scrim {
             Box(contentAlignment = Alignment.Center) {

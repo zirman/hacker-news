@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view
+package com.monoid.hackernews
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -30,6 +30,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.monoid.hackernews.common.core.metro.LocalViewModelProviderFactory
 import com.monoid.hackernews.common.domain.navigation.Route
+import com.monoid.hackernews.common.view.Scrim
 import com.monoid.hackernews.common.view.home.contentDescription
 import com.monoid.hackernews.common.view.home.icon
 import com.monoid.hackernews.common.view.home.label
@@ -43,7 +44,7 @@ import org.jetbrains.compose.resources.stringResource
 import kotlin.reflect.KClass
 
 @Composable
-actual fun App(onClickUrl: (Url) -> Unit) {
+fun IosApp(onClickUrl: (Url) -> Unit) {
     val appGraph = remember { createGraph<IosAppGraph>() }
     CompositionLocalProvider(LocalViewModelProviderFactory provides object : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T {

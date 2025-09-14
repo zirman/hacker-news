@@ -2,6 +2,7 @@ package com.monoid.hackernews
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.CreationExtras
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
@@ -14,17 +15,14 @@ import kotlin.reflect.KClass
  */
 @ContributesBinding(AppScope::class)
 @Inject
-class HNViewModelFactory(
-    private val viewModelProviders: Map<KClass<out ViewModel>, Provider<ViewModel>>
-) : ViewModelProvider.Factory {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        val provider = viewModelProviders[modelClass.kotlin]
+class AndroidViewModelFactory(val appGraph: AndroidAppGraph) : ViewModelProvider.Factory {
+
+    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
+        val viewModelGraph = appGraph.createViewModelGraph(extras)
+        println(viewModelGraph.viewModelProviders)
+        val provider = viewModelGraph.viewModelProviders[modelClass.kotlin]
             ?: throw IllegalArgumentException("Unknown model class $modelClass")
-        return try {
-            provider() as T
-        } catch (e: Exception) {
-            throw RuntimeException(e)
-        }
+        @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+        return modelClass.cast(provider())
     }
 }

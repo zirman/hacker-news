@@ -19,7 +19,7 @@
         android:required="false" />
 
     <application
-        android:name=".HNApplication"
+        android:name=".HackerNewsApplication"
         android:allowBackup="true"
         android:appComponentFactory="com.monoid.hackernews.HnAppComponentFactory"
         android:dataExtractionRules="@xml/data_extraction_rules"

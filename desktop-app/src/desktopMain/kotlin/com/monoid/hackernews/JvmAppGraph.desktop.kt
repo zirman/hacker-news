@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view
+package com.monoid.hackernews
 
 import com.monoid.hackernews.common.core.log.JvmLoggerBindings
 import com.monoid.hackernews.common.core.metro.DispatcherBindings

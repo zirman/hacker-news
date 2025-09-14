@@ -1,19 +1,16 @@
-package com.monoid.hackernews.wear
+package com.monoid.hackernews
 
 import android.app.Application
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.StrictMode
-import com.monoid.hackernews.AndroidAppGraph
 import dev.zacsweers.metro.createGraphFactory
 
-class HNWearApplication : Application() {
+class HackerNewsApplication : Application() {
     val appGraph by lazy { createGraphFactory<AndroidAppGraph.Factory>().create(this) }
 
     override fun onCreate() {
-        super.onCreate()
-        // updateAndPushDynamicShortcuts(MainActivity::class.java)
         StrictMode.setVmPolicy(
             StrictMode.VmPolicy.Builder()
                 .let {
@@ -25,6 +22,9 @@ class HNWearApplication : Application() {
                 }
                 .build(),
         )
+        // force creation of singleton UiModeConfigurator
+        appGraph.uiModeConfigurator
+        super.onCreate()
         // register locale changed broadcast receiver
         registerReceiver(
             /* receiver = */

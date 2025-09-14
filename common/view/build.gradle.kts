@@ -7,9 +7,6 @@ kotlin {
         commonMain.dependencies {
             api(project(":common:domain"))
         }
-        androidMain.dependencies {
-            implementation(libs.bundles.wear)
-        }
     }
 }
 val packageNamespace = "com.monoid.hackernews.common.view"

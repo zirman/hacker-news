@@ -1,4 +1,4 @@
-package com.monoid.hackernews
+package com.monoid.hackernews.wear
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -10,14 +10,14 @@ import com.monoid.hackernews.common.view.settings.AppearanceViewModel
 import com.monoid.hackernews.common.view.theme.LocalCommentIndentation
 
 @Composable
-fun HackerNewsTheme(
+fun WearHackerNewsTheme(
     viewModel: AppearanceViewModel = metroViewModel(),
     content: @Composable () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     MaterialTheme(
-        colors = wearColorPalette,
-        typography = Typography,
+        colors = WearColorPalette,
+        typography = WearTypography,
         // For shapes, we generally recommend using the default Material Wear shapes which are
         // optimized for round and non-round devices.
         content = {

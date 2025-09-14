@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view
+package com.monoid.hackernews
 
 import android.app.Application
 import androidx.lifecycle.SavedStateHandle

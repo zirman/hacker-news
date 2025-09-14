@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view
+package com.monoid.hackernews
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -41,7 +41,6 @@ import androidx.navigation.compose.rememberNavController
 import com.monoid.hackernews.common.core.metro.metroViewModel
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.domain.navigation.Route
-import com.monoid.hackernews.common.view.home.ItemsColumn
 import com.monoid.hackernews.common.view.itemdetail.ItemDetailPane
 import com.monoid.hackernews.common.view.login.LoginDialog
 import com.monoid.hackernews.common.view.stories.StoriesViewModel
@@ -54,7 +53,7 @@ import org.jetbrains.compose.splitpane.rememberSplitPaneState
 import java.awt.Cursor
 
 @Composable
-actual fun App(onClickUrl: (Url) -> Unit) {
+fun JvmApp(onClickUrl: (Url) -> Unit) {
     AppTheme {
         var showLoginDialog by rememberSaveable {
             mutableStateOf(false)

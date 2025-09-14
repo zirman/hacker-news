@@ -10,7 +10,7 @@
     <uses-feature android:name="android.hardware.type.watch" />
 
     <application
-        android:name=".HNWearApplication"
+        android:name=".WearHackerNewsApplication"
         android:allowBackup="true"
         android:appComponentFactory="com.monoid.hackernews.wear.HnAppComponentFactory"
         android:icon="@mipmap/ic_launcher"
