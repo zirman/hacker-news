@@ -15,7 +15,7 @@ import kotlin.reflect.KClass
  */
 @ContributesBinding(AppScope::class)
 @Inject
-class AndroidViewModelFactory(val appGraph: AndroidAppGraph) : ViewModelProvider.Factory {
+class WearViewModelFactory(val appGraph: WearAppGraph) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
         val viewModelGraph = appGraph.createViewModelGraph(extras)

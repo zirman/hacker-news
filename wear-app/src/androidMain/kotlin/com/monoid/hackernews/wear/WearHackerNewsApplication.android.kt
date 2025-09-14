@@ -8,7 +8,7 @@ import android.os.StrictMode
 import dev.zacsweers.metro.createGraphFactory
 
 class WearHackerNewsApplication : Application() {
-    val appGraph by lazy { createGraphFactory<AndroidAppGraph.Factory>().create(this) }
+    val appGraph by lazy { createGraphFactory<WearAppGraph.Factory>().create(this) }
 
     override fun onCreate() {
         super.onCreate()

@@ -15,7 +15,7 @@ import dev.zacsweers.metro.Provides
 import kotlin.reflect.KClass
 
 @GraphExtension(ViewModelScope::class)
-interface AndroidViewModelGraph : ViewModelGraph {
+interface WearViewModelGraph : ViewModelGraph {
     override val viewModelProviders get() = androidViewModelProviders
 
     @Multibinds
@@ -31,6 +31,6 @@ interface AndroidViewModelGraph : ViewModelGraph {
 
     @GraphExtension.Factory
     fun interface Factory {
-        fun createViewModelGraph(@Provides creationExtras: CreationExtras): AndroidViewModelGraph
+        fun createViewModelGraph(@Provides creationExtras: CreationExtras): WearViewModelGraph
     }
 }

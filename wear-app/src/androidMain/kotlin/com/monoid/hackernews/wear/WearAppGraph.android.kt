@@ -34,7 +34,7 @@ import kotlin.reflect.KClass
         AndroidLoggerBindings::class,
     ],
 )
-interface AndroidAppGraph : AndroidViewModelGraph.Factory {
+interface WearAppGraph : WearViewModelGraph.Factory {
     val application: Application
     val db: HNDatabase
     val httpClient: HttpClient
@@ -48,7 +48,7 @@ interface AndroidAppGraph : AndroidViewModelGraph.Factory {
 
     @DependencyGraph.Factory
     fun interface Factory {
-        fun create(@Provides application: Application): AndroidAppGraph
+        fun create(@Provides application: Application): WearAppGraph
     }
 
     @SingleIn(AppScope::class)
