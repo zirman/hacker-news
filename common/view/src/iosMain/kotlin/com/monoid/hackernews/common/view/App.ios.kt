@@ -28,7 +28,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
-import com.monoid.hackernews.common.core.metro.LocalIosViewModelProviderFactory
+import com.monoid.hackernews.common.core.metro.LocalViewModelProviderFactory
 import com.monoid.hackernews.common.domain.navigation.Route
 import com.monoid.hackernews.common.view.home.contentDescription
 import com.monoid.hackernews.common.view.home.icon
@@ -45,7 +45,7 @@ import kotlin.reflect.KClass
 @Composable
 actual fun App(onClickUrl: (Url) -> Unit) {
     val appGraph = remember { createGraph<IosAppGraph>() }
-    CompositionLocalProvider(LocalIosViewModelProviderFactory provides object : ViewModelProvider.Factory {
+    CompositionLocalProvider(LocalViewModelProviderFactory provides object : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T {
             return appGraph.metroViewModelFactory.create(modelClass, extras)
         }

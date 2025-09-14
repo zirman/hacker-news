@@ -8,7 +8,7 @@ import androidx.compose.ui.window.application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.monoid.hackernews.common.core.metro.LocalJvmViewModelProviderFactory
+import com.monoid.hackernews.common.core.metro.LocalViewModelProviderFactory
 import com.monoid.hackernews.common.view.App
 import com.monoid.hackernews.common.view.JvmAppGraph
 import com.monoid.hackernews.common.view.Res
@@ -23,7 +23,7 @@ import kotlin.reflect.KClass
 fun main() {
     val appGraph = createGraph<JvmAppGraph>()
     application {
-        CompositionLocalProvider(LocalJvmViewModelProviderFactory provides object : ViewModelProvider.Factory {
+        CompositionLocalProvider(LocalViewModelProviderFactory provides object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T {
                 return appGraph.metroViewModelFactory.create(modelClass, extras)
             }
