@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view
+package com.monoid.hackernews.common.core.metro
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModel

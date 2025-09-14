@@ -5,9 +5,12 @@ package com.monoid.hackernews
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.CreationExtras
+import com.monoid.hackernews.common.core.metro.LocalJvmViewModelProviderFactory
 import com.monoid.hackernews.common.view.App
 import com.monoid.hackernews.common.view.JvmAppGraph
-import com.monoid.hackernews.common.view.LocalJvmAppGraph
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.hacker_news
 import dev.zacsweers.metro.createGraph
@@ -15,11 +18,16 @@ import io.ktor.http.toURI
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi
 import java.awt.Desktop
+import kotlin.reflect.KClass
 
 fun main() {
     val appGraph = createGraph<JvmAppGraph>()
     application {
-        CompositionLocalProvider(LocalJvmAppGraph provides appGraph) {
+        CompositionLocalProvider(LocalJvmViewModelProviderFactory provides object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T {
+                return appGraph.metroViewModelFactory.create(modelClass, extras)
+            }
+        }) {
             Window(
                 onCloseRequest = ::exitApplication,
                 alwaysOnTop = false,

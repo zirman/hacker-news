@@ -23,7 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.monoid.hackernews.common.view.metroViewModel
+import com.monoid.hackernews.common.core.metro.metroViewModel
 import com.monoid.hackernews.common.data.model.HNFont
 import com.monoid.hackernews.common.data.model.LightDarkMode
 import com.monoid.hackernews.common.data.model.Shape

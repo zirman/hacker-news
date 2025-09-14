@@ -6,7 +6,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.monoid.hackernews.common.view.metroViewModel
+import com.monoid.hackernews.common.core.metro.metroViewModel
 
 @Composable
 fun LogoutDialog(

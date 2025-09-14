@@ -1,7 +1,7 @@
-package com.monoid.hackernews.common.view
+package com.monoid.hackernews.common.core.metro
 
-import androidx.activity.compose.LocalActivity
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.lifecycle.HasDefaultViewModelProviderFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -18,7 +18,7 @@ actual inline fun <reified VM : ViewModel> metroViewModel(
 ): VM = viewModel(
     viewModelStoreOwner = viewModelStoreOwner,
     key = key,
-    factory = metroViewModelProviderFactory(),
+    factory = LocalJvmViewModelProviderFactory.current,
     extras = if (viewModelStoreOwner is HasDefaultViewModelProviderFactory) {
         viewModelStoreOwner.defaultViewModelCreationExtras
     } else {
@@ -33,19 +33,11 @@ actual inline fun <reified VM : ViewModel> metroViewModel(
     extras: CreationExtras,
     crossinline factory: ViewModelGraph.() -> VM,
 ): VM {
-    val metroViewModelProviderFactory = metroViewModelProviderFactory()
+    val metroViewModelProviderFactory = LocalJvmViewModelProviderFactory.current
     return viewModel(
         viewModelStoreOwner = viewModelStoreOwner,
         key = key,
-        factory = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(
-                modelClass: Class<T>,
-                extras: CreationExtras
-            ): T {
-                val viewModelGraph = metroViewModelProviderFactory.viewModelGraph(extras)
-                return checkNotNull(modelClass.cast(viewModelGraph.factory()))
-            }
-        },
+        factory = metroViewModelProviderFactory,
         extras = if (viewModelStoreOwner is HasDefaultViewModelProviderFactory) {
             viewModelStoreOwner.defaultViewModelCreationExtras
         } else {
@@ -54,7 +46,6 @@ actual inline fun <reified VM : ViewModel> metroViewModel(
     )
 }
 
-@Composable
-fun metroViewModelProviderFactory(): MetroViewModelFactory =
-    (LocalActivity.current as HasDefaultViewModelProviderFactory)
-        .defaultViewModelProviderFactory as MetroViewModelFactory
+val LocalJvmViewModelProviderFactory = staticCompositionLocalOf<ViewModelProvider.Factory> {
+    error("CompositionLocal LocalJvmViewModelProviderFactory not present")
+}

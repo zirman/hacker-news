@@ -15,7 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.monoid.hackernews.common.view.metroViewModel
+import com.monoid.hackernews.common.core.metro.metroViewModel
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.notifications
 import com.monoid.hackernews.common.view.stories.detailContentInsetSides

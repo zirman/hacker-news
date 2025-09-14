@@ -15,7 +15,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
-import com.monoid.hackernews.common.view.metroViewModel
+import com.monoid.hackernews.common.core.metro.metroViewModel
 
 @Composable
 fun LoginDialog(

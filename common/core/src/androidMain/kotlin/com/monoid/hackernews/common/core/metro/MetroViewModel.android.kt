@@ -1,7 +1,7 @@
-package com.monoid.hackernews.common.view
+package com.monoid.hackernews.common.core.metro
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.lifecycle.HasDefaultViewModelProviderFactory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -9,8 +9,6 @@ import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.plus
-import kotlin.reflect.KClass
-import kotlin.reflect.cast
 
 @Composable
 actual inline fun <reified VM : ViewModel> metroViewModel(
@@ -20,7 +18,7 @@ actual inline fun <reified VM : ViewModel> metroViewModel(
 ): VM = viewModel(
     viewModelStoreOwner = viewModelStoreOwner,
     key = key,
-    factory = LocalIosAppGraph.current.metroViewModelFactory,
+    factory = metroViewModelProviderFactory(),
     extras = if (viewModelStoreOwner is HasDefaultViewModelProviderFactory) {
         viewModelStoreOwner.defaultViewModelCreationExtras
     } else {
@@ -33,18 +31,13 @@ actual inline fun <reified VM : ViewModel> metroViewModel(
     viewModelStoreOwner: ViewModelStoreOwner,
     key: String?,
     extras: CreationExtras,
-    crossinline factory: ViewModelGraph.() -> VM
+    crossinline factory: ViewModelGraph.() -> VM,
 ): VM {
-    val metroViewModelProviderFactory = LocalIosAppGraph.current
+    val metroViewModelProviderFactory = metroViewModelProviderFactory()
     return viewModel(
         viewModelStoreOwner = viewModelStoreOwner,
         key = key,
-        factory = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T {
-                val viewModelGraph = metroViewModelProviderFactory.createViewModelGraph(extras)
-                return checkNotNull(modelClass.cast(viewModelGraph.factory()))
-            }
-        },
+        factory = metroViewModelProviderFactory,
         extras = if (viewModelStoreOwner is HasDefaultViewModelProviderFactory) {
             viewModelStoreOwner.defaultViewModelCreationExtras
         } else {
@@ -53,6 +46,7 @@ actual inline fun <reified VM : ViewModel> metroViewModel(
     )
 }
 
-val LocalIosAppGraph = staticCompositionLocalOf<IosAppGraph> {
-    error("CompositionLocal LocalJvmAppGraph not present")
-}
+@Composable
+fun metroViewModelProviderFactory(): ViewModelProvider.Factory =
+    (LocalActivity.current as HasDefaultViewModelProviderFactory)
+        .defaultViewModelProviderFactory

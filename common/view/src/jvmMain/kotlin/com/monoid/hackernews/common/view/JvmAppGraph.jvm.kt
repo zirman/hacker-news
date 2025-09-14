@@ -18,6 +18,6 @@ import dev.zacsweers.metro.DependencyGraph
         JvmLoggerBindings::class,
     ],
 )
-interface JvmAppGraph : ViewModelGraph.Factory {
+interface JvmAppGraph : JvmViewModelGraph.Factory {
     val metroViewModelFactory: MetroViewModelFactory
 }

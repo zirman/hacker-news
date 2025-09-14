@@ -18,6 +18,6 @@ import dev.zacsweers.metro.DependencyGraph
         IosLoggerBindings::class,
     ],
 )
-interface IosAppGraph : ViewModelGraph.Factory {
+interface IosAppGraph : IosViewModelGraph.Factory {
     val metroViewModelFactory: MetroViewModelFactory
 }

@@ -14,12 +14,12 @@ import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.savedState
 import com.monoid.hackernews.common.core.metro.ViewModelKey
 import com.monoid.hackernews.common.core.metro.ViewModelScope
+import com.monoid.hackernews.common.core.metro.metroViewModel
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.CommentRepository
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.StoriesRepository
 import com.monoid.hackernews.common.data.room.CommentDb
-import com.monoid.hackernews.common.view.metroViewModel
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.Job

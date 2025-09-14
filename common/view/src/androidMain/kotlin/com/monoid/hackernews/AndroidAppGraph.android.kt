@@ -13,8 +13,8 @@ import com.monoid.hackernews.common.data.AndroidDatabaseBindings
 import com.monoid.hackernews.common.data.AndroidNetworkBindings
 import com.monoid.hackernews.common.data.model.SettingsRepository
 import com.monoid.hackernews.common.data.room.HNDatabase
+import com.monoid.hackernews.common.view.AndroidViewModelGraph
 import com.monoid.hackernews.common.view.UiModeConfigurator
-import com.monoid.hackernews.common.view.ViewModelGraph
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Multibinds
@@ -35,7 +35,7 @@ import kotlin.reflect.KClass
         AndroidLoggerBindings::class,
     ],
 )
-interface AndroidAppGraph : ViewModelGraph.Factory {
+interface AndroidAppGraph : AndroidViewModelGraph.Factory {
     val application: Application
     val db: HNDatabase
     val httpClient: HttpClient
