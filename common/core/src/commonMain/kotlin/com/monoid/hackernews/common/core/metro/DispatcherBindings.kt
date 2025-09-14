@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.core
+package com.monoid.hackernews.common.core.metro
 
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.BindingContainer
