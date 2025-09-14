@@ -10,11 +10,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModelProvider
 import androidx.wear.compose.material.Text
 import com.monoid.hackernews.HackerNewsTheme
 import com.monoid.hackernews.common.core.log.LoggerAdapter
 import com.monoid.hackernews.common.core.metro.ActivityKey
-import com.monoid.hackernews.common.core.metro.AndroidViewModelFactory
 import com.monoid.hackernews.common.core.metro.metroViewModel
 import com.monoid.hackernews.jankStats
 import dev.zacsweers.metro.AppScope
@@ -26,7 +26,7 @@ import dev.zacsweers.metro.binding
 @ActivityKey(WearMainActivity::class)
 @Inject
 class WearMainActivity(
-    override val defaultViewModelProviderFactory: AndroidViewModelFactory,
+    override val defaultViewModelProviderFactory: ViewModelProvider.Factory,
     private val logger: LoggerAdapter,
 ) : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.monoid.hackernews.AndroidAppGraph
-import com.monoid.hackernews.common.core.metro.AndroidViewModelFactory
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
@@ -17,21 +16,14 @@ import kotlin.reflect.KClass
  */
 @ContributesBinding(AppScope::class)
 @Inject
-class MetroViewModelFactory(val appGraph: AndroidAppGraph) : AndroidViewModelFactory {
+class MetroViewModelFactory(val appGraph: AndroidAppGraph) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
-        val viewModelGraph = viewModelGraph(extras)
-
+        val viewModelGraph = appGraph.createViewModelGraph(extras)
         println(viewModelGraph.viewModelProviders)
-
-        val provider =
-            viewModelGraph.viewModelProviders[modelClass.kotlin]
-                ?: throw IllegalArgumentException("Unknown model class $modelClass")
-
+        val provider = viewModelGraph.viewModelProviders[modelClass.kotlin]
+            ?: throw IllegalArgumentException("Unknown model class $modelClass")
         @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
         return modelClass.cast(provider())
     }
-
-    override fun viewModelGraph(extras: CreationExtras): AndroidViewModelGraph =
-        appGraph.createViewModelGraph(extras)
 }

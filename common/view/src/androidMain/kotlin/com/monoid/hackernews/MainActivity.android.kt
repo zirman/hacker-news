@@ -12,9 +12,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.core.net.toUri
+import androidx.lifecycle.ViewModelProvider
 import com.monoid.hackernews.common.core.log.LoggerAdapter
 import com.monoid.hackernews.common.core.metro.ActivityKey
-import com.monoid.hackernews.common.core.metro.AndroidViewModelFactory
 import com.monoid.hackernews.common.view.App
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
@@ -26,7 +26,7 @@ import io.ktor.http.Url
 @ActivityKey(MainActivity::class)
 @Inject
 class MainActivity(
-    override val defaultViewModelProviderFactory: AndroidViewModelFactory,
+    override val defaultViewModelProviderFactory: ViewModelProvider.Factory,
     private val logger: LoggerAdapter,
 ) : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
