@@ -6,20 +6,20 @@ import android.content.Context
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.monoid.hackernews.common.core.log.LoggerAdapter
+import com.monoid.hackernews.common.core.metro.ProcessLifecycleOwnerQualifier
 import com.monoid.hackernews.common.data.model.SettingsRepository
 import com.monoid.hackernews.common.data.room.HNDatabase
 import com.monoid.hackernews.common.view.UiModeConfigurator
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Multibinds
-import dev.zacsweers.metro.Named
 import dev.zacsweers.metro.Provider
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 import io.ktor.client.HttpClient
 import kotlin.reflect.KClass
 
-@DependencyGraph(scope = AppScope::class)
+@DependencyGraph(AppScope::class)
 interface WearAppGraph : WearViewModelGraph.Factory {
     val application: Application
     val db: HNDatabase
@@ -30,7 +30,7 @@ interface WearAppGraph : WearViewModelGraph.Factory {
     fun providesApplicationContext(application: Application): Context = application
 
     @Multibinds
-    val activityProviders: Map<KClass<out Activity>, Provider<Activity>>
+    val activityProviders: Map<KClass<out Activity>, Provider<out Activity>>
 
     @DependencyGraph.Factory
     fun interface Factory {
@@ -38,7 +38,7 @@ interface WearAppGraph : WearViewModelGraph.Factory {
     }
 
     @SingleIn(AppScope::class)
-    @Named("ProcessLifecycleOwner")
+    @ProcessLifecycleOwnerQualifier
     @Provides
     fun providesProcessLifecycleOwner(): LifecycleOwner = ProcessLifecycleOwner.get()
 
@@ -46,7 +46,7 @@ interface WearAppGraph : WearViewModelGraph.Factory {
     @Provides
     fun providesUiModeConfigurator(
         context: Context,
-        @Named("ProcessLifecycleOwner")
+        @ProcessLifecycleOwnerQualifier
         lifecycleOwner: LifecycleOwner,
         settings: SettingsRepository,
         logger: LoggerAdapter,

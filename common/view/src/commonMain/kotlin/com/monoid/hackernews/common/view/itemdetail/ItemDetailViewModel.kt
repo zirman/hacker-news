@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.monoid.hackernews.common.core.coroutines.doOnErrorThenThrow
 import com.monoid.hackernews.common.core.log.LoggerAdapter
+import com.monoid.hackernews.common.core.metro.DefaultDispatcherQualifier
 import com.monoid.hackernews.common.core.metro.ViewModelKey
 import com.monoid.hackernews.common.core.metro.ViewModelScope
 import com.monoid.hackernews.common.data.WeakHashMap
@@ -14,7 +15,6 @@ import com.monoid.hackernews.common.data.model.SettingsRepository
 import com.monoid.hackernews.common.data.model.StoriesRepository
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.Named
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
@@ -34,7 +34,7 @@ import kotlinx.coroutines.withContext
 @Inject
 class ItemDetailViewModel(
     savedStateHandle: SavedStateHandle,
-    @Named("DefaultDispatcherQualifier")
+    @DefaultDispatcherQualifier
     defaultDispatcher: CoroutineDispatcher,
     private val logger: LoggerAdapter,
     private val storiesRepository: StoriesRepository,

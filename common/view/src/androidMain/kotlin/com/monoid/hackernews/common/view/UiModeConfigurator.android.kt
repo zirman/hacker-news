@@ -8,15 +8,15 @@ import androidx.core.content.getSystemService
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.monoid.hackernews.common.core.log.LoggerAdapter
+import com.monoid.hackernews.common.core.metro.ProcessLifecycleOwnerQualifier
 import com.monoid.hackernews.common.data.model.LightDarkMode
 import com.monoid.hackernews.common.data.model.SettingsRepository
-import dev.zacsweers.metro.Named
 import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 
 class UiModeConfigurator(
     context: Context,
-    @Named("ProcessLifecycleOwner")
+    @ProcessLifecycleOwnerQualifier
     lifecycleOwner: LifecycleOwner,
     settings: SettingsRepository,
     logger: LoggerAdapter,

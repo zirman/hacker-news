@@ -5,5 +5,5 @@ import dev.zacsweers.metro.Provider
 import kotlin.reflect.KClass
 
 interface ViewModelGraph {
-    val viewModelProviders: Map<KClass<out ViewModel>, Provider<ViewModel>>
+    val viewModelProviders: Map<KClass<out ViewModel>, Provider<out ViewModel>>
 }

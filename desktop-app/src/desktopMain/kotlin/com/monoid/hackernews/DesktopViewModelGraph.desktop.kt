@@ -17,7 +17,7 @@ interface DesktopViewModelGraph : ViewModelGraph {
     override val viewModelProviders get() = jvmViewModelProviders
 
     @Multibinds
-    val jvmViewModelProviders: Map<KClass<out ViewModel>, Provider<ViewModel>>
+    val jvmViewModelProviders: Map<KClass<out ViewModel>, Provider<out ViewModel>>
 
     @Provides
     fun providesSavedStateHandle(creationExtras: CreationExtras): SavedStateHandle =

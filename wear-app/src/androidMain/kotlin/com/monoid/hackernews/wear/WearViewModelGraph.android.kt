@@ -19,7 +19,7 @@ interface WearViewModelGraph : ViewModelGraph {
     override val viewModelProviders get() = androidViewModelProviders
 
     @Multibinds
-    val androidViewModelProviders: Map<KClass<out ViewModel>, Provider<ViewModel>>
+    val androidViewModelProviders: Map<KClass<out ViewModel>, Provider<out ViewModel>>
 
     @Provides
     fun providesApplication(creationExtras: CreationExtras): Application =

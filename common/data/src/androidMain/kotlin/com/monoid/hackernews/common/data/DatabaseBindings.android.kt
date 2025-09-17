@@ -5,11 +5,12 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.room.Room
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
+import com.monoid.hackernews.common.core.metro.IoDispatcherQualifier
+import com.monoid.hackernews.common.core.metro.ProcessLifecycleOwnerQualifier
 import com.monoid.hackernews.common.data.room.HNDatabase
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo
-import dev.zacsweers.metro.Named
 import dev.zacsweers.metro.Provides
 import kotlinx.coroutines.CoroutineDispatcher
 
@@ -19,9 +20,9 @@ object AndroidDatabaseBindings {
     @Provides
     fun providesHnDatabase(
         context: Context,
-        @Named("IoDispatcherQualifier")
+        @IoDispatcherQualifier
         coroutineDispatcher: CoroutineDispatcher,
-        @Named("ProcessLifecycleOwner")
+        @ProcessLifecycleOwnerQualifier
         lifecycleOwner: LifecycleOwner,
     ): HNDatabase {
         val database = Room

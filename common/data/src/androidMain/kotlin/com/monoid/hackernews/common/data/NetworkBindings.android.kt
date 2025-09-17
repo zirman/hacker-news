@@ -2,10 +2,10 @@ package com.monoid.hackernews.common.data
 
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import com.monoid.hackernews.common.core.metro.ProcessLifecycleOwnerQualifier
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.ContributesTo
-import dev.zacsweers.metro.Named
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 import io.ktor.client.HttpClient
@@ -31,7 +31,7 @@ object AndroidNetworkBindings {
     @Provides
     fun providesHttpClient(
         json: Json,
-        @Named("ProcessLifecycleOwner")
+        @ProcessLifecycleOwnerQualifier
         lifecycleOwner: LifecycleOwner,
     ): HttpClient {
         val client = HttpClient(Android) {

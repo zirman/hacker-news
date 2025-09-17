@@ -20,7 +20,7 @@ class HnAppComponentFactory : AppComponentFactory() {
     private inline fun <reified T : Any> getInstance(
         cl: ClassLoader,
         className: String,
-        providers: Map<KClass<out T>, Provider<T>>,
+        providers: Map<KClass<out T>, Provider<out T>>,
     ): T? {
         val clazz = Class.forName(className, false, cl).asSubclass(T::class.java)
         val modelProvider = providers[clazz.kotlin] ?: return null
@@ -44,6 +44,6 @@ class HnAppComponentFactory : AppComponentFactory() {
 
     // AppComponentFactory can be created multiple times
     companion object {
-        private lateinit var activityProviders: Map<KClass<out Activity>, Provider<Activity>>
+        private lateinit var activityProviders: Map<KClass<out Activity>, Provider<out Activity>>
     }
 }
