@@ -12,9 +12,11 @@ import com.monoid.hackernews.common.data.room.TrendingStoryDao
 import com.monoid.hackernews.common.data.room.UserDao
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 
+@ContributesTo(AppScope::class)
 @BindingContainer
 object DatabaseDaoBindings {
     @SingleIn(AppScope::class)

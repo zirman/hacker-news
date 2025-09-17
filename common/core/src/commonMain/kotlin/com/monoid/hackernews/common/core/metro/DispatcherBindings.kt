@@ -2,6 +2,7 @@ package com.monoid.hackernews.common.core.metro
 
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Named
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
@@ -10,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.MainCoroutineDispatcher
 
+@ContributesTo(AppScope::class)
 @BindingContainer
 object DispatcherBindings {
     @SingleIn(AppScope::class)

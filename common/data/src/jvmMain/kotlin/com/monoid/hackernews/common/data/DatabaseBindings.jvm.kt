@@ -5,12 +5,14 @@ import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.monoid.hackernews.common.data.room.HNDatabase
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Named
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineDispatcher
 import java.io.File
 
+@ContributesTo(AppScope::class)
 @BindingContainer(includes = [DatabaseDaoBindings::class])
 object JvmDatabaseBindings {
     @SingleIn(AppScope::class)

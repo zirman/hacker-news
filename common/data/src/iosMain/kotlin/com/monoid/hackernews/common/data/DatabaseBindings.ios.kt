@@ -7,6 +7,7 @@ import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.monoid.hackernews.common.data.room.HNDatabase
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Named
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
@@ -16,6 +17,7 @@ import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSFileManager
 import platform.Foundation.NSUserDomainMask
 
+@ContributesTo(AppScope::class)
 @BindingContainer(includes = [DatabaseDaoBindings::class])
 object IosDatabaseBindings {
     @SingleIn(AppScope::class)

@@ -5,12 +5,7 @@ import android.app.Application
 import android.content.Context
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.monoid.hackernews.common.core.log.AndroidLoggerBindings
 import com.monoid.hackernews.common.core.log.LoggerAdapter
-import com.monoid.hackernews.common.core.metro.DispatcherBindings
-import com.monoid.hackernews.common.data.AndroidDataStoreBindings
-import com.monoid.hackernews.common.data.AndroidDatabaseBindings
-import com.monoid.hackernews.common.data.AndroidNetworkBindings
 import com.monoid.hackernews.common.data.model.SettingsRepository
 import com.monoid.hackernews.common.data.room.HNDatabase
 import com.monoid.hackernews.common.view.UiModeConfigurator
@@ -24,16 +19,7 @@ import dev.zacsweers.metro.SingleIn
 import io.ktor.client.HttpClient
 import kotlin.reflect.KClass
 
-@DependencyGraph(
-    scope = AppScope::class,
-    bindingContainers = [
-        DispatcherBindings::class,
-        AndroidNetworkBindings::class,
-        AndroidDatabaseBindings::class,
-        AndroidDataStoreBindings::class,
-        AndroidLoggerBindings::class,
-    ],
-)
+@DependencyGraph(scope = AppScope::class)
 interface WearAppGraph : WearViewModelGraph.Factory {
     val application: Application
     val db: HNDatabase
