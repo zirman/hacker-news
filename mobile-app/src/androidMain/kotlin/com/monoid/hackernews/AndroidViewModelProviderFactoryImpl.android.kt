@@ -15,10 +15,9 @@ import kotlin.reflect.KClass
  */
 @ContributesBinding(AppScope::class)
 @Inject
-class AndroidViewModelFactory(val appGraph: AndroidAppGraph) : ViewModelProvider.Factory {
+class AndroidViewModelProviderFactoryImpl(val factory: AndroidViewModelGraph.Factory) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
-        val viewModelGraph = appGraph.createViewModelGraph(extras)
-        println(viewModelGraph.viewModelProviders)
+        val viewModelGraph = factory.createViewModelGraph(extras)
         val provider = viewModelGraph.viewModelProviders[modelClass.kotlin]
             ?: throw IllegalArgumentException("Unknown model class $modelClass")
         @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")

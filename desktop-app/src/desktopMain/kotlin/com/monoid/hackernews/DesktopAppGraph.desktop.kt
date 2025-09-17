@@ -5,5 +5,5 @@ import dev.zacsweers.metro.DependencyGraph
 
 @DependencyGraph(AppScope::class)
 interface DesktopAppGraph : DesktopViewModelGraph.Factory {
-    val desktopViewModelFactory: DesktopViewModelFactory
+    val desktopViewModelFactory: DesktopViewModelProviderFactoryImpl
 }

@@ -22,9 +22,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
@@ -41,16 +38,11 @@ import com.monoid.hackernews.common.view.theme.AppTheme
 import dev.zacsweers.metro.createGraph
 import io.ktor.http.Url
 import org.jetbrains.compose.resources.stringResource
-import kotlin.reflect.KClass
 
 @Composable
 fun IosApp(onClickUrl: (Url) -> Unit) {
     val appGraph = remember { createGraph<IosAppGraph>() }
-    CompositionLocalProvider(LocalViewModelProviderFactory provides object : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T {
-            return appGraph.iosViewModelFactory.create(modelClass, extras)
-        }
-    }) {
+    CompositionLocalProvider(LocalViewModelProviderFactory provides appGraph.iosViewModelFactory) {
         AppTheme {
             Scrim {
                 Box(contentAlignment = Alignment.Center) {

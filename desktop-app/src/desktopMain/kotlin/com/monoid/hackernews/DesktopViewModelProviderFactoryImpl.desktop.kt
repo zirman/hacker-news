@@ -16,11 +16,10 @@ import kotlin.reflect.cast
  */
 @ContributesBinding(AppScope::class)
 @Inject
-class IosViewModelFactory(val appGraph: IosAppGraph) : ViewModelProvider.Factory {
+class DesktopViewModelProviderFactoryImpl(val factory: DesktopViewModelGraph.Factory) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T {
-        val viewModelGraph = appGraph.createViewModelGraph(extras)
-        println(viewModelGraph.viewModelProviders)
-        val provider = viewModelGraph.viewModelProviders[modelClass]
+        val viewModelGraph = factory.createViewModelGraph(extras)
+        val provider = viewModelGraph.viewModelProviders[modelClass.java.kotlin]
             ?: throw IllegalArgumentException("Unknown model class $modelClass")
         @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
         return modelClass.cast(provider())
