@@ -120,7 +120,7 @@ val kspAndroid by configurations.named("kspAndroid")
 dependencies {
     coreLibraryDesugaring(libs.desugarJdkLibsNio)
     // https://github.com/google/ksp/issues/2595
-//    kspAndroid(project(":ksp-processors:screenshot"))
+    kspAndroid(project(":ksp-processors:screenshot"))
     lintChecks(libs.composeLintChecks)
     debugImplementation(libs.uiTestManifest)
 }

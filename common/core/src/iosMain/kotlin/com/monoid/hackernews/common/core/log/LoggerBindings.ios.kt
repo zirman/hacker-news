@@ -6,8 +6,7 @@ import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 
 @BindingContainer
-class IosLoggerBindings() {
-
+object IosLoggerBindings {
     @SingleIn(AppScope::class)
     @Provides
     fun providesLogger(): LoggerAdapter = LoggerAdapterImpl()

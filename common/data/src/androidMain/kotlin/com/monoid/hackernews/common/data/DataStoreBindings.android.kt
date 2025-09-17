@@ -11,7 +11,7 @@ import dev.zacsweers.metro.SingleIn
 import okio.Path.Companion.toPath
 
 @BindingContainer
-class AndroidDataStoreBindings() {
+object AndroidDataStoreBindings {
     @SingleIn(AppScope::class)
     @Provides
     fun providesDataStorePreferences(

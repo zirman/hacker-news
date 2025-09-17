@@ -17,8 +17,7 @@ import platform.Foundation.NSFileManager
 import platform.Foundation.NSUserDomainMask
 
 @BindingContainer(includes = [DatabaseDaoBindings::class])
-class IosDatabaseBindings() {
-
+object IosDatabaseBindings {
     @SingleIn(AppScope::class)
     @Provides
     fun providesHnDatabase(

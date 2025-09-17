@@ -11,7 +11,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.MainCoroutineDispatcher
 
 @BindingContainer
-class DispatcherBindings() {
+object DispatcherBindings {
     @SingleIn(AppScope::class)
     @Provides
     fun providesDispatchersMain(): MainCoroutineDispatcher = Dispatchers.Main

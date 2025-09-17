@@ -12,8 +12,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import java.io.File
 
 @BindingContainer(includes = [DatabaseDaoBindings::class])
-class JvmDatabaseBindings() {
-
+object JvmDatabaseBindings {
     @SingleIn(AppScope::class)
     @Provides
     fun providesHnDatabase(

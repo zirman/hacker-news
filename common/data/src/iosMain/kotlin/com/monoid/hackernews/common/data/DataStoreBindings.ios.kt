@@ -17,8 +17,7 @@ import platform.Foundation.NSURL
 import platform.Foundation.NSUserDomainMask
 
 @BindingContainer
-class IosDataStoreBindings() {
-
+object IosDataStoreBindings {
     @SingleIn(AppScope::class)
     @Provides
     fun providesDataStorePreferences(): DataStore<Preferences> {

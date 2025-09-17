@@ -11,8 +11,7 @@ import okio.Path.Companion.toPath
 import java.io.File
 
 @BindingContainer
-class JvmDataStoreBindings() {
-
+object JvmDataStoreBindings {
     @SingleIn(AppScope::class)
     @Provides
     fun providesDataStorePreferences(): DataStore<Preferences> {

@@ -15,8 +15,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 @BindingContainer
-class JvmNetworkBindings() {
-
+object JvmNetworkBindings {
     @SingleIn(AppScope::class)
     @Provides
     fun providesJson(): Json = Json {

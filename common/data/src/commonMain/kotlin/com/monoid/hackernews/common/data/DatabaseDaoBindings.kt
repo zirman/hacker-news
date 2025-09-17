@@ -16,8 +16,7 @@ import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 
 @BindingContainer
-class DatabaseDaoBindings() {
-
+object DatabaseDaoBindings {
     @SingleIn(AppScope::class)
     @Provides
     fun providesTopStoryDao(hnDatabase: HNDatabase): TrendingStoryDao = hnDatabase.topStoryDao()

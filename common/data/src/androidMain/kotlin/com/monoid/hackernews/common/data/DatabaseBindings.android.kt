@@ -12,8 +12,7 @@ import dev.zacsweers.metro.Provides
 import kotlinx.coroutines.CoroutineDispatcher
 
 @BindingContainer(includes = [DatabaseDaoBindings::class])
-class AndroidDatabaseBindings() {
-
+object AndroidDatabaseBindings {
     @Provides
     fun providesHnDatabase(
         context: Context,

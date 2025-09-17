@@ -6,8 +6,7 @@ import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 
 @BindingContainer
-class JvmLoggerBindings() {
-
+object JvmLoggerBindings {
     @SingleIn(AppScope::class)
     @Provides
     fun providesLogger(): LoggerAdapter = LoggerAdapterImpl()

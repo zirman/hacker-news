@@ -5,8 +5,7 @@ import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.Provides
 
 @BindingContainer
-class AndroidLoggerBindings() {
-
+object AndroidLoggerBindings {
     @Provides
     fun providesLogger(): LoggerAdapter = LoggerAdapterImpl(FirebaseCrashlytics.getInstance())
 }
