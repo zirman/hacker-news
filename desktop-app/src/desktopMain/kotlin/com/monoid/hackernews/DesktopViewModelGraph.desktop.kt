@@ -24,7 +24,7 @@ interface DesktopViewModelGraph : ViewModelGraph {
         creationExtras.createSavedStateHandle()
 
     @GraphExtension.Factory
-    fun interface Factory { // : ViewModelProvider.Factory
+    fun interface Factory {
         fun createViewModelGraph(@Provides creationExtras: CreationExtras): DesktopViewModelGraph
     }
 }
