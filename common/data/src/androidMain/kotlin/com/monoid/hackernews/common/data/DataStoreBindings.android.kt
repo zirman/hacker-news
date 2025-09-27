@@ -1,6 +1,6 @@
 package com.monoid.hackernews.common.data
 
-import android.content.Context
+import android.app.Application
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
@@ -17,7 +17,7 @@ object AndroidDataStoreBindings {
     @SingleIn(AppScope::class)
     @Provides
     fun providesDataStorePreferences(
-        context: Context,
+        context: Application,
     ): DataStore<Preferences> {
         return PreferenceDataStoreFactory.createWithPath(
             produceFile = {

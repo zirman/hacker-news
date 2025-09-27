@@ -13,21 +13,49 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModelProvider
 import androidx.wear.compose.material.Text
 import com.monoid.hackernews.common.core.log.LoggerAdapter
+import com.monoid.hackernews.common.core.metro.ActivityGraph
 import com.monoid.hackernews.common.core.metro.ActivityKey
+import com.monoid.hackernews.common.core.metro.ActivityScope
 import com.monoid.hackernews.common.core.metro.metroViewModel
 import com.monoid.hackernews.jankStats
 import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.ContributesIntoMap
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.Binds
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.GraphExtension
 import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.binding
+import dev.zacsweers.metro.IntoMap
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 
-@ContributesIntoMap(AppScope::class, binding<Activity>())
-@ActivityKey(WearMainActivity::class)
+@SingleIn(ActivityScope::class)
 @Inject
 class WearMainActivity(
     override val defaultViewModelProviderFactory: ViewModelProvider.Factory,
     private val logger: LoggerAdapter,
 ) : ComponentActivity() {
+    @GraphExtension(ActivityScope::class)
+    interface Graph : ActivityGraph {
+        @Binds
+        fun bindActivity(activity: WearMainActivity): Activity
+
+        @ContributesTo(AppScope::class)
+        @GraphExtension.Factory()
+        interface Factory {
+            fun createWearMainActivityGraph(): Graph
+        }
+    }
+
+    @ContributesTo(AppScope::class)
+    @BindingContainer
+    object AppBindings {
+        @ActivityKey(WearMainActivity::class)
+        @IntoMap
+        @Provides
+        fun provideActivityGraph(graphFactory: Graph.Factory): ActivityGraph =
+            graphFactory.createWearMainActivityGraph()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

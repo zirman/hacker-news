@@ -5,13 +5,27 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.StrictMode
-import dev.zacsweers.metro.createGraphFactory
+import com.monoid.hackernews.common.data.room.HNDatabase
+import com.monoid.hackernews.common.view.UiModeConfigurator
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import io.ktor.client.HttpClient
 
-class WearHackerNewsApplication : Application() {
-    val appGraph by lazy { createGraphFactory<WearAppGraph.Factory>().create(this) }
+@SingleIn(AppScope::class)
+@ContributesBinding(AppScope::class)
+@Inject
+class WearHackerNewsApplication(
+    uiModeConfigurator: Lazy<UiModeConfigurator>,
+    httpClient: Lazy<HttpClient>,
+    db: Lazy<HNDatabase>,
+) : Application() {
+    val uiModeConfigurator by uiModeConfigurator
+    val httpClient by httpClient
+    val db by db
 
     override fun onCreate() {
-        super.onCreate()
         // updateAndPushDynamicShortcuts(MainActivity::class.java)
         StrictMode.setVmPolicy(
             StrictMode.VmPolicy.Builder()
@@ -24,6 +38,8 @@ class WearHackerNewsApplication : Application() {
                 }
                 .build(),
         )
+        uiModeConfigurator
+        super.onCreate()
         // register locale changed broadcast receiver
         registerReceiver(
             /* receiver = */
@@ -34,8 +50,8 @@ class WearHackerNewsApplication : Application() {
     }
 
     override fun onTerminate() {
-        appGraph.httpClient.close()
-        appGraph.db.close()
+        httpClient.close()
+        db.close()
         super.onTerminate()
     }
 }

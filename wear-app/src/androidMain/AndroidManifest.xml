@@ -12,7 +12,7 @@
     <application
         android:name=".WearHackerNewsApplication"
         android:allowBackup="true"
-        android:appComponentFactory="com.monoid.hackernews.wear.HnAppComponentFactory"
+        android:appComponentFactory="com.monoid.hackernews.wear.WearAndroidAppComponentFactory"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"

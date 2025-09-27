@@ -1,6 +1,6 @@
 package com.monoid.hackernews.common.data
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.room.Room
@@ -19,7 +19,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 object AndroidDatabaseBindings {
     @Provides
     fun providesHnDatabase(
-        context: Context,
+        context: Application,
         @IoDispatcherQualifier
         coroutineDispatcher: CoroutineDispatcher,
         @ProcessLifecycleOwnerQualifier

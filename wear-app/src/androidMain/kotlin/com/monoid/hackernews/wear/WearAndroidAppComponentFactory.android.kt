@@ -1,7 +1,8 @@
-package com.monoid.hackernews
+package com.monoid.hackernews.wear
 
 import androidx.annotation.Keep
 import androidx.core.app.AppComponentFactory
+import com.monoid.hackernews.AndroidAppComponentFactory
 import com.monoid.hackernews.common.core.metro.AndroidAppGraph
 import dev.zacsweers.metro.createGraph
 
@@ -12,6 +13,6 @@ import dev.zacsweers.metro.createGraph
  * use an architecture that abstracts the Android framework components away.
  */
 @Keep
-class MobileAndroidAppComponentFactory : AndroidAppComponentFactory() {
-    override fun createAndroidAppGraph(): AndroidAppGraph = createGraph<MobileAndroidAppGraph>()
+class WearAndroidAppComponentFactory : AndroidAppComponentFactory() {
+    override fun createAndroidAppGraph(): AndroidAppGraph = createGraph<WearAndroidAppGraph>()
 }

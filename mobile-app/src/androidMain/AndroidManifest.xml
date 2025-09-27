@@ -21,7 +21,7 @@
     <application
         android:name=".HackerNewsApplication"
         android:allowBackup="true"
-        android:appComponentFactory="com.monoid.hackernews.HnAppComponentFactory"
+        android:appComponentFactory="com.monoid.hackernews.MobileAndroidAppComponentFactory"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher"

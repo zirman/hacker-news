@@ -5,10 +5,25 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.StrictMode
-import dev.zacsweers.metro.createGraphFactory
+import com.monoid.hackernews.common.data.room.HNDatabase
+import com.monoid.hackernews.common.view.UiModeConfigurator
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
+import io.ktor.client.HttpClient
 
-class HackerNewsApplication : Application() {
-    val appGraph by lazy { createGraphFactory<AndroidAppGraph.Factory>().create(this) }
+@ContributesBinding(AppScope::class)
+@SingleIn(AppScope::class)
+@Inject
+class HackerNewsApplication(
+    uiModeConfigurator: Lazy<UiModeConfigurator>,
+    httpClient: Lazy<HttpClient>,
+    db: Lazy<HNDatabase>,
+) : Application() {
+    val uiModeConfigurator by uiModeConfigurator
+    val httpClient by httpClient
+    val db by db
 
     override fun onCreate() {
         StrictMode.setVmPolicy(
@@ -23,7 +38,7 @@ class HackerNewsApplication : Application() {
                 .build(),
         )
         // force creation of singleton UiModeConfigurator
-        appGraph.uiModeConfigurator
+        uiModeConfigurator
         super.onCreate()
         // register locale changed broadcast receiver
         registerReceiver(
@@ -35,8 +50,8 @@ class HackerNewsApplication : Application() {
     }
 
     override fun onTerminate() {
-        appGraph.httpClient.close()
-        appGraph.db.close()
+        httpClient.close()
+        db.close()
         super.onTerminate()
     }
 }

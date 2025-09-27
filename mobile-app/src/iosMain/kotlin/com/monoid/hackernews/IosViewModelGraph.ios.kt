@@ -17,7 +17,7 @@ interface IosViewModelGraph : ViewModelGraph {
     override val viewModelProviders get() = iosViewModelProviders
 
     @Multibinds
-    val iosViewModelProviders: Map<KClass<out ViewModel>, Provider<out ViewModel>>
+    val iosViewModelProviders: Map<KClass<out ViewModel>, Provider<ViewModel>>
 
     @Provides
     fun providesSavedStateHandle(creationExtras: CreationExtras): SavedStateHandle =
