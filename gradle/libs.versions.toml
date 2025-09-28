@@ -1,4 +1,5 @@
 [versions]
+androidVersion = "4.1.1.4"
 buildToolsVersion = "36.0.0"
 jvmToolchain = "21"
 jvmTarget = "21"
@@ -103,6 +104,10 @@ desugarJdkLibsNio = { group = "com.android.tools", name = "desugar_jdk_libs_nio"
 #lintChecks = { group = "com.android.tools.lint", name = "lint-checks", version.ref = "lint" }
 #lintCli = { group = "com.android.tools.lint", name = "lint", version.ref = "lint" }
 #lintTests = { group = "com.android.tools.lint", name = "lint-tests", version.ref = "lint" }
+
+# used for annotation processing only
+android = { group = "com.google.android", name = "android", version.ref = "androidVersion" }
+metroRuntimeJvm = { group = "dev.zacsweers.metro", name = "runtime-jvm", version.ref = "metro" }
 
 kspSymbolProcessingApi = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
 kotlinPoet = { group = "com.squareup", name = "kotlinpoet", version.ref = "kotlinPoet" }

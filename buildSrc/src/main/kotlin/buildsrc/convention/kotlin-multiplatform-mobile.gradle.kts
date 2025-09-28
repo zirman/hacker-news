@@ -109,6 +109,7 @@ android {
 val kspAndroid by configurations.named("kspAndroid")
 dependencies {
     coreLibraryDesugaring(libs.desugarJdkLibsNio)
+    kspAndroid(project(":ksp-processors:injection"))
     // https://github.com/google/ksp/issues/2595
     kspAndroid(project(":ksp-processors:screenshot"))
     lintChecks(libs.composeLintChecks)

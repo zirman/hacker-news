@@ -12,20 +12,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModelProvider
 import androidx.wear.compose.material.Text
+import com.google.firebase.sessions.dagger.Module
 import com.monoid.hackernews.common.core.log.LoggerAdapter
 import com.monoid.hackernews.common.core.metro.ActivityGraph
-import com.monoid.hackernews.common.core.metro.ActivityKey
 import com.monoid.hackernews.common.core.metro.ActivityScope
+import com.monoid.hackernews.common.core.metro.ContributesAndroidInjector
 import com.monoid.hackernews.common.core.metro.metroViewModel
 import com.monoid.hackernews.jankStats
-import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.Binds
-import dev.zacsweers.metro.ContributesTo
-import dev.zacsweers.metro.GraphExtension
 import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.IntoMap
-import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 
 @SingleIn(ActivityScope::class)
@@ -34,26 +29,13 @@ class WearMainActivity(
     override val defaultViewModelProviderFactory: ViewModelProvider.Factory,
     private val logger: LoggerAdapter,
 ) : ComponentActivity() {
-    @GraphExtension(ActivityScope::class)
+    @Module
     interface Graph : ActivityGraph {
         @Binds
         fun bindActivity(activity: WearMainActivity): Activity
 
-        @ContributesTo(AppScope::class)
-        @GraphExtension.Factory()
-        interface Factory {
-            fun createWearMainActivityGraph(): Graph
-        }
-    }
-
-    @ContributesTo(AppScope::class)
-    @BindingContainer
-    object AppBindings {
-        @ActivityKey(WearMainActivity::class)
-        @IntoMap
-        @Provides
-        fun provideActivityGraph(graphFactory: Graph.Factory): ActivityGraph =
-            graphFactory.createWearMainActivityGraph()
+        @ContributesAndroidInjector
+        fun withTarget(): WearMainActivity
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

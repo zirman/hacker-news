@@ -14,18 +14,13 @@ import androidx.compose.runtime.setValue
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import com.monoid.hackernews.common.core.log.LoggerAdapter
-import com.monoid.hackernews.common.core.metro.ActivityGraph
-import com.monoid.hackernews.common.core.metro.ActivityKey
 import com.monoid.hackernews.common.core.metro.ActivityScope
+import com.monoid.hackernews.common.core.metro.ContributesAndroidInjector
 import com.monoid.hackernews.common.view.App
 import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.Binds
-import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.GraphExtension
 import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.IntoMap
-import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 import io.ktor.http.Url
 
@@ -35,26 +30,13 @@ class MainActivity(
     private val logger: LoggerAdapter,
     override val defaultViewModelProviderFactory: ViewModelProvider.Factory,
 ) : ComponentActivity() {
-    @GraphExtension(ActivityScope::class)
-    interface Graph : ActivityGraph {
+    @GraphExtension(AppScope::class)
+    interface InnerBindings {
         @Binds
         fun bindActivity(activity: MainActivity): Activity
 
-        @ContributesTo(AppScope::class)
-        @GraphExtension.Factory
-        interface Factory {
-            fun createMainActivityGraph(): Graph
-        }
-    }
-
-    @ContributesTo(AppScope::class)
-    @BindingContainer
-    object AppBindings {
-        @ActivityKey(MainActivity::class)
-        @IntoMap
-        @Provides
-        fun provideActivityGraph(graphFactory: Graph.Factory): ActivityGraph =
-            graphFactory.createMainActivityGraph()
+        @ContributesAndroidInjector
+        fun target(): MainActivity
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
