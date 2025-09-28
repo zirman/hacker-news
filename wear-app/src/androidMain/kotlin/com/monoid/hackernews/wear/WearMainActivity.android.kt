@@ -12,14 +12,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModelProvider
 import androidx.wear.compose.material.Text
-import com.google.firebase.sessions.dagger.Module
-import com.monoid.hackernews.common.core.log.LoggerAdapter
-import com.monoid.hackernews.common.core.metro.ActivityGraph
 import com.monoid.hackernews.common.core.metro.ActivityScope
-import com.monoid.hackernews.common.core.metro.ContributesAndroidInjector
+import com.monoid.hackernews.common.core.metro.ContributesActivityInjector
 import com.monoid.hackernews.common.core.metro.metroViewModel
 import com.monoid.hackernews.jankStats
+import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.Binds
+import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 
@@ -27,15 +26,17 @@ import dev.zacsweers.metro.SingleIn
 @Inject
 class WearMainActivity(
     override val defaultViewModelProviderFactory: ViewModelProvider.Factory,
-    private val logger: LoggerAdapter,
 ) : ComponentActivity() {
-    @Module
-    interface Graph : ActivityGraph {
+    @ContributesTo(ActivityScope::class)
+    @BindingContainer
+    interface InnerBindings {
         @Binds
         fun bindActivity(activity: WearMainActivity): Activity
+    }
 
-        @ContributesAndroidInjector
-        fun withTarget(): WearMainActivity
+    interface Injectors {
+        @ContributesActivityInjector
+        fun target(): WearMainActivity
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

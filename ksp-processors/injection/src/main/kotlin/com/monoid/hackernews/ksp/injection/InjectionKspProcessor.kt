@@ -1,6 +1,5 @@
 package com.monoid.hackernews.ksp.injection
 
-import android.app.Activity
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
@@ -12,24 +11,21 @@ import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.monoid.hackernews.common.core.metro.ActivityGraph
 import com.monoid.hackernews.common.core.metro.ActivityKey
 import com.monoid.hackernews.common.core.metro.ActivityScope
-import com.monoid.hackernews.common.core.metro.ContributesAndroidInjector
+import com.monoid.hackernews.common.core.metro.ContributesActivityInjector
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
-import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.ksp.toClassName
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.BindingContainer
-import dev.zacsweers.metro.Binds
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.GraphExtension
 import dev.zacsweers.metro.IntoMap
 import dev.zacsweers.metro.Provides
-import java.io.File
 import java.io.OutputStreamWriter
 
 class InjectionKspProcessor(
@@ -37,19 +33,9 @@ class InjectionKspProcessor(
 ) : SymbolProcessor {
     private val codeGenerator = environment.codeGenerator
 
-    private val outputDirectory = run {
-        codeGenerator::class.java
-            .getDeclaredMethod(
-                "extensionToDirectory",
-                String::class.java,
-            )
-            .apply { isAccessible = true }
-            .invoke(codeGenerator, "kotlin") as File
-    }.parentFile.let { File(it, "screenshotTest") }
-
     override fun process(resolver: Resolver): List<KSAnnotated> {
         resolver
-            .getSymbolsWithAnnotation(checkNotNull(ContributesAndroidInjector::class.qualifiedName))
+            .getSymbolsWithAnnotation(checkNotNull(ContributesActivityInjector::class.qualifiedName))
             .filterIsInstance<KSFunctionDeclaration>()
             .groupBy { it.containingFile }
             .forEach { (ksFile, ksFunctionDeclarations) ->
@@ -98,19 +84,6 @@ private fun KSFile.toScreenshotTestFileSpec(
                             .build(),
                     )
                     .addSuperinterface(ActivityGraph::class)
-                    .addFunction(
-                        FunSpec
-                            .builder("bindActivity")
-                            .addModifiers(KModifier.ABSTRACT)
-                            .addAnnotation(Binds::class)
-                            .addParameter(
-                                ParameterSpec
-                                    .builder(name = "activity", type = className)
-                                    .build(),
-                            )
-                            .returns(Activity::class)
-                            .build(),
-                    )
                     .addType(
                         TypeSpec
                             .interfaceBuilder("Factory")

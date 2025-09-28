@@ -15,11 +15,11 @@ import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import com.monoid.hackernews.common.core.log.LoggerAdapter
 import com.monoid.hackernews.common.core.metro.ActivityScope
-import com.monoid.hackernews.common.core.metro.ContributesAndroidInjector
+import com.monoid.hackernews.common.core.metro.ContributesActivityInjector
 import com.monoid.hackernews.common.view.App
-import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.Binds
-import dev.zacsweers.metro.GraphExtension
+import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import io.ktor.http.Url
@@ -30,12 +30,15 @@ class MainActivity(
     private val logger: LoggerAdapter,
     override val defaultViewModelProviderFactory: ViewModelProvider.Factory,
 ) : ComponentActivity() {
-    @GraphExtension(AppScope::class)
+    @ContributesTo(ActivityScope::class)
+    @BindingContainer
     interface InnerBindings {
         @Binds
         fun bindActivity(activity: MainActivity): Activity
+    }
 
-        @ContributesAndroidInjector
+    interface Injectors {
+        @ContributesActivityInjector
         fun target(): MainActivity
     }
 
