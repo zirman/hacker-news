@@ -158,4 +158,4 @@ class ItemDetailViewModel(
     }
 }
 
-private const val TAG = "HomeViewModel"
+private const val TAG = "ItemDetailViewModel"
