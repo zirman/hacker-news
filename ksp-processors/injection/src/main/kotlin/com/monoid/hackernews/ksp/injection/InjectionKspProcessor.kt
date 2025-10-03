@@ -12,6 +12,10 @@ import com.monoid.hackernews.common.core.metro.ActivityGraph
 import com.monoid.hackernews.common.core.metro.ActivityKey
 import com.monoid.hackernews.common.core.metro.ActivityScope
 import com.monoid.hackernews.common.core.metro.ContributesActivityInjector
+import com.monoid.hackernews.common.core.metro.ContributesServiceInjector
+import com.monoid.hackernews.common.core.metro.ServiceGraph
+import com.monoid.hackernews.common.core.metro.ServiceKey
+import com.monoid.hackernews.common.core.metro.ServiceScope
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
@@ -27,6 +31,7 @@ import dev.zacsweers.metro.GraphExtension
 import dev.zacsweers.metro.IntoMap
 import dev.zacsweers.metro.Provides
 import java.io.OutputStreamWriter
+import kotlin.reflect.KClass
 
 class InjectionKspProcessor(
     environment: SymbolProcessorEnvironment,
@@ -39,7 +44,32 @@ class InjectionKspProcessor(
             .filterIsInstance<KSFunctionDeclaration>()
             .groupBy { it.containingFile }
             .forEach { (ksFile, ksFunctionDeclarations) ->
-                val fileSpec = checkNotNull(ksFile).toScreenshotTestFileSpec(ksFunctionDeclarations)
+                val fileSpec = checkNotNull(ksFile).toInjectionFileSpec(
+                    ksFunctionDeclarations,
+                    scope = ActivityScope::class,
+                    graph = ActivityGraph::class,
+                    key = ActivityKey::class,
+                )
+                OutputStreamWriter(
+                    codeGenerator.createNewFile(
+                        dependencies = Dependencies(false, ksFile),
+                        packageName = fileSpec.packageName,
+                        fileName = fileSpec.name,
+                    ),
+                    Charsets.UTF_8,
+                ).use(fileSpec::writeTo)
+            }
+        resolver
+            .getSymbolsWithAnnotation(checkNotNull(ContributesServiceInjector::class.qualifiedName))
+            .filterIsInstance<KSFunctionDeclaration>()
+            .groupBy { it.containingFile }
+            .forEach { (ksFile, ksFunctionDeclarations) ->
+                val fileSpec = checkNotNull(ksFile).toInjectionFileSpec(
+                    ksFunctionDeclarations,
+                    scope = ServiceScope::class,
+                    graph = ServiceGraph::class,
+                    key = ServiceKey::class,
+                )
                 OutputStreamWriter(
                     codeGenerator.createNewFile(
                         dependencies = Dependencies(false, ksFile),
@@ -59,8 +89,11 @@ class InjectionKspProcessor(
     }
 }
 
-private fun KSFile.toScreenshotTestFileSpec(
+private fun KSFile.toInjectionFileSpec(
     ksFunctionDeclarations: List<KSFunctionDeclaration>,
+    scope: KClass<*>,
+    graph: KClass<*>,
+    key: KClass<out Annotation>,
 ): FileSpec {
     val testClassName = "${fileName.removeSuffix(".kt").removeSuffix(".android")}Injection"
     return FileSpec
@@ -80,10 +113,10 @@ private fun KSFile.toScreenshotTestFileSpec(
                     .addAnnotation(
                         AnnotationSpec
                             .builder(GraphExtension::class)
-                            .addMember("%T::class", ActivityScope::class)
+                            .addMember("%T::class", scope)
                             .build(),
                     )
-                    .addSuperinterface(ActivityGraph::class)
+                    .addSuperinterface(graph)
                     .addType(
                         TypeSpec
                             .interfaceBuilder("Factory")
@@ -119,17 +152,17 @@ private fun KSFile.toScreenshotTestFileSpec(
                     .addAnnotation(BindingContainer::class)
                     .addFunction(
                         FunSpec
-                            .builder("provideActivityGraph")
+                            .builder("provideGraph")
                             .addAnnotation(
                                 AnnotationSpec
-                                    .builder(ActivityKey::class)
+                                    .builder(key)
                                     .addMember("%T::class", className)
                                     .build(),
                             )
                             .addAnnotation(IntoMap::class)
                             .addAnnotation(Provides::class)
                             .addParameter("graphFactory", factoryName)
-                            .returns(ActivityGraph::class)
+                            .returns(graph)
                             .addCode(CodeBlock.of("return graphFactory.${createGraphName}()"))
                             .build(),
                     )
