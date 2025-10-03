@@ -51,11 +51,13 @@ class InjectionKspProcessor(
                     key = ActivityKey::class,
                 )
                 OutputStreamWriter(
+                    /* out = */
                     codeGenerator.createNewFile(
-                        dependencies = Dependencies(false, ksFile),
+                        dependencies = Dependencies(aggregating = false, ksFile),
                         packageName = fileSpec.packageName,
                         fileName = fileSpec.name,
                     ),
+                    /* cs = */
                     Charsets.UTF_8,
                 ).use(fileSpec::writeTo)
             }
@@ -71,11 +73,13 @@ class InjectionKspProcessor(
                     key = ServiceKey::class,
                 )
                 OutputStreamWriter(
+                    /* out = */
                     codeGenerator.createNewFile(
-                        dependencies = Dependencies(false, ksFile),
+                        dependencies = Dependencies(aggregating = false, ksFile),
                         packageName = fileSpec.packageName,
                         fileName = fileSpec.name,
                     ),
+                    /* cs = */
                     Charsets.UTF_8,
                 ).use(fileSpec::writeTo)
             }
