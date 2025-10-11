@@ -74,7 +74,7 @@ fun HomeContent(
         onClickFollow = {},
         onClickFlag = {},
         contentPadding = WindowInsets.safeDrawing.asPaddingValues(),
-        modifier = Modifier.fillMaxHeight(),
+        modifier = modifier.fillMaxHeight(),
     ) {}
 }
 
