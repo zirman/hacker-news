@@ -13,22 +13,22 @@ desugarJdkLibs = "2.1.5"
 kotlin = "2.2.21" # https://github.com/jetbrains/kotlin/releases
 ksp = "2.2.21-2.0.4" # https://github.com/google/ksp/releases
 kotlinPoet = "2.2.0" # https://github.com/square/kotlinpoet/releases
-kotlinWrappersBom = "2025.11.0" # https://github.com/JetBrains/kotlin-wrappers/releases
-jetbrainsCompose = "1.9.2" # https://github.com/JetBrains/compose-multiplatform/releases
+kotlinWrappersBom = "2025.11.4" # https://github.com/JetBrains/kotlin-wrappers/releases
+jetbrainsCompose = "1.9.3" # https://github.com/JetBrains/compose-multiplatform/releases
 jetbrainsComposeHotReload = "1.0.0-rc02" # https://mvnrepository.com/artifact/org.jetbrains.compose.hot-reload/hot-reload-gradle-plugin/
 kotlinCoroutines = "1.10.2"
 kotlinSerialization = "1.9.0"
 kotlinCollectionsImmutable = "0.4.0"
 material3WindowSizeClassMultiplatform = "0.5.0"
 kotlinDatetime = "0.7.1"
-ktor = "3.3.1" # https://github.com/ktorio/ktor/releases
+ktor = "3.3.2" # https://github.com/ktorio/ktor/releases
 kermit = "2.0.8"
 room = "2.8.3"
 sqlite = "2.6.1"
 datastore = "1.1.7"
 activityKtx = "1.11.0"
 fragmentKtx = "1.8.9"
-lifecycle = "2.9.5" # https://mvnrepository.com/artifact/org.jetbrains.androidx.lifecycle/lifecycle-viewmodel
+lifecycle = "2.9.6" # https://mvnrepository.com/artifact/org.jetbrains.androidx.lifecycle/lifecycle-viewmodel
 navigationCompose = "2.9.1" # https://mvnrepository.com/artifact/org.jetbrains.androidx.navigation/navigation-compose
 #navigation = "2.8.7"
 googlePlayServices = "4.4.4"
@@ -49,7 +49,7 @@ metricsPerformance = "1.0.0"
 composeLintChecks = "1.4.2"
 material3 = "1.5.0-alpha08"
 material3Adaptive = "1.2.0"
-metro = "0.7.3" # https://github.com/ZacSweers/metro/releases
+metro = "0.7.5" # https://github.com/ZacSweers/metro/releases
 wearCompose = "1.5.5"
 accompanist = "0.37.3" # https://github.com/google/accompanist/releases
 junit = "4.13.2"
@@ -58,7 +58,7 @@ espressoCore = "3.7.0"
 uiTestJunit4 = "1.9.4" # https://mvnrepository.com/artifact/androidx.compose.ui/ui-test-junit4
 mockk = "1.14.6"
 robolectric = "4.16"
-roborazzi = "1.50.0"
+roborazzi = "1.51.0"
 junitPlatform = "6.0.1"
 assertjCore = "3.27.6"
 slf4jSimple = "2.0.17"
@@ -167,7 +167,7 @@ jetbrainsLifecycleViewmodelCompose = { group = "org.jetbrains.androidx.lifecycle
 jetbrainsNavigationCompose = { group = "org.jetbrains.androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 jetbrainsCore = { group = "org.jetbrains.androidx.core", name = "core-bundle", version = "1.0.1" }
 jetbrainsWindowCore = { group = "org.jetbrains.androidx.window", name = "window-core", version = "1.4.0" }
-jetbrainsSavedState = { group = "org.jetbrains.androidx.savedstate", name = "savedstate", version = "1.3.5" }
+jetbrainsSavedState = { group = "org.jetbrains.androidx.savedstate", name = "savedstate", version = "1.3.6" }
 
 #navigationUiKtx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
 
