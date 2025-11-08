@@ -75,7 +75,7 @@ plugin-compose = { group = "org.jetbrains.kotlin.plugin.compose", name = "org.je
 plugin-composeCompiler = { group = "org.jetbrains.compose", name = "compose-gradle-plugin", version.ref = "jetbrainsCompose" }
 plugin-composeHotReload = { group = "org.jetbrains.compose.hot-reload", name = "hot-reload-gradle-plugin", version.ref = "jetbrainsComposeHotReload" }
 plugin-androidApplication = { group = "com.android.application", name = "com.android.application.gradle.plugin", version.ref = "android" }
-plugin-androidLibrary = { group = "com.android.library", name = "com.android.library.gradle.plugin", version.ref = "android" }
+plugin-androidMultiplatformLibrary = { group = "com.android.kotlin.multiplatform.library", name = "com.android.kotlin.multiplatform.library.gradle.plugin", version.ref = "android" }
 plugin-ksp = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 plugin-metro = { group = "dev.zacsweers.metro", name = "gradle-plugin", version.ref = "metro" }
 plugin-room = { group = "androidx.room", name = "androidx.room.gradle.plugin", version.ref = "room" }
@@ -212,7 +212,7 @@ robsRules = { group = "dev.robch.rules", name = "robs-rules", version.ref = "rob
 [bundles]
 plugins = [
     "plugin-androidApplication",
-    "plugin-androidLibrary",
+    "plugin-androidMultiplatformLibrary",
     "plugin-compose",
     "plugin-composeCompiler",
     "plugin-composeHotReload",

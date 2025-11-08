@@ -1,19 +1,19 @@
 plugins {
     id("buildsrc.convention.kotlin-multiplatform-core")
 }
+val packageNamespace = "com.monoid.hackernews.common.core"
 kotlin {
     sourceSets {
         androidMain.dependencies {
             api(project(":common:injection"))
         }
     }
+    androidLibrary {
+        namespace = packageNamespace
+    }
 }
-val packageNamespace = "com.monoid.hackernews.common.core"
 compose {
     resources {
         packageOfResClass = packageNamespace
     }
-}
-android {
-    namespace = packageNamespace
 }

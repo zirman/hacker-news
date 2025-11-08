@@ -106,6 +106,12 @@ android {
         baseline = file("lint-baseline.xml")
     }
 }
+compose {
+    resources {
+        publicResClass = true
+        generateResClass = always
+    }
+}
 val kspAndroid by configurations.named("kspAndroid")
 dependencies {
     coreLibraryDesugaring(libs.desugarJdkLibsNio)
@@ -114,12 +120,6 @@ dependencies {
     kspAndroid(project(":ksp-processors:screenshot"))
     lintChecks(libs.composeLintChecks)
     debugImplementation(libs.uiTestManifest)
-}
-compose {
-    resources {
-        publicResClass = true
-        generateResClass = always
-    }
 }
 roborazzi {
     outputDir.set(file("src/androidUnitTest/screenshotTest"))

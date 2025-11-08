@@ -2,12 +2,13 @@
 
 package buildsrc.convention
 
+import com.android.build.api.dsl.androidLibrary
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.jetbrains.compose.ExperimentalComposeLibrary
 
 plugins {
     kotlin("multiplatform")
-    id("com.android.library")
+    id("com.android.kotlin.multiplatform.library")
     id("org.jetbrains.kotlin.plugin.compose")
     id("org.jetbrains.compose")
     id("org.jetbrains.compose.hot-reload")
@@ -68,8 +69,24 @@ kotlin {
             languageSettings.optIn("kotlin.time.ExperimentalTime")
         }
     }
+    androidLibrary {
+        compileSdk = libs.versions.compileSdk.get().toInt()
+        compileSdkPreview = libs.versions.compileSdkPreview.get()
+        minSdk = libs.versions.minSdk.get().toInt()
+        buildToolsVersion = libs.versions.buildToolsVersion.get()
+        enableCoreLibraryDesugaring = true
+        packaging {
+            resources {
+                excludes += "/META-INF/versions/9/previous-compilation-data.bin"
+                excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            }
+        }
+        lint {
+            warningsAsErrors = true
+            baseline = file("lint-baseline.xml")
+        }
+    }
     jvm()
-    androidTarget()
 //    iosX64()
     iosArm64()
     iosSimulatorArm64()
@@ -81,47 +98,11 @@ kotlin {
     }
     jvmToolchain(libs.versions.jvmToolchain.get().toInt())
 }
-android {
-    compileSdk = libs.versions.compileSdk.get().toInt()
-    compileSdkPreview = libs.versions.compileSdkPreview.get()
-    buildToolsVersion = libs.versions.buildToolsVersion.get()
-    defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
-    }
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility =
-            JavaVersion.toVersion(libs.versions.jvmTarget.get().toInt())
-        targetCompatibility =
-            JavaVersion.toVersion(libs.versions.jvmTarget.get().toInt())
-    }
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
-        }
-    }
-    sourceSets.named("main").get().apply {
-        manifest.srcFile("src/androidMain/AndroidManifest.xml")
-        res.srcDirs("src/androidMain/res")
-        resources.srcDirs("src/commonMain/resources")
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/versions/9/previous-compilation-data.bin"
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-    lint {
-        warningsAsErrors = true
-        baseline = file("lint-baseline.xml")
-    }
-}
 val kspAndroid by configurations.named("kspAndroid")
 dependencies {
     coreLibraryDesugaring(libs.desugarJdkLibsNio)
     // https://github.com/google/ksp/issues/2595
     lintChecks(libs.composeLintChecks)
-    debugImplementation(libs.uiTestManifest)
 }
 compose {
     resources {
