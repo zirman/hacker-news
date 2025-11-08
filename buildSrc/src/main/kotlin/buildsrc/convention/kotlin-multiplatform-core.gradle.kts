@@ -5,6 +5,7 @@ package buildsrc.convention
 import com.android.build.api.dsl.androidLibrary
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.jetbrains.compose.ExperimentalComposeLibrary
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     kotlin("multiplatform")
@@ -84,6 +85,11 @@ kotlin {
         lint {
             warningsAsErrors = true
             baseline = file("lint-baseline.xml")
+        }
+        compilations.configureEach {
+            compilerOptions.configure {
+                jvmTarget.set(JvmTarget.fromTarget(libs.versions.jvmTarget.get()))
+            }
         }
     }
     jvm()
