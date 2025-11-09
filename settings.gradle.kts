@@ -27,7 +27,7 @@ pluginManagement {
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
-rootProject.name = "Hacker-News"
+rootProject.name = "hacker-news"
 include(":mobile-app")
 include(":desktop-app")
 include(":wear-app")
