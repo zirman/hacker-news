@@ -5,8 +5,22 @@ kotlin {
     jvmToolchain(libs.versions.jvmToolchain.get().toInt())
 }
 dependencies {
-    implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
-    implementation(libs.bundles.plugins)
+    implementation(plugin(libs.plugins.kotlinGradle))
+    implementation(plugin(libs.plugins.kotlinParcelize))
+    implementation(plugin(libs.plugins.kotlinSerialization))
+    implementation(plugin(libs.plugins.compose))
+    implementation(plugin(libs.plugins.composeCompiler))
+    implementation(plugin(libs.plugins.composeHotReload))
+    implementation(plugin(libs.plugins.androidApplication))
+    implementation(plugin(libs.plugins.androidMultiplatformLibrary))
+    implementation(plugin(libs.plugins.ksp))
+    implementation(plugin(libs.plugins.metro))
+    implementation(plugin(libs.plugins.room))
+    implementation(plugin(libs.plugins.googlePlayServices))
+    implementation(plugin(libs.plugins.crashlytics))
+    implementation(plugin(libs.plugins.firebasePerf))
+    implementation(plugin(libs.plugins.detektGradle))
+    implementation(plugin(libs.plugins.roborazzi))
 }
 tasks {
     validatePlugins {
@@ -14,3 +28,5 @@ tasks {
         failOnWarning = true
     }
 }
+fun DependencyHandlerScope.plugin(plugin: Provider<PluginDependency>) =
+    plugin.map { "${it.pluginId}:${it.pluginId}.gradle.plugin:${it.version}" }

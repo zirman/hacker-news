@@ -67,25 +67,25 @@ robsRules = "1.0.2"
 ksoup = "0.6.0"
 coil = "3.3.0"
 
-[libraries]
-plugin-kotlinGradle = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-plugin-kotlinParcelize = { group = "org.jetbrains.kotlin.plugin.parcelize", name = "org.jetbrains.kotlin.plugin.parcelize.gradle.plugin", version.ref = "kotlin" }
-plugin-kotlinSerialization = { group = "org.jetbrains.kotlin.plugin.serialization", name = "org.jetbrains.kotlin.plugin.serialization.gradle.plugin", version.ref = "kotlin" }
-plugin-compose = { group = "org.jetbrains.kotlin.plugin.compose", name = "org.jetbrains.kotlin.plugin.compose.gradle.plugin", version.ref = "kotlin" }
-plugin-composeCompiler = { group = "org.jetbrains.compose", name = "compose-gradle-plugin", version.ref = "jetbrainsCompose" }
-plugin-composeHotReload = { group = "org.jetbrains.compose.hot-reload", name = "hot-reload-gradle-plugin", version.ref = "jetbrainsComposeHotReload" }
-plugin-androidApplication = { group = "com.android.application", name = "com.android.application.gradle.plugin", version.ref = "android" }
-plugin-androidMultiplatformLibrary = { group = "com.android.kotlin.multiplatform.library", name = "com.android.kotlin.multiplatform.library.gradle.plugin", version.ref = "android" }
-plugin-ksp = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
-plugin-metro = { group = "dev.zacsweers.metro", name = "gradle-plugin", version.ref = "metro" }
-plugin-room = { group = "androidx.room", name = "androidx.room.gradle.plugin", version.ref = "room" }
-plugin-googlePlayServices = { group = "com.google.gms.google-services", name = "com.google.gms.google-services.gradle.plugin", version.ref = "googlePlayServices" }
-plugin-crashlytics = { group = "com.google.firebase.crashlytics", name = "com.google.firebase.crashlytics.gradle.plugin", version.ref = "crashlytics" }
-plugin-firebasePerf = { group = "com.google.firebase.firebase-perf", name = "com.google.firebase.firebase-perf.gradle.plugin", version.ref = "firebasePerf" }
-plugin-detektGradle = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
-plugin-roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi-gradle-plugin", version.ref = "roborazzi" }
+[plugins]
+kotlinGradle = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlinParcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+composeCompiler = { id = "org.jetbrains.compose", version.ref = "jetbrainsCompose" }
+composeHotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "jetbrainsComposeHotReload" }
+androidApplication = { id = "com.android.application", version.ref = "android" }
+androidMultiplatformLibrary = { id = "com.android.kotlin.multiplatform.library", version.ref = "android" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
+room = { id = "androidx.room", version.ref = "room" }
+googlePlayServices = { id = "com.google.gms.google-services", version.ref = "googlePlayServices" }
+crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics" }
+firebasePerf = { id = "com.google.firebase.firebase-perf", version.ref = "firebasePerf" }
+detektGradle = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 
-# dependencies
+[libraries]
 kotlinCoroutinesBom = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-bom", version.ref = "kotlinCoroutines" }
 #kotlinStdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 kotlinCoroutinesAndroid = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android" }
@@ -210,24 +210,6 @@ detektFormatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-forma
 robsRules = { group = "dev.robch.rules", name = "robs-rules", version.ref = "robsRules" }
 
 [bundles]
-plugins = [
-    "plugin-androidApplication",
-    "plugin-androidMultiplatformLibrary",
-    "plugin-compose",
-    "plugin-composeCompiler",
-    "plugin-composeHotReload",
-    "plugin-crashlytics",
-    "plugin-detektGradle",
-    "plugin-firebasePerf",
-    "plugin-googlePlayServices",
-    "plugin-kotlinGradle",
-    "plugin-kotlinParcelize",
-    "plugin-kotlinSerialization",
-    "plugin-ksp",
-    "plugin-metro",
-    "plugin-roborazzi",
-    "plugin-room",
-]
 commonMain = [
     "annotation",
     "coil",

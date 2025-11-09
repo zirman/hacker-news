@@ -2,12 +2,11 @@ package buildsrc.convention
 
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
-import org.gradle.accessors.dm.LibrariesForLibs
 
 plugins {
     id("io.gitlab.arturbosch.detekt")
 }
-val libs = the<LibrariesForLibs>()
+val libs = the<VersionCatalogsExtension>().named("libs")
 detekt {
     buildUponDefaultConfig = false // preconfigure defaults.
     allRules = false // activate all available (even unstable) rules.
@@ -23,8 +22,8 @@ detekt {
     ignoredBuildTypes = listOf("release")
 }
 dependencies {
-    detektPlugins(libs.detektFormatting)
-    detektPlugins(libs.robsRules)
+    detektPlugins(libs.findLibrary("detektFormatting").get())
+    detektPlugins(libs.findLibrary("robsRules").get())
 }
 tasks.withType<Detekt> {
     config.setFrom(files("${rootProject.projectDir}/detekt.yml"))
@@ -45,11 +44,11 @@ tasks.withType<Detekt> {
             outputLocation = file("build/reports/mydetekt.md")
         }
     }
-    jvmTarget = libs.versions.jvmTarget.get()
+    jvmTarget = libs.findVersion("jvmTarget").get().requiredVersion
 }
 tasks.withType<DetektCreateBaselineTask>().configureEach {
     config.setFrom(files("${rootProject.projectDir}/detekt.yml"))
-    jvmTarget = libs.versions.jvmTarget.get()
+    jvmTarget = libs.findVersion("jvmTarget").get().requiredVersion
     exclude {
         it.file.relativeTo(projectDir).startsWith("build")
     }

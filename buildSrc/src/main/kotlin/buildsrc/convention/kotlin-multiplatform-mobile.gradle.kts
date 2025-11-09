@@ -2,7 +2,6 @@
 
 package buildsrc.convention
 
-import org.gradle.accessors.dm.LibrariesForLibs
 import org.jetbrains.compose.ExperimentalComposeLibrary
 
 plugins {
@@ -20,14 +19,14 @@ plugins {
     id("io.github.takahirom.roborazzi")
     id("buildsrc.convention.detekt-rules")
 }
-val libs = the<LibrariesForLibs>()
+val libs = the<VersionCatalogsExtension>().named("libs")
 kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(project(":common:core"))
         }
         commonTest.dependencies {
-            implementation(libs.bundles.commonTest)
+            implementation(libs.findBundle("commonTest").get())
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)
         }
@@ -35,7 +34,7 @@ kotlin {
             kotlin.srcDir("build/generated/ksp/android/androidDebug/screenshotTest")
         }
         androidUnitTest.dependencies {
-            implementation(libs.bundles.androidUnitTest)
+            implementation(libs.findBundle("androidUnitTest").get())
         }
         all {
             languageSettings.optIn("kotlin.time.ExperimentalTime")
@@ -58,22 +57,22 @@ kotlin {
         // apiVersion = KOTLIN_2_1
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }
-    jvmToolchain(libs.versions.jvmToolchain.get().toInt())
+    jvmToolchain(libs.findVersion("jvmToolchain").get().requiredVersion.toInt())
 }
 android {
-    compileSdk = libs.versions.compileSdk.get().toInt()
-    compileSdkPreview = libs.versions.compileSdkPreview.get()
-    buildToolsVersion = libs.versions.buildToolsVersion.get()
+    compileSdk = libs.findVersion("compileSdk").get().requiredVersion.toInt()
+    compileSdkPreview = libs.findVersion("compileSdkPreview").get().requiredVersion
+    buildToolsVersion = libs.findVersion("buildToolsVersion").get().requiredVersion
     defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
+        minSdk = libs.findVersion("minSdk").get().requiredVersion.toInt()
+        targetSdk = libs.findVersion("targetSdk").get().requiredVersion.toInt()
     }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
         sourceCompatibility =
-            JavaVersion.toVersion(libs.versions.jvmTarget.get().toInt())
+            JavaVersion.toVersion(libs.findVersion("jvmTarget").get().requiredVersion.toInt())
         targetCompatibility =
-            JavaVersion.toVersion(libs.versions.jvmTarget.get().toInt())
+            JavaVersion.toVersion(libs.findVersion("jvmTarget").get().requiredVersion.toInt())
     }
     testOptions {
         unitTests {
@@ -114,12 +113,12 @@ compose {
 }
 val kspAndroid by configurations.named("kspAndroid")
 dependencies {
-    coreLibraryDesugaring(libs.desugarJdkLibsNio)
+    coreLibraryDesugaring(libs.findLibrary("desugarJdkLibsNio").get())
     kspAndroid(project(":ksp-processors:injection"))
     // https://github.com/google/ksp/issues/2595
     kspAndroid(project(":ksp-processors:screenshot"))
-    lintChecks(libs.composeLintChecks)
-    debugImplementation(libs.uiTestManifest)
+    lintChecks(libs.findLibrary("composeLintChecks").get())
+    debugImplementation(libs.findLibrary("uiTestManifest").get())
 }
 roborazzi {
     outputDir.set(file("src/androidUnitTest/screenshotTest"))

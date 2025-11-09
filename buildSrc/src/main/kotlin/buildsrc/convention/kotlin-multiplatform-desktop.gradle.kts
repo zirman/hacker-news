@@ -1,6 +1,5 @@
 package buildsrc.convention
 
-import org.gradle.accessors.dm.LibrariesForLibs
 import org.jetbrains.compose.ExperimentalComposeLibrary
 
 plugins {
@@ -13,14 +12,14 @@ plugins {
     id("dev.zacsweers.metro")
     id("buildsrc.convention.detekt-rules")
 }
-val libs = the<LibrariesForLibs>()
+val libs = the<VersionCatalogsExtension>().named("libs")
 kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(project(":common:core"))
         }
         commonTest.dependencies {
-            implementation(libs.bundles.commonTest)
+            implementation(libs.findBundle("commonTest").get())
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)
         }
@@ -35,7 +34,7 @@ kotlin {
         // apiVersion = KOTLIN_2_1
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }
-    jvmToolchain(libs.versions.jvmToolchain.get().toInt())
+    jvmToolchain(libs.findVersion("jvmToolchain").get().requiredVersion.toInt())
 }
 compose {
     resources {
