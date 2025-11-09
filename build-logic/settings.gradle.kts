@@ -1,11 +1,10 @@
 @file:Suppress("UnstableApiUsage")
 
 dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
-        gradlePluginPortal()
-        maven(url = "https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
     versionCatalogs {
         create("libs") {
@@ -13,4 +12,5 @@ dependencyResolutionManagement {
         }
     }
 }
-rootProject.name = "buildSrc"
+rootProject.name = "build-logic"
+include(":plugins")

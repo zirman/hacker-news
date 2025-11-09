@@ -1,5 +1,5 @@
 plugins {
-    id("buildsrc.convention.kotlin-multiplatform-mobile")
+    id("kotlin-multiplatform-mobile")
 }
 kotlin {
     sourceSets {

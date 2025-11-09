@@ -1,5 +1,3 @@
-package buildsrc.convention
-
 import org.jetbrains.compose.ExperimentalComposeLibrary
 
 plugins {
@@ -10,7 +8,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization")
     id("com.google.devtools.ksp")
     id("dev.zacsweers.metro")
-    id("buildsrc.convention.detekt-rules")
+    id("detekt-rules")
 }
 val libs = the<VersionCatalogsExtension>().named("libs")
 kotlin {

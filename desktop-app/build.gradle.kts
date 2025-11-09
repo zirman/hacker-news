@@ -1,7 +1,7 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
-    id("buildsrc.convention.kotlin-multiplatform-desktop")
+    id("kotlin-multiplatform-desktop")
 }
 kotlin {
     sourceSets {

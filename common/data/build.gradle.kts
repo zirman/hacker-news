@@ -1,5 +1,5 @@
 plugins {
-    id("buildsrc.convention.kotlin-multiplatform-library")
+    id("kotlin-multiplatform-library")
     id("kotlin-parcelize")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("androidx.room")

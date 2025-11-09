@@ -68,7 +68,7 @@ fun DesktopApp(onClickUrl: (Url) -> Unit) {
                         IconButton(onClick = { /* do something */ }) {
                             Icon(
                                 Icons.Filled.Check,
-                                contentDescription = "Localized description"
+                                contentDescription = "Localized description",
                             )
                         }
                         IconButton(onClick = { /* do something */ }) {
@@ -98,7 +98,7 @@ fun DesktopApp(onClickUrl: (Url) -> Unit) {
                         ) {
                             Icon(Icons.Filled.Add, "Localized description")
                         }
-                    }
+                    },
                 )
             },
         ) { innerPadding ->

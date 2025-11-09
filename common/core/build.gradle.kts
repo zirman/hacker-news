@@ -1,5 +1,5 @@
 plugins {
-    id("buildsrc.convention.kotlin-multiplatform-core")
+    id("kotlin-multiplatform-core")
 }
 val packageNamespace = "com.monoid.hackernews.common.core"
 kotlin {

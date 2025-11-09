@@ -3,25 +3,16 @@
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        mavenLocal()
         google()
         mavenCentral()
-        maven {
-            url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap")
-        }
     }
 }
 pluginManagement {
-    buildscript {
-        repositories {
-            mavenCentral()
-            maven {
-                url = uri("https://storage.googleapis.com/r8-releases/raw")
-            }
-        }
-        dependencies {
-            // classpath("com.android.tools:r8:8.13.0-dev")
-        }
+    includeBuild("build-logic")
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
     }
 }
 plugins {

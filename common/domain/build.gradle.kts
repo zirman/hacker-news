@@ -1,5 +1,5 @@
 plugins {
-    id("buildsrc.convention.kotlin-multiplatform-library")
+    id("kotlin-multiplatform-library")
     id("org.jetbrains.kotlin.plugin.serialization")
 }
 val packageNamespace = "com.monoid.hackernews.common.domain"

@@ -1,7 +1,5 @@
 @file:Suppress("OPT_IN_USAGE")
 
-package buildsrc.convention
-
 import com.android.build.api.dsl.androidLibrary
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -15,7 +13,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("dev.zacsweers.metro")
     id("io.github.takahirom.roborazzi")
-    id("buildsrc.convention.detekt-rules")
+    id("detekt-rules")
 }
 val libs = the<VersionCatalogsExtension>().named("libs")
 kotlin {

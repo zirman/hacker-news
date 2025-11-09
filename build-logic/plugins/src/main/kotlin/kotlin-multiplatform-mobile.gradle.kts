@@ -1,7 +1,5 @@
 @file:Suppress("OPT_IN_USAGE")
 
-package buildsrc.convention
-
 import org.jetbrains.compose.ExperimentalComposeLibrary
 
 plugins {
@@ -17,7 +15,7 @@ plugins {
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
     id("io.github.takahirom.roborazzi")
-    id("buildsrc.convention.detekt-rules")
+    id("detekt-rules")
 }
 val libs = the<VersionCatalogsExtension>().named("libs")
 kotlin {

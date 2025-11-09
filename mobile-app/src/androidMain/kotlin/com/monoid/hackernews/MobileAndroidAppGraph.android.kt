@@ -19,7 +19,8 @@ import kotlin.reflect.KClass
 interface MobileAndroidAppGraph : AndroidAppGraph {
     @Multibinds
     val _activityGraphProviders: Map<KClass<out Activity>, Provider<ActivityGraph>>
-    override val activityGraphProviders: Map<KClass<out Activity>, Provider<ActivityGraph>> get() = _activityGraphProviders
+    override val activityGraphProviders: Map<KClass<out Activity>, Provider<ActivityGraph>>
+        get() = _activityGraphProviders
 
     @Multibinds(allowEmpty = true)
     val _serviceGraphProviders: Map<KClass<out Service>, Provider<ServiceGraph>>
