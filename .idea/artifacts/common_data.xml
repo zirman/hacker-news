@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="common-data">
+    <output-path>$PROJECT_DIR$/common/data/build/libs</output-path>
+    <root id="archive" name="common-data.jar">
+      <element id="module-output" name="hacker-news.common-data.androidMain" />
+    </root>
+  </artifact>
+</component>

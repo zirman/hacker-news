@@ -16,7 +16,7 @@ val libs = the<VersionCatalogsExtension>().named("libs")
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":common:core"))
+            implementation(project(":common-core"))
         }
         commonTest.dependencies {
             implementation(libs.findBundle("commonTest").get())

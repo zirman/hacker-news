@@ -7,5 +7,5 @@ dependencies {
     compileOnly(libs.kotlinPoetKsp)
     implementation(libs.android)
     implementation(libs.metroRuntimeJvm)
-    implementation(project(":common:injection"))
+    implementation(project(":common-injection"))
 }
