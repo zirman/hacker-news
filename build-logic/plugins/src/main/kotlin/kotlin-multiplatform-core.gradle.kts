@@ -1,6 +1,5 @@
 @file:Suppress("OPT_IN_USAGE")
 
-import com.android.build.api.dsl.androidLibrary
 import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -67,7 +66,7 @@ kotlin {
             languageSettings.optIn("kotlin.time.ExperimentalTime")
         }
     }
-    androidLibrary {
+    android {
         compileSdk = libs.findVersion("compileSdk").get().requiredVersion.toInt()
         compileSdkPreview = libs.findVersion("compileSdkPreview").get().requiredVersion
         minSdk = libs.findVersion("minSdk").get().requiredVersion.toInt()

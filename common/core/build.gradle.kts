@@ -8,7 +8,7 @@ kotlin {
             api(project(":common-injection"))
         }
     }
-    androidLibrary {
+    android {
         namespace = packageNamespace
     }
 }

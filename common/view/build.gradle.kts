@@ -9,7 +9,7 @@ kotlin {
             api(project(":common-domain"))
         }
     }
-    androidLibrary {
+    android {
         namespace = packageNamespace
         androidResources.enable = true
     }

@@ -6,7 +6,7 @@ plugins {
 }
 val packageNamespace = "com.monoid.hackernews.common.data"
 kotlin {
-    androidLibrary {
+    android {
         namespace = packageNamespace
     }
 }

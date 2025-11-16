@@ -9,7 +9,7 @@ kotlin {
             api(project(":common-data"))
         }
     }
-    androidLibrary {
+    android {
         namespace = packageNamespace
     }
 }
