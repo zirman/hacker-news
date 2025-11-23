@@ -26,7 +26,7 @@ compose {
                     version = "7.6.1"
                     isEnabled = true
                     optimize = true
-                    obfuscate = false // Currently obfuscated builds are broken
+                    obfuscate = true
                     configurationFiles.from(
                         project.file("proguard-rules.pro"),
                     )

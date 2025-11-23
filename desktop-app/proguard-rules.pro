@@ -59,6 +59,7 @@
 
 -keepclasseswithmembers class * extends androidx.room.RoomDatabase { <init>(); }
 -keepnames class com.monoid.hackernews.common.data.api.** { *; }
+-keep class com.monoid.hackernews.common.data.model.** { *; }
 
 -keep class io.ktor.serialization.kotlinx.json.KotlinxSerializationJsonExtensionProvider { *; }
 #-keepclassmembers class kotlinx.coroutines.swing.SwingDispatcherFactory { *; }
@@ -71,6 +72,7 @@
 -keepclassmembers class com.monoid.hackernews.common.view.stories.** { *; }
 
 -keepclassmembers class * extends androidx.room.RoomDatabase { <init>(); }
+-keep class androidx.sqlite.** { *; }
 -keepclassmembers class androidx.sqlite.driver.bundled.** { *; }
 
 #-whyareyoukeeping
