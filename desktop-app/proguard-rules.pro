@@ -57,18 +57,20 @@
 # However, since in this case they will not be used, we can disable these warnings
 -dontwarn kotlinx.serialization.internal.ClassValueReferences
 
--keep class com.monoid.hackernews.common.data.room.** { *; }
--keep class com.monoid.hackernews.common.data.api.** { *; }
+-keepclasseswithmembers class * extends androidx.room.RoomDatabase { <init>(); }
+-keepnames class com.monoid.hackernews.common.data.api.** { *; }
 
 -keep class io.ktor.serialization.kotlinx.json.KotlinxSerializationJsonExtensionProvider { *; }
--keep class kotlinx.coroutines.swing.SwingDispatcherFactory { *; }
--keep class kotlinx.coroutines.flow.** { *; }
--keep class okio.** { *; }
--keep class androidx.compose.runtime.** { *; }
+#-keepclassmembers class kotlinx.coroutines.swing.SwingDispatcherFactory { *; }
+#-keepclassmembers class kotlinx.coroutines.flow.** { *; }
+#-keep class okio.** { *; }
+#-keepclassmembers class androidx.compose.runtime.** { *; }
 #-keepclassmembers class io.ktor.http.** { *; }
 
 -dontwarn **
--keep class com.monoid.hackernews.common.view.stories.** { *; }
+-keepclassmembers class com.monoid.hackernews.common.view.stories.** { *; }
 
--keep class * extends androidx.room.RoomDatabase { <init>(); }
--keep class androidx.sqlite.driver.bundled.** { *; }
+-keepclassmembers class * extends androidx.room.RoomDatabase { <init>(); }
+-keepclassmembers class androidx.sqlite.driver.bundled.** { *; }
+
+#-whyareyoukeeping

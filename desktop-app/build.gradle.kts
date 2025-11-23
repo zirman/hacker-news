@@ -27,7 +27,9 @@ compose {
                     isEnabled = true
                     optimize = true
                     obfuscate = false // Currently obfuscated builds are broken
-                    configurationFiles.from("proguard-rules.pro")
+                    configurationFiles.from(
+                        project.file("proguard-rules.pro"),
+                    )
                 }
             }
         }
