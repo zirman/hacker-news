@@ -1,4 +1,5 @@
 import org.jetbrains.compose.ExperimentalComposeLibrary
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     kotlin("multiplatform")
@@ -24,12 +25,12 @@ kotlin {
         all {
             languageSettings.optIn("kotlin.time.ExperimentalTime")
         }
+
     }
-    jvm("desktop")
+    jvm("desktop") {
+        JvmTarget.fromTarget(libs.findVersion("jvmTarget").get().requiredVersion)
+    }
     compilerOptions {
-        // Should be able to remove in 2.2.20-Beta2
-        // https://issuetracker.google.com/issues/429988549
-        // apiVersion = KOTLIN_2_1
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }
     jvmToolchain(libs.findVersion("jvmToolchain").get().requiredVersion.toInt())

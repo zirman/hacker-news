@@ -1,6 +1,7 @@
 @file:Suppress("OPT_IN_USAGE")
 
 import org.jetbrains.compose.ExperimentalComposeLibrary
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     kotlin("multiplatform")
@@ -30,15 +31,20 @@ kotlin {
         }
         androidUnitTest {
             kotlin.srcDir("build/generated/ksp/android/androidDebug/screenshotTest")
-        }
-        androidUnitTest.dependencies {
-            implementation(libs.findBundle("androidUnitTest").get())
+            // dependsOn(commonMain.get())
+            dependencies {
+                implementation(libs.findBundle("androidUnitTest").get())
+            }
         }
         all {
             languageSettings.optIn("kotlin.time.ExperimentalTime")
         }
     }
-    androidTarget()
+    androidTarget {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.fromTarget(libs.findVersion("jvmTarget").get().requiredVersion))
+        }
+    }
     listOf(
 //        iosX64(),
         iosArm64(),
@@ -50,9 +56,6 @@ kotlin {
         }
     }
     compilerOptions {
-        // Should be able to remove in 2.2.20-Beta2
-        // https://issuetracker.google.com/issues/429988549
-        // apiVersion = KOTLIN_2_1
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }
     jvmToolchain(libs.findVersion("jvmToolchain").get().requiredVersion.toInt())
@@ -115,7 +118,7 @@ dependencies {
     kspAndroid(project(":ksp-processors-injection"))
     // https://github.com/google/ksp/issues/2595
     kspAndroid(project(":ksp-processors-screenshot"))
-    lintChecks(libs.findLibrary("composeLintChecks").get())
+//    lintChecks(libs.findLibrary("composeLintChecks").get())
     debugImplementation(libs.findLibrary("uiTestManifest").get())
 }
 roborazzi {

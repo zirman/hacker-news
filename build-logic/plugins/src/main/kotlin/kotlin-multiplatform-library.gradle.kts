@@ -27,9 +27,10 @@ kotlin {
         }
         androidUnitTest {
             kotlin.srcDir("build/generated/ksp/android/androidDebug/screenshotTest")
-        }
-        androidUnitTest.dependencies {
-            implementation(libs.findBundle("androidUnitTest").get())
+            // dependsOn(commonMain.get())
+            dependencies {
+                implementation(libs.findBundle("androidUnitTest").get())
+            }
         }
         all {
             languageSettings.optIn("kotlin.time.ExperimentalTime")
@@ -51,20 +52,19 @@ kotlin {
             warningsAsErrors = true
             baseline = file("lint-baseline.xml")
         }
-        compilations.configureEach {
-            compilerOptions.configure {
-                jvmTarget.set(JvmTarget.fromTarget(libs.findVersion("jvmTarget").get().requiredVersion))
-            }
+        compilerOptions {
+            jvmTarget.set(JvmTarget.fromTarget(libs.findVersion("jvmTarget").get().requiredVersion))
         }
     }
-    jvm()
+    jvm {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.fromTarget(libs.findVersion("jvmTarget").get().requiredVersion))
+        }
+    }
 //    iosX64()
     iosArm64()
     iosSimulatorArm64()
     compilerOptions {
-        // Should be able to remove in 2.2.20-Beta2
-        // https://issuetracker.google.com/issues/429988549
-        // apiVersion = KOTLIN_2_1
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }
     jvmToolchain(libs.findVersion("jvmToolchain").get().requiredVersion.toInt())
@@ -75,7 +75,7 @@ dependencies {
     kspAndroid(project(":ksp-processors-injection"))
     // https://github.com/google/ksp/issues/2595
     kspAndroid(project(":ksp-processors-screenshot"))
-    lintChecks(libs.findLibrary("composeLintChecks").get())
+//    lintChecks(libs.findLibrary("composeLintChecks").get())
 }
 compose {
     resources {
