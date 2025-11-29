@@ -83,8 +83,4 @@
 -keepnames class androidx.lifecycle.** { *; }
 -keepnames class com.mohamedrejeb.ksoup.html.parser.** { *; }
 #-keeppackagenames
-
--keepclassmembers class * extends androidx.room.RoomDatabase { <init>(); }
--keepclassmembers class androidx.sqlite.driver.bundled.** { *; }
-
 #-whyareyoukeeping

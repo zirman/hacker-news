@@ -70,9 +70,5 @@
 
 -dontwarn **
 -keepclassmembers class com.monoid.hackernews.common.view.stories.** { *; }
-
--keepclassmembers class * extends androidx.room.RoomDatabase { <init>(); }
--keep class androidx.sqlite.** { *; }
--keepclassmembers class androidx.sqlite.driver.bundled.** { *; }
-
+#-keeppackagenames
 #-whyareyoukeeping

@@ -8,6 +8,11 @@ val packageNamespace = "com.monoid.hackernews.common.data"
 kotlin {
     android {
         namespace = packageNamespace
+        @Suppress("UnstableApiUsage")
+        optimization {
+            consumerKeepRules.publish = true
+            consumerKeepRules.files.add(File("proguard-rules.pro"))
+        }
     }
 }
 compose {
