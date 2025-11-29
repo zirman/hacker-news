@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.13.1" type="baseline" client="gradle" dependencies="false" name="AGP (8.13.1)" variant="fatal" version="8.13.1">
+
+    <issue
+        id="Instantiatable"
+        message="This class should provide a default constructor (a public constructor with no arguments) (`com.monoid.hackernews.wear.WearHackerNewsApplication`)"
+        errorLine1="        android:name=&quot;.WearHackerNewsApplication&quot;"
+        errorLine2="                      ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/androidMain/AndroidManifest.xml"
+            line="13"
+            column="23"/>
+    </issue>
+
+</issues>
