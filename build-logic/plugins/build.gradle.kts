@@ -5,6 +5,7 @@ kotlin {
     jvmToolchain(libs.versions.jvmToolchain.get().toInt())
 }
 dependencies {
+    implementation(plugin(libs.plugins.kotlinMultiplatform))
     implementation(plugin(libs.plugins.kotlinGradle))
     implementation(plugin(libs.plugins.kotlinSerialization))
     implementation(plugin(libs.plugins.compose))

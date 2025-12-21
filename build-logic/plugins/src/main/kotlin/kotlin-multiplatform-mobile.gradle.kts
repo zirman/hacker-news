@@ -4,7 +4,7 @@ import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    kotlin("multiplatform")
+    id("org.jetbrains.kotlin.multiplatform")
     id("com.android.application")
     id("org.jetbrains.kotlin.plugin.compose")
     id("org.jetbrains.compose")
@@ -111,6 +111,10 @@ compose {
         publicResClass = true
         generateResClass = always
     }
+}
+metro {
+    enableTopLevelFunctionInjection = true
+    generateContributionHintsInFir = true
 }
 val kspAndroid by configurations.named("kspAndroid")
 dependencies {

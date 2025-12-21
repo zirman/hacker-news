@@ -13,7 +13,7 @@ desugarJdkLibs = "2.1.5"
 kotlin = "2.3.0" # https://github.com/jetbrains/kotlin/releases
 kotlinDatetime = "0.7.1"
 kotlinPoet = "2.2.0" # https://github.com/square/kotlinpoet/releases
-kotlinWrappersBom = "2025.12.5" # https://github.com/JetBrains/kotlin-wrappers/releases
+kotlinWrappersBom = "2025.12.8" # https://github.com/JetBrains/kotlin-wrappers/releases
 ksp = "2.3.4" # https://github.com/google/ksp/releases
 jetbrainsCompose = "1.10.0-rc02" # https://github.com/JetBrains/compose-multiplatform/releases
 jetbrainsComposeHotReload = "1.0.0" # https://mvnrepository.com/artifact/org.jetbrains.compose.hot-reload/hot-reload-gradle-plugin/
@@ -55,7 +55,7 @@ material3Adaptive = "1.2.0"
 material3AdaptiveNavigation = "1.2.0"
 material3AdaptiveNavigationSuite = "1.4.0"
 material3WindowSizeClassMultiplatform = "0.5.0"
-metro = "0.9.1" # https://github.com/ZacSweers/metro/releases
+metro = "0.9.2" # https://github.com/ZacSweers/metro/releases
 wearCompose = "1.5.6"
 accompanist = "0.37.3" # https://github.com/google/accompanist/releases
 junit = "4.13.2"
@@ -74,6 +74,7 @@ ksoup = "0.6.0"
 coil = "3.3.0"
 
 [plugins]
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version = "2.3.20-dev-5437" }
 kotlinGradle = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinParcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

@@ -5,6 +5,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven("https://packages.jetbrains.team/maven/p/kt/dev/")
     }
     versionCatalogs {
         create("libs") {

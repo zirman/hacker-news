@@ -2,7 +2,7 @@ import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    kotlin("multiplatform")
+    id("org.jetbrains.kotlin.multiplatform")
     id("org.jetbrains.kotlin.plugin.compose")
     id("org.jetbrains.compose")
     id("org.jetbrains.compose.hot-reload")
@@ -40,4 +40,8 @@ compose {
         publicResClass = true
         generateResClass = always
     }
+}
+metro {
+    enableTopLevelFunctionInjection = true
+    generateContributionHintsInFir = true
 }
