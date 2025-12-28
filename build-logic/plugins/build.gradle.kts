@@ -28,5 +28,5 @@ tasks {
         failOnWarning = true
     }
 }
-fun DependencyHandlerScope.plugin(plugin: Provider<PluginDependency>) =
+fun DependencyHandlerScope.plugin(plugin: Provider<PluginDependency>): Provider<String> =
     plugin.map { "${it.pluginId}:${it.pluginId}.gradle.plugin:${it.version}" }
