@@ -16,7 +16,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.retain.retain
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -41,7 +41,7 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun IosApp(onClickUrl: (Url) -> Unit) {
-    val appGraph = remember { createGraph<IosAppGraph>() }
+    val appGraph = retain { createGraph<IosAppGraph>() }
     CompositionLocalProvider(LocalViewModelProviderFactory provides appGraph.iosViewModelFactory) {
         AppTheme {
             Scrim {

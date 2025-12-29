@@ -1,6 +1,5 @@
 plugins {
     id("kotlin-multiplatform-library")
-    id("kotlin-parcelize")
 }
 val packageNamespace = "com.monoid.hackernews.common.view"
 kotlin {

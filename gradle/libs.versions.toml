@@ -1,6 +1,6 @@
 [versions]
 androidVersion = "4.1.1.4"
-buildToolsVersion = "36.0.0"
+buildToolsVersion = "36.1.0"
 jvmToolchain = "21"
 jvmTarget = "21"
 minSdk = "28"
@@ -10,10 +10,10 @@ compileSdkPreview = "Baklava"
 android = "8.13.2"
 #lint = "31.4.0"
 desugarJdkLibs = "2.1.5"
-kotlin = "2.3.0" # https://github.com/jetbrains/kotlin/releases
+kotlin = "2.3.20-dev-5437" # https://github.com/jetbrains/kotlin/releases
 kotlinDatetime = "0.7.1"
 kotlinPoet = "2.2.0" # https://github.com/square/kotlinpoet/releases
-kotlinWrappersBom = "2025.12.8" # https://github.com/JetBrains/kotlin-wrappers/releases
+kotlinWrappersBom = "2025.12.11" # https://github.com/JetBrains/kotlin-wrappers/releases
 ksp = "2.3.4" # https://github.com/google/ksp/releases
 jetbrainsCompose = "1.10.0-rc02" # https://github.com/JetBrains/compose-multiplatform/releases
 jetbrainsComposeHotReload = "1.0.0" # https://mvnrepository.com/artifact/org.jetbrains.compose.hot-reload/hot-reload-gradle-plugin/
@@ -75,8 +75,6 @@ coil = "3.3.0"
 
 [plugins]
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version = "2.3.20-dev-5437" }
-kotlinGradle = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlinParcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 composeCompiler = { id = "org.jetbrains.compose", version.ref = "jetbrainsCompose" }

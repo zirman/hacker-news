@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.monoid.hackernews.common.core.coroutines.doOnErrorThenThrow
 import com.monoid.hackernews.common.core.log.LoggerAdapter
-import com.monoid.hackernews.common.core.metro.DefaultDispatcherQualifier
 import com.monoid.hackernews.common.core.metro.ViewModelKey
 import com.monoid.hackernews.common.core.metro.ViewModelScope
 import com.monoid.hackernews.common.data.WeakHashMap
@@ -15,8 +14,8 @@ import com.monoid.hackernews.common.data.model.SettingsRepository
 import com.monoid.hackernews.common.data.model.StoriesRepository
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
@@ -34,8 +33,8 @@ import kotlinx.coroutines.withContext
 @Inject
 class ItemDetailViewModel(
     savedStateHandle: SavedStateHandle,
-    @DefaultDispatcherQualifier
-    defaultDispatcher: CoroutineDispatcher,
+//    @DefaultDispatcherQualifier
+//    defaultDispatcher: CoroutineDispatcher,
     private val logger: LoggerAdapter,
     private val storiesRepository: StoriesRepository,
     private val settingsRepository: SettingsRepository,
@@ -67,7 +66,7 @@ class ItemDetailViewModel(
     val uiState: StateFlow<UiState> = combine(
         loading,
         storiesRepository.cache.map { cache ->
-            withContext(defaultDispatcher) {
+            withContext(Dispatchers.Default) {
                 cache.traverse(itemId)
             }
         },

@@ -11,7 +11,6 @@ plugins {
     id("org.jetbrains.compose.hot-reload")
     id("com.google.devtools.ksp")
     id("dev.zacsweers.metro")
-    id("kotlin-parcelize")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
