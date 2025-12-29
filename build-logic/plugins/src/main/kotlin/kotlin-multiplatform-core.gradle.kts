@@ -90,7 +90,6 @@ kotlin {
     jvm {
         JvmTarget.fromTarget(libs.findVersion("jvmTarget").get().requiredVersion)
     }
-//    iosX64()
     iosArm64()
     iosSimulatorArm64()
     compilerOptions {
