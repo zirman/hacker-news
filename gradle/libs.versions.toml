@@ -10,7 +10,8 @@ compileSdkPreview = "Baklava"
 android = "8.13.2"
 #lint = "31.4.0"
 desugarJdkLibs = "2.1.5"
-kotlin = "2.3.20-dev-5437" # https://github.com/jetbrains/kotlin/releases
+kotlin = "2.3.20-dev-6919" # https://github.com/jetbrains/kotlin/releases
+kotlinTest = "2.3.0"
 kotlinDatetime = "0.7.1"
 kotlinPoet = "2.2.0" # https://github.com/square/kotlinpoet/releases
 kotlinWrappersBom = "2025.12.11" # https://github.com/JetBrains/kotlin-wrappers/releases
@@ -101,7 +102,7 @@ kotlinSerializationJson = { group = "org.jetbrains.kotlinx", name = "kotlinx-ser
 kotlinCollectionsImmutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinCollectionsImmutable" }
 kotlinDatetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinDatetime" }
 kotlinWrappersBom = { group = "org.jetbrains.kotlin-wrappers", name = "kotlin-wrappers-bom", version.ref = "kotlinWrappersBom" }
-kotlinTest = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
+kotlinTest = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlinTest" }
 
 desugarJdkLibsNio = { group = "com.android.tools", name = "desugar_jdk_libs_nio", version.ref = "desugarJdkLibs" }
 #lintApi = { group = "com.android.tools.lint", name = "lint-api", version.ref = "lint" }
