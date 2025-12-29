@@ -74,13 +74,13 @@ ksoup = "0.6.0"
 coil = "3.3.0"
 
 [plugins]
-kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version = "2.3.20-dev-5437" }
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+androidMultiplatformLibrary = { id = "com.android.kotlin.multiplatform.library", version.ref = "android" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 composeCompiler = { id = "org.jetbrains.compose", version.ref = "jetbrainsCompose" }
 composeHotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "jetbrainsComposeHotReload" }
-androidApplication = { id = "com.android.application", version.ref = "android" }
-androidMultiplatformLibrary = { id = "com.android.kotlin.multiplatform.library", version.ref = "android" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
 room = { id = "androidx.room", version.ref = "room" }

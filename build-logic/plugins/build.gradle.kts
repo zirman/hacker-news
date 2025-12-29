@@ -6,12 +6,12 @@ kotlin {
 }
 dependencies {
     implementation(plugin(libs.plugins.kotlinMultiplatform))
+    implementation(plugin(libs.plugins.kotlinAndroid))
+    implementation(plugin(libs.plugins.androidMultiplatformLibrary))
     implementation(plugin(libs.plugins.kotlinSerialization))
     implementation(plugin(libs.plugins.compose))
     implementation(plugin(libs.plugins.composeCompiler))
     implementation(plugin(libs.plugins.composeHotReload))
-    implementation(plugin(libs.plugins.androidApplication))
-    implementation(plugin(libs.plugins.androidMultiplatformLibrary))
     implementation(plugin(libs.plugins.ksp))
     implementation(plugin(libs.plugins.metro))
     implementation(plugin(libs.plugins.room))
