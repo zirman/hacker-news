@@ -36,12 +36,11 @@ object IosDatabaseBindings {
             )
             ?.path
             .let { checkNotNull(it) }
-        Room
+        return Room
             .databaseBuilder<HNDatabase>(name = "$documentDirectory/$DATABASE_FILE_NAME")
             .fallbackToDestructiveMigration(true)
             .setDriver(BundledSQLiteDriver())
             .setQueryCoroutineContext(coroutineDispatcher)
             .build()
-            .run { return this }
     }
 }
