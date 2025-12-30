@@ -1,6 +1,8 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="common-core">
     <output-path>$PROJECT_DIR$/common/core/build/libs</output-path>
-    <root id="archive" name="common-core.jar" />
+    <root id="archive" name="common-core.jar">
+      <element id="module-output" name="hacker-news.common-core.androidMain" />
+    </root>
   </artifact>
 </component>
