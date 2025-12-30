@@ -1,8 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="common-data-jvm">
     <output-path>$PROJECT_DIR$/common/data/build/libs</output-path>
-    <root id="archive" name="common-data-jvm.jar">
-      <element id="module-output" name="hacker-news.common-data.jvmMain" />
-    </root>
+    <root id="archive" name="common-data-jvm.jar" />
   </artifact>
 </component>
