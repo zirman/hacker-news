@@ -113,6 +113,7 @@ compose {
 metro {
     enableTopLevelFunctionInjection = true
     generateContributionHintsInFir = true
+    enableKotlinVersionCompatibilityChecks = false
 }
 val kspAndroid by configurations.named("kspAndroid")
 dependencies {

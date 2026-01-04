@@ -112,6 +112,7 @@ compose {
 metro {
     enableTopLevelFunctionInjection = true
     generateContributionHintsInFir = true
+    enableKotlinVersionCompatibilityChecks = false
 }
 roborazzi {
     outputDir.set(file("src/androidUnitTest/screenshotTest"))

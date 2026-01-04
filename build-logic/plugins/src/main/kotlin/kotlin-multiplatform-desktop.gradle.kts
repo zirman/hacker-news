@@ -44,4 +44,5 @@ compose {
 metro {
     enableTopLevelFunctionInjection = true
     generateContributionHintsInFir = true
+    enableKotlinVersionCompatibilityChecks = false
 }
