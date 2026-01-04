@@ -2,7 +2,7 @@
   <artifact type="jar" name="data">
     <output-path>$PROJECT_DIR$/common/data/build/libs</output-path>
     <root id="archive" name="data.jar">
-      <element id="module-output" name="hacker-news.common.data.androidMain" />
+      <element id="module-output" name="hacker-news.data.androidMain" />
     </root>
   </artifact>
 </component>

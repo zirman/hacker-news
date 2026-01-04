@@ -2,7 +2,7 @@
   <artifact type="jar" name="core">
     <output-path>$PROJECT_DIR$/common/core/build/libs</output-path>
     <root id="archive" name="core.jar">
-      <element id="module-output" name="hacker-news.common.core.androidMain" />
+      <element id="module-output" name="hacker-news.core.androidMain" />
     </root>
   </artifact>
 </component>

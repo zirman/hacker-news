@@ -24,15 +24,14 @@ rootProject.name = "hacker-news"
 include(":mobile-app")
 include(":desktop-app")
 include(":wear-app")
-includeSubdir("common", "core")
-includeSubdir("common", "injection")
-includeSubdir("common", "data")
-includeSubdir("common", "domain")
-includeSubdir("common", "view")
-includeSubdir("ksp-processors", "injection")
-includeSubdir("ksp-processors", "screenshot")
-private fun includeSubdir(directory: String, name: String) {
-    val path = ":${directory}-${name}"
-    include(path)
-    project(path).projectDir = file("$directory/$name")
+includeSubdir(":core", "common")
+includeSubdir(":injection", "common")
+includeSubdir(":data", "common")
+includeSubdir(":domain", "common")
+includeSubdir(":view", "common")
+includeSubdir(":injection-processor", "ksp")
+includeSubdir(":screenshot-processor", "ksp")
+private fun includeSubdir(name: String, directory: String) {
+    include(name)
+    project(name).projectDir = file("$directory/${name.removePrefix(":")}")
 }

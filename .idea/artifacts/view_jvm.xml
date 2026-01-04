@@ -2,7 +2,7 @@
   <artifact type="jar" name="view-jvm">
     <output-path>$PROJECT_DIR$/common/view/build/libs</output-path>
     <root id="archive" name="view-jvm.jar">
-      <element id="module-output" name="hacker-news.common.view.jvmMain" />
+      <element id="module-output" name="hacker-news.view.jvmMain" />
     </root>
   </artifact>
 </component>

@@ -2,7 +2,7 @@
   <artifact type="jar" name="core-jvm">
     <output-path>$PROJECT_DIR$/common/core/build/libs</output-path>
     <root id="archive" name="core-jvm.jar">
-      <element id="module-output" name="hacker-news.common.core.jvmMain" />
+      <element id="module-output" name="hacker-news.core.jvmMain" />
     </root>
   </artifact>
 </component>

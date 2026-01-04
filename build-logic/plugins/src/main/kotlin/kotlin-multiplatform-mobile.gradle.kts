@@ -21,7 +21,7 @@ val libs = the<VersionCatalogsExtension>().named("libs")
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":common-core"))
+            implementation(project(":core"))
         }
         commonTest.dependencies {
             implementation(libs.findBundle("commonTest").get())
@@ -117,9 +117,9 @@ metro {
 val kspAndroid by configurations.named("kspAndroid")
 dependencies {
     coreLibraryDesugaring(libs.findLibrary("desugarJdkLibsNio").get())
-    kspAndroid(project(":ksp-processors-injection"))
+    kspAndroid(project(":injection-processor"))
     // https://github.com/google/ksp/issues/2595
-    kspAndroid(project(":ksp-processors-screenshot"))
+    kspAndroid(project(":screenshot-processor"))
 //    lintChecks(libs.findLibrary("composeLintChecks").get())
     debugImplementation(libs.findLibrary("uiTestManifest").get())
 }

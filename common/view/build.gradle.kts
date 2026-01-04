@@ -5,7 +5,7 @@ val packageNamespace = "com.monoid.hackernews.common.view"
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            api(project(":common-domain"))
+            api(project(":domain"))
         }
     }
     android {

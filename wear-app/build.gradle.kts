@@ -4,7 +4,7 @@ plugins {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":common-view"))
+            implementation(project(":view"))
         }
         androidMain.dependencies {
             implementation(libs.bundles.wear)
