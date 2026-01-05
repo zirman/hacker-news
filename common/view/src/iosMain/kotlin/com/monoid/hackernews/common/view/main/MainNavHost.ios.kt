@@ -14,20 +14,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.NavHostController
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.dialog
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.ui.NavDisplay
 import com.monoid.hackernews.common.core.metro.metroViewModel
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.Username
-import com.monoid.hackernews.common.domain.navigation.ItemIdNavType
 import com.monoid.hackernews.common.domain.navigation.Route
-import com.monoid.hackernews.common.domain.navigation.UsernameNavType
 import com.monoid.hackernews.common.view.comment.CommentDialog
 import com.monoid.hackernews.common.view.favorites.FavoriteStoriesListPane
 import com.monoid.hackernews.common.view.home.StoriesPane
@@ -43,10 +36,12 @@ import com.monoid.hackernews.common.view.settings.TermsOfServicePane
 import com.monoid.hackernews.common.view.settings.UserGuidelinesPane
 import com.monoid.hackernews.common.view.stories.listContentInsetSides
 import io.ktor.http.Url
-import kotlin.reflect.typeOf
 
 @Composable
-fun MainNavHost(
+fun MainNavDisplay(
+    backStack: List<Route>,
+    onNavigate: (Route) -> Unit,
+    onNavigateUp: () -> Unit,
     onClickLogin: () -> Unit,
     onClickLogout: () -> Unit,
     onClickItem: (Item) -> Unit,
@@ -61,163 +56,157 @@ fun MainNavHost(
     onClickSendFeedback: () -> Unit,
     onClickAbout: () -> Unit,
     modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController(),
 ) {
-    NavHost(
-        navController = navController,
-        startDestination = Route.BottomNav.Stories,
-        modifier = modifier.fillMaxSize(),
-    ) {
-        composable<Route.BottomNav.Stories> {
-            val viewModel: HomeViewModel = metroViewModel()
-            val lifecycleOwner = LocalLifecycleOwner.current
-            LaunchedEffect(Unit) {
-                lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    for (event in viewModel.events) {
-                        when (event) {
-                            is HomeViewModel.Event.OpenLogin -> {
-                                onClickLogin()
-                            }
-
-                            is HomeViewModel.Event.OpenReply -> {
-                                navController.navigate(Route.Reply(event.itemId))
-                            }
-
-                            is HomeViewModel.Event.OpenUser -> {
-                                navController.navigate(Route.User(event.username))
-                            }
-
-                            is HomeViewModel.Event.OpenStory -> {
-                                navController.navigate(Route.Story(event.itemId))
-                            }
-                        }
-                    }
-                }
-            }
-            StoriesPane(
-                onClickLogin = onClickLogin,
-                onClickUser = viewModel::onClickUser,
-                onClickStory = viewModel::onClickStory,
-                onClickReply = viewModel::onClickReply,
-                onClickUrl = onClickUrl,
-            )
-        }
-        composable<Route.BottomNav.Favorites> {
-            val viewModel: SettingsViewModel = metroViewModel()
-            val lifecycleOwner = LocalLifecycleOwner.current
-            LaunchedEffect(Unit) {
-                lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    for (event in viewModel.events) {
-                        when (event) {
-                            is SettingsViewModel.Event.OpenLogin -> {
-                                onClickLogin()
-                            }
-
-                            is SettingsViewModel.Event.OpenReply -> {
-                                navController.navigate(Route.Reply(event.itemId))
-                            }
-                        }
-                    }
-                }
-            }
-            val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
-            if (uiState.username.string.isNotBlank()) {
-                FavoriteStoriesListPane(
-                    username = uiState.username,
-                    onClickItem = onClickItem,
-                    onClickReply = viewModel::onClickReply,
-                    onClickUser = onClickUser,
-                    onClickUrl = onClickUrl,
-                    onClickLogin = onClickLogin,
-                    contentPadding = WindowInsets.safeDrawing
-                        .only(listContentInsetSides())
-                        .asPaddingValues(),
-                )
-            } else {
+    NavDisplay(
+        backStack = backStack,
+        onBack = onNavigateUp,
+        entryProvider = entryProvider {
+            entry<Route.BottomNav.Stories> {
+                val viewModel: HomeViewModel = metroViewModel()
+                val lifecycleOwner = LocalLifecycleOwner.current
                 LaunchedEffect(Unit) {
-                    onClickLogin()
-                }
-            }
-        }
-        composable<Route.BottomNav.Settings> {
-            val viewModel: SettingsViewModel = metroViewModel()
-            val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
-            SettingsListPane(
-                username = uiState.username,
-                onClickLogin = onClickLogin,
-                onClickLogout = onClickLogout,
-                onClickAppearance = onClickAppearance,
-                onClickNotifications = onClickNotifications,
-                onClickHelp = onClickHelp,
-                onClickTermsOfService = onClickTermsOfService,
-                onClickUserGuidelines = onClickUserGuidelines,
-                onClickSendFeedback = onClickSendFeedback,
-                onClickAbout = onClickAbout,
-            )
-        }
-        composable<Route.Story>(
-            typeMap = mapOf(typeOf<ItemId>() to NavType.ItemIdNavType),
-        ) { navBackStackEntry ->
-            val itemId = navBackStackEntry.toRoute<Route.Story>().itemId
-            val viewModel: SettingsViewModel = metroViewModel()
-            val lifecycleOwner = LocalLifecycleOwner.current
-            LaunchedEffect(Unit) {
-                lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    for (event in viewModel.events) {
-                        when (event) {
-                            is SettingsViewModel.Event.OpenLogin -> {
-                                onClickLogin()
-                            }
+                    lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                        for (event in viewModel.events) {
+                            when (event) {
+                                is HomeViewModel.Event.OpenLogin -> {
+                                    onClickLogin()
+                                }
 
-                            is SettingsViewModel.Event.OpenReply -> {
-                                navController.navigate(Route.Reply(event.itemId))
+                                is HomeViewModel.Event.OpenReply -> {
+                                    onNavigate(Route.Reply(event.itemId))
+                                }
+
+                                is HomeViewModel.Event.OpenUser -> {
+                                    onNavigate(Route.User(event.username))
+                                }
+
+                                is HomeViewModel.Event.OpenStory -> {
+                                    onNavigate(Route.Story(event.itemId))
+                                }
                             }
                         }
                     }
                 }
+                StoriesPane(
+                    onClickLogin = onClickLogin,
+                    onClickUser = viewModel::onClickUser,
+                    onClickStory = viewModel::onClickStory,
+                    onClickReply = viewModel::onClickReply,
+                    onClickUrl = onClickUrl,
+                )
             }
-            ItemDetailPane(
-                itemId = itemId,
-                onClickUrl = onClickUrl,
-                onClickUser = onClickUser,
-                onClickReply = viewModel::onClickReply,
-                onClickLogin = onClickLogin,
-            )
-        }
-        composable<Route.User>(
-            typeMap = mapOf(typeOf<Username>() to NavType.UsernameNavType),
-        ) { navBackStackEntry ->
-            Text(navBackStackEntry.toRoute<Route.User>().username.string)
-        }
-        dialog<Route.Reply>(
-            typeMap = mapOf(typeOf<ItemId>() to NavType.ItemIdNavType),
-        ) { navBackStackEntry ->
-            CommentDialog(
-                navBackStackEntry.toRoute<Route.Reply>().parentId,
-                onDismiss = navController::navigateUp,
-                modifier = Modifier.padding(WindowInsets.safeDrawing.asPaddingValues()),
-            )
-        }
-        composable<Route.Settings.Appearance> {
-            AppearanceDetailPane()
-        }
-        composable<Route.Settings.Help> {
-            HelpPane()
-        }
-        composable<Route.Settings.About> {
-            AboutPane()
-        }
-        composable<Route.Settings.SendFeedback> {
-            SendFeedbackPane()
-        }
-        composable<Route.Settings.Notifications> {
-            NotificationsPane()
-        }
-        composable<Route.Settings.TermsOfService> {
-            TermsOfServicePane()
-        }
-        composable<Route.Settings.UserGuidelines> {
-            UserGuidelinesPane()
-        }
-    }
+            entry<Route.BottomNav.Favorites> {
+                val viewModel: SettingsViewModel = metroViewModel()
+                val lifecycleOwner = LocalLifecycleOwner.current
+                LaunchedEffect(Unit) {
+                    lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                        for (event in viewModel.events) {
+                            when (event) {
+                                is SettingsViewModel.Event.OpenLogin -> {
+                                    onClickLogin()
+                                }
+
+                                is SettingsViewModel.Event.OpenReply -> {
+                                    onNavigate(Route.Reply(event.itemId))
+                                }
+                            }
+                        }
+                    }
+                }
+                val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+                if (uiState.username.string.isNotBlank()) {
+                    FavoriteStoriesListPane(
+                        username = uiState.username,
+                        onClickItem = onClickItem,
+                        onClickReply = viewModel::onClickReply,
+                        onClickUser = onClickUser,
+                        onClickUrl = onClickUrl,
+                        onClickLogin = onClickLogin,
+                        contentPadding = WindowInsets.safeDrawing
+                            .only(listContentInsetSides())
+                            .asPaddingValues(),
+                    )
+                } else {
+                    LaunchedEffect(Unit) {
+                        onClickLogin()
+                    }
+                }
+            }
+            entry<Route.BottomNav.Settings> {
+                val viewModel: SettingsViewModel = metroViewModel()
+                val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+                SettingsListPane(
+                    username = uiState.username,
+                    onClickLogin = onClickLogin,
+                    onClickLogout = onClickLogout,
+                    onClickAppearance = onClickAppearance,
+                    onClickNotifications = onClickNotifications,
+                    onClickHelp = onClickHelp,
+                    onClickTermsOfService = onClickTermsOfService,
+                    onClickUserGuidelines = onClickUserGuidelines,
+                    onClickSendFeedback = onClickSendFeedback,
+                    onClickAbout = onClickAbout,
+                )
+            }
+            entry<Route.Story> { key ->
+                val itemId = key.itemId
+                val viewModel: SettingsViewModel = metroViewModel()
+                val lifecycleOwner = LocalLifecycleOwner.current
+                LaunchedEffect(Unit) {
+                    lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                        for (event in viewModel.events) {
+                            when (event) {
+                                is SettingsViewModel.Event.OpenLogin -> {
+                                    onClickLogin()
+                                }
+
+                                is SettingsViewModel.Event.OpenReply -> {
+                                    onNavigate(Route.Reply(event.itemId))
+                                }
+                            }
+                        }
+                    }
+                }
+                ItemDetailPane(
+                    itemId = itemId,
+                    onClickUrl = onClickUrl,
+                    onClickUser = onClickUser,
+                    onClickReply = viewModel::onClickReply,
+                    onClickLogin = onClickLogin,
+                )
+            }
+            entry<Route.User> { key ->
+                Text(key.username.string)
+            }
+            entry<Route.Reply> { navBackStackEntry ->
+                CommentDialog(
+                    navBackStackEntry.parentId,
+                    onDismiss = onNavigateUp,
+                    modifier = Modifier.padding(WindowInsets.safeDrawing.asPaddingValues()),
+                )
+            }
+            entry<Route.Settings.Appearance> {
+                AppearanceDetailPane()
+            }
+            entry<Route.Settings.Help> {
+                HelpPane()
+            }
+            entry<Route.Settings.About> {
+                AboutPane()
+            }
+            entry<Route.Settings.SendFeedback> {
+                SendFeedbackPane()
+            }
+            entry<Route.Settings.Notifications> {
+                NotificationsPane()
+            }
+            entry<Route.Settings.TermsOfService> {
+                TermsOfServicePane()
+            }
+            entry<Route.Settings.UserGuidelines> {
+                UserGuidelinesPane()
+            }
+        },
+        modifier = modifier.fillMaxSize(),
+    )
 }

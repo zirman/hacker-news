@@ -7,24 +7,23 @@ import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.retain.retain
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.saveable.rememberSerializable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navOptions
+import androidx.savedstate.compose.serialization.serializers.SnapshotStateListSerializer
 import com.monoid.hackernews.common.core.metro.LocalViewModelProviderFactory
 import com.monoid.hackernews.common.domain.navigation.Route
 import com.monoid.hackernews.common.view.Scrim
@@ -33,7 +32,7 @@ import com.monoid.hackernews.common.view.home.icon
 import com.monoid.hackernews.common.view.home.label
 import com.monoid.hackernews.common.view.login.LoginDialog
 import com.monoid.hackernews.common.view.logout.LogoutDialog
-import com.monoid.hackernews.common.view.main.MainNavHost
+import com.monoid.hackernews.common.view.main.MainNavDisplay
 import com.monoid.hackernews.common.view.theme.AppTheme
 import dev.zacsweers.metro.createGraph
 import io.ktor.http.Url
@@ -48,30 +47,44 @@ fun IosApp(onClickUrl: (Url) -> Unit) {
                 Box(contentAlignment = Alignment.Center) {
                     var showLoginDialog by rememberSaveable { mutableStateOf(false) }
                     var showLogoutDialog by rememberSaveable { mutableStateOf(false) }
-                    val navController = rememberNavController()
-                    val startDestination = Route.BottomNav.Stories
-                    var selectedDestination by rememberSaveable { mutableIntStateOf(startDestination.ordinal) }
+                    val backStacks: SnapshotStateList<List<Route>> =
+                        rememberSerializable(serializer = SnapshotStateListSerializer()) {
+                            mutableStateListOf(
+                                listOf(Route.BottomNav.Stories),
+                            )
+                        }
+
+                    fun navigateTo(route: Route) {
+                        backStacks[backStacks.size - 1] = backStacks.last() + route
+                    }
+
+                    fun navigateUp() {
+                        val backStack = backStacks.last()
+                        if (backStack.size <= 1) {
+                            backStacks.removeLast()
+                        } else {
+                            backStacks[backStacks.size - 1] = backStack.dropLast(1)
+                        }
+                    }
                     Scaffold(
                         bottomBar = {
-                            NavigationBar(windowInsets = NavigationBarDefaults.windowInsets) {
-                                Route.BottomNav.entries.forEachIndexed { index, destination ->
+                            NavigationBar {
+                                Route.BottomNav.entries.forEach { destination ->
                                     NavigationBarItem(
-                                        selected = selectedDestination == index,
+                                        selected = destination == backStacks.last().first(),
                                         onClick = {
-                                            navController.navigate(
-                                                route = destination,
-                                                navOptions = navOptions {
-                                                    // popUpTo(destination) {
-                                                    //     saveState = true
-                                                    // }
-                                                    // launchSingleTop = true
-                                                },
-                                            )
-                                            selectedDestination = index
+                                            val i = backStacks
+                                                .indexOfLast { it.firstOrNull() == destination }
+                                            val stack = if (i != -1) {
+                                                backStacks.removeAt(i)
+                                            } else {
+                                                listOf(destination)
+                                            }
+                                            backStacks.add(stack)
                                         },
                                         icon = {
                                             Icon(
-                                                destination.icon,
+                                                imageVector = destination.icon,
                                                 contentDescription = stringResource(destination.contentDescription),
                                             )
                                         },
@@ -82,25 +95,29 @@ fun IosApp(onClickUrl: (Url) -> Unit) {
                         }
                     ) { padding ->
                         val dir = LocalLayoutDirection.current
-                        MainNavHost(
+                        MainNavDisplay(
+                            backStack = backStacks.last(),
+                            onNavigate = ::navigateTo,
+                            onNavigateUp = ::navigateUp,
                             onClickLogin = {
                                 showLoginDialog = true
                             },
                             onClickLogout = {
                                 showLogoutDialog = true
                             },
-                            onClickItem = { navController.nav(Route.Story(it.id)) },
-                            onClickReply = { navController.nav(Route.Reply(it)) },
-                            onClickUser = { navController.nav(Route.User(it)) },
+                            onClickItem = {
+                                navigateTo(Route.Story(it.id))
+                            },
+                            onClickReply = { navigateTo(Route.Reply(it)) },
+                            onClickUser = { navigateTo(Route.User(it)) },
                             onClickUrl = onClickUrl,
-                            onClickAppearance = { navController.nav(Route.Settings.Appearance) },
-                            onClickNotifications = { navController.nav(Route.Settings.Notifications) },
-                            onClickHelp = { navController.nav(Route.Settings.Help) },
-                            onClickTermsOfService = { navController.nav(Route.Settings.TermsOfService) },
-                            onClickUserGuidelines = { navController.nav(Route.Settings.UserGuidelines) },
-                            onClickSendFeedback = { navController.nav(Route.Settings.SendFeedback) },
-                            onClickAbout = { navController.nav(Route.Settings.About) },
-                            navController = navController,
+                            onClickAppearance = { navigateTo(Route.Settings.Appearance) },
+                            onClickNotifications = { navigateTo(Route.Settings.Notifications) },
+                            onClickHelp = { navigateTo(Route.Settings.Help) },
+                            onClickTermsOfService = { navigateTo(Route.Settings.TermsOfService) },
+                            onClickUserGuidelines = { navigateTo(Route.Settings.UserGuidelines) },
+                            onClickSendFeedback = { navigateTo(Route.Settings.SendFeedback) },
+                            onClickAbout = { navigateTo(Route.Settings.About) },
                             modifier = Modifier.padding(
                                 PaddingValues(
                                     start = padding.calculateStartPadding(dir),
@@ -128,17 +145,4 @@ fun IosApp(onClickUrl: (Url) -> Unit) {
             }
         }
     }
-}
-
-fun <T : Any> NavHostController.nav(route: T) {
-    navigate(
-        route = route,
-        navOptions = navOptions {
-            popUpTo(route) {
-                saveState = true
-            }
-            launchSingleTop = true
-            restoreState = true
-        },
-    )
 }

@@ -24,27 +24,22 @@ enum class Story {
     Favorite,
 }
 
-object Route {
-    sealed interface BottomNav {
+@Serializable
+sealed interface Route {
+    @Serializable
+    sealed interface BottomNav : Route {
         @Serializable
         @SerialName("Stories")
-        data object Stories : BottomNav {
-            override val route: String get() = "Stories"
-        }
+        data object Stories : BottomNav
 
         @Serializable
         @SerialName("Favorites")
-        data object Favorites : BottomNav {
-            override val route: String get() = "Favorites"
-        }
+        data object Favorites : BottomNav
 
         @Serializable
         @SerialName("Settings")
-        data object Settings : BottomNav {
-            override val route: String get() = "Settings"
-        }
+        data object Settings : BottomNav
 
-        val route: String
         val ordinal: Int get() = entries.indexOf(this)
 
         companion object {
@@ -55,48 +50,49 @@ object Route {
 
     @Serializable
     @SerialName("Home")
-    data object Home
+    data object Home : Route
 
     @Serializable
     @SerialName("User")
-    data class User(val username: Username)
+    data class User(val username: Username) : Route
 
     @Serializable
     @SerialName("Story")
-    data class Story(val itemId: ItemId)
+    data class Story(val itemId: ItemId) : Route
 
     @Serializable
     @SerialName("Reply")
-    data class Reply(val parentId: ItemId)
+    data class Reply(val parentId: ItemId) : Route
 
-    object Settings {
+    @Serializable
+    sealed interface Settings : Route {
         @Serializable
         @SerialName("Appearance")
-        data object Appearance
+        data object Appearance : Settings
 
         @Serializable
         @SerialName("Notifications")
-        data object Notifications
+        data object Notifications : Settings
 
         @Serializable
         @SerialName("Help")
-        data object Help
+        data object Help : Settings
 
         @Serializable
         @SerialName("TermsOfService")
-        data object TermsOfService
+        data object TermsOfService : Settings
 
         @Serializable
         @SerialName("UserGuidelines")
-        data object UserGuidelines
+        data object UserGuidelines : Settings
 
         @Serializable
         @SerialName("SendFeedback")
-        data object SendFeedback
+        data object SendFeedback : Settings
 
         @Serializable
         @SerialName("About")
-        data object About
+        data object About : Settings
     }
 }
 
