@@ -30,15 +30,23 @@ sealed interface Route {
     sealed interface BottomNav : Route {
         @Serializable
         @SerialName("Stories")
-        data object Stories : BottomNav
+        data object Stories : BottomNav {
+            override val instance: BottomNav get() = Stories
+        }
 
         @Serializable
         @SerialName("Favorites")
-        data object Favorites : BottomNav
+        data object Favorites : BottomNav {
+            override val instance: BottomNav get() = Favorites
+        }
 
         @Serializable
         @SerialName("Settings")
-        data object Settings : BottomNav
+        data object Settings : BottomNav {
+            override val instance: BottomNav get() = Settings
+        }
+
+        val instance: BottomNav
 
         val ordinal: Int get() = entries.indexOf(this)
 

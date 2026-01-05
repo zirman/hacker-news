@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalNativeApi::class)
+
 package com.monoid.hackernews
 
 import androidx.compose.foundation.layout.Box
@@ -37,6 +39,7 @@ import com.monoid.hackernews.common.view.theme.AppTheme
 import dev.zacsweers.metro.createGraph
 import io.ktor.http.Url
 import org.jetbrains.compose.resources.stringResource
+import kotlin.experimental.ExperimentalNativeApi
 
 @Composable
 fun IosApp(onClickUrl: (Url) -> Unit) {
@@ -47,40 +50,60 @@ fun IosApp(onClickUrl: (Url) -> Unit) {
                 Box(contentAlignment = Alignment.Center) {
                     var showLoginDialog by rememberSaveable { mutableStateOf(false) }
                     var showLogoutDialog by rememberSaveable { mutableStateOf(false) }
-                    val backStacks: SnapshotStateList<List<Route>> =
+                    val backStack: SnapshotStateList<Route> =
                         rememberSerializable(serializer = SnapshotStateListSerializer()) {
-                            mutableStateListOf(
-                                listOf(Route.BottomNav.Stories),
-                            )
+                            mutableStateListOf(Route.BottomNav.Stories)
                         }
 
                     fun navigateTo(route: Route) {
-                        backStacks[backStacks.size - 1] = backStacks.last() + route
+                        backStack.add(route)
                     }
 
                     fun navigateUp() {
-                        val backStack = backStacks.last()
-                        if (backStack.size <= 1) {
-                            backStacks.removeLast()
-                        } else {
-                            backStacks[backStacks.size - 1] = backStack.dropLast(1)
+                        backStack.removeLastOrNull()
+                    }
+
+                    fun currentBottomNav(): Route.BottomNav? {
+                        for (i in backStack.indices.reversed()) {
+                            (backStack[i] as? Route.BottomNav)?.run {
+                                return this
+                            }
                         }
+                        return null
+                    }
+
+                    fun <N : Route.BottomNav> currentStack(bottomNav: N): IntRange {
+                        var last = backStack.indices.last
+                        for (i in backStack.indices.reversed()) {
+                            if (bottomNav::class.isInstance(backStack[i])) {
+                                return i..last
+                            }
+                            if (backStack[i] is Route.BottomNav) {
+                                last = i - 1
+                            }
+                        }
+                        backStack.add(bottomNav)
+                        val i = backStack.indices.last
+                        return i..i
                     }
                     Scaffold(
                         bottomBar = {
                             NavigationBar {
+                                val currentBottomNavDestination = currentBottomNav()
                                 Route.BottomNav.entries.forEach { destination ->
                                     NavigationBarItem(
-                                        selected = destination == backStacks.last().first(),
+                                        selected = destination == currentBottomNavDestination,
                                         onClick = {
-                                            val i = backStacks
-                                                .indexOfLast { it.firstOrNull() == destination }
-                                            val stack = if (i != -1) {
-                                                backStacks.removeAt(i)
-                                            } else {
-                                                listOf(destination)
+                                            val r = currentStack(destination.instance)
+                                            val v = backStack.slice(r)
+                                            backStack.removeRange(
+                                                fromIndex = r.first,
+                                                toIndex = r.last + 1,
+                                            )
+                                            backStack.addAll(v)
+                                            if (backStack.first() != Route.BottomNav.Stories) {
+                                                backStack.add(0, Route.BottomNav.Stories)
                                             }
-                                            backStacks.add(stack)
                                         },
                                         icon = {
                                             Icon(
@@ -96,7 +119,7 @@ fun IosApp(onClickUrl: (Url) -> Unit) {
                     ) { padding ->
                         val dir = LocalLayoutDirection.current
                         MainNavDisplay(
-                            backStack = backStacks.last(),
+                            backStack = backStack,
                             onNavigate = ::navigateTo,
                             onNavigateUp = ::navigateUp,
                             onClickLogin = {
