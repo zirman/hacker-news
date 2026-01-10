@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 
-package com.monoid.hackernews.common.view.stories
+package com.monoid.hackernews.common.view.fab
 
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi

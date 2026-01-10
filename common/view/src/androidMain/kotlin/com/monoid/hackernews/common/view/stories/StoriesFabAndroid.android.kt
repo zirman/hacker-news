@@ -23,6 +23,7 @@ import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
+import com.monoid.hackernews.common.view.fab.FabAction
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

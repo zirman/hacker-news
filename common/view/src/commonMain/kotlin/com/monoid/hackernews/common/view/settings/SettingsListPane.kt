@@ -33,7 +33,7 @@ import com.monoid.hackernews.common.view.login
 import com.monoid.hackernews.common.view.logout_format
 import com.monoid.hackernews.common.view.notifications
 import com.monoid.hackernews.common.view.send_feedback
-import com.monoid.hackernews.common.view.stories.detailContentInsetSides
+import com.monoid.hackernews.common.view.fab.detailContentInsetSides
 import com.monoid.hackernews.common.view.terms_of_service
 import com.monoid.hackernews.common.view.user_guidelines
 import org.jetbrains.compose.resources.stringResource

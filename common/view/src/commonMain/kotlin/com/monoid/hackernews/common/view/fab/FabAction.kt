@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view.stories
+package com.monoid.hackernews.common.view.fab
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -32,6 +32,9 @@ import com.monoid.hackernews.common.view.jobs
 import com.monoid.hackernews.common.view.new
 import com.monoid.hackernews.common.view.platform.PlatformLoadingIndicator
 import com.monoid.hackernews.common.view.show
+import com.monoid.hackernews.common.view.stories.StoriesViewModel
+import com.monoid.hackernews.common.view.stories.StoryOrdering
+import com.monoid.hackernews.common.view.stories.displayMessage
 import com.monoid.hackernews.common.view.trending
 import io.ktor.http.Url
 import org.jetbrains.compose.resources.StringResource
@@ -60,7 +63,7 @@ enum class FabAction(
             val viewModel: StoriesViewModel = metroViewModel(
                 // we set a key so a unique viewmodel is created for each story ordering
                 key = fabAction.storyOrdering.toString(),
-                extras = StoriesViewModel.extras(fabAction.storyOrdering),
+                extras = StoriesViewModel.Companion.extras(fabAction.storyOrdering),
             )
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             val lifecycleOwner = LocalLifecycleOwner.current
@@ -125,7 +128,7 @@ enum class FabAction(
             val viewModel: StoriesViewModel = metroViewModel(
                 // we set a key so a unique viewmodel is created for each story ordering
                 key = fabAction.storyOrdering.toString(),
-                extras = StoriesViewModel.extras(fabAction.storyOrdering),
+                extras = StoriesViewModel.Companion.extras(fabAction.storyOrdering),
             )
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             val lifecycleOwner = LocalLifecycleOwner.current
@@ -189,7 +192,7 @@ enum class FabAction(
             val viewModel: StoriesViewModel = metroViewModel(
                 // we set a key so a unique viewmodel is created for each story ordering
                 key = fabAction.storyOrdering.toString(),
-                extras = StoriesViewModel.extras(fabAction.storyOrdering),
+                extras = StoriesViewModel.Companion.extras(fabAction.storyOrdering),
             )
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             val lifecycleOwner = LocalLifecycleOwner.current
@@ -253,7 +256,7 @@ enum class FabAction(
             val viewModel: StoriesViewModel = metroViewModel(
                 // we set a key so a unique viewmodel is created for each story ordering
                 key = fabAction.storyOrdering.toString(),
-                extras = StoriesViewModel.extras(fabAction.storyOrdering),
+                extras = StoriesViewModel.Companion.extras(fabAction.storyOrdering),
             )
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             val lifecycleOwner = LocalLifecycleOwner.current
@@ -317,7 +320,7 @@ enum class FabAction(
             val viewModel: StoriesViewModel = metroViewModel(
                 // we set a key so a unique viewmodel is created for each story ordering
                 key = fabAction.storyOrdering.toString(),
-                extras = StoriesViewModel.extras(fabAction.storyOrdering),
+                extras = StoriesViewModel.Companion.extras(fabAction.storyOrdering),
             )
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             val lifecycleOwner = LocalLifecycleOwner.current
@@ -381,7 +384,7 @@ enum class FabAction(
             val viewModel: StoriesViewModel = metroViewModel(
                 // we set a key so a unique viewmodel is created for each story ordering
                 key = fabAction.storyOrdering.toString(),
-                extras = StoriesViewModel.extras(fabAction.storyOrdering),
+                extras = StoriesViewModel.Companion.extras(fabAction.storyOrdering),
             )
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             val lifecycleOwner = LocalLifecycleOwner.current

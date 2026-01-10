@@ -1,5 +1,8 @@
 package com.monoid.hackernews.common.view.stories
 
+import com.monoid.hackernews.common.view.fab.ColorSchemeKeyTokens
+import com.monoid.hackernews.common.view.fab.ElevationTokens
+
 internal object FabPrimaryContainerTokens {
     val ContainerColor = ColorSchemeKeyTokens.PrimaryContainer
     val ContainerElevation = ElevationTokens.Level3

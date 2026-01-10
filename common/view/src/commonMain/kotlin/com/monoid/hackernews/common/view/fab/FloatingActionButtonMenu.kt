@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view.stories
+package com.monoid.hackernews.common.view.fab
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
@@ -68,7 +68,8 @@ import androidx.compose.ui.util.fastForEachIndexed
 import androidx.compose.ui.util.fastMap
 import androidx.compose.ui.util.fastMaxBy
 import androidx.compose.ui.util.fastSumBy
-import com.monoid.hackernews.common.view.stories.ToggleFloatingActionButtonDefaults.animateIcon
+import com.monoid.hackernews.common.view.fab.ToggleFloatingActionButtonDefaults.animateIcon
+import com.monoid.hackernews.common.view.stories.FabPrimaryContainerTokens
 import kotlinx.coroutines.launch
 import kotlin.math.hypot
 import kotlin.math.roundToInt

@@ -16,6 +16,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Username
+import com.monoid.hackernews.common.view.fab.listContentInsetSides
 import io.ktor.http.Url
 import kotlinx.coroutines.launch
 

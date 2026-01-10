@@ -18,7 +18,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.core.metro.metroViewModel
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.notifications
-import com.monoid.hackernews.common.view.stories.detailContentInsetSides
+import com.monoid.hackernews.common.view.fab.detailContentInsetSides
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

@@ -33,7 +33,7 @@ import com.monoid.hackernews.common.view.settings.SettingsViewModel
 import com.monoid.hackernews.common.view.settings.TermsOfServicePane
 import com.monoid.hackernews.common.view.settings.UserGuidelinesPane
 import com.monoid.hackernews.common.view.stories.StoriesPane
-import com.monoid.hackernews.common.view.stories.listContentInsetSides
+import com.monoid.hackernews.common.view.fab.listContentInsetSides
 import io.ktor.http.Url
 
 @Composable

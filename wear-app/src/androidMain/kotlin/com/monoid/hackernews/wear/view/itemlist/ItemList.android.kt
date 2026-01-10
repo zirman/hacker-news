@@ -19,7 +19,7 @@ import androidx.wear.compose.foundation.lazy.ScalingLazyListState
 import androidx.wear.compose.material.ListHeader
 import androidx.wear.compose.material.Text
 import com.monoid.hackernews.common.data.api.ItemId
-import com.monoid.hackernews.common.view.stories.detailContentInsetSides
+import com.monoid.hackernews.common.view.fab.detailContentInsetSides
 import kotlinx.coroutines.launch
 
 @Composable

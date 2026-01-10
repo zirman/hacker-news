@@ -27,7 +27,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.ItemType
 import com.monoid.hackernews.common.data.model.Username
-import com.monoid.hackernews.common.view.stories.detailContentInsetSides
+import com.monoid.hackernews.common.view.fab.detailContentInsetSides
 import io.ktor.http.Url
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds

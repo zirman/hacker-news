@@ -14,6 +14,7 @@ import com.monoid.hackernews.common.core.metro.metroViewModel
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.Username
+import com.monoid.hackernews.common.view.fab.listContentInsetSides
 import io.ktor.http.Url
 
 @Composable
