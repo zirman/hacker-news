@@ -112,4 +112,5 @@ Saludos cordiales,
     <string name="system">Sistema</string>
     <string name="light_mode">Modo Claro</string>
     <string name="dark_mode">Modo Oscuro</string>
+    <string name="an_error_occurred_format">Se produjo un error: %1$s</string>
 </resources>

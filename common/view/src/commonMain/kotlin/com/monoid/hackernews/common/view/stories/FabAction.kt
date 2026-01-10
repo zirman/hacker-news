@@ -24,6 +24,7 @@ import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.view.Res
+import com.monoid.hackernews.common.view.an_error_occurred_format
 import com.monoid.hackernews.common.view.ask
 import com.monoid.hackernews.common.view.hot
 import com.monoid.hackernews.common.view.itemlist.ItemsColumn
@@ -34,6 +35,7 @@ import com.monoid.hackernews.common.view.show
 import com.monoid.hackernews.common.view.trending
 import io.ktor.http.Url
 import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.getString
 
 enum class FabAction(
     val icon: ImageVector,
@@ -67,7 +69,12 @@ enum class FabAction(
                     for (event in viewModel.events) {
                         when (event) {
                             is StoriesViewModel.Event.Error -> {
-                                // TODO
+                                displayMessage(
+                                    getString(
+                                        Res.string.an_error_occurred_format,
+                                        event.message.orEmpty()
+                                    )
+                                )
                             }
 
                             is StoriesViewModel.Event.OpenLogin -> {
@@ -127,7 +134,12 @@ enum class FabAction(
                     for (event in viewModel.events) {
                         when (event) {
                             is StoriesViewModel.Event.Error -> {
-                                // TODO
+                                displayMessage(
+                                    getString(
+                                        Res.string.an_error_occurred_format,
+                                        event.message.orEmpty(),
+                                    ),
+                                )
                             }
 
                             is StoriesViewModel.Event.OpenLogin -> {
@@ -186,7 +198,12 @@ enum class FabAction(
                     for (event in viewModel.events) {
                         when (event) {
                             is StoriesViewModel.Event.Error -> {
-                                // TODO
+                                displayMessage(
+                                    getString(
+                                        Res.string.an_error_occurred_format,
+                                        event.message.orEmpty(),
+                                    ),
+                                )
                             }
 
                             is StoriesViewModel.Event.OpenLogin -> {
@@ -245,7 +262,12 @@ enum class FabAction(
                     for (event in viewModel.events) {
                         when (event) {
                             is StoriesViewModel.Event.Error -> {
-                                // TODO
+                                displayMessage(
+                                    getString(
+                                        Res.string.an_error_occurred_format,
+                                        event.message.orEmpty(),
+                                    ),
+                                )
                             }
 
                             is StoriesViewModel.Event.OpenLogin -> {
@@ -304,7 +326,12 @@ enum class FabAction(
                     for (event in viewModel.events) {
                         when (event) {
                             is StoriesViewModel.Event.Error -> {
-                                // TODO
+                                displayMessage(
+                                    getString(
+                                        Res.string.an_error_occurred_format,
+                                        event.message.orEmpty(),
+                                    ),
+                                )
                             }
 
                             is StoriesViewModel.Event.OpenLogin -> {
@@ -363,7 +390,12 @@ enum class FabAction(
                     for (event in viewModel.events) {
                         when (event) {
                             is StoriesViewModel.Event.Error -> {
-                                // TODO
+                                displayMessage(
+                                    getString(
+                                        Res.string.an_error_occurred_format,
+                                        event.message.orEmpty(),
+                                    ),
+                                )
                             }
 
                             is StoriesViewModel.Event.OpenLogin -> {

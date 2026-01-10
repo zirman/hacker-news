@@ -26,7 +26,7 @@ import androidx.compose.ui.semantics.semantics
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun StoriesFab(
+fun StoriesFabAndroid(
     fabAction: FabAction,
     expanded: Boolean,
     onClick: (FabAction) -> Unit,

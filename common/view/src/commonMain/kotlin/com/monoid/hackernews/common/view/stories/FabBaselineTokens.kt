@@ -1,7 +1,6 @@
 package com.monoid.hackernews.common.view.stories
 
 import androidx.compose.ui.unit.dp
-import com.monoid.hackernews.common.view.stories.ShapeKeyTokens
 
 internal object FabBaselineTokens {
     val ContainerHeight = 56.0.dp

@@ -17,13 +17,11 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.monoid.hackernews.common.core.metro.metroViewModel
-import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.domain.navigation.Route
 import com.monoid.hackernews.common.view.comment.CommentDialog
 import com.monoid.hackernews.common.view.favorites.FavoriteStoriesListPane
-import com.monoid.hackernews.common.view.home.StoriesPane
 import com.monoid.hackernews.common.view.itemdetail.ItemDetailPane
 import com.monoid.hackernews.common.view.settings.AboutPane
 import com.monoid.hackernews.common.view.settings.AppearanceDetailPane
@@ -34,6 +32,7 @@ import com.monoid.hackernews.common.view.settings.SettingsListPane
 import com.monoid.hackernews.common.view.settings.SettingsViewModel
 import com.monoid.hackernews.common.view.settings.TermsOfServicePane
 import com.monoid.hackernews.common.view.settings.UserGuidelinesPane
+import com.monoid.hackernews.common.view.stories.StoriesPane
 import com.monoid.hackernews.common.view.stories.listContentInsetSides
 import io.ktor.http.Url
 
@@ -45,7 +44,7 @@ fun MainNavDisplay(
     onClickLogin: () -> Unit,
     onClickLogout: () -> Unit,
     onClickItem: (Item) -> Unit,
-    onClickReply: (ItemId) -> Unit,
+//    onClickReply: (ItemId) -> Unit,
     onClickUser: (Username) -> Unit,
     onClickUrl: (Url) -> Unit,
     onClickAppearance: () -> Unit,
@@ -207,6 +206,13 @@ fun MainNavDisplay(
                 UserGuidelinesPane()
             }
         },
+//        entryDecorators = listOf(
+            // Add the default decorators for managing scenes and saving state
+//            rememberSaveableStateHolderNavEntryDecorator(),
+//            // Then add the view model store decorator
+            //rememberSaveableStateHolderNavEntryDecorator
+//            rememberViewModelStoreNavEntryDecorator(),
+//        ),
         modifier = modifier.fillMaxSize(),
     )
 }

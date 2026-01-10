@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view.home
+package com.monoid.hackernews.common.view.stories
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -14,10 +14,6 @@ import com.monoid.hackernews.common.core.metro.metroViewModel
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.Username
-import com.monoid.hackernews.common.view.stories.StoriesListPane
-import com.monoid.hackernews.common.view.stories.StoriesViewModel
-import com.monoid.hackernews.common.view.stories.StoryOrdering
-import com.monoid.hackernews.common.view.stories.listContentInsetSides
 import io.ktor.http.Url
 
 @Composable

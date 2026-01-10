@@ -112,6 +112,7 @@ agree to follow the <a href="https://news.ycombinator.com/newsguidelines.html">u
     <string name="system">System</string>
     <string name="light_mode">Light Mode</string>
     <string name="dark_mode">Dark Mode</string>
+    <string name="an_error_occurred_format">An error occurred: %1$s</string>
     <!-- https://news.ycombinator.com/newsfaq.html -->
     <string name="faq_content"><![CDATA[
 <h1>Hacker News FAQ<br></h1>
