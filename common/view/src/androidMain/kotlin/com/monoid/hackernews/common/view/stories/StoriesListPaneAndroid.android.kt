@@ -19,7 +19,7 @@ import io.ktor.http.Url
 
 @Suppress("ComposeUnstableReceiver")
 @Composable
-fun StoriesListPane(
+fun StoriesListPaneAndroid(
     onClickItem: (Item) -> Unit,
     onClickReply: (ItemId) -> Unit,
     onClickUser: (Username) -> Unit,
