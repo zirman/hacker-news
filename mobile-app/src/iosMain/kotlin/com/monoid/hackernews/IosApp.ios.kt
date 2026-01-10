@@ -39,6 +39,8 @@ import com.monoid.hackernews.common.view.logout.LogoutDialog
 import com.monoid.hackernews.common.view.main.MainNavDisplay
 import com.monoid.hackernews.common.view.navigateTo
 import com.monoid.hackernews.common.view.navigateUp
+import com.monoid.hackernews.common.view.stories.LocalPlatformContext
+import com.monoid.hackernews.common.view.stories.PlatformContext
 import com.monoid.hackernews.common.view.theme.AppTheme
 import dev.zacsweers.metro.createGraph
 import io.ktor.http.Url
@@ -48,7 +50,10 @@ import kotlin.experimental.ExperimentalNativeApi
 @Composable
 fun IosApp(onClickUrl: (Url) -> Unit) {
     val appGraph = retain { createGraph<IosAppGraph>() }
-    CompositionLocalProvider(LocalViewModelProviderFactory provides appGraph.iosViewModelFactory) {
+    CompositionLocalProvider(
+        LocalViewModelProviderFactory provides appGraph.iosViewModelFactory,
+        LocalPlatformContext provides PlatformContext(Unit),
+    ) {
         AppTheme {
             Scrim {
                 Box(contentAlignment = Alignment.Center) {

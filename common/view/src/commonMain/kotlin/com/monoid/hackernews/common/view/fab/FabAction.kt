@@ -32,6 +32,7 @@ import com.monoid.hackernews.common.view.jobs
 import com.monoid.hackernews.common.view.new
 import com.monoid.hackernews.common.view.platform.PlatformLoadingIndicator
 import com.monoid.hackernews.common.view.show
+import com.monoid.hackernews.common.view.stories.LocalPlatformContext
 import com.monoid.hackernews.common.view.stories.StoriesViewModel
 import com.monoid.hackernews.common.view.stories.StoryOrdering
 import com.monoid.hackernews.common.view.stories.displayMessage
@@ -63,16 +64,17 @@ enum class FabAction(
             val viewModel: StoriesViewModel = metroViewModel(
                 // we set a key so a unique viewmodel is created for each story ordering
                 key = fabAction.storyOrdering.toString(),
-                extras = StoriesViewModel.Companion.extras(fabAction.storyOrdering),
+                extras = StoriesViewModel.extras(fabAction.storyOrdering),
             )
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             val lifecycleOwner = LocalLifecycleOwner.current
+            val platformContext = LocalPlatformContext.current
             LaunchedEffect(Unit) {
                 lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     for (event in viewModel.events) {
                         when (event) {
                             is StoriesViewModel.Event.Error -> {
-                                displayMessage(
+                                platformContext.displayMessage(
                                     getString(
                                         Res.string.an_error_occurred_format,
                                         event.message.orEmpty()
@@ -128,16 +130,17 @@ enum class FabAction(
             val viewModel: StoriesViewModel = metroViewModel(
                 // we set a key so a unique viewmodel is created for each story ordering
                 key = fabAction.storyOrdering.toString(),
-                extras = StoriesViewModel.Companion.extras(fabAction.storyOrdering),
+                extras = StoriesViewModel.extras(fabAction.storyOrdering),
             )
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             val lifecycleOwner = LocalLifecycleOwner.current
+            val platformContext = LocalPlatformContext.current
             LaunchedEffect(Unit) {
                 lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     for (event in viewModel.events) {
                         when (event) {
                             is StoriesViewModel.Event.Error -> {
-                                displayMessage(
+                                platformContext.displayMessage(
                                     getString(
                                         Res.string.an_error_occurred_format,
                                         event.message.orEmpty(),
@@ -192,16 +195,17 @@ enum class FabAction(
             val viewModel: StoriesViewModel = metroViewModel(
                 // we set a key so a unique viewmodel is created for each story ordering
                 key = fabAction.storyOrdering.toString(),
-                extras = StoriesViewModel.Companion.extras(fabAction.storyOrdering),
+                extras = StoriesViewModel.extras(fabAction.storyOrdering),
             )
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             val lifecycleOwner = LocalLifecycleOwner.current
+            val platformContext = LocalPlatformContext.current
             LaunchedEffect(Unit) {
                 lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     for (event in viewModel.events) {
                         when (event) {
                             is StoriesViewModel.Event.Error -> {
-                                displayMessage(
+                                platformContext.displayMessage(
                                     getString(
                                         Res.string.an_error_occurred_format,
                                         event.message.orEmpty(),
@@ -256,16 +260,17 @@ enum class FabAction(
             val viewModel: StoriesViewModel = metroViewModel(
                 // we set a key so a unique viewmodel is created for each story ordering
                 key = fabAction.storyOrdering.toString(),
-                extras = StoriesViewModel.Companion.extras(fabAction.storyOrdering),
+                extras = StoriesViewModel.extras(fabAction.storyOrdering),
             )
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             val lifecycleOwner = LocalLifecycleOwner.current
+            val platformContext = LocalPlatformContext.current
             LaunchedEffect(Unit) {
                 lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     for (event in viewModel.events) {
                         when (event) {
                             is StoriesViewModel.Event.Error -> {
-                                displayMessage(
+                                platformContext.displayMessage(
                                     getString(
                                         Res.string.an_error_occurred_format,
                                         event.message.orEmpty(),
@@ -320,16 +325,17 @@ enum class FabAction(
             val viewModel: StoriesViewModel = metroViewModel(
                 // we set a key so a unique viewmodel is created for each story ordering
                 key = fabAction.storyOrdering.toString(),
-                extras = StoriesViewModel.Companion.extras(fabAction.storyOrdering),
+                extras = StoriesViewModel.extras(fabAction.storyOrdering),
             )
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             val lifecycleOwner = LocalLifecycleOwner.current
+            val platformContext = LocalPlatformContext.current
             LaunchedEffect(Unit) {
                 lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     for (event in viewModel.events) {
                         when (event) {
                             is StoriesViewModel.Event.Error -> {
-                                displayMessage(
+                                platformContext.displayMessage(
                                     getString(
                                         Res.string.an_error_occurred_format,
                                         event.message.orEmpty(),
@@ -384,16 +390,17 @@ enum class FabAction(
             val viewModel: StoriesViewModel = metroViewModel(
                 // we set a key so a unique viewmodel is created for each story ordering
                 key = fabAction.storyOrdering.toString(),
-                extras = StoriesViewModel.Companion.extras(fabAction.storyOrdering),
+                extras = StoriesViewModel.extras(fabAction.storyOrdering),
             )
             val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
             val lifecycleOwner = LocalLifecycleOwner.current
+            val platformContext = LocalPlatformContext.current
             LaunchedEffect(Unit) {
                 lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     for (event in viewModel.events) {
                         when (event) {
                             is StoriesViewModel.Event.Error -> {
-                                displayMessage(
+                                platformContext.displayMessage(
                                     getString(
                                         Res.string.an_error_occurred_format,
                                         event.message.orEmpty(),

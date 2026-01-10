@@ -8,6 +8,8 @@ import androidx.compose.ui.window.application
 import com.monoid.hackernews.common.core.metro.LocalViewModelProviderFactory
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.hacker_news
+import com.monoid.hackernews.common.view.stories.LocalPlatformContext
+import com.monoid.hackernews.common.view.stories.PlatformContext
 import dev.zacsweers.metro.createGraph
 import io.ktor.http.toURI
 import org.jetbrains.compose.resources.stringResource
@@ -17,7 +19,10 @@ import java.awt.Desktop
 fun main() {
     val appGraph = createGraph<DesktopAppGraph>()
     application {
-        CompositionLocalProvider(LocalViewModelProviderFactory provides appGraph.desktopViewModelFactory) {
+        CompositionLocalProvider(
+            LocalViewModelProviderFactory provides appGraph.desktopViewModelFactory,
+            LocalPlatformContext provides PlatformContext(Unit),
+        ) {
             Window(
                 onCloseRequest = ::exitApplication,
                 alwaysOnTop = false,

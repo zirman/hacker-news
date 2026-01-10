@@ -14,8 +14,11 @@ import com.monoid.hackernews.common.core.metro.metroViewModel
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.Username
+import com.monoid.hackernews.common.view.Res
+import com.monoid.hackernews.common.view.an_error_occurred_format
 import com.monoid.hackernews.common.view.fab.listContentInsetSides
 import io.ktor.http.Url
+import org.jetbrains.compose.resources.getString
 
 @Composable
 fun StoriesPane(
@@ -30,12 +33,19 @@ fun StoriesPane(
         extras = StoriesViewModel.extras(StoryOrdering.Trending),
     )
     val lifecycleOwner = LocalLifecycleOwner.current
+    LocalPlatformContext.current
+    val platformContext = LocalPlatformContext.current
     LaunchedEffect(Unit) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
             for (event in viewModel.events) {
                 when (event) {
                     is StoriesViewModel.Event.Error -> {
-                        // TODO
+                        platformContext.displayMessage(
+                            getString(
+                                Res.string.an_error_occurred_format,
+                                event.message.orEmpty(),
+                            ),
+                        )
                     }
 
                     is StoriesViewModel.Event.OpenLogin -> {

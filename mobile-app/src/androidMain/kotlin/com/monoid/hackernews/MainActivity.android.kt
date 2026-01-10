@@ -6,17 +6,21 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.ReportDrawnWhen
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import com.monoid.hackernews.common.core.log.LoggerAdapter
 import com.monoid.hackernews.common.core.metro.ActivityScope
 import com.monoid.hackernews.common.core.metro.ContributesActivityInjector
 import com.monoid.hackernews.common.view.App
+import com.monoid.hackernews.common.view.stories.LocalPlatformContext
+import com.monoid.hackernews.common.view.stories.PlatformContext
 import dev.zacsweers.metro.BindingContainer
 import dev.zacsweers.metro.Binds
 import dev.zacsweers.metro.ContributesTo
@@ -53,7 +57,9 @@ class MainActivity(
             var contentComposed by remember { mutableStateOf(false) }
             ReportDrawnWhen { contentComposed }
             SideEffect { contentComposed = true }
-            App(onClickUrl = ::onClickUrl)
+            CompositionLocalProvider(LocalPlatformContext provides PlatformContext(LocalContext.current)) {
+                App(onClickUrl = ::onClickUrl)
+            }
         }
         jankStats()
     }
