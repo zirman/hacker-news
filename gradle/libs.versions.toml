@@ -52,9 +52,6 @@ preferenceKtx = "1.2.1"
 metricsPerformance = "1.0.0"
 composeLintChecks = "1.4.2"
 material3 = "1.5.0-alpha11"
-material3Adaptive = "1.2.0"
-material3AdaptiveNavigation = "1.2.0"
-material3AdaptiveNavigationSuite = "1.4.0"
 material3WindowSizeClassMultiplatform = "0.5.0"
 metro = "0.9.4" # https://github.com/ZacSweers/metro/releases
 navigation3Ui = "1.0.0-alpha06"
@@ -183,10 +180,6 @@ composeLintChecks = { group = "com.slack.lint.compose", name = "compose-lint-che
 
 material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 material3WindowSizeClassMultiplatform = { group = "dev.chrisbanes.material3", name = "material3-window-size-class-multiplatform", version.ref = "material3WindowSizeClassMultiplatform" }
-material3Adaptive = { group = "androidx.compose.material3.adaptive", name = "adaptive", version.ref = "material3Adaptive" }
-material3AdaptiveLayout = { group = "androidx.compose.material3.adaptive", name = "adaptive-layout", version.ref = "material3Adaptive" }
-material3AdaptiveNavigation = { group = "org.jetbrains.compose.material3.adaptive", name = "adaptive-navigation", version.ref = "material3AdaptiveNavigation" }
-material3AdaptiveNavigationSuite = { group = "androidx.compose.material3", name = "material3-adaptive-navigation-suite", version.ref = "material3AdaptiveNavigationSuite" }
 
 navigation3Ui = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "navigation3Ui" }
 navigation3Material3Adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation3", version.ref = "adaptiveNavigation3" }
@@ -245,7 +238,6 @@ commonMain = [
     "ktorClientCore",
     "ktorClientLogging",
     "ktorSerializationKotlinJson",
-    "material3AdaptiveNavigation",
     "material3WindowSizeClassMultiplatform",
     "navigation3Ui",
     "navigation3Material3Adaptive",
@@ -269,9 +261,6 @@ androidMain = [
     "ktorClientAndroid",
     "lifecycleProcess",
     "material3",
-    "material3Adaptive",
-    "material3AdaptiveLayout",
-    "material3AdaptiveNavigationSuite",
     "metricsPerformance",
     "paletteKtx",
     "preferenceKtx",
