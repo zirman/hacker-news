@@ -22,8 +22,8 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.monoid.hackernews.wear.debug" />
-                  <option name="mobileSdkAppId" value="1:930746568262:android:86dcd6b8bb78bbb8350447" />
+                  <option name="appId" value="com.monoid.hackernews.wear" />
+                  <option name="mobileSdkAppId" value="1:930746568262:android:840ac2b861bd38fb350447" />
                   <option name="projectId" value="hacker-news-52778" />
                   <option name="projectNumber" value="930746568262" />
                 </ConnectionSetting>

@@ -1,4 +1,6 @@
-import org.jetbrains.compose.ExperimentalComposeLibrary
+@file:OptIn(DelicateMetroGradleApi::class)
+
+import dev.zacsweers.metro.gradle.DelicateMetroGradleApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -13,20 +15,6 @@ plugins {
 }
 val libs = the<VersionCatalogsExtension>().named("libs")
 kotlin {
-    sourceSets {
-        commonMain.dependencies {
-            implementation(project(":core"))
-        }
-        commonTest.dependencies {
-            implementation(libs.findBundle("commonTest").get())
-            @OptIn(ExperimentalComposeLibrary::class)
-            implementation(compose.uiTest)
-        }
-        all {
-            languageSettings.optIn("kotlin.time.ExperimentalTime")
-        }
-
-    }
     jvm("desktop") {
         JvmTarget.fromTarget(libs.findVersion("jvmTarget").get().requiredVersion)
     }
@@ -34,6 +22,18 @@ kotlin {
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }
     jvmToolchain(libs.findVersion("jvmToolchain").get().requiredVersion.toInt())
+    sourceSets {
+        commonMain.dependencies {
+            implementation(project(":core"))
+        }
+        commonTest.dependencies {
+            implementation(libs.findBundle("commonTest").get())
+            implementation(libs.findLibrary("composeUiTest").get())
+        }
+        all {
+            languageSettings.optIn("kotlin.time.ExperimentalTime")
+        }
+    }
 }
 compose {
     resources {

@@ -1,5 +1,5 @@
 Build for Android:
-`gradle :mobile-app:assembleDebug`
+`gradle :android-app:assembleDebug`
 
 Run on iOS
 Run project `ios-app/iosApp.xcodeproj`

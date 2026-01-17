@@ -3,11 +3,12 @@ androidVersion = "4.1.1.4"
 buildToolsVersion = "36.1.0"
 jvmToolchain = "21"
 jvmTarget = "21"
+lifecycleViewmodelNavigation3 = "2.10.0"
 minSdk = "28"
 targetSdk = "36"
 compileSdk = "36"
 compileSdkPreview = "Baklava"
-android = "8.13.2"
+android = "9.0.0"
 #lint = "31.4.0"
 desugarJdkLibs = "2.1.5"
 kotlin = "2.3.20-Beta1" # https://github.com/jetbrains/kotlin/releases
@@ -39,7 +40,7 @@ googlePlayServices = "4.4.4"
 playServicesWearable = "19.0.0"
 crashlytics = "3.0.6"
 firebasePerf = "2.0.2"
-firebaseBom = "34.7.0"
+firebaseBom = "34.8.0"
 window = "1.5.1"
 appcompat = "1.7.1"
 coreKtx = "1.17.0"
@@ -81,6 +82,8 @@ kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", versio
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 composeCompiler = { id = "org.jetbrains.compose", version.ref = "jetbrainsCompose" }
 composeHotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "jetbrainsComposeHotReload" }
+#orgJetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+#composeCompiler2 = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
 room = { id = "androidx.room", version.ref = "room" }
@@ -91,6 +94,15 @@ detektGradle = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 
 [libraries]
+composeAnimation = { group = "org.jetbrains.compose.animation", name = "animation", version.ref = "jetbrainsCompose" }
+composeAnimationGraphics = { group = "org.jetbrains.compose.animation", name = "animation-graphics", version.ref = "jetbrainsCompose" }
+composeFoundation = { group = "org.jetbrains.compose.foundation", name = "foundation", version.ref = "jetbrainsCompose" }
+composeMaterial3 = { group = "org.jetbrains.compose.material3", name = "material3", version = "1.11.0-alpha01" }
+composeMaterialIconsExtended = { group = "org.jetbrains.compose.material", name = "material-icons-extended", version = "1.7.3" }
+composeRuntime = { group = "org.jetbrains.compose.runtime", name = "runtime", version.ref = "jetbrainsCompose" }
+composeUi = { group = "org.jetbrains.compose.ui", name = "ui", version.ref = "jetbrainsCompose" }
+composeUiUtil = { group = "org.jetbrains.compose.ui", name = "ui-util", version.ref = "jetbrainsCompose" }
+composeUiTest = { group = "org.jetbrains.compose.ui", name = "ui-test", version.ref = "jetbrainsCompose" }
 kotlinCoroutinesBom = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-bom", version.ref = "kotlinCoroutines" }
 #kotlinStdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 kotlinCoroutinesAndroid = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android" }
@@ -111,6 +123,7 @@ desugarJdkLibsNio = { group = "com.android.tools", name = "desugar_jdk_libs_nio"
 
 # used for annotation processing only
 android = { group = "com.google.android", name = "android", version.ref = "androidVersion" }
+lifecycleViewmodelNavigation3 = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-navigation3", version.ref = "lifecycleViewmodelNavigation3" }
 metroRuntimeJvm = { group = "dev.zacsweers.metro", name = "runtime-jvm", version.ref = "metro" }
 
 kspSymbolProcessingApi = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
@@ -215,6 +228,14 @@ robsRules = { group = "dev.robch.rules", name = "robs-rules", version.ref = "rob
 
 [bundles]
 commonMain = [
+    "composeAnimation",
+    "composeAnimationGraphics",
+    "composeFoundation",
+    "composeMaterial3",
+    "composeMaterialIconsExtended",
+    "composeRuntime",
+    "composeUi",
+    "composeUiUtil",
     "annotation",
     "coil",
     "coilNetwork",

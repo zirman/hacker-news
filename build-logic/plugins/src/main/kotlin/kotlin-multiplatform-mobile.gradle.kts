@@ -1,49 +1,17 @@
 @file:Suppress("OPT_IN_USAGE")
 
-import org.jetbrains.compose.ExperimentalComposeLibrary
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
-    id("com.android.application")
     id("org.jetbrains.kotlin.plugin.compose")
     id("org.jetbrains.compose")
     id("org.jetbrains.compose.hot-reload")
     id("com.google.devtools.ksp")
     id("dev.zacsweers.metro")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
-    id("com.google.firebase.firebase-perf")
     id("io.github.takahirom.roborazzi")
     id("detekt-rules")
 }
 val libs = the<VersionCatalogsExtension>().named("libs")
 kotlin {
-    sourceSets {
-        commonMain.dependencies {
-            implementation(project(":core"))
-        }
-        commonTest.dependencies {
-            implementation(libs.findBundle("commonTest").get())
-            @OptIn(ExperimentalComposeLibrary::class)
-            implementation(compose.uiTest)
-        }
-        androidUnitTest {
-            kotlin.srcDir("build/generated/ksp/android/androidDebug/screenshotTest")
-            // dependsOn(commonMain.get())
-            dependencies {
-                implementation(libs.findBundle("androidUnitTest").get())
-            }
-        }
-        all {
-            languageSettings.optIn("kotlin.time.ExperimentalTime")
-        }
-    }
-    androidTarget {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.fromTarget(libs.findVersion("jvmTarget").get().requiredVersion))
-        }
-    }
     listOf(
         iosArm64(),
         iosSimulatorArm64(),
@@ -57,51 +25,17 @@ kotlin {
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }
     jvmToolchain(libs.findVersion("jvmToolchain").get().requiredVersion.toInt())
-}
-android {
-    compileSdk = libs.findVersion("compileSdk").get().requiredVersion.toInt()
-    compileSdkPreview = libs.findVersion("compileSdkPreview").get().requiredVersion
-    buildToolsVersion = libs.findVersion("buildToolsVersion").get().requiredVersion
-    defaultConfig {
-        minSdk = libs.findVersion("minSdk").get().requiredVersion.toInt()
-        targetSdk = libs.findVersion("targetSdk").get().requiredVersion.toInt()
-    }
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility =
-            JavaVersion.toVersion(libs.findVersion("jvmTarget").get().requiredVersion.toInt())
-        targetCompatibility =
-            JavaVersion.toVersion(libs.findVersion("jvmTarget").get().requiredVersion.toInt())
-    }
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
+    sourceSets {
+        commonMain.dependencies {
+            implementation(project(":core"))
         }
-    }
-    sourceSets.named("main").get().apply {
-        manifest.srcFile("src/androidMain/AndroidManifest.xml")
-        res.srcDirs("src/androidMain/res")
-        resources.srcDirs("src/commonMain/resources")
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/versions/9/previous-compilation-data.bin"
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        commonTest.dependencies {
+            implementation(libs.findBundle("commonTest").get())
+            implementation(libs.findLibrary("composeUiTest").get())
         }
-    }
-    buildTypes {
-        debug {
-            applicationIdSuffix = ".debug"
-            versionNameSuffix = ".debug"
+        all {
+            languageSettings.optIn("kotlin.time.ExperimentalTime")
         }
-        release {
-            isMinifyEnabled = true
-            isShrinkResources = true
-        }
-    }
-    lint {
-        warningsAsErrors = true
-        baseline = file("lint-baseline.xml")
     }
 }
 compose {
@@ -114,15 +48,6 @@ metro {
     enableTopLevelFunctionInjection = true
     generateContributionHintsInFir = true
     enableKotlinVersionCompatibilityChecks = false
-}
-val kspAndroid by configurations.named("kspAndroid")
-dependencies {
-    coreLibraryDesugaring(libs.findLibrary("desugarJdkLibsNio").get())
-    kspAndroid(project(":injection-processor"))
-    // https://github.com/google/ksp/issues/2595
-    kspAndroid(project(":screenshot-processor"))
-//    lintChecks(libs.findLibrary("composeLintChecks").get())
-    debugImplementation(libs.findLibrary("uiTestManifest").get())
 }
 roborazzi {
     outputDir.set(file("src/androidUnitTest/screenshotTest"))

@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalNativeApi::class)
 
-package com.monoid.hackernews
+package com.monoid.hackernews.common
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues

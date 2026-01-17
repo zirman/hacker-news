@@ -13,6 +13,11 @@ kotlin {
             consumerKeepRules.files.add(File("proguard-rules.pro"))
         }
     }
+    sourceSets {
+        jvmMain.dependencies {
+            implementation(libs.bundles.jvmMain)
+        }
+    }
 }
 compose {
     resources {
@@ -24,9 +29,9 @@ dependencies {
     // https://github.com/google/ksp/issues/2595
     kspAndroid(libs.roomCompiler)
     kspJvm(libs.roomCompiler)
-//    kspIosX64(libs.roomCompiler)
     kspIosArm64(libs.roomCompiler)
     kspIosSimulatorArm64(libs.roomCompiler)
+    // kspIosX64(libs.roomCompiler)
 }
 room {
     schemaDirectory("$projectDir/schemas")

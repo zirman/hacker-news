@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalSplitPaneApi::class)
-
 package com.monoid.hackernews
 
 import androidx.compose.runtime.CompositionLocalProvider
@@ -13,7 +11,6 @@ import com.monoid.hackernews.common.view.stories.PlatformContext
 import dev.zacsweers.metro.createGraph
 import io.ktor.http.toURI
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi
 import java.awt.Desktop
 
 fun main() {

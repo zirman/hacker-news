@@ -4,13 +4,13 @@ plugins {
 }
 val packageNamespace = "com.monoid.hackernews.common.domain"
 kotlin {
+    android {
+        namespace = packageNamespace
+    }
     sourceSets {
         commonMain.dependencies {
             api(project(":data"))
         }
-    }
-    android {
-        namespace = packageNamespace
     }
 }
 compose {

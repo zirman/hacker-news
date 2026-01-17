@@ -3,20 +3,29 @@ plugins {
 }
 val packageNamespace = "com.monoid.hackernews.common.view"
 kotlin {
-    sourceSets {
-        androidMain.dependencies {
-            implementation("androidx.lifecycle:lifecycle-viewmodel-navigation3:2.10.0")
-        }
-        commonMain.dependencies {
-            api(project(":domain"))
-        }
-        jvmMain.dependencies {
-            api("androidx.lifecycle:lifecycle-viewmodel-navigation3:2.10.0")
+    listOf(
+        iosArm64(),
+        iosSimulatorArm64(),
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "ComposeApp"
+            isStatic = true
         }
     }
     android {
         namespace = packageNamespace
         androidResources.enable = true
+    }
+    sourceSets {
+        androidMain.dependencies {
+            implementation(libs.lifecycleViewmodelNavigation3)
+        }
+        commonMain.dependencies {
+            api(project(":domain"))
+        }
+        jvmMain.dependencies {
+            api(libs.lifecycleViewmodelNavigation3)
+        }
     }
 }
 compose {

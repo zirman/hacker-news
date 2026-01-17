@@ -1,6 +1,5 @@
 @file:Suppress("OPT_IN_USAGE")
 
-import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -16,57 +15,6 @@ plugins {
 }
 val libs = the<VersionCatalogsExtension>().named("libs")
 kotlin {
-    sourceSets {
-        commonMain.dependencies {
-            api(project.dependencies.platform(libs.findLibrary("kotlinWrappersBom").get()))
-            api(project.dependencies.platform(libs.findLibrary("firebaseBom").get()))
-            api(compose.animation)
-            api(compose.animationGraphics)
-            api(compose.components.resources)
-            api(compose.foundation)
-            api(compose.material3)
-            api(compose.materialIconsExtended)
-            api(compose.runtime)
-            api(compose.ui)
-            api(compose.uiUtil)
-            api(libs.findBundle("commonMain").get())
-        }
-        androidMain.dependencies {
-            api(project.dependencies.platform(libs.findLibrary("kotlinCoroutinesBom").get()))
-            api(compose.uiTooling)
-            api(compose.preview)
-            api(compose.components.uiToolingPreview)
-            api(libs.findBundle("androidMain").get())
-        }
-        jvmMain.dependencies {
-            api(project.dependencies.platform(libs.findLibrary("kotlinCoroutinesBom").get()))
-            api(compose.desktop.common)
-            api(compose.desktop.currentOs)
-            @OptIn(ExperimentalComposeLibrary::class)
-            api(compose.desktop.components.animatedImage)
-            @OptIn(ExperimentalComposeLibrary::class)
-            api(compose.desktop.components.splitPane)
-            api(libs.findBundle("jvmMain").get())
-        }
-        iosMain.dependencies {
-            api(libs.findBundle("iosMain").get())
-        }
-        commonTest.dependencies {
-            implementation(libs.findBundle("commonTest").get())
-            @OptIn(ExperimentalComposeLibrary::class)
-            implementation(compose.uiTest)
-        }
-        androidUnitTest {
-            kotlin.srcDir("build/generated/ksp/android/androidDebug/screenshotTest")
-            // dependsOn(commonMain.get())
-            dependencies {
-                implementation(libs.findBundle("androidUnitTest").get())
-            }
-        }
-        all {
-            languageSettings.optIn("kotlin.time.ExperimentalTime")
-        }
-    }
     android {
         compileSdk = libs.findVersion("compileSdk").get().requiredVersion.toInt()
         compileSdkPreview = libs.findVersion("compileSdkPreview").get().requiredVersion
@@ -96,12 +44,52 @@ kotlin {
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }
     jvmToolchain(libs.findVersion("jvmToolchain").get().requiredVersion.toInt())
+    sourceSets {
+        commonMain.dependencies {
+            api(project.dependencies.platform(libs.findLibrary("kotlinWrappersBom").get()))
+            api(project.dependencies.platform(libs.findLibrary("firebaseBom").get()))
+            api("org.jetbrains.compose.components:components-resources:1.10.0")
+            api(libs.findBundle("commonMain").get())
+        }
+        androidMain.dependencies {
+            api(project.dependencies.platform(libs.findLibrary("kotlinCoroutinesBom").get()))
+            api("org.jetbrains.compose.ui:ui-tooling:1.10.0")
+            api("org.jetbrains.compose.ui:ui-tooling-preview:1.10.0")
+            api("org.jetbrains.compose.ui:ui-tooling-preview:1.10.0")
+            api(libs.findBundle("androidMain").get())
+        }
+        jvmMain.dependencies {
+            api(project.dependencies.platform(libs.findLibrary("kotlinCoroutinesBom").get()))
+            api("org.jetbrains.compose.desktop:desktop:1.10.0")
+            api(compose.desktop.currentOs)
+            api("org.jetbrains.compose.components:components-animatedimage:1.10.0")
+            api("org.jetbrains.compose.components:components-splitpane:1.10.0")
+            api(libs.findBundle("jvmMain").get())
+        }
+        iosMain.dependencies {
+            api(libs.findBundle("iosMain").get())
+        }
+        commonTest.dependencies {
+            implementation(libs.findBundle("commonTest").get())
+            implementation(libs.findLibrary("composeUiTest").get())
+        }
+//        androidUnitTest {
+//            kotlin.srcDir("build/generated/ksp/android/androidDebug/screenshotTest")
+//            // dependsOn(commonMain.get())
+//            dependencies {
+//                implementation(libs.findBundle("androidUnitTest").get())
+//            }
+//        }
+        all {
+            languageSettings.optIn("kotlin.time.ExperimentalTime")
+        }
+    }
 }
 val kspAndroid by configurations.named("kspAndroid")
 dependencies {
     coreLibraryDesugaring(libs.findLibrary("desugarJdkLibsNio").get())
     // https://github.com/google/ksp/issues/2595
-//    lintChecks(libs.findLibrary("composeLintChecks").get())
+    lintChecks(libs.findLibrary("composeLintChecks").get())
 }
 compose {
     resources {

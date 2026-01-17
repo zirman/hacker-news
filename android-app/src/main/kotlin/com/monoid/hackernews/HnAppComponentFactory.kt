@@ -1,7 +1,6 @@
 package com.monoid.hackernews
 
 import androidx.annotation.Keep
-import androidx.core.app.AppComponentFactory
 import com.monoid.hackernews.common.core.metro.AndroidAppGraph
 import dev.zacsweers.metro.createGraph
 

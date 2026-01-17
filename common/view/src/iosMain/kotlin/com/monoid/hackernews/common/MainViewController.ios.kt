@@ -1,4 +1,4 @@
-package com.monoid.hackernews
+package com.monoid.hackernews.common
 
 import androidx.compose.ui.window.ComposeUIViewController
 import platform.Foundation.NSURL

@@ -1,4 +1,4 @@
-package com.monoid.hackernews
+package com.monoid.hackernews.common
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

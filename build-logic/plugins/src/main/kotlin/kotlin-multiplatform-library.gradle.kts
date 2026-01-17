@@ -1,6 +1,5 @@
 @file:Suppress("OPT_IN_USAGE")
 
-import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -16,32 +15,11 @@ plugins {
 }
 val libs = the<VersionCatalogsExtension>().named("libs")
 kotlin {
-    sourceSets {
-        commonMain.dependencies {
-            implementation(project(":core"))
-        }
-        commonTest.dependencies {
-            implementation(libs.findBundle("commonTest").get())
-            @OptIn(ExperimentalComposeLibrary::class)
-            implementation(compose.uiTest)
-        }
-        androidUnitTest {
-            kotlin.srcDir("build/generated/ksp/android/androidDebug/screenshotTest")
-            // dependsOn(commonMain.get())
-            dependencies {
-                implementation(libs.findBundle("androidUnitTest").get())
-            }
-        }
-        all {
-            languageSettings.optIn("kotlin.time.ExperimentalTime")
-        }
-    }
     android {
         compileSdk = libs.findVersion("compileSdk").get().requiredVersion.toInt()
         compileSdkPreview = libs.findVersion("compileSdkPreview").get().requiredVersion
         minSdk = libs.findVersion("minSdk").get().requiredVersion.toInt()
         buildToolsVersion = libs.findVersion("buildToolsVersion").get().requiredVersion
-        enableCoreLibraryDesugaring = true
         packaging {
             resources {
                 excludes += "/META-INF/versions/9/previous-compilation-data.bin"
@@ -67,10 +45,32 @@ kotlin {
         freeCompilerArgs.add("-Xexpect-actual-classes")
     }
     jvmToolchain(libs.findVersion("jvmToolchain").get().requiredVersion.toInt())
+    sourceSets {
+        commonMain.dependencies {
+            implementation(project(":core"))
+        }
+        commonTest.dependencies {
+            implementation(libs.findBundle("commonTest").get())
+            implementation(libs.findLibrary("composeUiTest").get())
+        }
+        jvmMain.dependencies {
+            implementation(libs.findBundle("jvmMain").get())
+        }
+//        androidUnitTest {
+//            kotlin.srcDir("build/generated/ksp/android/androidDebug/screenshotTest")
+//            // dependsOn(commonMain.get())
+//            dependencies {
+//                implementation(libs.findBundle("androidUnitTest").get())
+//            }
+//        }
+        all {
+            languageSettings.optIn("kotlin.time.ExperimentalTime")
+        }
+    }
 }
 val kspAndroid by configurations.named("kspAndroid")
 dependencies {
-    coreLibraryDesugaring(libs.findLibrary("desugarJdkLibsNio").get())
+//    coreLibraryDesugaring(libs.findLibrary("desugarJdkLibsNio").get())
     kspAndroid(project(":injection-processor"))
     // https://github.com/google/ksp/issues/2595
     kspAndroid(project(":screenshot-processor"))
