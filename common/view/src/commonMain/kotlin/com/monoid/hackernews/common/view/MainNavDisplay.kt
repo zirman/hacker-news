@@ -51,10 +51,10 @@ fun MainNavDisplay(
     backStack: SnapshotStateList<Route>,
     onClickUrl: (Url) -> Unit,
     onShowLoginDialog: () -> Unit,
+    modifier: Modifier = Modifier,
     entryDecorators: List<NavEntryDecorator<Route>> = listOf(
         rememberSaveableStateHolderNavEntryDecorator(),
     ),
-    modifier: Modifier = Modifier,
 ) {
     val windowAdaptiveInfo = currentWindowAdaptiveInfo()
     val directive = remember(windowAdaptiveInfo) {

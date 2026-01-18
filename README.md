@@ -7,6 +7,9 @@ Run project `ios-app/iosApp.xcodeproj`
 Run on Desktop
 `gradle :desktop-app:run`
 
+Hot run with auto refresh on Desktop
+`gradle :desktop-app:hotRunDesktop --auto`
+
 Build for Wear OS
 `gradle :wear-app:assembleDebug`
 

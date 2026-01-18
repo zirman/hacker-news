@@ -56,10 +56,10 @@ kotlin {
         }
         androidMain.dependencies {
             api(libs.findBundle("androidMain").get())
-            api(compose.desktop.currentOs)
         }
         jvmMain.dependencies {
             api(libs.findBundle("jvmMain").get())
+            api(compose.desktop.currentOs)
         }
         iosMain.dependencies {
             api(libs.findBundle("iosMain").get())
