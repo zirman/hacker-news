@@ -37,7 +37,9 @@ kotlin {
         }
     }
     jvm {
-        JvmTarget.fromTarget(libs.findVersion("jvmTarget").get().requiredVersion)
+        compilerOptions {
+            jvmTarget.set(JvmTarget.fromTarget(libs.findVersion("jvmTarget").get().requiredVersion))
+        }
     }
     iosArm64()
     iosSimulatorArm64()

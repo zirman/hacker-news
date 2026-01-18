@@ -15,7 +15,9 @@ plugins {
 val libs = the<VersionCatalogsExtension>().named("libs")
 kotlin {
     jvm("desktop") {
-        JvmTarget.fromTarget(libs.findVersion("jvmTarget").get().requiredVersion)
+        compilerOptions {
+            jvmTarget.set(JvmTarget.fromTarget(libs.findVersion("jvmTarget").get().requiredVersion))
+        }
     }
     compilerOptions {
         freeCompilerArgs.add("-Xexpect-actual-classes")
