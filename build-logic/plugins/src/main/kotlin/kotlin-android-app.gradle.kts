@@ -16,15 +16,6 @@ plugins {
     id("com.google.firebase.firebase-perf")
 }
 val libs = the<VersionCatalogsExtension>().named("libs")
-dependencies {
-    implementation(project(":core"))
-    "coreLibraryDesugaring"(libs.findLibrary("desugarJdkLibsNio").get())
-    "ksp"(project(":injection-processor"))
-    // https://github.com/google/ksp/issues/2595
-    "ksp"(project(":screenshot-processor"))
-    "lintChecks"(libs.findLibrary("composeLintChecks").get())
-    "debugImplementation"(libs.findLibrary("uiTestManifest").get())
-}
 android {
     compileSdk = libs.findVersion("compileSdk").get().requiredVersion.toInt()
     compileSdkPreview = libs.findVersion("compileSdkPreview").get().requiredVersion
@@ -78,6 +69,14 @@ android {
         baseline = file("lint-baseline.xml")
     }
 }
+dependencies {
+    implementation(project(":core"))
+    coreLibraryDesugaring(libs.findLibrary("desugarJdkLibsNio").get())
+    ksp(project(":injection-processor"))
+    ksp(project(":screenshot-processor"))
+    lintChecks(libs.findLibrary("composeLintChecks").get())
+    debugImplementation(libs.findLibrary("uiTestManifest").get())
+}
 compose {
     resources {
         publicResClass = true
@@ -90,7 +89,7 @@ metro {
     enableKotlinVersionCompatibilityChecks = false
 }
 roborazzi {
-    // outputDir.set(file("src/androidUnitTest/screenshotTest"))
+    // outputDir.set(file("src/commonTest/screenshotTest"))
     // Directory for comparison images (Experimental option)
     compare {
         outputDir.set(file("build/roborazzi/comparison"))

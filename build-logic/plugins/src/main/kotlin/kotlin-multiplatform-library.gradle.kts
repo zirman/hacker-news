@@ -57,11 +57,11 @@ kotlin {
         jvmMain.dependencies {
             implementation(libs.findBundle("jvmMain").get())
         }
-//        androidUnitTest {
+//        commonTest {
 //            kotlin.srcDir("build/generated/ksp/android/androidDebug/screenshotTest")
 //            // dependsOn(commonMain.get())
 //            dependencies {
-//                implementation(libs.findBundle("androidUnitTest").get())
+//                implementation(libs.findBundle("commonTest").get())
 //            }
 //        }
         all {
@@ -69,13 +69,11 @@ kotlin {
         }
     }
 }
-val kspAndroid by configurations.named("kspAndroid")
 dependencies {
-//    coreLibraryDesugaring(libs.findLibrary("desugarJdkLibsNio").get())
+    coreLibraryDesugaring(libs.findLibrary("desugarJdkLibsNio").get())
     kspAndroid(project(":injection-processor"))
-    // https://github.com/google/ksp/issues/2595
     kspAndroid(project(":screenshot-processor"))
-//    lintChecks(libs.findLibrary("composeLintChecks").get())
+    lintChecks(libs.findLibrary("composeLintChecks").get())
 }
 compose {
     resources {
@@ -89,7 +87,7 @@ metro {
     enableKotlinVersionCompatibilityChecks = false
 }
 roborazzi {
-    outputDir.set(file("src/androidUnitTest/screenshotTest"))
+    outputDir.set(file("src/commonTest/screenshotTest"))
     // Directory for comparison images (Experimental option)
     compare {
         outputDir.set(file("build/roborazzi/comparison"))
