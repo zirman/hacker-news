@@ -1,4 +1,7 @@
 @file:Suppress("OPT_IN_USAGE")
+@file:OptIn(DelicateMetroGradleApi::class)
+
+import dev.zacsweers.metro.gradle.DelicateMetroGradleApi
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
