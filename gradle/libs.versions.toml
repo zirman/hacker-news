@@ -95,11 +95,17 @@ roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 [libraries]
 composeAnimation = { group = "org.jetbrains.compose.animation", name = "animation", version.ref = "jetbrainsCompose" }
 composeAnimationGraphics = { group = "org.jetbrains.compose.animation", name = "animation-graphics", version.ref = "jetbrainsCompose" }
+composeComponentsAnimatedImage = { group = "org.jetbrains.compose.components", name = "components-animatedimage", version.ref = "jetbrainsCompose" }
+composeComponentsResources = { group = "org.jetbrains.compose.components", name = "components-resources", version.ref = "jetbrainsCompose" }
+composeComponentsSplitPane = { group = "org.jetbrains.compose.components", name = "components-splitpane", version.ref = "jetbrainsCompose" }
+composeDesktop = { group = "org.jetbrains.compose.desktop", name = "desktop", version.ref = "jetbrainsCompose" }
 composeFoundation = { group = "org.jetbrains.compose.foundation", name = "foundation", version.ref = "jetbrainsCompose" }
 composeMaterial3 = { group = "org.jetbrains.compose.material3", name = "material3", version = "1.11.0-alpha01" }
 composeMaterialIconsExtended = { group = "org.jetbrains.compose.material", name = "material-icons-extended", version = "1.7.3" }
 composeRuntime = { group = "org.jetbrains.compose.runtime", name = "runtime", version.ref = "jetbrainsCompose" }
 composeUi = { group = "org.jetbrains.compose.ui", name = "ui", version.ref = "jetbrainsCompose" }
+composeUiTooling = { group = "org.jetbrains.compose.ui", name = "ui-tooling", version.ref = "jetbrainsCompose" }
+composeUiToolingPreview = { group = "org.jetbrains.compose.ui", name = "ui-tooling-preview", version.ref = "jetbrainsCompose" }
 composeUiUtil = { group = "org.jetbrains.compose.ui", name = "ui-util", version.ref = "jetbrainsCompose" }
 composeUiTest = { group = "org.jetbrains.compose.ui", name = "ui-test", version.ref = "jetbrainsCompose" }
 kotlinCoroutinesBom = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-bom", version.ref = "kotlinCoroutines" }
@@ -229,11 +235,13 @@ robsRules = { group = "dev.robch.rules", name = "robs-rules", version.ref = "rob
 commonMain = [
     "composeAnimation",
     "composeAnimationGraphics",
+    "composeComponentsResources",
     "composeFoundation",
     "composeMaterial3",
     "composeMaterialIconsExtended",
     "composeRuntime",
     "composeUi",
+    "composeUiToolingPreview",
     "composeUiUtil",
     "annotation",
     "coil",
@@ -270,6 +278,10 @@ androidMain = [
     "activityKtx",
     "appcompat",
     "collectionKtx",
+    "composeUiTooling",
+    "composeDesktop",
+    "composeComponentsAnimatedImage",
+    "composeComponentsSplitPane",
     "coreKtx",
     "coreSplashscreen",
     "firebaseAnalytics",
@@ -305,6 +317,7 @@ iosMain = [
     "ktorClientDarwin",
 ]
 commonTest = [
+    "composeUiTest",
     "kotlinCoroutinesTest",
     "kotlinTest",
 ]

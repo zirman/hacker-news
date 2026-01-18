@@ -13,11 +13,6 @@ kotlin {
             consumerKeepRules.files.add(File("proguard-rules.pro"))
         }
     }
-    sourceSets {
-        jvmMain.dependencies {
-            implementation(libs.bundles.jvmMain)
-        }
-    }
 }
 compose {
     resources {

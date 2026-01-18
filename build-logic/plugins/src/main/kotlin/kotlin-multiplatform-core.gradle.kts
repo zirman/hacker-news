@@ -47,24 +47,16 @@ kotlin {
     jvmToolchain(libs.findVersion("jvmToolchain").get().requiredVersion.toInt())
     sourceSets {
         commonMain.dependencies {
+            api(project.dependencies.platform(libs.findLibrary("kotlinCoroutinesBom").get()))
             api(project.dependencies.platform(libs.findLibrary("kotlinWrappersBom").get()))
             api(project.dependencies.platform(libs.findLibrary("firebaseBom").get()))
-            api("org.jetbrains.compose.components:components-resources:1.10.0")
             api(libs.findBundle("commonMain").get())
         }
         androidMain.dependencies {
-            api(project.dependencies.platform(libs.findLibrary("kotlinCoroutinesBom").get()))
-            api("org.jetbrains.compose.ui:ui-tooling:1.10.0")
-            api("org.jetbrains.compose.ui:ui-tooling-preview:1.10.0")
-            api("org.jetbrains.compose.ui:ui-tooling-preview:1.10.0")
             api(libs.findBundle("androidMain").get())
+            api(compose.desktop.currentOs)
         }
         jvmMain.dependencies {
-            api(project.dependencies.platform(libs.findLibrary("kotlinCoroutinesBom").get()))
-            api("org.jetbrains.compose.desktop:desktop:1.10.0")
-            api(compose.desktop.currentOs)
-            api("org.jetbrains.compose.components:components-animatedimage:1.10.0")
-            api("org.jetbrains.compose.components:components-splitpane:1.10.0")
             api(libs.findBundle("jvmMain").get())
         }
         iosMain.dependencies {
@@ -72,7 +64,6 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(libs.findBundle("commonTest").get())
-            implementation(libs.findLibrary("composeUiTest").get())
         }
 //        androidUnitTest {
 //            kotlin.srcDir("build/generated/ksp/android/androidDebug/screenshotTest")

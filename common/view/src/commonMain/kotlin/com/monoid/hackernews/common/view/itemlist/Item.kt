@@ -48,6 +48,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -68,6 +70,43 @@ import com.monoid.hackernews.common.view.unfollow
 import com.monoid.hackernews.common.view.upvote
 import io.ktor.http.Url
 import org.jetbrains.compose.resources.stringResource
+
+@Preview
+@Composable
+internal fun ItemPreview() {
+    MaterialTheme {
+        Item(
+            item = Item(
+                id = ItemId(0),
+                type = ItemType.Story,
+                title = "Hello World",
+                text = AnnotatedString(LoremIpsum(2).values.first()),
+                url = Url("https://www.wikipedia.com/"),
+                kids = emptyList(),
+                upvoted = false,
+                favorited = false,
+                flagged = false,
+                expanded = false,
+                followed = false,
+                by = null,
+                deleted = null,
+                descendants = null,
+                parent = null,
+                lastUpdate = null,
+                score = null,
+                time = null,
+            ),
+            onClickItem = {},
+            onClickReply = {},
+            onClickUser = {},
+            onClickUrl = {},
+            onClickUpvote = {},
+            onClickFavorite = {},
+            onClickFollow = {},
+            onClickFlag = {},
+        )
+    }
+}
 
 @Suppress("CyclomaticComplexMethod")
 @Composable
