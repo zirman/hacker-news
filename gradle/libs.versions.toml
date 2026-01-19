@@ -1,22 +1,20 @@
 [versions]
-androidVersion = "4.1.1.4"
-buildToolsVersion = "36.1.0"
+kotlin = "2.3.20-Beta1" # https://github.com/jetbrains/kotlin/releases
+kotlinTest = "2.3.20-Beta1"
 jvmToolchain = "21"
 jvmTarget = "21"
-lifecycleViewmodelNavigation3 = "2.10.0"
 minSdk = "28"
 targetSdk = "36"
 compileSdk = "36"
+buildToolsVersion = "36.1.0"
 compileSdkPreview = "Baklava"
-android = "9.0.0"
+androidGradlePlugin = "9.0.0"
+androidVersion = "4.1.1.4"
 #lint = "31.4.0"
 desugarJdkLibs = "2.1.5"
-kotlin = "2.3.20-Beta1" # https://github.com/jetbrains/kotlin/releases
-kotlinTest = "2.3.20-Beta1"
 kotlinDatetime = "0.7.1"
 kotlinPoet = "2.2.0" # https://github.com/square/kotlinpoet/releases
 kotlinWrappersBom = "2026.1.5" # https://github.com/JetBrains/kotlin-wrappers/releases
-ksp = "2.3.4" # https://github.com/google/ksp/releases
 jetbrainsCompose = "1.10.0" # https://github.com/JetBrains/compose-multiplatform/releases
 jetbrainsCore = "1.0.1"
 jetbrainsWindowCore = "1.5.1"
@@ -24,6 +22,7 @@ jetbrainsSavedState = "1.4.0"
 kotlinCoroutines = "1.10.2"
 kotlinSerialization = "1.9.0"
 kotlinCollectionsImmutable = "0.4.0"
+ksp = "2.3.4" # https://github.com/google/ksp/releases
 ktor = "3.3.3" # https://github.com/ktorio/ktor/releases
 kermit = "2.0.8"
 room = "2.8.4"
@@ -33,6 +32,7 @@ activityKtx = "1.12.2"
 fragmentKtx = "1.8.9"
 lifecycle = "2.9.6" # https://mvnrepository.com/artifact/org.jetbrains.androidx.lifecycle/lifecycle-viewmodel
 lifecycleProcess = "2.10.0"
+lifecycleViewmodelNavigation3 = "2.10.0"
 googlePlayServices = "4.4.4"
 playServicesWearable = "19.0.0"
 crashlytics = "3.0.6"
@@ -73,15 +73,13 @@ coil = "3.3.0"
 
 [plugins]
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-androidApplication = { id = "com.android.application", version.ref = "android" }
-androidMultiplatformLibrary = { id = "com.android.kotlin.multiplatform.library", version.ref = "android" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 composeCompiler = { id = "org.jetbrains.compose", version.ref = "jetbrainsCompose" }
-#orgJetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-#composeCompiler2 = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+androidMultiplatformLibrary = { id = "com.android.kotlin.multiplatform.library", version.ref = "androidGradlePlugin" }
 room = { id = "androidx.room", version.ref = "room" }
 googlePlayServices = { id = "com.google.gms.google-services", version.ref = "googlePlayServices" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics" }

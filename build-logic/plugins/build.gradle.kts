@@ -6,13 +6,13 @@ kotlin {
 }
 dependencies {
     implementation(plugin(libs.plugins.kotlinMultiplatform))
-    implementation(plugin(libs.plugins.androidApplication))
-    implementation(plugin(libs.plugins.androidMultiplatformLibrary))
     implementation(plugin(libs.plugins.kotlinSerialization))
     implementation(plugin(libs.plugins.compose))
     implementation(plugin(libs.plugins.composeCompiler))
-    implementation(plugin(libs.plugins.ksp))
     implementation(plugin(libs.plugins.metro))
+    implementation(plugin(libs.plugins.ksp))
+    implementation(plugin(libs.plugins.androidApplication))
+    implementation(plugin(libs.plugins.androidMultiplatformLibrary))
     implementation(plugin(libs.plugins.room))
     implementation(plugin(libs.plugins.googlePlayServices))
     implementation(plugin(libs.plugins.crashlytics))
