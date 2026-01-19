@@ -27,7 +27,7 @@ import com.monoid.hackernews.common.core.metro.metroViewModel
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.Username
-import com.monoid.hackernews.common.domain.navigation.Route.BottomNav
+import com.monoid.hackernews.common.domain.navigation.BottomNav
 import com.monoid.hackernews.common.view.stories.StoriesViewModel
 import com.monoid.hackernews.common.view.stories.StoryOrdering
 import io.ktor.http.Url

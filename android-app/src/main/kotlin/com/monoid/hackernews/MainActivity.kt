@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.monoid.hackernews.common.core.log.LoggerAdapter
 import com.monoid.hackernews.common.core.metro.ActivityScope
 import com.monoid.hackernews.common.core.metro.ContributesActivityInjector
-import com.monoid.hackernews.common.view.App
+import com.monoid.hackernews.common.view.AndroidApp
 import com.monoid.hackernews.common.view.stories.LocalPlatformContext
 import com.monoid.hackernews.common.view.stories.PlatformContext
 import dev.zacsweers.metro.BindingContainer
@@ -58,7 +58,7 @@ class MainActivity(
             ReportDrawnWhen { contentComposed }
             SideEffect { contentComposed = true }
             CompositionLocalProvider(LocalPlatformContext provides PlatformContext(LocalContext.current)) {
-                App(onClickUrl = ::onClickUrl)
+                AndroidApp(onClickUrl = ::onClickUrl)
             }
         }
         jankStats()

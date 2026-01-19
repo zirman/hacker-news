@@ -1,5 +1,6 @@
 package com.monoid.hackernews.common.domain.navigation
 
+import androidx.navigation3.runtime.NavKey
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Username
 import kotlinx.serialization.SerialName
@@ -19,19 +20,22 @@ enum class Story {
 }
 
 @Serializable
-sealed interface Route {
+sealed interface BottomNav : NavKey {
     @Serializable
-    enum class BottomNav : Route {
-        @SerialName("Stories")
-        Stories,
+    @SerialName("Stories")
+    data object Stories : BottomNav
 
-        @SerialName("Favorites")
-        Favorites,
+    @Serializable
+    @SerialName("Favorites")
+    data object Favorites : BottomNav
 
-        @SerialName("Settings")
-        Settings;
-    }
+    @Serializable
+    @SerialName("Settings")
+    data object Settings : BottomNav
+}
 
+@Serializable
+sealed interface Route : NavKey {
     @Serializable
     @SerialName("User")
     data class User(val username: Username) : Route

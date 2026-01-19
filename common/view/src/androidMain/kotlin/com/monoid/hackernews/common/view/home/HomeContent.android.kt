@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Username
-import com.monoid.hackernews.common.domain.navigation.Route.BottomNav
+import com.monoid.hackernews.common.domain.navigation.BottomNav
 import com.monoid.hackernews.common.view.favorites.FavoritesScaffold
 import com.monoid.hackernews.common.view.settings.SettingsScaffold
 import com.monoid.hackernews.common.view.stories.StoriesScaffold

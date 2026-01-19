@@ -2,6 +2,9 @@
 
 package com.monoid.hackernews.common.view
 
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.only
@@ -9,25 +12,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
-import androidx.compose.material3.adaptive.layout.calculatePaneScaffoldDirective
-import androidx.compose.material3.adaptive.navigation3.ListDetailSceneStrategy
-import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneStrategy
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation3.runtime.NavEntry
-import androidx.navigation3.runtime.NavEntryDecorator
-import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.ui.NavDisplay
 import com.monoid.hackernews.common.core.metro.metroViewModel
+import com.monoid.hackernews.common.domain.navigation.BottomNav
 import com.monoid.hackernews.common.domain.navigation.Route
 import com.monoid.hackernews.common.view.comment.CommentDialog
 import com.monoid.hackernews.common.view.fab.listContentInsetSides
@@ -48,52 +44,110 @@ import io.ktor.http.Url
 
 @Composable
 fun MainNavDisplay(
-    backStack: SnapshotStateList<Route>,
-    onClickUrl: (Url) -> Unit,
-    onShowLoginDialog: () -> Unit,
+    entries: List<NavEntry<NavKey>>,
+    onBack: () -> Unit,
     modifier: Modifier = Modifier,
-    entryDecorators: List<NavEntryDecorator<Route>> = listOf(
-        rememberSaveableStateHolderNavEntryDecorator(),
-    ),
 ) {
-    val windowAdaptiveInfo = currentWindowAdaptiveInfo()
-    val directive = remember(windowAdaptiveInfo) {
-        calculatePaneScaffoldDirective(windowAdaptiveInfo)
-            .copy(horizontalPartitionSpacerSize = 0.dp)
-    }
-    val listDetailStrategy = rememberListDetailSceneStrategy<Route>(directive = directive)
+//    val windowAdaptiveInfo = currentWindowAdaptiveInfo()
+//    val directive = remember(windowAdaptiveInfo) {
+//        calculatePaneScaffoldDirective(windowAdaptiveInfo)
+//            .copy(horizontalPartitionSpacerSize = 0.dp)
+//    }
+//    val listDetailStrategy = rememberListDetailSceneStrategy<Route>(directive = directive)
     NavDisplay(
-        backStack = backStack,
-        sceneStrategy = listDetailStrategy,
+        entries = entries,
+        onBack = onBack,
+//        sceneStrategy = listDetailStrategy,
         modifier = modifier,
-        entryProvider = { key ->
-            key.navEntries(
-                backStack = backStack,
-                onClickUrl = onClickUrl,
-                onShowLoginDialog = onShowLoginDialog,
-            )
+//        entryDecorators = entryDecorators,
+        transitionSpec = {
+            slideInHorizontally { it } togetherWith slideOutHorizontally { -it }
         },
-        entryDecorators = entryDecorators,
+        popTransitionSpec = {
+            slideInHorizontally { -it } togetherWith slideOutHorizontally { it }
+        },
+        predictivePopTransitionSpec = {
+            slideInHorizontally { -it } togetherWith slideOutHorizontally { it }
+        },
     )
 }
 
-private fun Route.navEntries(
-    backStack: SnapshotStateList<Route>,
+fun NavKey.navEntries(
+    navigator: Navigator,
     onClickUrl: (Url) -> Unit,
     onShowLoginDialog: () -> Unit,
-): NavEntry<Route> = when (this) {
+): NavEntry<NavKey> {
+    return when (this) {
+        is BottomNav -> navEntries(
+            navigator = navigator,
+            onClickUrl = onClickUrl,
+            onShowLoginDialog = onShowLoginDialog,
+        )
 
-    is Route.BottomNav -> navEntries(
-        backStack = backStack,
-        onClickUrl = onClickUrl,
-        onShowLoginDialog = onShowLoginDialog,
-    )
+        is Route.Settings -> navEntries()
 
-    is Route.Settings -> navEntries()
+        is Route.Story -> NavEntry(
+            key = this,
+//        metadata = ListDetailSceneStrategy.listPane(),
+        ) {
+            val viewModel: SettingsViewModel = metroViewModel()
+            val lifecycleOwner = LocalLifecycleOwner.current
+            LaunchedEffect(Unit) {
+                lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    for (event in viewModel.events) {
+                        when (event) {
+                            is SettingsViewModel.Event.OpenLogin -> {
+                                onShowLoginDialog()
+                            }
 
-    is Route.Story -> NavEntry(
-        this,
-        metadata = ListDetailSceneStrategy.detailPane(),
+                            is SettingsViewModel.Event.OpenReply -> {
+                                navigator.navigate(Route.Reply(event.itemId))
+                            }
+                        }
+                    }
+                }
+            }
+            ItemDetailPane(
+                itemId = itemId,
+                onClickUrl = onClickUrl,
+                onClickUser = { navigator.navigate(Route.User(it)) },
+                onClickReply = viewModel::onClickReply,
+                onClickLogin = onShowLoginDialog,
+            )
+        }
+
+        is Route.Reply -> NavEntry(
+            key = this,
+//        metadata = ListDetailSceneStrategy.detailPane(),
+        ) {
+            CommentDialog(
+                parentId = parentId,
+                onDismiss = navigator::goBack,
+                modifier = Modifier.padding(WindowInsets.safeDrawing.asPaddingValues()),
+            )
+        }
+
+        is Route.User -> NavEntry(
+            key = this,
+//        metadata = ListDetailSceneStrategy.detailPane(),
+        ) {
+            Text(username.string)
+        }
+
+        else -> {
+            error("")
+        }
+    }
+}
+
+private fun BottomNav.navEntries(
+    navigator: Navigator,
+    onClickUrl: (Url) -> Unit,
+    onShowLoginDialog: () -> Unit,
+): NavEntry<NavKey> = when (this) {
+    is BottomNav.Favorites -> NavEntry(
+        key = this,
+//        metadata = ListDetailSceneStrategy.listPane(),
     ) {
         val viewModel: SettingsViewModel = metroViewModel()
         val lifecycleOwner = LocalLifecycleOwner.current
@@ -106,52 +160,7 @@ private fun Route.navEntries(
                         }
 
                         is SettingsViewModel.Event.OpenReply -> {
-                            backStack.navigateTo(Route.Reply(event.itemId))
-                        }
-                    }
-                }
-            }
-        }
-        ItemDetailPane(
-            itemId = itemId,
-            onClickUrl = onClickUrl,
-            onClickUser = { backStack.navigateTo(Route.User(it)) },
-            onClickReply = viewModel::onClickReply,
-            onClickLogin = onShowLoginDialog,
-        )
-    }
-
-    is Route.Reply -> NavEntry(this) {
-        CommentDialog(
-            parentId = parentId,
-            onDismiss = backStack::navigateUp,
-            modifier = Modifier.padding(WindowInsets.safeDrawing.asPaddingValues()),
-        )
-    }
-
-    is Route.User -> NavEntry(this) {
-        Text(username.string)
-    }
-}
-
-private fun Route.BottomNav.navEntries(
-    backStack: SnapshotStateList<Route>,
-    onClickUrl: (Url) -> Unit,
-    onShowLoginDialog: () -> Unit,
-): NavEntry<Route> = when (this) {
-    Route.BottomNav.Favorites -> NavEntry(this) {
-        val viewModel: SettingsViewModel = metroViewModel()
-        val lifecycleOwner = LocalLifecycleOwner.current
-        LaunchedEffect(Unit) {
-            lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                for (event in viewModel.events) {
-                    when (event) {
-                        is SettingsViewModel.Event.OpenLogin -> {
-                            onShowLoginDialog()
-                        }
-
-                        is SettingsViewModel.Event.OpenReply -> {
-                            backStack.navigateTo(Route.Reply(event.itemId))
+//                            backStack.navigateTo(Route.Reply(event.itemId))
                         }
                     }
                 }
@@ -161,9 +170,9 @@ private fun Route.BottomNav.navEntries(
         if (uiState.username.string.isNotBlank()) {
             FavoriteStoriesListPane(
                 username = uiState.username,
-                onClickItem = { backStack.navigateTo(Route.Story(it.id)) },
+                onClickItem = { navigator.navigate(Route.Story(it.id)) },
                 onClickReply = viewModel::onClickReply,
-                onClickUser = { backStack.navigateTo(Route.User(it)) },
+                onClickUser = { navigator.navigate(Route.User(it)) },
                 onClickUrl = onClickUrl,
                 onClickLogin = onShowLoginDialog,
                 contentPadding = WindowInsets.safeDrawing
@@ -177,26 +186,29 @@ private fun Route.BottomNav.navEntries(
         }
     }
 
-    Route.BottomNav.Settings -> NavEntry(this) {
+    is BottomNav.Settings -> NavEntry(
+        key = this,
+//        metadata = ListDetailSceneStrategy.listPane(),
+    ) {
         val viewModel: SettingsViewModel = metroViewModel()
         val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
         SettingsListPane(
             username = uiState.username,
             onClickLogin = onShowLoginDialog,
             onClickLogout = { /* showLogoutDialog = true */ },
-            onClickAppearance = { backStack.navigateTo(Route.Settings.Appearance) },
-            onClickNotifications = { backStack.navigateTo(Route.Settings.Notifications) },
-            onClickHelp = { backStack.navigateTo(Route.Settings.Help) },
-            onClickTermsOfService = { backStack.navigateTo(Route.Settings.TermsOfService) },
-            onClickUserGuidelines = { backStack.navigateTo(Route.Settings.UserGuidelines) },
-            onClickSendFeedback = { backStack.navigateTo(Route.Settings.SendFeedback) },
-            onClickAbout = { backStack.navigateTo(Route.Settings.About) },
+            onClickAppearance = { navigator.navigate(Route.Settings.Appearance) },
+            onClickNotifications = { navigator.navigate(Route.Settings.Notifications) },
+            onClickHelp = { navigator.navigate(Route.Settings.Help) },
+            onClickTermsOfService = { navigator.navigate(Route.Settings.TermsOfService) },
+            onClickUserGuidelines = { navigator.navigate(Route.Settings.UserGuidelines) },
+            onClickSendFeedback = { navigator.navigate(Route.Settings.SendFeedback) },
+            onClickAbout = { navigator.navigate(Route.Settings.About) },
         )
     }
 
-    Route.BottomNav.Stories -> NavEntry(
-        this,
-        metadata = ListDetailSceneStrategy.listPane(),
+    is BottomNav.Stories -> NavEntry(
+        key = this,
+//        metadata = ListDetailSceneStrategy.listPane(),
     ) {
         val viewModel: HomeViewModel = metroViewModel()
         val lifecycleOwner = LocalLifecycleOwner.current
@@ -209,15 +221,15 @@ private fun Route.BottomNav.navEntries(
                         }
 
                         is HomeViewModel.Event.OpenReply -> {
-                            backStack.navigateTo(Route.Reply(event.itemId))
+                            navigator.navigate(Route.Reply(event.itemId))
                         }
 
                         is HomeViewModel.Event.OpenUser -> {
-                            backStack.navigateTo(Route.User(event.username))
+                            navigator.navigate(Route.User(event.username))
                         }
 
                         is HomeViewModel.Event.OpenStory -> {
-                            backStack.navigateTo(Route.Story(event.itemId))
+                            navigator.navigate(Route.Story(event.itemId))
                         }
                     }
                 }
@@ -233,32 +245,53 @@ private fun Route.BottomNav.navEntries(
     }
 }
 
-private fun Route.Settings.navEntries(): NavEntry<Route> = when (this) {
-    is Route.Settings.About -> NavEntry(this) {
+private fun Route.Settings.navEntries(): NavEntry<NavKey> = when (this) {
+    is Route.Settings.About -> NavEntry(
+        key = this,
+//        metadata = ListDetailSceneStrategy.detailPane(),
+    ) {
         AboutPane()
     }
 
-    is Route.Settings.Appearance -> NavEntry(this) {
+    is Route.Settings.Appearance -> NavEntry(
+        key = this,
+//        metadata = ListDetailSceneStrategy.detailPane(),
+    ) {
         AppearanceDetailPane()
     }
 
-    is Route.Settings.Help -> NavEntry(this) {
+    is Route.Settings.Help -> NavEntry(
+        key = this,
+//        metadata = ListDetailSceneStrategy.detailPane(),
+    ) {
         HelpPane()
     }
 
-    is Route.Settings.Notifications -> NavEntry(this) {
+    is Route.Settings.Notifications -> NavEntry(
+        key = this,
+//        metadata = ListDetailSceneStrategy.detailPane(),
+    ) {
         NotificationsPane()
     }
 
-    is Route.Settings.SendFeedback -> NavEntry(this) {
+    is Route.Settings.SendFeedback -> NavEntry(
+        key = this,
+//        metadata = ListDetailSceneStrategy.detailPane(),
+    ) {
         SendFeedbackPane()
     }
 
-    is Route.Settings.TermsOfService -> NavEntry(this) {
+    is Route.Settings.TermsOfService -> NavEntry(
+        key = this,
+//        metadata = ListDetailSceneStrategy.detailPane(),
+    ) {
         TermsOfServicePane()
     }
 
-    is Route.Settings.UserGuidelines -> NavEntry(this) {
+    is Route.Settings.UserGuidelines -> NavEntry(
+        key = this,
+//        metadata = ListDetailSceneStrategy.detailPane(),
+    ) {
         UserGuidelinesPane()
     }
 }

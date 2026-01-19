@@ -1,8 +1,3 @@
-@file:OptIn(DelicateMetroGradleApi::class, ExperimentalRoborazziApi::class)
-
-import com.github.takahirom.roborazzi.ExperimentalRoborazziApi
-import dev.zacsweers.metro.gradle.DelicateMetroGradleApi
-
 plugins {
     id("kotlin-android-app")
 }

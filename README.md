@@ -26,6 +26,7 @@ iOS:
 <img src="https://github.com/user-attachments/assets/a74416fc-df62-458b-b259-878056d08820" width="320"/>
 
 TODO:
+ + Move features into separate api/impl modules
  + Saved State, View Model, Lifecycle, Paging* KMP libraries
  + Modifier.onVisibilityChanged()
  + Modifier.contentType(Username)

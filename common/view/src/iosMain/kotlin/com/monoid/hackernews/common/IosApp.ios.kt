@@ -15,33 +15,29 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.retain.retain
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.saveable.rememberSerializable
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.savedstate.compose.serialization.serializers.SnapshotStateListSerializer
 import com.monoid.hackernews.common.core.metro.LocalViewModelProviderFactory
-import com.monoid.hackernews.common.domain.navigation.Route
+import com.monoid.hackernews.common.domain.navigation.BottomNav
 import com.monoid.hackernews.common.view.MainNavDisplay
+import com.monoid.hackernews.common.view.Navigator
 import com.monoid.hackernews.common.view.Scrim
-import com.monoid.hackernews.common.view.currentBottomNav
-import com.monoid.hackernews.common.view.currentStack
-import com.monoid.hackernews.common.view.home.contentDescription
-import com.monoid.hackernews.common.view.home.icon
-import com.monoid.hackernews.common.view.home.label
+import com.monoid.hackernews.common.view.home.TOP_LEVEL_ROUTES
 import com.monoid.hackernews.common.view.login.LoginDialog
 import com.monoid.hackernews.common.view.logout.LogoutDialog
+import com.monoid.hackernews.common.view.navEntries
 import com.monoid.hackernews.common.view.stories.LocalPlatformContext
 import com.monoid.hackernews.common.view.stories.PlatformContext
 import com.monoid.hackernews.common.view.theme.AppTheme
 import dev.zacsweers.metro.createGraph
 import io.ktor.http.Url
 import org.jetbrains.compose.resources.stringResource
+import rememberNavigationState
 import kotlin.experimental.ExperimentalNativeApi
 
 @Composable
@@ -56,64 +52,49 @@ fun IosApp(onClickUrl: (Url) -> Unit) {
                 Box(contentAlignment = Alignment.Center) {
                     var showLoginDialog by rememberSaveable { mutableStateOf(false) }
                     var showLogoutDialog by rememberSaveable { mutableStateOf(false) }
-                    val backStack: SnapshotStateList<Route> =
-                        rememberSerializable(serializer = SnapshotStateListSerializer()) {
-                            mutableStateListOf(Route.BottomNav.Stories)
-                        }
+                    val navigationState = rememberNavigationState(
+                        startRoute = BottomNav.Stories,
+                        topLevelRoutes = TOP_LEVEL_ROUTES.keys,
+                    )
+                    val navigator = remember { Navigator(navigationState) }
                     Scaffold(
                         bottomBar = {
                             NavigationBar {
-                                val currentBottomNavDestination: Route.BottomNav? =
-                                    backStack.currentBottomNav()
-                                Route.BottomNav.entries.forEach { destination ->
+                                TOP_LEVEL_ROUTES.forEach { (key, value) ->
                                     NavigationBarItem(
-                                        selected = destination == currentBottomNavDestination,
-                                        onClick = {
-                                            val r = backStack.currentStack(Route.BottomNav.entries.first())
-                                            val v = backStack.slice(r)
-                                            backStack.removeRange(
-                                                fromIndex = r.first,
-                                                toIndex = r.last + 1,
-                                            )
-                                            backStack.addAll(v)
-                                            if (backStack.first() != Route.BottomNav.Stories) {
-                                                backStack.add(0, Route.BottomNav.Stories)
-                                            }
-                                        },
+                                        selected = key == navigationState.topLevelRoute,
+                                        onClick = { navigator.navigate(key) },
                                         icon = {
                                             Icon(
-                                                imageVector = destination.icon,
-                                                contentDescription = stringResource(destination.contentDescription),
+                                                imageVector = if (key == navigationState.topLevelRoute) value.selectedIcon else value.icon,
+                                                contentDescription = stringResource(value.description),
                                             )
                                         },
-                                        label = { Text(stringResource(destination.label)) },
+                                        label = { Text(stringResource(value.label)) },
                                     )
                                 }
                             }
                         }
                     ) { paddingValues ->
                         MainNavDisplay(
-                            backStack = backStack,
-                            onClickUrl = onClickUrl,
-                            onShowLoginDialog = { showLoginDialog = true },
+                            entries = navigationState.toDecoratedEntries { key ->
+                                key.navEntries(
+                                    navigator = navigator,
+                                    onClickUrl = onClickUrl,
+                                    onShowLoginDialog = { showLoginDialog = true },
+                                )
+                            },
+                            onBack = navigator::goBack,
                             modifier = Modifier
                                 .consumeWindowInsets(ScaffoldDefaults.contentWindowInsets)
                                 .padding(PaddingValues(bottom = paddingValues.calculateBottomPadding())),
                         )
                     }
                     if (showLoginDialog) {
-                        LoginDialog(
-                            onDismissRequest = {
-                                showLoginDialog = false
-                            },
-                        )
+                        LoginDialog(onDismissRequest = { showLoginDialog = false })
                     }
                     if (showLogoutDialog) {
-                        LogoutDialog(
-                            onDismissRequest = {
-                                showLogoutDialog = false
-                            },
-                        )
+                        LogoutDialog(onDismissRequest = { showLogoutDialog = false })
                     }
                 }
             }
