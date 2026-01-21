@@ -45,6 +45,7 @@ kotlin {
     iosSimulatorArm64()
     compilerOptions {
         freeCompilerArgs.add("-Xexpect-actual-classes")
+        freeCompilerArgs.add("-Xexplicit-backing-fields")
     }
     jvmToolchain(libs.findVersion("jvmToolchain").get().requiredVersion.toInt())
     sourceSets {
@@ -74,9 +75,6 @@ kotlin {
 //                implementation(libs.findBundle("commonTest").get())
 //            }
 //        }
-        all {
-            languageSettings.optIn("kotlin.time.ExperimentalTime")
-        }
     }
 }
 dependencies {

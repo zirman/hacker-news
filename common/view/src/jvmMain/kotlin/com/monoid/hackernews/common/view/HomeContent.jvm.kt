@@ -1,4 +1,4 @@
-package com.monoid.hackernews
+package com.monoid.hackernews.common.view
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box

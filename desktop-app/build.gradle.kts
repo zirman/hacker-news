@@ -17,7 +17,7 @@ compose {
     }
     desktop {
         application {
-            mainClass = "com.monoid.hackernews.Main_desktopKt"
+            mainClass = "com.monoid.hackernews.common.view.Main_jvmKt"
             nativeDistributions {
                 targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
                 packageName = name

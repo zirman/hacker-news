@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3AdaptiveApi::class)
 
-package com.monoid.hackernews
+package com.monoid.hackernews.common.view
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -21,11 +21,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.monoid.hackernews.common.domain.navigation.BottomNav
-import com.monoid.hackernews.common.view.MainNavDisplay
-import com.monoid.hackernews.common.view.Navigator
 import com.monoid.hackernews.common.view.home.TOP_LEVEL_ROUTES
 import com.monoid.hackernews.common.view.login.LoginDialog
-import com.monoid.hackernews.common.view.navEntries
 import com.monoid.hackernews.common.view.theme.AppTheme
 import io.ktor.http.Url
 import org.jetbrains.compose.resources.stringResource

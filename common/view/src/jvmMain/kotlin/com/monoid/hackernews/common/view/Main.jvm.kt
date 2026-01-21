@@ -1,11 +1,9 @@
-package com.monoid.hackernews
+package com.monoid.hackernews.common.view
 
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import com.monoid.hackernews.common.core.metro.LocalViewModelProviderFactory
-import com.monoid.hackernews.common.view.Res
-import com.monoid.hackernews.common.view.hacker_news
 import com.monoid.hackernews.common.view.stories.LocalPlatformContext
 import com.monoid.hackernews.common.view.stories.PlatformContext
 import dev.zacsweers.metro.createGraph

@@ -21,6 +21,7 @@ kotlin {
     }
     compilerOptions {
         freeCompilerArgs.add("-Xexpect-actual-classes")
+        freeCompilerArgs.add("-Xexplicit-backing-fields")
     }
     jvmToolchain(libs.findVersion("jvmToolchain").get().requiredVersion.toInt())
     sourceSets {
@@ -30,9 +31,6 @@ kotlin {
         commonTest.dependencies {
             implementation(libs.findBundle("commonTest").get())
             implementation(libs.findLibrary("composeUiTest").get())
-        }
-        all {
-            languageSettings.optIn("kotlin.time.ExperimentalTime")
         }
     }
 }

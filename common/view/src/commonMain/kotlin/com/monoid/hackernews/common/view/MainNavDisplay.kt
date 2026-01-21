@@ -12,9 +12,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.adaptive.layout.calculatePaneScaffoldDirective
+import androidx.compose.material3.adaptive.navigation3.ListDetailSceneStrategy
+import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneStrategy
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -48,16 +54,16 @@ fun MainNavDisplay(
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-//    val windowAdaptiveInfo = currentWindowAdaptiveInfo()
-//    val directive = remember(windowAdaptiveInfo) {
-//        calculatePaneScaffoldDirective(windowAdaptiveInfo)
-//            .copy(horizontalPartitionSpacerSize = 0.dp)
-//    }
-//    val listDetailStrategy = rememberListDetailSceneStrategy<Route>(directive = directive)
+    val windowAdaptiveInfo = currentWindowAdaptiveInfo()
+    val directive = remember(windowAdaptiveInfo) {
+        calculatePaneScaffoldDirective(windowAdaptiveInfo)
+            .copy(horizontalPartitionSpacerSize = 0.dp)
+    }
+    val listDetailStrategy = rememberListDetailSceneStrategy<NavKey>(directive = directive)
     NavDisplay(
         entries = entries,
         onBack = onBack,
-//        sceneStrategy = listDetailStrategy,
+        sceneStrategy = listDetailStrategy,
         modifier = modifier,
 //        entryDecorators = entryDecorators,
         transitionSpec = {
@@ -88,7 +94,7 @@ fun NavKey.navEntries(
 
         is Route.Story -> NavEntry(
             key = this,
-//        metadata = ListDetailSceneStrategy.listPane(),
+            metadata = ListDetailSceneStrategy.detailPane(),
         ) {
             val viewModel: SettingsViewModel = metroViewModel()
             val lifecycleOwner = LocalLifecycleOwner.current
@@ -118,7 +124,7 @@ fun NavKey.navEntries(
 
         is Route.Reply -> NavEntry(
             key = this,
-//        metadata = ListDetailSceneStrategy.detailPane(),
+            metadata = ListDetailSceneStrategy.detailPane(),
         ) {
             CommentDialog(
                 parentId = parentId,
@@ -129,7 +135,7 @@ fun NavKey.navEntries(
 
         is Route.User -> NavEntry(
             key = this,
-//        metadata = ListDetailSceneStrategy.detailPane(),
+            metadata = ListDetailSceneStrategy.detailPane(),
         ) {
             Text(username.string)
         }
@@ -147,7 +153,7 @@ private fun BottomNav.navEntries(
 ): NavEntry<NavKey> = when (this) {
     is BottomNav.Favorites -> NavEntry(
         key = this,
-//        metadata = ListDetailSceneStrategy.listPane(),
+        metadata = ListDetailSceneStrategy.listPane(),
     ) {
         val viewModel: SettingsViewModel = metroViewModel()
         val lifecycleOwner = LocalLifecycleOwner.current
@@ -188,7 +194,7 @@ private fun BottomNav.navEntries(
 
     is BottomNav.Settings -> NavEntry(
         key = this,
-//        metadata = ListDetailSceneStrategy.listPane(),
+        metadata = ListDetailSceneStrategy.listPane(),
     ) {
         val viewModel: SettingsViewModel = metroViewModel()
         val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
@@ -208,7 +214,7 @@ private fun BottomNav.navEntries(
 
     is BottomNav.Stories -> NavEntry(
         key = this,
-//        metadata = ListDetailSceneStrategy.listPane(),
+        metadata = ListDetailSceneStrategy.listPane(),
     ) {
         val viewModel: HomeViewModel = metroViewModel()
         val lifecycleOwner = LocalLifecycleOwner.current
@@ -248,49 +254,49 @@ private fun BottomNav.navEntries(
 private fun Route.Settings.navEntries(): NavEntry<NavKey> = when (this) {
     is Route.Settings.About -> NavEntry(
         key = this,
-//        metadata = ListDetailSceneStrategy.detailPane(),
+        metadata = ListDetailSceneStrategy.detailPane(),
     ) {
         AboutPane()
     }
 
     is Route.Settings.Appearance -> NavEntry(
         key = this,
-//        metadata = ListDetailSceneStrategy.detailPane(),
+        metadata = ListDetailSceneStrategy.detailPane(),
     ) {
         AppearanceDetailPane()
     }
 
     is Route.Settings.Help -> NavEntry(
         key = this,
-//        metadata = ListDetailSceneStrategy.detailPane(),
+        metadata = ListDetailSceneStrategy.detailPane(),
     ) {
         HelpPane()
     }
 
     is Route.Settings.Notifications -> NavEntry(
         key = this,
-//        metadata = ListDetailSceneStrategy.detailPane(),
+        metadata = ListDetailSceneStrategy.detailPane(),
     ) {
         NotificationsPane()
     }
 
     is Route.Settings.SendFeedback -> NavEntry(
         key = this,
-//        metadata = ListDetailSceneStrategy.detailPane(),
+        metadata = ListDetailSceneStrategy.detailPane(),
     ) {
         SendFeedbackPane()
     }
 
     is Route.Settings.TermsOfService -> NavEntry(
         key = this,
-//        metadata = ListDetailSceneStrategy.detailPane(),
+        metadata = ListDetailSceneStrategy.detailPane(),
     ) {
         TermsOfServicePane()
     }
 
     is Route.Settings.UserGuidelines -> NavEntry(
         key = this,
-//        metadata = ListDetailSceneStrategy.detailPane(),
+        metadata = ListDetailSceneStrategy.detailPane(),
     ) {
         UserGuidelinesPane()
     }

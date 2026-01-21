@@ -3,7 +3,7 @@ kotlin = "2.3.20-Beta1" # https://github.com/jetbrains/kotlin/releases
 kotlinTest = "2.3.20-Beta1"
 jvmToolchain = "21"
 jvmTarget = "21"
-minSdk = "28"
+minSdk = "29"
 targetSdk = "36"
 compileSdk = "36"
 buildToolsVersion = "36.1.0"
@@ -186,15 +186,13 @@ jetbrainsCore = { group = "org.jetbrains.androidx.core", name = "core-bundle", v
 jetbrainsWindowCore = { group = "org.jetbrains.androidx.window", name = "window-core", version.ref = "jetbrainsWindowCore" }
 jetbrainsSavedState = { group = "org.jetbrains.androidx.savedstate", name = "savedstate", version.ref = "jetbrainsSavedState" }
 
-#navigationUiKtx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
-
 composeLintChecks = { group = "com.slack.lint.compose", name = "compose-lint-checks", version.ref = "composeLintChecks" }
 
 material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 material3WindowSizeClassMultiplatform = { group = "dev.chrisbanes.material3", name = "material3-window-size-class-multiplatform", version.ref = "material3WindowSizeClassMultiplatform" }
 
-navigation3Ui = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "navigation3Ui" }
-navigation3Material3Adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation3", version.ref = "adaptiveNavigation3" }
+navigation3Ui = { group = "org.jetbrains.androidx.navigation3", name = "navigation3-ui", version.ref = "navigation3Ui" }
+navigation3Material3Adaptive = { group = "org.jetbrains.compose.material3.adaptive", name = "adaptive-navigation3", version.ref = "adaptiveNavigation3" }
 
 composeMaterialWear = { group = "androidx.wear.compose", name = "compose-material", version.ref = "wearCompose" }
 composeNavigationWear = { group = "androidx.wear.compose", name = "compose-navigation", version.ref = "wearCompose" }
