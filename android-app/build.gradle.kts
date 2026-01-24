@@ -24,6 +24,7 @@ android {
     }
     buildTypes {
         release {
+            // isDebuggable = true
             signingConfig = signingConfigs.getByName("release")
         }
     }
