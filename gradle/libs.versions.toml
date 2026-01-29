@@ -1,6 +1,6 @@
 [versions]
-kotlin = "2.3.20-Beta1" # https://github.com/jetbrains/kotlin/releases
-kotlinTest = "2.3.20-Beta1"
+kotlin = "2.3.20-Beta2" # https://github.com/jetbrains/kotlin/releases
+kotlinTest = "2.3.20-Beta2"
 jvmToolchain = "21"
 jvmTarget = "21"
 minSdk = "29"
@@ -14,7 +14,7 @@ androidVersion = "4.1.1.4"
 desugarJdkLibs = "2.1.5"
 kotlinDatetime = "0.7.1"
 kotlinPoet = "2.2.0" # https://github.com/square/kotlinpoet/releases
-kotlinWrappersBom = "2026.1.12" # https://github.com/JetBrains/kotlin-wrappers/releases
+kotlinWrappersBom = "2026.1.16" # https://github.com/JetBrains/kotlin-wrappers/releases
 jetbrainsCompose = "1.10.0" # https://github.com/JetBrains/compose-multiplatform/releases
 jetbrainsCore = "1.0.1"
 jetbrainsWindowCore = "1.5.1"
@@ -28,7 +28,7 @@ kermit = "2.0.8"
 room = "2.8.4"
 sqlite = "2.6.2"
 datastore = "1.2.0"
-activityKtx = "1.12.2"
+activityKtx = "1.12.3"
 fragmentKtx = "1.8.9"
 lifecycle = "2.9.6" # https://mvnrepository.com/artifact/org.jetbrains.androidx.lifecycle/lifecycle-viewmodel
 lifecycleProcess = "2.10.0"
@@ -45,26 +45,26 @@ coreSplashscreen = "1.2.0"
 collectionKtx = "1.5.0"
 annotation = "1.9.1"
 paletteKtx = "1.0.0"
-workRuntimeKtx = "2.11.0"
+workRuntimeKtx = "2.11.1"
 preferenceKtx = "1.2.1"
 metricsPerformance = "1.0.0"
 composeLintChecks = "1.4.2"
-material3 = "1.5.0-alpha12"
+material3 = "1.5.0-alpha13"
 material3WindowSizeClassMultiplatform = "0.5.0"
-metro = "0.10.1" # https://github.com/ZacSweers/metro/releases
+metro = "0.10.2" # https://github.com/ZacSweers/metro/releases
 navigation3Ui = "1.0.0-alpha06"
-adaptiveNavigation3 = "1.3.0-alpha03"
+adaptiveNavigation3 = "1.3.0-alpha04"
 wearCompose = "1.5.6"
 accompanist = "0.37.3" # https://github.com/google/accompanist/releases
 junit = "4.13.2"
 junitExt = "1.3.0"
 espressoCore = "3.7.0"
-uiTestJunit4 = "1.10.1" # https://mvnrepository.com/artifact/androidx.compose.ui/ui-test-junit4
-mockk = "1.14.7"
+uiTestJunit4 = "1.10.2" # https://mvnrepository.com/artifact/androidx.compose.ui/ui-test-junit4
+mockk = "1.14.9"
 robolectric = "4.16.1"
 roborazzi = "1.57.0"
 junitPlatform = "6.0.2"
-assertjCore = "3.27.6"
+assertjCore = "3.27.7"
 slf4jSimple = "2.0.17"
 detekt = "1.23.8"
 robsRules = "1.0.2"
@@ -95,7 +95,7 @@ composeComponentsResources = { group = "org.jetbrains.compose.components", name 
 composeComponentsSplitPane = { group = "org.jetbrains.compose.components", name = "components-splitpane", version.ref = "jetbrainsCompose" }
 composeDesktop = { group = "org.jetbrains.compose.desktop", name = "desktop", version.ref = "jetbrainsCompose" }
 composeFoundation = { group = "org.jetbrains.compose.foundation", name = "foundation", version.ref = "jetbrainsCompose" }
-composeMaterial3 = { group = "org.jetbrains.compose.material3", name = "material3", version = "1.11.0-alpha01" }
+composeMaterial3 = { group = "org.jetbrains.compose.material3", name = "material3", version = "1.11.0-alpha02" }
 composeMaterialIconsExtended = { group = "org.jetbrains.compose.material", name = "material-icons-extended", version = "1.7.3" }
 composeRuntime = { group = "org.jetbrains.compose.runtime", name = "runtime", version.ref = "jetbrainsCompose" }
 composeUi = { group = "org.jetbrains.compose.ui", name = "ui", version.ref = "jetbrainsCompose" }
