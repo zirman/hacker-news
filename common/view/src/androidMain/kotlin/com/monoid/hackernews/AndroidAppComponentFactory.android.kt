@@ -27,11 +27,7 @@ abstract class AndroidAppComponentFactory : AppComponentFactory() {
         return appGraph.application
     }
 
-    override fun instantiateActivityCompat(
-        cl: ClassLoader,
-        className: String,
-        intent: Intent?,
-    ): Activity {
+    override fun instantiateActivityCompat(cl: ClassLoader, className: String, intent: Intent?): Activity {
         val activityGraphProvider = getProvider(cl, className, appGraph.activityGraphProviders)
         return if (activityGraphProvider != null) {
             activityGraphProvider().activity
@@ -40,11 +36,7 @@ abstract class AndroidAppComponentFactory : AppComponentFactory() {
         }
     }
 
-    override fun instantiateServiceCompat(
-        cl: ClassLoader,
-        className: String,
-        intent: Intent?
-    ): Service {
+    override fun instantiateServiceCompat(cl: ClassLoader, className: String, intent: Intent?): Service {
         val serviceGraphProvider = getProvider(cl, className, appGraph.serviceGraphProviders)
         return if (serviceGraphProvider != null) {
             serviceGraphProvider().service
@@ -53,11 +45,7 @@ abstract class AndroidAppComponentFactory : AppComponentFactory() {
         }
     }
 
-    override fun instantiateReceiverCompat(
-        cl: ClassLoader,
-        className: String,
-        intent: Intent?
-    ): BroadcastReceiver {
+    override fun instantiateReceiverCompat(cl: ClassLoader, className: String, intent: Intent?): BroadcastReceiver {
         val broadcastReceiverGraphProvider =
             getProvider(cl, className, appGraph.broadcastReceiverGraphProviders)
         return if (broadcastReceiverGraphProvider != null) {

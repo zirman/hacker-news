@@ -28,9 +28,7 @@ import dev.zacsweers.metro.SingleIn
 
 @SingleIn(ActivityScope::class)
 @Inject
-class WearMainActivity(
-    override val defaultViewModelProviderFactory: ViewModelProvider.Factory,
-) : ComponentActivity() {
+class WearMainActivity(override val defaultViewModelProviderFactory: ViewModelProvider.Factory) : ComponentActivity() {
     @ContributesTo(ActivityScope::class)
     @BindingContainer
     interface InnerBindings {

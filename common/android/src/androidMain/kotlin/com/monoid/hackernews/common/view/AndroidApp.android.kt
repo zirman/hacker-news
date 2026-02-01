@@ -49,7 +49,11 @@ fun AndroidApp(onClickUrl: (Url) -> Unit) {
                                     onClick = { navigator.navigate(key) },
                                     icon = {
                                         Icon(
-                                            imageVector = if (key == navigationState.topLevelRoute) value.selectedIcon else value.icon,
+                                            imageVector = if (key == navigationState.topLevelRoute) {
+                                                value.selectedIcon
+                                            } else {
+                                                value.icon
+                                            },
                                             contentDescription = stringResource(value.description),
                                         )
                                     },
@@ -57,7 +61,7 @@ fun AndroidApp(onClickUrl: (Url) -> Unit) {
                                 )
                             }
                         }
-                    }
+                    },
                 ) { paddingValues ->
                     MainNavDisplay(
                         entries = navigationState.toDecoratedEntries { key ->

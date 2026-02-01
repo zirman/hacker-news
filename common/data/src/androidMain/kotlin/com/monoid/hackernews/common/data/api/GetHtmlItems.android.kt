@@ -3,9 +3,7 @@ package com.monoid.hackernews.common.data.api
 import kotlin.coroutines.suspendCoroutine
 
 @Suppress("SetJavaScriptEnabled")
-actual suspend fun getHtmlItems(
-    path: String,
-): List<ItemId> = suspendCoroutine { _ ->
+actual suspend fun getHtmlItems(path: String): List<ItemId> = suspendCoroutine { _ ->
     // TODO: make platform agnostic
 //    val wv = WebView(context)
 //    wv.settings.javaScriptEnabled = true

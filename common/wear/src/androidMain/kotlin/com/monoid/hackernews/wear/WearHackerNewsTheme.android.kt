@@ -10,10 +10,7 @@ import com.monoid.hackernews.common.view.settings.AppearanceViewModel
 import com.monoid.hackernews.common.view.theme.LocalCommentIndentation
 
 @Composable
-fun WearHackerNewsTheme(
-    viewModel: AppearanceViewModel = metroViewModel(),
-    content: @Composable () -> Unit,
-) {
+fun WearHackerNewsTheme(viewModel: AppearanceViewModel = metroViewModel(), content: @Composable () -> Unit) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     MaterialTheme(
         colors = WearColorPalette,

@@ -36,9 +36,11 @@ actual fun appColorScheme(): ColorScheme {
                 dynamicLightColorScheme(context)
             }
         }
+
         useDarkTheme -> {
             DarkThemeColors
         }
+
         else -> {
             LightThemeColors
         }
@@ -46,10 +48,7 @@ actual fun appColorScheme(): ColorScheme {
 }
 
 @Composable
-actual fun AppTheme(
-    viewModel: AppearanceViewModel,
-    content: @Composable () -> Unit,
-) {
+actual fun AppTheme(viewModel: AppearanceViewModel, content: @Composable () -> Unit) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     MaterialExpressiveTheme(
         colorScheme = appColorScheme(),

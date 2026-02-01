@@ -70,7 +70,7 @@ fun StoriesFabAndroid(
                                     fabMenuExpanded = false
                                     true
                                 },
-                            )
+                            ),
                         )
                     }
                 },

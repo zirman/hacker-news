@@ -39,7 +39,7 @@ fun TextBlock(
     softWrap: Boolean = true,
     minHeight: Boolean = false,
     onTextLayout: (TextLayoutResult) -> Unit = {},
-    style: TextStyle = LocalTextStyle.current
+    style: TextStyle = LocalTextStyle.current,
 ) {
     val blockHeightSp: TextUnit =
         style.lineHeight * lines
@@ -90,7 +90,7 @@ fun TextBlock(
     minHeight: Boolean = false,
     inlineContent: Map<String, InlineTextContent> = mapOf(),
     onTextLayout: (TextLayoutResult) -> Unit = {},
-    style: TextStyle = LocalTextStyle.current
+    style: TextStyle = LocalTextStyle.current,
 ) {
     val blockHeightSp: TextUnit =
         style.lineHeight

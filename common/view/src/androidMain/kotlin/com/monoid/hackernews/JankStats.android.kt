@@ -1,14 +1,6 @@
 package com.monoid.hackernews
 
-import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import androidx.metrics.performance.JankStats
-import kotlinx.coroutines.awaitCancellation
-import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
 
 fun ComponentActivity.jankStats() {
     return

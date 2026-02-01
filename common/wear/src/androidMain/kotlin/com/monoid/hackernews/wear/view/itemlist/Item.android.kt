@@ -6,11 +6,7 @@ import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 
 @Composable
-fun Item(
-    itemUi: Item?,
-    onClickDetail: (ItemId?) -> Unit,
-    modifier: Modifier = Modifier,
-) {
+fun Item(itemUi: Item?, onClickDetail: (ItemId?) -> Unit, modifier: Modifier = Modifier) {
 //    TitleCard(
 //        onClick = { onClickDetail(ItemId(requireNotNull(itemUi?.item?.id))) },
 //        title = {

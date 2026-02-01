@@ -16,15 +16,12 @@ import okio.Path.Companion.toPath
 object AndroidDataStoreBindings {
     @SingleIn(AppScope::class)
     @Provides
-    fun providesDataStorePreferences(
-        context: Application,
-    ): DataStore<Preferences> {
-        return PreferenceDataStoreFactory.createWithPath(
+    fun providesDataStorePreferences(context: Application): DataStore<Preferences> =
+        PreferenceDataStoreFactory.createWithPath(
             produceFile = {
                 context
                     .filesDir.resolve(DATA_STORE_FILE_NAME)
                     .absolutePath.toPath()
             },
         )
-    }
 }

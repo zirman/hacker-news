@@ -34,7 +34,7 @@ class UiModeConfigurator(
                                         LightDarkMode.System -> UiModeManager.MODE_NIGHT_AUTO
                                         LightDarkMode.Light -> UiModeManager.MODE_NIGHT_NO
                                         LightDarkMode.Dark -> UiModeManager.MODE_NIGHT_YES
-                                    }
+                                    },
                                 )
                         } else {
                             AppCompatDelegate.setDefaultNightMode(
@@ -42,7 +42,7 @@ class UiModeConfigurator(
                                     LightDarkMode.System -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
                                     LightDarkMode.Light -> AppCompatDelegate.MODE_NIGHT_NO
                                     LightDarkMode.Dark -> AppCompatDelegate.MODE_NIGHT_YES
-                                }
+                                },
                             )
                         }
                     }

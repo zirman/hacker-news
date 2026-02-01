@@ -6,6 +6,4 @@ import kotlinx.serialization.Serializable
 @Serializable
 @SerialName("ItemId")
 @JvmInline
-actual value class ItemId actual constructor(
-    actual val long: Long,
-)
+actual value class ItemId actual constructor(actual val long: Long)

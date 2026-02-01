@@ -24,8 +24,7 @@ interface AndroidViewModelGraph : ViewModelGraph {
     val androidViewModelProviders: Map<KClass<out ViewModel>, Provider<ViewModel>>
 
     @Provides
-    fun providesApplication(creationExtras: CreationExtras): Application =
-        checkNotNull(creationExtras[APPLICATION_KEY])
+    fun providesApplication(creationExtras: CreationExtras): Application = checkNotNull(creationExtras[APPLICATION_KEY])
 
     @Provides
     fun providesSavedStateHandle(creationExtras: CreationExtras): SavedStateHandle =
