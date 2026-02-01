@@ -2,8 +2,7 @@ plugins {
     id("kotlin-android-app")
 }
 dependencies {
-    implementation(project(":view"))
-    implementation(libs.bundles.wear)
+    implementation(project(":wear"))
 }
 android {
     val appId = "com.monoid.hackernews.wear"

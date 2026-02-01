@@ -29,6 +29,8 @@ includeSubdir(":injection", "common")
 includeSubdir(":data", "common")
 includeSubdir(":domain", "common")
 includeSubdir(":view", "common")
+includeSubdir(":android", "common")
+includeSubdir(":wear", "common")
 includeSubdir(":injection-processor", "ksp")
 includeSubdir(":screenshot-processor", "ksp")
 private fun includeSubdir(name: String, directory: String) {
