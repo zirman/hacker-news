@@ -1,21 +1,16 @@
-@file:OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-
 package com.monoid.hackernews.common.view.fab
 
 import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
-import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
+import androidx.window.core.layout.WindowSizeClass
 
 @Composable
-fun listContentInsetSides(windowSizeClass: WindowSizeClass = calculateWindowSizeClass()): WindowInsetsSides {
+fun listContentInsetSides(windowSizeClass: WindowSizeClass = currentWindowAdaptiveInfo().windowSizeClass): WindowInsetsSides {
     var windowInsetsSides = WindowInsetsSides.Top + WindowInsetsSides.Start
     windowInsetsSides += if (
-        windowSizeClass.heightSizeClass >= WindowHeightSizeClass.Medium &&
-        windowSizeClass.widthSizeClass >= WindowWidthSizeClass.Expanded
+        windowSizeClass.isHeightAtLeastBreakpoint(WindowSizeClass.HEIGHT_DP_MEDIUM_LOWER_BOUND) &&
+        windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND)
     ) {
         // nav buttons are on the side
         WindowInsetsSides.Bottom
@@ -27,11 +22,11 @@ fun listContentInsetSides(windowSizeClass: WindowSizeClass = calculateWindowSize
 }
 
 @Composable
-fun detailContentInsetSides(windowSizeClass: WindowSizeClass = calculateWindowSizeClass()): WindowInsetsSides {
+fun detailContentInsetSides(windowSizeClass: WindowSizeClass = currentWindowAdaptiveInfo().windowSizeClass): WindowInsetsSides {
     var windowInsetsSides = WindowInsetsSides.Top + WindowInsetsSides.End
     windowInsetsSides += if (
-        windowSizeClass.heightSizeClass >= WindowHeightSizeClass.Medium &&
-        windowSizeClass.widthSizeClass >= WindowWidthSizeClass.Expanded
+        windowSizeClass.isHeightAtLeastBreakpoint(WindowSizeClass.HEIGHT_DP_MEDIUM_LOWER_BOUND) &&
+        windowSizeClass.isWidthAtLeastBreakpoint(WindowSizeClass.WIDTH_DP_EXPANDED_LOWER_BOUND)
     ) {
         // nav buttons are on the side
         WindowInsetsSides.Bottom

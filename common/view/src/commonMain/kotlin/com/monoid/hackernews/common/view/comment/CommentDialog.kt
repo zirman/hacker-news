@@ -19,10 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -36,6 +33,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.window.core.layout.WindowSizeClass
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.an_error_occurred
@@ -45,16 +43,15 @@ import com.monoid.hackernews.common.view.reply
 import com.monoid.hackernews.common.view.send
 import org.jetbrains.compose.resources.stringResource
 
-@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
 fun CommentDialog(
     parentId: ItemId,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CommentViewModel = createCommentViewModel(parentId = parentId),
-    windowSizeClass: WindowSizeClass = calculateWindowSizeClass(),
+    windowSizeClass: WindowSizeClass = currentWindowAdaptiveInfo().windowSizeClass,
 ) {
-    val compact = windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
+    val compact = windowSizeClass.isHeightAtLeastBreakpoint(WindowSizeClass.HEIGHT_DP_MEDIUM_LOWER_BOUND).not()
     var erred by rememberSaveable { mutableStateOf(false) }
     val (item, loading, text) = viewModel.uiState.collectAsStateWithLifecycle().value
     val lifecycleOwner = LocalLifecycleOwner.current

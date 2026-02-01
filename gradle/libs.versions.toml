@@ -49,8 +49,8 @@ workRuntimeKtx = "2.11.1"
 preferenceKtx = "1.2.1"
 metricsPerformance = "1.0.0"
 composeLintChecks = "1.4.2"
-material3 = "1.5.0-alpha13"
-material3WindowSizeClassMultiplatform = "0.5.0"
+androidMaterial3 = "1.5.0-alpha13"
+composeMaterial3 = "1.11.0-alpha01"
 metro = "0.10.2" # https://github.com/ZacSweers/metro/releases
 navigation3Ui = "1.0.0-alpha06"
 adaptiveNavigation3 = "1.3.0-alpha03"
@@ -95,7 +95,7 @@ composeComponentsResources = { group = "org.jetbrains.compose.components", name 
 composeComponentsSplitPane = { group = "org.jetbrains.compose.components", name = "components-splitpane", version.ref = "jetbrainsCompose" }
 composeDesktop = { group = "org.jetbrains.compose.desktop", name = "desktop", version.ref = "jetbrainsCompose" }
 composeFoundation = { group = "org.jetbrains.compose.foundation", name = "foundation", version.ref = "jetbrainsCompose" }
-composeMaterial3 = { group = "org.jetbrains.compose.material3", name = "material3", version = "1.11.0-alpha01" }
+composeMaterial3 = { group = "org.jetbrains.compose.material3", name = "material3", version.ref = "composeMaterial3" }
 composeMaterialIconsExtended = { group = "org.jetbrains.compose.material", name = "material-icons-extended", version = "1.7.3" }
 composeRuntime = { group = "org.jetbrains.compose.runtime", name = "runtime", version.ref = "jetbrainsCompose" }
 composeUi = { group = "org.jetbrains.compose.ui", name = "ui", version.ref = "jetbrainsCompose" }
@@ -188,8 +188,7 @@ jetbrainsSavedState = { group = "org.jetbrains.androidx.savedstate", name = "sav
 
 composeLintChecks = { group = "com.slack.lint.compose", name = "compose-lint-checks", version.ref = "composeLintChecks" }
 
-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
-material3WindowSizeClassMultiplatform = { group = "dev.chrisbanes.material3", name = "material3-window-size-class-multiplatform", version.ref = "material3WindowSizeClassMultiplatform" }
+androidMaterial3 = { group = "androidx.compose.material3", name = "material3", version.ref = "androidMaterial3" }
 
 navigation3Ui = { group = "org.jetbrains.androidx.navigation3", name = "navigation3-ui", version.ref = "navigation3Ui" }
 navigation3Material3Adaptive = { group = "org.jetbrains.compose.material3.adaptive", name = "adaptive-navigation3", version.ref = "adaptiveNavigation3" }
@@ -257,7 +256,6 @@ commonMain = [
     "ktorClientCore",
     "ktorClientLogging",
     "ktorSerializationKotlinJson",
-    "material3WindowSizeClassMultiplatform",
     "navigation3Ui",
     "navigation3Material3Adaptive",
     "roomRuntime",
@@ -283,7 +281,7 @@ androidMain = [
     "kspSymbolProcessingApi",
     "ktorClientAndroid",
     "lifecycleProcess",
-    "material3",
+    "androidMaterial3",
     "metricsPerformance",
     "paletteKtx",
     "preferenceKtx",
