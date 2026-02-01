@@ -16,11 +16,9 @@ import java.io.File
 object JvmDataStoreBindings {
     @SingleIn(AppScope::class)
     @Provides
-    fun providesDataStorePreferences(): DataStore<Preferences> {
-        return PreferenceDataStoreFactory.createWithPath(
-            produceFile = {
-                File(DATA_STORE_FILE_NAME).absolutePath.toPath()
-            },
-        )
-    }
+    fun providesDataStorePreferences(): DataStore<Preferences> = PreferenceDataStoreFactory.createWithPath(
+        produceFile = {
+            File(DATA_STORE_FILE_NAME).absolutePath.toPath()
+        },
+    )
 }

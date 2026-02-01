@@ -49,7 +49,11 @@ fun DesktopApp(onClickUrl: (Url) -> Unit) {
                         TOP_LEVEL_ROUTES.forEach { (key, value) ->
                             IconButton(onClick = { navigator.navigate(key) }) {
                                 Icon(
-                                    imageVector = if (key == navigationState.topLevelRoute) value.selectedIcon else value.icon,
+                                    imageVector = if (key == navigationState.topLevelRoute) {
+                                        value.selectedIcon
+                                    } else {
+                                        value.icon
+                                    },
                                     contentDescription = stringResource(value.description),
                                 )
                             }

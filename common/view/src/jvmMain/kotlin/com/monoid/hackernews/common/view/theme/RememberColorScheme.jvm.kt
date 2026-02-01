@@ -9,15 +9,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.view.settings.AppearanceViewModel
 
 @Composable
-actual fun appColorScheme(): ColorScheme {
-    return DarkThemeColors
-}
+actual fun appColorScheme(): ColorScheme = DarkThemeColors
 
 @Composable
-actual fun AppTheme(
-    viewModel: AppearanceViewModel,
-    content: @Composable () -> Unit,
-) {
+actual fun AppTheme(viewModel: AppearanceViewModel, content: @Composable () -> Unit) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     MaterialTheme(
         colorScheme = appColorScheme(),

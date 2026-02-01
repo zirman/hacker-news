@@ -126,5 +126,4 @@ fun ItemsColumn(
     }
 }
 
-private fun LazyListState.hasScrolled(): Boolean =
-    firstVisibleItemIndex == 0 && firstVisibleItemScrollOffset == 0
+private fun LazyListState.hasScrolled(): Boolean = firstVisibleItemIndex == 0 && firstVisibleItemScrollOffset == 0
