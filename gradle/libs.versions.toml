@@ -66,7 +66,8 @@ roborazzi = "1.57.0"
 junitPlatform = "6.0.2"
 assertjCore = "3.27.7"
 slf4jSimple = "2.0.17"
-detekt = "1.23.8"
+detekt = "2.0.0-alpha.2"
+detektFormatting = "1.23.8"
 robsRules = "1.0.2"
 ksoup = "0.6.0"
 coil = "3.3.0"
@@ -84,7 +85,7 @@ room = { id = "androidx.room", version.ref = "room" }
 googlePlayServices = { id = "com.google.gms.google-services", version.ref = "googlePlayServices" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics" }
 firebasePerf = { id = "com.google.firebase.firebase-perf", version.ref = "firebasePerf" }
-detektGradle = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+detektGradle = { id = "dev.detekt", version.ref = "detekt" }
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 
 [libraries]
@@ -219,7 +220,8 @@ junitPlatformEngine = { group = "org.junit.platform", name = "junit-platform-eng
 junitPlatformLauncher = { group = "org.junit.platform", name = "junit-platform-launcher", version.ref = "junitPlatform" }
 assertjCore = { group = "org.assertj", name = "assertj-core", version.ref = "assertjCore" }
 
-detektFormatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
+ktlint = { group = "dev.detekt", name = "detekt-rules-ktlint-wrapper", version.ref = "detekt" }
+detektFormatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detektFormatting" }
 robsRules = { group = "dev.robch.rules", name = "robs-rules", version.ref = "robsRules" }
 
 [bundles]

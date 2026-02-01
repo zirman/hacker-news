@@ -1,18 +1,19 @@
-import io.gitlab.arturbosch.detekt.Detekt
-import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
+import dev.detekt.gradle.Detekt
+import dev.detekt.gradle.DetektCreateBaselineTask
 
 plugins {
-    id("io.gitlab.arturbosch.detekt")
+    id("dev.detekt")
 }
 val libs = the<VersionCatalogsExtension>().named("libs")
 detekt {
-    buildUponDefaultConfig = false // preconfigure defaults.
+    toolVersion = "2.0.0-alpha.2"
+    buildUponDefaultConfig = true // false // preconfigure defaults.
     allRules = false // activate all available (even unstable) rules.
-    autoCorrect = false // To enable or disable auto formatting.
+    autoCorrect = true // To enable or disable auto formatting.
     // To enable or disable parallel execution of detekt on multiple submodules.
     parallel = true
     // point to your custom config defining rules to run, overwriting default behavior.
-    config.setFrom("${rootProject.projectDir}/detekt.yml")
+//    config.setFrom("${rootProject.projectDir}/detekt.yml")
     baseline = projectDir.resolve("detekt-baseline.xml")
     enableCompilerPlugin = false
     // verbose output
@@ -20,24 +21,18 @@ detekt {
     ignoredBuildTypes = listOf("release")
 }
 dependencies {
-    detektPlugins(libs.findLibrary("detektFormatting").get())
-    detektPlugins(libs.findLibrary("robsRules").get())
+    detektPlugins(libs.findLibrary("ktlint").get())
 }
 tasks.withType<Detekt> {
-    config.setFrom(files("${rootProject.projectDir}/detekt.yml"))
+//    config.setFrom(files("${rootProject.projectDir}/detekt.yml"))
     reports {
         // observe findings in your browser with structure and code snippets
         html {
             required = true
             outputLocation = file("build/reports/mydetekt.html")
         }
-        // similar to the console output, contains issue signature to manually edit baseline files
-        txt {
-            required = true
-            outputLocation = file("build/reports/mydetekt.txt")
-        }
         // simple Markdown format
-        md {
+        markdown {
             required = true
             outputLocation = file("build/reports/mydetekt.md")
         }
@@ -51,10 +46,10 @@ tasks.withType<DetektCreateBaselineTask>().configureEach {
         it.file.relativeTo(projectDir).startsWith("build")
     }
 }
-pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
-    tasks.withType<Detekt>().configureEach {
-        exclude {
-            it.file.relativeTo(projectDir).startsWith("build")
-        }
-    }
-}
+//pluginManager.withPlugin("org.jetbrains.kotlin.multiplatform") {
+//    tasks.withType<Detekt>().configureEach {
+//        exclude {
+//            it.file.relativeTo(projectDir).startsWith("build")
+//        }
+//    }
+//}
