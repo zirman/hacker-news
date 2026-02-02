@@ -2,7 +2,7 @@ plugins {
     id("kotlin-android-app")
 }
 dependencies {
-    implementation(project(":view"))
+    implementation(project(":android"))
     testImplementation(libs.bundles.commonTest)
     testImplementation(libs.composeUiTest)
 }

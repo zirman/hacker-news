@@ -19,7 +19,7 @@
         android:required="false" />
 
     <application
-        android:name=".HackerNewsApplication"
+        android:name="com.monoid.hackernews.HackerNewsApplication"
         android:allowBackup="true"
         android:appComponentFactory="com.monoid.hackernews.MobileAndroidAppComponentFactory"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -37,7 +37,7 @@
         <!-- <profileable android:shell="true" /> -->
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.monoid.hackernews.MainActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize"
