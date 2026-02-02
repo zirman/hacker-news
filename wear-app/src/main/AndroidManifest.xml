@@ -10,7 +10,7 @@
     <uses-feature android:name="android.hardware.type.watch" />
 
     <application
-        android:name=".WearHackerNewsApplication"
+        android:name="com.monoid.hackernews.wear.WearHackerNewsApplication"
         android:allowBackup="true"
         android:appComponentFactory="com.monoid.hackernews.wear.WearAndroidAppComponentFactory"
         android:icon="@mipmap/ic_launcher"
@@ -33,7 +33,7 @@
             android:value="true" />
 
         <activity
-            android:name=".WearMainActivity"
+            android:name="com.monoid.hackernews.wear.WearMainActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:taskAffinity=".main"
@@ -73,7 +73,7 @@
         </activity>
 
         <service
-            android:name=".LocaleChangedService"
+            android:name="com.monoid.hackernews.wear.LocaleChangedService"
             android:exported="false" />
     </application>
 </manifest>
