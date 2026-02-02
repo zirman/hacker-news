@@ -33,7 +33,7 @@ class WearMainActivity(override val defaultViewModelProviderFactory: ViewModelPr
     @BindingContainer
     interface InnerBindings {
         @Binds
-        fun bindActivity(activity: WearMainActivity): Activity
+        val WearMainActivity.bind: Activity
     }
 
     interface Injectors {

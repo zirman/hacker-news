@@ -22,7 +22,7 @@ class LocaleChangedService : Service() {
     @GraphExtension(ServiceScope::class)
     interface Graph : ServiceGraph {
         @Binds
-        fun bindService(service: LocaleChangedService): Service
+        val LocaleChangedService.bind: Service
 
         @ContributesTo(AppScope::class)
         @GraphExtension.Factory

@@ -38,7 +38,7 @@ class MainActivity(
     @BindingContainer
     interface InnerBindings {
         @Binds
-        fun bindActivity(activity: MainActivity): Activity
+        val MainActivity.bind: Activity
     }
 
     interface Injectors {

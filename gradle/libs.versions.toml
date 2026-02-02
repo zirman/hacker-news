@@ -67,8 +67,8 @@ junitPlatform = "6.0.2"
 assertjCore = "3.27.7"
 slf4jSimple = "2.0.17"
 detekt = "2.0.0-alpha.2"
-detektFormatting = "1.23.8"
-robsRules = "1.0.2"
+#detektFormatting = "1.23.8"
+#robsRules = "1.0.2"
 ksoup = "0.6.0"
 coil = "3.3.0"
 
@@ -221,8 +221,8 @@ junitPlatformLauncher = { group = "org.junit.platform", name = "junit-platform-l
 assertjCore = { group = "org.assertj", name = "assertj-core", version.ref = "assertjCore" }
 
 ktlint = { group = "dev.detekt", name = "detekt-rules-ktlint-wrapper", version.ref = "detekt" }
-detektFormatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detektFormatting" }
-robsRules = { group = "dev.robch.rules", name = "robs-rules", version.ref = "robsRules" }
+#detektFormatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detektFormatting" }
+#robsRules = { group = "dev.robch.rules", name = "robs-rules", version.ref = "robsRules" }
 
 [bundles]
 commonMain = [

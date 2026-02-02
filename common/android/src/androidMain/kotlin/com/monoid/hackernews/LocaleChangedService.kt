@@ -18,7 +18,7 @@ class LocaleChangedService : Service() {
     @BindingContainer
     interface InnerBindings {
         @Binds
-        fun bindService(service: LocaleChangedService): Service
+        val LocaleChangedService.bind: Service
     }
 
     interface Injectors {
