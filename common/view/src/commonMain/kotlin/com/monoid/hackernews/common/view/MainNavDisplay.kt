@@ -5,8 +5,10 @@ package com.monoid.hackernews.common.view
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
@@ -19,6 +21,7 @@ import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneSt
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
@@ -47,6 +50,7 @@ import com.monoid.hackernews.common.view.settings.TermsOfServicePane
 import com.monoid.hackernews.common.view.settings.UserGuidelinesPane
 import com.monoid.hackernews.common.view.stories.StoriesPane
 import io.ktor.http.Url
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun MainNavDisplay(
@@ -153,7 +157,16 @@ private fun BottomNav.navEntries(
 ): NavEntry<NavKey> = when (this) {
     is BottomNav.Favorites -> NavEntry(
         key = this,
-        metadata = ListDetailSceneStrategy.listPane(),
+        metadata = ListDetailSceneStrategy.listPane(
+            detailPlaceholder = {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Text(
+                        text = stringResource(Res.string.no_story_selected),
+                        modifier = Modifier.align(Alignment.Center),
+                    )
+                }
+            },
+        ),
     ) {
         val viewModel: SettingsViewModel = metroViewModel()
         val lifecycleOwner = LocalLifecycleOwner.current
@@ -194,7 +207,16 @@ private fun BottomNav.navEntries(
 
     is BottomNav.Settings -> NavEntry(
         key = this,
-        metadata = ListDetailSceneStrategy.listPane(),
+        metadata = ListDetailSceneStrategy.listPane(
+            detailPlaceholder = {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Text(
+                        text = stringResource(Res.string.no_setting_selected),
+                        modifier = Modifier.align(Alignment.Center),
+                    )
+                }
+            },
+        ),
     ) {
         val viewModel: SettingsViewModel = metroViewModel()
         val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
@@ -214,7 +236,16 @@ private fun BottomNav.navEntries(
 
     is BottomNav.Stories -> NavEntry(
         key = this,
-        metadata = ListDetailSceneStrategy.listPane(),
+        metadata = ListDetailSceneStrategy.listPane(
+            detailPlaceholder = {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Text(
+                        text = stringResource(Res.string.no_story_selected),
+                        modifier = Modifier.align(Alignment.Center),
+                    )
+                }
+            },
+        ),
     ) {
         val viewModel: HomeViewModel = metroViewModel()
         val lifecycleOwner = LocalLifecycleOwner.current

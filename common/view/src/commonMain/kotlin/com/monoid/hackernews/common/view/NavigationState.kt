@@ -16,6 +16,7 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.savedstate.compose.serialization.serializers.MutableStateSerializer
 import androidx.savedstate.serialization.SavedStateConfiguration
 import com.monoid.hackernews.common.domain.navigation.BottomNav
+import com.monoid.hackernews.common.domain.navigation.Route
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 
@@ -45,6 +46,16 @@ fun rememberNavigationState(
                         subclass(BottomNav.Stories::class, BottomNav.Stories.serializer())
                         subclass(BottomNav.Favorites::class, BottomNav.Favorites.serializer())
                         subclass(BottomNav.Settings::class, BottomNav.Settings.serializer())
+                        subclass(Route.User::class, Route.User.serializer())
+                        subclass(Route.Story::class, Route.Story.serializer())
+                        subclass(Route.Reply::class, Route.Reply.serializer())
+                        subclass(Route.Settings.Appearance::class, Route.Settings.Appearance.serializer())
+                        subclass(Route.Settings.Notifications::class, Route.Settings.Notifications.serializer())
+                        subclass(Route.Settings.Help::class, Route.Settings.Help.serializer())
+                        subclass(Route.Settings.TermsOfService::class, Route.Settings.TermsOfService.serializer())
+                        subclass(Route.Settings.UserGuidelines::class, Route.Settings.UserGuidelines.serializer())
+                        subclass(Route.Settings.SendFeedback::class, Route.Settings.SendFeedback.serializer())
+                        subclass(Route.Settings.About::class, Route.Settings.About.serializer())
                     }
                 }
             },

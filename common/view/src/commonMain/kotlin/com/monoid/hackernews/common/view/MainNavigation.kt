@@ -1,40 +1,40 @@
 package com.monoid.hackernews.common.view
 
-import com.monoid.hackernews.common.domain.navigation.Story
-import org.jetbrains.compose.resources.DrawableResource
-import org.jetbrains.compose.resources.StringResource
+//import com.monoid.hackernews.common.domain.navigation.StoryType
+//import org.jetbrains.compose.resources.DrawableResource
+//import org.jetbrains.compose.resources.StringResource
+//
+//fun StoryType.toShortcutShortLabelStringId(): StringResource = when (this) {
+//    StoryType.Top -> Res.string.top_stories_shortcut_short_label
+//    StoryType.New -> Res.string.new_stories_shortcut_short_label
+//    StoryType.Best -> Res.string.best_stories_shortcut_short_label
+//    StoryType.Ask -> Res.string.ask_hacker_news_shortcut_short_label
+//    StoryType.Show -> Res.string.show_hacker_news_shortcut_short_label
+//    StoryType.Job -> Res.string.jobs_shortcut_short_label
+//    StoryType.Favorite -> Res.string.favorites_shortcut_short_label
+//}
+//
+//fun StoryType.toShortcutLongLabelStringId(): StringResource = when (this) {
+//    StoryType.Top -> Res.string.top_stories_shortcut_long_label
+//    StoryType.New -> Res.string.new_stories_shortcut_long_label
+//    StoryType.Best -> Res.string.best_stories_shortcut_long_label
+//    StoryType.Ask -> Res.string.ask_hacker_news_shortcut_long_label
+//    StoryType.Show -> Res.string.show_hacker_news_shortcut_long_label
+//    StoryType.Job -> Res.string.jobs_shortcut_long_label
+//    StoryType.Favorite -> Res.string.favorites_shortcut_long_label
+//}
+//
+//fun StoryType.toShortcutIconDrawableId(): DrawableResource = when (this) {
+//    StoryType.Top -> Res.drawable.trending_up_48px
+//    StoryType.New -> Res.drawable.new_releases_48px
+//    StoryType.Best -> Res.drawable.grade_48px
+//    StoryType.Ask -> Res.drawable.forum_48px
+//    StoryType.Show -> Res.drawable.present_to_all_48px
+//    StoryType.Job -> Res.drawable.work_48px
+//    StoryType.Favorite -> Res.drawable.bookmarks_48px
+//}
 
-fun Story.toShortcutShortLabelStringId(): StringResource = when (this) {
-    Story.Top -> Res.string.top_stories_shortcut_short_label
-    Story.New -> Res.string.new_stories_shortcut_short_label
-    Story.Best -> Res.string.best_stories_shortcut_short_label
-    Story.Ask -> Res.string.ask_hacker_news_shortcut_short_label
-    Story.Show -> Res.string.show_hacker_news_shortcut_short_label
-    Story.Job -> Res.string.jobs_shortcut_short_label
-    Story.Favorite -> Res.string.favorites_shortcut_short_label
-}
-
-fun Story.toShortcutLongLabelStringId(): StringResource = when (this) {
-    Story.Top -> Res.string.top_stories_shortcut_long_label
-    Story.New -> Res.string.new_stories_shortcut_long_label
-    Story.Best -> Res.string.best_stories_shortcut_long_label
-    Story.Ask -> Res.string.ask_hacker_news_shortcut_long_label
-    Story.Show -> Res.string.show_hacker_news_shortcut_long_label
-    Story.Job -> Res.string.jobs_shortcut_long_label
-    Story.Favorite -> Res.string.favorites_shortcut_long_label
-}
-
-fun Story.toShortcutIconDrawableId(): DrawableResource = when (this) {
-    Story.Top -> Res.drawable.trending_up_48px
-    Story.New -> Res.drawable.new_releases_48px
-    Story.Best -> Res.drawable.grade_48px
-    Story.Ask -> Res.drawable.forum_48px
-    Story.Show -> Res.drawable.present_to_all_48px
-    Story.Job -> Res.drawable.work_48px
-    Story.Favorite -> Res.drawable.bookmarks_48px
-}
-
-// fun <T : Context> Story.toShortcutInfoCompat(
+// fun <T : Context> StoryType.toShortcutInfoCompat(
 //    context: Context,
 //    contextClass: Class<T>,
 // ): ShortcutInfoCompat = ShortcutInfoCompat
@@ -50,13 +50,13 @@ fun Story.toShortcutIconDrawableId(): DrawableResource = when (this) {
 //                .buildUpon()
 //                .appendPath(
 //                    when (this@toShortcutInfoCompat) {
-//                        Story.Top -> "news"
-//                        Story.New -> "newest"
-//                        Story.Best -> "best"
-//                        Story.Ask -> "ask"
-//                        Story.Show -> "show"
-//                        Story.Job -> "jobs"
-//                        Story.Favorite -> "favorites"
+//                        StoryType.Top -> "news"
+//                        StoryType.New -> "newest"
+//                        StoryType.Best -> "best"
+//                        StoryType.Ask -> "ask"
+//                        StoryType.Show -> "show"
+//                        StoryType.Job -> "jobs"
+//                        StoryType.Favorite -> "favorites"
 //                    }
 //                )
 //                .build()

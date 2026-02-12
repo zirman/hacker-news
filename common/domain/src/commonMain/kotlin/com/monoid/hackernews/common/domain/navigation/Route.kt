@@ -9,15 +9,15 @@ import kotlinx.serialization.Serializable
 expect fun encodeUrl(str: String): String
 expect fun decodeUrl(str: String): String
 
-enum class Story {
-    Top,
-    New,
-    Best,
-    Ask,
-    Show,
-    Job,
-    Favorite,
-}
+//enum class StoryType {
+//    Top,
+//    New,
+//    Best,
+//    Ask,
+//    Show,
+//    Job,
+//    Favorite,
+//}
 
 @Serializable
 sealed interface BottomNav : NavKey {
