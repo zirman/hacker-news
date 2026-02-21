@@ -1,4 +1,4 @@
-package com.monoid.hackernews.common.view.home
+package com.monoid.hackernews.common.view
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bookmarks
@@ -9,13 +9,6 @@ import androidx.compose.material.icons.twotone.Newspaper
 import androidx.compose.material.icons.twotone.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.monoid.hackernews.common.domain.navigation.BottomNav
-import com.monoid.hackernews.common.view.Res
-import com.monoid.hackernews.common.view.favorites
-import com.monoid.hackernews.common.view.favorites_description
-import com.monoid.hackernews.common.view.profile_description
-import com.monoid.hackernews.common.view.settings
-import com.monoid.hackernews.common.view.stories
-import com.monoid.hackernews.common.view.trending_description
 import org.jetbrains.compose.resources.StringResource
 
 val TOP_LEVEL_ROUTES: Map<BottomNav, NavBarItem> = mapOf(

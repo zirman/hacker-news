@@ -2,10 +2,6 @@ package com.monoid.hackernews.wear.view.itemlist
 
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.scrollBy
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -19,7 +15,6 @@ import androidx.wear.compose.foundation.lazy.ScalingLazyListState
 import androidx.wear.compose.material.ListHeader
 import androidx.wear.compose.material.Text
 import com.monoid.hackernews.common.data.api.ItemId
-import com.monoid.hackernews.common.view.fab.detailContentInsetSides
 import kotlinx.coroutines.launch
 
 @Composable
@@ -65,9 +60,6 @@ fun ItemList(
             .focusRequester(focusRequester)
             .focusable(),
         state = state,
-        contentPadding = WindowInsets.safeDrawing
-            .only(detailContentInsetSides())
-            .asPaddingValues(),
     ) {
         item {
             ListHeader {

@@ -1,5 +1,6 @@
 package com.monoid.hackernews.common.view.login
 
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.monoid.hackernews.common.core.log.LoggerAdapter
@@ -21,6 +22,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+@Stable
 @ContributesIntoMap(ViewModelScope::class)
 @ViewModelKey(LoginViewModel::class)
 @Inject

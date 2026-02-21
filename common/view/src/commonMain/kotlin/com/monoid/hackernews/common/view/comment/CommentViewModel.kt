@@ -1,6 +1,7 @@
 package com.monoid.hackernews.common.view.comment
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.DEFAULT_ARGS_KEY
 import androidx.lifecycle.SAVED_STATE_REGISTRY_OWNER_KEY
 import androidx.lifecycle.SavedStateHandle
@@ -33,6 +34,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+@Stable
 @ContributesIntoMap(ViewModelScope::class)
 @ViewModelKey(CommentViewModel::class)
 @Inject

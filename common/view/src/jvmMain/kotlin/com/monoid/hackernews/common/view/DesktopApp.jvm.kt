@@ -2,7 +2,6 @@
 
 package com.monoid.hackernews.common.view
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.BottomAppBar
@@ -17,16 +16,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import com.monoid.hackernews.common.domain.navigation.BottomNav
-import com.monoid.hackernews.common.view.home.TOP_LEVEL_ROUTES
 import com.monoid.hackernews.common.view.login.LoginDialog
 import com.monoid.hackernews.common.view.theme.AppTheme
 import io.ktor.http.Url
 import org.jetbrains.compose.resources.stringResource
-import rememberNavigationState
 
 @Composable
 fun DesktopApp(onClickUrl: (Url) -> Unit) {
@@ -70,17 +67,18 @@ fun DesktopApp(onClickUrl: (Url) -> Unit) {
                     },
                 )
             },
-        ) { innerPadding ->
+        ) { contentPadding ->
+            val contentPadding = rememberUpdatedState(contentPadding)
             MainNavDisplay(
                 entries = navigationState.toDecoratedEntries { key ->
                     key.navEntries(
                         navigator = navigator,
                         onClickUrl = onClickUrl,
                         onShowLoginDialog = { showLoginDialog = true },
+                        contentPadding = contentPadding,
                     )
                 },
                 onBack = navigator::goBack,
-                modifier = Modifier.padding(innerPadding),
             )
         }
     }

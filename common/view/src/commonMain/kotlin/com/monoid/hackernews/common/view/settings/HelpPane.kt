@@ -1,5 +1,6 @@
 package com.monoid.hackernews.common.view.settings
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -9,8 +10,11 @@ import com.monoid.hackernews.common.view.faq_content
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun HelpPane(modifier: Modifier = Modifier) {
+fun HelpPane(contentPadding: PaddingValues, modifier: Modifier = Modifier) {
     Surface(modifier = modifier.fillMaxSize()) {
-        HtmlPane(stringResource(Res.string.faq_content))
+        HtmlPane(
+            htmlString = stringResource(resource = Res.string.faq_content),
+            contentPadding = contentPadding,
+        )
     }
 }

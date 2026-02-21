@@ -1,5 +1,8 @@
+package com.monoid.hackernews.common.view
+
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,12 +52,27 @@ fun rememberNavigationState(
                         subclass(Route.User::class, Route.User.serializer())
                         subclass(Route.Story::class, Route.Story.serializer())
                         subclass(Route.Reply::class, Route.Reply.serializer())
-                        subclass(Route.Settings.Appearance::class, Route.Settings.Appearance.serializer())
-                        subclass(Route.Settings.Notifications::class, Route.Settings.Notifications.serializer())
+                        subclass(
+                            Route.Settings.Appearance::class,
+                            Route.Settings.Appearance.serializer()
+                        )
+                        subclass(
+                            Route.Settings.Notifications::class,
+                            Route.Settings.Notifications.serializer()
+                        )
                         subclass(Route.Settings.Help::class, Route.Settings.Help.serializer())
-                        subclass(Route.Settings.TermsOfService::class, Route.Settings.TermsOfService.serializer())
-                        subclass(Route.Settings.UserGuidelines::class, Route.Settings.UserGuidelines.serializer())
-                        subclass(Route.Settings.SendFeedback::class, Route.Settings.SendFeedback.serializer())
+                        subclass(
+                            Route.Settings.TermsOfService::class,
+                            Route.Settings.TermsOfService.serializer()
+                        )
+                        subclass(
+                            Route.Settings.UserGuidelines::class,
+                            Route.Settings.UserGuidelines.serializer()
+                        )
+                        subclass(
+                            Route.Settings.SendFeedback::class,
+                            Route.Settings.SendFeedback.serializer()
+                        )
                         subclass(Route.Settings.About::class, Route.Settings.About.serializer())
                     }
                 }
@@ -79,6 +97,7 @@ fun rememberNavigationState(
  * @param topLevelRoute - the state object that backs the top level route.
  * @param backStacks - the back stacks for each top level route.
  */
+@Stable
 class NavigationState(
     val startRoute: BottomNav,
     topLevelRoute: MutableState<BottomNav>,

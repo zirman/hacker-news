@@ -14,7 +14,8 @@ import com.monoid.hackernews.common.view.settings.AppearanceViewModel
 @Composable
 actual fun appColorScheme(): ColorScheme {
     val viewModel: AppearanceViewModel = metroViewModel()
-    return when (viewModel.uiState.collectAsStateWithLifecycle().value.lightDarkMode) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    return when (uiState.lightDarkMode) {
         LightDarkMode.System -> {
             if (isSystemInDarkTheme()) {
                 DarkThemeColors

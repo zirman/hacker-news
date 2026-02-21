@@ -2,11 +2,8 @@ package com.monoid.hackernews.common.view.itemdetail
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
@@ -24,7 +21,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.ItemType
 import com.monoid.hackernews.common.data.model.Username
-import com.monoid.hackernews.common.view.fab.detailContentInsetSides
 import io.ktor.http.Url
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds
@@ -36,6 +32,7 @@ fun ItemDetailPane(
     onClickUser: (Username) -> Unit,
     onClickReply: (ItemId) -> Unit,
     onClickLogin: () -> Unit,
+    contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
     val viewModel = createItemDetailViewModel(itemId)
@@ -72,9 +69,7 @@ fun ItemDetailPane(
         modifier = modifier
             .background(MaterialTheme.colorScheme.surface)
             .fillMaxSize(),
-        contentPadding = WindowInsets.safeDrawing
-            .only(detailContentInsetSides())
-            .asPaddingValues(),
+        contentPadding = contentPadding,
     ) {
         itemsIndexed(
             items = uiState.comments.orEmpty(),

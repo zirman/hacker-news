@@ -1,5 +1,6 @@
 package com.monoid.hackernews.common.domain.navigation
 
+import androidx.compose.runtime.Stable
 import androidx.navigation3.runtime.NavKey
 import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Username
@@ -19,6 +20,7 @@ expect fun decodeUrl(str: String): String
 //    Favorite,
 //}
 
+@Stable
 @Serializable
 sealed interface BottomNav : NavKey {
     @Serializable

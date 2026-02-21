@@ -1,11 +1,8 @@
 package com.monoid.hackernews.common.view.settings
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.twotone.Help
@@ -33,7 +30,6 @@ import com.monoid.hackernews.common.view.login
 import com.monoid.hackernews.common.view.logout_format
 import com.monoid.hackernews.common.view.notifications
 import com.monoid.hackernews.common.view.send_feedback
-import com.monoid.hackernews.common.view.fab.detailContentInsetSides
 import com.monoid.hackernews.common.view.terms_of_service
 import com.monoid.hackernews.common.view.user_guidelines
 import org.jetbrains.compose.resources.stringResource
@@ -51,14 +47,11 @@ fun SettingsListPane(
     onClickUserGuidelines: () -> Unit,
     onClickSendFeedback: () -> Unit,
     onClickAbout: () -> Unit,
+    contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
     Surface(modifier = modifier.fillMaxSize()) {
-        LazyColumn(
-            contentPadding = WindowInsets.safeDrawing
-                .only(detailContentInsetSides())
-                .asPaddingValues(),
-        ) {
+        LazyColumn(contentPadding = contentPadding) {
             item {
                 if (username.string.isBlank()) {
                     ListItem(

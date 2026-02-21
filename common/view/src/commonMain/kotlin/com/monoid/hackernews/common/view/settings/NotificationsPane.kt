@@ -1,12 +1,10 @@
 package com.monoid.hackernews.common.view.settings
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
@@ -18,34 +16,28 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.monoid.hackernews.common.core.metro.metroViewModel
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.notifications
-import com.monoid.hackernews.common.view.fab.detailContentInsetSides
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun NotificationsPane(
+    contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
     viewModel: NotificationsViewModel = metroViewModel(),
 ) {
-    Surface(modifier = modifier.fillMaxSize()) {
+    Surface(
+        modifier = modifier.fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(contentPadding),
+    ) {
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-        Column(
-            modifier = Modifier.padding(
-                WindowInsets.safeDrawing
-                    .only(detailContentInsetSides())
-                    .asPaddingValues(),
-            ),
-        ) {
-            ListItem(
-                headlineContent = {
-                    Text(stringResource(Res.string.notifications))
-                },
-                trailingContent = {
-                    Switch(
-                        checked = uiState.notifications,
-                        onCheckedChange = viewModel::onClickNotifications,
-                    )
-                },
-            )
-        }
+        ListItem(
+            headlineContent = { Text(stringResource(Res.string.notifications)) },
+            trailingContent = {
+                Switch(
+                    checked = uiState.notifications,
+                    onCheckedChange = viewModel::onClickNotifications,
+                )
+            },
+        )
     }
 }

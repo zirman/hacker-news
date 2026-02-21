@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3AdaptiveApi::class)
+
 package com.monoid.hackernews.common.view
 
 
@@ -5,26 +7,29 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
+import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
 import com.monoid.hackernews.common.domain.navigation.BottomNav
-import com.monoid.hackernews.common.view.home.TOP_LEVEL_ROUTES
 import com.monoid.hackernews.common.view.login.LoginDialog
 import com.monoid.hackernews.common.view.logout.LogoutDialog
 import com.monoid.hackernews.common.view.theme.AppTheme
 import io.ktor.http.Url
-import rememberNavigationState
 
 @Suppress("ComposeModifierMissing")
 @Composable
@@ -40,18 +45,36 @@ fun MainApp(onClickUrl: (Url) -> Unit) {
                 )
                 val navigator = remember { Navigator(navigationState) }
                 val windowAdaptiveInfo = currentWindowAdaptiveInfo()
-                val showBottomBar = windowAdaptiveInfo.windowPosture.isTabletop ||
+                val useBottomBar = windowAdaptiveInfo.windowPosture.isTabletop ||
                     windowAdaptiveInfo.windowSizeClass.minWidthDp < windowAdaptiveInfo.windowSizeClass.minHeightDp
                 Scaffold(
                     bottomBar = {
-                        AnimatedVisibility(showBottomBar) {
+                        AnimatedVisibility(useBottomBar) {
                             MainNavigationBar(navigationState, navigator)
                         }
                     }
                 ) { paddingValues ->
-                    Row {
-                        AnimatedVisibility(showBottomBar.not()) {
-                            MainNavigationRail(navigationState, navigator)
+                    val layoutDirection = LocalLayoutDirection.current
+                    val start = paddingValues.calculateStartPadding(layoutDirection)
+                    val end = paddingValues.calculateEndPadding(layoutDirection)
+                    Row(
+                        modifier = Modifier
+                            .padding(start = start, end = end)
+                            .consumeWindowInsets(ScaffoldDefaults.contentWindowInsets),
+                    ) {
+
+                        val contentPadding = rememberUpdatedState(
+                            PaddingValues(
+                                top = paddingValues.calculateTopPadding(),
+                                bottom = paddingValues.calculateBottomPadding(),
+                            ),
+                        )
+                        AnimatedVisibility(useBottomBar.not()) {
+                            MainNavigationRail(
+                                navigationState = navigationState,
+                                navigator = navigator,
+                                modifier = Modifier.padding(contentPadding.value),
+                            )
                         }
                         MainNavDisplay(
                             entries = navigationState.toDecoratedEntries { key ->
@@ -59,12 +82,11 @@ fun MainApp(onClickUrl: (Url) -> Unit) {
                                     navigator = navigator,
                                     onClickUrl = onClickUrl,
                                     onShowLoginDialog = { showLoginDialog = true },
+                                    contentPadding = contentPadding,
                                 )
                             },
                             onBack = navigator::goBack,
-                            modifier = Modifier
-                                .consumeWindowInsets(ScaffoldDefaults.contentWindowInsets)
-                                .padding(PaddingValues(bottom = paddingValues.calculateBottomPadding())),
+                            windowAdaptiveInfo = windowAdaptiveInfo,
                         )
                     }
                 }

@@ -6,20 +6,21 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.adaptive.layout.PaneScaffoldDirective
 import androidx.compose.material3.adaptive.layout.calculatePaneScaffoldDirective
 import androidx.compose.material3.adaptive.navigation3.ListDetailSceneStrategy
 import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneStrategy
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,7 +36,6 @@ import com.monoid.hackernews.common.core.metro.metroViewModel
 import com.monoid.hackernews.common.domain.navigation.BottomNav
 import com.monoid.hackernews.common.domain.navigation.Route
 import com.monoid.hackernews.common.view.comment.CommentDialog
-import com.monoid.hackernews.common.view.fab.listContentInsetSides
 import com.monoid.hackernews.common.view.favorites.FavoriteStoriesListPane
 import com.monoid.hackernews.common.view.itemdetail.ItemDetailPane
 import com.monoid.hackernews.common.view.main.HomeViewModel
@@ -57,11 +57,19 @@ fun MainNavDisplay(
     entries: List<NavEntry<NavKey>>,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
+    windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
 ) {
-    val windowAdaptiveInfo = currentWindowAdaptiveInfo()
-    val directive = remember(windowAdaptiveInfo) {
+    val directive: PaneScaffoldDirective = remember(windowAdaptiveInfo) {
         calculatePaneScaffoldDirective(windowAdaptiveInfo)
-            .copy(horizontalPartitionSpacerSize = 0.dp)
+            .copy(
+                // maxHorizontalPartitions = 0, // Int = this.maxHorizontalPartitions
+                horizontalPartitionSpacerSize = 0.dp, // Dp = this.horizontalPartitionSpacerSize
+                // maxVerticalPartitions = 0, // Int = this.maxVerticalPartitions
+                verticalPartitionSpacerSize = 0.dp, // Dp = this.verticalPartitionSpacerSize
+                // defaultPanePreferredWidth = 0.dp, // Dp = this.defaultPanePreferredWidth
+                // excludedBounds = 0.dp, // List<Rect> = this.excludedBounds
+                // defaultPanePreferredHeight = 0.dp, // Dp = this.defaultPanePreferredHeight
+            )
     }
     val listDetailStrategy = rememberListDetailSceneStrategy<NavKey>(directive = directive)
     NavDisplay(
@@ -69,15 +77,14 @@ fun MainNavDisplay(
         onBack = onBack,
         sceneStrategy = listDetailStrategy,
         modifier = modifier,
-//        entryDecorators = entryDecorators,
         transitionSpec = {
-            slideInHorizontally { it } togetherWith slideOutHorizontally { -it }
+            slideInHorizontally { it / 2 } togetherWith slideOutHorizontally { -it / 2 }
         },
         popTransitionSpec = {
-            slideInHorizontally { -it } togetherWith slideOutHorizontally { it }
+            slideInHorizontally { -it / 2 } togetherWith slideOutHorizontally { it / 2 }
         },
         predictivePopTransitionSpec = {
-            slideInHorizontally { -it } togetherWith slideOutHorizontally { it }
+            slideInHorizontally { -it / 2 } togetherWith slideOutHorizontally { it / 2 }
         },
     )
 }
@@ -86,15 +93,17 @@ fun NavKey.navEntries(
     navigator: Navigator,
     onClickUrl: (Url) -> Unit,
     onShowLoginDialog: () -> Unit,
+    contentPadding: State<PaddingValues>,
 ): NavEntry<NavKey> {
     return when (this) {
         is BottomNav -> navEntries(
             navigator = navigator,
             onClickUrl = onClickUrl,
             onShowLoginDialog = onShowLoginDialog,
+            contentPadding = contentPadding,
         )
 
-        is Route.Settings -> navEntries()
+        is Route.Settings -> navEntries(contentPadding = contentPadding)
 
         is Route.Story -> NavEntry(
             key = this,
@@ -123,6 +132,7 @@ fun NavKey.navEntries(
                 onClickUser = { navigator.navigate(Route.User(it)) },
                 onClickReply = viewModel::onClickReply,
                 onClickLogin = onShowLoginDialog,
+                contentPadding = contentPadding.value,
             )
         }
 
@@ -133,7 +143,7 @@ fun NavKey.navEntries(
             CommentDialog(
                 parentId = parentId,
                 onDismiss = navigator::goBack,
-                modifier = Modifier.padding(WindowInsets.safeDrawing.asPaddingValues()),
+                contentPadding = contentPadding.value,
             )
         }
 
@@ -141,11 +151,14 @@ fun NavKey.navEntries(
             key = this,
             metadata = ListDetailSceneStrategy.detailPane(),
         ) {
-            Text(username.string)
+            Text(
+                text = username.string,
+                modifier = Modifier.padding(contentPadding.value),
+            )
         }
 
         else -> {
-            error("")
+            error("Invalid navEntry")
         }
     }
 }
@@ -154,6 +167,7 @@ private fun BottomNav.navEntries(
     navigator: Navigator,
     onClickUrl: (Url) -> Unit,
     onShowLoginDialog: () -> Unit,
+    contentPadding: State<PaddingValues>,
 ): NavEntry<NavKey> = when (this) {
     is BottomNav.Favorites -> NavEntry(
         key = this,
@@ -179,13 +193,13 @@ private fun BottomNav.navEntries(
                         }
 
                         is SettingsViewModel.Event.OpenReply -> {
-//                            backStack.navigateTo(Route.Reply(event.itemId))
+                            // backStack.navigateTo(Route.Reply(event.itemId))
                         }
                     }
                 }
             }
         }
-        val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         if (uiState.username.string.isNotBlank()) {
             FavoriteStoriesListPane(
                 username = uiState.username,
@@ -194,9 +208,7 @@ private fun BottomNav.navEntries(
                 onClickUser = { navigator.navigate(Route.User(it)) },
                 onClickUrl = onClickUrl,
                 onClickLogin = onShowLoginDialog,
-                contentPadding = WindowInsets.safeDrawing
-                    .only(listContentInsetSides())
-                    .asPaddingValues(),
+                contentPadding = contentPadding.value,
             )
         } else {
             LaunchedEffect(Unit) {
@@ -219,7 +231,7 @@ private fun BottomNav.navEntries(
         ),
     ) {
         val viewModel: SettingsViewModel = metroViewModel()
-        val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         SettingsListPane(
             username = uiState.username,
             onClickLogin = onShowLoginDialog,
@@ -231,6 +243,7 @@ private fun BottomNav.navEntries(
             onClickUserGuidelines = { navigator.navigate(Route.Settings.UserGuidelines) },
             onClickSendFeedback = { navigator.navigate(Route.Settings.SendFeedback) },
             onClickAbout = { navigator.navigate(Route.Settings.About) },
+            contentPadding = contentPadding.value,
         )
     }
 
@@ -278,57 +291,59 @@ private fun BottomNav.navEntries(
             onClickStory = viewModel::onClickStory,
             onClickReply = viewModel::onClickReply,
             onClickUrl = onClickUrl,
+            contentPadding = contentPadding.value,
         )
     }
 }
 
-private fun Route.Settings.navEntries(): NavEntry<NavKey> = when (this) {
-    is Route.Settings.About -> NavEntry(
-        key = this,
-        metadata = ListDetailSceneStrategy.detailPane(),
-    ) {
-        AboutPane()
-    }
+private fun Route.Settings.navEntries(contentPadding: State<PaddingValues>): NavEntry<NavKey> =
+    when (this) {
+        is Route.Settings.About -> NavEntry(
+            key = this,
+            metadata = ListDetailSceneStrategy.detailPane(),
+        ) {
+            AboutPane(contentPadding = contentPadding.value)
+        }
 
-    is Route.Settings.Appearance -> NavEntry(
-        key = this,
-        metadata = ListDetailSceneStrategy.detailPane(),
-    ) {
-        AppearanceDetailPane()
-    }
+        is Route.Settings.Appearance -> NavEntry(
+            key = this,
+            metadata = ListDetailSceneStrategy.detailPane(),
+        ) {
+            AppearanceDetailPane(contentPadding = contentPadding.value)
+        }
 
-    is Route.Settings.Help -> NavEntry(
-        key = this,
-        metadata = ListDetailSceneStrategy.detailPane(),
-    ) {
-        HelpPane()
-    }
+        is Route.Settings.Help -> NavEntry(
+            key = this,
+            metadata = ListDetailSceneStrategy.detailPane(),
+        ) {
+            HelpPane(contentPadding = contentPadding.value)
+        }
 
-    is Route.Settings.Notifications -> NavEntry(
-        key = this,
-        metadata = ListDetailSceneStrategy.detailPane(),
-    ) {
-        NotificationsPane()
-    }
+        is Route.Settings.Notifications -> NavEntry(
+            key = this,
+            metadata = ListDetailSceneStrategy.detailPane(),
+        ) {
+            NotificationsPane(contentPadding = contentPadding.value)
+        }
 
-    is Route.Settings.SendFeedback -> NavEntry(
-        key = this,
-        metadata = ListDetailSceneStrategy.detailPane(),
-    ) {
-        SendFeedbackPane()
-    }
+        is Route.Settings.SendFeedback -> NavEntry(
+            key = this,
+            metadata = ListDetailSceneStrategy.detailPane(),
+        ) {
+            SendFeedbackPane(contentPadding = contentPadding.value)
+        }
 
-    is Route.Settings.TermsOfService -> NavEntry(
-        key = this,
-        metadata = ListDetailSceneStrategy.detailPane(),
-    ) {
-        TermsOfServicePane()
-    }
+        is Route.Settings.TermsOfService -> NavEntry(
+            key = this,
+            metadata = ListDetailSceneStrategy.detailPane(),
+        ) {
+            TermsOfServicePane(contentPadding = contentPadding.value)
+        }
 
-    is Route.Settings.UserGuidelines -> NavEntry(
-        key = this,
-        metadata = ListDetailSceneStrategy.detailPane(),
-    ) {
-        UserGuidelinesPane()
+        is Route.Settings.UserGuidelines -> NavEntry(
+            key = this,
+            metadata = ListDetailSceneStrategy.detailPane(),
+        ) {
+            UserGuidelinesPane(contentPadding = contentPadding.value)
+        }
     }
-}

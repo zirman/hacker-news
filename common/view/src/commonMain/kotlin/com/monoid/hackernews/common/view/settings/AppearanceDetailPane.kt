@@ -6,11 +6,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.Add
 import androidx.compose.material.icons.twotone.Remove
@@ -38,13 +38,11 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun AppearanceDetailPane(
+    contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
     viewModel: AppearanceViewModel = metroViewModel(),
 ) {
-    Surface(
-        modifier = modifier
-            .fillMaxSize(),
-    ) {
+    Surface(modifier = modifier.fillMaxSize()) {
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         val selectedLightDarkMode = uiState.lightDarkMode
         val selectedFont = uiState.font
@@ -54,8 +52,8 @@ fun AppearanceDetailPane(
         val selectedShape = uiState.shape
         Column(
             modifier = Modifier
-                .padding(WindowInsets.safeDrawing.asPaddingValues())
-                .padding(16.dp),
+                .verticalScroll(rememberScrollState())
+                .padding(contentPadding),
         ) {
             Text(stringResource(Res.string.light_dark_mode))
             FlowRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {

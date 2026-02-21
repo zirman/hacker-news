@@ -2,6 +2,7 @@ package com.monoid.hackernews.common.view.comment
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -47,11 +48,14 @@ import org.jetbrains.compose.resources.stringResource
 fun CommentDialog(
     parentId: ItemId,
     onDismiss: () -> Unit,
+    contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
     viewModel: CommentViewModel = createCommentViewModel(parentId = parentId),
     windowSizeClass: WindowSizeClass = currentWindowAdaptiveInfo().windowSizeClass,
 ) {
-    val compact = windowSizeClass.isHeightAtLeastBreakpoint(WindowSizeClass.HEIGHT_DP_MEDIUM_LOWER_BOUND).not()
+    val compact =
+        windowSizeClass.isHeightAtLeastBreakpoint(WindowSizeClass.HEIGHT_DP_MEDIUM_LOWER_BOUND)
+            .not()
     var erred by rememberSaveable { mutableStateOf(false) }
     val (item, loading, text) = viewModel.uiState.collectAsStateWithLifecycle().value
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -70,7 +74,11 @@ fun CommentDialog(
             }
         }
     }
-    Card(modifier = modifier.fillMaxSize()) {
+    Card(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(contentPadding),
+    ) {
         if (compact.not()) {
             if (item != null) {
                 ReplyItem(

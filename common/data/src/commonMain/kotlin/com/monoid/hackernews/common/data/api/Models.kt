@@ -1,5 +1,6 @@
 package com.monoid.hackernews.common.data.api
 
+import androidx.compose.runtime.Stable
 import com.monoid.hackernews.common.data.model.ItemType
 import com.monoid.hackernews.common.data.room.ItemDb
 import com.monoid.hackernews.common.data.room.UserDb
@@ -8,6 +9,7 @@ import kotlinx.serialization.Serializable
 import kotlin.time.Clock
 import kotlin.time.Instant
 
+@Stable
 @Serializable
 expect value class ItemId(
     val long: Long,

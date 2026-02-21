@@ -1,6 +1,5 @@
 package com.monoid.hackernews.common.view
 
-import NavigationState
 import androidx.navigation3.runtime.NavKey
 import com.monoid.hackernews.common.domain.navigation.BottomNav
 

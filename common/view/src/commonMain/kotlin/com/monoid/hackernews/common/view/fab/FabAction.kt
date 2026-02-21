@@ -12,6 +12,7 @@ import androidx.compose.material.icons.twotone.Whatshot
 import androidx.compose.material.icons.twotone.Work
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -66,7 +67,7 @@ enum class FabAction(
                 key = fabAction.storyOrdering.toString(),
                 extras = StoriesViewModel.extras(fabAction.storyOrdering),
             )
-            val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             val lifecycleOwner = LocalLifecycleOwner.current
             val platformContext = LocalPlatformContext.current
             LaunchedEffect(Unit) {
@@ -132,7 +133,7 @@ enum class FabAction(
                 key = fabAction.storyOrdering.toString(),
                 extras = StoriesViewModel.extras(fabAction.storyOrdering),
             )
-            val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             val lifecycleOwner = LocalLifecycleOwner.current
             val platformContext = LocalPlatformContext.current
             LaunchedEffect(Unit) {
@@ -197,7 +198,7 @@ enum class FabAction(
                 key = fabAction.storyOrdering.toString(),
                 extras = StoriesViewModel.extras(fabAction.storyOrdering),
             )
-            val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             val lifecycleOwner = LocalLifecycleOwner.current
             val platformContext = LocalPlatformContext.current
             LaunchedEffect(Unit) {
@@ -262,7 +263,7 @@ enum class FabAction(
                 key = fabAction.storyOrdering.toString(),
                 extras = StoriesViewModel.extras(fabAction.storyOrdering),
             )
-            val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             val lifecycleOwner = LocalLifecycleOwner.current
             val platformContext = LocalPlatformContext.current
             LaunchedEffect(Unit) {
@@ -327,7 +328,7 @@ enum class FabAction(
                 key = fabAction.storyOrdering.toString(),
                 extras = StoriesViewModel.extras(fabAction.storyOrdering),
             )
-            val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             val lifecycleOwner = LocalLifecycleOwner.current
             val platformContext = LocalPlatformContext.current
             LaunchedEffect(Unit) {
@@ -392,7 +393,7 @@ enum class FabAction(
                 key = fabAction.storyOrdering.toString(),
                 extras = StoriesViewModel.extras(fabAction.storyOrdering),
             )
-            val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             val lifecycleOwner = LocalLifecycleOwner.current
             val platformContext = LocalPlatformContext.current
             LaunchedEffect(Unit) {

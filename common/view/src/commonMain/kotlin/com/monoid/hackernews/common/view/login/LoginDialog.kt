@@ -42,7 +42,7 @@ fun LoginDialog(
             }
         }
     }
-    val uiState = loginViewModel.uiState.collectAsStateWithLifecycle().value
+    val uiState by loginViewModel.uiState.collectAsStateWithLifecycle()
     @OptIn(ExperimentalMaterial3Api::class)
     BasicAlertDialog(
         onDismissRequest = onDismissRequest,

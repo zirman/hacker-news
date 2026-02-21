@@ -1,13 +1,9 @@
 package com.monoid.hackernews.common.view.settings
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -29,7 +25,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 @Composable
-fun HtmlPane(htmlString: String, modifier: Modifier = Modifier) {
+fun HtmlPane(htmlString: String, contentPadding: PaddingValues, modifier: Modifier = Modifier) {
     var htmlAnnotatedString: AnnotatedString? by remember {
         mutableStateOf(null)
     }
@@ -48,12 +44,8 @@ fun HtmlPane(htmlString: String, modifier: Modifier = Modifier) {
                 text = htmlAnnotatedStringPinned,
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
+                    .padding(contentPadding)
                     .widthIn(max = 640.dp)
-                    .padding(
-                        WindowInsets.safeDrawing
-                            .only(WindowInsetsSides.Vertical + WindowInsetsSides.End)
-                            .asPaddingValues(),
-                    )
                     .padding(16.dp)
                     .fillMaxSize(),
                 style = htmlTextStyle(),
