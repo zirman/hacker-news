@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
+
 package com.monoid.hackernews.common.view.settings
 
 import androidx.compose.foundation.layout.Box
@@ -7,6 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,7 +24,6 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import com.monoid.hackernews.common.data.html.toHtmlAnnotatedString
 import com.monoid.hackernews.common.view.itemdetail.htmlTextStyle
-import com.monoid.hackernews.common.view.platform.PlatformLoadingIndicator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -51,7 +54,7 @@ fun HtmlPane(htmlString: String, contentPadding: PaddingValues, modifier: Modifi
                 style = htmlTextStyle(),
             )
         } else {
-            PlatformLoadingIndicator()
+            LoadingIndicator()
         }
     }
 }

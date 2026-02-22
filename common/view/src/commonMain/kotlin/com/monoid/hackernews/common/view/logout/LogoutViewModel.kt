@@ -1,5 +1,6 @@
 package com.monoid.hackernews.common.view.logout
 
+import androidx.compose.runtime.Stable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.monoid.hackernews.common.core.log.LoggerAdapter
@@ -12,6 +13,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
+@Stable
 @ContributesIntoMap(ViewModelScope::class)
 @ViewModelKey(LogoutViewModel::class)
 @Inject

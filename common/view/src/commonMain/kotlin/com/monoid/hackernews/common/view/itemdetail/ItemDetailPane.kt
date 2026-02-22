@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package com.monoid.hackernews.common.view.itemdetail
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -61,7 +63,6 @@ fun ItemDetailPane(
             }
         }
     }
-    @OptIn(ExperimentalFoundationApi::class)
     LazyColumn(
         state = rememberLazyListState(
             cacheWindow = LazyLayoutCacheWindow(ahead = 500.dp),

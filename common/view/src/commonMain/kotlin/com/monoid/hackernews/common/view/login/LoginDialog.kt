@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.monoid.hackernews.common.view.login
 
 import androidx.compose.foundation.rememberScrollState
@@ -43,7 +45,6 @@ fun LoginDialog(
         }
     }
     val uiState by loginViewModel.uiState.collectAsStateWithLifecycle()
-    @OptIn(ExperimentalMaterial3Api::class)
     BasicAlertDialog(
         onDismissRequest = onDismissRequest,
         modifier = modifier,

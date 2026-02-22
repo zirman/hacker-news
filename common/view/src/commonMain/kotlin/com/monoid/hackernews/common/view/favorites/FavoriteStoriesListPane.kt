@@ -1,7 +1,11 @@
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
+
 package com.monoid.hackernews.common.view.favorites
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,7 +21,6 @@ import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.Username
 import com.monoid.hackernews.common.view.itemlist.ItemsColumn
-import com.monoid.hackernews.common.view.platform.PlatformLoadingIndicator
 import io.ktor.http.Url
 
 @Suppress("ComposeUnstableReceiver")
@@ -74,7 +77,7 @@ fun FavoriteStoriesListPane(
             ) {
             }
             if (uiState.loading && uiState.isRefreshing.not()) {
-                PlatformLoadingIndicator(modifier = Modifier.align(Alignment.Center))
+                LoadingIndicator(modifier = Modifier.align(Alignment.Center))
             }
         }
     }

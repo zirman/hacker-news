@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
+
 package com.monoid.hackernews.common.view.fab
 
 import androidx.compose.foundation.layout.Box
@@ -10,6 +12,8 @@ import androidx.compose.material.icons.twotone.Forum
 import androidx.compose.material.icons.twotone.RssFeed
 import androidx.compose.material.icons.twotone.Whatshot
 import androidx.compose.material.icons.twotone.Work
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.LoadingIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -31,7 +35,6 @@ import com.monoid.hackernews.common.view.hot
 import com.monoid.hackernews.common.view.itemlist.ItemsColumn
 import com.monoid.hackernews.common.view.jobs
 import com.monoid.hackernews.common.view.new
-import com.monoid.hackernews.common.view.platform.PlatformLoadingIndicator
 import com.monoid.hackernews.common.view.show
 import com.monoid.hackernews.common.view.stories.LocalPlatformContext
 import com.monoid.hackernews.common.view.stories.StoriesViewModel
@@ -110,7 +113,7 @@ enum class FabAction(
                     content(Pair(this@Box, it))
                 }
                 if (uiState.loading && uiState.isRefreshing.not()) {
-                    PlatformLoadingIndicator(modifier = Modifier.align(Alignment.Center))
+                    LoadingIndicator(modifier = Modifier.align(Alignment.Center))
                 }
             }
         }
@@ -175,7 +178,7 @@ enum class FabAction(
                     content(Pair(this@Box, it))
                 }
                 if (uiState.loading && uiState.isRefreshing.not()) {
-                    PlatformLoadingIndicator(modifier = Modifier.align(Alignment.Center))
+                    LoadingIndicator(modifier = Modifier.align(Alignment.Center))
                 }
             }
         }
@@ -240,7 +243,7 @@ enum class FabAction(
                     content(Pair(this@Box, it))
                 }
                 if (uiState.loading && uiState.isRefreshing.not()) {
-                    PlatformLoadingIndicator(modifier = Modifier.align(Alignment.Center))
+                    LoadingIndicator(modifier = Modifier.align(Alignment.Center))
                 }
             }
         }
@@ -305,7 +308,7 @@ enum class FabAction(
                     content(Pair(this@Box, it))
                 }
                 if (uiState.loading && uiState.isRefreshing.not()) {
-                    PlatformLoadingIndicator(modifier = Modifier.align(Alignment.Center))
+                    LoadingIndicator(modifier = Modifier.align(Alignment.Center))
                 }
             }
         }
@@ -370,7 +373,7 @@ enum class FabAction(
                     content(Pair(this@Box, it))
                 }
                 if (uiState.loading && uiState.isRefreshing.not()) {
-                    PlatformLoadingIndicator(modifier = Modifier.align(Alignment.Center))
+                    LoadingIndicator(modifier = Modifier.align(Alignment.Center))
                 }
             }
         }
@@ -435,7 +438,7 @@ enum class FabAction(
                     content(Pair(this@Box, it))
                 }
                 if (uiState.loading && uiState.isRefreshing.not()) {
-                    PlatformLoadingIndicator(modifier = Modifier.align(Alignment.Center))
+                    LoadingIndicator(modifier = Modifier.align(Alignment.Center))
                 }
             }
         }

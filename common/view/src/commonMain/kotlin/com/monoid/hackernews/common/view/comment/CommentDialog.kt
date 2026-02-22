@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3ExpressiveApi::class)
+
 package com.monoid.hackernews.common.view.comment
 
 import androidx.compose.animation.AnimatedVisibility
@@ -14,8 +16,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.twotone.Send
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -39,7 +43,6 @@ import com.monoid.hackernews.common.data.api.ItemId
 import com.monoid.hackernews.common.view.Res
 import com.monoid.hackernews.common.view.an_error_occurred
 import com.monoid.hackernews.common.view.cancel
-import com.monoid.hackernews.common.view.platform.PlatformLoadingIndicator
 import com.monoid.hackernews.common.view.reply
 import com.monoid.hackernews.common.view.send
 import org.jetbrains.compose.resources.stringResource
@@ -98,7 +101,7 @@ fun CommentDialog(
             trailingIcon = if (compact) {
                 {
                     if (loading) {
-                        PlatformLoadingIndicator(modifier = Modifier.size(24.dp))
+                        LoadingIndicator(modifier = Modifier.size(24.dp))
                     } else {
                         IconButton(
                             onClick = {
@@ -142,9 +145,7 @@ fun CommentDialog(
                 TextButton(onClick = viewModel::sendComment, enabled = loading.not()) {
                     Text(stringResource(Res.string.send))
                     AnimatedVisibility(loading) {
-                        PlatformLoadingIndicator(
-                            modifier = Modifier.padding(start = 16.dp).size(24.dp),
-                        )
+                        LoadingIndicator(modifier = Modifier.padding(start = 16.dp).size(24.dp))
                     }
                 }
             }

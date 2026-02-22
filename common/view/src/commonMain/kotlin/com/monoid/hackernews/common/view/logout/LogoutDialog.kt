@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.monoid.hackernews.common.view.logout
 
 import androidx.compose.foundation.layout.Box
@@ -14,7 +16,6 @@ fun LogoutDialog(
     modifier: Modifier = Modifier,
     loginViewModel: LogoutViewModel = metroViewModel(),
 ) {
-    @OptIn(ExperimentalMaterial3Api::class)
     BasicAlertDialog(
         onDismissRequest = onDismissRequest,
         modifier = modifier,
