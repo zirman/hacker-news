@@ -1,9 +1,11 @@
 package com.monoid.hackernews.common.data.model
 
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.text.AnnotatedString
 import com.monoid.hackernews.common.data.api.ItemId
 import io.ktor.http.Url
 
+@Stable
 data class Item(
     val id: ItemId,
     val lastUpdate: Long? = null,

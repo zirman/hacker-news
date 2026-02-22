@@ -39,6 +39,7 @@ fun StoriesListPane(
                         fabAction = fabAction,
                         expanded = hasScrolled,
                         onClick = { fabAction = it },
+                        contentPadding = contentPadding,
                         modifier = Modifier.align(Alignment.BottomEnd),
                     )
                 }

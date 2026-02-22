@@ -48,8 +48,13 @@ import com.monoid.hackernews.common.view.settings.SettingsListPane
 import com.monoid.hackernews.common.view.settings.SettingsViewModel
 import com.monoid.hackernews.common.view.settings.TermsOfServicePane
 import com.monoid.hackernews.common.view.settings.UserGuidelinesPane
-import com.monoid.hackernews.common.view.stories.StoriesPane
+import com.monoid.hackernews.common.view.stories.LocalPlatformContext
+import com.monoid.hackernews.common.view.stories.StoriesListPane
+import com.monoid.hackernews.common.view.stories.StoriesViewModel
+import com.monoid.hackernews.common.view.stories.StoryOrdering
+import com.monoid.hackernews.common.view.stories.displayMessage
 import io.ktor.http.Url
+import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -61,15 +66,7 @@ fun MainNavDisplay(
 ) {
     val directive: PaneScaffoldDirective = remember(windowAdaptiveInfo) {
         calculatePaneScaffoldDirective(windowAdaptiveInfo)
-            .copy(
-                // maxHorizontalPartitions = 0, // Int = this.maxHorizontalPartitions
-                horizontalPartitionSpacerSize = 0.dp, // Dp = this.horizontalPartitionSpacerSize
-                // maxVerticalPartitions = 0, // Int = this.maxVerticalPartitions
-                verticalPartitionSpacerSize = 0.dp, // Dp = this.verticalPartitionSpacerSize
-                // defaultPanePreferredWidth = 0.dp, // Dp = this.defaultPanePreferredWidth
-                // excludedBounds = 0.dp, // List<Rect> = this.excludedBounds
-                // defaultPanePreferredHeight = 0.dp, // Dp = this.defaultPanePreferredHeight
-            )
+            .copy(horizontalPartitionSpacerSize = 0.dp)
     }
     val listDetailStrategy = rememberListDetailSceneStrategy<NavKey>(directive = directive)
     NavDisplay(
@@ -285,12 +282,36 @@ private fun BottomNav.navEntries(
                 }
             }
         }
-        StoriesPane(
-            onClickLogin = onShowLoginDialog,
-            onClickUser = viewModel::onClickUser,
-            onClickStory = viewModel::onClickStory,
+        val storiesViewModel: StoriesViewModel = metroViewModel(
+            extras = StoriesViewModel.extras(StoryOrdering.Trending),
+        )
+        val platformContext = LocalPlatformContext.current
+        LaunchedEffect(Unit) {
+            lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                for (event in storiesViewModel.events) {
+                    when (event) {
+                        is StoriesViewModel.Event.Error -> {
+                            platformContext.displayMessage(
+                                getString(
+                                    Res.string.an_error_occurred_format,
+                                    event.message.orEmpty(),
+                                ),
+                            )
+                        }
+
+                        is StoriesViewModel.Event.OpenLogin -> {
+                            onShowLoginDialog()
+                        }
+                    }
+                }
+            }
+        }
+        StoriesListPane(
+            onClickItem = viewModel::onClickStory,
             onClickReply = viewModel::onClickReply,
+            onClickUser = viewModel::onClickUser,
             onClickUrl = onClickUrl,
+            onClickLogin = onShowLoginDialog,
             contentPadding = contentPadding.value,
         )
     }
