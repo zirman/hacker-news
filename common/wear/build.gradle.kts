@@ -9,7 +9,6 @@ kotlin {
     }
     sourceSets {
         androidMain.dependencies {
-            implementation(libs.lifecycleViewmodelNavigation3)
             implementation(libs.bundles.wear)
         }
         commonMain.dependencies {

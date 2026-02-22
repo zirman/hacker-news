@@ -8,9 +8,6 @@ kotlin {
         androidResources.enable = true
     }
     sourceSets {
-        androidMain.dependencies {
-            implementation(libs.lifecycleViewmodelNavigation3)
-        }
         commonMain.dependencies {
             api(project(":view"))
         }

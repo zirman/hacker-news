@@ -32,7 +32,7 @@ activityKtx = "1.12.4"
 fragmentKtx = "1.8.9"
 lifecycle = "2.9.6" # https://mvnrepository.com/artifact/org.jetbrains.androidx.lifecycle/lifecycle-viewmodel
 lifecycleProcess = "2.10.0"
-lifecycleViewmodelNavigation3 = "2.10.0"
+lifecycleViewmodelNavigation3 = "2.10.0-alpha08"
 googlePlayServices = "4.4.4"
 playServicesWearable = "19.0.0"
 crashlytics = "3.0.6"
@@ -127,7 +127,6 @@ desugarJdkLibsNio = { group = "com.android.tools", name = "desugar_jdk_libs_nio"
 
 # used for annotation processing only
 android = { group = "com.google.android", name = "android", version.ref = "androidVersion" }
-lifecycleViewmodelNavigation3 = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-navigation3", version.ref = "lifecycleViewmodelNavigation3" }
 metroRuntimeJvm = { group = "dev.zacsweers.metro", name = "runtime-jvm", version.ref = "metro" }
 
 kspSymbolProcessingApi = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
@@ -186,6 +185,7 @@ lifecycleProcess = { group = "androidx.lifecycle", name = "lifecycle-process", v
 jetbrainsLifecycleRuntimeCompose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
 jetbrainsLifecycleViewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "lifecycle" }
 jetbrainsLifecycleViewmodelCompose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+jetbrainsLifecycleViewmodelNavigation3 = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel-navigation3", version.ref = "lifecycleViewmodelNavigation3" }
 jetbrainsCore = { group = "org.jetbrains.androidx.core", name = "core-bundle", version.ref = "jetbrainsCore" }
 jetbrainsWindowCore = { group = "org.jetbrains.androidx.window", name = "window-core", version.ref = "jetbrainsWindowCore" }
 jetbrainsSavedState = { group = "org.jetbrains.androidx.savedstate", name = "savedstate", version.ref = "jetbrainsSavedState" }
@@ -246,6 +246,7 @@ commonMain = [
     "jetbrainsLifecycleRuntimeCompose",
     "jetbrainsLifecycleViewmodel",
     "jetbrainsLifecycleViewmodelCompose",
+    "jetbrainsLifecycleViewmodelNavigation3",
     "jetbrainsSavedState",
     "jetbrainsWindowCore",
     "kermit",
