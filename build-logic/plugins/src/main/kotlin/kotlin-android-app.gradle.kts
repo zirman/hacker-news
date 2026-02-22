@@ -15,7 +15,7 @@ plugins {
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
 }
-val libs = the<VersionCatalogsExtension>().named("libs")
+val libs: VersionCatalog = the<VersionCatalogsExtension>().named("libs")
 android {
     compileSdk = libs.findVersion("compileSdk").get().requiredVersion.toInt()
     compileSdkPreview = libs.findVersion("compileSdkPreview").get().requiredVersion

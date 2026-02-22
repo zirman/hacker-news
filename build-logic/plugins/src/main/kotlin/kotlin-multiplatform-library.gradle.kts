@@ -14,7 +14,7 @@ plugins {
     id("io.github.takahirom.roborazzi")
     id("detekt-rules")
 }
-val libs = the<VersionCatalogsExtension>().named("libs")
+val libs: VersionCatalog = the<VersionCatalogsExtension>().named("libs")
 kotlin {
     android {
         compileSdk = libs.findVersion("compileSdk").get().requiredVersion.toInt()

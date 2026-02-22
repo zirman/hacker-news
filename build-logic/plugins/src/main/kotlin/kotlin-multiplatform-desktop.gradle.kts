@@ -12,7 +12,7 @@ plugins {
     id("dev.zacsweers.metro")
     id("detekt-rules")
 }
-val libs = the<VersionCatalogsExtension>().named("libs")
+val libs: VersionCatalog = the<VersionCatalogsExtension>().named("libs")
 kotlin {
     jvm("desktop") {
         compilerOptions {

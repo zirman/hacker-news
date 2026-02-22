@@ -4,7 +4,7 @@ import dev.detekt.gradle.DetektCreateBaselineTask
 plugins {
     id("dev.detekt")
 }
-val libs = the<VersionCatalogsExtension>().named("libs")
+val libs: VersionCatalog = the<VersionCatalogsExtension>().named("libs")
 detekt {
     toolVersion = "2.0.0-alpha.2"
     buildUponDefaultConfig = true // false // preconfigure defaults.
