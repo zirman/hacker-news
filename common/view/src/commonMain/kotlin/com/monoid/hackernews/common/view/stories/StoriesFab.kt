@@ -2,8 +2,6 @@
 
 package com.monoid.hackernews.common.view.stories
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FloatingActionButtonMenu
@@ -28,7 +26,6 @@ fun StoriesFab(
     fabAction: FabAction,
     expanded: Boolean,
     onClick: (FabAction) -> Unit,
-    contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
     var fabMenuExpanded by rememberSaveable { mutableStateOf(false) }
@@ -42,7 +39,7 @@ fun StoriesFab(
                 text = { Text(stringResource(fabAction.text)) },
             )
         },
-        modifier = modifier.padding(contentPadding),
+        modifier = modifier,
     ) {
         for (i in FabAction.entries.indices) {
             val item = FabAction.entries[i]
