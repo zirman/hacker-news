@@ -82,6 +82,7 @@ fun MainApp(onClickUrl: (Url) -> Unit) {
                                     navigator = navigator,
                                     onClickUrl = onClickUrl,
                                     onShowLoginDialog = { showLoginDialog = true },
+                                    onShowLogoutDialog = { showLogoutDialog = true },
                                     contentPadding = contentPadding,
                                 )
                             },

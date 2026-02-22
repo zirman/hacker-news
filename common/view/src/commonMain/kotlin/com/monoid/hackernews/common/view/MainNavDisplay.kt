@@ -90,6 +90,7 @@ fun NavKey.navEntries(
     navigator: Navigator,
     onClickUrl: (Url) -> Unit,
     onShowLoginDialog: () -> Unit,
+    onShowLogoutDialog: () -> Unit,
     contentPadding: State<PaddingValues>,
 ): NavEntry<NavKey> {
     return when (this) {
@@ -97,6 +98,7 @@ fun NavKey.navEntries(
             navigator = navigator,
             onClickUrl = onClickUrl,
             onShowLoginDialog = onShowLoginDialog,
+            onShowLogoutDialog = onShowLogoutDialog,
             contentPadding = contentPadding,
         )
 
@@ -164,6 +166,7 @@ private fun BottomNav.navEntries(
     navigator: Navigator,
     onClickUrl: (Url) -> Unit,
     onShowLoginDialog: () -> Unit,
+    onShowLogoutDialog: () -> Unit,
     contentPadding: State<PaddingValues>,
 ): NavEntry<NavKey> = when (this) {
     is BottomNav.Favorites -> NavEntry(
@@ -232,7 +235,7 @@ private fun BottomNav.navEntries(
         SettingsListPane(
             username = uiState.username,
             onClickLogin = onShowLoginDialog,
-            onClickLogout = { /* showLogoutDialog = true */ },
+            onClickLogout = onShowLogoutDialog,
             onClickAppearance = { navigator.navigate(Route.Settings.Appearance) },
             onClickNotifications = { navigator.navigate(Route.Settings.Notifications) },
             onClickHelp = { navigator.navigate(Route.Settings.Help) },
