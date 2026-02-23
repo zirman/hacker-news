@@ -21,6 +21,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import com.monoid.hackernews.common.domain.navigation.BottomNav
 import com.monoid.hackernews.common.view.login.LoginDialog
+import com.monoid.hackernews.common.view.logout.LogoutDialog
 import com.monoid.hackernews.common.view.theme.AppTheme
 import io.ktor.http.Url
 import org.jetbrains.compose.resources.stringResource
@@ -31,8 +32,14 @@ fun DesktopApp(onClickUrl: (Url) -> Unit) {
         var showLoginDialog by rememberSaveable {
             mutableStateOf(false)
         }
+        var showLogoutDialog by rememberSaveable {
+            mutableStateOf(false)
+        }
         if (showLoginDialog) {
             LoginDialog(onDismissRequest = { showLoginDialog = false })
+        }
+        if (showLogoutDialog) {
+            LogoutDialog(onDismissRequest = { showLogoutDialog = false })
         }
         val navigationState = rememberNavigationState(
             startRoute = BottomNav.Stories,
@@ -75,6 +82,7 @@ fun DesktopApp(onClickUrl: (Url) -> Unit) {
                         navigator = navigator,
                         onClickUrl = onClickUrl,
                         onShowLoginDialog = { showLoginDialog = true },
+                        onShowLogoutDialog = { showLogoutDialog = true },
                         contentPadding = contentPadding,
                     )
                 },
