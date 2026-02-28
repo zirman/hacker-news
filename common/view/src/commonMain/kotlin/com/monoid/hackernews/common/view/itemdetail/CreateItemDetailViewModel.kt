@@ -7,5 +7,5 @@ import com.monoid.hackernews.common.data.api.ItemId
 @Composable
 fun createItemDetailViewModel(itemId: ItemId): ItemDetailViewModel = metroViewModel(
     key = itemId.toString(),
-    extras = itemId.toItemDetailViewModelExtras(),
+    extras = itemId.toViewModelExtras(),
 )

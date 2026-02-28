@@ -12,12 +12,12 @@ import androidx.savedstate.savedState
 import com.monoid.hackernews.common.data.api.ItemId
 
 @Composable
-internal fun ItemId.toItemDetailViewModelExtras(): CreationExtras = MutableCreationExtras().apply {
+internal fun ItemId.toViewModelExtras(): CreationExtras = MutableCreationExtras().apply {
     val viewModelStoreOwner = checkNotNull(LocalViewModelStoreOwner.current)
     set(
         DEFAULT_ARGS_KEY,
         savedState {
-            putLong(ItemDetailViewModel.ITEM_ID, this@toItemDetailViewModelExtras.long)
+            putLong(ItemDetailViewModel.ITEM_ID, this@toViewModelExtras.long)
         },
     )
     set(VIEW_MODEL_STORE_OWNER_KEY, viewModelStoreOwner)

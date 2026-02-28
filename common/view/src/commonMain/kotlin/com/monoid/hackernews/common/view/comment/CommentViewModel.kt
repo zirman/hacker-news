@@ -2,17 +2,9 @@ package com.monoid.hackernews.common.view.comment
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
-import androidx.lifecycle.DEFAULT_ARGS_KEY
-import androidx.lifecycle.SAVED_STATE_REGISTRY_OWNER_KEY
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.VIEW_MODEL_STORE_OWNER_KEY
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.CreationExtras
-import androidx.lifecycle.viewmodel.MutableCreationExtras
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
-import androidx.savedstate.SavedStateRegistryOwner
-import androidx.savedstate.savedState
 import com.monoid.hackernews.common.core.metro.ViewModelKey
 import com.monoid.hackernews.common.core.metro.ViewModelScope
 import com.monoid.hackernews.common.core.metro.metroViewModel
@@ -21,6 +13,8 @@ import com.monoid.hackernews.common.data.model.CommentRepository
 import com.monoid.hackernews.common.data.model.Item
 import com.monoid.hackernews.common.data.model.StoriesRepository
 import com.monoid.hackernews.common.data.room.CommentDb
+import com.monoid.hackernews.common.view.itemdetail.ItemDetailViewModel
+import com.monoid.hackernews.common.view.itemdetail.toViewModelExtras
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.Job
@@ -43,7 +37,7 @@ class CommentViewModel(
     private val commentRepository: CommentRepository,
     storiesRepository: StoriesRepository,
 ) : ViewModel() {
-    private val parentId = ItemId(checkNotNull(savedStateHandle[PARENT_ID]))
+    private val parentId = ItemId(checkNotNull(savedStateHandle[ItemDetailViewModel.ITEM_ID]))
 
     sealed interface Event {
         data object CloseComment : Event
@@ -98,27 +92,10 @@ class CommentViewModel(
             job = it
         }
     }
-
-    companion object {
-        const val PARENT_ID = "PARENT_ID"
-    }
 }
 
 @Composable
 fun createCommentViewModel(parentId: ItemId): CommentViewModel = metroViewModel(
     key = parentId.toString(),
-    extras = parentId.toCommentViewModelExtras(),
+    extras = parentId.toViewModelExtras(),
 )
-
-@Composable
-internal fun ItemId.toCommentViewModelExtras(): CreationExtras = MutableCreationExtras().apply {
-    val viewModelStoreOwner = checkNotNull(LocalViewModelStoreOwner.current)
-    set(
-        DEFAULT_ARGS_KEY,
-        savedState {
-            putLong(CommentViewModel.PARENT_ID, this@toCommentViewModelExtras.long)
-        },
-    )
-    set(VIEW_MODEL_STORE_OWNER_KEY, viewModelStoreOwner)
-    set(SAVED_STATE_REGISTRY_OWNER_KEY, viewModelStoreOwner as SavedStateRegistryOwner)
-}
