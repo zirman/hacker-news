@@ -42,7 +42,11 @@ fun AppearanceDetailPane(
     modifier: Modifier = Modifier,
     viewModel: AppearanceViewModel = metroViewModel(),
 ) {
-    Surface(modifier = modifier.fillMaxSize()) {
+    Surface(
+        modifier = modifier
+            .padding(16.dp)
+            .fillMaxSize(),
+    ) {
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         val selectedLightDarkMode = uiState.lightDarkMode
         val selectedFont = uiState.font

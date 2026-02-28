@@ -11,8 +11,8 @@ android {
     namespace = appId
     defaultConfig {
         applicationId = appId
-        versionCode = 49
-        versionName = "2.0.0"
+        versionCode = 50
+        versionName = "2.0.1"
     }
     signingConfigs {
         create("release") {
