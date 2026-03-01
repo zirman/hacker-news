@@ -24,7 +24,7 @@ compose {
                 packageVersion = "1.0.0"
             }
             buildTypes.release.proguard {
-                version = "7.8.1"
+                version = "7.8.2"
                 isEnabled = true
                 optimize = true
                 obfuscate = true
