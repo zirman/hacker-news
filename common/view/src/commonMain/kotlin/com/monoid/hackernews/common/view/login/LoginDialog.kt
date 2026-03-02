@@ -25,11 +25,11 @@ fun LoginDialog(
     modifier: Modifier = Modifier,
     loginViewModel: LoginViewModel = metroViewModel(),
 ) {
-    val lifecycleOwner = LocalLifecycleOwner.current
     var showErrorText by rememberSaveable {
         mutableStateOf(false)
     }
-    LaunchedEffect(Unit) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+    LaunchedEffect(lifecycleOwner) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
             for (event in loginViewModel.events) {
                 when (event) {

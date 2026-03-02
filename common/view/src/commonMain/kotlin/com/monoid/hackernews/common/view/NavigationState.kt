@@ -2,7 +2,6 @@ package com.monoid.hackernews.common.view
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -97,7 +96,6 @@ fun rememberNavigationState(
  * @param topLevelRoute - the state object that backs the top level route.
  * @param backStacks - the back stacks for each top level route.
  */
-@Stable
 class NavigationState(
     val startRoute: BottomNav,
     topLevelRoute: MutableState<BottomNav>,

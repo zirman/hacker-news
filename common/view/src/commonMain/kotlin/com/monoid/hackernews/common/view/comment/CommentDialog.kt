@@ -62,7 +62,7 @@ fun CommentDialog(
     var erred by rememberSaveable { mutableStateOf(false) }
     val (item, loading, text) = viewModel.uiState.collectAsStateWithLifecycle().value
     val lifecycleOwner = LocalLifecycleOwner.current
-    LaunchedEffect(Unit) {
+    LaunchedEffect(lifecycleOwner) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
             for (event in viewModel.events) {
                 when (event) {

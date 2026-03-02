@@ -40,7 +40,7 @@ fun ItemDetailPane(
     val viewModel = createItemDetailViewModel(itemId)
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
-    LaunchedEffect(itemId) {
+    LaunchedEffect(lifecycleOwner, itemId) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
             while (true) {
                 viewModel.updateItem(itemId)
@@ -48,7 +48,7 @@ fun ItemDetailPane(
             }
         }
     }
-    LaunchedEffect(Unit) {
+    LaunchedEffect(lifecycleOwner) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
             for (event in viewModel.events) {
                 when (event) {

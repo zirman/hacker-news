@@ -75,7 +75,7 @@ fun ItemComment(
 ) {
     val item = threadItem.item
     val lifecycleOwner = LocalLifecycleOwner.current
-    LaunchedEffect(item.id) {
+    LaunchedEffect(lifecycleOwner, item.id) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
             while (true) {
                 onVisible(item.id)

@@ -110,7 +110,7 @@ fun NavKey.navEntries(
         ) {
             val viewModel: SettingsViewModel = metroViewModel()
             val lifecycleOwner = LocalLifecycleOwner.current
-            LaunchedEffect(Unit) {
+            LaunchedEffect(lifecycleOwner) {
                 lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     for (event in viewModel.events) {
                         when (event) {
@@ -184,7 +184,7 @@ private fun BottomNav.navEntries(
     ) {
         val viewModel: SettingsViewModel = metroViewModel()
         val lifecycleOwner = LocalLifecycleOwner.current
-        LaunchedEffect(Unit) {
+        LaunchedEffect(lifecycleOwner) {
             lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 for (event in viewModel.events) {
                     when (event) {
@@ -262,7 +262,7 @@ private fun BottomNav.navEntries(
     ) {
         val viewModel: HomeViewModel = metroViewModel()
         val lifecycleOwner = LocalLifecycleOwner.current
-        LaunchedEffect(Unit) {
+        LaunchedEffect(lifecycleOwner) {
             lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 for (event in viewModel.events) {
                     when (event) {
@@ -289,7 +289,7 @@ private fun BottomNav.navEntries(
             extras = StoriesViewModel.extras(StoryOrdering.Trending),
         )
         val platformContext = LocalPlatformContext.current
-        LaunchedEffect(Unit) {
+        LaunchedEffect(lifecycleOwner) {
             lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 for (event in storiesViewModel.events) {
                     when (event) {

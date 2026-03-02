@@ -71,9 +71,9 @@ enum class FabAction(
                 extras = StoriesViewModel.extras(fabAction.storyOrdering),
             )
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            val lifecycleOwner = LocalLifecycleOwner.current
             val platformContext = LocalPlatformContext.current
-            LaunchedEffect(Unit) {
+            val lifecycleOwner = LocalLifecycleOwner.current
+            LaunchedEffect(lifecycleOwner) {
                 lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     for (event in viewModel.events) {
                         when (event) {
@@ -137,9 +137,9 @@ enum class FabAction(
                 extras = StoriesViewModel.extras(fabAction.storyOrdering),
             )
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            val lifecycleOwner = LocalLifecycleOwner.current
             val platformContext = LocalPlatformContext.current
-            LaunchedEffect(Unit) {
+            val lifecycleOwner = LocalLifecycleOwner.current
+            LaunchedEffect(lifecycleOwner) {
                 lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     for (event in viewModel.events) {
                         when (event) {
@@ -202,9 +202,9 @@ enum class FabAction(
                 extras = StoriesViewModel.extras(fabAction.storyOrdering),
             )
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            val lifecycleOwner = LocalLifecycleOwner.current
             val platformContext = LocalPlatformContext.current
-            LaunchedEffect(Unit) {
+            val lifecycleOwner = LocalLifecycleOwner.current
+            LaunchedEffect(lifecycleOwner) {
                 lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     for (event in viewModel.events) {
                         when (event) {
@@ -267,9 +267,9 @@ enum class FabAction(
                 extras = StoriesViewModel.extras(fabAction.storyOrdering),
             )
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            val lifecycleOwner = LocalLifecycleOwner.current
             val platformContext = LocalPlatformContext.current
-            LaunchedEffect(Unit) {
+            val lifecycleOwner = LocalLifecycleOwner.current
+            LaunchedEffect(lifecycleOwner) {
                 lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     for (event in viewModel.events) {
                         when (event) {
@@ -332,9 +332,9 @@ enum class FabAction(
                 extras = StoriesViewModel.extras(fabAction.storyOrdering),
             )
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            val lifecycleOwner = LocalLifecycleOwner.current
             val platformContext = LocalPlatformContext.current
-            LaunchedEffect(Unit) {
+            val lifecycleOwner = LocalLifecycleOwner.current
+            LaunchedEffect(lifecycleOwner) {
                 lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     for (event in viewModel.events) {
                         when (event) {
@@ -397,9 +397,9 @@ enum class FabAction(
                 extras = StoriesViewModel.extras(fabAction.storyOrdering),
             )
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            val lifecycleOwner = LocalLifecycleOwner.current
             val platformContext = LocalPlatformContext.current
-            LaunchedEffect(Unit) {
+            val lifecycleOwner = LocalLifecycleOwner.current
+            LaunchedEffect(lifecycleOwner) {
                 lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     for (event in viewModel.events) {
                         when (event) {
