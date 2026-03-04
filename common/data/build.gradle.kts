@@ -9,8 +9,10 @@ kotlin {
         namespace = packageNamespace
         @Suppress("UnstableApiUsage")
         optimization {
-            consumerKeepRules.publish = true
-            consumerKeepRules.files.add(File("proguard-rules.pro"))
+            consumerKeepRules.apply {
+                publish = true
+                files.add(File("proguard-rules.pro"))
+            }
         }
     }
 }
