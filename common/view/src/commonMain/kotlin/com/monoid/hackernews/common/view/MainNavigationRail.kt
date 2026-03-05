@@ -1,6 +1,9 @@
 package com.monoid.hackernews.common.view
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.twotone.ArrowBack
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationRail
@@ -43,7 +46,24 @@ fun MainNavigationRail(
     navigator: Navigator,
     modifier: Modifier = Modifier,
 ) {
-    NavigationRail(modifier = modifier) {
+    NavigationRail(
+        modifier = modifier,
+        header = if (currentPlatform != Platform.Android) {
+            {
+                IconButton(
+                    onClick = navigator::goBack,
+                    enabled = navigationState.canGoBack,
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.TwoTone.ArrowBack,
+                        contentDescription = stringResource(Res.string.back),
+                    )
+                }
+            }
+        } else {
+            null
+        },
+    ) {
         TOP_LEVEL_ROUTES.forEach { (key, value) ->
             NavigationRailItem(
                 selected = key == navigationState.topLevelRoute,

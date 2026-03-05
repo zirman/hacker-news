@@ -109,6 +109,15 @@ class NavigationState(
     var topLevelRoute: BottomNav by topLevelRoute
 
     /**
+     * Whether the user can navigate back.
+     */
+    val canGoBack: Boolean
+        get() {
+            val currentStack = backStacks[topLevelRoute] ?: return false
+            return topLevelRoute != startRoute || currentStack.size > 1
+        }
+
+    /**
      * Convert the navigation state into `NavEntry`s that have been decorated with a
      * `SaveableStateHolder`.
      *
