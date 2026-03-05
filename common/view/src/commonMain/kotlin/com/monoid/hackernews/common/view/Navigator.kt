@@ -12,7 +12,11 @@ class Navigator(val state: NavigationState) {
             // This is a top level route, just switch to it
             state.topLevelRoute = route as BottomNav
         } else {
-            state.backStacks[state.topLevelRoute]?.add(route)
+            val currentStack = state.backStacks[state.topLevelRoute]
+            if (currentStack != null) {
+                currentStack.remove(route)
+                currentStack.add(route)
+            }
         }
     }
 
