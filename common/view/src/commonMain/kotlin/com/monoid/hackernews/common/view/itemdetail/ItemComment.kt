@@ -59,6 +59,7 @@ import com.monoid.hackernews.common.view.un_flag
 import com.monoid.hackernews.common.view.un_vote
 import com.monoid.hackernews.common.view.unfollow
 import com.monoid.hackernews.common.view.upvote
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.stringResource
 import kotlin.time.Duration.Companion.seconds
@@ -169,6 +170,7 @@ fun ItemComment(
                                         contentDescription = stringResource(Res.string.reply),
                                     )
                                 },
+                                enabled = item.flagged != true && item.deleted != true,
                             )
                             DropdownMenuItem(text = {
                                 Text(
@@ -237,6 +239,7 @@ fun ItemComment(
                                         ),
                                     )
                                 },
+                                enabled = item.flagged != true && item.deleted != true,
                             )
 
                             DropdownMenuItem(
@@ -274,6 +277,7 @@ fun ItemComment(
                                         ),
                                     )
                                 },
+                                enabled = item.flagged != true && item.deleted != true,
                             )
                         }
                     }

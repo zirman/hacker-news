@@ -147,7 +147,8 @@ fun ItemDetail(
                                                 },
                                             ),
                                         )
-                                    }
+                                    },
+                                    enabled = item.flagged != true && item.deleted != true,
                                 )
                             }
                             DropdownMenuItem(
@@ -178,7 +179,8 @@ fun ItemDetail(
                                             },
                                         ),
                                     )
-                                }
+                                },
+                                enabled = item.flagged != true && item.deleted != true,
                             )
                             DropdownMenuItem(
                                 text = {
@@ -209,6 +211,7 @@ fun ItemDetail(
                                         ),
                                     )
                                 },
+                                enabled = item.flagged != true && item.deleted != true,
                             )
                         }
                     }
@@ -291,7 +294,10 @@ fun ItemDetail(
                 val descendants = item?.descendants
                 key("comments") {
                     if (item != null && (item.type == ItemType.Story || item.type == ItemType.Comment)) {
-                        IconButton(onClick = { onClickReply(item.id) }) {
+                        IconButton(
+                            onClick = { onClickReply(item.id) },
+                            enabled = item.flagged != true && item.deleted != true,
+                        ) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.TwoTone.Comment,
                                 contentDescription = null,

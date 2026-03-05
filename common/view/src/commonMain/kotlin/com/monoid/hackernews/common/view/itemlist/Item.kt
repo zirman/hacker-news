@@ -190,6 +190,7 @@ fun Item(
                                     ),
                                 )
                             },
+                            enabled = item.flagged != true && item.deleted != true,
                         )
                         DropdownMenuItem(
                             text = {
@@ -223,6 +224,7 @@ fun Item(
                                     ),
                                 )
                             },
+                            enabled = item.flagged != true && item.deleted != true,
                         )
                         DropdownMenuItem(
                             text = {
@@ -256,6 +258,7 @@ fun Item(
                                     ),
                                 )
                             },
+                            enabled = item.flagged != true && item.deleted != true,
                         )
                     }
                 }
@@ -307,7 +310,10 @@ fun Item(
                 key("comments") {
                     val descendants = item.descendants
                     if (isStoryOrComment) {
-                        IconButton(onClick = { onClickReply(item.id) }) {
+                        IconButton(
+                            onClick = { onClickReply(item.id) },
+                            enabled = item.flagged != true && item.deleted != true,
+                        ) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.TwoTone.Comment,
                                 contentDescription = null,
