@@ -190,7 +190,7 @@ fun Item(
                                     ),
                                 )
                             },
-                            enabled = item.flagged != true && item.deleted != true,
+                            enabled = item.deleted != true,
                         )
                         DropdownMenuItem(
                             text = {
@@ -224,7 +224,7 @@ fun Item(
                                     ),
                                 )
                             },
-                            enabled = item.flagged != true && item.deleted != true,
+                            enabled = item.deleted != true,
                         )
                         DropdownMenuItem(
                             text = {
@@ -258,7 +258,7 @@ fun Item(
                                     ),
                                 )
                             },
-                            enabled = item.flagged != true && item.deleted != true,
+                            enabled = item.deleted != true,
                         )
                     }
                 }
@@ -312,7 +312,7 @@ fun Item(
                     if (isStoryOrComment) {
                         IconButton(
                             onClick = { onClickReply(item.id) },
-                            enabled = item.flagged != true && item.deleted != true,
+                            enabled = item.deleted != true,
                         ) {
                             Icon(
                                 imageVector = Icons.AutoMirrored.TwoTone.Comment,
