@@ -23,6 +23,7 @@ android {
     defaultConfig {
         minSdk = libs.findVersion("minSdk").get().requiredVersion.toInt()
         targetSdk = libs.findVersion("targetSdk").get().requiredVersion.toInt()
+        targetSdkPreview = libs.findVersion("targetSdkPreview").get().requiredVersion
         // reduces apk sizes by not including unsupported languages
         androidResources {
             @Suppress("UnstableApiUsage")
