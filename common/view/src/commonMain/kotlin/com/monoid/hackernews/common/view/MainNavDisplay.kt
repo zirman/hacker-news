@@ -72,7 +72,7 @@ fun MainNavDisplay(
     NavDisplay(
         entries = entries,
         onBack = onBack,
-        sceneStrategy = listDetailStrategy,
+        sceneStrategies = listOf(listDetailStrategy),
         modifier = modifier,
         transitionSpec = {
             slideInHorizontally { it / 2 } togetherWith slideOutHorizontally { -it / 2 }

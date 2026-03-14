@@ -18,7 +18,7 @@ val libs: VersionCatalog = the<VersionCatalogsExtension>().named("libs")
 kotlin {
     android {
         compileSdk = libs.findVersion("compileSdk").get().requiredVersion.toInt()
-        compileSdkPreview = libs.findVersion("compileSdkPreview").get().requiredVersion
+        // compileSdkPreview = libs.findVersion("compileSdkPreview").get().requiredVersion
         minSdk = libs.findVersion("minSdk").get().requiredVersion.toInt()
         // minSdkPreview = libs.findVersion("minSdkPreview").get().requiredVersion
         buildToolsVersion = libs.findVersion("buildToolsVersion").get().requiredVersion

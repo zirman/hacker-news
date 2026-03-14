@@ -48,20 +48,16 @@ fun MainNavigationRail(
 ) {
     NavigationRail(
         modifier = modifier,
-        header = if (currentPlatform != Platform.Android) {
-            {
-                IconButton(
-                    onClick = navigator::goBack,
-                    enabled = navigationState.canGoBack,
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.TwoTone.ArrowBack,
-                        contentDescription = stringResource(Res.string.back),
-                    )
-                }
+        header = {
+            IconButton(
+                onClick = navigator::goBack,
+                enabled = navigationState.canGoBack,
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.TwoTone.ArrowBack,
+                    contentDescription = stringResource(Res.string.back),
+                )
             }
-        } else {
-            null
         },
     ) {
         TOP_LEVEL_ROUTES.forEach { (key, value) ->

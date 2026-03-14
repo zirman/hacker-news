@@ -18,12 +18,12 @@ plugins {
 val libs: VersionCatalog = the<VersionCatalogsExtension>().named("libs")
 android {
     compileSdk = libs.findVersion("compileSdk").get().requiredVersion.toInt()
-    compileSdkPreview = libs.findVersion("compileSdkPreview").get().requiredVersion
+    // compileSdkPreview = libs.findVersion("compileSdkPreview").get().requiredVersion
     buildToolsVersion = libs.findVersion("buildToolsVersion").get().requiredVersion
     defaultConfig {
         minSdk = libs.findVersion("minSdk").get().requiredVersion.toInt()
         targetSdk = libs.findVersion("targetSdk").get().requiredVersion.toInt()
-        targetSdkPreview = libs.findVersion("targetSdkPreview").get().requiredVersion
+        // targetSdkPreview = libs.findVersion("targetSdkPreview").get().requiredVersion
         // reduces apk sizes by not including unsupported languages
         androidResources {
             @Suppress("UnstableApiUsage")
