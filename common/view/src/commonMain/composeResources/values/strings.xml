@@ -47,7 +47,7 @@
     <string name="hacker_news_login">Hacker News Login</string>
     <string name="hacker_news_logout">Hacker News Logout</string>
     <string name="send">Send</string>
-    <string name="an_error_occurred">A error occurred. Please try again later.</string>
+    <string name="an_error_occurred">An error occurred. Please try again later.</string>
     <string name="back_online">Back Online</string>
     <string name="offline">Offline</string>
     <string name="expand">Expand</string>
