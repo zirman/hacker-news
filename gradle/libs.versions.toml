@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.3.20" # https://github.com/jetbrains/kotlin/releases
+kotlin = "2.3.21-RC2" # https://github.com/jetbrains/kotlin/releases
 kotlinTest = "2.3.20"
 jvmToolchain = "21"
 jvmTarget = "21"
@@ -16,7 +16,7 @@ androidVersion = "4.1.1.4"
 desugarJdkLibs = "2.1.5"
 kotlinDatetime = "0.7.1"
 kotlinPoet = "2.3.0" # https://github.com/square/kotlinpoet/releases
-kotlinWrappersBom = "2026.4.8" # https://github.com/JetBrains/kotlin-wrappers/releases
+kotlinWrappersBom = "2026.4.9" # https://github.com/JetBrains/kotlin-wrappers/releases
 jetbrainsCompose = "1.10.3" # https://github.com/JetBrains/compose-multiplatform/releases
 jetbrainsCore = "1.0.1"
 jetbrainsWindowCore = "1.5.1"
@@ -55,7 +55,7 @@ composeLintChecks = "1.4.2"
 composeMaterial3 = "1.11.0-alpha06"
 composeMaterialIconsExtended = "1.7.3"
 composeNavigation3Ui = "1.0.0-alpha06"
-metro = "0.13.2" # https://github.com/ZacSweers/metro/releases
+metro = "1.0.0-RC2" # https://github.com/ZacSweers/metro/releases
 wearCompose = "1.6.1"
 accompanist = "0.37.3" # https://github.com/google/accompanist/releases
 junit = "4.13.2"
