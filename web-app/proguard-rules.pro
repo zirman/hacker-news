@@ -57,7 +57,7 @@
 # However, since in this case they will not be used, we can disable these warnings
 -dontwarn kotlinx.serialization.internal.ClassValueReferences
 
--keepclasseswithmembers class * extends androidx.room.RoomDatabase { <init>(); }
+-keepclasseswithmembers class * extends androidx.room3.RoomDatabase { <init>(); }
 -keepnames class com.monoid.hackernews.common.data.api.** { *; }
 -keep class com.monoid.hackernews.common.data.model.** { *; }
 
@@ -71,7 +71,7 @@
 -dontwarn **
 -keepclassmembers class com.monoid.hackernews.common.view.stories.** { *; }
 
--keepclassmembers class * extends androidx.room.RoomDatabase { <init>(); }
+-keepclassmembers class * extends androidx.room3.RoomDatabase { <init>(); }
 -keepclassmembers class androidx.sqlite.driver.bundled.** { *; }
 -keep class androidx.sqlite.** { *; }
 

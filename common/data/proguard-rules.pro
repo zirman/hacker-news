@@ -1,3 +1,3 @@
--keepclassmembers class * extends androidx.room.RoomDatabase { <init>(); }
+-keepclassmembers class * extends androidx.room3.RoomDatabase { <init>(); }
 -keepclassmembers class androidx.sqlite.driver.bundled.** { *; }
 -keep class androidx.sqlite.** { *; }
