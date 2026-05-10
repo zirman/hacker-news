@@ -36,6 +36,8 @@ dependencies {
     // https://github.com/google/ksp/issues/2595
     kspAndroid(libs.roomCompiler)
     kspJvm(libs.roomCompiler)
+    kspJs(libs.roomCompiler)
+    kspWasmJs(libs.roomCompiler)
     kspIosArm64(libs.roomCompiler)
     kspIosSimulatorArm64(libs.roomCompiler)
     // kspIosX64(libs.roomCompiler)

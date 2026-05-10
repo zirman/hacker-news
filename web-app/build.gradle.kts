@@ -2,6 +2,8 @@ import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
+    id("org.jetbrains.kotlin.plugin.compose")
+    id("org.jetbrains.compose")
 }
 kotlin {
     js {
@@ -19,6 +21,7 @@ kotlin {
     }
     sourceSets {
         commonMain.dependencies {
+            implementation(libs.composeRuntime)
             implementation(project(":view"))
         }
     }

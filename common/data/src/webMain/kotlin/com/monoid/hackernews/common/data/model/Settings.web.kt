@@ -3,8 +3,11 @@ package com.monoid.hackernews.common.data.model
 import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.Preferences
 
+// TODO
 actual var MutablePreferences.settings: Settings?
-    get() = TODO("Not yet implemented")
+    get() = Settings()
     set(value) {}
+
+// TODO
 actual val Preferences.settings: Settings?
-    get() = TODO("Not yet implemented")
+    get() = Settings()
