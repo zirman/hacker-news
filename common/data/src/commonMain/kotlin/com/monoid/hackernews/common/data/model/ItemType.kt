@@ -1,6 +1,6 @@
 package com.monoid.hackernews.common.data.model
 
-import androidx.room.TypeConverter
+import androidx.room3.TypeConverter
 
 enum class ItemType {
     Story,

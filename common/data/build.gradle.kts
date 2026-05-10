@@ -1,7 +1,7 @@
 plugins {
     id("kotlin-multiplatform-library")
     id("org.jetbrains.kotlin.plugin.serialization")
-    id("androidx.room")
+    id("androidx.room3")
 }
 val packageNamespace = "com.monoid.hackernews.common.data"
 kotlin {
@@ -30,6 +30,6 @@ dependencies {
     kspIosSimulatorArm64(libs.roomCompiler)
     // kspIosX64(libs.roomCompiler)
 }
-room {
+room3 {
     schemaDirectory("$projectDir/schemas")
 }

@@ -13,7 +13,7 @@ dependencies {
     implementation(plugin(libs.plugins.ksp))
     implementation(plugin(libs.plugins.androidApplication))
     implementation(plugin(libs.plugins.androidMultiplatformLibrary))
-    implementation(plugin(libs.plugins.room))
+    implementation(plugin(libs.plugins.room3))
     implementation(plugin(libs.plugins.googlePlayServices))
     implementation(plugin(libs.plugins.crashlytics))
     implementation(plugin(libs.plugins.firebasePerf))

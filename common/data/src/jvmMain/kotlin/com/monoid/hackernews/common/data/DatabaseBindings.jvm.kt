@@ -1,6 +1,6 @@
 package com.monoid.hackernews.common.data
 
-import androidx.room.Room
+import androidx.room3.Room
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.monoid.hackernews.common.core.metro.IoDispatcherQualifier
 import com.monoid.hackernews.common.data.room.HNDatabase
