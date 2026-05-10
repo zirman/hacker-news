@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="wear-wasm-js">
+    <output-path>$PROJECT_DIR$/common/wear/build/libs</output-path>
+    <root id="archive" name="wear-wasm-js.jar">
+      <element id="module-output" name="hacker-news.wear.wasmJsMain" />
+    </root>
+  </artifact>
+</component>

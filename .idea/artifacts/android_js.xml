@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="android-js">
+    <output-path>$PROJECT_DIR$/common/android/build/libs</output-path>
+    <root id="archive" name="android-js.jar">
+      <element id="module-output" name="hacker-news.android.jsMain" />
+    </root>
+  </artifact>
+</component>

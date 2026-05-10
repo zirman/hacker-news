@@ -2,6 +2,7 @@
 @file:OptIn(DelicateMetroGradleApi::class)
 
 import dev.zacsweers.metro.gradle.DelicateMetroGradleApi
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -43,6 +44,13 @@ kotlin {
     }
     iosArm64()
     iosSimulatorArm64()
+    js {
+        browser()
+    }
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        browser()
+    }
     compilerOptions {
         freeCompilerArgs.add("-Xexpect-actual-classes")
         freeCompilerArgs.add("-Xexplicit-backing-fields")
@@ -58,6 +66,13 @@ kotlin {
         }
         jvmMain.dependencies {
             implementation(libs.findBundle("jvmMain").get())
+        }
+        webMain.dependencies {
+//            implementation(libs.findBundle("webMain").get())
+        }
+        wasmJsMain.dependencies {
+//            npm("@sqlite.org/sqlite-wasm", "3.5.1-build1")
+//            npm("sqlite-wasm-worker", project.file("sqlite-wasm-worker"))
         }
 //        commonTest {
 //            kotlin.srcDir("build/generated/ksp/android/androidDebug/screenshotTest")

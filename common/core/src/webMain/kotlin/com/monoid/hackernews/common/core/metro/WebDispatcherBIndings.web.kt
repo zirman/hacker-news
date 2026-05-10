@@ -8,12 +8,11 @@ import dev.zacsweers.metro.Qualifier
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.MainCoroutineDispatcher
 
 @ContributesTo(AppScope::class)
 @BindingContainer
-object DispatcherBindings {
+object WebDispatcherBindings {
     @SingleIn(AppScope::class)
     @Provides
     fun providesDispatchersMain(): MainCoroutineDispatcher = Dispatchers.Main
@@ -26,7 +25,7 @@ object DispatcherBindings {
     @SingleIn(AppScope::class)
     @IoDispatcherQualifier
     @Provides
-    fun providesDispatchersIo(): CoroutineDispatcher = Dispatchers.IO
+    fun providesDispatchersIo(): CoroutineDispatcher = Dispatchers.Default
 
     @SingleIn(AppScope::class)
     @UnconfinedDispatcherQualifier

@@ -1,0 +1,8 @@
+{
+  "name": "sql-js-web-worker",
+  "version": "0.0.0",
+  "license": "APACHE-2.0",
+  "dependencies": {
+    "sql.js": "1.14.0"
+  }
+}

@@ -1,0 +1,43 @@
+package com.monoid.hackernews.common.core.metro
+
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.BindingContainer
+import dev.zacsweers.metro.ContributesTo
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.Qualifier
+import dev.zacsweers.metro.SingleIn
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainCoroutineDispatcher
+
+@ContributesTo(AppScope::class)
+@BindingContainer
+object JvmDispatcherBindings {
+    @SingleIn(AppScope::class)
+    @Provides
+    fun providesDispatchersMain(): MainCoroutineDispatcher = Dispatchers.Main
+
+    @SingleIn(AppScope::class)
+    @DefaultDispatcherQualifier
+    @Provides
+    fun providesDispatchersDefault(): CoroutineDispatcher = Dispatchers.Default
+
+    @SingleIn(AppScope::class)
+    @IoDispatcherQualifier
+    @Provides
+    fun providesDispatchersIo(): CoroutineDispatcher = Dispatchers.IO
+
+    @SingleIn(AppScope::class)
+    @UnconfinedDispatcherQualifier
+    @Provides
+    fun providesDispatchersUnconfined(): CoroutineDispatcher = Dispatchers.Unconfined
+}
+
+@Qualifier
+annotation class DefaultDispatcherQualifier
+
+@Qualifier
+annotation class IoDispatcherQualifier
+
+@Qualifier
+annotation class UnconfinedDispatcherQualifier

@@ -15,7 +15,7 @@ import dev.zacsweers.metro.SingleIn
 
 @ContributesTo(AppScope::class)
 @BindingContainer
-object AppBindings {
+object AndroidAppBindings {
     @SingleIn(AppScope::class)
     @ProcessLifecycleOwnerQualifier
     @Provides

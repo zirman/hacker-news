@@ -1,7 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+   // repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
@@ -24,6 +24,7 @@ rootProject.name = "hacker-news"
 include(":android-app")
 include(":desktop-app")
 include(":wear-app")
+include(":web-app")
 includeSubdir(":core", "common")
 includeSubdir(":injection", "common")
 includeSubdir(":data", "common")

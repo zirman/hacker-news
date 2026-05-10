@@ -1,6 +1,6 @@
 [versions]
 kotlin = "2.3.21" # https://github.com/jetbrains/kotlin/releases
-kotlinTest = "2.3.20"
+kotlinTest = "2.3.21"
 jvmToolchain = "21"
 jvmTarget = "21"
 minSdk = "29"
@@ -28,8 +28,8 @@ ksp = "2.3.4" # https://github.com/google/ksp/releases
 ktor = "3.4.3" # https://github.com/ktorio/ktor/releases
 kermit = "2.1.0"
 room3 = "3.0.0-alpha04"
-sqlite = "2.6.2"
-datastore = "1.2.1"
+sqlite = "2.7.0-alpha04"
+datastore = "1.3.0-alpha09"
 activityKtx = "1.13.0"
 fragmentKtx = "1.8.9"
 lifecycle = "2.10.0" # https://mvnrepository.com/artifact/org.jetbrains.androidx.lifecycle/lifecycle-viewmodel
@@ -158,12 +158,13 @@ kermit = { group = "co.touchlab", name = "kermit", version.ref = "kermit" }
 roomCompiler = { group = "androidx.room3", name = "room3-compiler", version.ref = "room3" }
 roomRuntime = { group = "androidx.room3", name = "room3-runtime", version.ref = "room3" }
 sqliteBundled = { group = "androidx.sqlite", name = "sqlite-bundled", version.ref = "sqlite" }
+sqliteWeb = { group = "androidx.sqlite", name = "sqlite-web", version.ref = "sqlite" }
 
-datastore = { group = "androidx.datastore", name = "datastore", version.ref = "datastore" }
+datastore = { group = "androidx.datastore", name = "datastore-core", version.ref = "datastore" }
 datastorePreferencesCore = { group = "androidx.datastore", name = "datastore-preferences-core", version.ref = "datastore" }
-datastorePreferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
-datastoreCoreOkio = { group = "androidx.datastore", name = "datastore-core-okio", version.ref = "datastore" }
-datastoreCoreOkioJvm = { group = "androidx.datastore", name = "datastore-core-okio-jvm", version.ref = "datastore" }
+#datastorePreferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+#datastoreCoreOkio = { group = "androidx.datastore", name = "datastore-core-okio", version.ref = "datastore" }
+#datastoreCoreOkioJvm = { group = "androidx.datastore", name = "datastore-core-okio-jvm", version.ref = "datastore" }
 
 window = { group = "androidx.window", name = "window", version.ref = "window" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
@@ -239,8 +240,8 @@ commonMain = [
     "coil",
     "coilNetwork",
     "datastore",
-    "datastoreCoreOkio",
-    "datastorePreferences",
+#    "datastoreCoreOkio",
+#    "datastorePreferences",
     "datastorePreferencesCore",
     "jetbrainsCore",
     "jetbrainsLifecycleRuntimeCompose",
@@ -262,7 +263,7 @@ commonMain = [
     "composeNavigation3Material3Adaptive",
     "roomRuntime",
     "slf4jSimple",
-    "sqliteBundled",
+#    "sqliteBundled",
 ]
 androidMain = [
     "accompanistAdaptive",
@@ -289,20 +290,27 @@ androidMain = [
     "roomRuntime",
     "window",
     "workRuntimeKtx",
+    "sqliteBundled",
 ]
 jvmMain = [
-    "datastoreCoreOkioJvm",
+#    "datastoreCoreOkioJvm",
     "kotlinCoroutinesSwing",
     "ktorClientJvm",
     "ktorCoilJvm",
+    "sqliteBundled",
 ]
 wear = [
     "composeMaterialWear",
     "composeNavigationWear",
     "playServicesWearable",
+    "sqliteBundled",
+]
+webMain = [
+    "sqliteWeb",
 ]
 iosMain = [
     "ktorClientDarwin",
+    "sqliteBundled",
 ]
 commonTest = [
     "composeUiTest",

@@ -1,3 +1,7 @@
+@file:OptIn(ExperimentalWasmDsl::class)
+
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+
 plugins {
     id("kotlin-multiplatform-library")
     id("org.jetbrains.kotlin.plugin.serialization")
@@ -13,6 +17,12 @@ kotlin {
                 publish = true
                 files.add(File("proguard-rules.pro"))
             }
+        }
+    }
+    sourceSets {
+        webMain.dependencies {
+            implementation(libs.sqliteWeb)
+            implementation(npm("sql-js-worker", layout.projectDirectory.file("worker").asFile))
         }
     }
 }
