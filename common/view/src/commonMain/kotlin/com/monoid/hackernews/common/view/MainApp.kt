@@ -2,7 +2,6 @@
 
 package com.monoid.hackernews.common.view
 
-
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
