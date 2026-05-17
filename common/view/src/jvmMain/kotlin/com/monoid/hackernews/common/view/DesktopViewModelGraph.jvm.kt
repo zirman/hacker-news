@@ -10,7 +10,6 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.GraphExtension
 import dev.zacsweers.metro.Multibinds
-import dev.zacsweers.metro.Provider
 import dev.zacsweers.metro.Provides
 import kotlin.reflect.KClass
 
@@ -19,7 +18,7 @@ interface DesktopViewModelGraph : ViewModelGraph {
     override val viewModelProviders get() = jvmViewModelProviders
 
     @Multibinds
-    val jvmViewModelProviders: Map<KClass<out ViewModel>, Provider<ViewModel>>
+    val jvmViewModelProviders: Map<KClass<out ViewModel>, () -> ViewModel>
 
     @Provides
     fun providesSavedStateHandle(creationExtras: CreationExtras): SavedStateHandle =

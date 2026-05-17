@@ -6,7 +6,6 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
-import dev.zacsweers.metro.Provider
 import kotlin.reflect.KClass
 
 /**
@@ -15,7 +14,8 @@ import kotlin.reflect.KClass
  */
 @ContributesBinding(AppScope::class)
 @Inject
-class AndroidViewModelProviderFactoryImpl(val factory: AndroidViewModelGraph.Factory) : ViewModelProvider.Factory {
+class AndroidViewModelProviderFactoryImpl(val factory: AndroidViewModelGraph.Factory) :
+    ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
         val viewModelGraph = factory.createViewModelGraph(extras)
         val provider = viewModelGraph.viewModelProviders[modelClass.kotlin]

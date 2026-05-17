@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,7 +43,7 @@ fun MainApp(onClickUrl: (Url) -> Unit) {
                     topLevelRoutes = TOP_LEVEL_ROUTES.keys,
                 )
                 val navigator = remember { Navigator(navigationState) }
-                val windowAdaptiveInfo = currentWindowAdaptiveInfo()
+                val windowAdaptiveInfo = currentWindowAdaptiveInfoV2()
                 val useBottomBar = windowAdaptiveInfo.windowPosture.isTabletop ||
                     windowAdaptiveInfo.windowSizeClass.minWidthDp < windowAdaptiveInfo.windowSizeClass.minHeightDp
                 Scaffold(

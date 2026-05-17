@@ -9,7 +9,6 @@ import android.content.Intent
 import androidx.annotation.Keep
 import androidx.core.app.AppComponentFactory
 import com.monoid.hackernews.common.core.metro.AndroidAppGraph
-import dev.zacsweers.metro.Provider
 import kotlin.reflect.KClass
 
 /**
@@ -68,8 +67,8 @@ abstract class AndroidAppComponentFactory : AppComponentFactory() {
     private inline fun <reified T : Any, R> getProvider(
         cl: ClassLoader,
         className: String,
-        providers: Map<KClass<out T>, Provider<R>>,
-    ): Provider<R>? {
+        providers: Map<KClass<out T>, () -> R>,
+    ): (() -> R)? {
         val kClass = Class.forName(className, false, cl).asSubclass(T::class.java).kotlin
         return providers[kClass]
     }

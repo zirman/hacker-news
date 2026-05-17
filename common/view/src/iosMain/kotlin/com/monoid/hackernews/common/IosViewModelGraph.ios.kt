@@ -10,7 +10,6 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.GraphExtension
 import dev.zacsweers.metro.Multibinds
-import dev.zacsweers.metro.Provider
 import dev.zacsweers.metro.Provides
 import kotlin.reflect.KClass
 
@@ -19,7 +18,7 @@ interface IosViewModelGraph : ViewModelGraph {
     override val viewModelProviders get() = iosViewModelProviders
 
     @Multibinds
-    val iosViewModelProviders: Map<KClass<out ViewModel>, Provider<ViewModel>>
+    val iosViewModelProviders: Map<KClass<out ViewModel>, () -> ViewModel>
 
     @Provides
     fun providesSavedStateHandle(creationExtras: CreationExtras): SavedStateHandle =

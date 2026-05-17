@@ -12,7 +12,6 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.GraphExtension
 import dev.zacsweers.metro.Multibinds
-import dev.zacsweers.metro.Provider
 import dev.zacsweers.metro.Provides
 import kotlin.reflect.KClass
 
@@ -21,7 +20,7 @@ interface WearViewModelGraph : ViewModelGraph {
     override val viewModelProviders get() = androidViewModelProviders
 
     @Multibinds
-    val androidViewModelProviders: Map<KClass<out ViewModel>, Provider<ViewModel>>
+    val androidViewModelProviders: Map<KClass<out ViewModel>, () -> ViewModel>
 
     @Provides
     fun providesApplication(creationExtras: CreationExtras): Application = checkNotNull(creationExtras[APPLICATION_KEY])
