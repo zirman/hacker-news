@@ -6,8 +6,8 @@ import androidx.room3.Relation
 data class ItemWithKids(
     @Embedded val item: ItemDb,
     @Relation(
-        parentColumn = "id",
-        entityColumn = "parent",
+        parentColumns = ["id"],
+        entityColumns = ["parent"],
     )
     val kids: List<ItemDb>,
 )

@@ -6,8 +6,8 @@ import androidx.room3.Relation
 data class UserWithSubmitted(
     @Embedded val user: UserDb,
     @Relation(
-        parentColumn = "id",
-        entityColumn = "by",
+        parentColumns = ["id"],
+        entityColumns = ["by"],
     )
     val submitted: List<ItemDb>,
 )
