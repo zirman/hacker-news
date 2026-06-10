@@ -133,13 +133,12 @@ class NavigationState(
         // the entries from that stack. When backStacks changes, `rememberDecoratedNavEntries` will
         // be recomposed and a new list of decorated entries is returned.
         val decoratedEntries = backStacks.mapValues { (_, stack) ->
-            val decorators = listOf(
-                rememberSaveableStateHolderNavEntryDecorator<NavKey>(),
-                rememberViewModelStoreNavEntryDecorator(),
-            )
             rememberDecoratedNavEntries(
                 backStack = stack,
-                entryDecorators = decorators,
+                entryDecorators = listOf(
+                    rememberSaveableStateHolderNavEntryDecorator(),
+                    rememberViewModelStoreNavEntryDecorator(),
+                ),
                 entryProvider = entryProvider,
             )
         }
