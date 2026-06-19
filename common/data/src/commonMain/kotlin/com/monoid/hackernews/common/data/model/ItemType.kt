@@ -1,6 +1,6 @@
 package com.monoid.hackernews.common.data.model
 
-import androidx.room3.TypeConverter
+import androidx.room3.ColumnTypeConverter
 
 enum class ItemType {
     Story,
@@ -14,10 +14,10 @@ enum class ItemType {
 
     internal class Converter {
 
-        @TypeConverter
+        @ColumnTypeConverter
         fun toItemType(value: String): ItemType = enumValueOf(value)
 
-        @TypeConverter
+        @ColumnTypeConverter
         fun fromItemType(value: ItemType): String = value.name
     }
 }

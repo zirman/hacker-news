@@ -1,10 +1,10 @@
 package com.monoid.hackernews.common.data.room
 
+import androidx.room3.ColumnTypeConverters
 import androidx.room3.ConstructedBy
 import androidx.room3.Database
 import androidx.room3.RoomDatabase
 import androidx.room3.RoomDatabaseConstructor
-import androidx.room3.TypeConverters
 import com.monoid.hackernews.common.data.model.ItemType
 
 @Database(
@@ -26,7 +26,7 @@ import com.monoid.hackernews.common.data.model.ItemType
 //        AutoMigration(from = 2, to = 3),
 //    ],
 )
-@TypeConverters(ItemType.Converter::class)
+@ColumnTypeConverters(ItemType.Converter::class)
 @ConstructedBy(HNDatabaseConstructor::class)
 abstract class HNDatabase : RoomDatabase() {
     abstract fun topStoryDao(): TrendingStoryDao
