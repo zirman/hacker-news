@@ -4,7 +4,11 @@ import android.app.Application
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
+import android.os.ProfilingManager
+import android.os.ProfilingResult
+import android.os.ProfilingTrigger
 import android.os.StrictMode
+import androidx.core.content.ContextCompat
 import com.monoid.hackernews.common.data.room.HNDatabase
 import com.monoid.hackernews.common.view.UiModeConfigurator
 import dev.zacsweers.metro.AppScope
@@ -37,6 +41,24 @@ class HackerNewsApplication(
                 }
                 .build(),
         )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CINNAMON_BUN) {
+            val profilingManager = applicationContext.getSystemService(ProfilingManager::class.java)
+            profilingManager.registerForAllProfilingResults(
+                ContextCompat.getMainExecutor(this),
+                { profilingResult ->
+                    if (profilingResult.errorCode == ProfilingResult.ERROR_NONE &&
+                        profilingResult.triggerType == ProfilingTrigger.TRIGGER_TYPE_OOM
+                    ) {
+                        // upload profilingResult.resultFilePath
+                    }
+                },
+            )
+            profilingManager.addProfilingTriggers(
+                listOf(
+                    ProfilingTrigger.Builder(ProfilingTrigger.TRIGGER_TYPE_OOM).build(),
+                ),
+            )
+        }
         // force creation of singleton UiModeConfigurator
         uiModeConfigurator
         super.onCreate()
