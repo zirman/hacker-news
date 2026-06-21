@@ -15,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
+import coil3.util.CoilUtils
 import com.monoid.hackernews.common.core.log.LoggerAdapter
 import com.monoid.hackernews.common.core.metro.ActivityScope
 import com.monoid.hackernews.common.core.metro.ContributesActivityInjector
@@ -77,6 +78,19 @@ class MainActivity(
                 throwable = throwable,
                 tag = TAG,
             )
+        }
+    }
+
+    override fun onTrimMemory(level: Int) {
+        super.onTrimMemory(level)
+
+        if (level >= TRIM_MEMORY_UI_HIDDEN) {
+            // Release memory related to UI elements, such as bitmap caches.
+        }
+
+        if (level >= TRIM_MEMORY_BACKGROUND) {
+            // Release memory related to background processing, such as by
+            // closing a database connection.
         }
     }
 }
