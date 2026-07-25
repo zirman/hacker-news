@@ -1,6 +1,6 @@
 [versions]
 kotlin = "2.4.10" # https://github.com/jetbrains/kotlin/releases
-kotlinTest = "2.4.0"
+kotlinTest = "2.4.10"
 jvmToolchain = "21"
 jvmTarget = "21"
 minSdk = "29"
@@ -10,13 +10,13 @@ buildToolsVersion = "37.0.0"
 #compileSdkPreview = "CinnamonBun"
 #targetSdkPreview = "CinnamonBun"
 #minSdkPreview = "CinnamonBun"
-androidGradlePlugin = "9.3.0"
+androidGradlePlugin = "9.3.1"
 androidVersion = "4.1.1.4"
 #lint = "31.4.0"
 desugarJdkLibs = "2.1.5"
 kotlinDatetime = "0.8.0"
 kotlinPoet = "2.3.0" # https://github.com/square/kotlinpoet/releases
-kotlinWrappersBom = "2026.7.3" # https://github.com/JetBrains/kotlin-wrappers/releases
+kotlinWrappersBom = "2026.7.6" # https://github.com/JetBrains/kotlin-wrappers/releases
 jetbrainsCompose = "1.11.1" # https://github.com/JetBrains/compose-multiplatform/releases
 jetbrainsCore = "1.0.1"
 jetbrainsWindowCore = "1.5.1"
