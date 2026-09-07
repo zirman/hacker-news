@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.4.10" # https://github.com/jetbrains/kotlin/releases
+kotlin = "2.4.20" # https://github.com/jetbrains/kotlin/releases
 kotlinTest = "2.4.10"
 jvmToolchain = "21"
 jvmTarget = "21"
@@ -15,8 +15,8 @@ androidVersion = "4.1.1.4"
 #lint = "31.4.0"
 desugarJdkLibs = "2.1.5"
 kotlinDatetime = "0.8.0"
-kotlinPoet = "2.3.0" # https://github.com/square/kotlinpoet/releases
-kotlinWrappersBom = "2026.9.0" # https://github.com/JetBrains/kotlin-wrappers/releases
+kotlinPoet = "2.4.0" # https://github.com/square/kotlinpoet/releases
+kotlinWrappersBom = "2026.9.1" # https://github.com/JetBrains/kotlin-wrappers/releases
 jetbrainsCompose = "1.12.0" # https://github.com/JetBrains/compose-multiplatform/releases
 jetbrainsCore = "1.0.1"
 jetbrainsWindowCore = "1.5.1"
@@ -111,7 +111,6 @@ composeUiToolingPreview = { group = "org.jetbrains.compose.ui", name = "ui-tooli
 composeUiUtil = { group = "org.jetbrains.compose.ui", name = "ui-util", version.ref = "jetbrainsCompose" }
 composeUiTest = { group = "org.jetbrains.compose.ui", name = "ui-test", version.ref = "jetbrainsCompose" }
 kotlinCoroutinesBom = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-bom", version.ref = "kotlinCoroutines" }
-#kotlinStdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 kotlinCoroutinesAndroid = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android" }
 kotlinCoroutinesSwing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing" }
 #kotlinCoroutinesJavaFx = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-javafx" }
