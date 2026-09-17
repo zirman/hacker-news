@@ -17,7 +17,6 @@ kotlin {
     }
     compilerOptions {
         freeCompilerArgs.add("-Xexpect-actual-classes")
-        freeCompilerArgs.add("-Xexplicit-backing-fields")
     }
     sourceSets {
         commonMain.dependencies {

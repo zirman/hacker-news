@@ -53,7 +53,6 @@ kotlin {
     }
     compilerOptions {
         freeCompilerArgs.add("-Xexpect-actual-classes")
-        freeCompilerArgs.add("-Xexplicit-backing-fields")
     }
     jvmToolchain(libs.findVersion("jvmToolchain").get().requiredVersion.toInt())
     sourceSets {
