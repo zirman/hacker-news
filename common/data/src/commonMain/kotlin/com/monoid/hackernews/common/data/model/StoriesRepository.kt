@@ -267,7 +267,7 @@ class StoriesRepository(
         val lastUpdate = localData?.item?.lastUpdate?.let { Instant.fromEpochSeconds(it) }
         if (localData != null) {
             _cache.update { cache ->
-                cache.put(
+                cache.putting(
                     itemId,
                     localData.item.toSimpleItemUiState(localData.kids.map { ItemId(it.id) }),
                 )
@@ -280,7 +280,7 @@ class StoriesRepository(
                 var item: Item? = null
                 _cache.update { cache ->
                     item = cache[itemId]
-                    cache.put(
+                    cache.putting(
                         itemId,
                         remoteData.toSimpleItemUiState(
                             instant = currentInstant,
@@ -301,7 +301,7 @@ class StoriesRepository(
         val upvoted = item.upvoted == true
         // optimistically update the cache
         _cache.update { cache ->
-            cache.put(
+            cache.putting(
                 key = item.id,
                 value = cache.getValue(item.id).copy(upvoted = upvoted.not()),
             )
@@ -315,7 +315,7 @@ class StoriesRepository(
         }.doOnErrorThenThrow {
             // revert cache if an error occurred
             _cache.update { cache ->
-                cache.put(
+                cache.putting(
                     key = item.id,
                     value = cache.getValue(item.id).copy(upvoted = upvoted),
                 )
@@ -329,7 +329,7 @@ class StoriesRepository(
         val favorited = item.favorited == true
         // optimistically update the cache
         _cache.update { cache ->
-            cache.put(
+            cache.putting(
                 key = item.id,
                 value = cache.getValue(item.id).copy(favorited = favorited.not()),
             )
@@ -343,7 +343,7 @@ class StoriesRepository(
         }.doOnErrorThenThrow {
             // revert cache if an error occurred
             _cache.update { cache ->
-                cache.put(
+                cache.putting(
                     key = item.id,
                     value = cache.getValue(item.id).copy(favorited = favorited),
                 )
@@ -357,7 +357,7 @@ class StoriesRepository(
         val followed = item.followed
         // optimistically update the cache
         _cache.update { cache ->
-            cache.put(
+            cache.putting(
                 key = item.id,
                 value = cache.getValue(item.id).copy(followed = followed.not()),
             )
@@ -370,7 +370,7 @@ class StoriesRepository(
         val flagged = item.flagged == true
         // optimistically update the cache
         _cache.update { cache ->
-            cache.put(
+            cache.putting(
                 key = item.id,
                 value = cache.getValue(item.id).copy(flagged = flagged.not()),
             )
@@ -384,7 +384,7 @@ class StoriesRepository(
         }.doOnErrorThenThrow {
             // revert cache if an error occurred
             _cache.update { cache ->
-                cache.put(
+                cache.putting(
                     key = item.id,
                     value = cache.getValue(item.id).copy(flagged = flagged),
                 )
@@ -398,7 +398,7 @@ class StoriesRepository(
         val itemWithKids = itemLocalDataSource.itemToggleExpanded(itemId = itemId.long) ?: return
         val item = itemWithKids.item.toSimpleItemUiState(itemWithKids.kids.map { ItemId(it.id) })
         _cache.update { cache ->
-            cache.put(itemId, item)
+            cache.putting(itemId, item)
         }
     }
 
