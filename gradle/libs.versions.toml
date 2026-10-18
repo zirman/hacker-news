@@ -1,6 +1,6 @@
 [versions]
 kotlin = "2.4.21" # https://github.com/jetbrains/kotlin/releases
-kotlinTest = "2.4.20"
+kotlinTest = "2.4.21"
 jvmToolchain = "21"
 jvmTarget = "21"
 minSdk = "29"
