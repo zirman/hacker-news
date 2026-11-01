@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.androidMultiplatformLibrary) apply false
+    alias(libs.plugins.androidKeep) apply false
     alias(libs.plugins.room3) apply false
     alias(libs.plugins.googlePlayServices) apply false
     alias(libs.plugins.crashlytics) apply false

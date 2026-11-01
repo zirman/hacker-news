@@ -12,6 +12,7 @@ buildToolsVersion = "37.0.0"
 #minSdkPreview = "CinnamonBun"
 androidGradlePlugin = "9.5.0"
 androidVersion = "4.1.1.4"
+androidKeep = "1.0.0-alpha01"
 #lint = "31.4.0"
 desugarJdkLibs = "2.1.5"
 kotlinDatetime = "0.8.0"
@@ -84,6 +85,7 @@ metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 androidApplication = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 androidMultiplatformLibrary = { id = "com.android.kotlin.multiplatform.library", version.ref = "androidGradlePlugin" }
+androidKeep = { id = "androidx.annotation.keep", version.ref = "androidKeep" }
 room3 = { id = "androidx.room3", version.ref = "room3" }
 googlePlayServices = { id = "com.google.gms.google-services", version.ref = "googlePlayServices" }
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics" }
@@ -110,6 +112,7 @@ composeUiTooling = { group = "org.jetbrains.compose.ui", name = "ui-tooling", ve
 composeUiToolingPreview = { group = "org.jetbrains.compose.ui", name = "ui-tooling-preview", version.ref = "jetbrainsCompose" }
 composeUiUtil = { group = "org.jetbrains.compose.ui", name = "ui-util", version.ref = "jetbrainsCompose" }
 composeUiTest = { group = "org.jetbrains.compose.ui", name = "ui-test", version.ref = "jetbrainsCompose" }
+androidKeep = { module = "androidx.annotation.keep:keep", version.ref = "androidKeep" }
 kotlinCoroutinesBom = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-bom", version.ref = "kotlinCoroutines" }
 kotlinCoroutinesAndroid = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android" }
 kotlinCoroutinesSwing = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-swing" }
@@ -275,6 +278,7 @@ androidMain = [
     "composeDesktop",
     "composeComponentsAnimatedImage",
     "composeComponentsSplitPane",
+    "androidKeep",
     "coreKtx",
     "tracing",
     "coreSplashscreen",
@@ -297,6 +301,7 @@ androidMain = [
 jvmMain = [
     #    "datastoreCoreOkioJvm",
     "kotlinCoroutinesSwing",
+    "androidKeep",
     "ktorClientJvm",
     "ktorCoilJvm",
     "sqliteBundled",

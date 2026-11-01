@@ -1,7 +1,4 @@
 @file:Suppress("OPT_IN_USAGE")
-@file:OptIn(DelicateMetroGradleApi::class)
-
-import dev.zacsweers.metro.gradle.DelicateMetroGradleApi
 
 plugins {
     id("com.android.application")
@@ -9,8 +6,9 @@ plugins {
     id("org.jetbrains.compose")
     id("com.google.devtools.ksp")
     id("dev.zacsweers.metro")
-    id("io.github.takahirom.roborazzi")
+    id("androidx.annotation.keep")
     id("detekt-rules")
+    id("io.github.takahirom.roborazzi")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")

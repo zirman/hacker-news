@@ -13,6 +13,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("dev.zacsweers.metro")
     id("io.github.takahirom.roborazzi")
+    id("androidx.annotation.keep")
     id("detekt-rules")
 }
 val libs: VersionCatalog = the<VersionCatalogsExtension>().named("libs")

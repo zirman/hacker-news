@@ -17,6 +17,7 @@ dependencies {
     implementation(plugin(libs.plugins.googlePlayServices))
     implementation(plugin(libs.plugins.crashlytics))
     implementation(plugin(libs.plugins.firebasePerf))
+    implementation(plugin(libs.plugins.androidKeep))
     implementation(plugin(libs.plugins.detektGradle))
     implementation(plugin(libs.plugins.roborazzi))
 }
